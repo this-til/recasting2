@@ -1,0 +1,8 @@
+{
+  "name": "recasting:slashblade/long_sky_sunset",
+  "properties": {},
+  "render": {
+    "model": "recasting:slashblade/long_sky_sunset.obj",
+    "texture": "recasting:slashblade/long_sky_sunset.png"
+  }
+}

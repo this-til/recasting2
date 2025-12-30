@@ -1,0 +1,13 @@
+{
+  "name": "recasting:slashblade/obliterate_lambda",
+  "properties": {
+    "max_damage": 640
+  },
+  "properties_extension": {
+    "attack_distance": 1.25
+  },
+  "render": {
+    "model": "recasting:slashblade/obliterate_lambda.obj",
+    "texture": "recasting:slashblade/obliterate.png"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "recasting:slashblade/laser/laser_1",
+  "properties": {
+    "attack_base": 6.0,
+    "max_damage": 400
+  },
+  "render": {
+    "model": "recasting:slashblade/laser/laser_1.obj",
+    "texture": "recasting:slashblade/laser/laser_1.png"
+  }
+}

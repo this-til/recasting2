@@ -1,0 +1,11 @@
+{
+  "name": "recasting:slashblade/color_wing",
+  "properties": {
+    "attack_base": 8.0,
+    "max_damage": 560
+  },
+  "render": {
+    "model": "recasting:slashblade/color_wing.obj",
+    "texture": "recasting:slashblade/color_wing.png"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "recasting:slashblade/dharma_stick",
+  "properties": {
+    "attack_base": 2.0,
+    "max_damage": 4560
+  },
+  "render": {
+    "model": "recasting:slashblade/dharma_stick.obj",
+    "texture": "recasting:slashblade/dharma_stick.png"
+  }
+}

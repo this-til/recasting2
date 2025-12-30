@@ -1,0 +1,14 @@
+{
+  "name": "recasting:slashblade/silver_wing",
+  "properties": {
+    "attack_base": 6.0,
+    "max_damage": 320
+  },
+  "properties_extension": {
+    "attack_distance": 1.15
+  },
+  "render": {
+    "model": "recasting:slashblade/silver_wing.obj",
+    "texture": "recasting:slashblade/silver_wing.png"
+  }
+}

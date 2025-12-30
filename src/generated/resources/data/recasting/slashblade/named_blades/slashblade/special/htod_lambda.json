@@ -1,0 +1,12 @@
+{
+  "name": "recasting:slashblade/special/htod_lambda",
+  "properties": {
+    "attack_base": 12.0,
+    "max_damage": 3840
+  },
+  "render": {
+    "model": "recasting:slashblade/special/htod.obj",
+    "summon_sword_color": -638141,
+    "texture": "recasting:slashblade/special/htod.png"
+  }
+}

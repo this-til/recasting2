@@ -1,0 +1,15 @@
+{
+  "name": "recasting:slashblade/void/void_2",
+  "properties": {
+    "attack_base": 8.0,
+    "max_damage": 960
+  },
+  "properties_extension": {
+    "attack_distance": 1.5
+  },
+  "render": {
+    "model": "recasting:slashblade/void/void.obj",
+    "summon_sword_color": 16711710,
+    "texture": "recasting:slashblade/void/void_2.png"
+  }
+}

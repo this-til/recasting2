@@ -1,0 +1,11 @@
+{
+  "name": "recasting:slashblade/hoe",
+  "properties": {
+    "attack_base": 2.0,
+    "max_damage": 200
+  },
+  "render": {
+    "model": "recasting:slashblade/hoe.obj",
+    "texture": "recasting:slashblade/hoe.png"
+  }
+}

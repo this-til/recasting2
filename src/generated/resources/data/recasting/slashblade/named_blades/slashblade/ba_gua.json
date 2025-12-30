@@ -1,0 +1,11 @@
+{
+  "name": "recasting:slashblade/ba_gua",
+  "properties": {
+    "max_damage": 80
+  },
+  "render": {
+    "model": "recasting:slashblade/ba_gua.obj",
+    "summon_sword_color": -1,
+    "texture": "recasting:slashblade/ba_gua.png"
+  }
+}

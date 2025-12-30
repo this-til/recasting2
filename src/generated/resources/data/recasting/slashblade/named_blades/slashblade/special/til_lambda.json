@@ -1,0 +1,12 @@
+{
+  "name": "recasting:slashblade/special/til_lambda",
+  "properties": {
+    "attack_base": 12.0,
+    "max_damage": 3840
+  },
+  "render": {
+    "model": "recasting:slashblade/special/til.obj",
+    "summon_sword_color": -2984202,
+    "texture": "recasting:slashblade/special/til.png"
+  }
+}

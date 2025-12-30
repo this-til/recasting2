@@ -1,0 +1,12 @@
+{
+  "name": "recasting:slashblade/umbrella",
+  "properties": {
+    "attack_base": 5.0,
+    "max_damage": 480
+  },
+  "render": {
+    "model": "recasting:slashblade/umbrella.obj",
+    "summon_sword_color": -4091393,
+    "texture": "recasting:slashblade/umbrella.png"
+  }
+}

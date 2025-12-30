@@ -1,0 +1,12 @@
+{
+  "name": "recasting:slashblade/blue_cloud",
+  "properties": {
+    "attack_base": 6.0,
+    "max_damage": 160
+  },
+  "render": {
+    "model": "recasting:slashblade/blue_cloud.obj",
+    "summon_sword_color": -5781885,
+    "texture": "recasting:slashblade/blue_cloud.png"
+  }
+}

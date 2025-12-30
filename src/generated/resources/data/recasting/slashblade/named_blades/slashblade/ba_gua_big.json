@@ -1,0 +1,12 @@
+{
+  "name": "recasting:slashblade/ba_gua_big",
+  "properties": {
+    "attack_base": 6.0,
+    "max_damage": 480
+  },
+  "render": {
+    "model": "recasting:slashblade/ba_gua_big.obj",
+    "summon_sword_color": -1,
+    "texture": "recasting:slashblade/ba_gua_big.png"
+  }
+}

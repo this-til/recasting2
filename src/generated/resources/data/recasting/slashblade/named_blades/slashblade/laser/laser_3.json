@@ -1,0 +1,14 @@
+{
+  "name": "recasting:slashblade/laser/laser_3",
+  "properties": {
+    "attack_base": 8.0,
+    "max_damage": 800
+  },
+  "properties_extension": {
+    "attack_distance": 1.2
+  },
+  "render": {
+    "model": "recasting:slashblade/laser/laser_3.obj",
+    "texture": "recasting:slashblade/laser/laser_3.png"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "recasting:slashblade/xuan_yuan",
+  "properties": {
+    "attack_base": 7.0
+  },
+  "render": {
+    "model": "recasting:slashblade/xuan_yuan.obj",
+    "summon_sword_color": -256,
+    "texture": "recasting:slashblade/xuan_yuan.png"
+  }
+}

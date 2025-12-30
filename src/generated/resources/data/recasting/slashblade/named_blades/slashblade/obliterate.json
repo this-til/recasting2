@@ -1,0 +1,10 @@
+{
+  "name": "recasting:slashblade/obliterate",
+  "properties": {
+    "max_damage": 480
+  },
+  "render": {
+    "model": "recasting:slashblade/obliterate.obj",
+    "texture": "recasting:slashblade/obliterate.png"
+  }
+}

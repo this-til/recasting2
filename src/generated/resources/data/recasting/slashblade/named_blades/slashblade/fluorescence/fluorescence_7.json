@@ -1,0 +1,11 @@
+{
+  "name": "recasting:slashblade/fluorescence/fluorescence_7",
+  "properties": {
+    "attack_base": 2.0,
+    "max_damage": 960
+  },
+  "render": {
+    "model": "recasting:slashblade/fluorescence/fluorescence_7.obj",
+    "texture": "recasting:slashblade/fluorescence/fluorescence_7.png"
+  }
+}

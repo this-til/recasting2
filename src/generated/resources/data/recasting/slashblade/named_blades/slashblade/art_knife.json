@@ -1,0 +1,11 @@
+{
+  "name": "recasting:slashblade/art_knife",
+  "properties": {
+    "max_damage": 80
+  },
+  "render": {
+    "model": "recasting:slashblade/art_knife.obj",
+    "summon_sword_color": -10197916,
+    "texture": "recasting:slashblade/art_knife.png"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "recasting:slashblade/black",
+  "properties": {
+    "max_damage": 160
+  },
+  "render": {
+    "model": "recasting:slashblade/black.obj",
+    "summon_sword_color": -16777216,
+    "texture": "recasting:slashblade/black.png"
+  }
+}

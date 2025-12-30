@@ -1,0 +1,12 @@
+{
+  "name": "recasting:slashblade/special/xing_kong",
+  "properties": {
+    "attack_base": 10.0,
+    "max_damage": 1920
+  },
+  "render": {
+    "model": "recasting:slashblade/special/xing_kong.obj",
+    "summon_sword_color": -16772778,
+    "texture": "recasting:slashblade/special/xing_kong.png"
+  }
+}

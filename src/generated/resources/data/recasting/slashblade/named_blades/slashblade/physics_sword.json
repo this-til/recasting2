@@ -1,0 +1,10 @@
+{
+  "name": "recasting:slashblade/physics_sword",
+  "properties": {
+    "attack_base": 6.0
+  },
+  "render": {
+    "model": "recasting:slashblade/physics_sword.obj",
+    "texture": "recasting:slashblade/physics_sword.png"
+  }
+}

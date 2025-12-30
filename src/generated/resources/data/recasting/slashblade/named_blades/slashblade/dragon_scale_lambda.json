@@ -1,0 +1,12 @@
+{
+  "name": "recasting:slashblade/dragon_scale_lambda",
+  "properties": {
+    "attack_base": 5.0,
+    "max_damage": 400
+  },
+  "render": {
+    "model": "recasting:slashblade/dragon_scale.obj",
+    "summon_sword_color": -4622064,
+    "texture": "recasting:slashblade/dragon_scale.png"
+  }
+}
