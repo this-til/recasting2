@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:hay_block"
+    },
+    "F": {
+      "item": "minecraft:feather"
+    },
+    "H": {
+      "item": "minecraft:honeycomb_block"
+    },
+    "P": {
+      "item": "slashblade:proudsoul"
+    }
+  },
+  "pattern": [
+    "HFH",
+    "FPF",
+    "HBH"
+  ],
+  "result": {
+    "item": "recasting:cradle_flame"
+  },
+  "show_notification": true
+}

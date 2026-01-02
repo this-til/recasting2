@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:blue_ice"
+    },
+    "F": {
+      "item": "minecraft:packed_ice"
+    },
+    "I": {
+      "item": "minecraft:ice"
+    },
+    "P": {
+      "item": "slashblade:proudsoul"
+    },
+    "S": {
+      "item": "minecraft:snow_block"
+    }
+  },
+  "pattern": [
+    "SBS",
+    "IPI",
+    "FBF"
+  ],
+  "result": {
+    "item": "recasting:ice_core_flame"
+  },
+  "show_notification": true
+}

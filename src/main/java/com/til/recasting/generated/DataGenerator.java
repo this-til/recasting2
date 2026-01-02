@@ -30,13 +30,27 @@ public class DataGenerator {
         // 注册 SlashBlade 定义数据包生成
         final RegistrySetBuilder bladeBuilder = new RegistrySetBuilder().add(SlashBladeDefinition.REGISTRY_KEY, RecastingSlashBladeBuiltInRegistry::registerAll);
 
-        dataGenerator.addProvider(event.includeServer(),
+        dataGenerator.addProvider(
+                event.includeServer(),
                 new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, bladeBuilder, Set.of(Recasting.MODID)) {
                     @Override
                     public @NotNull String getName() {
                         return "Recasting SlashBlade Definition Registry";
                     }
-                });
+                }
+        );
+
+        // 注册配方生成器（物品配方）
+        dataGenerator.addProvider(
+                event.includeServer(),
+                new RecastingRecipeProvider(packOutput)
+        );
+
+        // 注册刀配方生成器
+        dataGenerator.addProvider(
+                event.includeServer(),
+                new SlashBladeRecipeProvider(packOutput)
+        );
 
     }
 

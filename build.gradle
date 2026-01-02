@@ -189,28 +189,27 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     //nbt编辑器
-    //implementation fg.deobf("curse.maven:ibe-editor-256822:4994072")
-
-    //暮色森林
-    //implementation fg.deobf("curse.maven:the-twilight-forest-227639:5468648")
-
-    //假人前置
-    //implementation fg.deobf("curse.maven:selene-499980:5942980")
-    //训练假人
-    //implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:5737040")
-
-    //植物魔法
-    //implementation fg.deobf("curse.maven:botania-225643:5594997")
-    //植物魔法前置
-    //implementation fg.deobf("curse.maven:patchouli-306770:4966125")
+    implementation fg.deobf("curse.maven:ibe-editor-256822:4994072")
 
     implementation fg.deobf("mods.flammpfeil.slashblade:SlashBlade_Resharped:${slash_blade_version}")
 
+    //伤害数值显示
+    implementation fg.deobf("curse.maven:damage-number-998849:5538112")
+    //nbt编辑器
+    implementation fg.deobf("curse.maven:ibe-editor-256822:4994072")
+    //curios
+    implementation fg.deobf("curse.maven:curios-309927:5680164")
+    //假人前置
+    implementation fg.deobf("curse.maven:selene-499980:5942980")
+    //训练假人
+    implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:5737040")
     //开发环境jei
-    implementation fg.deobf("curse.maven:jei-238222:6600311")
-    //拔刀剑重锋依赖
-    //implementation fg.deobf("curse.maven:slashblade-resharped-1022428:7234815")
+    implementation fg.deobf("curse.maven:jei-238222:7391695")
 
+    //compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
+    //compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
+    // at runtime, use the full JEI jar for Forge
+    //runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

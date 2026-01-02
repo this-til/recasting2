@@ -8,9 +8,12 @@
     "SlashBladeDefinitionCodecMixin",
     "SlashBladeDefinitionGetBladeMixin",
     "SlashBladeDefinitionMixin",
-    "SlashBladeDefinitionBladeComparatorMixin"
+    "SlashBladeDefinitionBladeComparatorMixin",
+    "EntitySlashEffectMixin",
+    "RecipeProviderMixin"
   ],
   "client": [
+    "ItemModelBuilderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

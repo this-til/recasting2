@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:enchanted_book"
+    },
+    "P": {
+      "item": "slashblade:proudsoul"
+    }
+  },
+  "pattern": [
+    "  B",
+    " P ",
+    "B  "
+  ],
+  "result": {
+    "item": "recasting:poetry_ash_flame"
+  },
+  "show_notification": true
+}
