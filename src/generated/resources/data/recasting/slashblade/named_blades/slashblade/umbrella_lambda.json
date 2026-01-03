@@ -5,6 +5,7 @@
     "max_damage": 720
   },
   "render": {
+    "carry_type": "default",
     "model": "recasting:slashblade/umbrella_lambda.obj",
     "summon_sword_color": -4091393,
     "texture": "recasting:slashblade/umbrella.png"

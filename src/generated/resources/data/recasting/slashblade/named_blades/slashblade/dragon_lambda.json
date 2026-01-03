@@ -5,6 +5,7 @@
     "max_damage": 320
   },
   "render": {
+    "carry_type": "default",
     "model": "recasting:slashblade/dragon_lambda.obj",
     "summon_sword_color": -256,
     "texture": "recasting:slashblade/dragon_lambda.png"

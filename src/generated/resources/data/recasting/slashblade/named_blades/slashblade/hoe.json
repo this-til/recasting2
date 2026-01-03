@@ -5,6 +5,7 @@
     "max_damage": 200
   },
   "render": {
+    "carry_type": "default",
     "model": "recasting:slashblade/hoe.obj",
     "texture": "recasting:slashblade/hoe.png"
   }

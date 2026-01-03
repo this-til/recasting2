@@ -1,0 +1,11 @@
+{
+  "name": "recasting:slashblade/broadsword_iron",
+  "properties": {
+    "max_damage": 80
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/broadsword_iron.obj",
+    "texture": "recasting:slashblade/broadsword_iron.png"
+  }
+}

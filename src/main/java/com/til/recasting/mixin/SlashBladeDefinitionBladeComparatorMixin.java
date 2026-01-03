@@ -3,12 +3,9 @@ package com.til.recasting.mixin;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
 import net.minecraft.core.Holder.Reference;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-
-import java.util.Map;
 
 /**
  * Mixin 用于修复 BladeComparator 的比较逻辑
@@ -28,9 +25,9 @@ public abstract class SlashBladeDefinitionBladeComparatorMixin {
      * @reason 修复比较器逻辑
      */
     @Overwrite(remap = false)
-    public int compare(Map.Entry<ResourceKey<SlashBladeDefinition>, SlashBladeDefinition> left, Map.Entry<ResourceKey<SlashBladeDefinition>, SlashBladeDefinition> right) {
-        ResourceLocation leftKey = left.getKey().location();
-        ResourceLocation rightKey = right.getKey().location();
+    public int compare(Reference<SlashBladeDefinition> left, Reference<SlashBladeDefinition> right) {
+        ResourceLocation leftKey = left.key().location();
+        ResourceLocation rightKey = right.key().location();
 
         String leftNamespace = leftKey.getNamespace();
         String rightNamespace = rightKey.getNamespace();

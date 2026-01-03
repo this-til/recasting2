@@ -1,7 +1,8 @@
-package com.til.recasting.constant;
+package com.til.recasting.client.constant;
 
 import com.til.recasting.client.generated.language.LanguageItem;
 import com.til.recasting.client.generated.language.LanguageTypes;
+import com.til.recasting.constant.SlashBladeDefinitions;
 import com.til.recasting.registry.RecastingItems;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
 import net.minecraftforge.registries.RegistryObject;
@@ -133,6 +134,30 @@ public class LanguageItems {
     public static final LanguageItem XUAN_YUAN = createLanguageItem(SlashBladeDefinitions.XUAN_YUAN)
             .addTranslation(LanguageTypes.ZH_CN, "轩辕剑")
             .addTranslation(LanguageTypes.EN_US, "Xuan Yuan");
+
+    public static final LanguageItem BROADSWORD_IRON = createLanguageItem(SlashBladeDefinitions.BROADSWORD_IRON)
+            .addTranslation(LanguageTypes.ZH_CN, "阔刃（铁）")
+            .addTranslation(LanguageTypes.EN_US, "Broadsword (Iron)");
+
+    public static final LanguageItem BROADSWORD_WOOD = createLanguageItem(SlashBladeDefinitions.BROADSWORD_WOOD)
+            .addTranslation(LanguageTypes.ZH_CN, "阔刃（木）")
+            .addTranslation(LanguageTypes.EN_US, "Broadsword (Wood)");
+
+    public static final LanguageItem BROKEN_WHITE = createLanguageItem(SlashBladeDefinitions.BROKEN_WHITE)
+            .addTranslation(LanguageTypes.ZH_CN, "碎白")
+            .addTranslation(LanguageTypes.EN_US, "Broken White");
+
+    public static final LanguageItem GREEN_BLADE_IRON = createLanguageItem(SlashBladeDefinitions.GREEN_BLADE_IRON)
+            .addTranslation(LanguageTypes.ZH_CN, "青锋（铁）")
+            .addTranslation(LanguageTypes.EN_US, "Green Blade (Iron)");
+
+    public static final LanguageItem GREEN_BLADE_WOOD = createLanguageItem(SlashBladeDefinitions.GREEN_BLADE_WOOD)
+            .addTranslation(LanguageTypes.ZH_CN, "青锋（木）")
+            .addTranslation(LanguageTypes.EN_US, "Green Blade (Wood)");
+
+    public static final LanguageItem SOULBLADE = createLanguageItem(SlashBladeDefinitions.SOULBLADE)
+            .addTranslation(LanguageTypes.ZH_CN, "魂刃")
+            .addTranslation(LanguageTypes.EN_US, "Soulblade");
 
     // ========== Fluorescence SlashBlades ==========
     public static final LanguageItem FLUORESCENCE_1 = createLanguageItem(SlashBladeDefinitions.FLUORESCENCE_1)

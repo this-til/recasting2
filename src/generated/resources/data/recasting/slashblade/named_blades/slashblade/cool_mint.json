@@ -5,6 +5,7 @@
     "max_damage": 640
   },
   "render": {
+    "carry_type": "default",
     "model": "recasting:slashblade/cool_mint.obj",
     "summon_sword_color": -3673141,
     "texture": "recasting:slashblade/cool_mint.png"

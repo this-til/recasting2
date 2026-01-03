@@ -2,7 +2,7 @@ package com.til.recasting.client.generated;
 
 import com.til.recasting.Recasting;
 import com.til.recasting.client.generated.language.LanguageItem;
-import com.til.recasting.constant.LanguageItems;
+import com.til.recasting.client.constant.LanguageItems;
 import com.til.recasting.client.generated.language.LanguageTypes;
 import lombok.extern.log4j.Log4j2;
 import net.minecraft.data.PackOutput;

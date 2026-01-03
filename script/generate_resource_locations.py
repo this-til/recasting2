@@ -144,7 +144,7 @@ class ResourceLocationGenerator:
         java_code.append(" * 自动生成的ResourceLocation常量")
         java_code.append(" * 请勿手动修改此文件")
         java_code.append(" */")
-        java_code.append("package com.til.recasting.util.constant;")
+        java_code.append("package com.til.recasting.constant;")
         java_code.append("")
         java_code.append("import net.minecraft.resources.ResourceLocation;")
         java_code.append("")
@@ -273,7 +273,7 @@ def main():
     java_code = generator.generate_java_code(resources)
     
     # 保存Java文件到正确的位置
-    output_dir = Path("../src/main/java/com/til/recasting/util/constant")
+    output_dir = Path("../src/main/java/com/til/recasting/constant")
     output_dir.mkdir(parents=True, exist_ok=True)
     output_file = output_dir / "R.java"
     

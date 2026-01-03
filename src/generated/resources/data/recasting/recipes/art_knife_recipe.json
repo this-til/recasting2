@@ -1,0 +1,34 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/art_knife",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:efficiency",
+            "lvl": 2
+          }
+        ],
+        "kill": 50,
+        "name": "recasting:slashblade/broadsword_iron",
+        "refine": 20
+      }
+    },
+    "C": {
+      "item": "recasting:craftsman_flame"
+    }
+  },
+  "pattern": [
+    "  C",
+    " B ",
+    "C  "
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

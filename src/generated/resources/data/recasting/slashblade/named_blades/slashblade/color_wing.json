@@ -5,6 +5,7 @@
     "max_damage": 560
   },
   "render": {
+    "carry_type": "default",
     "model": "recasting:slashblade/color_wing.obj",
     "texture": "recasting:slashblade/color_wing.png"
   }

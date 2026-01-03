@@ -4,6 +4,7 @@
     "attack_base": 7.0
   },
   "render": {
+    "carry_type": "default",
     "model": "recasting:slashblade/xuan_yuan.obj",
     "summon_sword_color": -256,
     "texture": "recasting:slashblade/xuan_yuan.png"

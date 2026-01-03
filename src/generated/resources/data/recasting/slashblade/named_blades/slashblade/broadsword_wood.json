@@ -1,0 +1,11 @@
+{
+  "name": "recasting:slashblade/broadsword_wood",
+  "properties": {
+    "attack_base": 3.0
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/broadsword_wood.obj",
+    "texture": "recasting:slashblade/broadsword_wood.png"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_poetry_ash_flame": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "recasting:poetry_ash_flame"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "recasting:ba_gua_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_poetry_ash_flame",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "recasting:ba_gua_recipe"
+    ]
+  },
+  "sends_telemetry_event": false
+}

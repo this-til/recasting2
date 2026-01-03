@@ -5,6 +5,7 @@
     "max_damage": 4560
   },
   "render": {
+    "carry_type": "default",
     "model": "recasting:slashblade/dharma_stick.obj",
     "texture": "recasting:slashblade/dharma_stick.png"
   }

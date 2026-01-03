@@ -191,7 +191,9 @@ dependencies {
     //nbt编辑器
     implementation fg.deobf("curse.maven:ibe-editor-256822:4994072")
 
-    implementation fg.deobf("mods.flammpfeil.slashblade:SlashBlade_Resharped:${slash_blade_version}")
+    //implementation fg.deobf("mods.flammpfeil.slashblade:SlashBlade_Resharped:${slash_blade_version}")
+    implementation fg.deobf("curse.maven:SlashBlade_Resharped-1022428:7363505")
+
 
     //伤害数值显示
     implementation fg.deobf("curse.maven:damage-number-998849:5538112")

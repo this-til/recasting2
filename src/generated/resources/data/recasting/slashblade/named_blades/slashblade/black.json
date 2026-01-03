@@ -1,9 +1,11 @@
 {
   "name": "recasting:slashblade/black",
   "properties": {
+    "attack_base": 5.0,
     "max_damage": 160
   },
   "render": {
+    "carry_type": "default",
     "model": "recasting:slashblade/black.obj",
     "summon_sword_color": -16777216,
     "texture": "recasting:slashblade/black.png"

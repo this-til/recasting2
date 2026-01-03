@@ -8,6 +8,7 @@
     "attack_distance": 1.2
   },
   "render": {
+    "carry_type": "default",
     "model": "recasting:slashblade/laser/laser_3.obj",
     "texture": "recasting:slashblade/laser/laser_3.png"
   }

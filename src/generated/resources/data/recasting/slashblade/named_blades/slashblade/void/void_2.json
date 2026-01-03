@@ -8,6 +8,7 @@
     "attack_distance": 1.5
   },
   "render": {
+    "carry_type": "default",
     "model": "recasting:slashblade/void/void.obj",
     "summon_sword_color": 16711710,
     "texture": "recasting:slashblade/void/void_2.png"

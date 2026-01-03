@@ -19,25 +19,57 @@ import java.util.stream.Collectors;
 public class Config {
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
-    private static final ForgeConfigSpec.BooleanValue LOG_DIRT_BLOCK = BUILDER.comment("Whether to log the dirt block on common setup").define("logDirtBlock", true);
 
-    private static final ForgeConfigSpec.IntValue MAGIC_NUMBER = BUILDER.comment("A magic number").defineInRange("magicNumber", 42, 0, Integer.MAX_VALUE);
-
-    public static final ForgeConfigSpec.ConfigValue<String> MAGIC_NUMBER_INTRODUCTION = BUILDER.comment("What you want the introduction message to be for the magic number").define("magicNumberIntroduction", "The magic number is... ");
+    // 附魔加成
+    public  static final ForgeConfigSpec.DoubleValue SMITE_ATTACK_BONUS = BUILDER
+            .comment("亡灵杀手附魔伤害加成（每级）")
+            .defineInRange("smiteAttackBonus", 0.2, 0, 10);
+    
+    public  static final ForgeConfigSpec.DoubleValue BANE_OF_ARTHROPODS_ATTACK_BONUS = BUILDER
+            .comment("节肢杀手附魔伤害加成（每级）")
+            .defineInRange("baneOfArthropodsAttackBonus", 0.2, 0, 10);
+    
+    public  static final ForgeConfigSpec.DoubleValue FIRE_ASPECT_DAMAGE = BUILDER
+            .comment("火焰附加附魔的火焰伤害倍率（每级）")
+            .defineInRange("fireAspectDamage", 0.05, 0, 10);
+    
+    public  static final ForgeConfigSpec.DoubleValue POWER_ATTACK_BONUS = BUILDER
+            .comment("力量附魔对幻影剑攻击的伤害加成（每级）")
+            .defineInRange("powerAttackBonus", 0.1, 0, 10);
+    
+    // 评分等级加成
+    public  static final ForgeConfigSpec.DoubleValue RANK_MAX_BONUS = BUILDER
+            .comment("评分等级最大伤害加成（满级时）")
+            .defineInRange("rankMaxBonus", 0.5, 0, 10);
+    
+    // 精炼和击杀加成
+    public  static final ForgeConfigSpec.DoubleValue REFINE_ATTACK_BONUS = BUILDER
+            .comment("精炼等级伤害加成（每级）")
+            .defineInRange("refineAttackBonus", 0.001, 0, 10);
+    
+    public  static final ForgeConfigSpec.DoubleValue SUMMONED_SWORD_BASE_DAMAGE = BUILDER
+            .comment("召唤剑基础伤害倍率")
+            .defineInRange("summonedSwordBaseDamage", 0.1, 0.0, 100.0);
+    
+    public  static final ForgeConfigSpec.DoubleValue THOUSAND_KILL_ATTACK_BONUS = BUILDER
+            .comment("击杀数超过1000的伤害加成")
+            .defineInRange("thousandKillAttackBonus", 0.1, 0.0, 10.0);
+    
+    public  static final ForgeConfigSpec.DoubleValue TEN_THOUSAND_KILL_ATTACK_BONUS = BUILDER
+            .comment("击杀数超过10000的伤害加成")
+            .defineInRange("tenThousandKillAttackBonus", 0.2, 0.0, 10.0);
+    
+    public  static final ForgeConfigSpec.DoubleValue THOUSAND_REFINE_ATTACK_BONUS = BUILDER
+            .comment("精炼等级超过1000的伤害加成")
+            .defineInRange("thousandRefineAttackBonus", 0.15, 0.0, 10.0);
+    
+    public  static final ForgeConfigSpec.DoubleValue TEN_THOUSAND_REFINE_ATTACK_BONUS = BUILDER
+            .comment("精炼等级超过10000的伤害加成")
+            .defineInRange("tenThousandRefineAttackBonus", 0.3, 0.0, 10.0);
 
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
-    public static boolean logDirtBlock;
-    public static int magicNumber;
-    public static String magicNumberIntroduction;
-    public static Set<Item> items;
 
-    @SubscribeEvent
-    static void onLoad(final ModConfigEvent event) {
-        logDirtBlock = LOG_DIRT_BLOCK.get();
-        magicNumber = MAGIC_NUMBER.get();
-        magicNumberIntroduction = MAGIC_NUMBER_INTRODUCTION.get();
 
-    }
 }

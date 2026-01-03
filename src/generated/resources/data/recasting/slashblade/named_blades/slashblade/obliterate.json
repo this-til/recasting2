@@ -4,6 +4,7 @@
     "max_damage": 480
   },
   "render": {
+    "carry_type": "default",
     "model": "recasting:slashblade/obliterate.obj",
     "texture": "recasting:slashblade/obliterate.png"
   }

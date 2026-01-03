@@ -1,7 +1,5 @@
-package com.til.recasting.mixin;
+package com.til.recasting.mixin.client;
 
-import com.google.common.base.Preconditions;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.ModelBuilder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

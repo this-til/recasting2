@@ -1,0 +1,28 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/broken_white",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "kill": 300,
+        "name": "recasting:slashblade/green_blade_iron",
+        "refine": 30
+      }
+    },
+    "O": {
+      "item": "recasting:obsession_flame"
+    }
+  },
+  "pattern": [
+    "  O",
+    " B ",
+    "O  "
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

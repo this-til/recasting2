@@ -1,0 +1,13 @@
+{
+  "name": "recasting:slashblade/soulblade",
+  "properties": {
+    "attack_base": 8.0,
+    "max_damage": 800
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/soulblade.obj",
+    "summon_sword_color": -6921016,
+    "texture": "recasting:slashblade/soulblade.png"
+  }
+}

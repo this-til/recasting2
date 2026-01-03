@@ -5,6 +5,7 @@
     "max_damage": 480
   },
   "render": {
+    "carry_type": "default",
     "model": "recasting:slashblade/star/star_2.obj",
     "summon_sword_color": -1579546,
     "texture": "recasting:slashblade/star/star_2.png"

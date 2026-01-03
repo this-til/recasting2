@@ -5,6 +5,7 @@
     "max_damage": 3840
   },
   "render": {
+    "carry_type": "default",
     "model": "recasting:slashblade/special/til.obj",
     "summon_sword_color": -2984202,
     "texture": "recasting:slashblade/special/til.png"

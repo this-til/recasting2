@@ -5,6 +5,7 @@
     "max_damage": 400
   },
   "render": {
+    "carry_type": "default",
     "model": "recasting:slashblade/laser/laser_1.obj",
     "texture": "recasting:slashblade/laser/laser_1.png"
   }

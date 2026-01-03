@@ -40,16 +40,10 @@ public class DataGenerator {
                 }
         );
 
-        // 注册配方生成器（物品配方）
+        // 注册配方生成器（扫描所有配方类）
         dataGenerator.addProvider(
                 event.includeServer(),
                 new RecastingRecipeProvider(packOutput)
-        );
-
-        // 注册刀配方生成器
-        dataGenerator.addProvider(
-                event.includeServer(),
-                new SlashBladeRecipeProvider(packOutput)
         );
 
     }

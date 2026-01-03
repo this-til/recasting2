@@ -1,14 +1,10 @@
 package com.til.recasting.registry;
 
 import com.til.recasting.Recasting;
-import com.til.recasting.registry.specialeffects.ExampleSpecialEffect;
+import com.til.recasting.registry.instance.specialeffects.ExampleSpecialEffect;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.function.Supplier;
 
 /**
  * Special Effects (SE) 注册表

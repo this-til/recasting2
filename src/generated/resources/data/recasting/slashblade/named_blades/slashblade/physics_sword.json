@@ -4,6 +4,7 @@
     "attack_base": 6.0
   },
   "render": {
+    "carry_type": "default",
     "model": "recasting:slashblade/physics_sword.obj",
     "texture": "recasting:slashblade/physics_sword.png"
   }

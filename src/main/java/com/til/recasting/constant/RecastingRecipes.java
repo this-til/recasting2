@@ -42,10 +42,6 @@ public class RecastingRecipes {
     /**
      * 执念火配方：PROUDSOUL在中间，红石2个、烈焰粉2个、金粒4个
      * 橘红色，焰心处有苍白闪烁
-     * 布局：
-     * G B G
-     * R P R
-     * G B G
      * G=金粒, B=烈焰粉, R=红石, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper OBSESSION_FLAME_RECIPE = (consumer, recipeId) ->
@@ -63,10 +59,6 @@ public class RecastingRecipes {
     /**
      * 记忆火配方：PROUDSOUL在中间，青金石 + 玻璃
      * 半透明的琉璃色，焰苗中浮动着朦胧的光影
-     * 布局：
-     * L G L
-     * G P G
-     * L G L
      * L=青金石, G=玻璃, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper MEMORY_FLAME_RECIPE = (consumer, recipeId) ->
@@ -83,10 +75,6 @@ public class RecastingRecipes {
     /**
      * 罪孽火配方：PROUDSOUL在中间，下界砖4个、岩浆球2个、恶魂泪2个
      * 污浊的暗红色，带有不祥的黑色脉纹
-     * 布局：
-     * N G N
-     * M P M
-     * N G N
      * N=下界砖, G=恶魂泪, M=岩浆球, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper SIN_FLAME_RECIPE = (consumer, recipeId) ->
@@ -104,10 +92,6 @@ public class RecastingRecipes {
     /**
      * 圣愿火配方：PROUDSOUL在中间，萤石粉4个、羽毛4个
      * 纯净的乳白色光焰，边缘环绕着淡淡的金色光晕
-     * 布局：
-     * F G F
-     * G P G
-     * F G F
      * F=羽毛, G=萤石粉, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper HOLY_FLAME_RECIPE = (consumer, recipeId) ->
@@ -124,10 +108,6 @@ public class RecastingRecipes {
     /**
      * 混沌火配方：PROUDSOUL在中间，魔影珍珠2个、龙息2个
      * 色彩无定，在同一秒内可能呈现光谱上的任何颜色
-     * 布局：
-     *   E
-     * D P D
-     *   E
      * E=魔影珍珠, D=龙息, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper CHAOS_FLAME_RECIPE = (consumer, recipeId) ->
@@ -145,9 +125,6 @@ public class RecastingRecipes {
      * 冰核火配方：PROUDSOUL在中间，雪块2个、冰2个、浮冰2个、蓝冰2个
      * 外层炽热亮蓝，内核深邃暗蓝
      * 布局沿用原彼岸火：
-     * S B S
-     * I P I
-     * F B F
      * S=雪块, I=冰, F=浮冰, B=蓝冰, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper ICE_CORE_FLAME_RECIPE = (consumer, recipeId) ->
@@ -166,10 +143,6 @@ public class RecastingRecipes {
     /**
      * 彼岸火配方：PROUDSOUL在中间，灵魂砂4个、恶魂之泪2个
      * 冰冷的青白色，摇曳如烛，无温度
-     * 布局：
-     * S S
-     * G P G
-     * S S
      * S=灵魂砂, G=恶魂之泪, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper OTHER_SHORE_FLAME_RECIPE = (consumer, recipeId) ->
@@ -186,10 +159,6 @@ public class RecastingRecipes {
     /**
      * 因果火配方：PROUDSOUL在中间，红石2个、石英4个、线2个
      * 透明到银红交织，象征命运丝线
-     * 布局：
-     * Q R Q
-     * S P S
-     * Q R Q
      * Q=下界石英, R=红石, S=线, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper KARMA_FLAME_RECIPE = (consumer, recipeId) ->
@@ -207,10 +176,6 @@ public class RecastingRecipes {
     /**
      * 摇篮火配方：PROUDSOUL在中间，蜂巢块4个、羽毛2个、干草块1个
      * 柔和的鹅黄色，如安稳的烛光
-     * 布局：
-     * H F H
-     * F P F
-     * H B H
      * H=蜂巢块, F=羽毛, B=干草块, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper CRADLE_FLAME_RECIPE = (consumer, recipeId) ->
@@ -228,10 +193,6 @@ public class RecastingRecipes {
     /**
      * 渊寂火配方：PROUDSOUL在中间，黑曜石4个、煤炭块2个、墨囊2个
      * 纯粹的哑光黑，吞噬光线
-     * 布局：
-     * O C O
-     * I P I
-     * O C O
      * O=黑曜石, C=煤炭块, I=墨囊, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper ABYSS_FLAME_RECIPE = (consumer, recipeId) ->
@@ -249,10 +210,6 @@ public class RecastingRecipes {
     /**
      * 王权火配方：PROUDSOUL在中间，金锭4个、紫水晶碎片2个、青金石块1个
      * 暗金与深紫交织，宛如冠冕
-     * 布局：
-     * G A G
-     * A P A
-     * G L G
      * G=金锭, A=紫水晶碎片, L=青金石块, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper ROYAL_FLAME_RECIPE = (consumer, recipeId) ->
@@ -270,10 +227,6 @@ public class RecastingRecipes {
     /**
      * 衔尾火配方：PROUDSOUL在中间，末影之眼4个、铜锭4个
      * 自我循环的环状焰流
-     * 布局：
-     * E C E
-     * C P C
-     * E C E
      * E=末影之眼, C=铜锭, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper OUROBOROS_FLAME_RECIPE = (consumer, recipeId) ->
@@ -290,10 +243,6 @@ public class RecastingRecipes {
     /**
      * 镜生火配方：PROUDSOUL在中间，玻璃板4个、铁锭4个
      * 如水银般反光，可映照他火
-     * 布局：
-     * G I G
-     * I P I
-     * G I G
      * G=玻璃板, I=铁锭, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper MIRROR_FLAME_RECIPE = (consumer, recipeId) ->
@@ -310,10 +259,6 @@ public class RecastingRecipes {
     /**
      * 遗言火配方：PROUDSOUL在中间，白色蜡烛4个、书2本、灵魂火把1个
      * 琥珀金色，封存最后的星芒
-     * 布局：
-     * C B C
-     * B P B
-     * C S C
      * C=白色蜡烛, B=书, S=灵魂火把, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper LAST_WORDS_FLAME_RECIPE = (consumer, recipeId) ->
@@ -331,10 +276,6 @@ public class RecastingRecipes {
     /**
      * 潮汐火配方：PROUDSOUL在中间，海晶碎片4个、海晶砂粒2个、鹦鹉螺壳1个
      * 随涨落变色，如潮汐月相
-     * 布局：
-     * S C S
-     * C P C
-     * S N S
      * S=海晶碎片, C=海晶砂粒, N=鹦鹉螺壳, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper TIDE_FLAME_RECIPE = (consumer, recipeId) ->
@@ -352,10 +293,6 @@ public class RecastingRecipes {
     /**
      * 诗烬火配方：PROUDSOUL在中间，任意附魔书2个
      * 朦胧的月白色，焰心跃动着如文字般的淡金符文
-     * 布局：
-     * B
-     *   P
-     * B
      * B=附魔书, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper POETRY_ASH_FLAME_RECIPE = (consumer, recipeId) ->
@@ -371,10 +308,6 @@ public class RecastingRecipes {
     /**
      * 蜃楼火配方：PROUDSOUL在中间，幻翼膜2个、紫水晶碎片2个
      * 折射的虹彩色，边缘模糊，仿佛隔着一层水汽
-     * 布局：
-     *   A
-     * M P M
-     *   A
      * M=幻翼膜, A=紫水晶碎片, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper MIRAGE_FLAME_RECIPE = (consumer, recipeId) ->
@@ -391,10 +324,6 @@ public class RecastingRecipes {
     /**
      * 匠魂火配方：PROUDSOUL在中间，工作台1、熔炉1、酿造台1、切石机1
      * 沉稳的铜黄色，焰形规整，时有金属光泽闪过
-     * 布局：
-     *  C 
-     * F P B
-     *  S 
      * C=工作台, F=熔炉, B=酿造台, S=切石机, P=PROUDSOUL
      */
     public static final RecipeBuilderWrapper CRAFTSMAN_FLAME_RECIPE = (consumer, recipeId) ->

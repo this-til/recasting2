@@ -19,9 +19,9 @@
     }
   },
   "pattern": [
-    "SBS",
+    "SBF",
     "IPI",
-    "FBF"
+    "FBS"
   ],
   "result": {
     "item": "recasting:ice_core_flame"

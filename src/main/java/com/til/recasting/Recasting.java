@@ -1,10 +1,12 @@
 package com.til.recasting;
 
+import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingItems;
 import com.til.recasting.registry.SlashArtsRegistry;
 import com.til.recasting.registry.SpecialEffectsRegistry;
 import lombok.extern.log4j.Log4j2;
 import mods.flammpfeil.slashblade.SlashBlade;
+import mods.flammpfeil.slashblade.SlashBladeConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -12,7 +14,9 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -23,8 +27,15 @@ public class Recasting {
     public static final String MODID = "recasting";
 
     public Recasting() {
+
         @SuppressWarnings("removal")
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        FMLJavaModLoadingContext fmlJavaModLoadingContext = FMLJavaModLoadingContext.get();
+        IEventBus modEventBus = fmlJavaModLoadingContext.getModEventBus();
+
+        fmlJavaModLoadingContext.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        // 注册攻击类型注册表
+        RecastingAttackTypes.ATTACK_TYPES.register(modEventBus);
 
         // 注册 Slash Arts (SA) 注册表
         SlashArtsRegistry.SLASH_ARTS.register(modEventBus);

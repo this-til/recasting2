@@ -1,0 +1,28 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/green_blade_iron",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "kill": 51,
+        "name": "recasting:slashblade/green_blade_wood",
+        "refine": 6
+      }
+    },
+    "I": {
+      "item": "slashblade:proudsoul_ingot"
+    }
+  },
+  "pattern": [
+    "  I",
+    " I ",
+    "B  "
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

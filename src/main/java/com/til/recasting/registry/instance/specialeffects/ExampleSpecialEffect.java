@@ -1,4 +1,4 @@
-package com.til.recasting.registry.specialeffects;
+package com.til.recasting.registry.instance.specialeffects;
 
 import com.til.recasting.registry.SpecialEffectsRegistry;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;

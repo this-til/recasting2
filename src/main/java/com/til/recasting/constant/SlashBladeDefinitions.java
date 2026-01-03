@@ -6,7 +6,6 @@ import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.mixin_api.ISlashBladeStateExtension;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.val;
 import mods.flammpfeil.slashblade.registry.slashblade.EnchantmentDefinition;
 import mods.flammpfeil.slashblade.registry.slashblade.PropertiesDefinition;
 import mods.flammpfeil.slashblade.registry.slashblade.RenderDefinition;
@@ -16,13 +15,162 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import javax.annotation.Nullable;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.world.item.enchantment.Enchantments;
 
 public class SlashBladeDefinitions {
 
-    // ========== Void SlashBlades ==========
+    //region  t6
+    // 阔刃（木）
+    public static final SlashBladeDefinition BROADSWORD_WOOD = createBuild(R.Slashblade.broadswordWood)
+            .renderDefinition(RenderDefinition.Builder.newInstance()
+                    .modelName(R.Slashblade.broadswordWood$obj)
+                    .textureName(R.Slashblade.broadswordWood$png))
+            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
+                    .baseAttackModifier(3f)
+                    .maxDamage(40))
+            .build();
+
+
+    // 青锋（木）
+    public static final SlashBladeDefinition GREEN_BLADE_WOOD = createBuild(R.Slashblade.greenBladeWood)
+            .renderDefinition(RenderDefinition.Builder.newInstance()
+                    .modelName(R.Slashblade.greenBladeWood$obj)
+                    .textureName(R.Slashblade.greenBladeWood$png))
+            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
+                    .baseAttackModifier(3f)
+                    .maxDamage(40))
+            .build();
+    //endregion
+
+    //region t5
+    // 阔刃（铁）
+    public static final SlashBladeDefinition BROADSWORD_IRON = createBuild(R.Slashblade.broadswordIron)
+            .renderDefinition(RenderDefinition.Builder.newInstance()
+                    .modelName(R.Slashblade.broadswordIron$obj)
+                    .textureName(R.Slashblade.broadswordIron$png))
+            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
+                    .baseAttackModifier(4f)
+                    .maxDamage(2 * 40))
+            .build();
+
+
+    // 青锋（铁）
+    public static final SlashBladeDefinition GREEN_BLADE_IRON = createBuild(R.Slashblade.greenBladeIron)
+            .renderDefinition(RenderDefinition.Builder.newInstance()
+                    .modelName(R.Slashblade.greenBladeIron$obj)
+                    .textureName(R.Slashblade.greenBladeIron$png))
+            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
+                    .baseAttackModifier(4f)
+                    .maxDamage(2 * 40))
+            .build();
+    //endregion
+
+    //region t4
+
+    // 碎白
+    public static final SlashBladeDefinition BROKEN_WHITE = createBuild(R.Slashblade.brokenWhite)
+            .renderDefinition(RenderDefinition.Builder.newInstance()
+                    .modelName(R.Slashblade.brokenWhite$obj)
+                    .textureName(R.Slashblade.brokenWhite$png))
+            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
+                    .baseAttackModifier(5f)
+                    .maxDamage(4 * 40))
+            .build();
+
+    // 黑刃
+    public static final SlashBladeDefinition BLACK = createBuild(R.Slashblade.black)
+            .renderDefinition(RenderDefinition.Builder.newInstance()
+                    .modelName(R.Slashblade.black$obj)
+                    .textureName(R.Slashblade.black$png)
+                    .effectColor(new Color(0, 0, 0, 255).getRGB()))
+            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
+                    .baseAttackModifier(5f)
+                    .maxDamage(4 * 40))
+            .build();
+
+    // 美工刀
+    public static final SlashBladeDefinition ART_KNIFE = createBuild(R.Slashblade.artKnife)
+            .renderDefinition(RenderDefinition.Builder.newInstance()
+                    .modelName(R.Slashblade.artKnife$obj)
+                    .textureName(R.Slashblade.artKnife$png)
+                    .effectColor(new Color(100, 100, 100).getRGB()))
+            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
+                    .baseAttackModifier(5f)
+                    .maxDamage(2 * 40))
+            .build();
+
+    // 八卦剑
+    public static final SlashBladeDefinition BA_GUA = createBuild(R.Slashblade.baGua)
+            .renderDefinition(RenderDefinition.Builder.newInstance()
+                    .modelName(R.Slashblade.baGua$obj)
+                    .textureName(R.Slashblade.baGua$png)
+                    .effectColor(new Color(255, 255, 255).getRGB()))
+            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
+                    .baseAttackModifier(4f)
+                    .maxDamage(3 * 40))
+            .build();
+
+
+    //endregion
+
+    //region t3
+
+    // 青云
+    public static final SlashBladeDefinition BLUE_CLOUD = createBuild(R.Slashblade.blueCloud)
+            .renderDefinition(RenderDefinition.Builder.newInstance()
+                    .modelName(R.Slashblade.blueCloud$obj)
+                    .textureName(R.Slashblade.blueCloud$png)
+                    .effectColor(new Color(0xA7C683).getRGB()))
+            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
+                    .baseAttackModifier(5f)
+                    .maxDamage(6 * 40))
+            .build();
+
+    // 青云 Lambda
+    public static final SlashBladeDefinition BLUE_CLOUD_LAMBDA = createBuild(Recasting.prefix("slashblade/blue_cloud_lambda"))
+            .renderDefinition(RenderDefinition.Builder.newInstance()
+                    .modelName(R.Slashblade.blueCloud$obj)
+                    .textureName(R.Slashblade.blueCloud$png)
+                    .effectColor(new Color(0xA7C683).getRGB()))
+            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
+                    .baseAttackModifier(6f)
+                    .maxDamage(8 * 40))
+            .build();
+
+    //endregion
+
+    //region t2
+
+    // 冰薄荷
+    public static final SlashBladeDefinition COOL_MINT = createBuild(R.Slashblade.coolMint)
+            .renderDefinition(RenderDefinition.Builder.newInstance()
+                    .modelName(R.Slashblade.coolMint$obj)
+                    .textureName(R.Slashblade.coolMint$png)
+                    .effectColor(new Color(0xC7F3CB).getRGB()))
+            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
+                    .baseAttackModifier(7f)
+                    .maxDamage(16 * 40))
+            .build();
+
+    // 冰薄荷 Lambda
+    public static final SlashBladeDefinition COOL_MINT_LAMBDA = createBuild(Recasting.prefix("slashblade/cool_mint_lambda"))
+            .renderDefinition(RenderDefinition.Builder.newInstance()
+                    .modelName(R.Slashblade.coolMint$obj)
+                    .textureName(R.Slashblade.coolMint$png)
+                    .effectColor(new Color(0xC7F3CB).getRGB()))
+            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
+                    .baseAttackModifier(7f)
+                    .maxDamage(24 * 40))
+            .build();
+
+
+    //endregion
+
+
+    //region Void SlashBlades
     public static final SlashBladeDefinition VOID_1 = createBuild(R.Slashblade.Void.void1)
             .renderDefinition(RenderDefinition.Builder.newInstance()
                     .modelName(R.Slashblade.Void._void$obj)
@@ -55,18 +203,9 @@ public class SlashBladeDefinitions {
                     .maxDamage(32 * 40))
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(1.5f))
             .build();
+    //endregion
 
     // ========== Base SlashBlades ==========
-    // 八卦剑
-    public static final SlashBladeDefinition BA_GUA = createBuild(R.Slashblade.baGua)
-            .renderDefinition(RenderDefinition.Builder.newInstance()
-                    .modelName(R.Slashblade.baGua$obj)
-                    .textureName(R.Slashblade.baGua$png)
-                    .effectColor(new Color(255, 255, 255).getRGB()))
-            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
-                    .baseAttackModifier(4f)
-                    .maxDamage(2 * 40))
-            .build();
 
     // 八卦巨剑
     public static final SlashBladeDefinition BA_GUA_BIG = createBuild(R.Slashblade.baGuaBig)
@@ -90,49 +229,6 @@ public class SlashBladeDefinitions {
                     .maxDamage(12 * 40))
             .build();
 
-    // 黑刃
-    public static final SlashBladeDefinition BLACK = createBuild(R.Slashblade.black)
-            .renderDefinition(RenderDefinition.Builder.newInstance()
-                    .modelName(R.Slashblade.black$obj)
-                    .textureName(R.Slashblade.black$png)
-                    .effectColor(new Color(0, 0, 0, 255).getRGB()))
-            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
-                    .baseAttackModifier(4f)
-                    .maxDamage(4 * 40))
-            .build();
-
-    // 美工刀
-    public static final SlashBladeDefinition ART_KNIFE = createBuild(R.Slashblade.artKnife)
-            .renderDefinition(RenderDefinition.Builder.newInstance()
-                    .modelName(R.Slashblade.artKnife$obj)
-                    .textureName(R.Slashblade.artKnife$png)
-                    .effectColor(new Color(100, 100, 100).getRGB()))
-            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
-                    .baseAttackModifier(4f)
-                    .maxDamage(2 * 40))
-            .build();
-
-    // 青云
-    public static final SlashBladeDefinition BLUE_CLOUD = createBuild(R.Slashblade.blueCloud)
-            .renderDefinition(RenderDefinition.Builder.newInstance()
-                    .modelName(R.Slashblade.blueCloud$obj)
-                    .textureName(R.Slashblade.blueCloud$png)
-                    .effectColor(new Color(0xA7C683).getRGB()))
-            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
-                    .baseAttackModifier(6f)
-                    .maxDamage(4 * 40))
-            .build();
-
-    // 青云 Lambda
-    public static final SlashBladeDefinition BLUE_CLOUD_LAMBDA = createBuild(Recasting.prefix("slashblade/blue_cloud_lambda"))
-            .renderDefinition(RenderDefinition.Builder.newInstance()
-                    .modelName(R.Slashblade.blueCloud$obj)
-                    .textureName(R.Slashblade.blueCloud$png)
-                    .effectColor(new Color(0xA7C683).getRGB()))
-            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
-                    .baseAttackModifier(6f)
-                    .maxDamage(4 * 40))
-            .build();
 
     // 云翼
     public static final SlashBladeDefinition SILVER_WING = createBuild(R.Slashblade.silverWing)
@@ -176,27 +272,6 @@ public class SlashBladeDefinitions {
                     .maxDamage(24 * 40))
             .build();
 
-    // 冰薄荷
-    public static final SlashBladeDefinition COOL_MINT = createBuild(R.Slashblade.coolMint)
-            .renderDefinition(RenderDefinition.Builder.newInstance()
-                    .modelName(R.Slashblade.coolMint$obj)
-                    .textureName(R.Slashblade.coolMint$png)
-                    .effectColor(new Color(0xC7F3CB).getRGB()))
-            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
-                    .baseAttackModifier(7f)
-                    .maxDamage(16 * 40))
-            .build();
-
-    // 冰薄荷 Lambda
-    public static final SlashBladeDefinition COOL_MINT_LAMBDA = createBuild(Recasting.prefix("slashblade/cool_mint_lambda"))
-            .renderDefinition(RenderDefinition.Builder.newInstance()
-                    .modelName(R.Slashblade.coolMint$obj)
-                    .textureName(R.Slashblade.coolMint$png)
-                    .effectColor(new Color(0xC7F3CB).getRGB()))
-            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
-                    .baseAttackModifier(7f)
-                    .maxDamage(24 * 40))
-            .build();
 
     // 法棍
     public static final SlashBladeDefinition DHARMA_STICK = createBuild(R.Slashblade.dharmaStick)
@@ -334,6 +409,17 @@ public class SlashBladeDefinitions {
                     .effectColor(new Color(255, 255, 0).getRGB()))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(7f))
+            .build();
+
+    // 魂刃
+    public static final SlashBladeDefinition SOULBLADE = createBuild(R.Slashblade.soulblade)
+            .renderDefinition(RenderDefinition.Builder.newInstance()
+                    .modelName(R.Slashblade.soulblade$obj)
+                    .textureName(R.Slashblade.soulblade$png)
+                    .effectColor(new Color(150, 100, 200).getRGB()))
+            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
+                    .baseAttackModifier(8f)
+                    .maxDamage(20 * 40))
             .build();
 
     // ========== Fluorescence SlashBlades ==========
@@ -592,18 +678,27 @@ public class SlashBladeDefinitions {
                 throw new IllegalStateException("SlashBladeDefinitionBuild requires a name");
             }
 
+            // 检查是否有力量附魔，如果没有则添加力量1
+            List<EnchantmentDefinition> finalEnchantments = new ArrayList<>(enchantments);
+            ResourceLocation smiteId = ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE);
+            boolean hasSmite = finalEnchantments.stream()
+                    .anyMatch(e -> e.getEnchantmentID().equals(smiteId));
+            if (!hasSmite) {
+                finalEnchantments.add(new EnchantmentDefinition(smiteId, 1));
+            }
+
             SlashBladeDefinition slashBladeDefinition = new SlashBladeDefinition(name, (renderDefinition == null
                     ? RenderDefinition.Builder.newInstance()
                     : renderDefinition).build(), (propertiesDefinition == null
                     ? PropertiesDefinition.Builder.newInstance()
-                    : propertiesDefinition).build(), enchantments);
+                    : propertiesDefinition).build(), finalEnchantments);
 
             //noinspection ConstantValue
             if (slashBladeDefinition instanceof ISlashBladeStateExtension slashBladeStateDefinition) {
-                slashBladeStateDefinition.setPropertiesDefinitionExtension(propertiesDefinitionExtension == null
+                slashBladeStateDefinition.setRecasting$propertiesDefinitionExtension(propertiesDefinitionExtension == null
                         ? new PropertiesDefinitionExtension()
                         : propertiesDefinitionExtension);
-                slashBladeStateDefinition.setRenderDefinitionExtension(renderDefinitionExtension == null
+                slashBladeStateDefinition.setRecasting$renderDefinitionExtension(renderDefinitionExtension == null
                         ? new RenderDefinitionExtension()
                         : renderDefinitionExtension);
             } else {

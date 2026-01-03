@@ -1,0 +1,43 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/ba_gua",
+  "category": "equipment",
+  "key": {
+    "K": {
+      "item": "minecraft:black_wool"
+    },
+    "P": {
+      "item": "recasting:poetry_ash_flame"
+    },
+    "S": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:smite",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:sharpness",
+            "lvl": 2
+          }
+        ],
+        "kill": 500,
+        "name": "recasting:slashblade/broken_white"
+      }
+    },
+    "W": {
+      "item": "minecraft:white_wool"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "WSK",
+    "PPP"
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

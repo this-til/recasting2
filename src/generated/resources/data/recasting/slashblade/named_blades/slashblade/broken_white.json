@@ -1,0 +1,12 @@
+{
+  "name": "recasting:slashblade/broken_white",
+  "properties": {
+    "attack_base": 5.0,
+    "max_damage": 160
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/broken_white.obj",
+    "texture": "recasting:slashblade/broken_white.png"
+  }
+}

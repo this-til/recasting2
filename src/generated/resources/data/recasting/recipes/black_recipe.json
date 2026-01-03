@@ -1,0 +1,37 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/black",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:unbreaking",
+            "lvl": 3
+          }
+        ],
+        "kill": 200,
+        "name": "recasting:slashblade/broadsword_iron",
+        "refine": 20
+      }
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "S": {
+      "item": "recasting:sin_flame"
+    }
+  },
+  "pattern": [
+    "  O",
+    " B ",
+    "S  "
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

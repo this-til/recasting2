@@ -19,12 +19,12 @@ public abstract class SlashBladeDefinitionMixin implements ISlashBladeStateExten
     @Unique
     @Getter
     @Setter
-    private RenderDefinitionExtension renderDefinitionExtension = new RenderDefinitionExtension();
+    private RenderDefinitionExtension recasting$renderDefinitionExtension = new RenderDefinitionExtension();
 
     @Unique
     @Getter
     @Setter
-    private PropertiesDefinitionExtension propertiesDefinitionExtension = new PropertiesDefinitionExtension();
+    private PropertiesDefinitionExtension recasting$propertiesDefinitionExtension = new PropertiesDefinitionExtension();
 
 }
 

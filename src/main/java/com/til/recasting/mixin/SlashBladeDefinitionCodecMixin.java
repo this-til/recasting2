@@ -8,19 +8,11 @@ import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.data.SlashBladeDefinitionExtensionData;
 import com.til.recasting.mixin_api.ISlashBladeStateExtension;
-import lombok.val;
-import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
-import net.minecraft.core.Holder.Reference;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.lang.reflect.Field;
-import java.util.Comparator;
 
 /**
  * Mixin 用于修改 SlashBladeDefinition 的 CODEC，添加扩展字段的序列化支持
@@ -62,8 +54,8 @@ public abstract class SlashBladeDefinitionCodecMixin {
                     SlashBladeDefinitionExtensionData second = definition.getSecond();
 
                     if (first instanceof ISlashBladeStateExtension extension) {
-                        extension.setPropertiesDefinitionExtension(second.propertiesDefinitionExtension());
-                        extension.setRenderDefinitionExtension(second.renderDefinitionExtension());
+                        extension.setRecasting$propertiesDefinitionExtension(second.propertiesDefinitionExtension());
+                        extension.setRecasting$renderDefinitionExtension(second.renderDefinitionExtension());
                     } else {
                         throw new IllegalStateException("SlashBladeDefinition must be a SlashBladeStateExtension");
                     }
@@ -72,7 +64,7 @@ public abstract class SlashBladeDefinitionCodecMixin {
                 definition -> {
                     SlashBladeDefinitionExtensionData extensionData = null;
                     if (definition instanceof ISlashBladeStateExtension extension) {
-                        extensionData = new SlashBladeDefinitionExtensionData(extension.getRenderDefinitionExtension(), extension.getPropertiesDefinitionExtension());
+                        extensionData = new SlashBladeDefinitionExtensionData(extension.getRecasting$renderDefinitionExtension(), extension.getRecasting$propertiesDefinitionExtension());
                     } else {
                         throw new IllegalStateException("SlashBladeDefinition must be a SlashBladeStateExtension");
                     }

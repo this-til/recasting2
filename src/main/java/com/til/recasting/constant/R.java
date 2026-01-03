@@ -8,6 +8,15 @@ import net.minecraft.resources.ResourceLocation;
 
 public class R {
 
+    public static class Models {
+        public static class Item {
+            public static final ResourceLocation proudsoul = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/proudsoul");
+            public static final ResourceLocation proudsoul$json = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/proudsoul.json");
+            public static final ResourceLocation soul = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul");
+            public static final ResourceLocation soul$json = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul.json");
+        }
+    }
+
     public static class Slashblade {
         public static final ResourceLocation artKnife = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/art_knife");
         public static final ResourceLocation artKnife$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/art_knife.obj");
@@ -24,6 +33,15 @@ public class R {
         public static final ResourceLocation blueCloud = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/blue_cloud");
         public static final ResourceLocation blueCloud$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/blue_cloud.obj");
         public static final ResourceLocation blueCloud$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/blue_cloud.png");
+        public static final ResourceLocation broadswordIron = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/broadsword_iron");
+        public static final ResourceLocation broadswordIron$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/broadsword_iron.obj");
+        public static final ResourceLocation broadswordIron$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/broadsword_iron.png");
+        public static final ResourceLocation broadswordWood = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/broadsword_wood");
+        public static final ResourceLocation broadswordWood$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/broadsword_wood.obj");
+        public static final ResourceLocation broadswordWood$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/broadsword_wood.png");
+        public static final ResourceLocation brokenWhite = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/broken_white");
+        public static final ResourceLocation brokenWhite$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/broken_white.obj");
+        public static final ResourceLocation brokenWhite$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/broken_white.png");
         public static final ResourceLocation colorWing = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/color_wing");
         public static final ResourceLocation colorWing$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/color_wing.obj");
         public static final ResourceLocation colorWing$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/color_wing.png");
@@ -42,6 +60,12 @@ public class R {
         public static final ResourceLocation dragonScale = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/dragon_scale");
         public static final ResourceLocation dragonScale$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/dragon_scale.obj");
         public static final ResourceLocation dragonScale$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/dragon_scale.png");
+        public static final ResourceLocation greenBladeIron = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/green_blade_iron");
+        public static final ResourceLocation greenBladeIron$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/green_blade_iron.obj");
+        public static final ResourceLocation greenBladeIron$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/green_blade_iron.png");
+        public static final ResourceLocation greenBladeWood = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/green_blade_wood");
+        public static final ResourceLocation greenBladeWood$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/green_blade_wood.obj");
+        public static final ResourceLocation greenBladeWood$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/green_blade_wood.png");
         public static final ResourceLocation hoe = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/hoe");
         public static final ResourceLocation hoe$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/hoe.obj");
         public static final ResourceLocation hoe$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/hoe.png");
@@ -59,6 +83,9 @@ public class R {
         public static final ResourceLocation silverWing = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/silver_wing");
         public static final ResourceLocation silverWing$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/silver_wing.obj");
         public static final ResourceLocation silverWing$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/silver_wing.png");
+        public static final ResourceLocation soulblade = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/soulblade");
+        public static final ResourceLocation soulblade$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/soulblade.obj");
+        public static final ResourceLocation soulblade$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/soulblade.png");
         public static final ResourceLocation umbrella = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/umbrella");
         public static final ResourceLocation umbrella$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/umbrella.obj");
         public static final ResourceLocation umbrella$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/umbrella.png");
@@ -188,6 +215,16 @@ public class R {
             public static final ResourceLocation yayoi = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/yamazakura/yayoi");
             public static final ResourceLocation yayoi$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/yamazakura/yayoi.obj");
             public static final ResourceLocation yayoi$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/yamazakura/yayoi.png");
+        }
+    }
+
+    public static class Textures {
+        public static final ResourceLocation soul = ResourceLocation.fromNamespaceAndPath("recasting", "textures/soul");
+        public static final ResourceLocation soul$png = ResourceLocation.fromNamespaceAndPath("recasting", "textures/soul.png");
+
+        public static class Item {
+            public static final ResourceLocation soul = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul");
+            public static final ResourceLocation soul$png = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul.png");
         }
     }
 }

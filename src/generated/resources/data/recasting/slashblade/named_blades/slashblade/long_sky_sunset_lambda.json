@@ -2,6 +2,7 @@
   "name": "recasting:slashblade/long_sky_sunset_lambda",
   "properties": {},
   "render": {
+    "carry_type": "default",
     "model": "recasting:slashblade/long_sky_sunset.obj",
     "texture": "recasting:slashblade/long_sky_sunset.png"
   }

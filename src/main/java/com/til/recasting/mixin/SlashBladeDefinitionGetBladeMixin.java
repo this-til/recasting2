@@ -37,7 +37,7 @@ public abstract class SlashBladeDefinitionGetBladeMixin {
         // 设置 PropertiesDefinitionExtension
         result.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION)
                 .ifPresent(capability -> {
-                    PropertiesDefinitionExtension source = extension.getPropertiesDefinitionExtension();
+                    PropertiesDefinitionExtension source = extension.getRecasting$propertiesDefinitionExtension();
                     if (source != null) {
                         capability.attackDistance(source.attackDistance());
                     }
@@ -46,7 +46,7 @@ public abstract class SlashBladeDefinitionGetBladeMixin {
         // 设置 RenderDefinitionExtension
         result.getCapability(CapabilityRegistryHandler.RENDER_DEFINITION_EXTENSION)
                 .ifPresent(capability -> {
-                    RenderDefinitionExtension source = extension.getRenderDefinitionExtension();
+                    RenderDefinitionExtension source = extension.getRecasting$renderDefinitionExtension();
                     if (source != null) {
                         capability.summondSwordModel(source.summondSwordModel());
                         capability.summondSwordTexture(source.summondSwordTexture());
