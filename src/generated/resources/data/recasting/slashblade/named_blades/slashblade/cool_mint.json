@@ -2,7 +2,8 @@
   "name": "recasting:slashblade/cool_mint",
   "properties": {
     "attack_base": 7.0,
-    "max_damage": 640
+    "max_damage": 640,
+    "slash_art": "recasting:fanatical_dance"
   },
   "render": {
     "carry_type": "default",

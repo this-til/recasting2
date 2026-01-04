@@ -77,14 +77,14 @@ public class SlashBladeRecipes {
      */
     public static final RecipeBuilderWrapper BROADSWORD_IRON_RECIPE = (consumer, recipeId) ->
             SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BROADSWORD_IRON.getName())
+                    .pattern("  I")
                     .pattern(" I ")
-                    .pattern(" I ")
-                    .pattern(" B ")
+                    .pattern("B  ")
                     .define('B',
                             SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
                                     .name(SlashBladeDefinitions.BROADSWORD_WOOD.getName())
-                                    .killCount(51)
-                                    .refineCount(6)
+                                    .killCount(50)
+                                    .refineCount(5)
                                     .build()))
                     .define('I', SlashBladeItems.PROUDSOUL_INGOT.get())
                     .unlockedBy("has_iron_ingot", RecipeProviderMixin.invokeHas(Items.IRON_INGOT))
@@ -97,14 +97,14 @@ public class SlashBladeRecipes {
      */
     public static final RecipeBuilderWrapper GREEN_BLADE_IRON_RECIPE = (consumer, recipeId) ->
             SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.GREEN_BLADE_IRON.getName())
-                    .pattern("  I")
                     .pattern(" I ")
-                    .pattern("B  ")
+                    .pattern(" I ")
+                    .pattern(" B ")
                     .define('B',
                             SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
                                     .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
-                                    .killCount(51)
-                                    .refineCount(6)
+                                    .killCount(50)
+                                    .refineCount(5)
                                     .build()))
                     .define('I', SlashBladeItems.PROUDSOUL_INGOT.get())
                     .unlockedBy("has_iron_ingot", RecipeProviderMixin.invokeHas(Items.IRON_INGOT))
@@ -158,14 +158,14 @@ public class SlashBladeRecipes {
     /**
      * 八卦剑配方：从碎白升级
      * 要求：杀敌500、力量2附魔、锋利2附魔
-     * 材料：诗烬火6个、白羊毛1个、黑羊毛1个
+     * 材料：诗烬火2个、白羊毛1个、黑羊毛1个
      * P=诗烬火, W=白羊毛, K=黑羊毛, S=基础刀（碎白，满足要求）
      */
     public static final RecipeBuilderWrapper BA_GUA_RECIPE = (consumer, recipeId) ->
             SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BA_GUA.getName())
-                    .pattern("PPP")
+                    .pattern(" P ")
                     .pattern("WSK")
-                    .pattern("PPP")
+                    .pattern(" P ")
                     .define('S',
                             SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
                                     .name(SlashBladeDefinitions.BROKEN_WHITE.getName())
@@ -183,9 +183,9 @@ public class SlashBladeRecipes {
 
     public static final RecipeBuilderWrapper BLACK_RECIPE = (consumer, recipeId) ->
             SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BLACK.getName())
-                    .pattern("  O")
+                    .pattern("  S")
                     .pattern(" B ")
-                    .pattern("S  ")
+                    .pattern("O  ")
                     .define('B',
                             SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
                                     .name(SlashBladeDefinitions.BROADSWORD_IRON.getName())

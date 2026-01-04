@@ -1,6 +1,8 @@
 package com.til.recasting;
 
 import com.til.recasting.registry.RecastingAttackTypes;
+import com.til.recasting.registry.RecastingComboStateRegistry;
+import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.registry.RecastingItems;
 import com.til.recasting.registry.SlashArtsRegistry;
 import com.til.recasting.registry.SpecialEffectsRegistry;
@@ -34,11 +36,19 @@ public class Recasting {
 
         fmlJavaModLoadingContext.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
+        // 注册实体类型
+        RecastingEntities.ENTITY_TYPES.register(modEventBus);
+
         // 注册攻击类型注册表
         RecastingAttackTypes.ATTACK_TYPES.register(modEventBus);
 
         // 注册 Slash Arts (SA) 注册表
+        // 注意：必须在 ComboState 之前注册，因为 ComboState 依赖于 SlashArts
         SlashArtsRegistry.SLASH_ARTS.register(modEventBus);
+
+        // 注册 Combo State 注册表
+        // 注意：必须在 SlashArts 之后注册，因为它会调用 SlashArts 的实例方法
+        RecastingComboStateRegistry.COMBO_STATE.register(modEventBus);
 
         // 注册 Special Effects (SE) 注册表
         SpecialEffectsRegistry.SPECIAL_EFFECT.register(modEventBus);

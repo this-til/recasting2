@@ -26,9 +26,9 @@
     }
   },
   "pattern": [
-    "  O",
+    "  S",
     " B ",
-    "S  "
+    "O  "
   ],
   "result": {
     "item": "slashblade:slashblade"

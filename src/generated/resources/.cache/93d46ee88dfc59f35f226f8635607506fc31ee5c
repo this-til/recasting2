@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-02T20:35:19.6112076	Recasting SlashBlade Definition Registry
+// 1.20.1	2026-01-04T22:48:29.3088604	Recasting SlashBlade Definition Registry
 54425988bdb3a6427dded3c85502e41a5a724eb4 data/recasting/slashblade/named_blades/slashblade/art_knife.json
 e6241ad9eeab869aeeb6626cc4085e2c7c8daae9 data/recasting/slashblade/named_blades/slashblade/ba_gua.json
 90d196fdd42bc5d973c712e21f7a11d1dd30de39 data/recasting/slashblade/named_blades/slashblade/ba_gua_big.json
@@ -11,8 +11,8 @@ e76207fe04ba6e9268626668c099fa79052f3697 data/recasting/slashblade/named_blades/
 755978b3e357a3ac38e3f4bba3480ea1c36a38cc data/recasting/slashblade/named_blades/slashblade/broken_white.json
 9046d880d3a0ab680b8f32cdb7ff0ebd4d49ba51 data/recasting/slashblade/named_blades/slashblade/color_wing.json
 0af82a77bb99dd4d22f2350d82b1573e99273c92 data/recasting/slashblade/named_blades/slashblade/color_wing_lambda.json
-71c52131823e32095330348e341e41c12f9ee39b data/recasting/slashblade/named_blades/slashblade/cool_mint.json
-a4089ecabf44829aeac37c8be5a9c4c717aef381 data/recasting/slashblade/named_blades/slashblade/cool_mint_lambda.json
+ba7d33e4e7406abc7d0a2a294a7ac58fe106f6f3 data/recasting/slashblade/named_blades/slashblade/cool_mint.json
+37c424f5b3f69489570d8cf07f847a1af83637cb data/recasting/slashblade/named_blades/slashblade/cool_mint_lambda.json
 b22bfdfb49cd80d8de00bdc99513d455d61911a1 data/recasting/slashblade/named_blades/slashblade/dharma_stick.json
 4a7ec8988d56291ff7e8776a0ffe230aa0bbd839 data/recasting/slashblade/named_blades/slashblade/dragon.json
 3af0c9b7c8b2d9327e231f3296ac60a39b893aec data/recasting/slashblade/named_blades/slashblade/dragon_lambda.json

@@ -68,7 +68,7 @@ public class RecastingAttackTypes {
      */
     public static final RegistryObject<AttackType> JUDGEMENT_CUT_ATTACK = ATTACK_TYPES.register("judgement_cut",
             () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
-                    attacker.damageSources().fellOutOfWorld(),
+                    attacker.damageSources().dragonBreath(),
                     1.0f
             ))
     );

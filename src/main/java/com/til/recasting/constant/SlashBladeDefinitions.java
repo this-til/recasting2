@@ -4,6 +4,7 @@ import com.til.recasting.Recasting;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.mixin_api.ISlashBladeStateExtension;
+import com.til.recasting.registry.SlashArtsRegistry;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.registry.slashblade.EnchantmentDefinition;
@@ -18,6 +19,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.world.item.enchantment.Enchantments;
 
 public class SlashBladeDefinitions {
@@ -126,7 +128,9 @@ public class SlashBladeDefinitions {
                     .effectColor(new Color(0xA7C683).getRGB()))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(5f)
-                    .maxDamage(6 * 40))
+                    .maxDamage(6 * 40)
+                    .slashArtsType(SlashArtsRegistry.CYAN_GLOW.getId())
+            )
             .build();
 
     // 青云 Lambda
@@ -137,7 +141,9 @@ public class SlashBladeDefinitions {
                     .effectColor(new Color(0xA7C683).getRGB()))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(6f)
-                    .maxDamage(8 * 40))
+                    .maxDamage(8 * 40)
+                    .slashArtsType(SlashArtsRegistry.CYAN_GLOW_LAMBDA.getId())
+            )
             .build();
 
     //endregion
@@ -152,7 +158,9 @@ public class SlashBladeDefinitions {
                     .effectColor(new Color(0xC7F3CB).getRGB()))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(7f)
-                    .maxDamage(16 * 40))
+                    .maxDamage(16 * 40)
+                    .slashArtsType(SlashArtsRegistry.FANATICAL_DANCE.getId())
+            )
             .build();
 
     // 冰薄荷 Lambda
@@ -163,7 +171,9 @@ public class SlashBladeDefinitions {
                     .effectColor(new Color(0xC7F3CB).getRGB()))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(7f)
-                    .maxDamage(24 * 40))
+                    .maxDamage(24 * 40)
+                    .slashArtsType(SlashArtsRegistry.FANATICAL_DANCE_LAMBDA.getId())
+            )
             .build();
 
 
@@ -178,7 +188,9 @@ public class SlashBladeDefinitions {
                     .effectColor(0xFF001E))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(8f)
-                    .maxDamage(12 * 40))
+                    .maxDamage(12 * 40)
+                    .slashArtsType(SlashArtsRegistry.VOID_HOLE.getId())
+            )
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(1.5f))
             .build();
 
@@ -189,7 +201,9 @@ public class SlashBladeDefinitions {
                     .effectColor(0xFF001E))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(8f)
-                    .maxDamage(24 * 40))
+                    .maxDamage(24 * 40)
+                    .slashArtsType(SlashArtsRegistry.VOID_HOLE_PITCH_BLACK.getId())
+            )
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(1.5f))
             .build();
 
@@ -200,7 +214,9 @@ public class SlashBladeDefinitions {
                     .effectColor(0xFF001E))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(8f)
-                    .maxDamage(32 * 40))
+                    .maxDamage(32 * 40)
+                    .slashArtsType(SlashArtsRegistry.VOID_HOLE_FISHY_RED.getId())
+            )
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(1.5f))
             .build();
     //endregion
@@ -291,7 +307,9 @@ public class SlashBladeDefinitions {
                     .effectColor(new Color(0xB97910).getRGB()))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(5f)
-                    .maxDamage((int) (5f * 40)))
+                    .maxDamage((int) (5f * 40))
+                    .slashArtsType(SlashArtsRegistry.STORM_PHANTOM_SWORDS.getId())
+            )
             .build();
 
     // 龙鳞 Lambda
@@ -302,7 +320,9 @@ public class SlashBladeDefinitions {
                     .effectColor(new Color(0xB97910).getRGB()))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(5f)
-                    .maxDamage((int) (10f * 40)))
+                    .maxDamage((int) (10f * 40))
+                    .slashArtsType(SlashArtsRegistry.STORM_PHANTOM_SWORDS_LAMBDA.getId())
+            )
             .build();
 
     // 龙一
@@ -313,7 +333,9 @@ public class SlashBladeDefinitions {
                     .effectColor(new Color(255, 255, 0).getRGB()))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(6f)
-                    .maxDamage(8 * 40))
+                    .maxDamage(8 * 40)
+                    .slashArtsType(SlashArtsRegistry.SWORD_RAIN.getId())
+            )
             .build();
 
     // 龙一 Lambda
@@ -324,7 +346,9 @@ public class SlashBladeDefinitions {
                     .effectColor(new Color(255, 255, 0).getRGB()))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(6f)
-                    .maxDamage(8 * 40))
+                    .maxDamage(8 * 40)
+                    .slashArtsType(SlashArtsRegistry.SWORD_RAIN_LAMBDA.getId())
+            )
             .build();
 
     // 锄头
@@ -388,7 +412,9 @@ public class SlashBladeDefinitions {
                     .effectColor(new Color(0xC191FF).getRGB()))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(5f)
-                    .maxDamage(12 * 40))
+                    .maxDamage(12 * 40)
+                    .slashArtsType(SlashArtsRegistry.MULTIPLE_JUDGEMENT_CUT.getId())
+            )
             .build();
 
     // 伞 Lambda
@@ -399,7 +425,9 @@ public class SlashBladeDefinitions {
                     .effectColor(new Color(0xC191FF).getRGB()))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(6f)
-                    .maxDamage(18 * 40))
+                    .maxDamage(18 * 40)
+                    .slashArtsType(SlashArtsRegistry.INFINITE_JUDGEMENT_CUT.getId())
+            )
             .build();
 
     public static final SlashBladeDefinition XUAN_YUAN = createBuild(R.Slashblade.xuanYuan)
@@ -679,19 +707,25 @@ public class SlashBladeDefinitions {
             }
 
             // 检查是否有力量附魔，如果没有则添加力量1
-            List<EnchantmentDefinition> finalEnchantments = new ArrayList<>(enchantments);
-            ResourceLocation smiteId = ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE);
-            boolean hasSmite = finalEnchantments.stream()
-                    .anyMatch(e -> e.getEnchantmentID().equals(smiteId));
-            if (!hasSmite) {
-                finalEnchantments.add(new EnchantmentDefinition(smiteId, 1));
-            }
+            //List<EnchantmentDefinition> finalEnchantments = new ArrayList<>(enchantments);
+            //ResourceLocation smiteId = ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE);
+            //boolean hasSmite = finalEnchantments.stream()
+            //        .anyMatch(e -> e.getEnchantmentID().equals(smiteId));
+            //if (!hasSmite) {
+            //    finalEnchantments.add(new EnchantmentDefinition(smiteId, 1));
+            //}
 
-            SlashBladeDefinition slashBladeDefinition = new SlashBladeDefinition(name, (renderDefinition == null
-                    ? RenderDefinition.Builder.newInstance()
-                    : renderDefinition).build(), (propertiesDefinition == null
-                    ? PropertiesDefinition.Builder.newInstance()
-                    : propertiesDefinition).build(), finalEnchantments);
+
+            SlashBladeDefinition slashBladeDefinition = new SlashBladeDefinition(
+                    name,
+                    (renderDefinition == null
+                            ? RenderDefinition.Builder.newInstance()
+                            : renderDefinition).build(),
+                    (propertiesDefinition == null
+                            ? PropertiesDefinition.Builder.newInstance()
+                            : propertiesDefinition).build(),
+                    enchantments
+            );
 
             //noinspection ConstantValue
             if (slashBladeDefinition instanceof ISlashBladeStateExtension slashBladeStateDefinition) {

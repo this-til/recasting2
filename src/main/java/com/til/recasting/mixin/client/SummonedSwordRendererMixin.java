@@ -17,6 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 @OnlyIn(Dist.CLIENT)
@@ -26,7 +27,11 @@ public abstract class SummonedSwordRendererMixin {
     @Shadow
     public abstract @NotNull ResourceLocation getTextureLocation(EntityAbstractSummonedSword entity);
 
-
+    /**
+     * @author til
+     * @reason 修正渲染位置
+     */
+    @Overwrite
     public void render(EntityAbstractSummonedSword entity, float entityYaw, float partialTicks, @NotNull PoseStack matrixStack, @NotNull MultiBufferSource bufferIn, int packedLightIn) {
         try (MSAutoCloser msac = MSAutoCloser.pushMatrix(matrixStack)) {
             Entity hits = entity.getHitEntity();
@@ -45,6 +50,7 @@ public abstract class SummonedSwordRendererMixin {
             float scale = 0.0075F * size;
             matrixStack.scale(scale, scale, scale);
             matrixStack.mulPose(Axis.YP.rotationDegrees(90.0F));
+
             if (hasHitEntity) {
                 matrixStack.translate(0.0F, 0.0F, -100.0F);
             }

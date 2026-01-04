@@ -1,6 +1,7 @@
 package com.til.recasting.mixin.entity;
 
 import com.til.recasting.mixin_api.IEntityModifiedRatio;
+import com.til.recasting.mixin_api.IEntitySize;
 import com.til.recasting.registry.RecastingAttackTypes;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,12 +28,17 @@ import java.util.function.Consumer;
  * 防止幻影剑实体被保存到世界文件，并使用正确的攻击类型
  */
 @Mixin(value = EntityJudgementCut.class, remap = false)
-public abstract class EntityJudgementCutMixin implements EntityAccess, IEntityModifiedRatio {
+public abstract class EntityJudgementCutMixin implements EntityAccess, IEntityModifiedRatio, IEntitySize {
 
     @Unique
     @Getter
     @Setter
     private float recasting$modifiedRatio = 0;
+
+    @Unique
+    @Getter
+    @Setter
+    private float recasting$size = 1.0f;
 
     @Shadow
     @Nullable

@@ -7,9 +7,9 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
-        "kill": 51,
+        "kill": 50,
         "name": "recasting:slashblade/broadsword_wood",
-        "refine": 6
+        "refine": 5
       }
     },
     "I": {
@@ -17,9 +17,9 @@
     }
   },
   "pattern": [
+    "  I",
     " I ",
-    " I ",
-    " B "
+    "B  "
   ],
   "result": {
     "item": "slashblade:slashblade"

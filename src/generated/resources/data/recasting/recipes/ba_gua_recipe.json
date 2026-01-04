@@ -32,9 +32,9 @@
     }
   },
   "pattern": [
-    "PPP",
+    " P ",
     "WSK",
-    "PPP"
+    " P "
   ],
   "result": {
     "item": "slashblade:slashblade"

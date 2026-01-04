@@ -4,7 +4,10 @@ import com.til.recasting.client.generated.language.LanguageItem;
 import com.til.recasting.client.generated.language.LanguageTypes;
 import com.til.recasting.constant.SlashBladeDefinitions;
 import com.til.recasting.registry.RecastingItems;
+import com.til.recasting.registry.SlashArtsRegistry;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
+import mods.flammpfeil.slashblade.slasharts.SlashArts;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.RegistryObject;
 
 public class LanguageItems {
@@ -433,12 +436,85 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "随着涨落，颜色从新月时的深紫，到满月时如海浪泡沫般的银白。")
             .addTranslation(LanguageTypes.EN_US, "With the ebb and flow, colors shift from deep purple at new moon to silvery white like sea foam at full moon.");
 
+    // ========== Slash Arts ==========
+    // 青芒
+    public static final LanguageItem CYAN_GLOW = createSlashArtsLanguageItem(SlashArtsRegistry.CYAN_GLOW)
+            .addTranslation(LanguageTypes.ZH_CN, "青芒")
+            .addTranslation(LanguageTypes.EN_US, "Cyan Glow");
+
+    public static final LanguageItem CYAN_GLOW_LAMBDA = createSlashArtsLanguageItem(SlashArtsRegistry.CYAN_GLOW_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "青芒^")
+            .addTranslation(LanguageTypes.EN_US, "Cyan Glow Lambda");
+
+
+    // 乱舞
+    public static final LanguageItem FANATICAL_DANCE = createSlashArtsLanguageItem(SlashArtsRegistry.FANATICAL_DANCE)
+            .addTranslation(LanguageTypes.ZH_CN, "乱舞")
+            .addTranslation(LanguageTypes.EN_US, "Fanatical Dance");
+
+    public static final LanguageItem FANATICAL_DANCE_LAMBDA = createSlashArtsLanguageItem(SlashArtsRegistry.FANATICAL_DANCE_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^乱舞")
+            .addTranslation(LanguageTypes.EN_US, "Fanatical Dance Lambda");
+
+    // 风暴幻影剑
+    public static final LanguageItem STORM_PHANTOM_SWORDS = createSlashArtsLanguageItem(SlashArtsRegistry.STORM_PHANTOM_SWORDS)
+            .addTranslation(LanguageTypes.ZH_CN, "风暴幻影剑")
+            .addTranslation(LanguageTypes.EN_US, "Storm Phantom Swords");
+
+    public static final LanguageItem STORM_PHANTOM_SWORDS_LAMBDA = createSlashArtsLanguageItem(SlashArtsRegistry.STORM_PHANTOM_SWORDS_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^风暴幻影剑")
+            .addTranslation(LanguageTypes.EN_US, "Storm Phantom Swords Lambda");
+
+    // 剑雨
+    public static final LanguageItem SWORD_RAIN = createSlashArtsLanguageItem(SlashArtsRegistry.SWORD_RAIN)
+            .addTranslation(LanguageTypes.ZH_CN, "剑雨")
+            .addTranslation(LanguageTypes.EN_US, "Sword Rain");
+
+    public static final LanguageItem SWORD_RAIN_LAMBDA = createSlashArtsLanguageItem(SlashArtsRegistry.SWORD_RAIN_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^剑雨")
+            .addTranslation(LanguageTypes.EN_US, "Sword Rain Lambda");
+
+    // 拟似黑洞
+    public static final LanguageItem VOID_HOLE = createSlashArtsLanguageItem(SlashArtsRegistry.VOID_HOLE)
+            .addTranslation(LanguageTypes.ZH_CN, "拟似黑洞")
+            .addTranslation(LanguageTypes.EN_US, "Void Hole");
+
+    public static final LanguageItem VOID_HOLE_PITCH_BLACK = createSlashArtsLanguageItem(SlashArtsRegistry.VOID_HOLE_PITCH_BLACK)
+            .addTranslation(LanguageTypes.ZH_CN, "拟似黑洞[漆黑]")
+            .addTranslation(LanguageTypes.EN_US, "Void Hole [Pitch Black]");
+
+    public static final LanguageItem VOID_HOLE_FISHY_RED = createSlashArtsLanguageItem(SlashArtsRegistry.VOID_HOLE_FISHY_RED)
+            .addTranslation(LanguageTypes.ZH_CN, "拟似黑洞[腥红]")
+            .addTranslation(LanguageTypes.EN_US, "Void Hole [Fishy Red]");
+
+    // 多重次元斩·决
+    public static final LanguageItem MULTIPLE_JUDGEMENT_CUT = createSlashArtsLanguageItem(SlashArtsRegistry.MULTIPLE_JUDGEMENT_CUT)
+            .addTranslation(LanguageTypes.ZH_CN, "多重次元斩·决")
+            .addTranslation(LanguageTypes.EN_US, "Multiple Judgement Cut");
+
+    // 无限次元斩
+    public static final LanguageItem INFINITE_JUDGEMENT_CUT = createSlashArtsLanguageItem(SlashArtsRegistry.INFINITE_JUDGEMENT_CUT)
+            .addTranslation(LanguageTypes.ZH_CN, "无限次元斩")
+            .addTranslation(LanguageTypes.EN_US, "Infinite Judgement Cut");
+
     private static LanguageItem createLanguageItem(SlashBladeDefinition definition) {
         return new LanguageItem(definition.getTranslationKey());
     }
 
     private static LanguageItem createLanguageItem(RegistryObject<net.minecraft.world.item.Item> item) {
         return new LanguageItem(() -> item.get().getDescriptionId());
+    }
+
+    /**
+     * 创建 Slash Arts 翻译项
+     * 翻译键格式：slasharts.modid.name
+     */
+    private static LanguageItem createSlashArtsLanguageItem(RegistryObject<? extends SlashArts> slashArts) {
+        return new LanguageItem(() -> {
+            SlashArts arts = slashArts.get();
+            ResourceLocation key = SlashArts.getRegistryKey(arts);
+            return "slasharts." + key.getNamespace() + "." + key.getPath();
+        });
     }
 
     /**

@@ -10,10 +10,12 @@
     "EntityAccessor",
     "JudgementCutMixin",
     "RecipeProviderMixin",
+    "SlashArtsAccessor",
     "SlashBladeDefinitionBladeComparatorMixin",
     "SlashBladeDefinitionCodecMixin",
     "SlashBladeDefinitionGetBladeMixin",
     "SlashBladeDefinitionMixin",
+    "SummonedSwordArtsMixin",
     "entity.EntityAbstractSummonedSwordMixin",
     "entity.EntityDriveMixin",
     "entity.EntityJudgementCutMixin",
@@ -21,6 +23,7 @@
   ],
   "client": [
     "client.ItemModelBuilderMixin",
+    "client.JudgementCutRendererMixin",
     "client.SummonedSwordRendererMixin"
   ],
   "injectors": {
