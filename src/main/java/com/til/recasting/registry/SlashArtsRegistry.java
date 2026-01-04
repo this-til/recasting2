@@ -5,6 +5,7 @@ import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.capability.TimeRunCapability;
+import com.til.recasting.entity.LightningEntity;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.mixin.SlashArtsAccessor;
 import com.til.recasting.mixin_api.IEntityModifiedRatio;
@@ -90,6 +91,15 @@ public class SlashArtsRegistry {
 
     // 多重剑气
     public static final RegistryObject<ExtendedSlashArts> MULTIPLE_DRIVE = registerExtendedSA("multiple_drive", new MultipleDriveSlashArts());
+
+    // 苍穹十二连
+    public static final RegistryObject<ExtendedSlashArts> HEAVEN_TWELVE_HIT = registerExtendedSA("heaven_twelve_hit", new HeavenTwelveHitSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> HEAVEN_TWELVE_HIT_LAMBDA = registerExtendedSA("heaven_twelve_hit_lambda", new HeavenTwelveHitSlashArts().setLightningNumber(18).setLightningAttack(1.3f).setAttack(0.5f));
+
+    // 云轮
+    public static final RegistryObject<ExtendedSlashArts> CLOUD_WHEEL = registerExtendedSA("cloud_wheel", new CloudWheelSlashArts().setLightningNumber(0));
+    // 云轮风暴
+    public static final RegistryObject<ExtendedSlashArts> CLOUD_WHEEL_STORM = registerExtendedSA("cloud_wheel_storm", new CloudWheelSlashArts().setLightningNumber(7).setAttackNumber(10));
 
 
     /**
@@ -1159,6 +1169,243 @@ public class SlashArtsRegistry {
                     0.2F,
                     1.45F
             );
+        }
+    }
+
+    /**
+     * 苍穹十二连 Slash Arts
+     * 发射多把召唤剑，击中敌人后在敌人位置生成闪电
+     */
+    @Setter
+    @Accessors(chain = true)
+    public static class HeavenTwelveHitSlashArts extends ExtendedSlashArts {
+
+        int lightningNumber = 12;
+        float attack = 0.1f;
+        float lightningAttack = 1.0f;
+
+        @Override
+        public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
+
+            Level worldIn = livingEntity.level();
+
+            // 获取攻击目标位置
+            Vec3 attackPos = getAttackTargetPosition(livingEntity, slashBladeState);
+
+            // 创建多把召唤剑
+            for(int i = 0; i < lightningNumber; i++) {
+                LightningSummonedSword summonedSword = new LightningSummonedSword(
+                        SlashBlade.RegistryEvents.SummonedSword,
+                        worldIn,
+                        livingEntity,
+                        slashBladeState.getColorCode(),
+                        lightningAttack
+                );
+
+                // 设置位置为玩家位置
+                Vec3 spawnPos = livingEntity.position().add(0, 1.5, 0);
+                summonedSword.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+
+                // 设置属性
+                summonedSword.setOwner(livingEntity);
+                summonedSword.setColor(slashBladeState.getColorCode());
+                summonedSword.setDamage(attack);
+
+                // 设置大小
+                //noinspection ConstantValue
+                if (summonedSword instanceof IEntitySize) {
+                    ((IEntitySize) summonedSword).setRecasting$size(1.25f);
+                }
+
+                // 朝向攻击目标位置
+                Vec3 direction = attackPos.subtract(spawnPos).normalize();
+                summonedSword.shoot(direction.x, direction.y, direction.z, 2.0f, 0.0f);
+
+                // 添加到世界
+                worldIn.addFreshEntity(summonedSword);
+            }
+
+            // 播放音效
+            livingEntity.playSound(
+                    net.minecraft.sounds.SoundEvents.CHORUS_FRUIT_TELEPORT,
+                    0.2F,
+                    1.45F
+            );
+        }
+    }
+
+    /**
+     * 云轮 Slash Arts
+     * 在目标位置上方生成多把召唤剑，击中后生成闪电
+     */
+    @Setter
+    @Accessors(chain = true)
+    public static class CloudWheelSlashArts extends ExtendedSlashArts {
+
+        float attack = 0.2f;
+        int attackNumber = 6;
+        float lightningAttack = 1.35f;
+        int lightningNumber = 10;
+
+        @Override
+        public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
+
+            Level worldIn = livingEntity.level();
+            net.minecraft.util.RandomSource random = livingEntity.getRandom();
+
+            // 获取攻击目标位置
+            Vec3 attackPos = getAttackTargetPosition(livingEntity, slashBladeState);
+
+            // 第一阶段：在目标位置上方5格，圆形范围内生成召唤剑
+            for(int i = 0; i < attackNumber; i++) {
+                LightningSummonedSword summonedSword = new LightningSummonedSword(
+                        SlashBlade.RegistryEvents.SummonedSword,
+                        worldIn,
+                        livingEntity,
+                        slashBladeState.getColorCode(),
+                        lightningAttack
+                );
+
+                // 在圆形范围内随机生成位置
+                Vec3 randomOffset = getRandomVectorInCircle(random, 2.5f);
+                Vec3 pos = attackPos.add(0, 5, 0).add(randomOffset);
+                summonedSword.setPos(pos.x, pos.y, pos.z);
+
+                // 设置属性
+                summonedSword.setOwner(livingEntity);
+                summonedSword.setColor(slashBladeState.getColorCode());
+                summonedSword.setDamage(attack);
+                summonedSword.setDelay(5);
+                summonedSword.setRoll(random.nextInt(360));
+
+                // 朝向攻击目标位置
+                Vec3 direction = attackPos.subtract(pos).normalize();
+                summonedSword.shoot(direction.x, direction.y, direction.z, 2.0f, 0.0f);
+
+                // 添加到世界
+                worldIn.addFreshEntity(summonedSword);
+            }
+
+            // 第二阶段：在目标位置上方7格生成一把黄色召唤剑
+            {
+                LightningSummonedSword summonedSword = new LightningSummonedSword(
+                        SlashBlade.RegistryEvents.SummonedSword,
+                        worldIn,
+                        livingEntity,
+                        0xFFFF00, // 黄色
+                        lightningAttack
+                );
+
+                Vec3 pos = attackPos.add(0, 7, 0);
+                summonedSword.setPos(pos.x, pos.y, pos.z);
+
+                // 设置属性
+                summonedSword.setOwner(livingEntity);
+                summonedSword.setColor(0xFFFF00); // 黄色
+                summonedSword.setDamage(attack);
+                summonedSword.setDelay(10);
+
+                // 设置大小
+                //noinspection ConstantValue
+                if (summonedSword instanceof IEntitySize) {
+                    ((IEntitySize) summonedSword).setRecasting$size(1.25f);
+                }
+
+                // 朝向攻击目标位置
+                Vec3 direction = attackPos.subtract(pos).normalize();
+                summonedSword.shoot(direction.x, direction.y, direction.z, 2.0f, 0.0f);
+
+                // 添加到世界
+                worldIn.addFreshEntity(summonedSword);
+            }
+
+            // 第三阶段：生成多把黄色召唤剑（如果 lightningNumber > 0）
+            if (lightningNumber > 0) {
+                for(int i = 0; i < lightningNumber; i++) {
+                    LightningSummonedSword summonedSword = new LightningSummonedSword(
+                            SlashBlade.RegistryEvents.SummonedSword,
+                            worldIn,
+                            livingEntity,
+                            0xFFFF00, // 黄色
+                            lightningAttack
+                    );
+
+                    Vec3 pos = attackPos.add(0, 7, 0);
+                    summonedSword.setPos(pos.x, pos.y, pos.z);
+
+                    // 设置属性
+                    summonedSword.setOwner(livingEntity);
+                    summonedSword.setColor(0xFFFF00); // 黄色
+                    summonedSword.setDamage(attack);
+                    summonedSword.setDelay(i * 2);
+
+                    // 设置大小
+                    //noinspection ConstantValue
+                    if (summonedSword instanceof IEntitySize) {
+                        ((IEntitySize) summonedSword).setRecasting$size(1.25f);
+                    }
+
+                    // 朝向攻击目标位置
+                    Vec3 direction = attackPos.subtract(pos).normalize();
+                    summonedSword.shoot(direction.x, direction.y, direction.z, 2.0f, 0.0f);
+
+                    // 添加到世界
+                    worldIn.addFreshEntity(summonedSword);
+                }
+            }
+        }
+    }
+
+    /**
+     * 自定义召唤剑 - 击中后产生闪电
+     */
+    public static class LightningSummonedSword extends EntityAbstractSummonedSword {
+
+        private final LivingEntity caster;
+        private final int lightningColor;
+        private final float lightningAttack;
+
+        public LightningSummonedSword(
+                net.minecraft.world.entity.EntityType<? extends EntityAbstractSummonedSword> type,
+                Level level,
+                LivingEntity caster,
+                int lightningColor,
+                float lightningAttack
+        ) {
+            super(type, level);
+            this.caster = caster;
+            this.lightningColor = lightningColor;
+            this.lightningAttack = lightningAttack;
+        }
+
+        @Override
+        protected void onHitEntity(net.minecraft.world.phys.EntityHitResult entityHitResult) {
+            // 先调用父类的击中逻辑（造成伤害等）
+            super.onHitEntity(entityHitResult);
+
+            // 在击中位置生成闪电实体
+            if (!this.level().isClientSide()) {
+                Entity hitEntity = entityHitResult.getEntity();
+
+                // 确定闪电生成位置（被击中实体的位置）
+                Vec3 lightningPos = hitEntity.position().add(0, hitEntity.getEyeHeight() * 0.5, 0);
+
+                // 创建闪电实体
+                LightningEntity lightningEntity = new LightningEntity(
+                        com.til.recasting.registry.RecastingEntities.LIGHTNING.get(),
+                        this.level()
+                );
+
+                lightningEntity.setPos(lightningPos.x, lightningPos.y, lightningPos.z);
+                lightningEntity.setOwner(caster);
+                lightningEntity.setColor(lightningColor);
+                lightningEntity.setModifiedRatio(lightningAttack);
+                lightningEntity.setMaxLifeTime(20); // 持续1秒
+                lightningEntity.setAttackInterval(5); // 每5 tick攻击一次
+
+                // 添加到世界
+                this.level().addFreshEntity(lightningEntity);
+            }
         }
     }
 }

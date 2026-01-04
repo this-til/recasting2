@@ -30,38 +30,40 @@ import java.util.List;
  * 闪电特效实体
  * 用于创建闪电攻击特效，造成魔法伤害并带有视觉效果
  */
-public class LightningEntity extends Projectile {
+public class LightningEntity extends Entity {
 
     // 数据同步
     private static final EntityDataAccessor<Long> BOLT_VERTEX = SynchedEntityData.defineId(LightningEntity.class, EntityDataSerializers.LONG);
     private static final EntityDataAccessor<Float> SIZE = SynchedEntityData.defineId(LightningEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> MUTE = SynchedEntityData.defineId(LightningEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(LightningEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(LightningEntity.class, EntityDataSerializers.INT);
 
     // 实体状态
     private boolean isInitialized = false;
     @Getter
     @Setter
     private int maxLifeTime = 20; // 默认 1 秒
-    @Setter
-    @Getter
-    private float damage = 10.0f;
     @Getter
     @Setter
-    private float modifiedRatio = 1.0f;
+    private float modifiedRatio = 1.0f; // 伤害倍率（areaAttack 需要）
     @Getter
     @Setter
-    private float extraDamage = 0.0f;
+    private float extraDamage = 0.0f; // 额外伤害（areaAttack 需要）
     @Getter
     @Setter
-    private int attackInterval = 5; // 攻击间隔（tick），默认 2
+    private int attackInterval = 5; // 攻击间隔（tick），默认 5
 
-    public LightningEntity(EntityType<? extends Projectile> entityType, Level level) {
+    // Owner 缓存
+    private Entity cachedOwner;
+
+    public LightningEntity(EntityType<? extends LightningEntity> entityType, Level level) {
         super(entityType, level);
         this.setNoGravity(true);
         this.setMaxLifeTime(this.random.nextInt(15) + 5);
         this.setBoltVertex(this.random.nextLong());
     }
+
 
     @Override
     protected void defineSynchedData() {
@@ -69,11 +71,17 @@ public class LightningEntity extends Projectile {
         this.entityData.define(SIZE, 1.0f);
         this.entityData.define(MUTE, false);
         this.entityData.define(COLOR, 0x3399FF); // 默认蓝色
+        this.entityData.define(OWNER_ID, -1);
     }
 
     @Override
     public void tick() {
         super.tick();
+
+        if (getOwner() == null) {
+            remove(RemovalReason.DISCARDED);
+            return;
+        }
 
         // 服务器端：初始化和攻击逻辑
         if (!isInitialized) {
@@ -117,34 +125,27 @@ public class LightningEntity extends Projectile {
         }
 
         // 计算攻击范围
-        float range = 3.0f * this.getSize();
-        AABB attackBox = this.getBoundingBox().inflate(range);
-
-        // 获取范围内的目标实体
-        List<Entity> targets = TargetSelector.getTargettableEntitiesWithinAABB(
-                this.level(),
-                attacker,
-                attackBox
-        );
-
-        // 排除幻影剑实体
-        targets.removeIf(entity -> entity instanceof EntityAbstractSummonedSword);
+        float attackRange = 1.5f * this.getSize();
 
         // 创建攻击类型列表
         List<AttackType> attackTypes = List.of(RecastingAttackTypes.LIGHTNING_ATTACK.get());
 
-        // 对每个目标造成伤害
-        for(Entity target : targets) {
-            AttackManager.doMeleeAttack(
-                    attacker,
-                    target,
-                    true,  // forceHit - 强制命中
-                    true,  // resetHit - 重置无敌时间
-                    this.modifiedRatio,
-                    this.extraDamage,
-                    attackTypes
-            );
-        }
+        // 排除列表（排除幻影剑实体）
+        List<Entity> exclude = List.of();
+
+        // 使用 areaAttack 进行范围攻击
+        AttackManager.areaAttack(
+                attacker,
+                living -> {},  // beforeHit - 攻击前回调
+                modifiedRatio,  // 伤害倍率
+                extraDamage,    // 额外伤害
+                true,           // forceHit - 强制命中
+                true,           // resetHit - 重置无敌时间
+                this.isMute(),  // mute - 静音
+                attackRange,    // 攻击范围
+                exclude,        // 排除列表
+                attackTypes     // 攻击类型列表
+        );
     }
 
     public long getBoltVertex() {
@@ -179,11 +180,73 @@ public class LightningEntity extends Projectile {
         this.entityData.set(COLOR, color);
     }
 
+    /**
+     * 获取所有者实体
+     */
+    public Entity getOwner() {
+        if (this.cachedOwner != null && !this.cachedOwner.isRemoved()) {
+            return this.cachedOwner;
+        }
+
+        int ownerId = this.entityData.get(OWNER_ID);
+        if (ownerId == -1) {
+            return null;
+        }
+
+        if (this.level() != null && !this.level().isClientSide()) {
+            this.cachedOwner = this.level().getEntity(ownerId);
+            return this.cachedOwner;
+        }
+
+        return null;
+    }
+
+    /**
+     * 设置所有者实体
+     */
+    public void setOwner(Entity owner) {
+        if (owner != null) {
+            this.entityData.set(OWNER_ID, owner.getId());
+            this.cachedOwner = owner;
+        } else {
+            this.entityData.set(OWNER_ID, -1);
+            this.cachedOwner = null;
+        }
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public boolean shouldRenderAtSqrDistance(double distance) {
         double renderDistance = 256.0D * getViewScale();
         return distance < renderDistance * renderDistance;
+    }
+
+    @Override
+    protected void readAdditionalSaveData(@NotNull CompoundTag tag) {
+        if (tag.contains("OwnerUUID")) {
+            // 从 UUID 加载 owner（如果需要持久化）
+            // 注意：由于 shouldBeSaved 返回 false，这个方法通常不会被调用
+        }
+        if (tag.contains("ModifiedRatio")) {
+            this.modifiedRatio = tag.getFloat("ModifiedRatio");
+        }
+        if (tag.contains("ExtraDamage")) {
+            this.extraDamage = tag.getFloat("ExtraDamage");
+        }
+        if (tag.contains("MaxLifeTime")) {
+            this.maxLifeTime = tag.getInt("MaxLifeTime");
+        }
+        if (tag.contains("AttackInterval")) {
+            this.attackInterval = tag.getInt("AttackInterval");
+        }
+    }
+
+    @Override
+    protected void addAdditionalSaveData(@NotNull CompoundTag tag) {
+        tag.putFloat("ModifiedRatio", this.modifiedRatio);
+        tag.putFloat("ExtraDamage", this.extraDamage);
+        tag.putInt("MaxLifeTime", this.maxLifeTime);
+        tag.putInt("AttackInterval", this.attackInterval);
     }
 
     @Override

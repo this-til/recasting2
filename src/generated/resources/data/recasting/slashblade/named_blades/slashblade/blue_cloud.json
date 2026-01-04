@@ -2,7 +2,8 @@
   "name": "recasting:slashblade/blue_cloud",
   "properties": {
     "attack_base": 5.0,
-    "max_damage": 240
+    "max_damage": 240,
+    "slash_art": "recasting:cyan_glow"
   },
   "render": {
     "carry_type": "default",

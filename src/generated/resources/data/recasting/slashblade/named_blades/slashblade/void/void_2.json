@@ -2,7 +2,8 @@
   "name": "recasting:slashblade/void/void_2",
   "properties": {
     "attack_base": 8.0,
-    "max_damage": 960
+    "max_damage": 960,
+    "slash_art": "recasting:void_hole_pitch_black"
   },
   "properties_extension": {
     "attack_distance": 1.5

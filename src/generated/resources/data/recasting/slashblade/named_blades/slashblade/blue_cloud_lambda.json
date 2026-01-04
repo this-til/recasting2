@@ -2,7 +2,8 @@
   "name": "recasting:slashblade/blue_cloud_lambda",
   "properties": {
     "attack_base": 6.0,
-    "max_damage": 320
+    "max_damage": 320,
+    "slash_art": "recasting:cyan_glow_lambda"
   },
   "render": {
     "carry_type": "default",

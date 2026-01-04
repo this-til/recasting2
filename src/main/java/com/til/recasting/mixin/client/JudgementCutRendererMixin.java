@@ -22,14 +22,15 @@ public abstract class JudgementCutRendererMixin<T extends EntityJudgementCut> {
      * 在 scale 变量被赋值后，scale() 方法调用之前拦截并修改
      */
     @ModifyVariable(
-            method = "render(Lmods/flammpfeil/slashblade/entity/EntityJudgementCut;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
+            method = "render*",
             at = @At(
-                    value = "STORE",
+                    value = "INVOKE",
+                    target = "Lcom/mojang/blaze3d/vertex/PoseStack;scale(FFF)V",
                     ordinal = 0
             ),
             ordinal = 0,
-            remap = false
-    )
+            remap = false,
+            argsOnly = true)
     private float modifyScale(float originalScale, T entity, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         // 获取自定义大小
         if (entity instanceof IEntitySize sizeEntity) {

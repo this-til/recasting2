@@ -2,7 +2,8 @@
   "name": "recasting:slashblade/dragon_scale_lambda",
   "properties": {
     "attack_base": 5.0,
-    "max_damage": 400
+    "max_damage": 400,
+    "slash_art": "recasting:storm_phantom_swords_lambda"
   },
   "render": {
     "carry_type": "default",

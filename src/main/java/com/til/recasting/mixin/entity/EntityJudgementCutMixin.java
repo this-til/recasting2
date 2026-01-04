@@ -1,13 +1,17 @@
 package com.til.recasting.mixin.entity;
 
+import com.til.recasting.mixin.EntityAccessor;
 import com.til.recasting.mixin_api.IEntityModifiedRatio;
 import com.til.recasting.mixin_api.IEntitySize;
 import com.til.recasting.registry.RecastingAttackTypes;
 import lombok.Getter;
 import lombok.Setter;
 import mods.flammpfeil.slashblade.entity.EntityJudgementCut;
-import mods.flammpfeil.slashblade.entity.EntitySlashEffect;
 import net.minecraft.world.entity.Entity;
+import mods.flammpfeil.slashblade.entity.EntitySlashEffect;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityAccess;
@@ -31,14 +35,12 @@ import java.util.function.Consumer;
 public abstract class EntityJudgementCutMixin implements EntityAccess, IEntityModifiedRatio, IEntitySize {
 
     @Unique
-    @Getter
-    @Setter
-    private float recasting$modifiedRatio = 0;
+    private static final EntityDataAccessor<Float> RECASTING$SIZE = SynchedEntityData.defineId(EntityJudgementCut.class, EntityDataSerializers.FLOAT);
 
     @Unique
     @Getter
     @Setter
-    private float recasting$size = 1.0f;
+    private float recasting$modifiedRatio = 0;
 
     @Shadow
     @Nullable
@@ -47,9 +49,26 @@ public abstract class EntityJudgementCutMixin implements EntityAccess, IEntityMo
     @Shadow
     private double damage;
 
+    /**
+     * 获取 EntityData，使用 EntityAccessor
+     */
+    @Unique
+    private SynchedEntityData recasting2$getEntityData() {
+        Entity self = (Entity) (Object) this;
+        return ((EntityAccessor) self).getEntityData();
+    }
+
 
     @Shadow
     public abstract double getDamage();
+
+    /**
+     * 在 defineSynchedData 中添加 size 数据同步
+     */
+    @Inject(method = "defineSynchedData", at = @At("RETURN"), remap = false)
+    private void defineSizeData(CallbackInfo ci) {
+        this.recasting2$getEntityData().define(RECASTING$SIZE, 1.0f);
+    }
 
     /**
      * 构造注入：初始化 damage 为 0
@@ -57,6 +76,22 @@ public abstract class EntityJudgementCutMixin implements EntityAccess, IEntityMo
     @Inject(method = "<init>", at = @At("RETURN"), remap = false)
     private void initDamage(CallbackInfo ci) {
         this.damage = 0;
+    }
+
+    /**
+     * 实现 IEntitySize 接口的 getRecasting$size 方法
+     */
+    @Override
+    public float getRecasting$size() {
+        return this.recasting2$getEntityData().get(RECASTING$SIZE);
+    }
+
+    /**
+     * 实现 IEntitySize 接口的 setRecasting$size 方法
+     */
+    @Override
+    public void setRecasting$size(float size) {
+        this.recasting2$getEntityData().set(RECASTING$SIZE, size);
     }
 
     /**
@@ -111,6 +146,8 @@ public abstract class EntityJudgementCutMixin implements EntityAccess, IEntityMo
     ) {
         // 调用自定义的 AttackManager.areaAttack，传入次元斩攻击类型
         if (getShooter() instanceof LivingEntity living) {
+            // 根据 size 调整攻击范围
+            float adjustedReach = (float) reach * getRecasting$size();
 
             return com.til.recasting.util.AttackManager.areaAttack(
                     living,
@@ -120,7 +157,7 @@ public abstract class EntityJudgementCutMixin implements EntityAccess, IEntityMo
                     forceHit,
                     resetHit,
                     false, // mute
-                    (float) reach,
+                    adjustedReach,
                     exclude,
                     List.of(RecastingAttackTypes.JUDGEMENT_CUT_ATTACK.get())
             );

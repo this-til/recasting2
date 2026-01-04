@@ -10,6 +10,8 @@ import mods.flammpfeil.slashblade.slasharts.SlashArts;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Objects;
+
 public class LanguageItems {
 
     public static final LanguageItem TEST = new LanguageItem("other.test")
@@ -497,6 +499,51 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "无限次元斩")
             .addTranslation(LanguageTypes.EN_US, "Infinite Judgement Cut");
 
+    // 苍穹十二连
+    public static final LanguageItem HEAVEN_TWELVE_HIT = createSlashArtsLanguageItem(SlashArtsRegistry.HEAVEN_TWELVE_HIT)
+            .addTranslation(LanguageTypes.ZH_CN, "苍穹十二连")
+            .addTranslation(LanguageTypes.EN_US, "Heaven Twelve Hit");
+
+    public static final LanguageItem HEAVEN_TWELVE_HIT_LAMBDA = createSlashArtsLanguageItem(SlashArtsRegistry.HEAVEN_TWELVE_HIT_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^苍穹十二连")
+            .addTranslation(LanguageTypes.EN_US, "Heaven Twelve Hit Lambda");
+
+    // 云轮
+    public static final LanguageItem CLOUD_WHEEL = createSlashArtsLanguageItem(SlashArtsRegistry.CLOUD_WHEEL)
+            .addTranslation(LanguageTypes.ZH_CN, "云轮")
+            .addTranslation(LanguageTypes.EN_US, "Cloud Wheel");
+
+    // 云轮风暴
+    public static final LanguageItem CLOUD_WHEEL_STORM = createSlashArtsLanguageItem(SlashArtsRegistry.CLOUD_WHEEL_STORM)
+            .addTranslation(LanguageTypes.ZH_CN, "云轮风暴")
+            .addTranslation(LanguageTypes.EN_US, "Cloud Wheel Storm");
+
+    // 星
+    public static final LanguageItem STAR_1_SA = createSlashArtsLanguageItem(SlashArtsRegistry.STAR_1)
+            .addTranslation(LanguageTypes.ZH_CN, "星流")
+            .addTranslation(LanguageTypes.EN_US, "Star I");
+
+    public static final LanguageItem STAR_2_SA = createSlashArtsLanguageItem(SlashArtsRegistry.STAR_2)
+            .addTranslation(LanguageTypes.ZH_CN, "星流II")
+            .addTranslation(LanguageTypes.EN_US, "Star II");
+
+    public static final LanguageItem STAR_3_SA = createSlashArtsLanguageItem(SlashArtsRegistry.STAR_3)
+            .addTranslation(LanguageTypes.ZH_CN, "星流III")
+            .addTranslation(LanguageTypes.EN_US, "Star III");
+
+    public static final LanguageItem STAR_4_SA = createSlashArtsLanguageItem(SlashArtsRegistry.STAR_4)
+            .addTranslation(LanguageTypes.ZH_CN, "星流IV")
+            .addTranslation(LanguageTypes.EN_US, "Star IV");
+
+    public static final LanguageItem STAR_4_LAMBDA_SA = createSlashArtsLanguageItem(SlashArtsRegistry.STAR_4_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^星流IV")
+            .addTranslation(LanguageTypes.EN_US, "Star IV Lambda");
+
+    // 多重剑气
+    public static final LanguageItem MULTIPLE_DRIVE = createSlashArtsLanguageItem(SlashArtsRegistry.MULTIPLE_DRIVE)
+            .addTranslation(LanguageTypes.ZH_CN, "多重剑气")
+            .addTranslation(LanguageTypes.EN_US, "Multiple Drive");
+
     private static LanguageItem createLanguageItem(SlashBladeDefinition definition) {
         return new LanguageItem(definition.getTranslationKey());
     }
@@ -510,11 +557,7 @@ public class LanguageItems {
      * 翻译键格式：slasharts.modid.name
      */
     private static LanguageItem createSlashArtsLanguageItem(RegistryObject<? extends SlashArts> slashArts) {
-        return new LanguageItem(() -> {
-            SlashArts arts = slashArts.get();
-            ResourceLocation key = SlashArts.getRegistryKey(arts);
-            return "slasharts." + key.getNamespace() + "." + key.getPath();
-        });
+        return new LanguageItem(() -> Objects.requireNonNull(slashArts.getId()).toLanguageKey());
     }
 
     /**

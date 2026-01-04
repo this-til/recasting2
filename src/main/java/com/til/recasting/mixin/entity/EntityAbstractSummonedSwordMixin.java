@@ -4,14 +4,15 @@ import com.til.recasting.Config;
 import com.til.recasting.mixin.EntityAccessor;
 import com.til.recasting.mixin_api.IEntityModifiedRatio;
 import com.til.recasting.mixin_api.IEntitySize;
+import net.minecraft.world.entity.Entity;
 import com.til.recasting.registry.RecastingAttackTypes;
 import lombok.Getter;
 import lombok.Setter;
 import mods.flammpfeil.slashblade.entity.EntityAbstractSummonedSword;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.entity.EntityAccess;
 import net.minecraft.world.phys.EntityHitResult;
@@ -37,14 +38,12 @@ public abstract class EntityAbstractSummonedSwordMixin implements EntityAccess, 
     private static EntityDataAccessor<Integer> HIT_ENTITY_ID;
 
     @Unique
-    @Getter
-    @Setter
-    private float recasting$modifiedRatio = 0;
+    private static final EntityDataAccessor<Float> RECASTING$SIZE = SynchedEntityData.defineId(EntityAbstractSummonedSword.class, EntityDataSerializers.FLOAT);
 
     @Unique
     @Getter
     @Setter
-    private float recasting$size = 1.0f;
+    private float recasting$modifiedRatio = 0;
 
     @Unique
     @OnlyIn(Dist.CLIENT)
@@ -86,12 +85,45 @@ public abstract class EntityAbstractSummonedSwordMixin implements EntityAccess, 
     public abstract void setDelay(int delay);
 
     /**
+     * 获取 EntityData，使用 EntityAccessor
+     */
+    @Unique
+    private SynchedEntityData recasting2$getEntityData() {
+        Entity self = (Entity) (Object) this;
+        return ((EntityAccessor) self).getEntityData();
+    }
+
+    /**
+     * 在 defineSynchedData 中添加 size 数据同步
+     */
+    @Inject(method = "defineSynchedData", at = @At("RETURN"), remap = false)
+    private void defineSizeData(CallbackInfo ci) {
+        this.recasting2$getEntityData().define(RECASTING$SIZE, 1.0f);
+    }
+
+    /**
      * 构造注入：初始化 damage 为 0
      */
     @Inject(method = "<init>", at = @At("RETURN"), remap = false)
     private void initDamage(CallbackInfo ci) {
         this.damage = 0;
         this.recasting$modifiedRatio = Config.SUMMONED_SWORD_BASE_DAMAGE.get().floatValue();
+    }
+
+    /**
+     * 实现 IEntitySize 接口的 getRecasting$size 方法
+     */
+    @Override
+    public float getRecasting$size() {
+        return this.recasting2$getEntityData().get(RECASTING$SIZE);
+    }
+
+    /**
+     * 实现 IEntitySize 接口的 setRecasting$size 方法
+     */
+    @Override
+    public void setRecasting$size(float size) {
+        this.recasting2$getEntityData().set(RECASTING$SIZE, size);
     }
 
     /**
