@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import java.util.function.Function;
 
-@org.spongepowered.asm.mixin.Mixin(mods.flammpfeil.slashblade.slasharts.SlashArts.class)
+@org.spongepowered.asm.mixin.Mixin(value = mods.flammpfeil.slashblade.slasharts.SlashArts.class, remap = false)
 public interface SlashArtsAccessor {
 
     @Accessor

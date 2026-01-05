@@ -1,7 +1,8 @@
 package com.til.recasting.mixin.entity;
 
-import com.til.recasting.mixin_api.IEntityModifiedRatio;
 import com.til.recasting.registry.RecastingAttackTypes;
+import com.til.recasting.handler.AttackHelper;
+import com.til.recasting.util.DamageStructure;
 import lombok.Getter;
 import lombok.Setter;
 import mods.flammpfeil.slashblade.entity.EntitySlashEffect;
@@ -25,12 +26,7 @@ import java.util.function.Consumer;
  * 使用自定义的 AttackManager 并传入攻击距离和攻击类型
  */
 @Mixin(value = EntitySlashEffect.class, remap = false)
-public abstract class EntitySlashEffectMixin implements EntityAccess, IEntityModifiedRatio {
-
-    @Unique
-    @Getter
-    @Setter
-    private float recasting$modifiedRatio = 0;
+public abstract class EntitySlashEffectMixin implements EntityAccess {
 
     @Shadow
     public abstract float getBaseSize();
@@ -45,13 +41,9 @@ public abstract class EntitySlashEffectMixin implements EntityAccess, IEntityMod
     @Nullable
     public abstract Entity getShooter();
 
-    /**
-     * 构造注入：初始化 damage 为 0
-     */
-    @Inject(method = "<init>", at = @At("RETURN"), remap = false)
-    private void initDamage(CallbackInfo ci) {
-        this.damage = 0;
-    }
+
+    @Shadow
+    public abstract double getDamage();
 
     /**
      * 重写 shouldBeSaved 方法，防止 EntitySlashEffect 被持久化
@@ -105,20 +97,10 @@ public abstract class EntitySlashEffectMixin implements EntityAccess, IEntityMod
         // 计算攻击范围：4 * baseSize
         float attackRange = 4.0f * this.getBaseSize();
 
+        EntitySlashEffect self = (EntitySlashEffect) (Object) this;
 
         // 调用自定义的 AttackManager.areaAttack
-        return com.til.recasting.util.AttackManager.areaAttack(
-                shooter,
-                beforeHit,
-                recasting$modifiedRatio,
-                (float) damage,
-                forceHit,
-                resetHit,
-                mute,
-                attackRange,
-                exclude,
-                List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get())
-        );
+        return AttackHelper.areaAttack(shooter, self.getPosition(0), new DamageStructure((float) getDamage(), 0), mute, attackRange, List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get()), exclude, beforeHit);
     }
 
     /**

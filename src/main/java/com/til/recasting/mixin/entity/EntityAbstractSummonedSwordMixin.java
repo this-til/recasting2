@@ -2,8 +2,8 @@ package com.til.recasting.mixin.entity;
 
 import com.til.recasting.Config;
 import com.til.recasting.mixin.EntityAccessor;
-import com.til.recasting.mixin_api.IEntityModifiedRatio;
-import com.til.recasting.mixin_api.IEntitySize;
+import com.til.recasting.handler.AttackHelper;
+import com.til.recasting.util.DamageStructure;
 import net.minecraft.world.entity.Entity;
 import com.til.recasting.registry.RecastingAttackTypes;
 import lombok.Getter;
@@ -31,7 +31,7 @@ import java.util.List;
  * 防止召唤剑实体被保存到世界文件，并使用自定义攻击系统
  */
 @Mixin(value = EntityAbstractSummonedSword.class, remap = false)
-public abstract class EntityAbstractSummonedSwordMixin implements EntityAccess, IEntityModifiedRatio, IEntitySize {
+public abstract class EntityAbstractSummonedSwordMixin implements EntityAccess {
 
     @Final
     @Shadow
@@ -39,11 +39,6 @@ public abstract class EntityAbstractSummonedSwordMixin implements EntityAccess, 
 
     @Unique
     private static final EntityDataAccessor<Float> RECASTING$SIZE = SynchedEntityData.defineId(EntityAbstractSummonedSword.class, EntityDataSerializers.FLOAT);
-
-    @Unique
-    @Getter
-    @Setter
-    private float recasting$modifiedRatio = 0;
 
     @Unique
     @OnlyIn(Dist.CLIENT)
@@ -101,30 +96,6 @@ public abstract class EntityAbstractSummonedSwordMixin implements EntityAccess, 
         this.recasting2$getEntityData().define(RECASTING$SIZE, 1.0f);
     }
 
-    /**
-     * 构造注入：初始化 damage 为 0
-     */
-    @Inject(method = "<init>", at = @At("RETURN"), remap = false)
-    private void initDamage(CallbackInfo ci) {
-        this.damage = 0;
-        this.recasting$modifiedRatio = Config.SUMMONED_SWORD_BASE_DAMAGE.get().floatValue();
-    }
-
-    /**
-     * 实现 IEntitySize 接口的 getRecasting$size 方法
-     */
-    @Override
-    public float getRecasting$size() {
-        return this.recasting2$getEntityData().get(RECASTING$SIZE);
-    }
-
-    /**
-     * 实现 IEntitySize 接口的 setRecasting$size 方法
-     */
-    @Override
-    public void setRecasting$size(float size) {
-        this.recasting2$getEntityData().set(RECASTING$SIZE, size);
-    }
 
     /**
      * 覆盖父类的 shouldBeSaved 方法
@@ -200,13 +171,7 @@ public abstract class EntityAbstractSummonedSwordMixin implements EntityAccess, 
 
         if (!self.level().isClientSide() && delay < 0) {
             if (getShooter() instanceof LivingEntity attacker) {
-                com.til.recasting.util.AttackHelper.attack(
-                        attacker,
-                        hits,
-                        recasting$modifiedRatio,
-                        (float) getDamage(),
-                        List.of(RecastingAttackTypes.SUMMOND_SWORD_ATTACK.get())
-                );
+                AttackHelper.attack(attacker, hits, new DamageStructure(0, (float) getDamage() * 0.5f), List.of(RecastingAttackTypes.SUMMOND_SWORD_ATTACK.get()));
             }
 
             this.burst();
@@ -238,13 +203,7 @@ public abstract class EntityAbstractSummonedSwordMixin implements EntityAccess, 
         if (shooter instanceof LivingEntity attacker) {
             Entity target = entityHitResult.getEntity();
             // 调用自定义的攻击系统
-            com.til.recasting.util.AttackHelper.attack(
-                    attacker,
-                    target,
-                    recasting$modifiedRatio * 0.5f, // TODO 写入配置
-                    (float) getDamage() * 0.5f, // TODO 写入配置
-                    List.of(RecastingAttackTypes.SUMMOND_SWORD_ATTACK.get())
-            );
+            AttackHelper.attack(attacker, target, new DamageStructure(0, (float) getDamage()), List.of(RecastingAttackTypes.SUMMOND_SWORD_ATTACK.get()));
 
             this.setHitEntity(target);
 

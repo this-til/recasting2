@@ -1,9 +1,9 @@
 package com.til.recasting.mixin.entity;
 
+import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.mixin.EntityAccessor;
-import com.til.recasting.mixin_api.IEntityModifiedRatio;
-import com.til.recasting.mixin_api.IEntitySize;
 import com.til.recasting.registry.RecastingAttackTypes;
+import com.til.recasting.util.DamageStructure;
 import lombok.Getter;
 import lombok.Setter;
 import mods.flammpfeil.slashblade.entity.EntityDrive;
@@ -31,15 +31,7 @@ import java.util.List;
  * 使用自定义的攻击系统
  */
 @Mixin(value = EntityDrive.class, remap = false)
-public abstract class EntityDriveMixin implements EntityAccess, IEntityModifiedRatio, IEntitySize {
-
-    @Unique
-    private static final EntityDataAccessor<Float> RECASTING$SIZE = SynchedEntityData.defineId(EntityDrive.class, EntityDataSerializers.FLOAT);
-
-    @Unique
-    @Getter
-    @Setter
-    private float recasting$modifiedRatio = 0;
+public abstract class EntityDriveMixin implements EntityAccess {
 
     @Shadow
     @Nullable
@@ -59,38 +51,6 @@ public abstract class EntityDriveMixin implements EntityAccess, IEntityModifiedR
 
     @Shadow
     private double damage;
-
-    /**
-     * 在 defineSynchedData 中添加 size 数据同步
-     */
-    @Inject(method = "defineSynchedData", at = @At("RETURN"), remap = false)
-    private void defineSizeData(CallbackInfo ci) {
-        this.recasting2$getEntityData().define(RECASTING$SIZE, 1.0f);
-    }
-
-    /**
-     * 构造注入：初始化 damage 为 0
-     */
-    @Inject(method = "<init>", at = @At("RETURN"), remap = false)
-    private void initDamage(CallbackInfo ci) {
-        this.damage = 0;
-    }
-
-    /**
-     * 实现 IEntitySize 接口的 getRecasting$size 方法
-     */
-    @Override
-    public float getRecasting$size() {
-        return this.recasting2$getEntityData().get(RECASTING$SIZE);
-    }
-
-    /**
-     * 实现 IEntitySize 接口的 setRecasting$size 方法
-     */
-    @Override
-    public void setRecasting$size(float size) {
-        this.recasting2$getEntityData().set(RECASTING$SIZE, size);
-    }
 
     /**
      * 重定向 onHitEntity 中的伤害计算
@@ -113,11 +73,10 @@ public abstract class EntityDriveMixin implements EntityAccess, IEntityModifiedR
 
 
             // 调用自定义的攻击系统
-            com.til.recasting.util.AttackHelper.attack(
+            AttackHelper.attack(
                     attacker,
                     target,
-                    recasting$modifiedRatio,
-                    (float) getDamage(),
+                    new DamageStructure(0, (float) getDamage()),
                     List.of(RecastingAttackTypes.DRIVE_ATTACK.get())
             );
 
@@ -126,23 +85,5 @@ public abstract class EntityDriveMixin implements EntityAccess, IEntityModifiedR
         }
     }
 
-    /**
-     * 重定向 getRayTrace 方法中的 inflate 调用
-     * 根据 size 调整碰撞检测范围
-     */
-    @Redirect(
-            method = "getRayTrace",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/world/phys/AABB;inflate(D)Lnet/minecraft/world/phys/AABB;",
-                    remap = true
-            ),
-            remap = false
-    )
-    private AABB redirectInflate(AABB aabb, double expansion) {
-        // 根据 size 调整碰撞检测范围
-        double adjustedExpansion = expansion * getRecasting$size();
-        return aabb.inflate(adjustedExpansion);
-    }
 }
 

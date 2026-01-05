@@ -2,7 +2,6 @@ package com.til.recasting.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.til.recasting.mixin_api.IEntitySize;
 import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;
 import mods.flammpfeil.slashblade.client.renderer.model.obj.WavefrontObject;
 import mods.flammpfeil.slashblade.client.renderer.util.BladeRenderState;
@@ -44,9 +43,6 @@ public abstract class SummonedSwordRendererMixin {
 
             // 使用自定义的 size 字段控制缩放
             float size = 1.0f;
-            if (entity instanceof IEntitySize sizeEntity) {
-                size = sizeEntity.getRecasting$size();
-            }
             float scale = 0.0075F * size;
             matrixStack.scale(scale, scale, scale);
             matrixStack.mulPose(Axis.YP.rotationDegrees(90.0F));

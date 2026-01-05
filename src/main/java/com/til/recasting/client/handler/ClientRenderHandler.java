@@ -1,7 +1,11 @@
 package com.til.recasting.client.handler;
 
 import com.til.recasting.Recasting;
+import com.til.recasting.client.renderer.entity.DriveEntityRenderer;
+import com.til.recasting.client.renderer.entity.JudgementCutEntityRenderer;
 import com.til.recasting.client.renderer.entity.LightningEntityRenderer;
+import com.til.recasting.client.renderer.entity.SlashEffectEntityRenderer;
+import com.til.recasting.client.renderer.entity.SummondSwordEntityRenderer;
 import com.til.recasting.registry.RecastingEntities;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -19,8 +23,20 @@ public class ClientRenderHandler {
      */
     @SubscribeEvent
     public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        // 注册次元斩实体渲染器
+        event.registerEntityRenderer(RecastingEntities.JUDGEMENT_CUT.get(), JudgementCutEntityRenderer::new);
+        
         // 注册闪电实体渲染器
         event.registerEntityRenderer(RecastingEntities.LIGHTNING.get(), LightningEntityRenderer::new);
+        
+        // 注册召唤剑实体渲染器
+        event.registerEntityRenderer(RecastingEntities.SUMMOND_SWORD.get(), SummondSwordEntityRenderer::new);
+        
+        // 注册斩击特效实体渲染器
+        event.registerEntityRenderer(RecastingEntities.SLASH_EFFECT.get(), SlashEffectEntityRenderer::new);
+        
+        // 注册 Drive 实体渲染器
+        event.registerEntityRenderer(RecastingEntities.DRIVE.get(), DriveEntityRenderer::new);
     }
 }
 

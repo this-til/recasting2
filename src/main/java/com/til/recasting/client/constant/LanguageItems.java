@@ -557,7 +557,7 @@ public class LanguageItems {
      * 翻译键格式：slasharts.modid.name
      */
     private static LanguageItem createSlashArtsLanguageItem(RegistryObject<? extends SlashArts> slashArts) {
-        return new LanguageItem(() -> Objects.requireNonNull(slashArts.getId()).toLanguageKey());
+        return new LanguageItem(() -> Objects.requireNonNull(slashArts.get()).getDescriptionId());
     }
 
     /**

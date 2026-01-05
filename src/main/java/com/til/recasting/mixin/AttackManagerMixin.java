@@ -1,8 +1,12 @@
 package com.til.recasting.mixin;
 
 import com.til.recasting.capability.PropertiesDefinitionExtension;
+import com.til.recasting.entity.SlashEffectEntity;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingAttackTypes;
+import com.til.recasting.handler.AttackHelper;
+import com.til.recasting.util.DamageStructure;
+import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.entity.EntitySlashEffect;
 import mods.flammpfeil.slashblade.util.KnockBacks;
 import net.minecraft.world.entity.Entity;
@@ -36,10 +40,13 @@ public abstract class AttackManagerMixin {
                 .map(PropertiesDefinitionExtension::attackDistance)
                 .orElse(1.0f);
 
-        return com.til.recasting.util.AttackManager.doSlash(
+        AttackHelper.doSlash(
                 playerIn, roll, colorCode, centerOffset,
-                mute, critical, (float) comboRatio, 0, attackDistance, knockback
+                mute, critical, new DamageStructure((float) comboRatio, 0), attackDistance, knockback
         );
+
+        // so,, 放弃使用 EntitySlashEffect但不能直接返回null，希望他是安全的
+        return new EntitySlashEffect(SlashBlade.RegistryEvents.SlashEffect, playerIn.level());
     }
 
     /**
@@ -56,10 +63,8 @@ public abstract class AttackManagerMixin {
                 .map(PropertiesDefinitionExtension::attackDistance)
                 .orElse(1.0f);
 
-        return com.til.recasting.util.AttackManager.areaAttack(
-                playerIn, beforeHit, comboRatio, 0,
-                forceHit, resetHit, mute, attackDistance, exclude,
-                List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get())
+        return AttackHelper.areaAttack(
+                playerIn, playerIn.getPosition(0), new DamageStructure(comboRatio, 0), mute, attackDistance, List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get()), exclude, beforeHit
         );
     }
 
@@ -70,7 +75,7 @@ public abstract class AttackManagerMixin {
      */
     @Overwrite(remap = false)
     public static void doMeleeAttack(LivingEntity attacker, Entity target, boolean forceHit, boolean resetHit, float comboRatio) {
-        com.til.recasting.util.AttackManager.doMeleeAttack(attacker, target, forceHit, resetHit, comboRatio, 0, List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get()));
+        AttackHelper.doMeleeAttack(attacker, target, new DamageStructure(comboRatio, 0), List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get()));
     }
 }
 

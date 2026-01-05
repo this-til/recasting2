@@ -5,34 +5,32 @@ import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.capability.TimeRunCapability;
+import com.til.recasting.entity.DriveEntity;
+import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.entity.LightningEntity;
+import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.mixin.SlashArtsAccessor;
-import com.til.recasting.mixin_api.IEntityModifiedRatio;
-import com.til.recasting.mixin_api.IEntitySize;
-import com.til.recasting.mixin_api.ISlashBladeStateExtension;
-import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.ability.StunManager;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
-import mods.flammpfeil.slashblade.entity.EntityAbstractSummonedSword;
-import mods.flammpfeil.slashblade.entity.EntityJudgementCut;
 import mods.flammpfeil.slashblade.event.client.UserPoseOverrider;
 import mods.flammpfeil.slashblade.event.handler.FallHandler;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
-import mods.flammpfeil.slashblade.registry.ComboStateRegistry;
 import mods.flammpfeil.slashblade.registry.combo.ComboState;
 import mods.flammpfeil.slashblade.slasharts.SlashArts;
 import mods.flammpfeil.slashblade.util.AttackManager;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
@@ -40,9 +38,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * Slash Arts (SA) 注册表
@@ -183,23 +178,19 @@ public class SlashArtsRegistry {
          * @return 攻击目标位置
          */
         protected static Vec3 getAttackTargetPosition(LivingEntity livingEntity, ISlashBladeState slashBladeState) {
-            return getAttackTargetPosition(livingEntity, slashBladeState, 40.0);
+            return getAttackTargetPosition(livingEntity, slashBladeState, 64.0);
         }
 
         /**
          * 在圆形范围内生成随机向量
-         *
-         * @param random 随机数生成器
-         * @param radius 圆形半径
-         * @return 随机向量
          */
-        protected static Vec3 getRandomVectorInCircle(net.minecraft.util.RandomSource random, float radius) {
-            // 使用均匀分布生成圆内随机点
-            double angle = random.nextDouble() * 2 * Math.PI;
-            double r = Math.sqrt(random.nextDouble()) * radius;
-            double x = r * Math.cos(angle);
-            double z = r * Math.sin(angle);
-            return new Vec3(x, 0, z);
+        protected static Vec3 getRandomVectorInCircle(net.minecraft.util.RandomSource random, float distance) {
+            double theta = random.nextDouble() * Math.PI;
+            double phi = random.nextDouble() * (double) 2.0F * Math.PI;
+            double x = distance * Math.sin(theta) * Math.cos(phi);
+            double y = distance * Math.sin(theta) * Math.sin(phi);
+            double z = distance * Math.cos(theta);
+            return new Vec3(x, y, z);
         }
 
         public ComboState createComboState() {
@@ -318,23 +309,22 @@ public class SlashArtsRegistry {
 
             // 创建多把召唤剑
             for(int i = 0; i < number; i++) {
-                EntityAbstractSummonedSword summonedSword =
-                        new EntityAbstractSummonedSword(
-                                SlashBlade.RegistryEvents.SummonedSword,
-                                worldIn
+                SummondSwordEntity summonedSword =
+                        new SummondSwordEntity(
+                                RecastingEntities.SUMMOND_SWORD.get(),
+                                worldIn,
+                                livingEntity
                         );
 
                 // 设置位置
                 summonedSword.setPos(pos.x, pos.y, pos.z);
 
                 // 设置朝向（朝向攻击目标）
-                Vec3 dir = attackPos.subtract(pos).normalize();
-                summonedSword.shoot(dir.x, dir.y, dir.z, 3.0f, 0.0f);
+                summonedSword.lookAt(attackPos, false);
 
                 // 设置属性
-                summonedSword.setOwner(livingEntity);
                 summonedSword.setColor(slashBladeState.getColorCode());
-                summonedSword.setDelay(i);  // 延迟发射
+                summonedSword.setStartDelay(i);  // 延迟发射
                 summonedSword.setRoll(livingEntity.getRandom().nextFloat() * 360.0f);
 
                 // 添加到世界
@@ -343,7 +333,7 @@ public class SlashArtsRegistry {
 
             // 播放音效
             livingEntity.playSound(
-                    net.minecraft.sounds.SoundEvents.CHORUS_FRUIT_TELEPORT,
+                    SoundEvents.CHORUS_FRUIT_TELEPORT,
                     0.2F,
                     1.45F
             );
@@ -378,10 +368,11 @@ public class SlashArtsRegistry {
 
             // 创建大量召唤剑
             for(int i = 0; i < attackNumber; i++) {
-                EntityAbstractSummonedSword summonedSword =
-                        new EntityAbstractSummonedSword(
-                                SlashBlade.RegistryEvents.SummonedSword,
-                                worldIn
+                SummondSwordEntity summonedSword =
+                        new SummondSwordEntity(
+                                RecastingEntities.SUMMOND_SWORD.get(),
+                                worldIn,
+                                livingEntity
                         );
 
                 // 在圆形范围内随机生成位置
@@ -392,25 +383,17 @@ public class SlashArtsRegistry {
                 summonedSword.setPos(pos.x, pos.y, pos.z);
 
                 // 设置大小
-                //noinspection ConstantValue
-                if (summonedSword instanceof IEntitySize) {
-                    ((com.til.recasting.mixin_api.IEntitySize) summonedSword).setRecasting$size(0.6f);
-                }
+                summonedSword.setSize(0.6f);
 
                 // 设置属性
-                summonedSword.setOwner(livingEntity);
                 summonedSword.setColor(slashBladeState.getColorCode());
                 summonedSword.setDamage(attack);
-                summonedSword.setDelay(random.nextInt(60));  // 随机延迟发射
+                summonedSword.setStartDelay(random.nextInt(60));  // 随机延迟发射
                 summonedSword.setRoll(random.nextFloat() * 360.0f);
 
                 // 如果需要集中攻击，则朝向目标位置
                 if (concentrate) {
-                    Vec3 dir = attackPos.subtract(pos).normalize();
-                    summonedSword.shoot(dir.x, dir.y, dir.z, 1.0f, 0.0f);
-                } else {
-                    // 否则直接向下射击
-                    summonedSword.setXRot(90.0f);  // 朝下
+                    summonedSword.lookAt(attackPos, false);
                 }
 
                 // 添加到世界
@@ -419,7 +402,7 @@ public class SlashArtsRegistry {
 
             // 播放音效
             livingEntity.playSound(
-                    net.minecraft.sounds.SoundEvents.CHORUS_FRUIT_TELEPORT,
+                    SoundEvents.CHORUS_FRUIT_TELEPORT,
                     0.2F,
                     1.45F
             );
@@ -497,7 +480,7 @@ public class SlashArtsRegistry {
             Vec3 pos = getAttackTargetPosition(livingEntity, slashBladeState);
 
             // 创建自定义的黑洞次元斩
-            EntityJudgementCut jc = new EntityJudgementCut(SlashBlade.RegistryEvents.JudgementCut, worldIn) {
+            JudgementCutEntity jc = new JudgementCutEntity(RecastingEntities.JUDGEMENT_CUT.get(), worldIn, livingEntity) {
 
                 @Override
                 public void tick() {
@@ -507,29 +490,14 @@ public class SlashArtsRegistry {
                     if (!this.level().isClientSide()) {
                         Vec3 centerPos = this.position();
 
-                        // 创建 AABB 范围
-                        AABB aabb = new AABB(
-                                centerPos.x - range, centerPos.y - range, centerPos.z - range,
-                                centerPos.x + range, centerPos.y + range, centerPos.z + range
-                        );
 
                         // 获取范围内的所有实体
-                        List<Entity> entities =
-                                this.level().getEntities(
-                                        this,
-                                        aabb,
-                                        entity -> {
-                                            // 过滤条件：必须是生物实体，且不是施法者自己
-                                            if (!(entity instanceof LivingEntity)) {
-                                                return false;
-                                            }
-                                            if (entity == this.getOwner()) {
-                                                return false;
-                                            }
-                                            // 可以添加更多过滤条件
-                                            return entity.isAlive() && !entity.isSpectator();
-                                        }
-                                );
+                        List<Entity> entities = EntityHelper.getTargettableEntitiesWithinAABB(
+                                level(),
+                                getShooter(),
+                                pos,
+                                range
+                        );
 
                         // 对每个实体施加吸引力
                         for(Entity entity : entities) {
@@ -556,117 +524,33 @@ public class SlashArtsRegistry {
                     }
                 }
             };
+
             jc.setPos(pos.x, pos.y, pos.z);
-            jc.setOwner(livingEntity);
-
-            // 设置颜色
-            itemStack.getCapability(mods.flammpfeil.slashblade.item.ItemSlashBlade.BLADESTATE)
-                    .ifPresent(state -> jc.setColor(state.getColorCode()));
-
-            // 设置等级
-            livingEntity.getCapability(mods.flammpfeil.slashblade.capability.concentrationrank.ConcentrationRankCapabilityProvider.RANK_POINT)
-                    .ifPresent(rank -> jc.setRank(rank.getRankLevel(worldIn.getGameTime())));
-
-            // 设置伤害倍率
-            //noinspection ConstantValue
-            if (jc instanceof IEntityModifiedRatio entityModifiedRatio) {
-                entityModifiedRatio.setRecasting$modifiedRatio(attack);
-            }
-            jc.setDamage(0);
-
-            // 设置生命时间
-            jc.setLifetime(life);
 
             jc.setColor(slashBladeState.getColorCode());
 
-            // 设置大小
-            //noinspection ConstantValue
-            if (jc instanceof IEntitySize) {
-                ((IEntitySize) jc).setRecasting$size(size);
-            }
+
+            // 设置伤害倍率
+            jc.setModifiedRatio(attack);
+            jc.setDamage(0);
+
+            // 设置生命时间
+            jc.setMaxLifeTime(life);
+
+            jc.setColor(slashBladeState.getColorCode());
+
+            jc.setSize(size);
 
             // 添加到世界
             worldIn.addFreshEntity(jc);
 
             // 播放音效
             worldIn.playSound(null, jc.getX(), jc.getY(), jc.getZ(),
-                    net.minecraft.sounds.SoundEvents.ENDERMAN_TELEPORT,
+                    SoundEvents.ENDERMAN_TELEPORT,
                     net.minecraft.sounds.SoundSource.PLAYERS, 0.5F,
                     0.8F / (livingEntity.getRandom().nextFloat() * 0.4F + 0.8F));
         }
 
-        /**
-         * 自定义的黑洞次元斩实体
-         * 重写 tick 方法以实现吸引效果
-         */
-        public static class VoidHoleJudgementCut extends EntityJudgementCut {
-
-            private final float attractRange;
-            private final float attractPower;
-
-            public VoidHoleJudgementCut(net.minecraft.world.entity.EntityType<? extends EntityJudgementCut> type, Level level, float attractRange, float attractPower) {
-                super(type, level);
-                this.attractRange = attractRange;
-                this.attractPower = attractPower;
-            }
-
-            @Override
-            public void tick() {
-                super.tick();
-
-                // 每 tick 执行吸引效果
-                if (!this.level().isClientSide()) {
-                    Vec3 centerPos = this.position();
-
-                    // 创建 AABB 范围
-                    AABB aabb = new AABB(
-                            centerPos.x - attractRange, centerPos.y - attractRange, centerPos.z - attractRange,
-                            centerPos.x + attractRange, centerPos.y + attractRange, centerPos.z + attractRange
-                    );
-
-                    // 获取范围内的所有实体
-                    List<Entity> entities =
-                            this.level().getEntities(
-                                    this,
-                                    aabb,
-                                    entity -> {
-                                        // 过滤条件：必须是生物实体，且不是施法者自己
-                                        if (!(entity instanceof LivingEntity)) {
-                                            return false;
-                                        }
-                                        if (entity == this.getOwner()) {
-                                            return false;
-                                        }
-                                        // 可以添加更多过滤条件
-                                        return entity.isAlive() && !entity.isSpectator();
-                                    }
-                            );
-
-                    // 对每个实体施加吸引力
-                    for(Entity entity : entities) {
-                        Vec3 direction = centerPos.subtract(entity.position());
-                        double length = direction.length();
-
-                        if (length > attractRange || length < 0.1) {
-                            continue;
-                        }
-
-                        // 计算力度：距离越近力度越大（平方衰减）
-                        double lengthRatio = length / attractRange;
-                        double strength = (1 - lengthRatio) * (1 - lengthRatio);
-                        double _power = attractPower * attractRange;
-
-                        // 应用吸引力
-                        Vec3 currentMotion = entity.getDeltaMovement();
-                        entity.setDeltaMovement(currentMotion.add(
-                                (direction.x / length) * strength * _power,
-                                (direction.y / length) * strength * _power,
-                                (direction.z / length) * strength * _power
-                        ));
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -707,32 +591,25 @@ public class SlashArtsRegistry {
                                 }
 
                                 // 创建次元斩
-                                EntityJudgementCut jc =
-                                        new EntityJudgementCut(
-                                                SlashBlade.RegistryEvents.JudgementCut,
-                                                worldIn
+                                JudgementCutEntity jc =
+                                        new JudgementCutEntity(
+                                                RecastingEntities.JUDGEMENT_CUT.get(),
+                                                worldIn,
+                                                livingEntity
                                         );
 
                                 jc.setPos(pos.x, pos.y, pos.z);
-                                jc.setOwner(livingEntity);
 
                                 // 设置颜色
                                 itemStack.getCapability(mods.flammpfeil.slashblade.item.ItemSlashBlade.BLADESTATE)
                                         .ifPresent(state -> jc.setColor(state.getColorCode()));
 
-                                // 设置等级
-                                livingEntity.getCapability(mods.flammpfeil.slashblade.capability.concentrationrank.ConcentrationRankCapabilityProvider.RANK_POINT)
-                                        .ifPresent(rank -> jc.setRank(rank.getRankLevel(worldIn.getGameTime())));
-
                                 // 设置伤害倍率
-                                //noinspection ConstantValue
-                                if (jc instanceof IEntityModifiedRatio entityModifiedRatio) {
-                                    entityModifiedRatio.setRecasting$modifiedRatio(hit);
-                                }
+                                jc.setModifiedRatio(hit);
                                 jc.setDamage(0);
 
                                 // 设置生命时间
-                                jc.setLifetime(10);
+                                jc.setColor(slashBladeState.getColorCode());
 
                                 // 添加到世界
                                 worldIn.addFreshEntity(jc);
@@ -742,7 +619,7 @@ public class SlashArtsRegistry {
 
                                 // 播放音效
                                 worldIn.playSound(null, jc.getX(), jc.getY(), jc.getZ(),
-                                        net.minecraft.sounds.SoundEvents.ENDERMAN_TELEPORT,
+                                        SoundEvents.ENDERMAN_TELEPORT,
                                         net.minecraft.sounds.SoundSource.PLAYERS, 0.5F,
                                         0.8F / (livingEntity.getRandom().nextFloat() * 0.4F + 0.8F));
                             },
@@ -774,29 +651,13 @@ public class SlashArtsRegistry {
             // 获取攻击目标位置
             Vec3 attackPos = getAttackTargetPosition(livingEntity, slashBladeState);
 
-            // 创建 AABB 范围
-            AABB aabb = new AABB(
-                    attackPos.x - attackRange, attackPos.y - attackRange, attackPos.z - attackRange,
-                    attackPos.x + attackRange, attackPos.y + attackRange, attackPos.z + attackRange
-            );
-
             // 获取范围内的所有敌对实体
-            List<Entity> attackEntities =
-                    worldIn.getEntities(
-                            livingEntity,
-                            aabb,
-                            entity -> {
-                                if (!(entity instanceof LivingEntity)) {
-                                    return false;
-                                }
-                                if (entity == livingEntity) {
-                                    return false;
-                                }
-                                // 可以添加更多过滤条件（例如：敌对判定）
-                                return entity.isAlive() && !entity.isSpectator();
-                            }
-                    );
-
+            List<Entity> attackEntities = EntityHelper.getTargettableEntitiesWithinAABB(
+                    livingEntity.level(),
+                    livingEntity,
+                    livingEntity.position(),
+                    attackRange
+            );
             // 获取实体的定时器
             LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(TimeRunCapability.TIME_RUN);
 
@@ -840,39 +701,31 @@ public class SlashArtsRegistry {
                                 }
 
                                 // 创建次元斩
-                                EntityJudgementCut jc =
-                                        new EntityJudgementCut(
-                                                SlashBlade.RegistryEvents.JudgementCut,
-                                                worldIn
+                                JudgementCutEntity jc =
+                                        new JudgementCutEntity(
+                                                RecastingEntities.JUDGEMENT_CUT.get(),
+                                                worldIn,
+                                                livingEntity
                                         );
 
                                 jc.setPos(targetPos.x, targetPos.y, targetPos.z);
-                                jc.setOwner(livingEntity);
 
                                 // 设置颜色
-                                itemStack.getCapability(mods.flammpfeil.slashblade.item.ItemSlashBlade.BLADESTATE)
-                                        .ifPresent(state -> jc.setColor(state.getColorCode()));
-
-                                // 设置等级
-                                livingEntity.getCapability(mods.flammpfeil.slashblade.capability.concentrationrank.ConcentrationRankCapabilityProvider.RANK_POINT)
-                                        .ifPresent(rank -> jc.setRank(rank.getRankLevel(worldIn.getGameTime())));
+                                jc.setColor(slashBladeState.getColorCode());
 
                                 // 设置伤害倍率
-                                //noinspection ConstantValue
-                                if (jc instanceof IEntityModifiedRatio entityModifiedRatio) {
-                                    entityModifiedRatio.setRecasting$modifiedRatio(hit);
-                                }
+                                jc.setModifiedRatio(hit);
                                 jc.setDamage(0);
 
                                 // 设置生命时间
-                                jc.setLifetime(10);
+                                jc.setMaxLifeTime(10);
 
                                 // 添加到世界
                                 worldIn.addFreshEntity(jc);
 
                                 // 播放音效
                                 worldIn.playSound(null, jc.getX(), jc.getY(), jc.getZ(),
-                                        net.minecraft.sounds.SoundEvents.ENDERMAN_TELEPORT,
+                                        SoundEvents.ENDERMAN_TELEPORT,
                                         net.minecraft.sounds.SoundSource.PLAYERS, 0.5F,
                                         0.8F / (livingEntity.getRandom().nextFloat() * 0.4F + 0.8F));
                             },
@@ -910,32 +763,18 @@ public class SlashArtsRegistry {
             // 获取攻击目标位置
             Vec3 attackPos = getAttackTargetPosition(livingEntity, slashBladeState);
 
-            // 创建 AABB 范围，查找敌人
-            AABB aabb = new AABB(
-                    attackPos.x - range, attackPos.y - range, attackPos.z - range,
-                    attackPos.x + range, attackPos.y + range, attackPos.z + range
+            List<Entity> entityList = EntityHelper.getTargettableEntitiesWithinAABB(
+                    livingEntity.level(),
+                    livingEntity,
+                    attackPos,
+                    range
             );
-
-            List<Entity> entityList =
-                    worldIn.getEntities(
-                            livingEntity,
-                            aabb,
-                            entity -> {
-                                if (!(entity instanceof LivingEntity)) {
-                                    return false;
-                                }
-                                if (entity == livingEntity) {
-                                    return false;
-                                }
-                                return entity.isAlive() && !entity.isSpectator();
-                            }
-                    );
 
             // 第一阶段：发射初始召唤剑
             for(int i = 0; i < attackNumber; i++) {
                 // 使用自定义召唤剑，击中后产生次元斩
                 StarSummonedSword summonedSword = new StarSummonedSword(
-                        SlashBlade.RegistryEvents.SummonedSword,
+                        RecastingEntities.SUMMOND_SWORD.get(),
                         worldIn,
                         livingEntity,
                         judgementCutAttack
@@ -946,10 +785,9 @@ public class SlashArtsRegistry {
                 summonedSword.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
 
                 // 设置属性
-                summonedSword.setOwner(livingEntity);
                 summonedSword.setColor(slashBladeState.getColorCode());
                 summonedSword.setDamage(attack);
-                summonedSword.setDelay(10 + livingEntity.getRandom().nextInt(10));
+                summonedSword.setStartDelay(10 + livingEntity.getRandom().nextInt(10));
 
                 // 设置朝向：如果有敌人，朝向随机敌人，否则朝向攻击位置
                 Vec3 targetPos;
@@ -960,8 +798,7 @@ public class SlashArtsRegistry {
                     targetPos = attackPos;
                 }
 
-                Vec3 direction = targetPos.subtract(spawnPos).normalize();
-                summonedSword.shoot(direction.x, direction.y, direction.z, 2.0f, 0.0f);
+                summonedSword.lookAt(targetPos, false);
 
                 // 添加到世界
                 worldIn.addFreshEntity(summonedSword);
@@ -969,7 +806,7 @@ public class SlashArtsRegistry {
 
             // 播放音效
             livingEntity.playSound(
-                    net.minecraft.sounds.SoundEvents.CHORUS_FRUIT_TELEPORT,
+                    SoundEvents.CHORUS_FRUIT_TELEPORT,
                     0.2F,
                     1.45F
             );
@@ -982,9 +819,10 @@ public class SlashArtsRegistry {
                     Vec3 zonePos = livingEntity.position().add(randomOffset);
 
                     // 创建持续存在的次元斩
-                    EntityJudgementCut starJC = new EntityJudgementCut(
-                            SlashBlade.RegistryEvents.JudgementCut,
-                            worldIn
+                    JudgementCutEntity starJC = new JudgementCutEntity(
+                            RecastingEntities.JUDGEMENT_CUT.get(),
+                            worldIn,
+                            livingEntity
                     ) {
                         @Override
                         public void tick() {
@@ -998,37 +836,34 @@ public class SlashArtsRegistry {
 
                                 // 使用自定义召唤剑，击中后产生次元斩
                                 StarSummonedSword summonedSword = new StarSummonedSword(
-                                        SlashBlade.RegistryEvents.SummonedSword,
+                                        RecastingEntities.SUMMOND_SWORD.get(),
                                         this.level(),
                                         livingEntity,
                                         judgementCutAttack
                                 );
 
                                 summonedSword.setPos(pos.x, pos.y, pos.z);
-                                summonedSword.setOwner(livingEntity);
                                 summonedSword.setColor(slashBladeState.getColorCode());
                                 summonedSword.setDamage(summondSwordAttack);
-                                summonedSword.setDelay(10);
+                                summonedSword.setStartDelay(10);
 
                                 // 朝向实时获取的目标位置
-                                Vec3 direction = currentTargetPos.subtract(pos).normalize();
-                                summonedSword.shoot(direction.x, direction.y, direction.z, 2.0f, 0.0f);
+                                summonedSword.lookAt(currentTargetPos, false);
 
                                 this.level().addFreshEntity(summonedSword);
 
                                 // 播放音效
                                 this.level().playSound(null, pos.x, pos.y, pos.z,
-                                        net.minecraft.sounds.SoundEvents.CHORUS_FRUIT_TELEPORT,
+                                        SoundEvents.CHORUS_FRUIT_TELEPORT,
                                         net.minecraft.sounds.SoundSource.PLAYERS, 0.2F, 1.45F);
                             }
                         }
                     };
 
                     starJC.setPos(zonePos.x, zonePos.y, zonePos.z);
-                    starJC.setOwner(livingEntity);
                     starJC.setColor(slashBladeState.getColorCode());
                     starJC.setDamage(0);  // 这个次元斩本身不造成伤害
-                    starJC.setLifetime(zoneTime);
+                    starJC.setMaxLifeTime(zoneTime);
 
                     worldIn.addFreshEntity(starJC);
                 }
@@ -1038,66 +873,46 @@ public class SlashArtsRegistry {
         /**
          * 自定义召唤剑 - 击中后产生次元斩
          */
-        public static class StarSummonedSword extends EntityAbstractSummonedSword {
+        public static class StarSummonedSword extends SummondSwordEntity {
 
-            private final LivingEntity caster;
-            private final float judgementCutAttack;
+            public StarSummonedSword(EntityType<? extends SummondSwordEntity> entityTypeIn, Level worldIn, LivingEntity shooting, float judgementCutAttack) {
+                super(entityTypeIn, worldIn, shooting);
 
-            public StarSummonedSword(
-                    net.minecraft.world.entity.EntityType<? extends EntityAbstractSummonedSword> type,
-                    Level level,
-                    LivingEntity caster,
-                    float judgementCutAttack
-            ) {
-                super(type, level);
-                this.caster = caster;
-                this.judgementCutAttack = judgementCutAttack;
-            }
-
-            @Override
-            protected void onHitEntity(net.minecraft.world.phys.EntityHitResult entityHitResult) {
-                // 先调用父类的击中逻辑（造成伤害等）
-                super.onHitEntity(entityHitResult);
-
-                // 在击中位置生成次元斩
-                if (!this.level().isClientSide()) {
-                    Entity hitEntity = entityHitResult.getEntity();
-
-                    // 确定次元斩生成位置（被击中实体的位置）
-                    Vec3 jcPos = hitEntity.position().add(0, hitEntity.getEyeHeight() * 0.5, 0);
+                attackActionCallbackPoint.register(e -> {
+                    Vec3 jcPos = e.position().add(0, e.getEyeHeight() * 0.5, 0);
 
                     // 创建次元斩
-                    EntityJudgementCut jc =
-                            new EntityJudgementCut(
-                                    SlashBlade.RegistryEvents.JudgementCut,
-                                    this.level()
+                    JudgementCutEntity jc =
+                            new JudgementCutEntity(
+                                    RecastingEntities.JUDGEMENT_CUT.get(),
+                                    this.level(),
+                                    getShooter()
                             );
 
                     jc.setPos(jcPos.x, jcPos.y, jcPos.z);
-                    jc.setOwner(caster);
                     jc.setColor(this.getColor());
 
                     // 设置伤害倍率
-                    //noinspection ConstantValue
-                    if (jc instanceof IEntityModifiedRatio entityModifiedRatio) {
-                        entityModifiedRatio.setRecasting$modifiedRatio(judgementCutAttack);
-                    }
+                    jc.setModifiedRatio(judgementCutAttack);
                     jc.setDamage(0);
 
                     // 设置生命时间
-                    jc.setLifetime(10);
+                    jc.setMaxLifeTime(10);
 
                     // 添加到世界
                     this.level().addFreshEntity(jc);
 
                     // 播放音效
                     this.level().playSound(null, jcPos.x, jcPos.y, jcPos.z,
-                            net.minecraft.sounds.SoundEvents.ENDERMAN_TELEPORT,
+                            SoundEvents.ENDERMAN_TELEPORT,
                             net.minecraft.sounds.SoundSource.PLAYERS, 0.5F,
                             0.8F / (this.level().getRandom().nextFloat() * 0.4F + 0.8F));
-                }
+                });
+
             }
+
         }
+
 
     }
 
@@ -1118,16 +933,17 @@ public class SlashArtsRegistry {
         public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
 
             Level worldIn = livingEntity.level();
-
+            Vec3 attackPos = getAttackTargetPosition(livingEntity, slashBladeState);
             // 获取玩家视线方向
             Vec3 lookAngle = livingEntity.getLookAngle();
 
             // 生成多个驱动剑气
             for(int i = 0; i < attackNumber; i++) {
-                mods.flammpfeil.slashblade.entity.EntityDrive driveEntity =
-                        new mods.flammpfeil.slashblade.entity.EntityDrive(
-                                SlashBlade.RegistryEvents.Drive,
-                                worldIn
+                DriveEntity driveEntity =
+                        new DriveEntity(
+                                RecastingEntities.DRIVE.get(),
+                                worldIn,
+                                livingEntity
                         );
 
                 // 设置位置为玩家眼睛位置稍微向前
@@ -1137,27 +953,26 @@ public class SlashArtsRegistry {
                 driveEntity.setPos(pos.x, pos.y, pos.z);
 
                 // 设置属性
-                driveEntity.setOwner(livingEntity);
                 driveEntity.setColor(slashBladeState.getColorCode());
 
                 // 设置尺寸：随机尺寸 * 攻击距离
                 float randomSize = livingEntity.getRandom().nextFloat() * range;
-                driveEntity.setBaseSize(randomSize * propertiesDefinitionExtension.attackDistance());
+                driveEntity.setSize(randomSize * propertiesDefinitionExtension.attackDistance());
 
                 // 设置伤害
                 driveEntity.setDamage(attack);
 
                 // 设置生命时间
-                driveEntity.setLifetime(life);
+                driveEntity.setMaxLifeTime(life);
 
                 // 设置随机旋转角度（Roll）
-                driveEntity.setRotationRoll(livingEntity.getRandom().nextInt(360));
+                driveEntity.setRoll(livingEntity.getRandom().nextInt(360));
 
                 // 设置速度
-                driveEntity.setSpeed(0.45f);
+                driveEntity.setSeep(0.45f);
 
                 // 向前发射（使用玩家的视线方向）
-                driveEntity.shoot(lookAngle.x, lookAngle.y, lookAngle.z, driveEntity.getSpeed(), 0.0f);
+                driveEntity.lookAt(attackPos, false);
 
                 // 添加到世界
                 worldIn.addFreshEntity(driveEntity);
@@ -1165,7 +980,7 @@ public class SlashArtsRegistry {
 
             // 播放音效
             livingEntity.playSound(
-                    net.minecraft.sounds.SoundEvents.CHORUS_FRUIT_TELEPORT,
+                    SoundEvents.CHORUS_FRUIT_TELEPORT,
                     0.2F,
                     1.45F
             );
@@ -1195,7 +1010,7 @@ public class SlashArtsRegistry {
             // 创建多把召唤剑
             for(int i = 0; i < lightningNumber; i++) {
                 LightningSummonedSword summonedSword = new LightningSummonedSword(
-                        SlashBlade.RegistryEvents.SummonedSword,
+                        RecastingEntities.SUMMOND_SWORD.get(),
                         worldIn,
                         livingEntity,
                         slashBladeState.getColorCode(),
@@ -1207,19 +1022,14 @@ public class SlashArtsRegistry {
                 summonedSword.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
 
                 // 设置属性
-                summonedSword.setOwner(livingEntity);
                 summonedSword.setColor(slashBladeState.getColorCode());
                 summonedSword.setDamage(attack);
 
                 // 设置大小
-                //noinspection ConstantValue
-                if (summonedSword instanceof IEntitySize) {
-                    ((IEntitySize) summonedSword).setRecasting$size(1.25f);
-                }
+                summonedSword.setSize(1.25f);
 
                 // 朝向攻击目标位置
-                Vec3 direction = attackPos.subtract(spawnPos).normalize();
-                summonedSword.shoot(direction.x, direction.y, direction.z, 2.0f, 0.0f);
+                summonedSword.lookAt(attackPos, false);
 
                 // 添加到世界
                 worldIn.addFreshEntity(summonedSword);
@@ -1227,7 +1037,7 @@ public class SlashArtsRegistry {
 
             // 播放音效
             livingEntity.playSound(
-                    net.minecraft.sounds.SoundEvents.CHORUS_FRUIT_TELEPORT,
+                    SoundEvents.CHORUS_FRUIT_TELEPORT,
                     0.2F,
                     1.45F
             );
@@ -1259,7 +1069,7 @@ public class SlashArtsRegistry {
             // 第一阶段：在目标位置上方5格，圆形范围内生成召唤剑
             for(int i = 0; i < attackNumber; i++) {
                 LightningSummonedSword summonedSword = new LightningSummonedSword(
-                        SlashBlade.RegistryEvents.SummonedSword,
+                        RecastingEntities.SUMMOND_SWORD.get(),
                         worldIn,
                         livingEntity,
                         slashBladeState.getColorCode(),
@@ -1272,15 +1082,12 @@ public class SlashArtsRegistry {
                 summonedSword.setPos(pos.x, pos.y, pos.z);
 
                 // 设置属性
-                summonedSword.setOwner(livingEntity);
                 summonedSword.setColor(slashBladeState.getColorCode());
                 summonedSword.setDamage(attack);
-                summonedSword.setDelay(5);
+                summonedSword.setStartDelay(5);
                 summonedSword.setRoll(random.nextInt(360));
 
-                // 朝向攻击目标位置
-                Vec3 direction = attackPos.subtract(pos).normalize();
-                summonedSword.shoot(direction.x, direction.y, direction.z, 2.0f, 0.0f);
+                summonedSword.lookAt(attackPos, false);
 
                 // 添加到世界
                 worldIn.addFreshEntity(summonedSword);
@@ -1289,7 +1096,7 @@ public class SlashArtsRegistry {
             // 第二阶段：在目标位置上方7格生成一把黄色召唤剑
             {
                 LightningSummonedSword summonedSword = new LightningSummonedSword(
-                        SlashBlade.RegistryEvents.SummonedSword,
+                        RecastingEntities.SUMMOND_SWORD.get(),
                         worldIn,
                         livingEntity,
                         0xFFFF00, // 黄色
@@ -1300,20 +1107,16 @@ public class SlashArtsRegistry {
                 summonedSword.setPos(pos.x, pos.y, pos.z);
 
                 // 设置属性
-                summonedSword.setOwner(livingEntity);
                 summonedSword.setColor(0xFFFF00); // 黄色
                 summonedSword.setDamage(attack);
-                summonedSword.setDelay(10);
+                summonedSword.setStartDelay(10);
 
                 // 设置大小
                 //noinspection ConstantValue
-                if (summonedSword instanceof IEntitySize) {
-                    ((IEntitySize) summonedSword).setRecasting$size(1.25f);
-                }
+                summonedSword.setSize(1.25f);
 
                 // 朝向攻击目标位置
-                Vec3 direction = attackPos.subtract(pos).normalize();
-                summonedSword.shoot(direction.x, direction.y, direction.z, 2.0f, 0.0f);
+                summonedSword.lookAt(attackPos, false);
 
                 // 添加到世界
                 worldIn.addFreshEntity(summonedSword);
@@ -1323,7 +1126,7 @@ public class SlashArtsRegistry {
             if (lightningNumber > 0) {
                 for(int i = 0; i < lightningNumber; i++) {
                     LightningSummonedSword summonedSword = new LightningSummonedSword(
-                            SlashBlade.RegistryEvents.SummonedSword,
+                            RecastingEntities.SUMMOND_SWORD.get(),
                             worldIn,
                             livingEntity,
                             0xFFFF00, // 黄色
@@ -1334,20 +1137,15 @@ public class SlashArtsRegistry {
                     summonedSword.setPos(pos.x, pos.y, pos.z);
 
                     // 设置属性
-                    summonedSword.setOwner(livingEntity);
                     summonedSword.setColor(0xFFFF00); // 黄色
                     summonedSword.setDamage(attack);
-                    summonedSword.setDelay(i * 2);
+                    summonedSword.setStartDelay(i * 2);
 
                     // 设置大小
-                    //noinspection ConstantValue
-                    if (summonedSword instanceof IEntitySize) {
-                        ((IEntitySize) summonedSword).setRecasting$size(1.25f);
-                    }
+                    summonedSword.setSize(1.25f);
 
                     // 朝向攻击目标位置
-                    Vec3 direction = attackPos.subtract(pos).normalize();
-                    summonedSword.shoot(direction.x, direction.y, direction.z, 2.0f, 0.0f);
+                    summonedSword.lookAt(attackPos, false);
 
                     // 添加到世界
                     worldIn.addFreshEntity(summonedSword);
@@ -1359,54 +1157,35 @@ public class SlashArtsRegistry {
     /**
      * 自定义召唤剑 - 击中后产生闪电
      */
-    public static class LightningSummonedSword extends EntityAbstractSummonedSword {
+    public static class LightningSummonedSword extends SummondSwordEntity {
 
-        private final LivingEntity caster;
-        private final int lightningColor;
-        private final float lightningAttack;
 
-        public LightningSummonedSword(
-                net.minecraft.world.entity.EntityType<? extends EntityAbstractSummonedSword> type,
-                Level level,
-                LivingEntity caster,
-                int lightningColor,
-                float lightningAttack
-        ) {
-            super(type, level);
-            this.caster = caster;
-            this.lightningColor = lightningColor;
-            this.lightningAttack = lightningAttack;
-        }
+        public LightningSummonedSword(EntityType<? extends SummondSwordEntity> entityTypeIn, Level worldIn, LivingEntity shooting, int lightningColor, float lightningAttack) {
+            super(entityTypeIn, worldIn, shooting);
 
-        @Override
-        protected void onHitEntity(net.minecraft.world.phys.EntityHitResult entityHitResult) {
-            // 先调用父类的击中逻辑（造成伤害等）
-            super.onHitEntity(entityHitResult);
-
-            // 在击中位置生成闪电实体
-            if (!this.level().isClientSide()) {
-                Entity hitEntity = entityHitResult.getEntity();
+            attackActionCallbackPoint.register(e -> {
 
                 // 确定闪电生成位置（被击中实体的位置）
-                Vec3 lightningPos = hitEntity.position().add(0, hitEntity.getEyeHeight() * 0.5, 0);
+                Vec3 lightningPos = e.position();
 
                 // 创建闪电实体
                 LightningEntity lightningEntity = new LightningEntity(
-                        com.til.recasting.registry.RecastingEntities.LIGHTNING.get(),
-                        this.level()
+                        RecastingEntities.LIGHTNING.get(),
+                        this.level(),
+                        getShooter()
                 );
 
                 lightningEntity.setPos(lightningPos.x, lightningPos.y, lightningPos.z);
-                lightningEntity.setOwner(caster);
                 lightningEntity.setColor(lightningColor);
                 lightningEntity.setModifiedRatio(lightningAttack);
-                lightningEntity.setMaxLifeTime(20); // 持续1秒
-                lightningEntity.setAttackInterval(5); // 每5 tick攻击一次
+                lightningEntity.setMaxLifeTime(20);
 
                 // 添加到世界
                 this.level().addFreshEntity(lightningEntity);
-            }
+            });
         }
+
+
     }
 }
 

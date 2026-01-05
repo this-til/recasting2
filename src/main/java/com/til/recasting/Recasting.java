@@ -1,11 +1,6 @@
 package com.til.recasting;
 
-import com.til.recasting.registry.RecastingAttackTypes;
-import com.til.recasting.registry.RecastingComboStateRegistry;
-import com.til.recasting.registry.RecastingEntities;
-import com.til.recasting.registry.RecastingItems;
-import com.til.recasting.registry.SlashArtsRegistry;
-import com.til.recasting.registry.SpecialEffectsRegistry;
+import com.til.recasting.registry.*;
 import lombok.extern.log4j.Log4j2;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.SlashBladeConfig;
@@ -36,6 +31,8 @@ public class Recasting {
 
         fmlJavaModLoadingContext.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
+        RecastingEntityDataSerializers.ENTITY_DATA_SERIALIZERS.register(modEventBus);
+
         // 注册实体类型
         RecastingEntities.ENTITY_TYPES.register(modEventBus);
 
@@ -55,6 +52,7 @@ public class Recasting {
 
         // 注册物品
         RecastingItems.ITEMS.register(modEventBus);
+
 
         modEventBus.addListener(EventPriority.HIGH, RecastingItems::onBuildCreativeModeTabContents);
     }

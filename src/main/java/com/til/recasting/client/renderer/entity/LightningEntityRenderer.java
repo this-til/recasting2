@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -19,7 +19,7 @@ import java.util.Random;
 
 /**
  * 闪电实体渲染器
- * 渲染闪电特效
+ * 基于原版闪电渲染逻辑，支持自定义颜色和大小
  */
 @OnlyIn(Dist.CLIENT)
 public class LightningEntityRenderer extends EntityRenderer<LightningEntity> {
@@ -29,154 +29,106 @@ public class LightningEntityRenderer extends EntityRenderer<LightningEntity> {
     }
 
     @Override
-    public void render(@NotNull LightningEntity entity, float entityYaw, float partialTicks,
-                       @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight) {
+    public void render(LightningEntity entityIn, float entityYaw, float partialTicks,
+                       @NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int packedLightIn) {
+        float[] afloat = new float[8];
+        float[] afloat1 = new float[8];
+        float f = 0.0F;
+        float f1 = 0.0F;
+        Random random = new Random(entityIn.getBoltVertex());
 
-        float[] xOffsets = new float[8];
-        float[] zOffsets = new float[8];
-        float currentX = 0.0F;
-        float currentZ = 0.0F;
-        Random random = new Random(entity.getBoltVertex());
-
-        // 生成闪电路径的随机偏移
-        for(int i = 7; i >= 0; --i) {
-            xOffsets[i] = currentX;
-            zOffsets[i] = currentZ;
-            currentX += (float) (random.nextInt(11) - 5);
-            currentZ += (float) (random.nextInt(11) - 5);
+        for (int i = 7; i >= 0; --i) {
+            afloat[i] = f;
+            afloat1[i] = f1;
+            f += (float) (random.nextInt(11) - 5);
+            f1 += (float) (random.nextInt(11) - 5);
         }
 
-        // 获取颜色
-        Color color = new Color(entity.getColor(), false);
+        Color color = entityIn.getColor();
         int r = color.getRed();
         int g = color.getGreen();
         int b = color.getBlue();
 
-        // 应用缩放
-        float scale = entity.getSize();
-        poseStack.pushPose();
-        poseStack.scale(scale, scale, scale);
+        float scale = entityIn.getSize();
+        matrixStackIn.scale(scale, scale, scale);
 
-        // 获取顶点构建器
-        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.lightning());
-        Matrix4f matrix4f = poseStack.last().pose();
+        VertexConsumer vertexConsumer = bufferIn.getBuffer(RenderType.lightning());
+        Matrix4f matrix4f = matrixStackIn.last().pose();
 
-        // 渲染闪电的多层效果
-        for(int layer = 0; layer < 4; ++layer) {
-            Random layerRandom = new Random(entity.getBoltVertex());
+        for (int j = 0; j < 4; ++j) {
+            Random random1 = new Random(entityIn.getBoltVertex());
 
-            // 渲染三个分支
-            for(int branch = 0; branch < 3; ++branch) {
-                int startSegment = 7;
-                int endSegment = 0;
-
-                if (branch > 0) {
-                    startSegment = 7 - branch;
+            for (int k = 0; k < 3; ++k) {
+                int l = 7;
+                int i1 = 0;
+                if (k > 0) {
+                    l = 7 - k;
                 }
 
-                if (branch > 0) {
-                    endSegment = startSegment - 2;
+                if (k > 0) {
+                    i1 = l - 2;
                 }
 
-                float prevX = xOffsets[startSegment] - currentX;
-                float prevZ = zOffsets[startSegment] - currentZ;
+                float f2 = afloat[l] - f;
+                float f3 = afloat1[l] - f1;
 
-                // 渲染每个线段
-                for(int segment = startSegment; segment >= endSegment; --segment) {
-                    float nextX = prevX;
-                    float nextZ = prevZ;
-
-                    if (branch == 0) {
-                        prevX += (float) (layerRandom.nextInt(11) - 5);
-                        prevZ += (float) (layerRandom.nextInt(11) - 5);
+                for (int j1 = l; j1 >= i1; --j1) {
+                    float f4 = f2;
+                    float f5 = f3;
+                    if (k == 0) {
+                        f2 += (float) (random1.nextInt(11) - 5);
+                        f3 += (float) (random1.nextInt(11) - 5);
                     } else {
-                        prevX += (float) (layerRandom.nextInt(31) - 15);
-                        prevZ += (float) (layerRandom.nextInt(31) - 15);
+                        f2 += (float) (random1.nextInt(31) - 15);
+                        f3 += (float) (random1.nextInt(31) - 15);
                     }
 
-                    // 计算线宽
-                    float width1 = 0.1F + (float) layer * 0.2F;
-                    if (branch == 0) {
-                        width1 = (float) ((double) width1 * ((double) segment * 0.1D + 1.0D));
+                    float f10 = 0.1F + (float) j * 0.2F;
+                    if (k == 0) {
+                        f10 = (float) ((double) f10 * ((double) j1 * 0.1D + 1.0D));
                     }
 
-                    float width2 = 0.1F + (float) layer * 0.2F;
-                    if (branch == 0) {
-                        width2 *= (float) (segment - 1) * 0.1F + 1.0F;
+                    float f11 = 0.1F + (float) j * 0.2F;
+                    if (k == 0) {
+                        f11 *= (float) (j1 - 1) * 0.1F + 1.0F;
                     }
 
-                    // 渲染四个面形成立体闪电
-                    renderQuad(matrix4f, vertexConsumer, prevX, prevZ, segment, nextX, nextZ,
-                            r, g, b, width1, width2, false, false, true, false);
-                    renderQuad(matrix4f, vertexConsumer, prevX, prevZ, segment, nextX, nextZ,
-                            r, g, b, width1, width2, true, false, true, true);
-                    renderQuad(matrix4f, vertexConsumer, prevX, prevZ, segment, nextX, nextZ,
-                            r, g, b, width1, width2, true, true, false, true);
-                    renderQuad(matrix4f, vertexConsumer, prevX, prevZ, segment, nextX, nextZ,
-                            r, g, b, width1, width2, false, true, false, false);
+                    int alpha = 76;
+                    renderVertex(matrix4f, vertexConsumer, f2, f3, j1, f4, f5, r, g, b, alpha, f10, f11, false, false, true, false);
+                    renderVertex(matrix4f, vertexConsumer, f2, f3, j1, f4, f5, r, g, b, alpha, f10, f11, true, false, true, true);
+                    renderVertex(matrix4f, vertexConsumer, f2, f3, j1, f4, f5, r, g, b, alpha, f10, f11, true, true, false, true);
+                    renderVertex(matrix4f, vertexConsumer, f2, f3, j1, f4, f5, r, g, b, alpha, f10, f11, false, true, false, false);
                 }
             }
         }
-
-        poseStack.popPose();
     }
 
     /**
-     * 渲染闪电的一个四边形面
+     * 渲染闪电的一个顶点
      */
-    private static void renderQuad(Matrix4f matrix, VertexConsumer buffer,
-                                   float x1, float z1, int segment,
-                                   float x2, float z2,
-                                   int red, int green, int blue,
-                                   float width1, float width2,
-                                   boolean negX1, boolean negZ1,
-                                   boolean negX2, boolean negZ2) {
-
-        int alpha = 76; // 透明度
-
-        // 计算四个顶点
-        buffer.vertex(matrix, x1 + (negX1
-                                ? width2
-                                : -width2), (float) (segment * 16),
-                        z1 + (negZ1
-                                ? width2
-                                : -width2))
-                .color(red, green, blue, alpha)
+    private static void renderVertex(Matrix4f matrix4f, VertexConsumer vertexConsumer,
+                                     float x, float z, int segment,
+                                     float prevX, float prevZ,
+                                     int r, int g, int b, int alpha,
+                                     float width1, float width2,
+                                     boolean flag1, boolean flag2, boolean flag3, boolean flag4) {
+        vertexConsumer.vertex(matrix4f, x + (flag1 ? width2 : -width2), (float) (segment * 16), z + (flag2 ? width2 : -width2))
+                .color(r, g, b, alpha)
                 .endVertex();
-
-        buffer.vertex(matrix, x2 + (negX1
-                                ? width1
-                                : -width1), (float) ((segment + 1) * 16),
-                        z2 + (negZ1
-                                ? width1
-                                : -width1))
-                .color(red, green, blue, alpha)
+        vertexConsumer.vertex(matrix4f, prevX + (flag1 ? width1 : -width1), (float) ((segment + 1) * 16), prevZ + (flag2 ? width1 : -width1))
+                .color(r, g, b, alpha)
                 .endVertex();
-
-        buffer.vertex(matrix, x2 + (negX2
-                                ? width1
-                                : -width1), (float) ((segment + 1) * 16),
-                        z2 + (negZ2
-                                ? width1
-                                : -width1))
-                .color(red, green, blue, alpha)
+        vertexConsumer.vertex(matrix4f, prevX + (flag3 ? width1 : -width1), (float) ((segment + 1) * 16), prevZ + (flag4 ? width1 : -width1))
+                .color(r, g, b, alpha)
                 .endVertex();
-
-        buffer.vertex(matrix, x1 + (negX2
-                                ? width2
-                                : -width2), (float) (segment * 16),
-                        z1 + (negZ2
-                                ? width2
-                                : -width2))
-                .color(red, green, blue, alpha)
+        vertexConsumer.vertex(matrix4f, x + (flag3 ? width2 : -width2), (float) (segment * 16), z + (flag4 ? width2 : -width2))
+                .color(r, g, b, alpha)
                 .endVertex();
     }
 
     @NotNull
     @Override
     public ResourceLocation getTextureLocation(@NotNull LightningEntity entity) {
-        // 闪电不需要纹理
-        return ResourceLocation.fromNamespaceAndPath("minecraft", "textures/block/white_concrete.png");
+        return TextureAtlas.LOCATION_BLOCKS;
     }
 }
-

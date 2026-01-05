@@ -8,7 +8,6 @@
     "AttackHelperMixin",
     "AttackManagerMixin",
     "EntityAccessor",
-    "JudgementCutMixin",
     "RecipeProviderMixin",
     "SlashArtsAccessor",
     "SlashBladeDefinitionBladeComparatorMixin",
@@ -23,7 +22,6 @@
   ],
   "client": [
     "client.ItemModelBuilderMixin",
-    "client.JudgementCutRendererMixin",
     "client.SummonedSwordRendererMixin"
   ],
   "injectors": {

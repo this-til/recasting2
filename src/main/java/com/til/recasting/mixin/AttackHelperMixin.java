@@ -1,6 +1,7 @@
 package com.til.recasting.mixin;
 
 import com.til.recasting.registry.RecastingAttackTypes;
+import com.til.recasting.util.DamageStructure;
 import mods.flammpfeil.slashblade.util.AttackHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +23,7 @@ public abstract class AttackHelperMixin {
      */
     @Overwrite(remap = false)
     public static void attack(LivingEntity attacker, Entity target, float modifiedRatio) {
-        com.til.recasting.util.AttackHelper.attack(attacker, target, modifiedRatio, 0, List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get()));
+        com.til.recasting.handler.AttackHelper.attack(attacker, target, new DamageStructure(modifiedRatio, 0), List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get()));
     }
 }
 

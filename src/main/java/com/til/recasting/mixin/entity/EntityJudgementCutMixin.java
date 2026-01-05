@@ -1,9 +1,9 @@
 package com.til.recasting.mixin.entity;
 
 import com.til.recasting.mixin.EntityAccessor;
-import com.til.recasting.mixin_api.IEntityModifiedRatio;
-import com.til.recasting.mixin_api.IEntitySize;
 import com.til.recasting.registry.RecastingAttackTypes;
+import com.til.recasting.handler.AttackHelper;
+import com.til.recasting.util.DamageStructure;
 import lombok.Getter;
 import lombok.Setter;
 import mods.flammpfeil.slashblade.entity.EntityJudgementCut;
@@ -16,6 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityAccess;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,15 +33,8 @@ import java.util.function.Consumer;
  * 防止幻影剑实体被保存到世界文件，并使用正确的攻击类型
  */
 @Mixin(value = EntityJudgementCut.class, remap = false)
-public abstract class EntityJudgementCutMixin implements EntityAccess, IEntityModifiedRatio, IEntitySize {
+public abstract class EntityJudgementCutMixin implements EntityAccess {
 
-    @Unique
-    private static final EntityDataAccessor<Float> RECASTING$SIZE = SynchedEntityData.defineId(EntityJudgementCut.class, EntityDataSerializers.FLOAT);
-
-    @Unique
-    @Getter
-    @Setter
-    private float recasting$modifiedRatio = 0;
 
     @Shadow
     @Nullable
@@ -62,37 +56,6 @@ public abstract class EntityJudgementCutMixin implements EntityAccess, IEntityMo
     @Shadow
     public abstract double getDamage();
 
-    /**
-     * 在 defineSynchedData 中添加 size 数据同步
-     */
-    @Inject(method = "defineSynchedData", at = @At("RETURN"), remap = false)
-    private void defineSizeData(CallbackInfo ci) {
-        this.recasting2$getEntityData().define(RECASTING$SIZE, 1.0f);
-    }
-
-    /**
-     * 构造注入：初始化 damage 为 0
-     */
-    @Inject(method = "<init>", at = @At("RETURN"), remap = false)
-    private void initDamage(CallbackInfo ci) {
-        this.damage = 0;
-    }
-
-    /**
-     * 实现 IEntitySize 接口的 getRecasting$size 方法
-     */
-    @Override
-    public float getRecasting$size() {
-        return this.recasting2$getEntityData().get(RECASTING$SIZE);
-    }
-
-    /**
-     * 实现 IEntitySize 接口的 setRecasting$size 方法
-     */
-    @Override
-    public void setRecasting$size(float size) {
-        this.recasting2$getEntityData().set(RECASTING$SIZE, size);
-    }
 
     /**
      * 覆盖父类的 shouldBeSaved 方法
@@ -146,21 +109,8 @@ public abstract class EntityJudgementCutMixin implements EntityAccess, IEntityMo
     ) {
         // 调用自定义的 AttackManager.areaAttack，传入次元斩攻击类型
         if (getShooter() instanceof LivingEntity living) {
-            // 根据 size 调整攻击范围
-            float adjustedReach = (float) reach * getRecasting$size();
-
-            return com.til.recasting.util.AttackManager.areaAttack(
-                    living,
-                    beforeHit,
-                    recasting$modifiedRatio,
-                    (float) damage,
-                    forceHit,
-                    resetHit,
-                    false, // mute
-                    adjustedReach,
-                    exclude,
-                    List.of(RecastingAttackTypes.JUDGEMENT_CUT_ATTACK.get())
-            );
+            EntityJudgementCut self = (EntityJudgementCut) (Object) this;
+            return AttackHelper.areaAttack(living, self.getPosition(0), new DamageStructure(0, (float) getDamage()), true, (float) reach, List.of(RecastingAttackTypes.JUDGEMENT_CUT_ATTACK.get()), exclude, beforeHit);
         }
         return List.of();
     }
@@ -178,13 +128,7 @@ public abstract class EntityJudgementCutMixin implements EntityAccess, IEntityMo
             remap = false
     )
     private boolean redirectAddFreshEntity(Level level, Entity entity) {
-        // 如果是 EntitySlashEffect，设置其属性
         if (entity instanceof EntitySlashEffect slashEffect) {
-            // 按比例继承 modifiedRatio
-            if (slashEffect instanceof IEntityModifiedRatio entityModifiedRatio) {
-                entityModifiedRatio.setRecasting$modifiedRatio(0.1f * this.recasting$modifiedRatio); // TODO 写入配置
-            }
-
             slashEffect.setDamage(0.1 * this.getDamage()); // TODO 写入配置
         }
 

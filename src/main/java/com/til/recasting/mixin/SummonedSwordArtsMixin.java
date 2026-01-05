@@ -1,37 +1,46 @@
 package com.til.recasting.mixin;
 
 import com.til.recasting.Config;
+import com.til.recasting.entity.SummondSwordEntity;
+import com.til.recasting.registry.RecastingEntities;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.SlashBladeConfig;
 import mods.flammpfeil.slashblade.ability.SummonedSwordArts;
+import mods.flammpfeil.slashblade.capability.concentrationrank.CapabilityConcentrationRank;
+import mods.flammpfeil.slashblade.capability.concentrationrank.IConcentrationRank;
 import mods.flammpfeil.slashblade.capability.inputstate.CapabilityInputState;
 import mods.flammpfeil.slashblade.capability.slashblade.SlashBladeState;
-import mods.flammpfeil.slashblade.entity.EntityAbstractSummonedSword;
+import mods.flammpfeil.slashblade.entity.*;
 import mods.flammpfeil.slashblade.event.handler.InputCommandEvent;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.item.SwordType;
-import mods.flammpfeil.slashblade.util.AdvancementHelper;
-import mods.flammpfeil.slashblade.util.InputCommand;
-import mods.flammpfeil.slashblade.util.StatHelper;
-import mods.flammpfeil.slashblade.util.VectorHelper;
+import mods.flammpfeil.slashblade.util.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Mixin 用于修改召唤剑实体的基础伤害值
@@ -41,19 +50,12 @@ import java.util.Optional;
 public abstract class SummonedSwordArtsMixin {
 
     /**
-     * 在 onInputChange 方法中修改 powerLevel 变量的值
-     * 在 if (powerLevel <= 0) return; 之后将其设置为 0
+     * @author til
+     * @reason 使用自己的类型
      */
-    @ModifyVariable(
-            method = "onInputChange",
-            at = @At(value = "LOAD", ordinal = 1),
-            ordinal = 0
-    )
-    private int modifyPowerLevel(int powerLevel) {
-        if (powerLevel > 0) {
-            powerLevel = 0;
-        }
-        return powerLevel;
+    @SubscribeEvent
+    @Overwrite
+    public void onInputChange(InputCommandEvent event) {
     }
 
 }
