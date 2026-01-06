@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
  * 召唤剑实体渲染器
  */
 @OnlyIn(Dist.CLIENT)
-public class SummondSwordEntityRenderer extends EntityRenderer<SummondSwordEntity> {
+public class SummondSwordEntityRenderer<E extends SummondSwordEntity> extends EntityRenderer<E> {
 
     public SummondSwordEntityRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -34,18 +34,14 @@ public class SummondSwordEntityRenderer extends EntityRenderer<SummondSwordEntit
         return entity.getTexture();
     }
 
-    public static float ya = 0;
-    public static float za = 0;
-
 
     @Override
-    public void render(SummondSwordEntity entity, float entityYaw, float partialTicks,
-                       @NotNull PoseStack matrixStack, @NotNull MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(SummondSwordEntity entity, float entityYaw, float partialTicks, @NotNull PoseStack matrixStack, @NotNull MultiBufferSource bufferIn, int packedLightIn) {
 
         try (MSAutoCloser msac = MSAutoCloser.pushMatrix(matrixStack)) {
 
-            matrixStack.mulPose(Axis.YP.rotationDegrees(-Mth.rotLerp(partialTicks, entity.yRotO, entity.getYRot()) + ya));
-            matrixStack.mulPose(Axis.XP.rotationDegrees(Mth.rotLerp(partialTicks, entity.xRotO, entity.getXRot()) + za));
+            matrixStack.mulPose(Axis.YP.rotationDegrees(-Mth.rotLerp(partialTicks, entity.yRotO, entity.getYRot())));
+            matrixStack.mulPose(Axis.XP.rotationDegrees(Mth.rotLerp(partialTicks, entity.xRotO, entity.getXRot())));
             matrixStack.mulPose(Axis.ZP.rotationDegrees(entity.getRoll()));
 
 

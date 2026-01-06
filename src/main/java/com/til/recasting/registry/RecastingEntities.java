@@ -5,6 +5,7 @@ import com.til.recasting.entity.DriveEntity;
 import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.entity.LightningEntity;
 import com.til.recasting.entity.SlashEffectEntity;
+import com.til.recasting.entity.StellarRotationEntity;
 import com.til.recasting.entity.SummondSwordEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -118,6 +119,25 @@ public class RecastingEntities {
                     .noSummon()                      // 不能通过命令召唤
                     .setShouldReceiveVelocityUpdates(true)
                     .build("drive")
+    );
+
+    /**
+     * 星旋斩实体
+     * - 用于创建星旋斩攻击特效
+     * - 使用闪电效果渲染，类似末影龙死亡特效
+     * - 支持自定义颜色、大小、生命周期
+     */
+    public static final RegistryObject<EntityType<StellarRotationEntity>> STELLAR_ROTATION = ENTITY_TYPES.register(
+            "stellar_rotation",
+            () -> EntityType.Builder.<StellarRotationEntity>of((e, l) -> new StellarRotationEntity(e, l, null), MobCategory.MISC)
+                    .sized(1.5f, 1.5f)               // 碰撞箱大小
+                    .clientTrackingRange(64)         // 客户端追踪范围（格）
+                    .updateInterval(20)              // 更新间隔（tick）
+                    .fireImmune()                    // 免疫火焰伤害
+                    .noSave()                        // 不保存到世界数据
+                    .noSummon()                      // 不能通过命令召唤
+                    .setShouldReceiveVelocityUpdates(true)
+                    .build("stellar_rotation")
     );
 }
 

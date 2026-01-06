@@ -473,8 +473,8 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Sword Rain");
 
     public static final LanguageItem SWORD_RAIN_LAMBDA = createSlashArtsLanguageItem(SlashArtsRegistry.SWORD_RAIN_LAMBDA)
-            .addTranslation(LanguageTypes.ZH_CN, "^剑雨")
-            .addTranslation(LanguageTypes.EN_US, "Sword Rain Lambda");
+            .addTranslation(LanguageTypes.ZH_CN, "剑雨[顶点]")
+            .addTranslation(LanguageTypes.EN_US, "Sword Rain [Vertex]");
 
     // 拟似黑洞
     public static final LanguageItem VOID_HOLE = createSlashArtsLanguageItem(SlashArtsRegistry.VOID_HOLE)
@@ -491,7 +491,7 @@ public class LanguageItems {
 
     // 多重次元斩·决
     public static final LanguageItem MULTIPLE_JUDGEMENT_CUT = createSlashArtsLanguageItem(SlashArtsRegistry.MULTIPLE_JUDGEMENT_CUT)
-            .addTranslation(LanguageTypes.ZH_CN, "多重次元斩·决")
+            .addTranslation(LanguageTypes.ZH_CN, "多重次元斩")
             .addTranslation(LanguageTypes.EN_US, "Multiple Judgement Cut");
 
     // 无限次元斩

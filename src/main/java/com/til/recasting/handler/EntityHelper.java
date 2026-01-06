@@ -25,7 +25,17 @@ public class EntityHelper {
         return world.getEntities(null, aabb).stream()
                 .filter(e -> !Objects.equals(e, shooter))
                 .filter(e -> EntityPredicateHelper.canTarget(shooter, e))
-                .collect(Collectors.toList());
+                .toList();
+
+    }
+
+    public static List<LivingEntity> getTargettableLivingEntityWithinAABB(Level world, @Nullable LivingEntity shooter, Vec3 pos, float reach) {
+
+        return getTargettableEntitiesWithinAABB(world, shooter, pos, reach)
+                .stream()
+                .filter(e -> e instanceof LivingEntity)
+                .map(e -> (LivingEntity) e)
+                .toList();
 
 
     }

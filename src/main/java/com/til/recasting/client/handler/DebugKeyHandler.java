@@ -13,6 +13,7 @@ import org.lwjgl.glfw.GLFW;
  * 调试按键处理器
  * 用于调试召唤剑渲染角度
  */
+/*
 @Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class DebugKeyHandler {
 
@@ -67,3 +68,4 @@ public class DebugKeyHandler {
     }
 }
 
+*/

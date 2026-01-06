@@ -39,14 +39,13 @@ public class DriveEntity extends SlashEffectEntity {
         if (shooting != null) {
             setPos(shooting.getX(), shooting.getY(), shooting.getZ());
             setRot(shooting.getYRot(), shooting.getXRot());
-            updateMotion(1);
             lookAt(getDeltaMovement(), true, true);
         }
 
         setAttackInterval(1);
 
         attackTypeModelList = List.of(RecastingAttackTypes.DRIVE_ATTACK.get());
-
+        setUseBlockParticle(false);
     }
 
     @Override
@@ -88,6 +87,13 @@ public class DriveEntity extends SlashEffectEntity {
         }
 
     }
+
+    @Override
+    public void lookAt(Vec3 target, boolean isDistance, boolean prevSynchronous) {
+        super.lookAt(target, isDistance, prevSynchronous);
+        updateMotion(getSeep());
+    }
+
 
     public float getSeep() {
         return this.entityData.get(SEEP);

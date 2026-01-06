@@ -24,7 +24,7 @@ import java.awt.*;
  * 参考 JudgementCutRendererMixin 实现，添加自定义大小支持和修复长生命周期渲染问题
  */
 @OnlyIn(Dist.CLIENT)
-public class JudgementCutEntityRenderer extends EntityRenderer<JudgementCutEntity> {
+public class JudgementCutEntityRenderer<E extends JudgementCutEntity> extends EntityRenderer<E> {
 
     public JudgementCutEntityRenderer(EntityRendererProvider.Context context) {
         super(context);

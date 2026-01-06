@@ -22,7 +22,7 @@ import java.util.Random;
  * 基于原版闪电渲染逻辑，支持自定义颜色和大小
  */
 @OnlyIn(Dist.CLIENT)
-public class LightningEntityRenderer extends EntityRenderer<LightningEntity> {
+public class LightningEntityRenderer<E extends LightningEntity> extends EntityRenderer<E> {
 
     public LightningEntityRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -37,7 +37,7 @@ public class LightningEntityRenderer extends EntityRenderer<LightningEntity> {
         float f1 = 0.0F;
         Random random = new Random(entityIn.getBoltVertex());
 
-        for (int i = 7; i >= 0; --i) {
+        for(int i = 7; i >= 0; --i) {
             afloat[i] = f;
             afloat1[i] = f1;
             f += (float) (random.nextInt(11) - 5);
@@ -55,10 +55,10 @@ public class LightningEntityRenderer extends EntityRenderer<LightningEntity> {
         VertexConsumer vertexConsumer = bufferIn.getBuffer(RenderType.lightning());
         Matrix4f matrix4f = matrixStackIn.last().pose();
 
-        for (int j = 0; j < 4; ++j) {
+        for(int j = 0; j < 4; ++j) {
             Random random1 = new Random(entityIn.getBoltVertex());
 
-            for (int k = 0; k < 3; ++k) {
+            for(int k = 0; k < 3; ++k) {
                 int l = 7;
                 int i1 = 0;
                 if (k > 0) {
@@ -72,7 +72,7 @@ public class LightningEntityRenderer extends EntityRenderer<LightningEntity> {
                 float f2 = afloat[l] - f;
                 float f3 = afloat1[l] - f1;
 
-                for (int j1 = l; j1 >= i1; --j1) {
+                for(int j1 = l; j1 >= i1; --j1) {
                     float f4 = f2;
                     float f5 = f3;
                     if (k == 0) {
@@ -112,16 +112,32 @@ public class LightningEntityRenderer extends EntityRenderer<LightningEntity> {
                                      int r, int g, int b, int alpha,
                                      float width1, float width2,
                                      boolean flag1, boolean flag2, boolean flag3, boolean flag4) {
-        vertexConsumer.vertex(matrix4f, x + (flag1 ? width2 : -width2), (float) (segment * 16), z + (flag2 ? width2 : -width2))
+        vertexConsumer.vertex(matrix4f, x + (flag1
+                        ? width2
+                        : -width2), (float) (segment * 16), z + (flag2
+                        ? width2
+                        : -width2))
                 .color(r, g, b, alpha)
                 .endVertex();
-        vertexConsumer.vertex(matrix4f, prevX + (flag1 ? width1 : -width1), (float) ((segment + 1) * 16), prevZ + (flag2 ? width1 : -width1))
+        vertexConsumer.vertex(matrix4f, prevX + (flag1
+                        ? width1
+                        : -width1), (float) ((segment + 1) * 16), prevZ + (flag2
+                        ? width1
+                        : -width1))
                 .color(r, g, b, alpha)
                 .endVertex();
-        vertexConsumer.vertex(matrix4f, prevX + (flag3 ? width1 : -width1), (float) ((segment + 1) * 16), prevZ + (flag4 ? width1 : -width1))
+        vertexConsumer.vertex(matrix4f, prevX + (flag3
+                        ? width1
+                        : -width1), (float) ((segment + 1) * 16), prevZ + (flag4
+                        ? width1
+                        : -width1))
                 .color(r, g, b, alpha)
                 .endVertex();
-        vertexConsumer.vertex(matrix4f, x + (flag3 ? width2 : -width2), (float) (segment * 16), z + (flag4 ? width2 : -width2))
+        vertexConsumer.vertex(matrix4f, x + (flag3
+                        ? width2
+                        : -width2), (float) (segment * 16), z + (flag4
+                        ? width2
+                        : -width2))
                 .color(r, g, b, alpha)
                 .endVertex();
     }

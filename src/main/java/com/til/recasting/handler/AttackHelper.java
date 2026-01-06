@@ -1,5 +1,6 @@
 package com.til.recasting.handler;
 
+import com.til.recasting.entity.LightningEntity;
 import com.til.recasting.entity.SlashEffectEntity;
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.event.DoSlashExtendEvent;
@@ -9,18 +10,13 @@ import com.til.recasting.util.DamageStructure;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.util.KnockBacks;
 import mods.flammpfeil.slashblade.util.VectorHelper;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.CriticalHitEvent;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -77,14 +73,14 @@ public class AttackHelper {
             damage += attackAmplifierEvent.getExtraDamage();
 
             // 处理暴击
-            if (attacker instanceof Player player) {
-                CriticalHitEvent criticalHitEvent = ForgeHooks.getCriticalHit(player, target, isCritical, isCritical
-                        ? 1.5F
-                        : 1.0F);
-                if (criticalHitEvent != null) {
-                    damage *= criticalHitEvent.getDamageModifier();
-                }
-            }
+            //if (attacker instanceof Player player) {
+            //    CriticalHitEvent criticalHitEvent = ForgeHooks.getCriticalHit(player, target, isCritical, isCritical
+            //            ? 1.5F
+            //            : 1.0F);
+            //    if (criticalHitEvent != null) {
+            //        damage *= criticalHitEvent.getDamageModifier();
+            //    }
+            //}
 
             if (damage <= 0) {
                 return;
@@ -168,16 +164,13 @@ public class AttackHelper {
         jc.setCritical(event.isCritical());
 
         jc.setModifiedRatio(event.getModifiedRatio());
+        //noinspection deprecation
         jc.setDamage((float) event.getDamage());
 
         knockback = event.getKnockback();
         KnockBacks finalKnockback = knockback;
         if (finalKnockback != null) {
-            jc.attackActionCallbackPoint.register(e -> {
-                if (e instanceof LivingEntity livingEntity) {
-                    finalKnockback.action.accept(livingEntity);
-                }
-            });
+            jc.attackActionCallbackPoint.register(finalKnockback.action::accept);
 
         }
 
@@ -189,33 +182,27 @@ public class AttackHelper {
 
     }
 
-    public static List<Entity> areaAttack(LivingEntity playerIn, Vec3 pos, DamageStructure damageStructure, boolean mute, float attackRange, List<AttackType> attackTypeList, @Nullable List<Entity> exclude, @Nullable Consumer<LivingEntity> beforeHit) {
+    public static List<LivingEntity> areaAttack(LivingEntity playerIn, Vec3 pos, DamageStructure damageStructure, float attackRange, List<AttackType> attackTypeList, @Nullable List<Entity> exclude, @Nullable Consumer<LivingEntity> beforeHit) {
         if (playerIn.level().isClientSide()) {
-            if (!mute) {
-                playerIn.level().playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 0.5F, 0.4F / (playerIn.getRandom().nextFloat() * 0.4F + 0.8F));
-            }
             return List.of();
         }
 
-        List<Entity> founds = EntityHelper.getTargettableEntitiesWithinAABB(
-                playerIn.level(),
-                playerIn,
-                pos,
-                attackRange
-        );
+        return EntityHelper.getTargettableLivingEntityWithinAABB(
+                        playerIn.level(),
+                        playerIn,
+                        pos,
+                        attackRange
+                )
+                .stream()
+                .filter(e -> exclude == null || !exclude.contains(e))
+                .peek(e -> {
+                    if (beforeHit != null) {
+                        beforeHit.accept(e);
+                    }
+                    doMeleeAttack(playerIn, e, damageStructure, attackTypeList);
+                })
+                .toList();
 
-        if (exclude != null) {
-            founds.removeAll(exclude);
-        }
-
-        for(Entity entity : founds) {
-            if (beforeHit != null && entity instanceof LivingEntity living) {
-                beforeHit.accept(living);
-            }
-            doMeleeAttack(playerIn, entity, damageStructure, attackTypeList);
-        }
-
-        return founds;
     }
 
     public static void doMeleeAttack(LivingEntity attacker, Entity target, DamageStructure damageStructure, List<AttackType> attackTypeList) {

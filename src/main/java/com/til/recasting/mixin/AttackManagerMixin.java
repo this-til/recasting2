@@ -1,7 +1,6 @@
 package com.til.recasting.mixin;
 
 import com.til.recasting.capability.PropertiesDefinitionExtension;
-import com.til.recasting.entity.SlashEffectEntity;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.handler.AttackHelper;
@@ -64,8 +63,10 @@ public abstract class AttackManagerMixin {
                 .orElse(1.0f);
 
         return AttackHelper.areaAttack(
-                playerIn, playerIn.getPosition(0), new DamageStructure(comboRatio, 0), mute, attackDistance, List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get()), exclude, beforeHit
-        );
+                        playerIn, playerIn.getPosition(0), new DamageStructure(comboRatio, 0), attackDistance, List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get()), exclude, beforeHit
+                ).stream()
+                .map(e -> (Entity) e)
+                .toList();
     }
 
     /***

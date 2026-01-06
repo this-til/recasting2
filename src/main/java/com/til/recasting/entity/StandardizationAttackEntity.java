@@ -227,6 +227,7 @@ public abstract class StandardizationAttackEntity extends Entity {
         return entityData.get(DAMAGE);
     }
 
+    @Deprecated(since = "请使用setModifiedRatio，除非特别情况继续使用本方法")
     public void setDamage(float damage) {
         entityData.set(DAMAGE, damage);
     }

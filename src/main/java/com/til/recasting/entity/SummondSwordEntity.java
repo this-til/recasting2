@@ -124,8 +124,6 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
             y *= dist;
             z *= dist;
             setPos(shooting.getX() + x, shooting.getY() + y, shooting.getZ() + z);
-            setRot(shooting.getYRot(), shooting.getXRot());
-            updateMotion(1);
             lookAt(getDeltaMovement(), true, true);
         }
     }

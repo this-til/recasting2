@@ -4,19 +4,14 @@ import com.til.recasting.mixin.EntityAccessor;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.util.DamageStructure;
-import lombok.Getter;
-import lombok.Setter;
 import mods.flammpfeil.slashblade.entity.EntityJudgementCut;
 import net.minecraft.world.entity.Entity;
 import mods.flammpfeil.slashblade.entity.EntitySlashEffect;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityAccess;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -110,7 +105,10 @@ public abstract class EntityJudgementCutMixin implements EntityAccess {
         // 调用自定义的 AttackManager.areaAttack，传入次元斩攻击类型
         if (getShooter() instanceof LivingEntity living) {
             EntityJudgementCut self = (EntityJudgementCut) (Object) this;
-            return AttackHelper.areaAttack(living, self.getPosition(0), new DamageStructure(0, (float) getDamage()), true, (float) reach, List.of(RecastingAttackTypes.JUDGEMENT_CUT_ATTACK.get()), exclude, beforeHit);
+            return AttackHelper.areaAttack(living, self.getPosition(0), new DamageStructure(0, (float) getDamage()), (float) reach, List.of(RecastingAttackTypes.JUDGEMENT_CUT_ATTACK.get()), exclude, beforeHit)
+                    .stream()
+                    .map(e -> (Entity) e)
+                    .toList();
         }
         return List.of();
     }

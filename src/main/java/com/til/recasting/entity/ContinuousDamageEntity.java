@@ -15,9 +15,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public abstract class ContinuousDamageEntity extends StandardizationAttackEntity {
 
@@ -85,16 +83,15 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
         }
 
         if (alreadyHits == null) {
-            alreadyHits = new ArrayList<>() ;
+            alreadyHits = new ArrayList<>();
             alreadyHits.add(this);
             alreadyHits.add(shooter);
         }
 
-        List<Entity> list = AttackHelper.areaAttack(
+        List<LivingEntity> list = AttackHelper.areaAttack(
                         shooter,
                         getPos(),
                         getDamageStructure(),
-                        true,
                         getSize() * getParameterRange(),
                         new ArrayList<>(attackTypeModelList),
                         alreadyHits,
@@ -113,10 +110,16 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
                 .toList();
 
         if (!list.isEmpty()) {
-            playSound(hitEntitySound, 1.0F, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
+            if (!isMute()) {
+                playAttackSound();
+            }
             attackEndCallbackPoint.call(r -> r.attacked(list));
         }
 
+    }
+
+    public void playAttackSound() {
+        playSound(hitEntitySound, 1.0F, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
     }
 
     public int getAttackInterval() {
@@ -147,13 +150,13 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
      * 攻击到实体时
      */
     public interface IAttackAction {
-        void attack(Entity hitEntity);
+        void attack(LivingEntity hitEntity);
     }
 
     /***
      * 攻击判定结束并且打到目标
      */
     public interface IAttackEnd {
-        void attacked(List<Entity> entities);
+        void attacked(List<LivingEntity> entities);
     }
 }

@@ -37,23 +37,25 @@ public class SlashEffectEntityRenderer<T extends SlashEffectEntity> extends Enti
     }
 
     @Override
-    public void render(T entity, float entityYaw, float partialTicks, 
+    public void render(T entity, float entityYaw, float partialTicks,
                        @NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int packedLightIn) {
 
         try (MSAutoCloser msac = MSAutoCloser.pushMatrix(matrixStackIn)) {
 
-            matrixStackIn.mulPose(Axis.YP.rotationDegrees(-Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
-            matrixStackIn.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
-            matrixStackIn.mulPose(Axis.XP.rotationDegrees(entity.getRoll()));
+            coverPose(entity, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 
             WavefrontObject model = BladeModelManager.getInstance().getModel(entity.getModel());
 
-            int lifetime = getRenderTime(entity);
 
-            float progress = Math.min(lifetime, (entity.tickCount + partialTicks - getPartialTicksOffset(partialTicks))) / lifetime;
+            int lifetime = entity.getMaxLifeTime();
+
+            int ticksExisted = renderTime(entity);
+            partialTicks = ofPartialTicks(partialTicks);
+
+            float progress = Math.min(lifetime, (ticksExisted + partialTicks)) / lifetime;
 
             double deathTime = lifetime;
-            double baseAlpha = (Math.min(deathTime, Math.max(0, (lifetime - (entity.tickCount) - partialTicks + getPartialTicksOffset(partialTicks))))
+            double baseAlpha = (Math.min(deathTime, Math.max(0, (lifetime - (entity.tickCount) - partialTicks)))
                     / deathTime);
             baseAlpha = -Math.pow(baseAlpha - 1, 4.0) + 1.0;
 
@@ -131,20 +133,13 @@ public class SlashEffectEntityRenderer<T extends SlashEffectEntity> extends Enti
         }
     }
 
-    /**
-     * 获取渲染时间
-     * 可被子类重写以自定义动画持续时间
-     */
-    protected int getRenderTime(T entity) {
-        return entity.getMaxLifeTime();
-    }
 
-    /**
-     * 获取部分 tick 偏移
-     * 可被子类重写以调整动画时序
-     */
-    protected float getPartialTicksOffset(float partialTicks) {
-        return 0;
+    protected void coverPose(T entity, float entityYaw, float partialTicks, @NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int packedLightIn) {
+
+        matrixStackIn.mulPose(Axis.YP.rotationDegrees(-Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
+        matrixStackIn.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
+        matrixStackIn.mulPose(Axis.XP.rotationDegrees(entity.getRoll()));
+
     }
 
     /**
@@ -154,6 +149,14 @@ public class SlashEffectEntityRenderer<T extends SlashEffectEntity> extends Enti
     protected ConcentrationRanks getRank(T entity) {
         // 默认为 S 等级，显示完整效果
         return ConcentrationRanks.S;
+    }
+
+    protected int renderTime(T t) {
+        return t.tickCount;
+    }
+
+    protected float ofPartialTicks(float partialTicks) {
+        return partialTicks;
     }
 }
 

@@ -3,15 +3,12 @@ package com.til.recasting.mixin.entity;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.util.DamageStructure;
-import lombok.Getter;
-import lombok.Setter;
 import mods.flammpfeil.slashblade.entity.EntitySlashEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.entity.EntityAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -100,7 +97,10 @@ public abstract class EntitySlashEffectMixin implements EntityAccess {
         EntitySlashEffect self = (EntitySlashEffect) (Object) this;
 
         // 调用自定义的 AttackManager.areaAttack
-        return AttackHelper.areaAttack(shooter, self.getPosition(0), new DamageStructure((float) getDamage(), 0), mute, attackRange, List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get()), exclude, beforeHit);
+        return AttackHelper.areaAttack(shooter, self.getPosition(0), new DamageStructure((float) getDamage(), 0), attackRange, List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get()), exclude, beforeHit)
+                .stream()
+                .map(e -> (Entity) e)
+                .toList();
     }
 
     /**

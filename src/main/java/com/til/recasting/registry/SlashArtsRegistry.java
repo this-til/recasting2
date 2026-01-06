@@ -1,16 +1,15 @@
 package com.til.recasting.registry;
 
+import com.mojang.authlib.minecraft.report.ReportedEntity;
 import com.til.recasting.Recasting;
 import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.capability.TimeRunCapability;
-import com.til.recasting.entity.DriveEntity;
-import com.til.recasting.entity.JudgementCutEntity;
-import com.til.recasting.entity.LightningEntity;
-import com.til.recasting.entity.SummondSwordEntity;
+import com.til.recasting.entity.*;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.EntityHelper;
+import com.til.recasting.handler.PosHelper;
 import com.til.recasting.mixin.SlashArtsAccessor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -29,9 +28,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.DeferredRegister;
@@ -133,66 +130,6 @@ public class SlashArtsRegistry {
             return SlashArts.getRegistryKey(this);
         }
 
-        /**
-         * 获取攻击目标位置
-         * 优先返回锁定目标的位置，如果没有锁定目标则使用视线追踪
-         *
-         * @param livingEntity    发起攻击的实体
-         * @param slashBladeState 刀剑状态
-         * @param maxDistance     最大追踪距离
-         * @return 攻击目标位置
-         */
-        protected static Vec3 getAttackTargetPosition(LivingEntity livingEntity, ISlashBladeState slashBladeState, double maxDistance) {
-            Level worldIn = livingEntity.level();
-
-            // 尝试获取锁定的目标
-            var target = slashBladeState.getTargetEntity(worldIn);
-            if (target != null && target.isAlive() && !target.isRemoved()) {
-                return new Vec3(
-                        target.getX(),
-                        target.getY() + target.getEyeHeight() * 0.5,
-                        target.getZ()
-                );
-            } else {
-                // 如果没有锁定目标，使用视线追踪
-                Vec3 start = livingEntity.getEyePosition(1.0f);
-                Vec3 end = start.add(livingEntity.getLookAngle().scale(maxDistance));
-                HitResult result = worldIn.clip(
-                        new ClipContext(
-                                start,
-                                end,
-                                ClipContext.Block.COLLIDER,
-                                ClipContext.Fluid.NONE,
-                                livingEntity
-                        )
-                );
-                return result.getLocation();
-            }
-        }
-
-        /**
-         * 获取攻击目标位置（使用默认距离40）
-         *
-         * @param livingEntity    发起攻击的实体
-         * @param slashBladeState 刀剑状态
-         * @return 攻击目标位置
-         */
-        protected static Vec3 getAttackTargetPosition(LivingEntity livingEntity, ISlashBladeState slashBladeState) {
-            return getAttackTargetPosition(livingEntity, slashBladeState, 64.0);
-        }
-
-        /**
-         * 在圆形范围内生成随机向量
-         */
-        protected static Vec3 getRandomVectorInCircle(net.minecraft.util.RandomSource random, float distance) {
-            double theta = random.nextDouble() * Math.PI;
-            double phi = random.nextDouble() * (double) 2.0F * Math.PI;
-            double x = distance * Math.sin(theta) * Math.cos(phi);
-            double y = distance * Math.sin(theta) * Math.sin(phi);
-            double z = distance * Math.cos(theta);
-            return new Vec3(x, y, z);
-        }
-
         public ComboState createComboState() {
             return ComboState.Builder.newInstance()
                     .startAndEnd(1923, 1928)
@@ -288,6 +225,7 @@ public class SlashArtsRegistry {
     @Accessors(chain = true)
     public static class StormPhantomSwordsSlashArts extends ExtendedSlashArts {
 
+        float attack = 0.15f;
         int number = 12;
 
         @Override
@@ -296,7 +234,7 @@ public class SlashArtsRegistry {
             Level worldIn = livingEntity.level();
 
             // 获取攻击目标位置
-            Vec3 attackPos = getAttackTargetPosition(livingEntity, slashBladeState);
+            Vec3 attackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
 
             // 计算生成位置（玩家眼睛位置 + 侧向偏移）
             Vec3 pos = livingEntity.getEyePosition(1.0f)
@@ -326,6 +264,7 @@ public class SlashArtsRegistry {
                 summonedSword.setColor(slashBladeState.getColorCode());
                 summonedSword.setStartDelay(i);  // 延迟发射
                 summonedSword.setRoll(livingEntity.getRandom().nextFloat() * 360.0f);
+                summonedSword.setModifiedRatio(attack);
 
                 // 添加到世界
                 worldIn.addFreshEntity(summonedSword);
@@ -359,7 +298,7 @@ public class SlashArtsRegistry {
             Level worldIn = livingEntity.level();
 
             // 获取攻击目标位置
-            Vec3 attackPos = getAttackTargetPosition(livingEntity, slashBladeState);
+            Vec3 attackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
 
             // 计算基础生成位置（在实体上方）
             Vec3 basePos = livingEntity.position().add(0, range / 2, 0);
@@ -376,7 +315,7 @@ public class SlashArtsRegistry {
                         );
 
                 // 在圆形范围内随机生成位置
-                Vec3 randomOffset = getRandomVectorInCircle(random, range);
+                Vec3 randomOffset = PosHelper.getRandomVectorInCircle(random, range);
                 Vec3 pos = basePos.add(randomOffset);
 
                 // 设置位置
@@ -387,7 +326,7 @@ public class SlashArtsRegistry {
 
                 // 设置属性
                 summonedSword.setColor(slashBladeState.getColorCode());
-                summonedSword.setDamage(attack);
+                summonedSword.setModifiedRatio(attack);
                 summonedSword.setStartDelay(random.nextInt(60));  // 随机延迟发射
                 summonedSword.setRoll(random.nextFloat() * 360.0f);
 
@@ -477,7 +416,7 @@ public class SlashArtsRegistry {
             Level worldIn = livingEntity.level();
 
             // 获取目标位置
-            Vec3 pos = getAttackTargetPosition(livingEntity, slashBladeState);
+            Vec3 pos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
 
             // 创建自定义的黑洞次元斩
             JudgementCutEntity jc = new JudgementCutEntity(RecastingEntities.JUDGEMENT_CUT.get(), worldIn, livingEntity) {
@@ -532,7 +471,6 @@ public class SlashArtsRegistry {
 
             // 设置伤害倍率
             jc.setModifiedRatio(attack);
-            jc.setDamage(0);
 
             // 设置生命时间
             jc.setMaxLifeTime(life);
@@ -587,7 +525,7 @@ public class SlashArtsRegistry {
                                 if (lastPos[0] != null) {
                                     pos = lastPos[0];
                                 } else {
-                                    pos = getAttackTargetPosition(livingEntity, slashBladeState);
+                                    pos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
                                 }
 
                                 // 创建次元斩
@@ -606,7 +544,6 @@ public class SlashArtsRegistry {
 
                                 // 设置伤害倍率
                                 jc.setModifiedRatio(hit);
-                                jc.setDamage(0);
 
                                 // 设置生命时间
                                 jc.setColor(slashBladeState.getColorCode());
@@ -649,15 +586,16 @@ public class SlashArtsRegistry {
             Level worldIn = livingEntity.level();
 
             // 获取攻击目标位置
-            Vec3 attackPos = getAttackTargetPosition(livingEntity, slashBladeState);
+            Vec3 attackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
 
             // 获取范围内的所有敌对实体
-            List<Entity> attackEntities = EntityHelper.getTargettableEntitiesWithinAABB(
+            List<LivingEntity> attackEntities = new java.util.ArrayList<>(EntityHelper.getTargettableLivingEntityWithinAABB(
                     livingEntity.level(),
                     livingEntity,
                     livingEntity.position(),
                     attackRange
-            );
+            ));
+
             // 获取实体的定时器
             LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(TimeRunCapability.TIME_RUN);
 
@@ -675,8 +613,7 @@ public class SlashArtsRegistry {
 
                                     // 尝试找到一个存活的目标
                                     for(int attempt = 0; attempt < 10 && !attackEntities.isEmpty(); attempt++) {
-                                        Entity candidate =
-                                                attackEntities.get(livingEntity.getRandom().nextInt(attackEntities.size()));
+                                        Entity candidate = attackEntities.get(livingEntity.getRandom().nextInt(attackEntities.size()));
 
                                         if (candidate.isAlive()) {
                                             target = candidate;
@@ -715,7 +652,6 @@ public class SlashArtsRegistry {
 
                                 // 设置伤害倍率
                                 jc.setModifiedRatio(hit);
-                                jc.setDamage(0);
 
                                 // 设置生命时间
                                 jc.setMaxLifeTime(10);
@@ -738,7 +674,7 @@ public class SlashArtsRegistry {
     }
 
     /**
-     * 星辰 Slash Arts
+     * 星流 Slash Arts
      * 发射多把追踪召唤剑，击中后产生次元斩
      * 可选：在周围生成持续的次元斩阵地，定期发射召唤剑
      */
@@ -751,6 +687,7 @@ public class SlashArtsRegistry {
         float judgementCutAttack = 0.5f;
         float range = 12;
         float zoneNumber = 0;
+        int zonerRange = 12;
         int zoneTime = 160;
         float attackProbability = 1 / 20f;
         float summondSwordAttack = 0.02f;
@@ -761,9 +698,9 @@ public class SlashArtsRegistry {
             Level worldIn = livingEntity.level();
 
             // 获取攻击目标位置
-            Vec3 attackPos = getAttackTargetPosition(livingEntity, slashBladeState);
+            Vec3 attackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
 
-            List<Entity> entityList = EntityHelper.getTargettableEntitiesWithinAABB(
+            List<LivingEntity> entityList = EntityHelper.getTargettableLivingEntityWithinAABB(
                     livingEntity.level(),
                     livingEntity,
                     attackPos,
@@ -780,13 +717,9 @@ public class SlashArtsRegistry {
                         judgementCutAttack
                 );
 
-                // 设置位置为玩家位置
-                Vec3 spawnPos = livingEntity.position().add(0, 1.5, 0);
-                summonedSword.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
-
                 // 设置属性
                 summonedSword.setColor(slashBladeState.getColorCode());
-                summonedSword.setDamage(attack);
+                summonedSword.setModifiedRatio(attack);
                 summonedSword.setStartDelay(10 + livingEntity.getRandom().nextInt(10));
 
                 // 设置朝向：如果有敌人，朝向随机敌人，否则朝向攻击位置
@@ -815,7 +748,7 @@ public class SlashArtsRegistry {
             if (zoneNumber > 0) {
                 for(int i = 0; i < zoneNumber; i++) {
                     // 在玩家周围随机位置生成次元斩
-                    Vec3 randomOffset = getRandomVectorInCircle(livingEntity.getRandom(), 16);
+                    Vec3 randomOffset = PosHelper.getRandomVectorInCircle(livingEntity.getRandom(), zonerRange);
                     Vec3 zonePos = livingEntity.position().add(randomOffset);
 
                     // 创建持续存在的次元斩
@@ -832,7 +765,7 @@ public class SlashArtsRegistry {
                                 Vec3 pos = this.position();
 
                                 // 实时获取目标位置
-                                Vec3 currentTargetPos = getAttackTargetPosition(livingEntity, slashBladeState);
+                                Vec3 currentTargetPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
 
                                 // 使用自定义召唤剑，击中后产生次元斩
                                 StarSummonedSword summonedSword = new StarSummonedSword(
@@ -844,7 +777,7 @@ public class SlashArtsRegistry {
 
                                 summonedSword.setPos(pos.x, pos.y, pos.z);
                                 summonedSword.setColor(slashBladeState.getColorCode());
-                                summonedSword.setDamage(summondSwordAttack);
+                                summonedSword.setModifiedRatio(summondSwordAttack);
                                 summonedSword.setStartDelay(10);
 
                                 // 朝向实时获取的目标位置
@@ -862,7 +795,6 @@ public class SlashArtsRegistry {
 
                     starJC.setPos(zonePos.x, zonePos.y, zonePos.z);
                     starJC.setColor(slashBladeState.getColorCode());
-                    starJC.setDamage(0);  // 这个次元斩本身不造成伤害
                     starJC.setMaxLifeTime(zoneTime);
 
                     worldIn.addFreshEntity(starJC);
@@ -894,7 +826,7 @@ public class SlashArtsRegistry {
 
                     // 设置伤害倍率
                     jc.setModifiedRatio(judgementCutAttack);
-                    jc.setDamage(0);
+                    jc.setModifiedRatio(0);
 
                     // 设置生命时间
                     jc.setMaxLifeTime(10);
@@ -924,7 +856,7 @@ public class SlashArtsRegistry {
     @Accessors(chain = true)
     public static class MultipleDriveSlashArts extends ExtendedSlashArts {
 
-        float attack = 0.45f;
+        float attack = 0.35f;
         int attackNumber = 8;
         int life = 80;
         float range = 1;
@@ -933,9 +865,7 @@ public class SlashArtsRegistry {
         public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
 
             Level worldIn = livingEntity.level();
-            Vec3 attackPos = getAttackTargetPosition(livingEntity, slashBladeState);
-            // 获取玩家视线方向
-            Vec3 lookAngle = livingEntity.getLookAngle();
+            Vec3 attackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
 
             // 生成多个驱动剑气
             for(int i = 0; i < attackNumber; i++) {
@@ -946,12 +876,6 @@ public class SlashArtsRegistry {
                                 livingEntity
                         );
 
-                // 设置位置为玩家眼睛位置稍微向前
-                Vec3 pos = livingEntity.position()
-                        .add(0, livingEntity.getEyeHeight() * 0.75, 0)
-                        .add(lookAngle.scale(0.3f));
-                driveEntity.setPos(pos.x, pos.y, pos.z);
-
                 // 设置属性
                 driveEntity.setColor(slashBladeState.getColorCode());
 
@@ -960,7 +884,7 @@ public class SlashArtsRegistry {
                 driveEntity.setSize(randomSize * propertiesDefinitionExtension.attackDistance());
 
                 // 设置伤害
-                driveEntity.setDamage(attack);
+                driveEntity.setModifiedRatio(attack);
 
                 // 设置生命时间
                 driveEntity.setMaxLifeTime(life);
@@ -997,7 +921,7 @@ public class SlashArtsRegistry {
 
         int lightningNumber = 12;
         float attack = 0.1f;
-        float lightningAttack = 1.0f;
+        float lightningAttack = 0.3f;
 
         @Override
         public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
@@ -1005,7 +929,7 @@ public class SlashArtsRegistry {
             Level worldIn = livingEntity.level();
 
             // 获取攻击目标位置
-            Vec3 attackPos = getAttackTargetPosition(livingEntity, slashBladeState);
+            Vec3 attackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
 
             // 创建多把召唤剑
             for(int i = 0; i < lightningNumber; i++) {
@@ -1017,13 +941,10 @@ public class SlashArtsRegistry {
                         lightningAttack
                 );
 
-                // 设置位置为玩家位置
-                Vec3 spawnPos = livingEntity.position().add(0, 1.5, 0);
-                summonedSword.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
 
                 // 设置属性
                 summonedSword.setColor(slashBladeState.getColorCode());
-                summonedSword.setDamage(attack);
+                summonedSword.setModifiedRatio(attack);
 
                 // 设置大小
                 summonedSword.setSize(1.25f);
@@ -1054,7 +975,7 @@ public class SlashArtsRegistry {
 
         float attack = 0.2f;
         int attackNumber = 6;
-        float lightningAttack = 1.35f;
+        float lightningAttack = 0.4f;
         int lightningNumber = 10;
 
         @Override
@@ -1064,26 +985,24 @@ public class SlashArtsRegistry {
             net.minecraft.util.RandomSource random = livingEntity.getRandom();
 
             // 获取攻击目标位置
-            Vec3 attackPos = getAttackTargetPosition(livingEntity, slashBladeState);
+            Vec3 attackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
 
             // 第一阶段：在目标位置上方5格，圆形范围内生成召唤剑
             for(int i = 0; i < attackNumber; i++) {
-                LightningSummonedSword summonedSword = new LightningSummonedSword(
+                SummondSwordEntity summonedSword = new SummondSwordEntity(
                         RecastingEntities.SUMMOND_SWORD.get(),
                         worldIn,
-                        livingEntity,
-                        slashBladeState.getColorCode(),
-                        lightningAttack
+                        livingEntity
                 );
 
                 // 在圆形范围内随机生成位置
-                Vec3 randomOffset = getRandomVectorInCircle(random, 2.5f);
+                Vec3 randomOffset = PosHelper.getRandomVectorInCircle(random, 2.5f);
                 Vec3 pos = attackPos.add(0, 5, 0).add(randomOffset);
                 summonedSword.setPos(pos.x, pos.y, pos.z);
 
                 // 设置属性
                 summonedSword.setColor(slashBladeState.getColorCode());
-                summonedSword.setDamage(attack);
+                summonedSword.setModifiedRatio(attack);
                 summonedSword.setStartDelay(5);
                 summonedSword.setRoll(random.nextInt(360));
 
@@ -1108,11 +1027,10 @@ public class SlashArtsRegistry {
 
                 // 设置属性
                 summonedSword.setColor(0xFFFF00); // 黄色
-                summonedSword.setDamage(attack);
+                summonedSword.setModifiedRatio(attack);
                 summonedSword.setStartDelay(10);
 
                 // 设置大小
-                //noinspection ConstantValue
                 summonedSword.setSize(1.25f);
 
                 // 朝向攻击目标位置
@@ -1133,12 +1051,9 @@ public class SlashArtsRegistry {
                             lightningAttack
                     );
 
-                    Vec3 pos = attackPos.add(0, 7, 0);
-                    summonedSword.setPos(pos.x, pos.y, pos.z);
-
                     // 设置属性
                     summonedSword.setColor(0xFFFF00); // 黄色
-                    summonedSword.setDamage(attack);
+                    summonedSword.setModifiedRatio(attack);
                     summonedSword.setStartDelay(i * 2);
 
                     // 设置大小
@@ -1151,42 +1066,57 @@ public class SlashArtsRegistry {
                     worldIn.addFreshEntity(summonedSword);
                 }
             }
+
+            livingEntity.playSound(
+                    SoundEvents.CHORUS_FRUIT_TELEPORT,
+                    0.2F,
+                    1.45F
+            );
         }
     }
 
-    /**
-     * 自定义召唤剑 - 击中后产生闪电
-     */
-    public static class LightningSummonedSword extends SummondSwordEntity {
+    @Setter
+    @Accessors(chain = true)
+    public static class StellarRotationSlashArts extends ExtendedSlashArts {
+        float attack = 0.01f;
+        float moveRange = 32;
+        float size = 3;
+        int attackInterval = 1;
+        int life = 60;
 
+        @Override
+        public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
+            Vec3 attackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
 
-        public LightningSummonedSword(EntityType<? extends SummondSwordEntity> entityTypeIn, Level worldIn, LivingEntity shooting, int lightningColor, float lightningAttack) {
-            super(entityTypeIn, worldIn, shooting);
+            List<LivingEntity> entityList = EntityHelper.getTargettableLivingEntityWithinAABB(livingEntity.level(), livingEntity, attackPos, moveRange);
 
-            attackActionCallbackPoint.register(e -> {
+            for(Entity entity : entityList) {
+                entity.setPos(attackPos);
+            }
 
-                // 确定闪电生成位置（被击中实体的位置）
-                Vec3 lightningPos = e.position();
+            StellarRotationEntity jc = new StellarRotationEntity(
+                    RecastingEntities.STELLAR_ROTATION.get(),
+                    livingEntity.level(),
+                    livingEntity
+            );
+            jc.setPos(attackPos.x, attackPos.y, attackPos.z);
+            jc.setColor(slashBladeState.getColorCode());
+            jc.setModifiedRatio(attack);
+            jc.setMaxLifeTime(life);
+            jc.setAttackInterval(attackInterval);
+            jc.setSize(size);
 
-                // 创建闪电实体
-                LightningEntity lightningEntity = new LightningEntity(
-                        RecastingEntities.LIGHTNING.get(),
-                        this.level(),
-                        getShooter()
-                );
+            jc.attackActionCallbackPoint.register(e -> e.setDeltaMovement(Vec3.ZERO));
 
-                lightningEntity.setPos(lightningPos.x, lightningPos.y, lightningPos.z);
-                lightningEntity.setColor(lightningColor);
-                lightningEntity.setModifiedRatio(lightningAttack);
-                lightningEntity.setMaxLifeTime(20);
-
-                // 添加到世界
-                this.level().addFreshEntity(lightningEntity);
-            });
+            jc.level().addFreshEntity(jc);
+            livingEntity.playSound(
+                    SoundEvents.CHORUS_FRUIT_TELEPORT,
+                    0.2F,
+                    1.45F
+            );
         }
-
-
     }
+
 }
 
 

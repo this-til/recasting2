@@ -101,37 +101,16 @@ public class SummonedSwordHelper {
                 //幻影剑
                 AdvancementHelper.grantCriterion(sender, ADVANCEMENT_SUMMONEDSWORDS);
 
-                Optional<Entity> foundTarget = findTarget(sender, state.getTargetEntity(sender.level()));
-
                 Level worldIn = sender.level();
-                Vec3 targetPos = foundTarget.map((e) -> new Vec3(e.getX(), e.getY() + e.getEyeHeight() * 0.5, e.getZ()))
-                        .orElseGet(() -> {
-                            Vec3 start = sender.getEyePosition(1.0f);
-                            Vec3 end = start.add(sender.getLookAngle().scale(40));
-                            HitResult result = worldIn.clip(new ClipContext(start, end, ClipContext.Block.COLLIDER,
-                                    ClipContext.Fluid.NONE, sender));
-                            return result.getLocation();
-                        });
-
-                int counter = StatHelper.increase(sender, SlashBlade.RegistryEvents.SWORD_SUMMONED, 1);
-                boolean sided = counter % 2 == 0;
 
                 SummondSwordEntity ss = new SummondSwordEntity(RecastingEntities.SUMMOND_SWORD.get(), worldIn, sender);
 
-                Vec3 pos = sender.getEyePosition(1.0f)
-                        .add(VectorHelper.getVectorForRotation(0.0f, sender.getViewYRot(0) + 90).scale(sided
-                                ? 1
-                                : -1));
-                ss.setPos(pos.x, pos.y, pos.z);
-                ss.setDamage(0.1f);
-                ss.lookAt(targetPos, false);
+                ss.setModifiedRatio(0.1f);
                 ss.setColor(state.getColorCode());
                 ss.setRoll(sender.getRandom().nextFloat() * 360.0f);
-
-                ss.setBreakDelay(500);
+                ss.lookAt(PosHelper.getAttackTargetPosition(sender, state), false);
 
                 worldIn.addFreshEntity(ss);
-
                 sender.playNotifySound(SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 0.2F, 1.45F);
             });
         }

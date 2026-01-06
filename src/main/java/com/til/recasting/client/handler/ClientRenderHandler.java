@@ -5,6 +5,7 @@ import com.til.recasting.client.renderer.entity.DriveEntityRenderer;
 import com.til.recasting.client.renderer.entity.JudgementCutEntityRenderer;
 import com.til.recasting.client.renderer.entity.LightningEntityRenderer;
 import com.til.recasting.client.renderer.entity.SlashEffectEntityRenderer;
+import com.til.recasting.client.renderer.entity.StellarRotationEntityRender;
 import com.til.recasting.client.renderer.entity.SummondSwordEntityRenderer;
 import com.til.recasting.registry.RecastingEntities;
 import net.minecraftforge.api.distmarker.Dist;
@@ -37,6 +38,9 @@ public class ClientRenderHandler {
         
         // 注册 Drive 实体渲染器
         event.registerEntityRenderer(RecastingEntities.DRIVE.get(), DriveEntityRenderer::new);
+        
+        // 注册星旋斩实体渲染器
+        event.registerEntityRenderer(RecastingEntities.STELLAR_ROTATION.get(), StellarRotationEntityRender::new);
     }
 }
 
