@@ -2,9 +2,12 @@ package com.til.recasting.registry;
 
 import com.til.recasting.Recasting;
 import com.til.recasting.event.AttackAmplifierEvent;
+import com.til.recasting.mixin.DamageSourcesAccessor;
 import com.til.recasting.registry.instance.AttackType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -64,13 +67,14 @@ public class RecastingAttackTypes {
     );
 
     /**
-     * 次元斩攻击类型（虚空伤害 - 使用 fellOutOfWorld 伤害源）
+     * 次元斩攻击类型（虚空伤害 - 使用 fellOutOfWorld 伤害源，带上发动者）
      */
     public static final RegistryObject<AttackType> JUDGEMENT_CUT_ATTACK = ATTACK_TYPES.register("judgement_cut",
-            () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
-                    attacker.damageSources().dragonBreath(),
-                    1.0f
-            ))
+            () -> new AttackType((attacker, target) -> {
+                DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
+                DamageSource damageSource = accessor.callSource(DamageTypes.FELL_OUT_OF_WORLD, attacker, null);
+                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, 1.0f);
+            })
     );
 
     /**
@@ -87,10 +91,30 @@ public class RecastingAttackTypes {
      * 闪电攻击类型（魔法伤害）
      */
     public static final RegistryObject<AttackType> LIGHTNING_ATTACK = ATTACK_TYPES.register("lightning",
-            () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
-                    attacker.damageSources().lightningBolt(),
-                    1.0f
-            ))
+            () -> new AttackType((attacker, target) -> {
+                DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
+                DamageSource damageSource = accessor.callSource(DamageTypes.INDIRECT_MAGIC, attacker, target);
+                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, 1.0f);
+            })
+    );
+
+    /**
+     * 黑色玫瑰攻击类型（虚空伤害 - 使用 fellOutOfWorld 伤害源，带上发动者）
+     */
+    public static final RegistryObject<AttackType> BLACK_ROSE_ATTACK = ATTACK_TYPES.register("black_rose",
+            () -> new AttackType((attacker, target) -> {
+                DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
+                DamageSource damageSource = accessor.callSource(DamageTypes.FELL_OUT_OF_WORLD, attacker, null);
+                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, 1.0f);
+            })
+    );
+
+    /**
+     * 防止递归攻击类型（用于标记不应该触发SE叠加的攻击，防止递归）
+     * 使用通用魔法伤害，带上发动者
+     */
+    public static final RegistryObject<AttackType> NO_RECURSION_ATTACK = ATTACK_TYPES.register("no_recursion",
+            () -> new AttackType((attacker, target) -> null)
     );
 
 

@@ -138,9 +138,19 @@ public class AttackHelper {
             return null;
         }
 
-        DoSlashExtendEvent event = new DoSlashExtendEvent(blade,
+        DoSlashExtendEvent event = new DoSlashExtendEvent(
+                blade,
                 blade.getCapability(ItemSlashBlade.BLADESTATE).orElseThrow(NullPointerException::new),
-                playerIn, roll, critical, damageStructure.modifiedRatio(), damageStructure.extraDamage(), knockback, attackRange);
+                playerIn,
+                roll,
+                critical,
+                damageStructure.modifiedRatio(),
+                damageStructure.extraDamage(),
+                knockback,
+                attackRange,
+                centerOffset,
+                mute
+        );
 
         if (MinecraftForge.EVENT_BUS.post(event)) {
             return null;
@@ -160,7 +170,7 @@ public class AttackHelper {
 
         jc.setColor(colorCode);
 
-        jc.setMute(mute);
+        jc.setMute(event.isMute());
         jc.setCritical(event.isCritical());
 
         jc.setModifiedRatio(event.getModifiedRatio());

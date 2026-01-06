@@ -7,6 +7,7 @@
   "mixins": [
     "AttackHelperMixin",
     "AttackManagerMixin",
+    "DamageSourcesAccessor",
     "EntityAccessor",
     "RecipeProviderMixin",
     "SlashArtsAccessor",
