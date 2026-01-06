@@ -882,14 +882,11 @@ public class SpecialEffectsRegistry {
 
         float attack = 0.2f;
         float attenuation = 0.75f;
-        int attackInterval = 5;
         int cool = 1;
 
         // 存储每个攻击者对每个目标的累计伤害
         // Map<攻击者, Map<目标, 累计伤害>>
         Map<LivingEntity, Map<LivingEntity, Float>> accumulatedDamageMap = new HashMap<>();
-        // 存储每个攻击者的最后触发时间
-        Map<LivingEntity, Long> lastTriggerTimeMap = new HashMap<>();
 
         public BlackRoseSpecialEffect(int level) {
             super(level);
@@ -913,12 +910,6 @@ public class SpecialEffectsRegistry {
             }
 
             LivingEntity attacker = event.getAttacker();
-            long currentTime = attacker.level().getGameTime();
-            Long lastTriggerTime = lastTriggerTimeMap.get(attacker);
-            if (lastTriggerTime != null && currentTime - lastTriggerTime < cool) {
-                return;
-            }
-            lastTriggerTimeMap.put(attacker, currentTime);
 
             // 获取或创建目标伤害映射
             Map<LivingEntity, Float> targetDamageMap = accumulatedDamageMap.computeIfAbsent(attacker, k -> new HashMap<>());
