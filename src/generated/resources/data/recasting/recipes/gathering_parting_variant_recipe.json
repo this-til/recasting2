@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "recasting:emerald_medium_soul_cube"
+    },
+    "W": {
+      "item": "slashblade:slashblade_white"
+    }
+  },
+  "pattern": [
+    "WWW",
+    "WEW",
+    "WWW"
+  ],
+  "result": {
+    "count": 8,
+    "item": "recasting:gathering_parting_variant"
+  },
+  "show_notification": true
+}

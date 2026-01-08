@@ -2,12 +2,14 @@ package com.til.recasting.handler;
 
 import com.til.recasting.Config;
 import com.til.recasting.event.AttackAmplifierEvent;
+import com.til.recasting.mixin.DamageSourcesAccessor;
 import com.til.recasting.registry.RecastingAttackTypes;
 import mods.flammpfeil.slashblade.SlashBladeConfig;
 import mods.flammpfeil.slashblade.capability.concentrationrank.ConcentrationRankCapabilityProvider;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -67,8 +69,10 @@ public class VanillaSlashBladeDamageHandler {
         Entity target = event.getTarget();
         int fireAspect = weapon.getEnchantmentLevel(Enchantments.FIRE_ASPECT);
         if (fireAspect > 0 && !target.fireImmune()) {
+            DamageSourcesAccessor accessor = (DamageSourcesAccessor) event.getAttacker().damageSources();
+            DamageSource damageSource = accessor.callSource(DamageTypes.ON_FIRE, target, event.getAttacker());
             event.addDamageSourceInfo(
-                    event.getAttacker().damageSources().onFire(),
+                    damageSource,
                     (float) (Config.FIRE_ASPECT_DAMAGE.get() * fireAspect)
             );
         }

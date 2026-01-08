@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "recasting:cradle_flame"
+    },
+    "G": {
+      "item": "recasting:gold_medium_soul_cube"
+    },
+    "P": {
+      "item": "recasting:copper_medium_soul_cube"
+    },
+    "U": {
+      "item": "recasting:upgrade_variant_2"
+    }
+  },
+  "pattern": [
+    "CGC",
+    "PUP",
+    "CGC"
+  ],
+  "result": {
+    "item": "recasting:upgrade_variant_3"
+  },
+  "show_notification": true
+}

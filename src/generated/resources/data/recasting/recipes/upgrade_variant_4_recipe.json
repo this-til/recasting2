@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "recasting:diamond_medium_soul_cube"
+    },
+    "L": {
+      "item": "recasting:lapis_medium_soul_cube"
+    },
+    "R": {
+      "item": "recasting:royal_flame"
+    },
+    "U": {
+      "item": "recasting:upgrade_variant_3"
+    }
+  },
+  "pattern": [
+    "RDR",
+    "LUL",
+    "RDR"
+  ],
+  "result": {
+    "item": "recasting:upgrade_variant_4"
+  },
+  "show_notification": true
+}

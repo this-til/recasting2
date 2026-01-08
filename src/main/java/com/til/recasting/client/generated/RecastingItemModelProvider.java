@@ -2,6 +2,7 @@ package com.til.recasting.client.generated;
 
 import com.til.recasting.Recasting;
 import com.til.recasting.registry.RecastingItems;
+import mods.flammpfeil.slashblade.SlashBlade;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -12,6 +13,8 @@ import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.Objects;
 
 /**
  * 物品模型数据生成器
@@ -24,17 +27,46 @@ public class RecastingItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        RecastingItems.getAllItems().forEach(this::generateProudsoulModel);
+        RecastingItems.getAllFlame().forEach(this::generateProudsoulModel);
+
+        generateProudsoulModel(RecastingItems.SE_CRYSTAL, 4);
+        generateProudsoulModel(RecastingItems.UPGRADE_VARIANT, 8);
+        generateProudsoulModel(RecastingItems.UPGRADE_VARIANT_2, 8);
+        generateProudsoulModel(RecastingItems.UPGRADE_VARIANT_3, 8);
+        generateProudsoulModel(RecastingItems.UPGRADE_VARIANT_4, 8);
+        generateProudsoulModel(RecastingItems.GATHERING_PARTING_VARIANT, 7);
+
+        // 庸魂立方体模型生成
+        generateProudsoulModel(RecastingItems.IRON_MEDIUM_SOUL_CUBE, 5);
+        generateProudsoulModel(RecastingItems.GOLD_MEDIUM_SOUL_CUBE, 5);
+        generateProudsoulModel(RecastingItems.COPPER_MEDIUM_SOUL_CUBE, 5);
+        generateProudsoulModel(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE, 5);
+        generateProudsoulModel(RecastingItems.EMERALD_MEDIUM_SOUL_CUBE, 5);
+        generateProudsoulModel(RecastingItems.NETHERITE_MEDIUM_SOUL_CUBE, 5);
+        generateProudsoulModel(RecastingItems.LAPIS_MEDIUM_SOUL_CUBE, 5);
+        generateProudsoulModel(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE, 5);
     }
 
-    @SuppressWarnings("UnusedReturnValue")
     public ItemModelBuilder generateProudsoulModel(RegistryObject<Item> item) {
-        String name = item.getId().getPath();
         ResourceLocation texture = Recasting.prefix("item/soul");
-        ResourceLocation parentModel = Recasting.prefix("item/proudsoul");
+        ResourceLocation parentModel = Recasting.prefix("item/soul");
+        return generateProudsoulModel(item, parentModel, texture);
+    }
 
-        return getBuilder(name)
-                .parent(new ModelFile.UncheckedModelFile(parentModel))
+    public ItemModelBuilder generateProudsoulModel(RegistryObject<Item> item, int modelLevel) {
+        ResourceLocation texture = Recasting.prefix("item/soul_0");
+        return generateProudsoulModel(item, modelLevel, texture);
+    }
+
+
+    public ItemModelBuilder generateProudsoulModel(RegistryObject<Item> item, int modelLevel, ResourceLocation texture) {
+        ResourceLocation parentModel = Recasting.prefix("item/soul_" + modelLevel);
+        return generateProudsoulModel(item, parentModel, texture);
+    }
+
+    public ItemModelBuilder generateProudsoulModel(RegistryObject<Item> item, ResourceLocation model, ResourceLocation texture) {
+        return getBuilder(Objects.requireNonNull(item.getId()).getPath())
+                .parent(new ModelFile.UncheckedModelFile(model))
                 .texture("layer0", texture)
                 .guiLight(BlockModel.GuiLight.FRONT)
                 .transforms()

@@ -13,9 +13,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 @Log4j2
 @Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -30,23 +34,69 @@ public class ClientDataGenerator {
         // 注册物品模型生成器
         dataGenerator.addProvider(event.includeClient(), new RecastingItemModelProvider(packOutput, existingFileHelper));
 
-        // 收集所有 LanguageItem 字段
+        // 收集所有 LanguageItem 字段（包括单个 LanguageItem 和 List<LanguageItem>）
         List<LanguageItem> languageItemList = Arrays.stream(LanguageItems.class.getDeclaredFields())
-                .filter(field -> field.getType().equals(LanguageItem.class))
                 .filter(field -> Modifier.isStatic(field.getModifiers()))
                 .filter(field -> Modifier.isFinal(field.getModifiers()))
+                .filter(field -> {
+                    // 检查是否为单个 LanguageItem 字段
+                    if (field.getType().equals(LanguageItem.class)) {
+                        return true;
+                    }
+                    // 检查是否为 List<LanguageItem> 字段
+                    if (List.class.isAssignableFrom(field.getType())) {
+                        Type genericType = field.getGenericType();
+                        if (genericType instanceof ParameterizedType) {
+                            ParameterizedType paramType = (ParameterizedType) genericType;
+                            Type[] actualTypes = paramType.getActualTypeArguments();
+                            if (actualTypes.length == 1 && actualTypes[0] == LanguageItem.class) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                })
                 .peek(field -> field.setAccessible(true))
-                .map(field -> {
+                .flatMap(field -> {
                     try {
-                        return field.get(null);
+                        Object fieldValue = field.get(null);
+                        if (fieldValue == null) {
+                            return Stream.empty();
+                        }
+                        
+                        // 如果是单个 LanguageItem
+                        if (fieldValue instanceof LanguageItem) {
+                            return Stream.of((LanguageItem) fieldValue);
+                        }
+                        
+                        // 如果是 List<LanguageItem>
+                        if (fieldValue instanceof List) {
+                            @SuppressWarnings("unchecked")
+                            List<LanguageItem> list = (List<LanguageItem>) fieldValue;
+                            return list.stream()
+                                    .filter(Objects::nonNull)
+                                    .filter(item -> item instanceof LanguageItem);
+                        }
+                        
+                        // 如果是其他 Collection 类型（兼容性处理）
+                        if (fieldValue instanceof Collection) {
+                            @SuppressWarnings("unchecked")
+                            Collection<?> collection = (Collection<?>) fieldValue;
+                            return collection.stream()
+                                    .filter(Objects::nonNull)
+                                    .filter(item -> item instanceof LanguageItem)
+                                    .map(item -> (LanguageItem) item);
+                        }
+                        
+                        return Stream.empty();
                     } catch (IllegalAccessException e) {
-                        log.warn("无法访问 LanguageItem 字段", e);
-                        return null;
+                        log.warn("无法访问字段: {} (类型: {})", field.getName(), field.getType().getSimpleName(), e);
+                        return Stream.empty();
+                    } catch (Exception e) {
+                        log.error("处理字段时发生错误: {} (类型: {})", field.getName(), field.getType().getSimpleName(), e);
+                        return Stream.empty();
                     }
                 })
-                .filter(Objects::nonNull)
-                .filter(o -> o instanceof LanguageItem)
-                .map(o -> (LanguageItem) o)
                 .toList();
 
         // 为每种语言类型创建 LanguageProvider

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:redstone_block"
+    },
+    "O": {
+      "item": "recasting:obsession_flame"
+    },
+    "P": {
+      "item": "slashblade:proudsoul"
+    }
+  },
+  "pattern": [
+    "POP",
+    "OBO",
+    "POP"
+  ],
+  "result": {
+    "item": "recasting:redstone_medium_soul_cube"
+  },
+  "show_notification": true
+}

@@ -46,7 +46,8 @@ public class AttackHelper {
                     mainHandItem, s, attacker, target, damageStructure.modifiedRatio(), damageStructure.extraDamage(), attackTypeList,
                     attackTypeList.stream()
                             .map(a -> a.createDamageSource(attacker, target))
-                            .filter(Objects::nonNull).collect(Collectors.toList())
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList())
             );
 
             // 计算暴击状态（用于后续音效和粒子效果）

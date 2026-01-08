@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "recasting:copper_medium_soul_cube"
+    },
+    "I": {
+      "item": "recasting:iron_medium_soul_cube"
+    },
+    "P": {
+      "item": "recasting:poetry_ash_flame"
+    },
+    "U": {
+      "item": "recasting:upgrade_variant"
+    }
+  },
+  "pattern": [
+    "PCP",
+    "IUI",
+    "PCP"
+  ],
+  "result": {
+    "item": "recasting:upgrade_variant_2"
+  },
+  "show_notification": true
+}

@@ -159,6 +159,10 @@ public class SlashArtsRegistry {
 
         public abstract void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension);
 
+
+        public String getDescId() {
+            return getDescriptionId() + ".desc";
+        }
     }
 
     /**
@@ -482,6 +486,8 @@ public class SlashArtsRegistry {
             // 添加到世界
             worldIn.addFreshEntity(jc);
 
+            jc.setRepeatedAttack(true);
+
             // 播放音效
             worldIn.playSound(null, jc.getX(), jc.getY(), jc.getZ(),
                     SoundEvents.ENDERMAN_TELEPORT,
@@ -592,7 +598,7 @@ public class SlashArtsRegistry {
             List<LivingEntity> attackEntities = new java.util.ArrayList<>(EntityHelper.getTargettableLivingEntityWithinAABB(
                     livingEntity.level(),
                     livingEntity,
-                    livingEntity.position(),
+                    attackPos,
                     attackRange
             ));
 

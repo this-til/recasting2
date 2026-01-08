@@ -28,6 +28,7 @@ public class ItemColorHandler {
         RecastingItems.getAllItems().stream()
                 .map(RegistryObject::get)
                 .filter(item -> item instanceof IGradientColorProvider)
+                .filter(item -> ((IGradientColorProvider) item).getGradient() != null)
                 .forEach(item -> event.register(createGradientItemColor(), item));
     }
 

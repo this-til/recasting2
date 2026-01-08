@@ -72,7 +72,7 @@ public class RecastingAttackTypes {
     public static final RegistryObject<AttackType> JUDGEMENT_CUT_ATTACK = ATTACK_TYPES.register("judgement_cut",
             () -> new AttackType((attacker, target) -> {
                 DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
-                DamageSource damageSource = accessor.callSource(DamageTypes.FELL_OUT_OF_WORLD, attacker, null);
+                DamageSource damageSource = accessor.callSource(DamageTypes.DRAGON_BREATH, target, attacker);
                 return new AttackAmplifierEvent.DamageSourceInfo(damageSource, 1.0f);
             })
     );
@@ -93,7 +93,7 @@ public class RecastingAttackTypes {
     public static final RegistryObject<AttackType> LIGHTNING_ATTACK = ATTACK_TYPES.register("lightning",
             () -> new AttackType((attacker, target) -> {
                 DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
-                DamageSource damageSource = accessor.callSource(DamageTypes.INDIRECT_MAGIC, attacker, target);
+                DamageSource damageSource = accessor.callSource(DamageTypes.LIGHTNING_BOLT, target, attacker);
                 return new AttackAmplifierEvent.DamageSourceInfo(damageSource, 1.0f);
             })
     );
@@ -104,7 +104,7 @@ public class RecastingAttackTypes {
     public static final RegistryObject<AttackType> BLACK_ROSE_ATTACK = ATTACK_TYPES.register("black_rose",
             () -> new AttackType((attacker, target) -> {
                 DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
-                DamageSource damageSource = accessor.callSource(DamageTypes.FELL_OUT_OF_WORLD, attacker, null);
+                DamageSource damageSource = accessor.callSource(DamageTypes.WITHER_SKULL, target, attacker);
                 return new AttackAmplifierEvent.DamageSourceInfo(damageSource, 1.0f);
             })
     );

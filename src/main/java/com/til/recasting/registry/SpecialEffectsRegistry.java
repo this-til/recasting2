@@ -12,39 +12,38 @@ import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.event.DoSlashExtendEvent;
 import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.handler.PosHelper;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.util.VectorHelper;
-import com.til.recasting.registry.RecastingAttackTypes;
-import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.DamageStructure;
 import com.til.recasting.util.NumberPack;
-import lombok.Getter;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.event.SlashBladeEvent;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.stream.IntStream;
+import java.util.function.Supplier;
 
 /**
  * Special Effects (SE) 注册表
@@ -59,60 +58,59 @@ public class SpecialEffectsRegistry {
     );
 
 
-    public static final List<RegistryObject<SpecialEffect>> COOPERATE_WITH = registerExtendedSE("cooperate_with", 5, CooperateWithSpecialEffect::new);
+    public static final RegistryObject<SpecialEffect> COOPERATE_WITH = registerExtendedSE("cooperate_with", CooperateWithSpecialEffect::new);
     // 十字斩 - 挥刀时追加一道剑气
-    public static final List<RegistryObject<SpecialEffect>> CROSS_CHOP = registerExtendedSE("cross_chop", 5, CrossChopSpecialEffect::new);
+    public static final RegistryObject<SpecialEffect> CROSS_CHOP = registerExtendedSE("cross_chop", CrossChopSpecialEffect::new);
     // 剑气释放 - 挥刀时有概率发出剑气
-    public static final List<RegistryObject<SpecialEffect>> DRIVE_RELEASE = registerExtendedSE("drive_release", 5, DriveReleaseSpecialEffect::new);
+    public static final RegistryObject<SpecialEffect> DRIVE_RELEASE = registerExtendedSE("drive_release", DriveReleaseSpecialEffect::new);
     // 生长 - 挥刀时恢复生命
-    public static final List<RegistryObject<SpecialEffect>> GROWTH = registerExtendedSE("growth", 5, GrowthSpecialEffect::new);
+    public static final RegistryObject<SpecialEffect> GROWTH = registerExtendedSE("growth", GrowthSpecialEffect::new);
     // 回溯 - 挥刀时恢复耐久
-    public static final List<RegistryObject<SpecialEffect>> REGRESSION = registerExtendedSE("regression", 5, RegressionSpecialEffect::new);
+    public static final RegistryObject<SpecialEffect> REGRESSION = registerExtendedSE("regression", RegressionSpecialEffect::new);
     // 断罪 - 触发SA时追加次元斩攻击
-    public static final List<RegistryObject<SpecialEffect>> JUDGEMENT = registerExtendedSE("judgement", 5, JudgementSpecialEffect::new);
+    public static final RegistryObject<SpecialEffect> JUDGEMENT = registerExtendedSE("judgement", JudgementSpecialEffect::new);
     // 冲击 - 造成伤害有几率召唤幻影剑造成瞬间伤害
-    public static final List<RegistryObject<SpecialEffect>> IMPACT = registerExtendedSE("impact", 5, ImpactSpecialEffect::new);
+    public static final RegistryObject<SpecialEffect> IMPACT = registerExtendedSE("impact", ImpactSpecialEffect::new);
     // 过载 - 挥刀时小概率触发审判
-    public static final List<RegistryObject<SpecialEffect>> OVERLOAD = registerExtendedSE("overload", 5, OverloadSpecialEffect::new);
+    public static final RegistryObject<SpecialEffect> OVERLOAD = registerExtendedSE("overload", OverloadSpecialEffect::new);
     // 抵抗 - 挥刀时获得伤害吸收
-    public static final List<RegistryObject<SpecialEffect>> RESIST = registerExtendedSE("resist", 5, ResistSpecialEffect::new);
+    public static final RegistryObject<SpecialEffect> RESIST = registerExtendedSE("resist", ResistSpecialEffect::new);
     // 断却 - 触发次元斩之后造成一次大伤害和大范围的劈砍
-    public static final List<RegistryObject<SpecialEffect>> SEVER_BREAK = registerExtendedSE("sever_break", 5, SeverBreakSpecialEffect::new);
+    public static final RegistryObject<SpecialEffect> SEVER_BREAK = registerExtendedSE("sever_break", SeverBreakSpecialEffect::new);
     // 风暴 - 触发审判时，召唤幻影剑进行攻击
-    public static final List<RegistryObject<SpecialEffect>> STORM = registerExtendedSE("storm", 5, StormSpecialEffect::new);
+    public static final RegistryObject<SpecialEffect> STORM = registerExtendedSE("storm", StormSpecialEffect::new);
     // 风暴.变体 - 触发审判时，从上方召唤幻影剑进行攻击
-    public static final List<RegistryObject<SpecialEffect>> STORM_VARIANT = registerExtendedSE("storm_variant", 5, StormVariantSpecialEffect::new);
+    public static final RegistryObject<SpecialEffect> STORM_VARIANT = registerExtendedSE("storm_variant", StormVariantSpecialEffect::new);
 
     // ==================== 攻击类型增幅 SE ====================
     // 太虚 - 幻影剑增幅
-    public static final List<RegistryObject<SpecialEffect>> GREAT_VOID = registerExtendedSE("great_void", 5, i -> new AttackAmplifierSpecialEffect(i, RecastingAttackTypes.SUMMOND_SWORD_ATTACK, new NumberPack(0.2f, 0.1f)));
+    public static final RegistryObject<SpecialEffect> GREAT_VOID = registerExtendedSE("great_void", () -> new AttackAmplifierSpecialEffect(RecastingAttackTypes.SUMMOND_SWORD_ATTACK, new NumberPack(0.1f, 0.1f)));
     // 斩击精通 - 斩击增幅
-    public static final List<RegistryObject<SpecialEffect>> SLASH_MASTERY = registerExtendedSE("slash_mastery", 5, i -> new AttackAmplifierSpecialEffect(i, RecastingAttackTypes.SLASH_EFFECT_ATTACK, new NumberPack(0.2f, 0.1f)));
+    public static final RegistryObject<SpecialEffect> SLASH_MASTERY = registerExtendedSE("slash_mastery", () -> new AttackAmplifierSpecialEffect(RecastingAttackTypes.SLASH_EFFECT_ATTACK, new NumberPack(0.1f, 0.1f)));
     // 震荡 - 次元斩增幅
-    public static final List<RegistryObject<SpecialEffect>> SHOCK = registerExtendedSE("shock", 5, i -> new AttackAmplifierSpecialEffect(i, RecastingAttackTypes.JUDGEMENT_CUT_ATTACK, new NumberPack(0.2f, 0.1f)));
+    public static final RegistryObject<SpecialEffect> SHOCK = registerExtendedSE("shock", () -> new AttackAmplifierSpecialEffect(RecastingAttackTypes.JUDGEMENT_CUT_ATTACK, new NumberPack(0.2f, 0.15f)));
     // 剑气纵横 - 剑气增幅
-    public static final List<RegistryObject<SpecialEffect>> SWORD_QI_MASTERY = registerExtendedSE("sword_qi_mastery", 5, i -> new AttackAmplifierSpecialEffect(i, RecastingAttackTypes.DRIVE_ATTACK, new NumberPack(0.2f, 0.1f)));
+    public static final RegistryObject<SpecialEffect> SWORD_QI_MASTERY = registerExtendedSE("sword_qi_mastery", () -> new AttackAmplifierSpecialEffect(RecastingAttackTypes.DRIVE_ATTACK, new NumberPack(0.2f, 0.15f)));
     // 雷霆万钧 - 闪电增幅
-    public static final List<RegistryObject<SpecialEffect>> THUNDER_STRIKE = registerExtendedSE("thunder_strike", 5, i -> new AttackAmplifierSpecialEffect(i, RecastingAttackTypes.LIGHTNING_ATTACK, new NumberPack(0.2f, 0.1f)));
+    public static final RegistryObject<SpecialEffect> THUNDER_STRIKE = registerExtendedSE("thunder_strike", () -> new AttackAmplifierSpecialEffect(RecastingAttackTypes.LIGHTNING_ATTACK, new NumberPack(0.2f, 0.15f)));
 
     // ==================== 特殊刀 SE ====================
     // 黑色玫瑰 - 叠加伤害，每 tick 造成伤害，伤害减半
-    public static final List<RegistryObject<SpecialEffect>> BLACK_ROSE = registerExtendedSE("black_rose", 1, BlackRoseSpecialEffect::new);
+    public static final RegistryObject<SpecialEffect> BLACK_ROSE = registerExtendedSE("black_rose", () -> new BlackRoseSpecialEffect().setMaxLevel(1));
 
-    public static List<RegistryObject<SpecialEffect>> registerExtendedSE(String name, int macLevel, Function<Integer, SpecialEffect> factory) {
-        return IntStream.range(0, macLevel)
-                .mapToObj(i -> SPECIAL_EFFECT.register(name + "_" + i, () -> factory.apply(i)))
-                .toList();
+    public static RegistryObject<SpecialEffect> registerExtendedSE(String name, Supplier<SpecialEffect> factory) {
+        return SPECIAL_EFFECT.register(name, factory);
     }
 
+    @Accessors(chain = true)
     public static class ExtendedSpecialEffect extends SpecialEffect {
 
         @Getter
-        int level;
+        @Setter
+        int maxLevel = 5;
 
-        public ExtendedSpecialEffect(int level) {
+        public ExtendedSpecialEffect() {
             super(0, false, false);
-            this.level = level;
             MinecraftForge.EVENT_BUS.register(this);
         }
 
@@ -123,14 +121,54 @@ public class SpecialEffectsRegistry {
             );
         }
 
+        public int getLevel(PropertiesDefinitionExtension propertiesDefinitionExtension) {
+            if (propertiesDefinitionExtension == null) {
+                return 0;
+            }
+
+            // 获取当前 SpecialEffect 的 ResourceLocation
+            IForgeRegistry<SpecialEffect> registry = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get();
+            ResourceLocation resourceLocation = registry.getKey(this);
+
+            if (resourceLocation == null) {
+                return 0;
+            }
+
+            // 从 extendedSpecialLevels 中获取等级
+            return propertiesDefinitionExtension.extendedSpecialLevels()
+                    .getOrDefault(resourceLocation, 0);
+        }
+
+        protected PropertiesDefinitionExtension getPropertiesDefinitionExtension(ItemStack itemStack) {
+            if (itemStack == null || itemStack.isEmpty()) {
+                return null;
+            }
+            //noinspection DataFlowIssue
+            return itemStack.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION)
+                    .orElse(null);
+        }
+
+        public String getDescId() {
+            return getDescriptionId() + ".desc";
+        }
+
+        @Override
+        public String toString() {
+            try {
+                return super.toString();
+            } catch (Exception ignored) {
+            }
+            return this.getClass().getSimpleName();
+        }
+
     }
 
     public static class AttackAmplifierSpecialEffect extends ExtendedSpecialEffect {
         RegistryObject<AttackType> attackType;
         NumberPack attack;
 
-        public AttackAmplifierSpecialEffect(int level, RegistryObject<AttackType> attackType, NumberPack attack) {
-            super(level);
+        public AttackAmplifierSpecialEffect(RegistryObject<AttackType> attackType, NumberPack attack) {
+            super();
             this.attackType = attackType;
             this.attack = attack;
         }
@@ -147,7 +185,8 @@ public class SpecialEffectsRegistry {
                 return;
             }
             // 添加伤害倍率加成
-            event.addModifiedRatioAmplifier(attack.of(getLevel()));
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(event.getItem());
+            event.addModifiedRatioAmplifier(attack.of(getLevel(properties)));
         }
     }
 
@@ -162,17 +201,16 @@ public class SpecialEffectsRegistry {
         NumberPack attackRatio = new NumberPack(0, 0.1f);
         int delay = 10;
 
-        public CooperateWithSpecialEffect(int level) {
-            super(level);
-        }
-
         @SubscribeEvent
         public void onEvent(DoSlashExtendEvent event) {
             if (!hasSpecialEffect(event.getSlashBladeState())) {
                 return;
             }
 
-            if (event.getUser().getRandom().nextFloat() >= probability.of(getLevel())) {
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(event.getBlade());
+            int level = getLevel(properties);
+
+            if (event.getUser().getRandom().nextFloat() >= probability.of(level)) {
                 return;
             }
 
@@ -186,8 +224,8 @@ public class SpecialEffectsRegistry {
                                     event.isMute(),
                                     event.isCritical(),
                                     new DamageStructure(
-                                            event.getModifiedRatio() * attackRatio.of(getLevel()),
-                                            (float) (event.getDamage() * attackRatio.of(getLevel()))
+                                            event.getModifiedRatio() * attackRatio.of(level),
+                                            (float) (event.getDamage() * attackRatio.of(level))
                                     ),
                                     event.getAttackRange(),
                                     null
@@ -209,10 +247,6 @@ public class SpecialEffectsRegistry {
 
         NumberPack attackRatio = new NumberPack(0f, 0.1f);
 
-        public CrossChopSpecialEffect(int level) {
-            super(level);
-        }
-
         @SubscribeEvent
         public void onEvent(DoSlashExtendEvent event) {
             if (!hasSpecialEffect(event.getSlashBladeState())) {
@@ -221,6 +255,9 @@ public class SpecialEffectsRegistry {
             if (event.getUser().level().isClientSide()) {
                 return;
             }
+
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(event.getBlade());
+            int level = getLevel(properties);
 
             // 计算位置（参考 AttackHelper.doSlash）
             Vec3 pos = event.getUser().position().add(0.0D, (double) event.getUser().getEyeHeight() * 0.75D, 0.0D)
@@ -244,9 +281,9 @@ public class SpecialEffectsRegistry {
             crossSlash.setColor(event.getSlashBladeState().getColorCode());
             crossSlash.setMute(event.isMute());
             crossSlash.setCritical(event.isCritical());
-            crossSlash.setModifiedRatio(event.getModifiedRatio() * attackRatio.of(getLevel()));
+            crossSlash.setModifiedRatio(event.getModifiedRatio() * attackRatio.of(level));
             //noinspection deprecation
-            crossSlash.setDamage((float) (event.getDamage() * attackRatio.of(getLevel())));
+            crossSlash.setDamage((float) (event.getDamage() * attackRatio.of(level)));
             crossSlash.setSize(event.getAttackRange());
 
             // 设置击退（如果有）
@@ -270,18 +307,17 @@ public class SpecialEffectsRegistry {
         int lifetime = 40;
         float speed = 0.45f;
 
-        public DriveReleaseSpecialEffect(int level) {
-            super(level);
-        }
-
         @SubscribeEvent
         public void onEvent(DoSlashExtendEvent event) {
             if (!hasSpecialEffect(event.getSlashBladeState())) {
                 return;
             }
 
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(event.getBlade());
+            int level = getLevel(properties);
+
             // 概率检查
-            if (event.getUser().getRandom().nextFloat() >= probability.of(getLevel())) {
+            if (event.getUser().getRandom().nextFloat() >= probability.of(level)) {
                 return;
             }
 
@@ -295,7 +331,7 @@ public class SpecialEffectsRegistry {
             // 设置属性
             driveEntity.setColor(event.getSlashBladeState().getColorCode());
             driveEntity.setSize(event.getAttackRange());
-            driveEntity.setModifiedRatio(event.getModifiedRatio() * attackRatio.of(getLevel()));
+            driveEntity.setModifiedRatio(event.getModifiedRatio() * attackRatio.of(level));
             driveEntity.setMaxLifeTime(lifetime);
             driveEntity.setRoll(event.getRoll());
             driveEntity.setSeep(speed);
@@ -318,18 +354,17 @@ public class SpecialEffectsRegistry {
 
         NumberPack healAmount = new NumberPack(0f, 0.2f);
 
-        public GrowthSpecialEffect(int level) {
-            super(level);
-        }
-
         @SubscribeEvent
         public void onEvent(DoSlashExtendEvent event) {
             if (!hasSpecialEffect(event.getSlashBladeState())) {
                 return;
             }
 
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(event.getBlade());
+            int level = getLevel(properties);
+
             // 恢复生命值
-            float heal = healAmount.of(getLevel());
+            float heal = healAmount.of(level);
             if (heal > 0) {
                 event.getUser().heal(heal);
             }
@@ -345,10 +380,6 @@ public class SpecialEffectsRegistry {
 
         NumberPack durabilityAmount = new NumberPack(0f, 1f);
 
-        public RegressionSpecialEffect(int level) {
-            super(level);
-        }
-
         @SubscribeEvent
         public void onEvent(DoSlashExtendEvent event) {
             if (!hasSpecialEffect(event.getSlashBladeState())) {
@@ -360,13 +391,16 @@ public class SpecialEffectsRegistry {
                 return;
             }
 
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(event.getBlade());
+            int level = getLevel(properties);
+
             ISlashBladeState state = event.getSlashBladeState();
             if (state.getMaxDamage() <= 0) {
                 return;
             }
 
             // 恢复耐久值
-            int restoreAmount = (int) durabilityAmount.of(getLevel());
+            int restoreAmount = (int) durabilityAmount.of(level);
             if (restoreAmount > 0) {
                 int currentDamage = state.getDamage();
                 int newDamage = Math.max(0, currentDamage - restoreAmount);
@@ -384,10 +418,6 @@ public class SpecialEffectsRegistry {
 
         NumberPack attackRatio = new NumberPack(0.2f, 0.1f);
         int delay = 5;
-
-        public JudgementSpecialEffect(int level) {
-            super(level);
-        }
 
         @SubscribeEvent
         public void onEvent(SlashBladeEvent.ChargeActionEvent event) {
@@ -408,6 +438,9 @@ public class SpecialEffectsRegistry {
             LivingEntity user = event.getEntityLiving();
             ISlashBladeState state = event.getSlashBladeState();
             ItemStack blade = user.getMainHandItem();
+
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(blade);
+            int level = getLevel(properties);
 
             // 延迟执行，确保SA已经触发
             user.getCapability(TimeRunCapability.TIME_RUN).ifPresent(
@@ -434,7 +467,7 @@ public class SpecialEffectsRegistry {
                                 jc.setColor(state.getColorCode());
 
                                 // 设置伤害倍率
-                                jc.setModifiedRatio(attackRatio.of(getLevel()));
+                                jc.setModifiedRatio(attackRatio.of(level));
 
                                 // 添加到世界
                                 worldIn.addFreshEntity(jc);
@@ -452,14 +485,9 @@ public class SpecialEffectsRegistry {
      */
     public static class ImpactSpecialEffect extends ExtendedSpecialEffect {
 
-        NumberPack probability = new NumberPack(0f, 0.07f);
+        NumberPack probability = new NumberPack(0f, 0.05f);
         NumberPack attackRatio = new NumberPack(0f, 0.1f);
-        int interval = 2;
-        Map<LivingEntity, Long> lastTriggerTimeMap = new WeakHashMap<>();
 
-        public ImpactSpecialEffect(int level) {
-            super(level);
-        }
 
         @SubscribeEvent
         public void onEvent(AttackAmplifierEvent event) {
@@ -477,19 +505,14 @@ public class SpecialEffectsRegistry {
                 return;
             }
 
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(event.getItem());
+            int level = getLevel(properties);
+
             // 概率检查
-            if (event.getAttacker().getRandom().nextFloat() >= probability.of(getLevel())) {
+            if (event.getAttacker().getRandom().nextFloat() >= probability.of(level)) {
                 return;
             }
 
-            // 时间间隔检查（每个攻击者独立）
-            LivingEntity attacker = event.getAttacker();
-            long currentTime = attacker.level().getGameTime();
-            Long lastTriggerTime = lastTriggerTimeMap.get(attacker);
-            if (lastTriggerTime != null && currentTime - lastTriggerTime < interval) {
-                return;
-            }
-            lastTriggerTimeMap.put(attacker, currentTime);
 
             // 延迟执行，确保攻击已经完成
             event.getAttacker().getCapability(TimeRunCapability.TIME_RUN).ifPresent(
@@ -524,7 +547,7 @@ public class SpecialEffectsRegistry {
                                 summondSword.setColor(event.getSlashBladeState().getColorCode());
 
                                 // 设置伤害倍率
-                                summondSword.setModifiedRatio(attackRatio.of(getLevel()));
+                                summondSword.setModifiedRatio(attackRatio.of(level));
 
                                 // 设置最大生命时间
                                 summondSword.setMaxLifeTime(40);
@@ -550,10 +573,6 @@ public class SpecialEffectsRegistry {
 
         NumberPack probability = new NumberPack(0f, 0.03f);
 
-        public OverloadSpecialEffect(int level) {
-            super(level);
-        }
-
         @SubscribeEvent
         public void onEvent(DoSlashExtendEvent event) {
             if (!hasSpecialEffect(event.getSlashBladeState())) {
@@ -565,8 +584,11 @@ public class SpecialEffectsRegistry {
                 return;
             }
 
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(event.getBlade());
+            int level = getLevel(properties);
+
             // 概率检查
-            if (event.getUser().getRandom().nextFloat() >= probability.of(getLevel())) {
+            if (event.getUser().getRandom().nextFloat() >= probability.of(level)) {
                 return;
             }
 
@@ -610,10 +632,6 @@ public class SpecialEffectsRegistry {
         NumberPack level = new NumberPack(1f, 0f);
         NumberPack time = new NumberPack(1f, 1f);
 
-        public ResistSpecialEffect(int level) {
-            super(level);
-        }
-
         @SubscribeEvent
         public void onEvent(DoSlashExtendEvent event) {
             if (!hasSpecialEffect(event.getSlashBladeState())) {
@@ -625,9 +643,12 @@ public class SpecialEffectsRegistry {
                 return;
             }
 
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(event.getBlade());
+            int levelValue = getLevel(properties);
+
             // 添加伤害吸收效果
-            int effectLevel = (int) level.of(getLevel());
-            int duration = (int) time.of(getLevel());
+            int effectLevel = (int) level.of(levelValue);
+            int duration = (int) time.of(levelValue);
             event.getUser().addEffect(new MobEffectInstance(MobEffects.ABSORPTION, duration, effectLevel));
         }
 
@@ -639,12 +660,8 @@ public class SpecialEffectsRegistry {
      */
     public static class SeverBreakSpecialEffect extends ExtendedSpecialEffect {
 
-        NumberPack attackRatio = new NumberPack(0f, 0.3f);
+        NumberPack attackRatio = new NumberPack(0.1f, 0.15f);
         NumberPack rangeRatio = new NumberPack(1f, 0.1f);
-
-        public SeverBreakSpecialEffect(int level) {
-            super(level);
-        }
 
         @SubscribeEvent
         public void onEvent(EntityJoinLevelEvent event) {
@@ -670,10 +687,13 @@ public class SpecialEffectsRegistry {
                 return;
             }
 
-            blade.getCapability(mods.flammpfeil.slashblade.item.ItemSlashBlade.BLADESTATE).ifPresent(state -> {
+            blade.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(state -> {
                 if (!hasSpecialEffect(state)) {
                     return;
                 }
+
+                PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(blade);
+                int level = getLevel(properties);
 
                 // 获取次元斩位置
                 Vec3 attackPos = jc.position();
@@ -684,7 +704,7 @@ public class SpecialEffectsRegistry {
                         .orElse(1.0f);
 
                 // 计算期望长度
-                double desiredLength = 4 * attackDistance * rangeRatio.of(getLevel());
+                double desiredLength = 4 * attackDistance * rangeRatio.of(level);
 
                 // 生成随机偏移
                 double x = (shooter.getRandom().nextDouble() * 2 - 1) * desiredLength;
@@ -706,7 +726,7 @@ public class SpecialEffectsRegistry {
                 slashEffect.lookAt(attackPos, false);
                 slashEffect.setColor(state.getColorCode());
                 slashEffect.setMute(false);
-                slashEffect.setModifiedRatio(attackRatio.of(getLevel()));
+                slashEffect.setModifiedRatio(attackRatio.of(level));
                 slashEffect.setSize((float) (desiredLength / 4));
 
                 // 添加到世界
@@ -724,10 +744,6 @@ public class SpecialEffectsRegistry {
 
         NumberPack attackRatio = new NumberPack(0f, 0.05f);
         NumberPack number = new NumberPack(2f, 1f);
-
-        public StormSpecialEffect(int level) {
-            super(level);
-        }
 
         @SubscribeEvent
         public void onEvent(EntityJoinLevelEvent event) {
@@ -753,17 +769,20 @@ public class SpecialEffectsRegistry {
                 return;
             }
 
-            blade.getCapability(mods.flammpfeil.slashblade.item.ItemSlashBlade.BLADESTATE).ifPresent(state -> {
+            blade.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(state -> {
                 if (!hasSpecialEffect(state)) {
                     return;
                 }
+
+                PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(blade);
+                int level = getLevel(properties);
 
                 // 获取次元斩位置
                 Vec3 pos = jc.position();
 
                 // 生成幻影剑数量
-                int n = (int) number.of(getLevel());
-                float attack = attackRatio.of(getLevel());
+                int n = (int) number.of(level);
+                float attack = attackRatio.of(level);
 
                 for(int i = 0; i < n; i++) {
                     SummondSwordEntity summondSword = new SummondSwordEntity(
@@ -801,10 +820,6 @@ public class SpecialEffectsRegistry {
         NumberPack attackRatio = new NumberPack(0f, 0.05f);
         NumberPack number = new NumberPack(2f, 1f);
 
-        public StormVariantSpecialEffect(int level) {
-            super(level);
-        }
-
         @SubscribeEvent
         public void onEvent(EntityJoinLevelEvent event) {
             // 只在服务端执行
@@ -829,17 +844,20 @@ public class SpecialEffectsRegistry {
                 return;
             }
 
-            blade.getCapability(mods.flammpfeil.slashblade.item.ItemSlashBlade.BLADESTATE).ifPresent(state -> {
+            blade.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(state -> {
                 if (!hasSpecialEffect(state)) {
                     return;
                 }
+
+                PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(blade);
+                int level = getLevel(properties);
 
                 // 获取次元斩位置
                 Vec3 attackPos = jc.position();
 
                 // 生成幻影剑数量
-                int n = (int) number.of(getLevel());
-                float attack = attackRatio.of(getLevel());
+                int n = (int) number.of(level);
+                float attack = attackRatio.of(level);
 
                 for(int i = 0; i < n; i++) {
                     // 在上方随机位置生成
@@ -880,17 +898,13 @@ public class SpecialEffectsRegistry {
      */
     public static class BlackRoseSpecialEffect extends ExtendedSpecialEffect {
 
-        float attack = 0.2f;
+        float attack = 0.05f;
         float attenuation = 0.75f;
-        int cool = 1;
+        int attackInterval = 5;
 
         // 存储每个攻击者对每个目标的累计伤害
         // Map<攻击者, Map<目标, 累计伤害>>
         Map<LivingEntity, Map<LivingEntity, Float>> accumulatedDamageMap = new HashMap<>();
-
-        public BlackRoseSpecialEffect(int level) {
-            super(level);
-        }
 
         @SubscribeEvent
         public void onAttackAmplifier(AttackAmplifierEvent event) {
@@ -948,6 +962,9 @@ public class SpecialEffectsRegistry {
             }
 
             long currentTime = firstAttacker.level().getGameTime();
+            if (currentTime % attackInterval != 0) {
+                return;
+            }
 
             // 清理无效的攻击者并统一造成伤害
             Iterator<Map.Entry<LivingEntity, Map<LivingEntity, Float>>> attackerIterator = accumulatedDamageMap.entrySet().iterator();
@@ -958,18 +975,11 @@ public class SpecialEffectsRegistry {
                 // 如果攻击者无效，清除整个条目
                 if (attacker == null || !attacker.isAlive() || attacker.level().isClientSide()) {
                     attackerIterator.remove();
-                    lastTriggerTimeMap.remove(attacker);
                     continue;
                 }
 
                 Map<LivingEntity, Float> targetDamageMap = attackerEntry.getValue();
 
-                // 检查是否到了统一伤害间隔（基于游戏时间）
-                if (currentTime % attackInterval != 0) {
-                    continue;
-                }
-
-                // 到了伤害间隔，统一对所有目标造成伤害
                 if (targetDamageMap == null || targetDamageMap.isEmpty()) {
                     continue;
                 }
@@ -1018,7 +1028,6 @@ public class SpecialEffectsRegistry {
                 // 如果目标映射为空，清除攻击者条目
                 if (targetDamageMap.isEmpty()) {
                     attackerIterator.remove();
-                    lastTriggerTimeMap.remove(attacker);
                 }
             }
         }

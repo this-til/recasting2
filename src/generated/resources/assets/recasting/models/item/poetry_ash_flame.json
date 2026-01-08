@@ -1,5 +1,5 @@
 {
-  "parent": "recasting:item/proudsoul",
+  "parent": "recasting:item/soul",
   "display": {
     "firstperson_righthand": {
       "rotation": [

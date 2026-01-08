@@ -17,6 +17,7 @@ public class StellarRotationEntity extends JudgementCutEntity {
 
     public StellarRotationEntity(EntityType<? extends StellarRotationEntity> entityTypeIn, Level worldIn, LivingEntity shooting) {
         super(entityTypeIn, worldIn, shooting);
+        setRepeatedAttack(true);
     }
 
 }

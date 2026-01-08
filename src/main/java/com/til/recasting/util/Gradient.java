@@ -2,6 +2,7 @@ package com.til.recasting.util;
 
 import lombok.Getter;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -452,5 +453,9 @@ public class Gradient {
     public static Gradient createFromColor(int baseColor) {
         return createFromColor(baseColor, 0.5f, 1.2f);
     }
+    public static Gradient createFromColor(Color baseColor) {
+        return createFromColor(baseColor.getRGB());
+    }
+
 }
 

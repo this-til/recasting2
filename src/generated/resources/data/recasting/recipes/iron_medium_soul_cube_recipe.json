@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:iron_block"
+    },
+    "M": {
+      "item": "recasting:mirror_flame"
+    },
+    "P": {
+      "item": "slashblade:proudsoul"
+    }
+  },
+  "pattern": [
+    "PMP",
+    "MBM",
+    "PMP"
+  ],
+  "result": {
+    "item": "recasting:iron_medium_soul_cube"
+  },
+  "show_notification": true
+}

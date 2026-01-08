@@ -20,7 +20,7 @@ public class LightningEntity extends ContinuousDamageEntity {
 
     public LightningEntity(EntityType<?> entityTypeIn, Level worldIn, LivingEntity shooting) {
         super(entityTypeIn, worldIn, shooting);
-        this.setRepeatedAttack(true);
+        this.setRepeatedAttack(false);
         setMaxLifeTime(this.random.nextInt(15) + 5);
         boltVertex = this.random.nextLong();
         setParameterRange(3);

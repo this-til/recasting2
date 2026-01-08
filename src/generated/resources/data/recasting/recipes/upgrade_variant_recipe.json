@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "item": "recasting:gathering_parting_variant"
+    },
+    "N": {
+      "item": "minecraft:nether_star"
+    },
+    "R": {
+      "item": "recasting:redstone_medium_soul_cube"
+    }
+  },
+  "pattern": [
+    "RGR",
+    "GNG",
+    "RGR"
+  ],
+  "result": {
+    "item": "recasting:upgrade_variant"
+  },
+  "show_notification": true
+}

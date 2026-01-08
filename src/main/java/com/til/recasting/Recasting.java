@@ -16,6 +16,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 
 @Log4j2
 @Mod(Recasting.MODID)
