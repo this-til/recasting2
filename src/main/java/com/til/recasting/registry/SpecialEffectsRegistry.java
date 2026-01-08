@@ -2,7 +2,6 @@ package com.til.recasting.registry;
 
 import com.til.recasting.Recasting;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
-import com.til.recasting.capability.TimeRunCapability;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.entity.DriveEntity;
 import com.til.recasting.entity.JudgementCutEntity;
@@ -42,7 +41,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -214,7 +212,7 @@ public class SpecialEffectsRegistry {
                 return;
             }
 
-            event.getUser().getCapability(TimeRunCapability.TIME_RUN).ifPresent(
+            event.getUser().getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(
                     timeRun -> timeRun.addTimerCell(
                             () -> AttackHelper.doSlash(
                                     event.getUser(),
@@ -443,7 +441,7 @@ public class SpecialEffectsRegistry {
             int level = getLevel(properties);
 
             // 延迟执行，确保SA已经触发
-            user.getCapability(TimeRunCapability.TIME_RUN).ifPresent(
+            user.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(
                     timeRun -> timeRun.addTimerCell(
                             () -> {
                                 Level worldIn = user.level();
@@ -515,7 +513,7 @@ public class SpecialEffectsRegistry {
 
 
             // 延迟执行，确保攻击已经完成
-            event.getAttacker().getCapability(TimeRunCapability.TIME_RUN).ifPresent(
+            event.getAttacker().getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(
                     timeRun -> timeRun.addTimerCell(
                             () -> {
                                 Level worldIn = event.getAttacker().level();

@@ -17,6 +17,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import com.til.recasting.network.NetworkManager;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 
 @Log4j2
@@ -33,6 +34,9 @@ public class Recasting {
 
         fmlJavaModLoadingContext.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
+        // 注册网络管理器
+        NetworkManager.register();
+
         RecastingEntityDataSerializers.ENTITY_DATA_SERIALIZERS.register(modEventBus);
 
         // 注册实体类型
@@ -40,6 +44,9 @@ public class Recasting {
 
         // 注册攻击类型注册表
         RecastingAttackTypes.ATTACK_TYPES.register(modEventBus);
+
+        // 注册Buff类型注册表
+        RecastingBuffTypes.BUFF_TYPES.register(modEventBus);
 
         // 注册 Slash Arts (SA) 注册表
         // 注意：必须在 ComboState 之前注册，因为 ComboState 依赖于 SlashArts

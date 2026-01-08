@@ -359,8 +359,23 @@ public class LanguageItems {
 
     // 升格变体名称
     public static final LanguageItem UPGRADE_VARIANT = createItemLanguage(RecastingItems.UPGRADE_VARIANT)
-            .addTranslation(LanguageTypes.ZH_CN, "升格变体")
-            .addTranslation(LanguageTypes.EN_US, "Upgrade Variant");
+            .addTranslation(LanguageTypes.ZH_CN, "升格变体 I")
+            .addTranslation(LanguageTypes.EN_US, "Upgrade Variant II");
+
+    // 升格变体 II 名称
+    public static final LanguageItem UPGRADE_VARIANT_2 = createItemLanguage(RecastingItems.UPGRADE_VARIANT_2)
+            .addTranslation(LanguageTypes.ZH_CN, "升格变体 II")
+            .addTranslation(LanguageTypes.EN_US, "Upgrade Variant II");
+
+    // 升格变体 III 名称
+    public static final LanguageItem UPGRADE_VARIANT_3 = createItemLanguage(RecastingItems.UPGRADE_VARIANT_3)
+            .addTranslation(LanguageTypes.ZH_CN, "升格变体 III")
+            .addTranslation(LanguageTypes.EN_US, "Upgrade Variant III");
+
+    // 升格变体 IV 名称
+    public static final LanguageItem UPGRADE_VARIANT_4 = createItemLanguage(RecastingItems.UPGRADE_VARIANT_4)
+            .addTranslation(LanguageTypes.ZH_CN, "升格变体 IV")
+            .addTranslation(LanguageTypes.EN_US, "Upgrade Variant IV");
 
     // ========== 庸魂立方体 ==========
     // 银灰庸魂立方体名称

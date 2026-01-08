@@ -1,8 +1,8 @@
 package com.til.recasting.handler;
 
 import com.til.recasting.Recasting;
-import com.til.recasting.capability.SECrystalCapability;
-import com.til.recasting.capability.SlashBladeDefinitionExtensionCapabilityProvider;
+import com.til.recasting.capability.provider.SECrystalProvider;
+import com.til.recasting.capability.provider.SlashBladeDefinitionExtensionProvider;
 import com.til.recasting.registry.RecastingItems;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.resources.ResourceLocation;
@@ -21,10 +21,10 @@ public class CapabilityAttachHandler {
     public static void onAttachCapabilitiesItemStack(AttachCapabilitiesEvent<ItemStack> event) {
         ItemStack stack = event.getObject();
         if (stack.getItem() instanceof ItemSlashBlade) {
-            event.addCapability(EXTENSION_KEY, new SlashBladeDefinitionExtensionCapabilityProvider());
+            event.addCapability(EXTENSION_KEY, new SlashBladeDefinitionExtensionProvider());
         }
         if (stack.getItem() == RecastingItems.SE_CRYSTAL.get()) {
-            event.addCapability(SE_CRYSTAL_KEY, new SECrystalCapability.Provider());
+            event.addCapability(SE_CRYSTAL_KEY, new SECrystalProvider());
         }
     }
 }

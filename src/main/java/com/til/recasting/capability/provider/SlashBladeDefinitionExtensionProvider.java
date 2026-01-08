@@ -1,5 +1,7 @@
-package com.til.recasting.capability;
+package com.til.recasting.capability.provider;
 
+import com.til.recasting.capability.PropertiesDefinitionExtension;
+import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -14,7 +16,7 @@ import javax.annotation.Nullable;
 /**
  * CapabilityProvider 用于同时提供 PropertiesDefinitionExtension 和 RenderDefinitionExtension 两个 capabilities
  */
-public class SlashBladeDefinitionExtensionCapabilityProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+public class SlashBladeDefinitionExtensionProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
     protected final LazyOptional<PropertiesDefinitionExtension> propertiesExtension = LazyOptional.of(PropertiesDefinitionExtension::new);
     protected final LazyOptional<RenderDefinitionExtension> renderExtension = LazyOptional.of(RenderDefinitionExtension::new);

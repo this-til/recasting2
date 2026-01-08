@@ -1,11 +1,9 @@
 package com.til.recasting.registry;
 
-import com.mojang.authlib.minecraft.report.ReportedEntity;
 import com.til.recasting.Recasting;
 import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
-import com.til.recasting.capability.TimeRunCapability;
 import com.til.recasting.entity.*;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.EntityHelper;
@@ -186,7 +184,7 @@ public class SlashArtsRegistry {
             int number = attackNumber + livingEntity.getRandom().nextInt(attackDeviation + 1);
 
             // 获取实体的定时器
-            LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(TimeRunCapability.TIME_RUN);
+            LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN);
 
             timeRunOptional.ifPresent(timeRun -> {
                 for(int i = 0; i < number; i++) {
@@ -371,7 +369,7 @@ public class SlashArtsRegistry {
             float angleStep = 360f / attackNumber;
 
             // 获取实体的定时器
-            LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(TimeRunCapability.TIME_RUN);
+            LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN);
 
             timeRunOptional.ifPresent(timeRun -> {
                 for(int i = 0; i < attackNumber; i++) {
@@ -516,7 +514,7 @@ public class SlashArtsRegistry {
             final Vec3[] lastPos = {null};
 
             // 获取实体的定时器
-            LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(TimeRunCapability.TIME_RUN);
+            LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN);
 
             timeRunOptional.ifPresent(timeRun -> {
                 for(int i = 0; i < attackNumber; i++) {
@@ -603,7 +601,7 @@ public class SlashArtsRegistry {
             ));
 
             // 获取实体的定时器
-            LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(TimeRunCapability.TIME_RUN);
+            LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN);
 
             timeRunOptional.ifPresent(timeRun -> {
                 for(int i = 0; i < attackNumber; i++) {

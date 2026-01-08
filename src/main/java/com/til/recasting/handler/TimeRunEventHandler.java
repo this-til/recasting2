@@ -1,8 +1,8 @@
-package com.til.recasting.event;
+package com.til.recasting.handler;
 
 import com.til.recasting.Recasting;
 import com.til.recasting.capability.ITimeRun;
-import com.til.recasting.capability.TimeRunCapability;
+import com.til.recasting.capability.provider.TimeRunProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -23,9 +23,9 @@ public class TimeRunEventHandler {
     @SubscribeEvent
     public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof LivingEntity) {
-            TimeRunCapability.Provider provider = new TimeRunCapability.Provider();
+            TimeRunProvider provider = new TimeRunProvider();
             event.addCapability(Recasting.prefix("time_run"), provider);
-            
+
             // 确保在实体移除时失效
             event.addListener(provider::invalidate);
         }
@@ -38,7 +38,7 @@ public class TimeRunEventHandler {
     public static void onLivingTick(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
         if (!entity.level().isClientSide()) {
-            entity.getCapability(TimeRunCapability.TIME_RUN).ifPresent(ITimeRun::tick);
+            entity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(ITimeRun::tick);
         }
     }
 }
