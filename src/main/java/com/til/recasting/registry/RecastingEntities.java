@@ -6,6 +6,7 @@ import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.entity.LightningEntity;
 import com.til.recasting.entity.SlashEffectEntity;
 import com.til.recasting.entity.StellarRotationEntity;
+import com.til.recasting.entity.SummondSpiralSwordEntity;
 import com.til.recasting.entity.SummondSwordEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -81,6 +82,25 @@ public class RecastingEntities {
                     .noSummon()                      // 不能通过命令召唤
                     .setShouldReceiveVelocityUpdates(true)
                     .build("summond_sword")
+    );
+
+    /**
+     * 螺旋剑实体
+     * - 围绕目标旋转的召唤剑
+     * - 支持自定义旋转轴、半径、速度
+     * - 可以向内或向外发射
+     */
+    public static final RegistryObject<EntityType<SummondSpiralSwordEntity>> SUMMOND_SPIRAL_SWORD = ENTITY_TYPES.register(
+            "summond_spiral_sword",
+            () -> EntityType.Builder.<SummondSpiralSwordEntity>of((e, l) -> new SummondSpiralSwordEntity(e, l, null), MobCategory.MISC)
+                    .sized(0.5f, 0.5f)               // 碰撞箱大小
+                    .clientTrackingRange(64)         // 客户端追踪范围（格）
+                    .updateInterval(20)              // 更新间隔（tick）
+                    .fireImmune()                    // 免疫火焰伤害
+                    .noSave()                        // 不保存到世界数据
+                    .noSummon()                      // 不能通过命令召唤
+                    .setShouldReceiveVelocityUpdates(true)
+                    .build("summond_spiral_sword")
     );
 
     /**

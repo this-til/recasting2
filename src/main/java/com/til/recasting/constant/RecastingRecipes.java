@@ -486,7 +486,7 @@ public class RecastingRecipes {
                     .pattern("WWW")
                     .pattern("WEW")
                     .pattern("WWW")
-                    .define('W', SlashBladeItems.SLASHBLADE_WHITE.get())
+                    .define('W', SlashBladeItems.SLASHBLADE_SILVERBAMBOO.get())
                     .define('E', RecastingItems.EMERALD_MEDIUM_SOUL_CUBE.get())
                     .unlockedBy("has_slashblade_white", RecipeProviderMixin.invokeHas(SlashBladeItems.SLASHBLADE_WHITE.get()))
                     .save(consumer, recipeId);

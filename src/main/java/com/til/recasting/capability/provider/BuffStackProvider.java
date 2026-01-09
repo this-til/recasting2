@@ -1,6 +1,5 @@
 package com.til.recasting.capability.provider;
 
-import com.til.recasting.capability.BuffStackData;
 import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import net.minecraft.core.Direction;
@@ -19,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class BuffStackProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-    private final BuffStackData data = new BuffStackData();
+    private final IBuffStackData.BuffStackData data = new IBuffStackData.BuffStackData();
     private final LazyOptional<IBuffStackData> lazyOptional = LazyOptional.of(() -> data);
 
     /**
@@ -44,7 +43,7 @@ public class BuffStackProvider implements ICapabilityProvider, INBTSerializable<
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        ((BuffStackData) data).deserializeNBT(nbt);
+        ((IBuffStackData.BuffStackData) data).deserializeNBT(nbt);
     }
 
     public void invalidate() {

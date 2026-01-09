@@ -33,6 +33,9 @@ public class ClientRenderHandler {
         // 注册召唤剑实体渲染器
         event.registerEntityRenderer(RecastingEntities.SUMMOND_SWORD.get(), SummondSwordEntityRenderer::new);
         
+        // 注册螺旋剑实体渲染器（使用相同的渲染器）
+        event.registerEntityRenderer(RecastingEntities.SUMMOND_SPIRAL_SWORD.get(), SummondSwordEntityRenderer::new);
+        
         // 注册斩击特效实体渲染器
         event.registerEntityRenderer(RecastingEntities.SLASH_EFFECT.get(), SlashEffectEntityRenderer::new);
         

@@ -2,6 +2,7 @@ package com.til.recasting.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import com.til.recasting.client.renderer.RenderStateManage;
 import com.til.recasting.entity.SummondSwordEntity;
 import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;
 import mods.flammpfeil.slashblade.client.renderer.model.obj.WavefrontObject;
@@ -59,7 +60,7 @@ public class SummondSwordEntityRenderer<E extends SummondSwordEntity> extends En
 
             WavefrontObject model = BladeModelManager.getInstance().getModel(entity.getModel());
             BladeRenderState.setCol(entity.getColor().getRGB(), false);
-            BladeRenderState.renderOverridedLuminous(ItemStack.EMPTY, model, "ss", this.getTextureLocation(entity), matrixStack, bufferIn, packedLightIn);
+            BladeRenderState.renderOverrided(ItemStack.EMPTY, model, "ss", this.getTextureLocation(entity), matrixStack, bufferIn, packedLightIn, RenderStateManage::mackLuminous, false);
         }
     }
 }

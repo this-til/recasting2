@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-08T19:22:56.9950705	Recipes
+// 1.20.1	2026-01-09T17:09:51.3193281	Recipes
 a74627e490b2ab2d41e968543fdb44be214ba575 data/recasting/advancements/recipes/combat/art_knife_recipe.json
 52d7b6355b869e21a747e54fc73458af5528c047 data/recasting/advancements/recipes/combat/ba_gua_recipe.json
 f7ae944104cc6e9e73a96fcc0c0065228a0073af data/recasting/advancements/recipes/combat/black_recipe.json
@@ -51,7 +51,7 @@ cc8905d08c8d3a265e215af05b19d25c32bd1dad data/recasting/recipes/copper_medium_so
 19e82a6f4b8197d14141996fce92003f3365674c data/recasting/recipes/craftsman_flame_recipe.json
 51ad61253907021a4cb6aa69c4a0723335cf3577 data/recasting/recipes/diamond_medium_soul_cube_recipe.json
 86b36b5512aaf40729d38aa8a06ec36798753367 data/recasting/recipes/emerald_medium_soul_cube_recipe.json
-493ffb7dd4297a69264806d401f5b269b860c6e2 data/recasting/recipes/gathering_parting_variant_recipe.json
+96d0045ac8e7edb852df7711806d26ffa04dea92 data/recasting/recipes/gathering_parting_variant_recipe.json
 618bcde3f7db102123b7e5c4628beb7092dd6d18 data/recasting/recipes/gold_medium_soul_cube_recipe.json
 505df776c864a1244d5aa5f6e37ce55379436319 data/recasting/recipes/green_blade_iron_recipe.json
 29b23f939b5739878534589cdef828fc4d655b77 data/recasting/recipes/green_blade_wood_recipe.json

@@ -1,6 +1,7 @@
 package com.til.recasting.handler;
 
 
+import com.til.recasting.entity.SummondSpiralSwordEntity;
 import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.registry.RecastingEntities;
 import mods.flammpfeil.slashblade.SlashBlade;
@@ -23,7 +24,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -56,13 +56,11 @@ public class SummonedSwordHelper {
         ItemStack blade = sender.getMainHandItem();
         var bladeState = blade.getCapability(ItemSlashBlade.BLADESTATE).orElse(new SlashBladeState(blade));
 
-        if (bladeState.isBroken() || bladeState.isSealed()
-                || !SwordType.from(blade).contains(SwordType.BEWITCHED)) {
+        if (bladeState.isBroken() || bladeState.isSealed() || !SwordType.from(blade).contains(SwordType.BEWITCHED)) {
             return;
         }
 
-        int powerLevel = blade
-                .getEnchantmentLevel(Enchantments.POWER_ARROWS);
+        int powerLevel = blade.getEnchantmentLevel(Enchantments.POWER_ARROWS);
         if (powerLevel <= 0) {
             return;
         }
@@ -80,15 +78,15 @@ public class SummonedSwordHelper {
             sender.getCapability(CapabilityInputState.INPUT_STATE).ifPresent(input -> {
 
                 // SpiralSwords command
-                input.getScheduler().schedule("SpiralSwords", pressTime + 10, (rawEntity, queue, now) -> performSpiralSwords(powerLevel, pressTime, rawEntity));
+                input.getScheduler().schedule("SpiralSwords", pressTime + 10, (rawEntity, queue, now) -> performSpiralSwords(pressTime, rawEntity));
 
                 // StormSwords command
-                input.getScheduler().schedule("StormSwords", pressTime + 10, (rawEntity, queue, now) -> performStormSwords(powerLevel, pressTime, rawEntity));
+                input.getScheduler().schedule("StormSwords", pressTime + 10, (rawEntity, queue, now) -> performStormSwords(pressTime, rawEntity));
 
                 // BlisteringSwords command
-                input.getScheduler().schedule("BlisteringSwords", pressTime + 10, (rawEntity, queue, now) -> performBlisteringSwords(powerLevel, pressTime, rawEntity, now));
+                input.getScheduler().schedule("BlisteringSwords", pressTime + 10, (rawEntity, queue, now) -> performBlisteringSwords(pressTime, rawEntity, now));
 
-                input.getScheduler().schedule("HeavyRainSwords", pressTime + 10, (rawEntity, queue, now) -> performHeavyRains(powerLevel, pressTime, rawEntity, now));
+                input.getScheduler().schedule("HeavyRainSwords", pressTime + 10, (rawEntity, queue, now) -> performHeavyRains(pressTime, rawEntity, now));
 
             });
 
@@ -149,7 +147,7 @@ public class SummonedSwordHelper {
         return new Vec3(f3 * f4, -f5, f2 * f4);
     }
 
-    private static void performSpiralSwords(int powerLevel, final Long pressTime, LivingEntity rawEntity) {
+    private static void performSpiralSwords(final Long pressTime, LivingEntity rawEntity) {
         if (!(rawEntity instanceof ServerPlayer entity)) {
             return;
         }
@@ -167,15 +165,25 @@ public class SummonedSwordHelper {
         }
 
         // spiralSwords
-        boolean alreadySummoned = entity.getPassengers().stream()
-                .anyMatch(e -> e instanceof EntitySpiralSwords);
+        Level worldIn = entity.level();
 
-        if (alreadySummoned) {
-            // fire
-            List<Entity> list = entity.getPassengers().stream()
-                    .filter(e -> e instanceof EntitySpiralSwords).toList();
+        // 检查是否已经有圆环幻影剑在旋转
+        List<SummondSpiralSwordEntity> existingSwords = worldIn.getEntitiesOfClass(
+                SummondSpiralSwordEntity.class,
+                entity.getBoundingBox().inflate(10),
+                sword -> sword.getShooter() == entity
+                        && sword.getCenterEntity() == entity
+                        && sword.getActionType() == SummondSwordEntity.ActionType.PREPARE
+        );
 
-            list.forEach(e -> ((EntitySpiralSwords) e).doFire());
+        if (!existingSwords.isEmpty()) {
+            // fire - 让所有旋转的剑发射
+            existingSwords.forEach(sword -> {
+                if (sword.getActionType() == SummondSwordEntity.ActionType.PREPARE) {
+                    sword.setActionType(SummondSwordEntity.ActionType.FLYING);
+                    sword.updateMotion(sword.getSeep());
+                }
+            });
         } else {
             // summon
             entity.getMainHandItem().getCapability(ItemSlashBlade.BLADESTATE).ifPresent((state) -> {
@@ -189,8 +197,6 @@ public class SummonedSwordHelper {
                 //圆环幻影剑
                 AdvancementHelper.grantCriterion(entity, ADVANCEMENT_SPIRAL_SWORDS);
 
-                Level worldIn = entity.level();
-
                 int rank = entity.getCapability(CapabilityConcentrationRank.RANK_POINT)
                         .map(r -> r.getRank(worldIn.getGameTime()).level).orElse(0);
 
@@ -201,17 +207,30 @@ public class SummonedSwordHelper {
                 }
 
                 for(int i = 0; i < count; i++) {
-                    EntitySpiralSwords ss = new EntitySpiralSwords(
-                            SlashBlade.RegistryEvents.SpiralSwords, worldIn);
-                    ss.setPos(entity.position());
-                    ss.setOwner(entity);
+                    SummondSpiralSwordEntity ss = new SummondSpiralSwordEntity(
+                            RecastingEntities.SUMMOND_SPIRAL_SWORD.get(), worldIn, entity);
+
+                    // 设置旋转中心为玩家
+                    ss.setCenterEntity(entity);
+
+                    // 设置旋转参数（匀速旋转，固定半径）
+                    ss.setRotationRadius(2.0f); // 固定半径 2 格
+                    ss.setRotationSpeed(16.0f); // 旋转速度 6 度/tick
+                    ss.setRotationSpeedModifier(1.0f); // 速度不变
+                    ss.setRotationRadiusModifier(1.0f); // 半径不变
+                    ss.setRotationAngle(360.0f / count * i); // 均匀分布在圆周上
+                    ss.setRotationAxis(new Vec3(0, 1, 0)); // 绕 Y 轴旋转
+                    ss.setRotationDirectionOutward(true); // 朝外
+
+                    // 启用旋转时攻击
+                    ss.setCanAttackDuringRotation(true);
+
+                    // 设置基本属性
+                    ss.setModifiedRatio(0.1f);
                     ss.setColor(state.getColorCode());
                     ss.setRoll(0);
-                    ss.setDamage(powerLevel);
-                    // force riding
-                    ss.startRiding(entity, true);
-
-                    ss.setDelay(360 / count * i);
+                    ss.setStartDelay(Integer.MAX_VALUE); // 不自动发射，等待手动触发
+                    ss.setSeep(3.0f); // 发射速度
 
                     worldIn.addFreshEntity(ss);
 
@@ -222,7 +241,7 @@ public class SummonedSwordHelper {
         }
     }
 
-    private static void performStormSwords(int powerLevel, final Long pressTime, LivingEntity rawEntity) {
+    private static void performStormSwords(final Long pressTime, LivingEntity rawEntity) {
         if (!(rawEntity instanceof ServerPlayer entity)) {
             return;
         }
@@ -251,8 +270,8 @@ public class SummonedSwordHelper {
             if (state.getProudSoulCount() < SlashBladeConfig.SUMMON_SWORD_ART_COST.get()) {
                 return;
             }
-            state.setProudSoulCount(
-                    state.getProudSoulCount() - SlashBladeConfig.SUMMON_SWORD_ART_COST.get());
+            state.setProudSoulCount(state.getProudSoulCount() - SlashBladeConfig.SUMMON_SWORD_ART_COST.get());
+
             //烈风环影剑
             AdvancementHelper.grantCriterion(entity, ADVANCEMENT_STORM_SWORDS);
 
@@ -266,26 +285,32 @@ public class SummonedSwordHelper {
             }
 
             for(int i = 0; i < count; i++) {
-                EntityStormSwords ss = new EntityStormSwords(SlashBlade.RegistryEvents.StormSwords,
-                        worldIn);
+                SummondSpiralSwordEntity ss = new SummondSpiralSwordEntity(RecastingEntities.SUMMOND_SPIRAL_SWORD.get(), worldIn, entity);
 
-                ss.setPos(entity.position());
-                ss.setOwner(entity);
+                // 设置旋转中心为目标
+                ss.setCenterEntity(target);
+
+                // 设置旋转参数（使用辅助方法自动计算修饰参数）
+                ss.setRadiusExpansion(2.5f, 6.0f, 30); // 40 tick 后从 2.5 格扩展到 8 格
+                ss.setSpeedDecay(16.0f, 0.3f, 30); // 40 tick 后从 16 度/tick 衰减到接近 0
+                ss.setRotationAngle(360.0f / count * i); // 均匀分布在圆周上
+                ss.setRotationAxis(new Vec3(0, 1, 0)); // 绕 Y 轴旋转
+                ss.setRotationDirectionOutward(false); // 朝向中心
+
+                // 设置基本属性
+                ss.setModifiedRatio(0.1f);
                 ss.setColor(state.getColorCode());
                 ss.setRoll(0);
-                ss.setDamage(powerLevel);
-                // force riding
-                ss.startRiding(target, true);
-                ss.setDelay(360 / count * i);
+                ss.setStartDelay(30); // 延迟 40 tick (2秒) 后发射
+
                 worldIn.addFreshEntity(ss);
 
-                entity.playNotifySound(SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 0.2F,
-                        1.45F);
+                entity.playNotifySound(SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 0.2F, 1.45F);
             }
         });
     }
 
-    private static void performBlisteringSwords(int powerLevel, final Long pressTime, LivingEntity rawEntity, long now) {
+    private static void performBlisteringSwords(final Long pressTime, LivingEntity rawEntity, long now) {
         if (!(rawEntity instanceof ServerPlayer entity)) {
             return;
         }
@@ -310,8 +335,8 @@ public class SummonedSwordHelper {
             if (state.getProudSoulCount() < SlashBladeConfig.SUMMON_SWORD_ART_COST.get()) {
                 return;
             }
-            state.setProudSoulCount(
-                    state.getProudSoulCount() - SlashBladeConfig.SUMMON_SWORD_ART_COST.get());
+            state.setProudSoulCount(state.getProudSoulCount() - SlashBladeConfig.SUMMON_SWORD_ART_COST.get());
+
             //急袭幻影剑
             AdvancementHelper.grantCriterion(entity, ADVANCEMENT_BLISTERING_SWORDS);
 
@@ -325,18 +350,50 @@ public class SummonedSwordHelper {
             }
 
             for(int i = 0; i < count; i++) {
-                EntityBlisteringSwords ss = new EntityBlisteringSwords(
-                        SlashBlade.RegistryEvents.BlisteringSwords, worldIn);
+                SummondSwordEntity ss = new SummondSwordEntity(
+                        RecastingEntities.SUMMOND_SWORD.get(), worldIn, entity);
 
-                ss.setPos(entity.position());
-                ss.setOwner(entity);
+                // 计算起始位置（参考 EntityBlisteringSwords.faceEntityStandby）
+                Vec3 basePos = entity.position().add(0, entity.getEyeHeight() * 0.8, 0);
+
+                boolean isRight = i % 2 == 0;
+                int level = i / 2;
+                double xOffset = (1 - 0.1 * level) * (isRight
+                        ? 1
+                        : -1);
+                double yOffset = 0.25 * level;
+                double zOffset = -0.1 * level;
+
+                Vec3 offset = new Vec3(xOffset, yOffset, zOffset);
+                offset = offset.xRot((float) Math.toRadians(-entity.getXRot()));
+                offset = offset.yRot((float) Math.toRadians(-entity.getYRot()));
+
+                Vec3 startPos = basePos.add(offset);
+
+                // 设置位置
+                ss.setPos(startPos);
+
+                // 设置基本属性
+                ss.setModifiedRatio(0.1f);
                 ss.setColor(state.getColorCode());
                 ss.setRoll(0);
-                ss.setDamage(powerLevel);
-                // force riding
-                ss.startRiding(entity, true);
+                ss.setStartDelay(i);
+                ss.setSeep(3.5f);
+                ss.setIgnoringBlock(false);
 
-                ss.setDelay(i);
+
+                // 计算目标位置（参考 EntityBlisteringSwords 的发射逻辑）
+                Entity target = state.getTargetEntity(worldIn);
+                Vec3 targetPos;
+                if (target != null && target.isAlive()) {
+                    targetPos = new Vec3(target.getX(), target.getY() + target.getEyeHeight() * 0.5, target.getZ());
+                } else {
+                    // 如果没有目标，朝向玩家前方
+                    Vec3 forwardDir = entity.getLookAngle();
+                    targetPos = startPos.add(forwardDir.scale(40));
+                }
+
+                ss.lookAt(targetPos, false, true);
 
                 worldIn.addFreshEntity(ss);
 
@@ -346,7 +403,7 @@ public class SummonedSwordHelper {
         });
     }
 
-    private static void performHeavyRains(int powerLevel, final Long pressTime, LivingEntity rawEntity, long now) {
+    private static void performHeavyRains(final Long pressTime, LivingEntity rawEntity, long now) {
         if (!(rawEntity instanceof ServerPlayer entity)) {
             return;
         }
@@ -392,45 +449,48 @@ public class SummonedSwordHelper {
             float yOffset = 7;
             basePos = basePos.add(0, yOffset, 0);
 
-            {// no random pos
-                EntityHeavyRainSwords ss = new EntityHeavyRainSwords(
-                        SlashBlade.RegistryEvents.HeavyRainSwords, worldIn);
+            int count = 9 + Math.min(rank - 1, 0);
+            int multiplier = 2;
 
-                ss.setOwner(entity);
+            // 第一个剑（中心位置，无延迟）
+            {
+                SummondSwordEntity ss = new SummondSwordEntity(RecastingEntities.SUMMOND_SWORD.get(), worldIn, entity);
+
+                ss.setModifiedRatio(0.1f);
                 ss.setColor(state.getColorCode());
                 ss.setRoll(0);
-                ss.setDamage(powerLevel);
-                // force riding
-                ss.startRiding(entity, true);
+                ss.setStartDelay(0);
+                ss.setIgnoringBlock(false);
 
-                ss.setDelay(0);
-
+                // 设置在目标上方
                 ss.setPos(basePos);
-
-                ss.setXRot(-90);
+                // 向下发射（-90度俯仰角）
+                ss.setRot(entity.getYRot(), -90.0f, false);
+                ss.updateMotion(ss.getSeep());
 
                 worldIn.addFreshEntity(ss);
             }
 
-            int count = 9 + Math.min(rank - 1, 0);
-            int multiplier = 2;
+            // 其他剑（有扩散和延迟）
             for(int i = 0; i < count; i++) {
                 for(int l = 0; l < multiplier; l++) {
-                    EntityHeavyRainSwords ss = new EntityHeavyRainSwords(
-                            SlashBlade.RegistryEvents.HeavyRainSwords, worldIn);
+                    SummondSwordEntity ss = new SummondSwordEntity(RecastingEntities.SUMMOND_SWORD.get(), worldIn, entity);
 
-                    ss.setOwner(entity);
+                    ss.setModifiedRatio(0.1f);
                     ss.setColor(state.getColorCode());
                     ss.setRoll(0);
-                    ss.setDamage(powerLevel);
-                    // force riding
-                    ss.startRiding(entity, true);
+                    ss.setStartDelay(i); // 延迟发射
+                    ss.setIgnoringBlock(false);
 
-                    ss.setDelay(i);
+                    // 计算扩散位置（随机偏移）
+                    double spreadX = (entity.getRandom().nextDouble() - 0.5) * 4.0; // -2 到 +2 格
+                    double spreadZ = (entity.getRandom().nextDouble() - 0.5) * 4.0; // -2 到 +2 格
+                    Vec3 spreadPos = basePos.add(spreadX, 0, spreadZ);
 
-                    ss.setSpread(basePos);
-
-                    ss.setXRot(-90);
+                    ss.setPos(spreadPos);
+                    // 向下发射（-90度俯仰角）
+                    ss.setRot(entity.getYRot(), 90.0f, false);
+                    ss.updateMotion(ss.getSeep());
 
                     worldIn.addFreshEntity(ss);
 

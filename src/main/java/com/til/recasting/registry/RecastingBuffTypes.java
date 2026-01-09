@@ -102,12 +102,12 @@ public class RecastingBuffTypes {
      * 注册自定义Buff类型
      * 
      * @param name Buff类型名称
-     * @param decayPerTick 每过多少tick减少一级，0表示不衰减
+     * @param decayInterval 衰减间隔（每过多少tick减少一级），0表示不衰减
      * @param maxLevel 最大等级，0表示无限制
      * @return 注册的BuffType
      */
-    public static RegistryObject<BuffType> register(String name, int decayPerTick, int maxLevel) {
-        return BUFF_TYPES.register(name, () -> new BuffType(decayPerTick, maxLevel));
+    public static RegistryObject<BuffType> register(String name, int decayInterval, int maxLevel) {
+        return BUFF_TYPES.register(name, () -> new BuffType(decayInterval, maxLevel));
     }
 }
 
