@@ -117,6 +117,16 @@ public class RecastingAttackTypes {
             () -> new AttackType((attacker, target) -> null)
     );
 
+    /**
+     * 星闪攻击类型（魔法伤害）
+     */
+    public static final RegistryObject<AttackType> STAR_BLINK_ATTACK = ATTACK_TYPES.register("star_blink",
+            () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
+                    attacker.damageSources().indirectMagic(target, attacker),
+                    1.0f
+            ))
+    );
+
 
 }
 

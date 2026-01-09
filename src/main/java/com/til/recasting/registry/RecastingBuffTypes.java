@@ -40,62 +40,13 @@ public class RecastingBuffTypes {
     // ==================== 预定义的Buff类型 ====================
 
     /**
-     * 默认Buff类型
+     * 星闪Buff类型
      * - 不衰减
-     * - 无最大等级限制
-     */
-    public static final RegistryObject<BuffType> DEFAULT = BUFF_TYPES.register("default",
-            () -> new BuffType(0, 0)
-    );
-
-    /**
-     * 临时Buff类型
-     * - 每1tick减少1级
-     * - 无最大等级限制
-     * - 适用于需要随时间自动消失的buff
-     */
-    public static final RegistryObject<BuffType> TEMPORARY = BUFF_TYPES.register("temporary",
-            () -> new BuffType(1, 0)
-    );
-
-    /**
-     * 快速衰减Buff类型
-     * - 每1tick减少1级（与TEMPORARY相同，但语义上表示快速衰减）
-     * - 无最大等级限制
-     * - 适用于快速消失的buff
-     */
-    public static final RegistryObject<BuffType> FAST_DECAY = BUFF_TYPES.register("fast_decay",
-            () -> new BuffType(1, 0)
-    );
-
-    /**
-     * 慢速衰减Buff类型
-     * - 每10tick减少1级
-     * - 无最大等级限制
-     * - 适用于持续时间较长的buff
-     */
-    public static final RegistryObject<BuffType> SLOW_DECAY = BUFF_TYPES.register("slow_decay",
-            () -> new BuffType(10, 0)
-    );
-
-    /**
-     * 有上限的Buff类型
-     * - 不衰减
-     * - 最大等级为10
-     * - 适用于有上限的叠加buff
-     */
-    public static final RegistryObject<BuffType> CAPPED = BUFF_TYPES.register("capped",
-            () -> new BuffType(0, 10)
-    );
-
-    /**
-     * 有上限且衰减的Buff类型
-     * - 每1tick减少1级
      * - 最大等级为5
-     * - 适用于有上限且会衰减的buff
+     * - 用于星闪特效的层数累积
      */
-    public static final RegistryObject<BuffType> CAPPED_DECAY = BUFF_TYPES.register("capped_decay",
-            () -> new BuffType(1, 5)
+    public static final RegistryObject<BuffType> STAR_BLINK = BUFF_TYPES.register("star_blink",
+            () -> new BuffType(0, 5)
     );
 
     /**

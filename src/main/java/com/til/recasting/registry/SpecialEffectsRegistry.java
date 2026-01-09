@@ -11,6 +11,7 @@ import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.event.DoSlashExtendEvent;
 import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.handler.PosHelper;
+import com.til.recasting.registry.instance.BuffType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -95,6 +96,8 @@ public class SpecialEffectsRegistry {
     // ==================== 特殊刀 SE ====================
     // 黑色玫瑰 - 叠加伤害，每 tick 造成伤害，伤害减半
     public static final RegistryObject<SpecialEffect> BLACK_ROSE = registerExtendedSE("black_rose", () -> new BlackRoseSpecialEffect().setMaxLevel(1));
+    // 星闪 - 攻击目标叠加层数，达到最大层数时触发额外伤害并重置目标速度
+    public static final RegistryObject<SpecialEffect> STAR_BLINK = registerExtendedSE("star_blink", () -> new StarBlinkSpecialEffect().setMaxLevel(1));
 
     public static RegistryObject<SpecialEffect> registerExtendedSE(String name, Supplier<SpecialEffect> factory) {
         return SPECIAL_EFFECT.register(name, factory);
@@ -1028,6 +1031,72 @@ public class SpecialEffectsRegistry {
                     attackerIterator.remove();
                 }
             }
+        }
+
+    }
+
+    /***
+     * 星闪
+     * 攻击目标叠加层数，达到最大层数时触发额外伤害并重置目标速度
+     */
+    public static class StarBlinkSpecialEffect extends ExtendedSpecialEffect {
+
+        float attack = 1.75f;
+        int addLevel = 1;
+
+        @SubscribeEvent
+        public void onEvent(AttackAmplifierEvent event) {
+            if (!hasSpecialEffect(event.getSlashBladeState())) {
+                return;
+            }
+
+            // 只在服务端执行
+            if (event.getAttacker().level().isClientSide()) {
+                return;
+            }
+
+            // 检查目标是否是生物实体且存活
+            if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+                return;
+            }
+
+            if (event.getAttackTypeList().contains(RecastingAttackTypes.STAR_BLINK_ATTACK.get())) {
+                return;
+            }
+
+            target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
+                    buffStackData -> {
+                        Level world = target.level();
+                        BuffType starBlinkBuffType = RecastingBuffTypes.STAR_BLINK.get();
+
+                        // 获取当前层数
+                        int currentLevel = buffStackData.getLevel(starBlinkBuffType, world);
+
+                        // 增加层数
+                        int newLevel = currentLevel + addLevel;
+                        buffStackData.setLevel(starBlinkBuffType, newLevel, world);
+
+                        // 检查是否达到最大层数
+                        if (newLevel >= starBlinkBuffType.getMaxLevel()) {
+                            // 重置层数
+                            buffStackData.setLevel(starBlinkBuffType, 0, world);
+
+                            // TODO: 生成粒子效果（需要客户端代码）
+
+                            // 造成伤害
+                            AttackHelper.attack(
+                                    event.getAttacker(),
+                                    target,
+                                    new DamageStructure(0f, attack),
+                                    List.of(RecastingAttackTypes.STAR_BLINK_ATTACK.get())
+                            );
+
+                            // 将目标速度设为0
+                            target.setDeltaMovement(Vec3.ZERO);
+                        }
+                    }
+            );
+
         }
 
     }
