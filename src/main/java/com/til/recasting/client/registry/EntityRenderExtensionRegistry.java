@@ -2,6 +2,9 @@ package com.til.recasting.client.registry;
 
 import com.til.recasting.Recasting;
 import com.til.recasting.client.renderer.EntityRenderExtension;
+import com.til.recasting.constant.R;
+import com.til.recasting.entity.SummondSwordEntity;
+import com.til.recasting.registry.RecastingBuffTypes;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -10,6 +13,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.awt.*;
 import java.util.function.Supplier;
 
 /**
@@ -39,6 +43,20 @@ public class EntityRenderExtensionRegistry {
             );
 
     // ==================== 预定义的渲染扩展 ====================
+
+    /**
+     * 星闪渲染扩展
+     * 为拥有星闪buff的实体渲染层级效果
+     */
+    public static final RegistryObject<EntityRenderExtension> STAR_BLINK = ENTITY_RENDER_EXTENSIONS.register(
+            "star_blink",
+            () -> new EntityRenderExtension.BuffLevelRender(
+                    R.Models.Mark.starBlink$obj,
+                    SummondSwordEntity.defaultTexture,
+                    new Color(210, 118, 246).getRGB(),
+                    RecastingBuffTypes.STAR_BLINK
+            )
+    );
 
 }
 

@@ -2,7 +2,11 @@
   "name": "recasting:slashblade/special/til_lambda",
   "properties": {
     "attack_base": 12.0,
-    "max_damage": 3840
+    "max_damage": 3840,
+    "slash_art": "recasting:stellar_rotation",
+    "special_effects": [
+      "recasting:star_blink_lambda"
+    ]
   },
   "render": {
     "carry_type": "default",

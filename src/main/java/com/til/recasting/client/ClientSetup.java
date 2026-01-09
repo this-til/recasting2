@@ -18,15 +18,19 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class ClientSetup {
 
     /**
+     * 初始化客户端注册表
+     * 必须在 mod 构造函数中、在类加载之前调用
+     */
+    public static void initRegistries(IEventBus modEventBus) {
+        EntityRenderExtensionRegistry.ENTITY_RENDER_EXTENSIONS.register(modEventBus);
+    }
+
+    /**
      * 客户端设置事件
      */
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
-        @SuppressWarnings("removal")
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        // 注册实体渲染扩展注册表（客户端专用）
-        EntityRenderExtensionRegistry.ENTITY_RENDER_EXTENSIONS.register(modEventBus);
+        // 客户端初始化逻辑
     }
 }
 

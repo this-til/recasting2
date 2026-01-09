@@ -40,7 +40,7 @@ public class Config {
     // 评分等级加成
     public  static final ForgeConfigSpec.DoubleValue RANK_MAX_BONUS = BUILDER
             .comment("评分等级最大伤害加成（满级时）")
-            .defineInRange("rankMaxBonus", 0.5, 0, 10);
+            .defineInRange("rankMaxBonus", 0.2, 0, 10);
     
     // 精炼和击杀加成
     public  static final ForgeConfigSpec.DoubleValue REFINE_ATTACK_BONUS = BUILDER

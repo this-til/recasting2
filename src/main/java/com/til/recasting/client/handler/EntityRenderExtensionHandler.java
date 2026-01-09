@@ -38,7 +38,7 @@ public class EntityRenderExtensionHandler {
         if (sortedExtensions == null) {
             var registry = EntityRenderExtensionRegistry.REGISTRY.get();
             if (registry == null) {
-                sortedExtensions = Collections.emptyList();
+                return Collections.emptyList();
             } else {
                 sortedExtensions = registry.getValues().stream()
                         .sorted(Comparator.comparingInt(EntityRenderExtension::getPriority))
@@ -72,27 +72,21 @@ public class EntityRenderExtensionHandler {
 
     /**
      * 应用所有适用的渲染扩展到实体
-     * 
-     * @param entity 要渲染的实体
+     *
+     * @param entity       要渲染的实体
      * @param partialTicks 部分刻度
-     * @param poseStack 矩阵栈
+     * @param poseStack    矩阵栈
      * @param bufferSource 缓冲区源
-     * @param packedLight 打包的光照值
+     * @param packedLight  打包的光照值
      */
-    public static void applyRenderExtensions(Entity entity, float partialTicks, PoseStack poseStack, 
-                                            MultiBufferSource bufferSource, int packedLight) {
+    public static void applyRenderExtensions(Entity entity, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         List<EntityRenderExtension> extensions = getSortedExtensions();
-        
-        for (EntityRenderExtension extension : extensions) {
+
+        for(EntityRenderExtension extension : extensions) {
             try {
-                if (extension.shouldRender(entity)) {
-                    poseStack.pushPose();
-                    extension.render(entity, partialTicks, poseStack, bufferSource, packedLight);
-                    poseStack.popPose();
-                }
+                extension.render(entity, partialTicks, poseStack, bufferSource, packedLight);
             } catch (Exception e) {
-                log.error("Error applying render extension to entity {}: {}", 
-                        entity.getClass().getSimpleName(), e.getMessage());
+                log.error("Error applying render extension to entity {}: {}", entity.getClass().getSimpleName(), e.getMessage());
             }
         }
     }
@@ -100,7 +94,7 @@ public class EntityRenderExtensionHandler {
     /**
      * 手动注册渲染扩展（用于动态注册）
      * 注意：这会清除缓存
-     * 
+     *
      * @param extension 要添加的渲染扩展
      */
     public static void registerExtension(EntityRenderExtension extension) {

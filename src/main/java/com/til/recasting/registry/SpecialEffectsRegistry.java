@@ -98,6 +98,7 @@ public class SpecialEffectsRegistry {
     public static final RegistryObject<SpecialEffect> BLACK_ROSE = registerExtendedSE("black_rose", () -> new BlackRoseSpecialEffect().setMaxLevel(1));
     // 星闪 - 攻击目标叠加层数，达到最大层数时触发额外伤害并重置目标速度
     public static final RegistryObject<SpecialEffect> STAR_BLINK = registerExtendedSE("star_blink", () -> new StarBlinkSpecialEffect().setMaxLevel(1));
+    public static final RegistryObject<SpecialEffect> STAR_BLINK_LAMBDA = registerExtendedSE("star_blink_lambda", () -> new StarBlinkSpecialEffect().setAddLevel(2).setMaxLevel(1));
 
     public static RegistryObject<SpecialEffect> registerExtendedSE(String name, Supplier<SpecialEffect> factory) {
         return SPECIAL_EFFECT.register(name, factory);
@@ -1039,9 +1040,11 @@ public class SpecialEffectsRegistry {
      * 星闪
      * 攻击目标叠加层数，达到最大层数时触发额外伤害并重置目标速度
      */
+    @Setter
+    @Accessors(chain = true)
     public static class StarBlinkSpecialEffect extends ExtendedSpecialEffect {
 
-        float attack = 1.75f;
+        float attack = 2.25f;
         int addLevel = 1;
 
         @SubscribeEvent
@@ -1087,7 +1090,7 @@ public class SpecialEffectsRegistry {
                             AttackHelper.attack(
                                     event.getAttacker(),
                                     target,
-                                    new DamageStructure(0f, attack),
+                                    new DamageStructure(attack, 0),
                                     List.of(RecastingAttackTypes.STAR_BLINK_ATTACK.get())
                             );
 

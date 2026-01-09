@@ -103,8 +103,8 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     public final CallbackPoint<IAttackBlock> attackBlockCallbackPoint = new CallbackPoint<>();
 
 
-    private static final ResourceLocation defaultModel = ResourceLocation.fromNamespaceAndPath(SlashBlade.MODID, "model/util/ss.obj");
-    private static final ResourceLocation defaultTexture = ResourceLocation.fromNamespaceAndPath(SlashBlade.MODID, "model/util/ss.png");
+    public static final ResourceLocation defaultModel = ResourceLocation.fromNamespaceAndPath(SlashBlade.MODID, "model/util/ss.obj");
+    public static final ResourceLocation defaultTexture = ResourceLocation.fromNamespaceAndPath(SlashBlade.MODID, "model/util/ss.png");
 
     public SummondSwordEntity(EntityType<? extends SummondSwordEntity> entityTypeIn, Level worldIn, LivingEntity shooting) {
         super(entityTypeIn, worldIn, shooting);

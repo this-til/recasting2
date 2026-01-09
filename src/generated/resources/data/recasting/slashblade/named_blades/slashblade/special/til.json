@@ -2,7 +2,11 @@
   "name": "recasting:slashblade/special/til",
   "properties": {
     "attack_base": 10.0,
-    "max_damage": 1920
+    "max_damage": 1920,
+    "slash_art": "recasting:stellar_rotation",
+    "special_effects": [
+      "recasting:star_blink"
+    ]
   },
   "render": {
     "carry_type": "default",

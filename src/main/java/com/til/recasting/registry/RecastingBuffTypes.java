@@ -50,6 +50,16 @@ public class RecastingBuffTypes {
     );
 
     /**
+     *  演算Buff类型
+     * - 衰减间隔为60 ticks（每60 tick减少一级）
+     * - 最大等级为16
+     * - 受到伤害时每层增加，每层提供10%伤害衰减
+     */
+    public static final RegistryObject<BuffType> CALCULUS = BUFF_TYPES.register("calculus",
+            () -> new BuffType(60, 16)
+    );
+
+    /**
      * 注册自定义Buff类型
      * 
      * @param name Buff类型名称

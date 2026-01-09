@@ -1,16 +1,19 @@
 package com.til.recasting;
 
+import com.til.recasting.client.ClientSetup;
 import com.til.recasting.registry.*;
 import lombok.extern.log4j.Log4j2;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.SlashBladeConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -33,6 +36,9 @@ public class Recasting {
         IEventBus modEventBus = fmlJavaModLoadingContext.getModEventBus();
 
         fmlJavaModLoadingContext.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        // 客户端专用注册表（必须在其他注册之前，确保类加载顺序正确）
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientSetup.initRegistries(modEventBus));
 
         // 注册网络管理器
         NetworkManager.register();
@@ -61,7 +67,6 @@ public class Recasting {
 
         // 注册物品
         RecastingItems.ITEMS.register(modEventBus);
-
 
         modEventBus.addListener(EventPriority.HIGH, RecastingItems::onBuildCreativeModeTabContents);
     }

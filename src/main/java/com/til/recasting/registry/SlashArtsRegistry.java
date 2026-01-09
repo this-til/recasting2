@@ -91,6 +91,7 @@ public class SlashArtsRegistry {
     // 云轮风暴
     public static final RegistryObject<ExtendedSlashArts> CLOUD_WHEEL_STORM = registerExtendedSA("cloud_wheel_storm", new CloudWheelSlashArts().setLightningNumber(7).setAttackNumber(10));
 
+    public static final RegistryObject<ExtendedSlashArts> STELLAR_ROTATION = registerExtendedSA("stellar_rotation", new StellarRotationSlashArts());
 
     /**
      * 注册扩展的 SlashArts，自动关联 ComboState

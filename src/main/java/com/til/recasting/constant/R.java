@@ -10,10 +10,76 @@ public class R {
 
     public static class Models {
         public static class Item {
-            public static final ResourceLocation proudsoul = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/proudsoul");
-            public static final ResourceLocation proudsoul$json = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/proudsoul.json");
             public static final ResourceLocation soul = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul");
             public static final ResourceLocation soul$json = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul.json");
+            public static final ResourceLocation soul1 = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul_1");
+            public static final ResourceLocation soul1$json = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul_1.json");
+            public static final ResourceLocation soul2 = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul_2");
+            public static final ResourceLocation soul2$json = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul_2.json");
+            public static final ResourceLocation soul3 = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul_3");
+            public static final ResourceLocation soul3$json = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul_3.json");
+            public static final ResourceLocation soul4 = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul_4");
+            public static final ResourceLocation soul4$json = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul_4.json");
+            public static final ResourceLocation soul5 = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul_5");
+            public static final ResourceLocation soul5$json = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul_5.json");
+            public static final ResourceLocation soul6 = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul_6");
+            public static final ResourceLocation soul6$json = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul_6.json");
+            public static final ResourceLocation soul7 = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul_7");
+            public static final ResourceLocation soul7$json = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul_7.json");
+            public static final ResourceLocation soul8 = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul_8");
+            public static final ResourceLocation soul8$json = ResourceLocation.fromNamespaceAndPath("recasting", "models/item/soul_8.json");
+        }
+
+        public static class Mark {
+            public static final ResourceLocation model = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model");
+            public static final ResourceLocation model$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model.obj");
+            public static final ResourceLocation model1 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model1");
+            public static final ResourceLocation model1$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model1.obj");
+            public static final ResourceLocation model2 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model2");
+            public static final ResourceLocation model2$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model2.obj");
+            public static final ResourceLocation model3 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model3");
+            public static final ResourceLocation model3$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model3.obj");
+            public static final ResourceLocation model4 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model4");
+            public static final ResourceLocation model4$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model4.obj");
+            public static final ResourceLocation model5 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model5");
+            public static final ResourceLocation model5$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model5.obj");
+            public static final ResourceLocation model6 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model6");
+            public static final ResourceLocation model6$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model6.obj");
+            public static final ResourceLocation model7 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model7");
+            public static final ResourceLocation model7$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model7.obj");
+            public static final ResourceLocation model8 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model8");
+            public static final ResourceLocation model8$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model8.obj");
+            public static final ResourceLocation model9 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model9");
+            public static final ResourceLocation model9$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model9.obj");
+            public static final ResourceLocation starBlink = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/star_blink");
+            public static final ResourceLocation starBlink$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/star_blink.obj");
+        }
+
+        public static class Prefab {
+            public static final ResourceLocation soul1 = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_1");
+            public static final ResourceLocation soul1$mtl = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_1.mtl");
+            public static final ResourceLocation soul1$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_1.obj");
+            public static final ResourceLocation soul2 = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_2");
+            public static final ResourceLocation soul2$mtl = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_2.mtl");
+            public static final ResourceLocation soul2$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_2.obj");
+            public static final ResourceLocation soul3 = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_3");
+            public static final ResourceLocation soul3$mtl = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_3.mtl");
+            public static final ResourceLocation soul3$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_3.obj");
+            public static final ResourceLocation soul4 = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_4");
+            public static final ResourceLocation soul4$mtl = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_4.mtl");
+            public static final ResourceLocation soul4$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_4.obj");
+            public static final ResourceLocation soul5 = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_5");
+            public static final ResourceLocation soul5$mtl = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_5.mtl");
+            public static final ResourceLocation soul5$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_5.obj");
+            public static final ResourceLocation soul6 = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_6");
+            public static final ResourceLocation soul6$mtl = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_6.mtl");
+            public static final ResourceLocation soul6$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_6.obj");
+            public static final ResourceLocation soul7 = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_7");
+            public static final ResourceLocation soul7$mtl = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_7.mtl");
+            public static final ResourceLocation soul7$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_7.obj");
+            public static final ResourceLocation soul8 = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_8");
+            public static final ResourceLocation soul8$mtl = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_8.mtl");
+            public static final ResourceLocation soul8$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_8.obj");
         }
     }
 
@@ -219,12 +285,19 @@ public class R {
     }
 
     public static class Textures {
-        public static final ResourceLocation soul = ResourceLocation.fromNamespaceAndPath("recasting", "textures/soul");
-        public static final ResourceLocation soul$png = ResourceLocation.fromNamespaceAndPath("recasting", "textures/soul.png");
-
         public static class Item {
             public static final ResourceLocation soul = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul");
             public static final ResourceLocation soul$png = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul.png");
+            public static final ResourceLocation soul0 = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul_0");
+            public static final ResourceLocation soul0$png = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul_0.png");
+            public static final ResourceLocation soul1 = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul_1");
+            public static final ResourceLocation soul1$png = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul_1.png");
+            public static final ResourceLocation soul2 = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul_2");
+            public static final ResourceLocation soul2$png = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul_2.png");
+            public static final ResourceLocation soul3 = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul_3");
+            public static final ResourceLocation soul3$png = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul_3.png");
+            public static final ResourceLocation soul4 = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul_4");
+            public static final ResourceLocation soul4$png = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul_4.png");
         }
     }
 }

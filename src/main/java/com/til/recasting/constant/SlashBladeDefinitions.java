@@ -5,6 +5,7 @@ import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.mixin_api.ISlashBladeStateExtension;
 import com.til.recasting.registry.SlashArtsRegistry;
+import com.til.recasting.registry.SpecialEffectsRegistry;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.registry.slashblade.EnchantmentDefinition;
@@ -560,7 +561,10 @@ public class SlashBladeDefinitions {
                     .effectColor(new Color(210, 118, 246).getRGB()))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(10f)
-                    .maxDamage(48 * 40))
+                    .maxDamage(48 * 40)
+                    .slashArtsType(SlashArtsRegistry.STELLAR_ROTATION.getId())
+                    .addSpecialEffect(SpecialEffectsRegistry.STAR_BLINK.getId())
+            )
             .build();
 
     public static final SlashBladeDefinition TIL_LAMBDA = createBuild(Recasting.prefix("slashblade/special/til_lambda"))
@@ -570,7 +574,10 @@ public class SlashBladeDefinitions {
                     .effectColor(new Color(210, 118, 246).getRGB()))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(12f)
-                    .maxDamage(96 * 40))
+                    .maxDamage(96 * 40)
+                    .slashArtsType(SlashArtsRegistry.STELLAR_ROTATION.getId())
+                    .addSpecialEffect(SpecialEffectsRegistry.STAR_BLINK_LAMBDA.getId())
+            )
             .build();
 
     public static final SlashBladeDefinition HTOD = createBuild(R.Slashblade.Special.htod)
