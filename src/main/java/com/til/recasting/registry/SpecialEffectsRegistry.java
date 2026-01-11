@@ -1272,7 +1272,7 @@ public class SpecialEffectsRegistry {
             }
 
             LivingEntity attacker = event.getAttacker();
-            long currentTime = attacker.level().getGameTime();
+            long currentTime = target.level().getGameTime();
 
 
             ItemStack blade = event.getItem();
@@ -1286,58 +1286,42 @@ public class SpecialEffectsRegistry {
 
 
             //noinspection DataFlowIssue
-            IBuffStackData buffStackData = attacker.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).orElse(null);
+            IBuffStackData buffStackData = target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).orElse(null);
             //noinspection ConstantValue
             if (buffStackData == null) {
                 return;
             }
 
-            Level world = attacker.level();
+            Level world = target.level();
             BuffType swordMomentumBuffType = RecastingBuffTypes.SWORD_MOMENTUM.get();
 
             // 获取当前层数
             int currentLevel = buffStackData.getLevel(swordMomentumBuffType, world);
 
-            // 如果已经达到最大层数，检查触发间隔
-            if (currentLevel >= swordMomentumBuffType.getMaxLevel()) {
-                // 检查触发间隔
-                Long lastTriggerTime = lastTriggerTimeMap.get(attacker);
-                int interval = (int) triggerInterval.of(getLevel(se));
+            Long lastTriggerTime = lastTriggerTimeMap.get(target);
+            int interval = (int) triggerInterval.of(getLevel(se));
 
-                // 如果触发间隔还没到，不触发风暴效果，也不叠加层数
-                if (lastTriggerTime != null && (currentTime - lastTriggerTime) < interval) {
-                    return;
-                }
+            // 如果触发间隔还没到，不触发风暴效果，也不叠加层数
+            if (lastTriggerTime != null && (currentTime - lastTriggerTime) < interval) {
+                return;
+            }
 
-                // 触发间隔到了，触发风暴效果并重置层数
-                buffStackData.setLevel(swordMomentumBuffType, 0, world);
-                lastTriggerTimeMap.put(attacker, currentTime);
-
-                // 触发风暴效果
-                performStormSwordsInternal(
-                        attacker,
-                        event.getSlashBladeState(),
-                        se
-                );
-            } else {
-                // 未达到最大层数，能叠加说明已经过了冷却，直接叠加层数
+            if (currentLevel < swordMomentumBuffType.getMaxLevel()) {
                 int newLevel = currentLevel + addLevel;
                 buffStackData.setLevel(swordMomentumBuffType, newLevel, world);
-
-                // 如果叠加后达到最大层数，立即触发风暴效果（能叠加说明冷却已过）
-                if (newLevel >= swordMomentumBuffType.getMaxLevel()) {
-                    // 重置层数
-                    buffStackData.setLevel(swordMomentumBuffType, 0, world);
-                    lastTriggerTimeMap.put(attacker, currentTime);
-
-                    // 触发风暴效果
-                    performStormSwordsInternal(
-                            attacker,
-                            event.getSlashBladeState(),
-                            se
-                    );
-                }
+                return;
             }
+
+            // 触发间隔到了，触发风暴效果并重置层数
+            buffStackData.setLevel(swordMomentumBuffType, 0, world);
+            lastTriggerTimeMap.put(target, currentTime);
+
+            // 触发风暴效果
+            performStormSwordsInternal(
+                    attacker,
+                    event.getSlashBladeState(),
+                    se
+            );
 
         }
 
@@ -1402,10 +1386,10 @@ public class SpecialEffectsRegistry {
             Iterator<Map.Entry<LivingEntity, Long>> iterator = lastTriggerTimeMap.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry<LivingEntity, Long> entry = iterator.next();
-                LivingEntity attacker = entry.getKey();
+                LivingEntity target = entry.getKey();
 
                 // 如果实体无效（null、死亡、被移除或在客户端），清除条目
-                if (attacker == null || !attacker.isAlive() || attacker.isRemoved() || attacker.level().isClientSide()) {
+                if (target == null || !target.isAlive() || target.isRemoved() || target.level().isClientSide()) {
                     iterator.remove();
                 }
             }

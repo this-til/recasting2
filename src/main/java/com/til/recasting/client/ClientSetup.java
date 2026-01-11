@@ -2,6 +2,7 @@ package com.til.recasting.client;
 
 import com.til.recasting.Recasting;
 import com.til.recasting.client.handler.ClientRenderHandler;
+import com.til.recasting.client.registry.BuffLevelRendererRegistry;
 import com.til.recasting.client.registry.EntityRenderExtensionRegistry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -23,6 +24,7 @@ public class ClientSetup {
      */
     public static void initRegistries(IEventBus modEventBus) {
         EntityRenderExtensionRegistry.ENTITY_RENDER_EXTENSIONS.register(modEventBus);
+        BuffLevelRendererRegistry.BUFF_LEVEL_RENDER_CONFIGS.register(modEventBus);
     }
 
     /**

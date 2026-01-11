@@ -19,6 +19,16 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "总该说些什么...")
             .addTranslation(LanguageTypes.EN_US, "I should say something...");
 
+    // ========== Buff Names ==========
+
+    public static final LanguageItem BUFF_SOUL_BURN = new LanguageItem("buff.recasting.soul_burn")
+            .addTranslation(LanguageTypes.ZH_CN, "灵魂燃烧")
+            .addTranslation(LanguageTypes.EN_US, "Soul Burn");
+
+    public static final LanguageItem BUFF_FRAGMENT = new LanguageItem("buff.recasting.fragment")
+            .addTranslation(LanguageTypes.ZH_CN, "破片")
+            .addTranslation(LanguageTypes.EN_US, "Fragment");
+
     // ========== Void SlashBlades ==========
     public static final LanguageItem VOID_1 = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.VOID_1)
             .addTranslation(LanguageTypes.ZH_CN, "洞虚利刃")

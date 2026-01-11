@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.til.recasting.Recasting;
 import com.til.recasting.capability.IBuffStackData;
+import com.til.recasting.client.renderer.BuffLevelTextRenderer;
 import com.til.recasting.client.renderer.EntityRenderExtension;
 import com.til.recasting.client.renderer.RenderStateManage;
 import com.til.recasting.constant.R;
@@ -76,8 +77,7 @@ public class EntityRenderExtensionRegistry {
             () -> new EntityRenderExtension.BuffLevelRender(
                     R.Models.Mark.spiralSpecial$obj,
                     new Color(118, 169, 246).getRGB(),
-                    RecastingBuffTypes.STAR_BLINK
-
+                    RecastingBuffTypes.SWORD_MOMENTUM
             )
     );
 
@@ -88,6 +88,15 @@ public class EntityRenderExtensionRegistry {
     public static final RegistryObject<EntityRenderExtension> SOUL_BURN = ENTITY_RENDER_EXTENSIONS.register(
             "soul_burn",
             SoulBurnRenderExtension::new
+    );
+
+    /**
+     * Buff层数文本渲染扩展
+     * 在实体名称标签上方显示 Buff 层数信息
+     */
+    public static final RegistryObject<EntityRenderExtension> BUFF_LEVEL_TEXT = ENTITY_RENDER_EXTENSIONS.register(
+            "buff_level_text",
+            BuffLevelTextRenderer::new
     );
 
     /**

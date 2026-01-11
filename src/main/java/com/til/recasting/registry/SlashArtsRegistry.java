@@ -89,7 +89,7 @@ public class SlashArtsRegistry {
 
     // 多重剑气
     public static final RegistryObject<ExtendedSlashArts> MULTIPLE_DRIVE = registerExtendedSA("multiple_drive", new MultipleDriveSlashArts());
-    public static final RegistryObject<ExtendedSlashArts> MULTIPLE_DRIVE_LAMBDA = registerExtendedSA("multiple_drive", new MultipleDriveSlashArts().setAttack(8).setAttack(0.2f));
+    public static final RegistryObject<ExtendedSlashArts> MULTIPLE_DRIVE_LAMBDA = registerExtendedSA("multiple_drive_lambda", new MultipleDriveSlashArts().setAttack(8).setAttack(0.2f));
 
     // 引雷
     public static final RegistryObject<ExtendedSlashArts> LIGHTNING_CALL = registerExtendedSA("lightning_call", new LightningCallSlashArts());
