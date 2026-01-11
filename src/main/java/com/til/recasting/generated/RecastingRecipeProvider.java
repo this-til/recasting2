@@ -3,7 +3,9 @@ package com.til.recasting.generated;
 import com.til.recasting.Recasting;
 import com.til.recasting.constant.RecastingRecipes;
 import com.til.recasting.constant.SlashBladeRecipes;
+import com.til.recasting.constant.SpecialEffectRecipes;
 import lombok.extern.log4j.Log4j2;
+import net.minecraft.client.renderer.ScreenEffectRenderer;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -31,7 +33,8 @@ public class RecastingRecipeProvider extends RecipeProvider implements IConditio
      */
     private static final List<Class<?>> RECIPE_CLASSES = Arrays.asList(
             RecastingRecipes.class,
-            SlashBladeRecipes.class
+            SlashBladeRecipes.class,
+            SpecialEffectRecipes.class
     );
 
     public RecastingRecipeProvider(PackOutput output) {

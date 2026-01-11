@@ -1,6 +1,7 @@
 package com.til.recasting.event;
 
 import com.til.recasting.registry.instance.AttackType;
+import com.til.recasting.util.DamageStructure;
 import lombok.Getter;
 import lombok.Setter;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -70,10 +71,14 @@ public class AttackAmplifierEvent extends Event {
         mechanismModifiedRatioAmplifier += amplifier;
     }
 
-    public void addDamageSourceInfo(DamageSource damageSource, float damage) {
-        damageSourceInfoList.add(new DamageSourceInfo(damageSource, damage));
+    public void addDamageSourceInfo(DamageSource damageSource, float modifiedRatio) {
+        damageSourceInfoList.add(new DamageSourceInfo(damageSource, new DamageStructure(modifiedRatio, 0)));
     }
 
-    public static record DamageSourceInfo(DamageSource damageSource, float damage) {
+    public void addDamageSourceInfo(DamageSource damageSource, DamageStructure damageStructure) {
+        damageSourceInfoList.add(new DamageSourceInfo(damageSource, damageStructure));
+    }
+
+    public static record DamageSourceInfo(DamageSource damageSource, DamageStructure damageStructure) {
     }
 }

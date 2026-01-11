@@ -40,11 +40,6 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
     @Nullable
     protected List<Entity> alreadyHits;
 
-    /***
-     * 附带的攻击类型
-     */
-    public List<AttackType> attackTypeModelList = List.of();
-
     public final CallbackPoint<IAttackAction> attackActionCallbackPoint = new CallbackPoint<>();
     public final CallbackPoint<IAttackEnd> attackEndCallbackPoint = new CallbackPoint<>();
 

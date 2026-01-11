@@ -451,7 +451,7 @@ public class Gradient {
      * @return Gradient 对象
      */
     public static Gradient createFromColor(int baseColor) {
-        return createFromColor(baseColor, 0.5f, 1.2f);
+        return createFromColor(baseColor, 0.7f, 1.2f);
     }
     public static Gradient createFromColor(Color baseColor) {
         return createFromColor(baseColor.getRGB());

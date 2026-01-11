@@ -3,6 +3,7 @@ package com.til.recasting.entity;
 import com.til.recasting.Recasting;
 import com.til.recasting.handler.MathHelper;
 import com.til.recasting.registry.RecastingEntityDataSerializers;
+import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.CallbackPoint;
 import com.til.recasting.util.DamageStructure;
 import net.minecraft.nbt.CompoundTag;
@@ -15,10 +16,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: til
@@ -87,6 +91,11 @@ public abstract class StandardizationAttackEntity extends Entity {
     public final CallbackPoint<ISetup> setupCallbackPoint = new CallbackPoint<>();
     public final CallbackPoint<IEnd> endCallbackPoint = new CallbackPoint<>();
 
+    /***
+     * 附带的攻击类型
+     */
+    protected List<AttackType> attackTypeModelList = new ArrayList<>();
+
     public StandardizationAttackEntity(EntityType<?> entityTypeIn, Level worldIn, LivingEntity shooting) {
         super(entityTypeIn, worldIn);
         if (!worldIn.isClientSide && shooting == null) {
@@ -152,6 +161,10 @@ public abstract class StandardizationAttackEntity extends Entity {
     public boolean shouldRenderAtSqrDistance(double distance) {
         double d0 = 256.0D * getViewScale();
         return distance < d0 * d0;
+    }
+
+    public void addAttackType(AttackType attackType) {
+        attackTypeModelList.add(attackType);
     }
 
     @Nullable

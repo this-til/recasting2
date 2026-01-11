@@ -40,6 +40,14 @@ public class PropertiesDefinitionExtension implements INBTSerializable<CompoundT
         this.extendedSpecialLevels = extendedSpecialLevels != null ? new HashMap<>(extendedSpecialLevels) : new HashMap<>();
     }
 
+    public int getExtendedSpecialLevels(ResourceLocation resourceLocation) {
+        return this.extendedSpecialLevels.getOrDefault(resourceLocation, 0);
+    }
+
+    public void setExtendedSpecialLevels(ResourceLocation resourceLocation, int value) {
+        this.extendedSpecialLevels.put(resourceLocation, value);
+    }
+
     @Override
     public CompoundTag serializeNBT() {
         return CODEC.encodeStart(NbtOps.INSTANCE, this)

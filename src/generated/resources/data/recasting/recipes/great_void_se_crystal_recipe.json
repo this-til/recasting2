@@ -1,0 +1,34 @@
+{
+  "type": "recasting:se_crystal_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:iron_sword"
+    },
+    "F": {
+      "item": "recasting:mirage_flame"
+    },
+    "G": {
+      "item": "minecraft:phantom_membrane"
+    },
+    "M": {
+      "item": "recasting:gathering_parting_variant"
+    },
+    "T": {
+      "item": "minecraft:amethyst_shard"
+    }
+  },
+  "pattern": [
+    "TMT",
+    "FGF",
+    "FBF"
+  ],
+  "result": {
+    "item": "recasting:se_crystal"
+  },
+  "se_crystal": {
+    "level": 1,
+    "special_effect_type": "recasting:great_void"
+  },
+  "show_notification": true
+}

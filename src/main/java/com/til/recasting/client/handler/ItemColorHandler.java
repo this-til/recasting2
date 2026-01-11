@@ -28,43 +28,36 @@ public class ItemColorHandler {
         RecastingItems.getAllItems().stream()
                 .map(RegistryObject::get)
                 .filter(item -> item instanceof IGradientColorProvider)
-                .filter(item -> ((IGradientColorProvider) item).getGradient() != null)
                 .forEach(item -> event.register(createGradientItemColor(), item));
     }
 
     /**
      * 创建使用渐变的 ItemColor 实例
      * 从物品实例中读取 gradient 和 timeScale
+     *
      * @return ItemColor 实例
      */
     private static ItemColor createGradientItemColor() {
         return (stack, tintIndex) -> {
-            // tintIndex 0 通常是物品的主要纹理层
-            if (tintIndex == 0) {
-                Item item = stack.getItem();
-                if (item instanceof IGradientColorProvider provider) {
-                    Gradient gradient = provider.getGradient();
-                    if (gradient != null) {
-                        float timeScale = provider.getTimeScale();
-                        
-                        // 获取游戏时间
-                        Level level = Minecraft.getInstance().level;
-                        if (level != null) {
-                            // 计算时间值（0.0-1.0），使用时间缩放
-                            // timeScale 是一个完整周期所需的游戏刻数
-                            long gameTime = level.getGameTime();
-                            float time = (float) (gameTime % (long) timeScale) / timeScale;
-                            
-                            // 评估渐变并返回 RGB 颜色值
-                            return gradient.evaluateToRGB(time);
-                        }
-                        // 如果没有世界，返回渐变的中间值
-                        return gradient.evaluateToRGB(0.5f);
-                    }
-                }
+            Item item = stack.getItem();
+            if (!(item instanceof IGradientColorProvider provider)) {
+                return 0xFFFFFF;
             }
-            // 默认返回白色（不染色）
-            return 0xFFFFFF;
+            Gradient gradient = provider.getGradient(stack, tintIndex);
+            if (gradient == null) {
+                return 0xFFFFFF;
+            }
+            float timeScale = provider.getTimeScale();
+
+            // 获取游戏时间
+            Level level = Minecraft.getInstance().level;
+            if (level == null) {
+                return gradient.evaluateToRGB(0.5f);
+            }
+
+            long gameTime = level.getGameTime();
+            float time = (float) (gameTime % (long) timeScale) / timeScale;
+            return gradient.evaluateToRGB(time);
         };
     }
 }

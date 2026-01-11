@@ -44,7 +44,7 @@ public class DriveEntity extends SlashEffectEntity {
 
         setAttackInterval(1);
 
-        attackTypeModelList = List.of(RecastingAttackTypes.DRIVE_ATTACK.get());
+        addAttackType(RecastingAttackTypes.DRIVE_ATTACK.get());
         setUseBlockParticle(false);
     }
 

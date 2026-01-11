@@ -55,13 +55,6 @@ public class SlashBladeItemsMixin$ProudsoulCrystal {
         int currentLevel = tag.getInt("SpecialEffectTypeLevel");
         int maxLevel = extendedSE.getMaxLevel();
 
-        // 添加 ExtendedSpecialEffect 的自定义格式
-        Component seComponent = Component.translatable(
-                "slashblade.tooltip.special_effect",
-                Component.translatable(se.getDescriptionId()),
-                currentLevel + "/" + maxLevel
-        ).withStyle(ChatFormatting.GRAY);
-
         components.add(
                 Component.translatable(
                         "slashblade.tooltip.special_effect",

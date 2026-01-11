@@ -65,6 +65,9 @@ public class Recasting {
         // 注册 Special Effects (SE) 注册表
         SpecialEffectsRegistry.SPECIAL_EFFECT.register(modEventBus);
 
+        // 注册配方序列化器
+        RecastingRecipeSerializers.register(modEventBus);
+
         // 注册物品
         RecastingItems.ITEMS.register(modEventBus);
 

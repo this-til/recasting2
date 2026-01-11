@@ -25,7 +25,7 @@ public class LightningEntity extends ContinuousDamageEntity {
         boltVertex = this.random.nextLong();
         setParameterRange(3);
         setAttackInterval(5);
-        attackTypeModelList = List.of(RecastingAttackTypes.LIGHTNING_ATTACK.get());
+        addAttackType(RecastingAttackTypes.LIGHTNING_ATTACK.get());
     }
 
     @Override

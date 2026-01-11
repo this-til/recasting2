@@ -12,6 +12,7 @@ import mods.flammpfeil.slashblade.registry.slashblade.EnchantmentDefinition;
 import mods.flammpfeil.slashblade.registry.slashblade.PropertiesDefinition;
 import mods.flammpfeil.slashblade.registry.slashblade.RenderDefinition;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
+import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -22,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryObject;
 
 public class SlashBladeDefinitions {
 
@@ -80,7 +83,8 @@ public class SlashBladeDefinitions {
                     .textureName(R.Slashblade.brokenWhite$png))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(5f)
-                    .maxDamage(4 * 40))
+                    .maxDamage(4 * 40)
+                    .slashArtsType(SlashArtsRegistry.FRAGMENT.getId()))
             .build();
 
     // 黑刃
@@ -91,7 +95,9 @@ public class SlashBladeDefinitions {
                     .effectColor(new Color(0, 0, 0, 255).getRGB()))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(5f)
-                    .maxDamage(4 * 40))
+                    .maxDamage(4 * 40)
+                    .slashArtsType(SlashArtsRegistry.MULTIPLE_JUDGEMENT_CUT.getId())
+            )
             .build();
 
     // 美工刀
@@ -113,7 +119,9 @@ public class SlashBladeDefinitions {
                     .effectColor(new Color(255, 255, 255).getRGB()))
             .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
                     .baseAttackModifier(4f)
-                    .maxDamage(3 * 40))
+                    .maxDamage(3 * 40)
+                    .slashArtsType(SlashArtsRegistry.MULTIPLE_DRIVE.getId())
+            )
             .build();
 
 
@@ -144,6 +152,32 @@ public class SlashBladeDefinitions {
                     .baseAttackModifier(6f)
                     .maxDamage(8 * 40)
                     .slashArtsType(SlashArtsRegistry.CYAN_GLOW_LAMBDA.getId())
+            )
+            .build();
+
+    // 龙鳞
+    public static final SlashBladeDefinition DRAGON_SCALE = createBuild(R.Slashblade.dragonScale)
+            .renderDefinition(RenderDefinition.Builder.newInstance()
+                    .modelName(R.Slashblade.dragonScale$obj)
+                    .textureName(R.Slashblade.dragonScale$png)
+                    .effectColor(new Color(0xB97910).getRGB()))
+            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
+                    .baseAttackModifier(5f)
+                    .maxDamage((int) (5f * 40))
+                    .slashArtsType(SlashArtsRegistry.STORM_PHANTOM_SWORDS.getId())
+            )
+            .build();
+
+    // 龙鳞 Lambda
+    public static final SlashBladeDefinition DRAGON_SCALE_LAMBDA = createBuild(Recasting.prefix("slashblade/dragon_scale_lambda"))
+            .renderDefinition(RenderDefinition.Builder.newInstance()
+                    .modelName(R.Slashblade.dragonScale$obj)
+                    .textureName(R.Slashblade.dragonScale$png)
+                    .effectColor(new Color(0xB97910).getRGB()))
+            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
+                    .baseAttackModifier(5f)
+                    .maxDamage((int) (10f * 40))
+                    .slashArtsType(SlashArtsRegistry.STORM_PHANTOM_SWORDS_LAMBDA.getId())
             )
             .build();
 
@@ -300,33 +334,8 @@ public class SlashBladeDefinitions {
                     .maxDamage((int) (114f * 40)))
             .build();
 
-    // 龙鳞
-    public static final SlashBladeDefinition DRAGON_SCALE = createBuild(R.Slashblade.dragonScale)
-            .renderDefinition(RenderDefinition.Builder.newInstance()
-                    .modelName(R.Slashblade.dragonScale$obj)
-                    .textureName(R.Slashblade.dragonScale$png)
-                    .effectColor(new Color(0xB97910).getRGB()))
-            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
-                    .baseAttackModifier(5f)
-                    .maxDamage((int) (5f * 40))
-                    .slashArtsType(SlashArtsRegistry.STORM_PHANTOM_SWORDS.getId())
-            )
-            .build();
 
-    // 龙鳞 Lambda
-    public static final SlashBladeDefinition DRAGON_SCALE_LAMBDA = createBuild(Recasting.prefix("slashblade/dragon_scale_lambda"))
-            .renderDefinition(RenderDefinition.Builder.newInstance()
-                    .modelName(R.Slashblade.dragonScale$obj)
-                    .textureName(R.Slashblade.dragonScale$png)
-                    .effectColor(new Color(0xB97910).getRGB()))
-            .propertiesDefinition(PropertiesDefinition.Builder.newInstance()
-                    .baseAttackModifier(5f)
-                    .maxDamage((int) (10f * 40))
-                    .slashArtsType(SlashArtsRegistry.STORM_PHANTOM_SWORDS_LAMBDA.getId())
-            )
-            .build();
-
-    // 龙一
+    // 龙神
     public static final SlashBladeDefinition DRAGON = createBuild(R.Slashblade.dragon)
             .renderDefinition(RenderDefinition.Builder.newInstance()
                     .modelName(R.Slashblade.dragon$obj)
@@ -339,7 +348,7 @@ public class SlashBladeDefinitions {
             )
             .build();
 
-    // 龙一 Lambda
+    // 龙神 Lambda
     public static final SlashBladeDefinition DRAGON_LAMBDA = createBuild(R.Slashblade.dragonLambda)
             .renderDefinition(RenderDefinition.Builder.newInstance()
                     .modelName(R.Slashblade.dragonLambda$obj)
@@ -697,7 +706,8 @@ public class SlashBladeDefinitions {
         ResourceLocation name;
         RenderDefinition.Builder renderDefinition;
         PropertiesDefinition.Builder propertiesDefinition;
-        List<EnchantmentDefinition> enchantments = List.of();
+        List<EnchantmentDefinition> enchantments = new ArrayList<>();
+        List<SpecialEffectDefinition> specialEffects = new ArrayList<>();
 
         RenderDefinitionExtension renderDefinitionExtension;
         PropertiesDefinitionExtension propertiesDefinitionExtension;
@@ -722,32 +732,71 @@ public class SlashBladeDefinitions {
             //    finalEnchantments.add(new EnchantmentDefinition(smiteId, 1));
             //}
 
+            if (propertiesDefinitionExtension == null) {
+                propertiesDefinitionExtension = new PropertiesDefinitionExtension();
+            }
+
+            if (renderDefinitionExtension == null) {
+                renderDefinitionExtension = new RenderDefinitionExtension();
+            }
+
+            if (renderDefinition == null) {
+                renderDefinition = RenderDefinition.Builder.newInstance();
+            }
+
+            if (propertiesDefinition == null) {
+                propertiesDefinition = PropertiesDefinition.Builder.newInstance();
+            }
+
+            for(SpecialEffectDefinition specialEffectDefinition : specialEffects) {
+                propertiesDefinition.addSpecialEffect(specialEffectDefinition.specialEffect());
+                propertiesDefinitionExtension.setExtendedSpecialLevels(specialEffectDefinition.specialEffect(), specialEffectDefinition.level());
+            }
+
+            RenderDefinition renderDefinitionInstance = renderDefinition.build();
+            PropertiesDefinition propertiesDefinitionInstance = propertiesDefinition.build();
+
+            for(ResourceLocation specialEffectResourceLocation : propertiesDefinitionInstance.getSpecialEffects()) {
+                int extendedSpecialLevels = propertiesDefinitionExtension.getExtendedSpecialLevels(specialEffectResourceLocation);
+                if (extendedSpecialLevels > 0) {
+                    continue;
+                }
+                propertiesDefinitionExtension.setExtendedSpecialLevels(specialEffectResourceLocation, 1);
+            }
 
             SlashBladeDefinition slashBladeDefinition = new SlashBladeDefinition(
                     name,
-                    (renderDefinition == null
-                            ? RenderDefinition.Builder.newInstance()
-                            : renderDefinition).build(),
-                    (propertiesDefinition == null
-                            ? PropertiesDefinition.Builder.newInstance()
-                            : propertiesDefinition).build(),
+                    renderDefinitionInstance,
+                    propertiesDefinitionInstance,
                     enchantments
             );
 
+
             //noinspection ConstantValue
             if (slashBladeDefinition instanceof ISlashBladeStateExtension slashBladeStateDefinition) {
-                slashBladeStateDefinition.setRecasting$propertiesDefinitionExtension(propertiesDefinitionExtension == null
-                        ? new PropertiesDefinitionExtension()
-                        : propertiesDefinitionExtension);
-                slashBladeStateDefinition.setRecasting$renderDefinitionExtension(renderDefinitionExtension == null
-                        ? new RenderDefinitionExtension()
-                        : renderDefinitionExtension);
+                slashBladeStateDefinition.setRecasting$propertiesDefinitionExtension(propertiesDefinitionExtension);
+                slashBladeStateDefinition.setRecasting$renderDefinitionExtension(renderDefinitionExtension);
             } else {
                 throw new IllegalStateException("SlashBladeDefinition must be a SlashBladeStateExtension");
             }
 
             return slashBladeDefinition;
         }
+
+        public void addEnchantmentDefinition(EnchantmentDefinition enchantmentDefinition) {
+            enchantments.add(enchantmentDefinition);
+        }
+
+        public void addSpecialEffects(RegistryObject<SpecialEffect> specialEffectRegistryObject) {
+            addSpecialEffects(specialEffectRegistryObject, 1);
+        }
+
+        public void addSpecialEffects(RegistryObject<SpecialEffect> specialEffectRegistryObject, int level) {
+            specialEffects.add(new SpecialEffectDefinition(specialEffectRegistryObject.getId(), level));
+        }
+    }
+
+    public record SpecialEffectDefinition(ResourceLocation specialEffect, int level) {
     }
 
 

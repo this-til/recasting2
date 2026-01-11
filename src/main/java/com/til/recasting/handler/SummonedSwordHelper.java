@@ -260,16 +260,17 @@ public class SummonedSwordHelper {
 
         // summon
         entity.getMainHandItem().getCapability(ItemSlashBlade.BLADESTATE).ifPresent((state) -> {
-
             Level worldIn = entity.level();
             Entity target = state.getTargetEntity(worldIn);
 
             if (target == null || !target.isAlive() || target.isRemoved()) {
                 return;
             }
+
             if (state.getProudSoulCount() < SlashBladeConfig.SUMMON_SWORD_ART_COST.get()) {
                 return;
             }
+
             state.setProudSoulCount(state.getProudSoulCount() - SlashBladeConfig.SUMMON_SWORD_ART_COST.get());
 
             //烈风环影剑
@@ -303,12 +304,14 @@ public class SummonedSwordHelper {
                 ss.setRoll(0);
                 ss.setStartDelay(30); // 延迟 40 tick (2秒) 后发射
 
+
                 worldIn.addFreshEntity(ss);
 
                 entity.playNotifySound(SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 0.2F, 1.45F);
             }
         });
     }
+
 
     private static void performBlisteringSwords(final Long pressTime, LivingEntity rawEntity, long now) {
         if (!(rawEntity instanceof ServerPlayer entity)) {

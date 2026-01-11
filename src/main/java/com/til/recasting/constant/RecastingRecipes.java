@@ -482,11 +482,11 @@ public class RecastingRecipes {
      * W=SLASHBLADE_WHITE, E=EMERALD_MEDIUM_SOUL_CUBE
      */
     public static final RecipeBuilderWrapper GATHERING_PARTING_VARIANT_RECIPE = (consumer, recipeId) ->
-            ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.GATHERING_PARTING_VARIANT.get(), 8)
+            ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.GATHERING_PARTING_VARIANT.get(), 4)
                     .pattern("WWW")
                     .pattern("WEW")
                     .pattern("WWW")
-                    .define('W', SlashBladeItems.SLASHBLADE_SILVERBAMBOO.get())
+                    .define('W', SlashBladeItems.PROUDSOUL_TRAPEZOHEDRON.get())
                     .define('E', RecastingItems.EMERALD_MEDIUM_SOUL_CUBE.get())
                     .unlockedBy("has_slashblade_white", RecipeProviderMixin.invokeHas(SlashBladeItems.SLASHBLADE_WHITE.get()))
                     .save(consumer, recipeId);

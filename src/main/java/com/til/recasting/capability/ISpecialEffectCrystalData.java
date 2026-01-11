@@ -1,13 +1,15 @@
 package com.til.recasting.capability;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * SE Crystal 数据接口
  * 用于存储 SE 结晶的特殊效果类型和等级信息
  */
-public interface ISECrystalData {
+public interface ISpecialEffectCrystalData extends INBTSerializable<CompoundTag> {
     /**
      * 获取特殊效果类型
      * @return 特殊效果的 ResourceLocation，如果未设置则返回 null

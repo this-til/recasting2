@@ -63,7 +63,7 @@ public class SlashEffectEntity extends ContinuousDamageEntity {
             setPos(pos);
             setRot(shooting.getYRot(), 0, true);
         }
-        attackTypeModelList = List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get());
+        addAttackType(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get());
         setRepeatedAttack(false);
         setParameterRange(4);
     }

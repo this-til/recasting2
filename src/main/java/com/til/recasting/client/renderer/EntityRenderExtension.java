@@ -6,9 +6,11 @@ import com.mojang.math.Axis;
 import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.client.registry.EntityRenderExtensionRegistry;
 import com.til.recasting.entity.StandardizationAttackEntity;
+import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.SpecialEffectsRegistry;
 import com.til.recasting.registry.instance.BuffType;
+import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;
 import mods.flammpfeil.slashblade.client.renderer.model.obj.WavefrontObject;
 import mods.flammpfeil.slashblade.client.renderer.util.BladeRenderState;
@@ -54,6 +56,7 @@ public interface EntityRenderExtension {
     }
 
     class BuffLevelRender implements EntityRenderExtension {
+        public static final ResourceLocation defaultTexture = ResourceLocation.fromNamespaceAndPath(SlashBlade.MODID, "model/util/ss.png");
 
         ResourceLocation modelLocation;
         ResourceLocation textureLocation;
@@ -70,6 +73,10 @@ public interface EntityRenderExtension {
             this.color = color;
 
             renderOffset = renderOffsetGlobalCounter++;
+        }
+
+        public BuffLevelRender(ResourceLocation modelLocation, int color, Supplier<BuffType> buffTypeSupplier) {
+            this(modelLocation, defaultTexture, color, buffTypeSupplier);
         }
 
         @Override

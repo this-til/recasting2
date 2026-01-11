@@ -40,9 +40,7 @@ public class RecastingBuffTypes {
     // ==================== 预定义的Buff类型 ====================
 
     /**
-     * 星闪Buff类型
-     * - 不衰减
-     * - 最大等级为5
+     * 星闪
      * - 用于星闪特效的层数累积
      */
     public static final RegistryObject<BuffType> STAR_BLINK = BUFF_TYPES.register("star_blink",
@@ -50,25 +48,34 @@ public class RecastingBuffTypes {
     );
 
     /**
-     *  演算Buff类型
-     * - 衰减间隔为60 ticks（每60 tick减少一级）
-     * - 最大等级为16
-     * - 受到伤害时每层增加，每层提供10%伤害衰减
+     * 演算
+     * - 每层提供10%增伤
      */
     public static final RegistryObject<BuffType> CALCULUS = BUFF_TYPES.register("calculus",
             () -> new BuffType(60, 16)
     );
 
     /**
-     * 注册自定义Buff类型
-     * 
-     * @param name Buff类型名称
-     * @param decayInterval 衰减间隔（每过多少tick减少一级），0表示不衰减
-     * @param maxLevel 最大等级，0表示无限制
-     * @return 注册的BuffType
+     * 灵魂燃烧
+     * - 每层提供6%当前生命值损伤
      */
-    public static RegistryObject<BuffType> register(String name, int decayInterval, int maxLevel) {
-        return BUFF_TYPES.register(name, () -> new BuffType(decayInterval, maxLevel));
-    }
-}
+    public static final RegistryObject<BuffType> SOUL_BURN = BUFF_TYPES.register("soul_burn",
+            () -> new BuffType(60, 24)
+    );
 
+    /**
+     * 破片
+     * - 用于破片特效的层数累积
+     */
+    public static final RegistryObject<BuffType> FRAGMENT = BUFF_TYPES.register("fragment",
+            () -> new BuffType(0, 64)
+    );
+
+    /**
+     * 剑势
+     * - 用于回旋特效的层数累积
+     */
+    public static final RegistryObject<BuffType> SWORD_MOMENTUM = BUFF_TYPES.register("sword_momentum",
+            () -> new BuffType(0, 12)
+    );
+}

@@ -1,12 +1,14 @@
 package com.til.recasting.registry;
 
 import com.til.recasting.Recasting;
+import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.entity.DriveEntity;
 import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.entity.SlashEffectEntity;
 import com.til.recasting.entity.SummondSwordEntity;
+import com.til.recasting.entity.SummondSpiralSwordEntity;
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.event.DoSlashExtendEvent;
 import com.til.recasting.handler.AttackHelper;
@@ -15,7 +17,12 @@ import com.til.recasting.registry.instance.BuffType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import mods.flammpfeil.slashblade.SlashBladeConfig;
+import mods.flammpfeil.slashblade.capability.concentrationrank.CapabilityConcentrationRank;
+import mods.flammpfeil.slashblade.capability.concentrationrank.IConcentrationRank;
+import mods.flammpfeil.slashblade.capability.slashblade.SlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
+import mods.flammpfeil.slashblade.util.AdvancementHelper;
 import mods.flammpfeil.slashblade.util.VectorHelper;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.DamageStructure;
@@ -24,9 +31,12 @@ import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.event.SlashBladeEvent;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -34,6 +44,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -56,7 +67,7 @@ public class SpecialEffectsRegistry {
             Recasting.MODID
     );
 
-
+    // 协同
     public static final RegistryObject<SpecialEffect> COOPERATE_WITH = registerExtendedSE("cooperate_with", CooperateWithSpecialEffect::new);
     // 十字斩 - 挥刀时追加一道剑气
     public static final RegistryObject<SpecialEffect> CROSS_CHOP = registerExtendedSE("cross_chop", CrossChopSpecialEffect::new);
@@ -64,13 +75,15 @@ public class SpecialEffectsRegistry {
     public static final RegistryObject<SpecialEffect> DRIVE_RELEASE = registerExtendedSE("drive_release", DriveReleaseSpecialEffect::new);
     // 生长 - 挥刀时恢复生命
     public static final RegistryObject<SpecialEffect> GROWTH = registerExtendedSE("growth", GrowthSpecialEffect::new);
+    // 吸血转化 - 将攻击伤害的0.01转化为生命恢复
+    public static final RegistryObject<SpecialEffect> LIFE_STEAL = registerExtendedSE("life_steal", LifeStealSpecialEffect::new);
     // 回溯 - 挥刀时恢复耐久
     public static final RegistryObject<SpecialEffect> REGRESSION = registerExtendedSE("regression", RegressionSpecialEffect::new);
     // 断罪 - 触发SA时追加次元斩攻击
     public static final RegistryObject<SpecialEffect> JUDGEMENT = registerExtendedSE("judgement", JudgementSpecialEffect::new);
     // 冲击 - 造成伤害有几率召唤幻影剑造成瞬间伤害
     public static final RegistryObject<SpecialEffect> IMPACT = registerExtendedSE("impact", ImpactSpecialEffect::new);
-    // 过载 - 挥刀时小概率触发审判
+    // 过载 - 挥刀时小概率触发次元斩
     public static final RegistryObject<SpecialEffect> OVERLOAD = registerExtendedSE("overload", OverloadSpecialEffect::new);
     // 抵抗 - 挥刀时获得伤害吸收
     public static final RegistryObject<SpecialEffect> RESIST = registerExtendedSE("resist", ResistSpecialEffect::new);
@@ -80,6 +93,12 @@ public class SpecialEffectsRegistry {
     public static final RegistryObject<SpecialEffect> STORM = registerExtendedSE("storm", StormSpecialEffect::new);
     // 风暴.变体 - 触发审判时，从上方召唤幻影剑进行攻击
     public static final RegistryObject<SpecialEffect> STORM_VARIANT = registerExtendedSE("storm_variant", StormVariantSpecialEffect::new);
+    // 分裂 - 挥刀时发射幻影剑进行辅助攻击
+    public static final RegistryObject<SpecialEffect> SPLIT = registerExtendedSE("split", SplitSpecialEffect::new);
+    // 回旋 - 挥刀时召唤围绕自己的旋转剑
+    public static final RegistryObject<SpecialEffect> SPIRAL = registerExtendedSE("spiral", SpiralSpecialEffect::new);
+    // 破片 - 幻影剑造成伤害时叠加层级，达到64层级时额外造成一次大量的伤害
+    public static final RegistryObject<SpecialEffect> FRAGMENT = registerExtendedSE("fragment", FragmentSpecialEffect::new);
 
     // ==================== 攻击类型增幅 SE ====================
     // 太虚 - 幻影剑增幅
@@ -132,13 +151,7 @@ public class SpecialEffectsRegistry {
             IForgeRegistry<SpecialEffect> registry = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get();
             ResourceLocation resourceLocation = registry.getKey(this);
 
-            if (resourceLocation == null) {
-                return 0;
-            }
-
-            // 从 extendedSpecialLevels 中获取等级
-            return propertiesDefinitionExtension.extendedSpecialLevels()
-                    .getOrDefault(resourceLocation, 0);
+            return propertiesDefinitionExtension.getExtendedSpecialLevels(resourceLocation);
         }
 
         protected PropertiesDefinitionExtension getPropertiesDefinitionExtension(ItemStack itemStack) {
@@ -306,8 +319,8 @@ public class SpecialEffectsRegistry {
 
         NumberPack probability = new NumberPack(0.1f, 0.05f);
         NumberPack attackRatio = new NumberPack(0.1f, 0.1f);
-        int lifetime = 40;
-        float speed = 0.45f;
+        int lifetime = 20;
+        float speed = 1.25f;
 
         @SubscribeEvent
         public void onEvent(DoSlashExtendEvent event) {
@@ -745,7 +758,7 @@ public class SpecialEffectsRegistry {
     public static class StormSpecialEffect extends ExtendedSpecialEffect {
 
         NumberPack attackRatio = new NumberPack(0f, 0.05f);
-        NumberPack number = new NumberPack(2f, 1f);
+        NumberPack number = new NumberPack(1f, 1f);
 
         @SubscribeEvent
         public void onEvent(EntityJoinLevelEvent event) {
@@ -820,7 +833,7 @@ public class SpecialEffectsRegistry {
     public static class StormVariantSpecialEffect extends ExtendedSpecialEffect {
 
         NumberPack attackRatio = new NumberPack(0f, 0.05f);
-        NumberPack number = new NumberPack(2f, 1f);
+        NumberPack number = new NumberPack(1f, 1f);
 
         @SubscribeEvent
         public void onEvent(EntityJoinLevelEvent event) {
@@ -957,13 +970,7 @@ public class SpecialEffectsRegistry {
                 return;
             }
 
-            // 获取第一个攻击者的世界和时间（所有攻击者应该在同一个世界）
-            LivingEntity firstAttacker = accumulatedDamageMap.keySet().iterator().next();
-            if (firstAttacker == null || firstAttacker.level().isClientSide()) {
-                return;
-            }
-
-            long currentTime = firstAttacker.level().getGameTime();
+            long currentTime = event.getServer().getTickCount();
             if (currentTime % attackInterval != 0) {
                 return;
             }
@@ -1100,6 +1107,374 @@ public class SpecialEffectsRegistry {
                     }
             );
 
+        }
+
+    }
+
+    /***
+     * 分裂
+     * 挥刀时发射幻影剑进行辅助攻击
+     */
+    public static class SplitSpecialEffect extends ExtendedSpecialEffect {
+
+        NumberPack attackRatio = new NumberPack(0.2f, 0.15f);
+
+        @SubscribeEvent
+        public void onEvent(DoSlashExtendEvent event) {
+            if (!hasSpecialEffect(event.getSlashBladeState())) {
+                return;
+            }
+            if (event.getUser().level().isClientSide()) {
+                return;
+            }
+
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(event.getBlade());
+            int level = getLevel(properties);
+
+            // 获取攻击目标位置
+            Vec3 attackPos = PosHelper.getAttackTargetPosition(event.getUser(), event.getSlashBladeState());
+
+            // 生成幻影剑数量
+            float attack = attackRatio.of(level);
+
+            SummondSwordEntity summondSword = new SummondSwordEntity(
+                    RecastingEntities.SUMMOND_SWORD.get(),
+                    event.getUser().level(),
+                    event.getUser()
+            );
+
+            // 设置位置（玩家前方）
+            Vec3 pos = event.getUser().position().add(0.0D, (double) event.getUser().getEyeHeight() * 0.75D, 0.0D)
+                    .add(event.getUser().getLookAngle().scale(1.5f));
+            summondSword.setPos(pos.x, pos.y, pos.z);
+
+            // 朝向攻击目标
+            summondSword.lookAt(attackPos, false);
+
+            // 设置属性
+            summondSword.setColor(event.getSlashBladeState().getColorCode());
+            summondSword.setModifiedRatio(attack);
+            summondSword.setStartDelay(event.getUser().getRandom().nextInt(5));
+
+            // 添加到世界
+            event.getUser().level().addFreshEntity(summondSword);
+        }
+
+    }
+
+    /***
+     * 吸血转化
+     * 将攻击伤害的0.01转化为生命恢复
+     */
+    public static class LifeStealSpecialEffect extends ExtendedSpecialEffect {
+
+        NumberPack healRatio = new NumberPack(0f, 0.01f); // 伤害转化比例
+
+        @SubscribeEvent
+        public void onEvent(AttackAmplifierEvent event) {
+            if (!hasSpecialEffect(event.getSlashBladeState())) {
+                return;
+            }
+            if (event.getAttacker().level().isClientSide()) {
+                return;
+            }
+            if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+                return;
+            }
+
+            LivingEntity attacker = event.getAttacker();
+
+            // 计算预期伤害（基于最终伤害倍率）
+            AttributeInstance attribute = attacker.getAttribute(Attributes.ATTACK_DAMAGE);
+            if (attribute == null) {
+                return;
+            }
+
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(event.getItem());
+            int level = getLevel(properties);
+
+            // 提前计算并保存需要的值
+            double ultimatelyModifiedRatio = event.getUltimatelyModifiedRatio();
+            float extraDamage = event.getExtraDamage();
+            float currentHealRatio = healRatio.of(level);
+
+            // 延迟执行，确保攻击已经完成并造成实际伤害
+            attacker.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(
+                    timeRun -> timeRun.addTimerCell(
+                            () -> {
+                                Level worldIn = attacker.level();
+                                if (worldIn.isClientSide()) {
+                                    return;
+                                }
+
+                                // 重新获取属性（可能在延迟期间发生变化）
+                                AttributeInstance currentAttribute = attacker.getAttribute(Attributes.ATTACK_DAMAGE);
+                                if (currentAttribute == null) {
+                                    return;
+                                }
+
+                                // 计算预期伤害
+                                float expectedDamage = (float) (currentAttribute.getValue() * ultimatelyModifiedRatio);
+                                expectedDamage += extraDamage;
+
+                                // 恢复生命值（基于预期伤害的比例）
+                                float healAmount = expectedDamage * currentHealRatio;
+                                if (healAmount > 0) {
+                                    attacker.heal(healAmount);
+                                }
+                            },
+                            1 // 延迟1 tick，确保伤害已经应用
+                    )
+            );
+        }
+
+    }
+
+    /***
+     * 回旋
+     * 幻影剑造成伤害后叠加剑势，达到12层后触发风暴效果
+     */
+    public static class SpiralSpecialEffect extends ExtendedSpecialEffect {
+
+        NumberPack modifiedRatio = new NumberPack(0.1f, 0);
+        int addLevel = 1; // 每次叠加的层数
+        NumberPack triggerInterval = new NumberPack(35, -5); // 触发间隔（tick）
+
+        // 存储每个攻击者的最后触发时间
+        Map<LivingEntity, Long> lastTriggerTimeMap = new HashMap<>();
+
+        @SubscribeEvent
+        public void onAttackEvent(AttackAmplifierEvent event) {
+            if (!hasSpecialEffect(event.getSlashBladeState())) {
+                return;
+            }
+
+            // 只在服务端执行
+            if (event.getAttacker().level().isClientSide()) {
+                return;
+            }
+
+            // 检查目标是否是生物实体且存活
+            if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+                return;
+            }
+
+            // 只处理幻影剑攻击
+            if (!event.getAttackTypeList().contains(RecastingAttackTypes.SUMMOND_SWORD_ATTACK.get())) {
+                return;
+            }
+
+            if (event.getAttackTypeList().contains(RecastingAttackTypes.NO_SPIRAL_SPECIAL_RECURSION_ATTACK.get())) {
+                return;
+            }
+            if (event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get())) {
+                return;
+            }
+
+            LivingEntity attacker = event.getAttacker();
+            long currentTime = attacker.level().getGameTime();
+
+
+            ItemStack blade = event.getItem();
+
+            //noinspection DataFlowIssue
+            PropertiesDefinitionExtension se = blade.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).orElse(null);
+            //noinspection ConstantValue
+            if (se == null) {
+                return;
+            }
+
+
+            //noinspection DataFlowIssue
+            IBuffStackData buffStackData = attacker.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).orElse(null);
+            //noinspection ConstantValue
+            if (buffStackData == null) {
+                return;
+            }
+
+            Level world = attacker.level();
+            BuffType swordMomentumBuffType = RecastingBuffTypes.SWORD_MOMENTUM.get();
+
+            // 获取当前层数
+            int currentLevel = buffStackData.getLevel(swordMomentumBuffType, world);
+
+            // 如果已经达到最大层数，检查触发间隔
+            if (currentLevel >= swordMomentumBuffType.getMaxLevel()) {
+                // 检查触发间隔
+                Long lastTriggerTime = lastTriggerTimeMap.get(attacker);
+                int interval = (int) triggerInterval.of(getLevel(se));
+
+                // 如果触发间隔还没到，不触发风暴效果，也不叠加层数
+                if (lastTriggerTime != null && (currentTime - lastTriggerTime) < interval) {
+                    return;
+                }
+
+                // 触发间隔到了，触发风暴效果并重置层数
+                buffStackData.setLevel(swordMomentumBuffType, 0, world);
+                lastTriggerTimeMap.put(attacker, currentTime);
+
+                // 触发风暴效果
+                performStormSwordsInternal(
+                        attacker,
+                        event.getSlashBladeState(),
+                        se
+                );
+            } else {
+                // 未达到最大层数，能叠加说明已经过了冷却，直接叠加层数
+                int newLevel = currentLevel + addLevel;
+                buffStackData.setLevel(swordMomentumBuffType, newLevel, world);
+
+                // 如果叠加后达到最大层数，立即触发风暴效果（能叠加说明冷却已过）
+                if (newLevel >= swordMomentumBuffType.getMaxLevel()) {
+                    // 重置层数
+                    buffStackData.setLevel(swordMomentumBuffType, 0, world);
+                    lastTriggerTimeMap.put(attacker, currentTime);
+
+                    // 触发风暴效果
+                    performStormSwordsInternal(
+                            attacker,
+                            event.getSlashBladeState(),
+                            se
+                    );
+                }
+            }
+
+        }
+
+
+        public void performStormSwordsInternal(LivingEntity entity, ISlashBladeState state, PropertiesDefinitionExtension propertiesDefinitionExtension) {
+            Level worldIn = entity.level();
+            Entity target = state.getTargetEntity(worldIn);
+
+            if (target == null || !target.isAlive() || target.isRemoved()) {
+                return;
+            }
+
+            int count = 6;
+
+            for(int i = 0; i < count; i++) {
+                SummondSpiralSwordEntity ss = new SummondSpiralSwordEntity(RecastingEntities.SUMMOND_SPIRAL_SWORD.get(), worldIn, entity);
+
+                // 设置旋转中心为目标
+                ss.setCenterEntity(target);
+
+                // 设置旋转参数（使用辅助方法自动计算修饰参数）
+                ss.setRadiusExpansion(2.5f, 6.0f, 30); // 40 tick 后从 2.5 格扩展到 8 格
+                ss.setSpeedDecay(16.0f, 0.3f, 30); // 40 tick 后从 16 度/tick 衰减到接近 0
+                ss.setRotationAngle(360.0f / count * i); // 均匀分布在圆周上
+                ss.setRotationAxis(new Vec3(0, 1, 0)); // 绕 Y 轴旋转
+                ss.setRotationDirectionOutward(false); // 朝向中心
+
+                // 设置基本属性
+                ss.setModifiedRatio(modifiedRatio.of(getLevel(propertiesDefinitionExtension)));
+                ss.setColor(state.getColorCode());
+                ss.setRoll(0);
+                ss.setStartDelay(30); // 延迟 40 tick (2秒) 后发射
+
+                ss.addAttackType(RecastingAttackTypes.NO_SPIRAL_SPECIAL_RECURSION_ATTACK.get());
+
+                worldIn.addFreshEntity(ss);
+
+                entity.playSound(
+                        SoundEvents.CHORUS_FRUIT_TELEPORT,
+                        0.2F,
+                        1.45F
+                );
+            }
+        }
+
+        @SubscribeEvent
+        public void onServerTick(TickEvent.ServerTickEvent event) {
+            if (event.phase != TickEvent.Phase.END) {
+                return;
+            }
+
+            long currentTime = event.getServer().getTickCount();
+            if (currentTime % 20 != 0) {
+                return;
+            }
+            // 如果没有实体，直接返回
+            if (lastTriggerTimeMap.isEmpty()) {
+                return;
+            }
+
+            // 清理无效的实体，防止内存泄漏
+            Iterator<Map.Entry<LivingEntity, Long>> iterator = lastTriggerTimeMap.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<LivingEntity, Long> entry = iterator.next();
+                LivingEntity attacker = entry.getKey();
+
+                // 如果实体无效（null、死亡、被移除或在客户端），清除条目
+                if (attacker == null || !attacker.isAlive() || attacker.isRemoved() || attacker.level().isClientSide()) {
+                    iterator.remove();
+                }
+            }
+        }
+
+    }
+
+    /***
+     * 破片
+     * 幻影剑造成伤害时叠加层级，达到64层级时额外造成一次大量的伤害
+     */
+    public static class FragmentSpecialEffect extends ExtendedSpecialEffect {
+
+        NumberPack attack = new NumberPack(3f, 1f); // 额外伤害
+        int addLevel = 1; // 每次叠加的层数
+
+        @SubscribeEvent
+        public void onEvent(AttackAmplifierEvent event) {
+            if (!hasSpecialEffect(event.getSlashBladeState())) {
+                return;
+            }
+
+            // 只在服务端执行
+            if (event.getAttacker().level().isClientSide()) {
+                return;
+            }
+
+            // 检查目标是否是生物实体且存活
+            if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+                return;
+            }
+
+            // 只处理幻影剑攻击
+            if (!event.getAttackTypeList().contains(RecastingAttackTypes.SUMMOND_SWORD_ATTACK.get())) {
+                return;
+            }
+
+
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(event.getItem());
+            int level = getLevel(properties);
+
+            target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
+                    buffStackData -> {
+                        Level world = target.level();
+                        BuffType fragmentBuffType = RecastingBuffTypes.FRAGMENT.get();
+
+                        // 获取当前层数
+                        int currentLevel = buffStackData.getLevel(fragmentBuffType, world);
+
+                        // 增加层数
+                        int newLevel = currentLevel + addLevel;
+                        buffStackData.setLevel(fragmentBuffType, newLevel, world);
+
+                        // 检查是否达到最大层数（64层）
+                        if (newLevel >= fragmentBuffType.getMaxLevel()) {
+                            // 重置层数
+                            buffStackData.setLevel(fragmentBuffType, 0, world);
+
+                            // 造成大量额外伤害
+                            float damage = attack.of(level);
+                            AttackHelper.attack(
+                                    event.getAttacker(),
+                                    target,
+                                    new DamageStructure(0f, damage),
+                                    List.of(RecastingAttackTypes.FRAGMENT_ATTACK.get())
+                            );
+                        }
+                    }
+            );
         }
 
     }

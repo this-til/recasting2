@@ -1,0 +1,34 @@
+{
+  "type": "recasting:se_crystal_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:trident"
+    },
+    "F": {
+      "item": "recasting:royal_flame"
+    },
+    "G": {
+      "item": "minecraft:prismarine_crystals"
+    },
+    "M": {
+      "item": "recasting:gathering_parting_variant"
+    },
+    "T": {
+      "item": "minecraft:glowstone_dust"
+    }
+  },
+  "pattern": [
+    "TMT",
+    "FGF",
+    "FBF"
+  ],
+  "result": {
+    "item": "recasting:se_crystal"
+  },
+  "se_crystal": {
+    "level": 1,
+    "special_effect_type": "recasting:thunder_strike"
+  },
+  "show_notification": true
+}

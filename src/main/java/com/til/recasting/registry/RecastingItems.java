@@ -1,13 +1,12 @@
 package com.til.recasting.registry;
 
 import com.til.recasting.Recasting;
-import com.til.recasting.capability.ISECrystalData;
+import com.til.recasting.capability.ISpecialEffectCrystalData;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.item.ProudSoulItem;
 import com.til.recasting.util.Gradient;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -20,7 +19,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -94,6 +92,9 @@ public class RecastingItems {
     public static final RegistryObject<Item> SE_CRYSTAL = ITEMS.register("se_crystal", () ->
             new ProudSoulItem(new Item.Properties(), null, 16.f) {
 
+                private final Gradient effective = Gradient.createFromColor(new Color(0xFFFF00).getRGB());
+                private final Gradient invalid = Gradient.createFromColor(new Color(0x818488).getRGB());
+
                 @Override
                 public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<net.minecraft.network.chat.Component> components, @NotNull TooltipFlag flag) {
                     // 使用能力系统获取数据
@@ -137,6 +138,22 @@ public class RecastingItems {
                                         .withStyle(ChatFormatting.DARK_GRAY)
                         );
                     });
+                }
+
+                @Override
+                public @Nullable Gradient getGradient(ItemStack itemStack, int level) {
+                    //noinspection DataFlowIssue
+                    ISpecialEffectCrystalData iSpecialEffectCrystalData = itemStack.getCapability(CapabilityRegistryHandler.SE_CRYSTAL_DATA).orElse(null);
+
+                    //noinspection ConstantValue
+                    if (iSpecialEffectCrystalData != null) {
+                        return invalid;
+                    }
+
+                    return iSpecialEffectCrystalData.getSpecialEffectLevel() <= 0
+                            ? invalid
+                            : effective;
+
                 }
             }
     );
@@ -606,7 +623,7 @@ public class RecastingItems {
         mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValues().stream()
                 .filter(se -> se instanceof SpecialEffectsRegistry.ExtendedSpecialEffect)
                 .map(se -> (SpecialEffectsRegistry.ExtendedSpecialEffect) se)
-                .flatMap(se -> IntStream.range(1, se.maxLevel + 1)
+                .flatMap(se -> IntStream.range(0, se.maxLevel + 1)
                         .mapToObj(
                                 level -> {
                                     ItemStack itemStack = new ItemStack(RecastingItems.SE_CRYSTAL.get());

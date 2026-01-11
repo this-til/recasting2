@@ -1,6 +1,7 @@
 package com.til.recasting.entity;
 
 import com.til.recasting.registry.RecastingAttackTypes;
+import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.util.CallbackPoint;
 import com.til.recasting.handler.EntityPredicateHelper;
@@ -33,6 +34,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -98,6 +100,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
 
     protected BlockState inBlockState;
 
+
     public final CallbackPoint<IAttackAction> attackActionCallbackPoint = new CallbackPoint<>();
     public final CallbackPoint<IAttackEndAction> attackEndActionCallbackPoint = new CallbackPoint<>();
     public final CallbackPoint<IAttackBlock> attackBlockCallbackPoint = new CallbackPoint<>();
@@ -110,6 +113,9 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
         super(entityTypeIn, worldIn, shooting);
         setModel(defaultModel);
         setTexture(defaultTexture);
+
+        // 初始化默认攻击类型
+        attackTypeModelList.add(RecastingAttackTypes.SUMMOND_SWORD_ATTACK.get());
 
         //设定初始角度等信息
         if (shooting != null) {
@@ -286,7 +292,8 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     }
 
     public void doAttackEntity(Entity target, SummondAttackType summondAttackType) {
-        AttackHelper.attack(getShooter(), target, getDamageStructure(), List.of(RecastingAttackTypes.SUMMOND_SWORD_ATTACK.get()));
+
+        AttackHelper.attack(getShooter(), target, getDamageStructure(), attackTypeModelList);
         target.setDeltaMovement(0, 0.1, 0);
         switch (summondAttackType) {
             case HIT -> attackActionCallbackPoint.call(a -> a.attack(target));

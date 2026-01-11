@@ -24,6 +24,7 @@
     "entity.EntitySlashEffectMixin"
   ],
   "client": [
+    "ItemSlashBladeMixin",
     "client.ItemModelBuilderMixin",
     "client.SummonedSwordRendererMixin"
   ],

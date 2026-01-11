@@ -98,7 +98,8 @@ public class AttackHelper {
                     .map(
                             info -> {
                                 target.invulnerableTime = 0;
-                                return target.hurt(info.damageSource(), (float) (finalDamage * info.damage()));
+                                DamageStructure structure = info.damageStructure();
+                                return target.hurt(info.damageSource(), (float) (finalDamage * structure.modifiedRatio()) + structure.extraDamage());
                             }
                     )
                     .toList()

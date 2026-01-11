@@ -32,7 +32,7 @@ public class JudgementCutEntity extends ContinuousDamageEntity {
         this.setMaxLifeTime(10);
         this.seed = this.random.nextInt(360);
 
-        attackTypeModelList = List.of(RecastingAttackTypes.JUDGEMENT_CUT_ATTACK.get());
+        addAttackType(RecastingAttackTypes.JUDGEMENT_CUT_ATTACK.get());
 
         setModel(modelLocation);
         setTexture(textureLocation);

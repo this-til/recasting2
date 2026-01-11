@@ -20,8 +20,13 @@ import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.registry.combo.ComboState;
 import mods.flammpfeil.slashblade.slasharts.SlashArts;
 import mods.flammpfeil.slashblade.util.AttackManager;
+import mods.flammpfeil.slashblade.util.KnockBacks;
+import com.til.recasting.handler.AttackHelper;
+import com.til.recasting.util.DamageStructure;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -45,6 +50,9 @@ public class SlashArtsRegistry {
             SlashArts.REGISTRY_KEY,
             Recasting.MODID
     );
+
+    // 碎段
+    public static final RegistryObject<ExtendedSlashArts> FRAGMENT = registerExtendedSA("fragment", new FragmentSlashArts());
 
     // 青芒
     public static final RegistryObject<ExtendedSlashArts> CYAN_GLOW = registerExtendedSA("cyan_glow", new CyanGlowSlashArts());
@@ -81,6 +89,10 @@ public class SlashArtsRegistry {
 
     // 多重剑气
     public static final RegistryObject<ExtendedSlashArts> MULTIPLE_DRIVE = registerExtendedSA("multiple_drive", new MultipleDriveSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> MULTIPLE_DRIVE_LAMBDA = registerExtendedSA("multiple_drive", new MultipleDriveSlashArts().setAttack(8).setAttack(0.2f));
+
+    // 引雷
+    public static final RegistryObject<ExtendedSlashArts> LIGHTNING_CALL = registerExtendedSA("lightning_call", new LightningCallSlashArts());
 
     // 苍穹十二连
     public static final RegistryObject<ExtendedSlashArts> HEAVEN_TWELVE_HIT = registerExtendedSA("heaven_twelve_hit", new HeavenTwelveHitSlashArts());
@@ -92,6 +104,11 @@ public class SlashArtsRegistry {
     public static final RegistryObject<ExtendedSlashArts> CLOUD_WHEEL_STORM = registerExtendedSA("cloud_wheel_storm", new CloudWheelSlashArts().setLightningNumber(7).setAttackNumber(10));
 
     public static final RegistryObject<ExtendedSlashArts> STELLAR_ROTATION = registerExtendedSA("stellar_rotation", new StellarRotationSlashArts());
+
+    // 急行幻影剑
+    public static final RegistryObject<ExtendedSlashArts> RAPID_PHANTOM_SWORDS = registerExtendedSA("rapid_phantom_swords", new RapidPhantomSwordsSlashArts());
+
+
 
     /**
      * 注册扩展的 SlashArts，自动关联 ComboState
@@ -861,8 +878,8 @@ public class SlashArtsRegistry {
     @Accessors(chain = true)
     public static class MultipleDriveSlashArts extends ExtendedSlashArts {
 
-        float attack = 0.35f;
-        int attackNumber = 8;
+        float attack = 0.15f;
+        int attackNumber = 4;
         int life = 80;
         float range = 1;
 
@@ -1119,6 +1136,145 @@ public class SlashArtsRegistry {
                     0.2F,
                     1.45F
             );
+        }
+    }
+
+    /**
+     * 急行幻影剑 Slash Arts
+     * 在目标位置周围召唤多把幻影剑，击中敌人后给敌人添加发光效果
+     */
+    @Setter
+    @Accessors(chain = true)
+    public static class RapidPhantomSwordsSlashArts extends ExtendedSlashArts {
+
+        float attack = 0.15f;
+        int number = 12;
+        float range = 12f;
+
+        @Override
+        public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
+
+            Level worldIn = livingEntity.level();
+
+            // 获取攻击目标位置
+            Vec3 attackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
+
+            // 获取范围内的所有实体
+            List<Entity> entityList = EntityHelper.getTargettableEntitiesWithinAABB(
+                    worldIn,
+                    livingEntity,
+                    attackPos,
+                    range
+            );
+
+            // 创建多把召唤剑
+            for(int i = 0; i < number; i++) {
+                SummondSwordEntity summonedSword = new SummondSwordEntity(
+                        RecastingEntities.SUMMOND_SWORD.get(),
+                        worldIn,
+                        livingEntity
+                );
+
+                // 设置属性
+                summonedSword.setColor(slashBladeState.getColorCode());
+                summonedSword.setModifiedRatio(attack);
+                summonedSword.setStartDelay(livingEntity.getRandom().nextInt(10));
+
+
+                // 设置朝向：如果有敌人，朝向随机敌人，否则朝向攻击位置
+                if (!entityList.isEmpty()) {
+                    Entity target = entityList.get(livingEntity.getRandom().nextInt(entityList.size()));
+                    Vec3 targetPos = new Vec3(
+                            target.getX(),
+                            target.getY() + target.getEyeHeight() * 0.5,
+                            target.getZ()
+                    );
+                    summonedSword.lookAt(targetPos, false);
+                } else {
+                    summonedSword.lookAt(attackPos, false);
+                }
+
+                // 添加到世界
+                worldIn.addFreshEntity(summonedSword);
+            }
+
+            // 播放音效
+            livingEntity.playSound(
+                    SoundEvents.CHORUS_FRUIT_TELEPORT,
+                    0.2F,
+                    1.45F
+            );
+        }
+    }
+
+    /**
+     * 碎段 Slash Arts
+     * 发动一次斩击，设置重复攻击和取消击退
+     */
+    @Setter
+    @Accessors(chain = true)
+    public static class FragmentSlashArts extends ExtendedSlashArts {
+
+        float attack = 0.3f;
+        float basicsRange = 4.0f;
+        int life = 10;
+
+        @Override
+        public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
+
+            // 调用 AttackHelper.doSlash
+            SlashEffectEntity slashEffectEntity = AttackHelper.doSlash(
+                    livingEntity,
+                    135f,  // roll
+                    slashBladeState.getColorCode(),
+                    Vec3.ZERO,
+                    false,  // mute
+                    true,   // critical
+                    new DamageStructure(attack, 0),
+                    basicsRange,
+                    KnockBacks.cancel
+            );
+
+            slashEffectEntity.setMaxLifeTime(life);
+            slashEffectEntity.setRepeatedAttack(true);
+        }
+    }
+
+    /**
+     * 引雷 Slash Arts
+     * 在目标位置召唤一道闪电
+     */
+    @Setter
+    @Accessors(chain = true)
+    public static class LightningCallSlashArts extends ExtendedSlashArts {
+
+        float attack = 0.5f;
+        int life = 20;
+
+        @Override
+        public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
+
+            Level worldIn = livingEntity.level();
+
+            // 获取攻击目标位置
+            Vec3 attackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
+
+            // 创建闪电实体
+            LightningEntity lightningEntity = new LightningEntity(
+                    RecastingEntities.LIGHTNING.get(),
+                    worldIn,
+                    livingEntity
+            );
+
+            // 设置位置
+            lightningEntity.setPos(attackPos.x, attackPos.y, attackPos.z);
+
+            // 设置属性
+            lightningEntity.setModifiedRatio(attack);
+            lightningEntity.setMaxLifeTime(life);
+
+            // 添加到世界
+            worldIn.addFreshEntity(lightningEntity);
         }
     }
 

@@ -26,7 +26,7 @@ public class ProudSoulItem extends Item implements IGradientColorProvider {
     }
 
     @Override
-    public @Nullable Gradient getGradient() {
+    public @Nullable Gradient getGradient(ItemStack itemStack, int level) {
         return gradient;
     }
 

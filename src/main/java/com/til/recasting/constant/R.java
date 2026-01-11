@@ -31,6 +31,8 @@ public class R {
         }
 
         public static class Mark {
+            public static final ResourceLocation calculus = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/calculus");
+            public static final ResourceLocation calculus$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/calculus.obj");
             public static final ResourceLocation model = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model");
             public static final ResourceLocation model$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model.obj");
             public static final ResourceLocation model1 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model1");
@@ -49,8 +51,8 @@ public class R {
             public static final ResourceLocation model7$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model7.obj");
             public static final ResourceLocation model8 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model8");
             public static final ResourceLocation model8$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model8.obj");
-            public static final ResourceLocation model9 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model9");
-            public static final ResourceLocation model9$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model9.obj");
+            public static final ResourceLocation spiralSpecial = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/spiral_special");
+            public static final ResourceLocation spiralSpecial$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/spiral_special.obj");
             public static final ResourceLocation starBlink = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/star_blink");
             public static final ResourceLocation starBlink$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/star_blink.obj");
         }

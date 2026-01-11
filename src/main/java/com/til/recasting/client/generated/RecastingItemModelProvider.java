@@ -54,7 +54,7 @@ public class RecastingItemModelProvider extends ItemModelProvider {
     }
 
     public ItemModelBuilder generateProudsoulModel(RegistryObject<Item> item, int modelLevel) {
-        ResourceLocation texture = Recasting.prefix("item/soul_0");
+        ResourceLocation texture = Recasting.prefix("item/soul");
         return generateProudsoulModel(item, modelLevel, texture);
     }
 

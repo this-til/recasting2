@@ -4,6 +4,7 @@ import com.til.recasting.Recasting;
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.mixin.DamageSourcesAccessor;
 import com.til.recasting.registry.instance.AttackType;
+import com.til.recasting.util.DamageStructure;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageSource;
@@ -52,7 +53,7 @@ public class RecastingAttackTypes {
                     attacker instanceof Player
                             ? attacker.damageSources().playerAttack((Player) attacker)
                             : attacker.damageSources().mobAttack(attacker),
-                    1.0f
+                    new DamageStructure(1.0f, 0.0f)
             ))
     );
 
@@ -62,7 +63,7 @@ public class RecastingAttackTypes {
     public static final RegistryObject<AttackType> SUMMOND_SWORD_ATTACK = ATTACK_TYPES.register("summond_sword",
             () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
                     attacker.damageSources().indirectMagic(target, attacker),
-                    1.0f
+                    new DamageStructure(1.0f, 0.0f)
             ))
     );
 
@@ -73,7 +74,7 @@ public class RecastingAttackTypes {
             () -> new AttackType((attacker, target) -> {
                 DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
                 DamageSource damageSource = accessor.callSource(DamageTypes.DRAGON_BREATH, target, attacker);
-                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, 1.0f);
+                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, new DamageStructure(1.0f, 0.0f));
             })
     );
 
@@ -83,7 +84,7 @@ public class RecastingAttackTypes {
     public static final RegistryObject<AttackType> DRIVE_ATTACK = ATTACK_TYPES.register("drive",
             () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
                     attacker.damageSources().indirectMagic(target, attacker),
-                    1.0f
+                    new DamageStructure(1.0f, 0.0f)
             ))
     );
 
@@ -94,7 +95,7 @@ public class RecastingAttackTypes {
             () -> new AttackType((attacker, target) -> {
                 DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
                 DamageSource damageSource = accessor.callSource(DamageTypes.LIGHTNING_BOLT, target, attacker);
-                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, 1.0f);
+                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, new DamageStructure(1.0f, 0.0f));
             })
     );
 
@@ -105,7 +106,7 @@ public class RecastingAttackTypes {
             () -> new AttackType((attacker, target) -> {
                 DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
                 DamageSource damageSource = accessor.callSource(DamageTypes.WITHER_SKULL, target, attacker);
-                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, 1.0f);
+                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, new DamageStructure(1.0f, 0.0f));
             })
     );
 
@@ -117,16 +118,29 @@ public class RecastingAttackTypes {
             () -> new AttackType((attacker, target) -> null)
     );
 
+    public static final RegistryObject<AttackType> NO_SPIRAL_SPECIAL_RECURSION_ATTACK = ATTACK_TYPES.register("no_spiral_special_recursion",
+            () -> new AttackType((attacker, target) -> null)
+    );
+
     /**
      * 星闪攻击类型（魔法伤害）
      */
     public static final RegistryObject<AttackType> STAR_BLINK_ATTACK = ATTACK_TYPES.register("star_blink",
             () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
                     attacker.damageSources().indirectMagic(target, attacker),
-                    1.0f
+                    new DamageStructure(1.0f, 0.0f)
             ))
     );
 
+    /**
+     * 破片攻击类型（魔法伤害）
+     */
+    public static final RegistryObject<AttackType> FRAGMENT_ATTACK = ATTACK_TYPES.register("fragment",
+            () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
+                    attacker.damageSources().indirectMagic(target, attacker),
+                    new DamageStructure(1.0f, 0.0f)
+            ))
+    );
 
 }
 

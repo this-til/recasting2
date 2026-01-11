@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * SE Crystal 数据实现类
  */
-public class SECrystalData implements ISECrystalData, INBTSerializable<CompoundTag> {
+public class SECrystalData implements ISpecialEffectCrystalData, INBTSerializable<CompoundTag> {
     
     private static final String KEY_SPECIAL_EFFECT_TYPE = "SpecialEffectType";
     private static final String KEY_SPECIAL_EFFECT_LEVEL = "SpecialEffectTypeLevel";

@@ -76,6 +76,6 @@
   },
   "gui_light": "front",
   "textures": {
-    "layer0": "recasting:item/soul_0"
+    "layer0": "recasting:item/soul"
   }
 }

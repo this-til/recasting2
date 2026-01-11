@@ -27,7 +27,6 @@ public class LightningSummonedSword extends SummondSwordEntity {
             );
 
             lightningEntity.setPos(lightningPos.x, lightningPos.y, lightningPos.z);
-            lightningEntity.setColor(lightningColor);
             lightningEntity.setModifiedRatio(lightningAttack);
             lightningEntity.setMaxLifeTime(20);
 

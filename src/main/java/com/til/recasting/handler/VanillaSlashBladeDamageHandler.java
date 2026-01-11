@@ -73,7 +73,7 @@ public class VanillaSlashBladeDamageHandler {
             DamageSource damageSource = accessor.callSource(DamageTypes.ON_FIRE, target, event.getAttacker());
             event.addDamageSourceInfo(
                     damageSource,
-                    (float) (Config.FIRE_ASPECT_DAMAGE.get() * fireAspect)
+                    new com.til.recasting.util.DamageStructure(0.0f, (float) (Config.FIRE_ASPECT_DAMAGE.get() * fireAspect))
             );
         }
 

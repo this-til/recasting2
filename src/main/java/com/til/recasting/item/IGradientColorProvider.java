@@ -1,6 +1,7 @@
 package com.til.recasting.item;
 
 import com.til.recasting.util.Gradient;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * 提供渐变颜色和时间缩放的接口
@@ -12,7 +13,7 @@ public interface IGradientColorProvider {
      * 获取渐变对象
      * @return Gradient 对象，如果返回 null 则不使用渐变
      */
-    Gradient getGradient();
+    Gradient getGradient(ItemStack itemStack, int level);
     
     /**
      * 获取时间缩放

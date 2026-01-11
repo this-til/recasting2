@@ -64,8 +64,8 @@ public class SoulBurnBuffHandler {
                 DamageSourcesAccessor accessor = (DamageSourcesAccessor) event.getAttacker().damageSources();
                 DamageSource fireDamageSource = accessor.callSource(DamageTypes.ON_FIRE, target, event.getAttacker());
                 
-                // 添加额外的火焰伤害
-                event.addDamageSourceInfo(fireDamageSource, fireDamage);
+                // 添加额外的火焰伤害（使用 DamageStructure，extraDamage 不会乘以攻击力）
+                event.addDamageSourceInfo(fireDamageSource, new com.til.recasting.util.DamageStructure(0.0f, fireDamage));
             }
         });
     }

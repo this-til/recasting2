@@ -1,6 +1,6 @@
 package com.til.recasting.capability.provider;
 
-import com.til.recasting.capability.ISECrystalData;
+import com.til.recasting.capability.ISpecialEffectCrystalData;
 import com.til.recasting.capability.SECrystalData;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import net.minecraft.core.Direction;
@@ -18,8 +18,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public class SECrystalProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-    private final ISECrystalData data = new SECrystalData();
-    private final LazyOptional<ISECrystalData> lazyOptional = LazyOptional.of(() -> data);
+    private final ISpecialEffectCrystalData data = new SECrystalData();
+    private final LazyOptional<ISpecialEffectCrystalData> lazyOptional = LazyOptional.of(() -> data);
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {

@@ -2,7 +2,9 @@ package com.til.recasting.constant;
 
 import com.til.recasting.generated.RecipeBuilderWrapper;
 import com.til.recasting.mixin.RecipeProviderMixin;
+import com.til.recasting.recipe.SpecialEffectCrystalIngredient;
 import com.til.recasting.registry.RecastingItems;
+import com.til.recasting.registry.SpecialEffectsRegistry;
 import com.til.recasting.registry.requir.SlashBladeItems;
 import mods.flammpfeil.slashblade.recipe.RequestDefinition;
 import mods.flammpfeil.slashblade.recipe.SlashBladeIngredient;
@@ -15,26 +17,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 /**
  * Recasting 模组的刀配方定义常量类
  * 所有刀配方定义都在这里，通过反射自动读取并生成
- * <p>
- * 使用方式：
- * 使用 lambda 表达式定义 RecipeBuilderWrapper，配方ID会自动使用字段名转小写
- * <p>
- * 示例（刀合成）：
- * 字段名 BLACK_RECIPE -> 配方ID: recasting:black_recipe
- * public static final RecipeBuilderWrapper BLACK_RECIPE = (consumer, recipeId) ->
- * SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BLACK.getName())
- * .pattern("  O")
- * .pattern(" B ")
- * .pattern("S  ")
- * .define('B', SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
- * .killCount(50)
- * .refineCount(10)
- * .addEnchantment(new EnchantmentDefinition(getEnchantmentID(Enchantments.UNBREAKING), 3))
- * .build()))
- * .define('O', Items.OBSIDIAN)
- * .define('S', RecastingItems.SIN_FLAME.get())
- * .unlockedBy("has_sin_flame", RecipeProviderMixin.invokeHas(RecastingItems.SIN_FLAME.get()))
- * .save(consumer, recipeId);
  */
 public class SlashBladeRecipes {
 
@@ -158,14 +140,12 @@ public class SlashBladeRecipes {
     /**
      * 八卦剑配方：从碎白升级
      * 要求：杀敌500、力量2附魔、锋利2附魔
-     * 材料：诗烬火2个、白羊毛1个、黑羊毛1个
-     * P=诗烬火, W=白羊毛, K=黑羊毛, S=基础刀（碎白，满足要求）
      */
     public static final RecipeBuilderWrapper BA_GUA_RECIPE = (consumer, recipeId) ->
             SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BA_GUA.getName())
-                    .pattern(" P ")
+                    .pattern("CPC")
                     .pattern("WSK")
-                    .pattern(" P ")
+                    .pattern("CPC")
                     .define('S',
                             SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
                                     .name(SlashBladeDefinitions.BROKEN_WHITE.getName())
@@ -178,9 +158,13 @@ public class SlashBladeRecipes {
                     .define('P', RecastingItems.POETRY_ASH_FLAME.get())
                     .define('W', Items.WHITE_WOOL)
                     .define('K', Items.BLACK_WOOL)
+                    .define('C', RecastingItems.CHAOS_FLAME.get())
                     .unlockedBy("has_poetry_ash_flame", RecipeProviderMixin.invokeHas(RecastingItems.POETRY_ASH_FLAME.get()))
                     .save(consumer, recipeId);
 
+    /***
+     * 黑刃
+     */
     public static final RecipeBuilderWrapper BLACK_RECIPE = (consumer, recipeId) ->
             SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BLACK.getName())
                     .pattern("  S")
@@ -197,6 +181,161 @@ public class SlashBladeRecipes {
                     .define('O', Items.OBSIDIAN)
                     .define('S', RecastingItems.SIN_FLAME.get())
                     .unlockedBy("has_sin_flame", RecipeProviderMixin.invokeHas(RecastingItems.SIN_FLAME.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * 青云配方：从碎白升级
+     * 要求：杀敌500、锻造20、锋利3附魔
+     * 材料：翠绿的庸魂立方体2个
+     * SE结晶：协同l1、十字斩l1
+     * E=翠绿的庸魂立方体, B=基础刀（碎白，满足要求）, C=协同l1 SE结晶
+     */
+    public static final RecipeBuilderWrapper BLUE_CLOUD_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BLUE_CLOUD.getName())
+                    .pattern(" E ")
+                    .pattern("CBC")
+                    .pattern(" E ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.BROKEN_WHITE.getName())
+                                    .killCount(500)
+                                    .refineCount(20)
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 3))
+                                    .build()))
+                    .define('E', RecastingItems.EMERALD_MEDIUM_SOUL_CUBE.get())
+                    .define('C', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.COOPERATE_WITH.getId(), 1))
+                    .unlockedBy("has_emerald_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.EMERALD_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * 青云 Lambda 配方：从青云升级
+     * 要求：杀敌750、锻造125、锋利5附魔
+     * 材料：翠绿的庸魂立方体6个
+     * SE结晶：十字斩l1 2个
+     * E=翠绿的庸魂立方体, B=基础刀（青云，满足要求）, X=十字斩l1 SE结晶
+     */
+    public static final RecipeBuilderWrapper BLUE_CLOUD_LAMBDA_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BLUE_CLOUD_LAMBDA.getName())
+                    .pattern("EEE")
+                    .pattern("XBX")
+                    .pattern("EEE")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.BLUE_CLOUD.getName())
+                                    .killCount(750)
+                                    .refineCount(125)
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                    .build()))
+                    .define('E', RecastingItems.EMERALD_MEDIUM_SOUL_CUBE.get())
+                    .define('X', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.CROSS_CHOP.getId(), 1))
+                    .unlockedBy("has_emerald_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.EMERALD_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * 冰薄荷配方：从青云 Lambda 升级
+     * 要求：杀敌1000、锻造300、锋利5附魔、抢夺2附魔、耐久3附魔、横扫2附魔
+     * 材料：天蓝色的庸魂立方体4个
+     * SE结晶：生长l2、回溯l2
+     * D=天蓝色的庸魂立方体, B=基础刀（青云 Lambda，满足要求）, G=生长l2 SE结晶, R=回溯l2 SE结晶
+     */
+    public static final RecipeBuilderWrapper COOL_MINT_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.COOL_MINT.getName())
+                    .pattern(" DR")
+                    .pattern("DBD")
+                    .pattern("GD ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.BLUE_CLOUD_LAMBDA.getName())
+                                    .killCount(1000)
+                                    .refineCount(300)
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MOB_LOOTING), 2))
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING), 3))
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SWEEPING_EDGE), 2))
+                                    .build()))
+                    .define('D', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                    .define('G', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.GROWTH.getId(), 2))
+                    .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 2))
+                    .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * 冰薄荷 Lambda 配方：从冰薄荷升级
+     * 要求：杀敌200、锻造500
+     * 材料：天蓝色的庸魂立方体4个
+     * SE结晶：剑气释放l2 2个
+     * D=天蓝色的庸魂立方体, B=基础刀（冰薄荷，满足要求）, C=剑气释放l2 SE结晶
+     */
+    public static final RecipeBuilderWrapper COOL_MINT_LAMBDA_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.COOL_MINT_LAMBDA.getName())
+                    .pattern(" DC")
+                    .pattern("DBD")
+                    .pattern("CD ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.COOL_MINT.getName())
+                                    .killCount(200)
+                                    .refineCount(500)
+                                    .build()))
+                    .define('D', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                    .define('C', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.DRIVE_RELEASE.getId(), 2))
+                    .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * 龙鳞配方：从八卦剑升级
+     * 要求：杀敌300、锻造50、力量3附魔、耐久2附魔
+     * SE结晶：冲击l1 2个
+     * B=基础刀（八卦剑，满足要求）, I=冲击l1 SE结晶
+     */
+    public static final RecipeBuilderWrapper DRAGON_SCALE_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.DRAGON_SCALE.getName())
+                    .pattern("  I")
+                    .pattern(" B ")
+                    .pattern("I  ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.BA_GUA.getName())
+                                    .killCount(300)
+                                    .refineCount(50)
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE), 3))
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING), 2))
+                                    .build()))
+                    .define('I', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.IMPACT.getId(), 1))
+                    .unlockedBy("has_impact_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * 龙鳞 Lambda 配方：从龙鳞升级
+     * 要求：杀敌500、锻造200、力量5附魔
+     * 材料：古铜色的庸魂立方体6个
+     * SE结晶：破片l1 2个
+     * C=古铜色的庸魂立方体, B=基础刀（龙鳞，满足要求）, F=破片l1 SE结晶
+     */
+    public static final RecipeBuilderWrapper DRAGON_SCALE_LAMBDA_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.DRAGON_SCALE_LAMBDA.getName())
+                    .pattern("CCC")
+                    .pattern("FBF")
+                    .pattern("CCC")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.DRAGON_SCALE.getName())
+                                    .killCount(500)
+                                    .refineCount(200)
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE), 5))
+                                    .build()))
+                    .define('C', RecastingItems.COPPER_MEDIUM_SOUL_CUBE.get())
+                    .define('F', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.FRAGMENT.getId(), 1))
+                    .unlockedBy("has_copper_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.COPPER_MEDIUM_SOUL_CUBE.get()))
                     .save(consumer, recipeId);
 
 }

@@ -2,6 +2,7 @@ package com.til.recasting.registry.instance;
 
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.registry.RecastingAttackTypes;
+import com.til.recasting.util.DamageStructure;
 import com.til.recasting.util.ICreateDamageSource;
 import lombok.AllArgsConstructor;
 import mods.flammpfeil.slashblade.registry.SlashArtsRegistry;
@@ -27,7 +28,7 @@ public class AttackType implements ICreateDamageSource {
                 attacker instanceof Player
                         ? attacker.damageSources().playerAttack((Player) attacker)
                         : attacker.damageSources().mobAttack(attacker),
-                1.0f
+                new DamageStructure(1.0f, 0)
         );
     }
 
