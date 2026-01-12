@@ -4,6 +4,7 @@ import com.til.recasting.Recasting;
 import com.til.recasting.entity.DriveEntity;
 import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.entity.LightningEntity;
+import com.til.recasting.entity.MatrixEntity;
 import com.til.recasting.entity.SlashEffectEntity;
 import com.til.recasting.entity.StellarRotationEntity;
 import com.til.recasting.entity.SummondSpiralSwordEntity;
@@ -55,7 +56,7 @@ public class RecastingEntities {
     public static final RegistryObject<EntityType<JudgementCutEntity>> JUDGEMENT_CUT = ENTITY_TYPES.register(
             "judgement_cut",
             () -> EntityType.Builder.<JudgementCutEntity>of((e, l) -> new JudgementCutEntity(e, l, null), MobCategory.MISC)
-                    .sized(1.5f, 1.5f)               // 碰撞箱大小
+                    .sized(0.5f, 0.5f)               // 碰撞箱大小
                     .clientTrackingRange(64)         // 客户端追踪范围（格）
                     .updateInterval(20)              // 更新间隔（tick）
                     .fireImmune()                    // 免疫火焰伤害
@@ -112,7 +113,7 @@ public class RecastingEntities {
     public static final RegistryObject<EntityType<SlashEffectEntity>> SLASH_EFFECT = ENTITY_TYPES.register(
             "slash_effect",
             () -> EntityType.Builder.<SlashEffectEntity>of((e, l) -> new SlashEffectEntity(e, l, null), MobCategory.MISC)
-                    .sized(3.0f, 3.0f)               // 碰撞箱大小
+                    .sized(0.5f, 0.5f)               // 碰撞箱大小
                     .clientTrackingRange(64)         // 客户端追踪范围（格）
                     .updateInterval(20)              // 更新间隔（tick）
                     .fireImmune()                    // 免疫火焰伤害
@@ -131,7 +132,7 @@ public class RecastingEntities {
     public static final RegistryObject<EntityType<DriveEntity>> DRIVE = ENTITY_TYPES.register(
             "drive",
             () -> EntityType.Builder.<DriveEntity>of((e, l) -> new DriveEntity(e, l, null), MobCategory.MISC)
-                    .sized(3.0f, 3.0f)               // 碰撞箱大小
+                    .sized(0.5f, 0.5f)               // 碰撞箱大小
                     .clientTrackingRange(64)         // 客户端追踪范围（格）
                     .updateInterval(20)              // 更新间隔（tick）
                     .fireImmune()                    // 免疫火焰伤害
@@ -150,7 +151,7 @@ public class RecastingEntities {
     public static final RegistryObject<EntityType<StellarRotationEntity>> STELLAR_ROTATION = ENTITY_TYPES.register(
             "stellar_rotation",
             () -> EntityType.Builder.<StellarRotationEntity>of((e, l) -> new StellarRotationEntity(e, l, null), MobCategory.MISC)
-                    .sized(1.5f, 1.5f)               // 碰撞箱大小
+                    .sized(0.5f, 0.5f)               // 碰撞箱大小
                     .clientTrackingRange(64)         // 客户端追踪范围（格）
                     .updateInterval(20)              // 更新间隔（tick）
                     .fireImmune()                    // 免疫火焰伤害
@@ -158,6 +159,25 @@ public class RecastingEntities {
                     .noSummon()                      // 不能通过命令召唤
                     .setShouldReceiveVelocityUpdates(true)
                     .build("stellar_rotation")
+    );
+
+    /**
+     * 穷观阵实体
+     * - 用于创建穷观阵攻击特效
+     * - 持续造成范围伤害并带有视觉效果
+     * - 支持自定义颜色、大小、攻击间隔、生命周期
+     */
+    public static final RegistryObject<EntityType<MatrixEntity>> MATRIX = ENTITY_TYPES.register(
+            "matrix",
+            () -> EntityType.Builder.<MatrixEntity>of((e, l) -> new MatrixEntity(e, l, null), MobCategory.MISC)
+                    .sized(0.5f, 0.5f)               // 碰撞箱大小
+                    .clientTrackingRange(128)         // 客户端追踪范围（格）
+                    .updateInterval(20)              // 更新间隔（tick）
+                    .fireImmune()                    // 免疫火焰伤害
+                    .noSave()                        // 不保存到世界数据
+                    .noSummon()                      // 不能通过命令召唤
+                    .setShouldReceiveVelocityUpdates(true)
+                    .build("matrix")
     );
 }
 

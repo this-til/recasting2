@@ -1,0 +1,43 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/dragon_scale",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:smite",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:unbreaking",
+            "lvl": 2
+          }
+        ],
+        "kill": 300,
+        "name": "recasting:slashblade/ba_gua",
+        "refine": 50
+      }
+    },
+    "I": {
+      "type": "recasting:se_crystal",
+      "item": "recasting:se_crystal",
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:split"
+      }
+    }
+  },
+  "pattern": [
+    "  I",
+    " B ",
+    "I  "
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

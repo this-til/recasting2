@@ -20,7 +20,7 @@ public class CalculusBuffHandler {
     /**
      * 伤害增加比例（每层）
      */
-    private static final float DAMAGE_INCREASE_PER_LEVEL = 0.1f; // 10%
+    private static final float DAMAGE_INCREASE_PER_LEVEL = 0.05f; // 10%
 
     /**
      * 处理攻击放大事件

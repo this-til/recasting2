@@ -167,6 +167,10 @@ public abstract class StandardizationAttackEntity extends Entity {
         attackTypeModelList.add(attackType);
     }
 
+    public List<AttackType> getAttackTypeModelList() {
+        return attackTypeModelList;
+    }
+
     @Nullable
     protected LivingEntity shooter;
 

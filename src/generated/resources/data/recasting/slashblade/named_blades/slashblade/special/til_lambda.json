@@ -8,6 +8,11 @@
       "recasting:star_blink_lambda"
     ]
   },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:star_blink_lambda": 1
+    }
+  },
   "render": {
     "carry_type": "default",
     "model": "recasting:slashblade/special/til.obj",

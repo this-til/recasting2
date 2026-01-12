@@ -2,26 +2,20 @@
   "type": "recasting:se_crystal_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "minecraft:golden_sword"
+    "A": {
+      "item": "minecraft:blaze_rod"
     },
     "F": {
       "item": "recasting:holy_flame"
     },
-    "G": {
-      "item": "minecraft:blaze_rod"
-    },
     "M": {
       "item": "recasting:gathering_parting_variant"
-    },
-    "T": {
-      "item": "minecraft:feather"
     }
   },
   "pattern": [
-    "TMT",
-    "FGF",
-    "FBF"
+    "FAF",
+    "AMA",
+    "FAF"
   ],
   "result": {
     "item": "recasting:se_crystal"

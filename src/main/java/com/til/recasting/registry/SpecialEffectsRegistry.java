@@ -6,23 +6,20 @@ import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.entity.DriveEntity;
 import com.til.recasting.entity.JudgementCutEntity;
+import com.til.recasting.entity.LightningEntity;
 import com.til.recasting.entity.SlashEffectEntity;
 import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.entity.SummondSpiralSwordEntity;
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.event.DoSlashExtendEvent;
 import com.til.recasting.handler.AttackHelper;
+import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.instance.BuffType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import mods.flammpfeil.slashblade.SlashBladeConfig;
-import mods.flammpfeil.slashblade.capability.concentrationrank.CapabilityConcentrationRank;
-import mods.flammpfeil.slashblade.capability.concentrationrank.IConcentrationRank;
-import mods.flammpfeil.slashblade.capability.slashblade.SlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
-import mods.flammpfeil.slashblade.util.AdvancementHelper;
 import mods.flammpfeil.slashblade.util.VectorHelper;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.DamageStructure;
@@ -31,12 +28,10 @@ import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.event.SlashBladeEvent;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -44,9 +39,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -81,6 +77,16 @@ public class SpecialEffectsRegistry {
     public static final RegistryObject<SpecialEffect> REGRESSION = registerExtendedSE("regression", RegressionSpecialEffect::new);
     // 断罪 - 触发SA时追加次元斩攻击
     public static final RegistryObject<SpecialEffect> JUDGEMENT = registerExtendedSE("judgement", JudgementSpecialEffect::new);
+    // 雷暴 - 触发SA时，在目标位置召唤多道闪电
+    public static final RegistryObject<SpecialEffect> THUNDERSTORM = registerExtendedSE("thunderstorm", ThunderstormSpecialEffect::new);
+    // 雷神之怒 - 击杀敌人时，在死亡位置召唤强力闪电
+    public static final RegistryObject<SpecialEffect> THUNDER_GODS_WRATH = registerExtendedSE("thunder_gods_wrath", ThunderGodsWrathSpecialEffect::new);
+    // 电离 - 受到雷电伤害时叠加电离buff，每层提供1%增伤
+    public static final RegistryObject<SpecialEffect> IONIZATION = registerExtendedSE("ionization", IonizationSpecialEffect::new);
+    // 蓄能 - 受到伤害后叠加层数，到48层时造成一道闪电攻击目标
+    public static final RegistryObject<SpecialEffect> ENERGY_STORAGE = registerExtendedSE("energy_storage", EnergyStorageSpecialEffect::new);
+    // 雷云 - 目标受到雷电伤害后获得4层雷光buff，持有雷光的实体受到伤害后附加闪电伤害
+    public static final RegistryObject<SpecialEffect> THUNDER_CLOUD = registerExtendedSE("thunder_cloud", ThunderCloudSpecialEffect::new);
     // 冲击 - 造成伤害有几率召唤幻影剑造成瞬间伤害
     public static final RegistryObject<SpecialEffect> IMPACT = registerExtendedSE("impact", ImpactSpecialEffect::new);
     // 过载 - 挥刀时小概率触发次元斩
@@ -95,16 +101,17 @@ public class SpecialEffectsRegistry {
     public static final RegistryObject<SpecialEffect> STORM_VARIANT = registerExtendedSE("storm_variant", StormVariantSpecialEffect::new);
     // 分裂 - 挥刀时发射幻影剑进行辅助攻击
     public static final RegistryObject<SpecialEffect> SPLIT = registerExtendedSE("split", SplitSpecialEffect::new);
-    // 回旋 - 挥刀时召唤围绕自己的旋转剑
+    // 回旋 - 幻影剑造成伤害后叠加剑势，达到12层后触发风暴幻影剑
     public static final RegistryObject<SpecialEffect> SPIRAL = registerExtendedSE("spiral", SpiralSpecialEffect::new);
-    // 破片 - 幻影剑造成伤害时叠加层级，达到64层级时额外造成一次大量的伤害
+    // 破片 - 幻影剑造成伤害时叠加层级，达到32层级时额外造成一次大量的伤害
     public static final RegistryObject<SpecialEffect> FRAGMENT = registerExtendedSE("fragment", FragmentSpecialEffect::new);
 
     // ==================== 攻击类型增幅 SE ====================
+
     // 太虚 - 幻影剑增幅
     public static final RegistryObject<SpecialEffect> GREAT_VOID = registerExtendedSE("great_void", () -> new AttackAmplifierSpecialEffect(RecastingAttackTypes.SUMMOND_SWORD_ATTACK, new NumberPack(0.1f, 0.1f)));
-    // 斩击精通 - 斩击增幅
-    public static final RegistryObject<SpecialEffect> SLASH_MASTERY = registerExtendedSE("slash_mastery", () -> new AttackAmplifierSpecialEffect(RecastingAttackTypes.SLASH_EFFECT_ATTACK, new NumberPack(0.1f, 0.1f)));
+    // 利刃 - 斩击增幅
+    public static final RegistryObject<SpecialEffect> SHARP_BLADE = registerExtendedSE("sharp_blade", () -> new AttackAmplifierSpecialEffect(RecastingAttackTypes.SLASH_EFFECT_ATTACK, new NumberPack(0.1f, 0.1f)));
     // 震荡 - 次元斩增幅
     public static final RegistryObject<SpecialEffect> SHOCK = registerExtendedSE("shock", () -> new AttackAmplifierSpecialEffect(RecastingAttackTypes.JUDGEMENT_CUT_ATTACK, new NumberPack(0.2f, 0.15f)));
     // 剑气纵横 - 剑气增幅
@@ -118,6 +125,8 @@ public class SpecialEffectsRegistry {
     // 星闪 - 攻击目标叠加层数，达到最大层数时触发额外伤害并重置目标速度
     public static final RegistryObject<SpecialEffect> STAR_BLINK = registerExtendedSE("star_blink", () -> new StarBlinkSpecialEffect().setMaxLevel(1));
     public static final RegistryObject<SpecialEffect> STAR_BLINK_LAMBDA = registerExtendedSE("star_blink_lambda", () -> new StarBlinkSpecialEffect().setAddLevel(2).setMaxLevel(1));
+    // 染色 - 挥刀时更改刀刃颜色为随机的
+    public static final RegistryObject<SpecialEffect> COLOR_DYE = registerExtendedSE("color_dye", () -> new ColorDyeSpecialEffect().setMaxLevel(1));
 
     public static RegistryObject<SpecialEffect> registerExtendedSE(String name, Supplier<SpecialEffect> factory) {
         return SPECIAL_EFFECT.register(name, factory);
@@ -517,6 +526,10 @@ public class SpecialEffectsRegistry {
 
             // 检查目标是否存活
             if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+                return;
+            }
+
+            if (event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get())) {
                 return;
             }
 
@@ -1082,12 +1095,8 @@ public class SpecialEffectsRegistry {
                         // 获取当前层数
                         int currentLevel = buffStackData.getLevel(starBlinkBuffType, world);
 
-                        // 增加层数
-                        int newLevel = currentLevel + addLevel;
-                        buffStackData.setLevel(starBlinkBuffType, newLevel, world);
-
                         // 检查是否达到最大层数
-                        if (newLevel >= starBlinkBuffType.getMaxLevel()) {
+                        if (currentLevel >= starBlinkBuffType.getMaxLevel()) {
                             // 重置层数
                             buffStackData.setLevel(starBlinkBuffType, 0, world);
 
@@ -1103,7 +1112,13 @@ public class SpecialEffectsRegistry {
 
                             // 将目标速度设为0
                             target.setDeltaMovement(Vec3.ZERO);
+                            return;
                         }
+
+                        // 增加层数
+                        int newLevel = currentLevel + addLevel;
+                        buffStackData.setLevel(starBlinkBuffType, newLevel, world);
+
                     }
             );
 
@@ -1232,13 +1247,15 @@ public class SpecialEffectsRegistry {
 
     /***
      * 回旋
-     * 幻影剑造成伤害后叠加剑势，达到12层后触发风暴效果
+     * 幻影剑造成伤害后叠加剑势，达到12层后触发风暴幻影剑
      */
     public static class SpiralSpecialEffect extends ExtendedSpecialEffect {
 
         NumberPack modifiedRatio = new NumberPack(0.1f, 0);
+        NumberPack count = new NumberPack(4, 1);
         int addLevel = 1; // 每次叠加的层数
-        NumberPack triggerInterval = new NumberPack(35, -5); // 触发间隔（tick）
+        NumberPack triggerInterval = new NumberPack(40, 0); // 触发间隔（tick）
+
 
         // 存储每个攻击者的最后触发时间
         Map<LivingEntity, Long> lastTriggerTimeMap = new HashMap<>();
@@ -1267,6 +1284,7 @@ public class SpecialEffectsRegistry {
             if (event.getAttackTypeList().contains(RecastingAttackTypes.NO_SPIRAL_SPECIAL_RECURSION_ATTACK.get())) {
                 return;
             }
+
             if (event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get())) {
                 return;
             }
@@ -1319,6 +1337,7 @@ public class SpecialEffectsRegistry {
             // 触发风暴效果
             performStormSwordsInternal(
                     attacker,
+                    target,
                     event.getSlashBladeState(),
                     se
             );
@@ -1326,15 +1345,16 @@ public class SpecialEffectsRegistry {
         }
 
 
-        public void performStormSwordsInternal(LivingEntity entity, ISlashBladeState state, PropertiesDefinitionExtension propertiesDefinitionExtension) {
+        public void performStormSwordsInternal(LivingEntity entity, LivingEntity target, ISlashBladeState state, PropertiesDefinitionExtension propertiesDefinitionExtension) {
             Level worldIn = entity.level();
-            Entity target = state.getTargetEntity(worldIn);
 
             if (target == null || !target.isAlive() || target.isRemoved()) {
                 return;
             }
 
-            int count = 6;
+            int count = (int) this.count.of(this.getLevel(propertiesDefinitionExtension));
+
+            float off = entity.getRandom().nextFloat() * 360;
 
             for(int i = 0; i < count; i++) {
                 SummondSpiralSwordEntity ss = new SummondSpiralSwordEntity(RecastingEntities.SUMMOND_SPIRAL_SWORD.get(), worldIn, entity);
@@ -1343,17 +1363,17 @@ public class SpecialEffectsRegistry {
                 ss.setCenterEntity(target);
 
                 // 设置旋转参数（使用辅助方法自动计算修饰参数）
-                ss.setRadiusExpansion(2.5f, 6.0f, 30); // 40 tick 后从 2.5 格扩展到 8 格
-                ss.setSpeedDecay(16.0f, 0.3f, 30); // 40 tick 后从 16 度/tick 衰减到接近 0
-                ss.setRotationAngle(360.0f / count * i); // 均匀分布在圆周上
-                ss.setRotationAxis(new Vec3(0, 1, 0)); // 绕 Y 轴旋转
-                ss.setRotationDirectionOutward(false); // 朝向中心
+                ss.setRadiusExpansion(2.5f, 6.0f, 30);
+                ss.setSpeedDecay(16.0f, 0.3f, 30);
+                ss.setRotationAngle(off + (360.0f / count * i));
+                ss.setRotationAxis(new Vec3(0, 1, 0));
+                ss.setRotationDirectionOutward(false);
 
                 // 设置基本属性
                 ss.setModifiedRatio(modifiedRatio.of(getLevel(propertiesDefinitionExtension)));
                 ss.setColor(state.getColorCode());
                 ss.setRoll(0);
-                ss.setStartDelay(30); // 延迟 40 tick (2秒) 后发射
+                ss.setStartDelay(30);
 
                 ss.addAttackType(RecastingAttackTypes.NO_SPIRAL_SPECIAL_RECURSION_ATTACK.get());
 
@@ -1399,7 +1419,7 @@ public class SpecialEffectsRegistry {
 
     /***
      * 破片
-     * 幻影剑造成伤害时叠加层级，达到64层级时额外造成一次大量的伤害
+     * 幻影剑造成伤害时叠加层级，达到32层级时额外造成一次大量的伤害
      */
     public static class FragmentSpecialEffect extends ExtendedSpecialEffect {
 
@@ -1455,6 +1475,456 @@ public class SpecialEffectsRegistry {
                                     target,
                                     new DamageStructure(0f, damage),
                                     List.of(RecastingAttackTypes.FRAGMENT_ATTACK.get())
+                            );
+
+                            // TODO 粒子 音效
+                        }
+                    }
+            );
+        }
+
+    }
+
+    /***
+     * 染色
+     * 挥刀时更改刀刃颜色为随机的
+     */
+    public static class ColorDyeSpecialEffect extends ExtendedSpecialEffect {
+
+        @SubscribeEvent
+        public void onEvent(DoSlashExtendEvent event) {
+            if (!hasSpecialEffect(event.getSlashBladeState())) {
+                return;
+            }
+
+            // 只在服务端执行
+            if (event.getUser().level().isClientSide()) {
+                return;
+            }
+
+            // 生成随机颜色（RGB格式，0x000000 到 0xFFFFFF）
+            int randomColor = event.getUser().getRandom().nextInt(0x1000000); // 0 到 16777215 (0xFFFFFF)
+
+            // 设置刀刃颜色
+            event.getSlashBladeState().setColorCode(randomColor);
+        }
+
+    }
+
+    /***
+     * 雷暴
+     * 触发SA时，在目标位置召唤闪电
+     */
+    public static class ThunderstormSpecialEffect extends ExtendedSpecialEffect {
+
+        NumberPack attackRatio = new NumberPack(0.1f, 0.1f);
+        NumberPack lightningCount = new NumberPack(1f, 0.4f);
+        NumberPack spreadRange = new NumberPack(3f, 0f); // 扩散范围
+        int delay = 5;
+
+        @SubscribeEvent
+        public void onEvent(SlashBladeEvent.ChargeActionEvent event) {
+            if (!hasSpecialEffect(event.getSlashBladeState())) {
+                return;
+            }
+
+            // 只在服务端执行
+            if (event.getEntityLiving().level().isClientSide()) {
+                return;
+            }
+
+            // 检查是否成功触发SA（不是失败）
+            if (event.getType() == mods.flammpfeil.slashblade.slasharts.SlashArts.ArtsType.Fail) {
+                return;
+            }
+
+            LivingEntity user = event.getEntityLiving();
+            ISlashBladeState state = event.getSlashBladeState();
+            ItemStack blade = user.getMainHandItem();
+
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(blade);
+            int level = getLevel(properties);
+
+            // 延迟执行，确保SA已经触发
+            user.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(
+                    timeRun -> timeRun.addTimerCell(
+                            () -> {
+                                Level worldIn = user.level();
+                                if (worldIn.isClientSide()) {
+                                    return;
+                                }
+
+                                // 获取攻击目标位置
+                                Vec3 centerPos = PosHelper.getAttackTargetPosition(user, state);
+
+                                // 计算闪电数量和扩散范围
+                                int count = (int) lightningCount.of(level);
+                                float attack = attackRatio.of(level);
+                                float range = spreadRange.of(level);
+
+                                // 生成多道闪电
+                                for(int i = 0; i < count; i++) {
+                                    // 在圆形范围内生成随机偏移（只在 x-z 平面，不修改 y 轴）
+                                    double angle = user.getRandom().nextDouble() * 2.0 * Math.PI;
+                                    double radius = user.getRandom().nextDouble() * range;
+                                    Vec3 randomOffset = new Vec3(
+                                            radius * Math.cos(angle),
+                                            0, // y 轴保持为 0
+                                            radius * Math.sin(angle)
+                                    );
+                                    Vec3 lightningPos = centerPos.add(randomOffset);
+
+                                    // 创建闪电实体
+                                    LightningEntity lightning = new LightningEntity(
+                                            RecastingEntities.LIGHTNING.get(),
+                                            worldIn,
+                                            user
+                                    );
+
+                                    lightning.setPos(lightningPos.x, lightningPos.y, lightningPos.z);
+                                    lightning.setModifiedRatio(attack);
+                                    lightning.setMaxLifeTime(20);
+
+                                    // 添加到世界
+                                    worldIn.addFreshEntity(lightning);
+                                }
+
+                                // 播放音效
+                                worldIn.playSound(null, centerPos.x, centerPos.y, centerPos.z,
+                                        SoundEvents.LIGHTNING_BOLT_THUNDER,
+                                        net.minecraft.sounds.SoundSource.WEATHER, 1.0F,
+                                        0.8F + user.getRandom().nextFloat() * 0.2F);
+                            },
+                            delay
+                    )
+            );
+        }
+
+    }
+
+    /***
+     * 雷神之怒
+     * 击杀敌人时，在死亡位置召唤闪电
+     */
+    public static class ThunderGodsWrathSpecialEffect extends ExtendedSpecialEffect {
+
+        NumberPack attackRatio = new NumberPack(0.2f, 0.1f);
+
+        @SubscribeEvent
+        public void onEvent(LivingDeathEvent event) {
+            // 只在服务端执行
+            if (event.getEntity().level().isClientSide()) {
+                return;
+            }
+
+            // 获取击杀者
+            net.minecraft.world.entity.Entity killer = event.getSource().getEntity();
+            if (!(killer instanceof LivingEntity attacker)) {
+                return;
+            }
+
+            // 检查击杀者是否持有刀
+            ItemStack blade = attacker.getMainHandItem();
+            if (blade.isEmpty()) {
+                return;
+            }
+
+            // 检查是否拥有此特效
+            blade.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(state -> {
+                if (!hasSpecialEffect(state)) {
+                    return;
+                }
+
+                PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(blade);
+                int level = getLevel(properties);
+
+                // 获取死亡位置
+                LivingEntity victim = event.getEntity();
+                Vec3 deathPos = victim.position();
+
+                // 计算伤害倍率和爆炸范围
+                float attack = attackRatio.of(level);
+
+                // 在死亡位置创建强力闪电
+                LightningEntity lightning = new LightningEntity(
+                        RecastingEntities.LIGHTNING.get(),
+                        victim.level(),
+                        attacker
+                );
+
+                lightning.setPos(deathPos.x, deathPos.y, deathPos.z);
+                lightning.setModifiedRatio(attack);
+
+
+                // 添加到世界
+                victim.level().addFreshEntity(lightning);
+
+            });
+        }
+
+    }
+
+    /***
+     * 电离
+     * 受到闪电伤害时叠加电离buff，每层提供1%全伤害增伤，最高64层，高等级叠层更快
+     */
+    public static class IonizationSpecialEffect extends ExtendedSpecialEffect {
+
+        // 每次受到闪电伤害叠加的层数
+        NumberPack addLevelPerHit = new NumberPack(0f, 1f);
+
+        @SubscribeEvent
+        public void onAttackAmplifier(AttackAmplifierEvent event) {
+            // 检查攻击者是否拥有此特效
+            if (!hasSpecialEffect(event.getSlashBladeState())) {
+                return;
+            }
+
+            // 只在服务端执行
+            if (event.getAttacker().level().isClientSide()) {
+                return;
+            }
+
+            // 检查目标是否是生物实体且存活
+            if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+                return;
+            }
+
+
+            // 从事件获取攻击者的刀
+            ItemStack blade = event.getItem();
+
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(blade);
+            int level = getLevel(properties);
+
+            // 获取电离buff类型
+            Level world = target.level();
+            BuffType ionizationBuffType = RecastingBuffTypes.IONIZATION.get();
+
+            // 检查是否是闪电攻击，如果是则叠加buff
+            if (event.getAttackTypeList().contains(RecastingAttackTypes.LIGHTNING_ATTACK.get()) && !event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get())) {
+                // 获取目标的当前层数
+                target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
+                        buffStackData -> {
+                            int currentLevel = buffStackData.getLevel(ionizationBuffType, world);
+                            int maxLevel = ionizationBuffType.getMaxLevel();
+
+                            // 计算要叠加的层数（高等级叠层更快）
+                            int addLevel = (int) addLevelPerHit.of(level);
+                            int newLevel = Math.min(currentLevel + addLevel, maxLevel);
+
+                            // 设置新层数
+                            buffStackData.setLevel(ionizationBuffType, newLevel, world);
+                        }
+                );
+            }
+
+            // 应用增伤：根据目标的电离buff层数提供全伤害增伤（对所有攻击类型都生效）
+            target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
+                    buffStackData -> {
+                        int ionizationLevel = buffStackData.getLevel(ionizationBuffType, world);
+                        if (ionizationLevel > 0) {
+                            // 每层提供1%全伤害增伤
+                            float damageBonus = ionizationLevel * 0.01f;
+                            event.addModifiedRatioAmplifier(damageBonus);
+                        }
+                    }
+            );
+        }
+
+    }
+
+    /***
+     * 蓄能
+     * 造成伤害后叠加层数，到12层时造成一道闪电攻击目标
+     */
+    public static class EnergyStorageSpecialEffect extends ExtendedSpecialEffect {
+
+        NumberPack addLevelPerHit = new NumberPack(1f, 0f); // 每次造成伤害叠加的层数
+        NumberPack lightningAttackRatio = new NumberPack(0.2f, 0.1f); // 闪电伤害倍率
+
+        @SubscribeEvent
+        public void onAttackAmplifier(AttackAmplifierEvent event) {
+            // 检查攻击者是否拥有此特效
+            if (!hasSpecialEffect(event.getSlashBladeState())) {
+                return;
+            }
+
+            // 只在服务端执行
+            if (event.getAttacker().level().isClientSide()) {
+                return;
+            }
+
+            // 检查目标是否是生物实体且存活
+            if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+                return;
+            }
+
+            // 排除递归攻击
+            if (event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get())) {
+                return;
+            }
+
+            // 从事件获取攻击者的刀
+            ItemStack blade = event.getItem();
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(blade);
+            int level = getLevel(properties);
+
+            // 获取蓄能buff类型（对目标叠加）
+            Level world = target.level();
+            BuffType energyStorageBuffType = RecastingBuffTypes.ENERGY_STORAGE.get();
+
+            // 获取当前层数（对目标叠加）
+            target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
+                    buffStackData -> {
+                        int currentLevel = buffStackData.getLevel(energyStorageBuffType, world);
+                        int maxLevel = energyStorageBuffType.getMaxLevel();
+
+                        // 计算要叠加的层数
+                        int addLevel = (int) addLevelPerHit.of(level);
+                        int newLevel = Math.min(currentLevel + addLevel, maxLevel);
+
+                        // 设置新层数
+                        buffStackData.setLevel(energyStorageBuffType, newLevel, world);
+
+                        // 检查是否达到最大层数（48层）
+                        if (newLevel >= maxLevel) {
+                            // 重置层数
+                            buffStackData.setLevel(energyStorageBuffType, 0, world);
+
+                            // 触发闪电攻击（攻击目标）
+                            LivingEntity attacker = event.getAttacker();
+                            triggerLightningAttack(attacker, target, blade, event.getSlashBladeState(), properties);
+                        }
+                    }
+            );
+        }
+
+        private void triggerLightningAttack(LivingEntity attacker, LivingEntity target, ItemStack blade, ISlashBladeState state, PropertiesDefinitionExtension properties) {
+            Level world = attacker.level();
+            if (world.isClientSide()) {
+                return;
+            }
+
+            // 获取目标站立位置（地面位置）
+            Vec3 targetPos = new Vec3(target.getX(), target.getY(), target.getZ());
+
+            // 计算闪电伤害倍率
+            int level = getLevel(properties);
+            float attack = lightningAttackRatio.of(level);
+
+            // 创建闪电实体
+            LightningEntity lightning = new LightningEntity(
+                    RecastingEntities.LIGHTNING.get(),
+                    world,
+                    attacker
+            );
+
+            lightning.setPos(targetPos.x, targetPos.y, targetPos.z);
+            lightning.setModifiedRatio(attack);
+            lightning.setMaxLifeTime(20);
+
+            // 添加到世界
+            world.addFreshEntity(lightning);
+
+        }
+
+    }
+
+    /***
+     * 雷云
+     * 目标受到雷电伤害后获得雷光buff，持有雷光的实体受到伤害后附加相当于原伤害10%等级的附加闪电伤害
+     */
+    public static class ThunderCloudSpecialEffect extends ExtendedSpecialEffect {
+
+        NumberPack thunderLightLevelPerHit = new NumberPack(0.5f, 0.5f); // 每次受到雷电伤害获得的雷光层数
+        float damageRatio = 0.1f;
+
+        @SubscribeEvent
+        public void onAttackAmplifier(AttackAmplifierEvent event) {
+            // 检查攻击者是否拥有此特效
+            if (!hasSpecialEffect(event.getSlashBladeState())) {
+                return;
+            }
+
+            // 只在服务端执行
+            if (event.getAttacker().level().isClientSide()) {
+                return;
+            }
+
+            // 检查目标是否是生物实体且存活
+            if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+                return;
+            }
+
+            // 排除递归攻击
+            if (event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get())) {
+                return;
+            }
+
+            // 检查是否是闪电攻击
+            if (!event.getAttackTypeList().contains(RecastingAttackTypes.LIGHTNING_ATTACK.get())) {
+                return;
+            }
+
+            // 给目标添加雷光buff
+            Level world = target.level();
+            BuffType thunderLightBuffType = RecastingBuffTypes.THUNDER_LIGHT.get();
+
+            ItemStack blade = event.getItem();
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(blade);
+
+            target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
+                    buffStackData -> {
+                        int currentLevel = buffStackData.getLevel(thunderLightBuffType, world);
+                        int maxLevel = thunderLightBuffType.getMaxLevel();
+                        int newLevel = Math.min(currentLevel + (int) thunderLightLevelPerHit.of(getLevel(properties)), maxLevel);
+                        buffStackData.setLevel(thunderLightBuffType, newLevel, world);
+                    }
+            );
+        }
+
+        @SubscribeEvent
+        public void onAttackAmplifierForThunderLight(AttackAmplifierEvent event) {
+
+            // 只在服务端执行
+            if (event.getAttacker().level().isClientSide()) {
+                return;
+            }
+
+            // 检查目标是否是生物实体且存活
+            if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+                return;
+            }
+
+            // 排除递归攻击
+            if (event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get())) {
+                return;
+            }
+
+            // 检查目标（受害者）是否有雷光buff
+            Level world = target.level();
+            BuffType thunderLightBuffType = RecastingBuffTypes.THUNDER_LIGHT.get();
+
+            target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
+                    buffStackData -> {
+                        int thunderLightLevel = buffStackData.getLevel(thunderLightBuffType, world);
+                        if (thunderLightLevel <= 0) {
+                            return;
+                        }
+
+                        // 计算附加闪电伤害比例：10% + 5% * SE等级
+                        float damageRatioValue = damageRatio;
+
+                        // 创建闪电伤害源，使用 modifiedRatio 基于 finalDamage 计算额外伤害
+                        AttackType lightningAttackType = RecastingAttackTypes.LIGHTNING_ATTACK.get();
+                        AttackAmplifierEvent.DamageSourceInfo damageSourceInfo = lightningAttackType.createDamageSource(event.getAttacker(), target);
+
+                        if (damageSourceInfo != null) {
+                            // 使用 addDamageSourceInfo 添加额外的闪电伤害（基于伤害倍率）
+                            event.addDamageSourceInfo(
+                                    damageSourceInfo.damageSource(),
+                                    new DamageStructure(damageRatioValue, 0f)
                             );
                         }
                     }

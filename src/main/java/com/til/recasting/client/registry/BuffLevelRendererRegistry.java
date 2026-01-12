@@ -55,4 +55,20 @@ public class BuffLevelRendererRegistry {
             "sword_momentum",
             () -> new BuffLevelRenderConfig(RecastingBuffTypes.FRAGMENT, LanguageItems.BUFF_FRAGMENT)
     );
+
+    /**
+     * 电离 - 显示层数
+     */
+    public static final RegistryObject<BuffLevelRenderConfig> IONIZATION = BUFF_LEVEL_RENDER_CONFIGS.register(
+            "ionization",
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.IONIZATION, LanguageItems.BUFF_IONIZATION)
+    );
+
+    /**
+     * 蓄能 - 显示层数
+     */
+    public static final RegistryObject<BuffLevelRenderConfig> ENERGY_STORAGE = BUFF_LEVEL_RENDER_CONFIGS.register(
+            "energy_storage",
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.ENERGY_STORAGE, LanguageItems.BUFF_ENERGY_STORAGE)
+    );
 }

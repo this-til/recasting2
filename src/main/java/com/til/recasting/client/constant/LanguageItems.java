@@ -29,6 +29,18 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "破片")
             .addTranslation(LanguageTypes.EN_US, "Fragment");
 
+    public static final LanguageItem BUFF_IONIZATION = new LanguageItem("buff.recasting.ionization")
+            .addTranslation(LanguageTypes.ZH_CN, "电离")
+            .addTranslation(LanguageTypes.EN_US, "Ionization");
+
+    public static final LanguageItem BUFF_ENERGY_STORAGE = new LanguageItem("buff.recasting.energy_storage")
+            .addTranslation(LanguageTypes.ZH_CN, "蓄能")
+            .addTranslation(LanguageTypes.EN_US, "Energy Storage");
+
+    public static final LanguageItem BUFF_THUNDER_LIGHT = new LanguageItem("buff.recasting.thunder_light")
+            .addTranslation(LanguageTypes.ZH_CN, "雷光")
+            .addTranslation(LanguageTypes.EN_US, "Thunder Light");
+
     // ========== Void SlashBlades ==========
     public static final LanguageItem VOID_1 = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.VOID_1)
             .addTranslation(LanguageTypes.ZH_CN, "洞虚利刃")
@@ -108,12 +120,12 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Dragon Scale Lambda");
 
     public static final LanguageItem DRAGON = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.DRAGON)
-            .addTranslation(LanguageTypes.ZH_CN, "龙一")
-            .addTranslation(LanguageTypes.EN_US, "Dragon");
+            .addTranslation(LanguageTypes.ZH_CN, "龙魂")
+            .addTranslation(LanguageTypes.EN_US, "Dragon Soul");
 
     public static final LanguageItem DRAGON_LAMBDA = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.DRAGON_LAMBDA)
-            .addTranslation(LanguageTypes.ZH_CN, "^龙一")
-            .addTranslation(LanguageTypes.EN_US, "Dragon Lambda");
+            .addTranslation(LanguageTypes.ZH_CN, "^龙魂")
+            .addTranslation(LanguageTypes.EN_US, "Dragon Soul Lambda");
 
     public static final LanguageItem HOE = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.HOE)
             .addTranslation(LanguageTypes.ZH_CN, "锄头")
@@ -625,6 +637,39 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "多重剑气")
             .addTranslation(LanguageTypes.EN_US, "Multiple Drive");
 
+    public static final LanguageItem MULTIPLE_DRIVE_LAMBDA = createSlashArtsLanguage(SlashArtsRegistry.MULTIPLE_DRIVE_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^多重剑气")
+            .addTranslation(LanguageTypes.EN_US, "Multiple Drive Lambda");
+
+    // 引雷
+    public static final LanguageItem LIGHTNING_CALL = createSlashArtsLanguage(SlashArtsRegistry.LIGHTNING_CALL)
+            .addTranslation(LanguageTypes.ZH_CN, "引雷")
+            .addTranslation(LanguageTypes.EN_US, "Lightning Call");
+
+    // 星旋
+    public static final LanguageItem STELLAR_ROTATION = createSlashArtsLanguage(SlashArtsRegistry.STELLAR_ROTATION)
+            .addTranslation(LanguageTypes.ZH_CN, "星旋")
+            .addTranslation(LanguageTypes.EN_US, "Stellar Rotation");
+
+    // 急行幻影剑
+    public static final LanguageItem RAPID_PHANTOM_SWORDS = createSlashArtsLanguage(SlashArtsRegistry.RAPID_PHANTOM_SWORDS)
+            .addTranslation(LanguageTypes.ZH_CN, "急行幻影剑")
+            .addTranslation(LanguageTypes.EN_US, "Rapid Phantom Swords");
+
+    // 穷观阵
+    public static final LanguageItem MATRIX = createSlashArtsLanguage(SlashArtsRegistry.MATRIX)
+            .addTranslation(LanguageTypes.ZH_CN, "穷观阵")
+            .addTranslation(LanguageTypes.EN_US, "Matrix");
+
+    public static final LanguageItem MATRIX_LAMBDA = createSlashArtsLanguage(SlashArtsRegistry.MATRIX_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^穷观阵")
+            .addTranslation(LanguageTypes.EN_US, "Matrix Lambda");
+
+    // 碎段
+    public static final LanguageItem FRAGMENT_SA = createSlashArtsLanguage(SlashArtsRegistry.FRAGMENT)
+            .addTranslation(LanguageTypes.ZH_CN, "碎段")
+            .addTranslation(LanguageTypes.EN_US, "Fragment");
+
     // ========== Slash Arts Descriptions ==========
     // 青芒介绍
     public static final LanguageItem CYAN_GLOW_DESC = createSlashArtsDescription(SlashArtsRegistry.CYAN_GLOW)
@@ -729,6 +774,39 @@ public class LanguageItems {
     public static final LanguageItem MULTIPLE_DRIVE_DESC = createSlashArtsDescription(SlashArtsRegistry.MULTIPLE_DRIVE)
             .addTranslation(LanguageTypes.ZH_CN, "向前发射多条剑气。")
             .addTranslation(LanguageTypes.EN_US, "Launch multiple sword qi forward, each with random size and rotation angle.");
+
+    public static final LanguageItem MULTIPLE_DRIVE_LAMBDA_DESC = createSlashArtsDescription(SlashArtsRegistry.MULTIPLE_DRIVE_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "向前发射多条剑气。")
+            .addTranslation(LanguageTypes.EN_US, "Launch multiple sword qi forward, each with random size and rotation angle.");
+
+    // 引雷介绍
+    public static final LanguageItem LIGHTNING_CALL_DESC = createSlashArtsDescription(SlashArtsRegistry.LIGHTNING_CALL)
+            .addTranslation(LanguageTypes.ZH_CN, "在目标位置召唤一道闪电。")
+            .addTranslation(LanguageTypes.EN_US, "Summon a lightning bolt at the target position.");
+
+    // 星旋介绍
+    public static final LanguageItem STELLAR_ROTATION_DESC = createSlashArtsDescription(SlashArtsRegistry.STELLAR_ROTATION)
+            .addTranslation(LanguageTypes.ZH_CN, "在目标位置创建一个旋转的次元斩，持续造成伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Create a rotating judgement cut at the target position that deals continuous damage.");
+
+    // 急行幻影剑介绍
+    public static final LanguageItem RAPID_PHANTOM_SWORDS_DESC = createSlashArtsDescription(SlashArtsRegistry.RAPID_PHANTOM_SWORDS)
+            .addTranslation(LanguageTypes.ZH_CN, "在目标位置周围召唤多把幻影剑，击中敌人后给敌人添加发光效果。")
+            .addTranslation(LanguageTypes.EN_US, "Summon multiple phantom swords around the target position. Enemies hit will gain a glowing effect.");
+
+    // 穷观阵介绍
+    public static final LanguageItem MATRIX_DESC = createSlashArtsDescription(SlashArtsRegistry.MATRIX)
+            .addTranslation(LanguageTypes.ZH_CN, "在目标位置创建一个穷观阵，持续造成伤害，同时叠加演算buff层数，演算使目标受到的伤害更高。")
+            .addTranslation(LanguageTypes.EN_US, "Create a matrix at the target position that deals continuous damage and stacks calculus buff layers, increasing damage taken by targets.");
+
+    public static final LanguageItem MATRIX_LAMBDA_DESC = createSlashArtsDescription(SlashArtsRegistry.MATRIX_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "在目标位置创建一个穷观阵，持续造成伤害，同时叠加演算buff层数，演算使目标受到的伤害更高。")
+            .addTranslation(LanguageTypes.EN_US, "Create a matrix at the target position that deals continuous damage and stacks calculus buff layers, increasing damage taken by targets.");
+
+    // 碎段介绍
+    public static final LanguageItem FRAGMENT_SA_DESC = createSlashArtsDescription(SlashArtsRegistry.FRAGMENT)
+            .addTranslation(LanguageTypes.ZH_CN, "发动一次斩击，设置重复攻击和取消击退。")
+            .addTranslation(LanguageTypes.EN_US, "Perform a slash with repeated attacks and knockback cancellation.");
 
     // ========== Special Effects ==========
     // 协同攻击
@@ -849,11 +927,11 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Increases phantom sword damage.");
 
     // 斩击精通
-    public static final LanguageItem SLASH_MASTERY = createSpecialEffectLanguage(SpecialEffectsRegistry.SLASH_MASTERY)
-            .addTranslation(LanguageTypes.ZH_CN, "斩击精通")
-            .addTranslation(LanguageTypes.EN_US, "Slash Mastery");
+    public static final LanguageItem SLASH_MASTERY = createSpecialEffectLanguage(SpecialEffectsRegistry.SHARP_BLADE)
+            .addTranslation(LanguageTypes.ZH_CN, "利刃")
+            .addTranslation(LanguageTypes.EN_US, "Sharp Blade");
 
-    public static final LanguageItem SLASH_MASTERY_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.SLASH_MASTERY)
+    public static final LanguageItem SLASH_MASTERY_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.SHARP_BLADE)
             .addTranslation(LanguageTypes.ZH_CN, "增加斩击伤害。")
             .addTranslation(LanguageTypes.EN_US, "Increases slash damage.");
 
@@ -892,6 +970,113 @@ public class LanguageItems {
     public static final LanguageItem BLACK_ROSE_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.BLACK_ROSE)
             .addTranslation(LanguageTypes.ZH_CN, "记录受到的伤害，并按照记录造成持续伤害，每次造成伤害后有衰减")
             .addTranslation(LanguageTypes.EN_US, "Records damage taken and deals continuous damage based on the record. Damage is halved after each tick.");
+
+    // 吸血转化
+    public static final LanguageItem LIFE_STEAL = createSpecialEffectLanguage(SpecialEffectsRegistry.LIFE_STEAL)
+            .addTranslation(LanguageTypes.ZH_CN, "吸血转化")
+            .addTranslation(LanguageTypes.EN_US, "Life Steal");
+
+    public static final LanguageItem LIFE_STEAL_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.LIFE_STEAL)
+            .addTranslation(LanguageTypes.ZH_CN, "将攻击伤害的一部分转化为生命恢复。")
+            .addTranslation(LanguageTypes.EN_US, "Converts a portion of attack damage into health restoration.");
+
+    // 雷暴
+    public static final LanguageItem THUNDERSTORM = createSpecialEffectLanguage(SpecialEffectsRegistry.THUNDERSTORM)
+            .addTranslation(LanguageTypes.ZH_CN, "雷暴")
+            .addTranslation(LanguageTypes.EN_US, "Thunderstorm");
+
+    public static final LanguageItem THUNDERSTORM_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.THUNDERSTORM)
+            .addTranslation(LanguageTypes.ZH_CN, "触发SA时，在目标位置召唤多道闪电。")
+            .addTranslation(LanguageTypes.EN_US, "Summons multiple lightning bolts at the target position when triggering SA.");
+
+    // 雷神之怒
+    public static final LanguageItem THUNDER_GODS_WRATH = createSpecialEffectLanguage(SpecialEffectsRegistry.THUNDER_GODS_WRATH)
+            .addTranslation(LanguageTypes.ZH_CN, "雷神之怒")
+            .addTranslation(LanguageTypes.EN_US, "Thunder God's Wrath");
+
+    public static final LanguageItem THUNDER_GODS_WRATH_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.THUNDER_GODS_WRATH)
+            .addTranslation(LanguageTypes.ZH_CN, "击杀敌人时，在死亡位置召唤强力闪电。")
+            .addTranslation(LanguageTypes.EN_US, "Summons a powerful lightning bolt at the death location when killing an enemy.");
+
+    // 电离
+    public static final LanguageItem IONIZATION = createSpecialEffectLanguage(SpecialEffectsRegistry.IONIZATION)
+            .addTranslation(LanguageTypes.ZH_CN, "电离")
+            .addTranslation(LanguageTypes.EN_US, "Ionization");
+
+    public static final LanguageItem IONIZATION_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.IONIZATION)
+            .addTranslation(LanguageTypes.ZH_CN, "受到雷电伤害时叠加电离buff，每层提供1%全伤害增伤，最高64层。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks ionization buff when taking lightning damage. Each stack provides 1% all-damage bonus, up to 64 stacks.");
+
+    // 蓄能
+    public static final LanguageItem ENERGY_STORAGE = createSpecialEffectLanguage(SpecialEffectsRegistry.ENERGY_STORAGE)
+            .addTranslation(LanguageTypes.ZH_CN, "蓄能")
+            .addTranslation(LanguageTypes.EN_US, "Energy Storage");
+
+    public static final LanguageItem ENERGY_STORAGE_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.ENERGY_STORAGE)
+            .addTranslation(LanguageTypes.ZH_CN, "造成伤害后叠加层数，到24层时造成一道闪电攻击目标。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks layers when dealing damage. At 24 stacks, triggers a lightning bolt to attack the target.");
+
+    // 雷云
+    public static final LanguageItem THUNDER_CLOUD = createSpecialEffectLanguage(SpecialEffectsRegistry.THUNDER_CLOUD)
+            .addTranslation(LanguageTypes.ZH_CN, "雷云")
+            .addTranslation(LanguageTypes.EN_US, "Thunder Cloud");
+
+    public static final LanguageItem THUNDER_CLOUD_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.THUNDER_CLOUD)
+            .addTranslation(LanguageTypes.ZH_CN, "目标受到雷电伤害后获得雷光buff，持有雷光的实体受到伤害后附加闪电伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Targets gain thunder light buff when taking lightning damage. Entities with thunder light take additional lightning damage when damaged.");
+
+    // 分裂
+    public static final LanguageItem SPLIT = createSpecialEffectLanguage(SpecialEffectsRegistry.SPLIT)
+            .addTranslation(LanguageTypes.ZH_CN, "分裂")
+            .addTranslation(LanguageTypes.EN_US, "Split");
+
+    public static final LanguageItem SPLIT_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.SPLIT)
+            .addTranslation(LanguageTypes.ZH_CN, "挥刀时发射幻影剑进行辅助攻击。")
+            .addTranslation(LanguageTypes.EN_US, "Launches phantom swords to assist in attacks when slashing.");
+
+    // 回旋
+    public static final LanguageItem SPIRAL = createSpecialEffectLanguage(SpecialEffectsRegistry.SPIRAL)
+            .addTranslation(LanguageTypes.ZH_CN, "回旋")
+            .addTranslation(LanguageTypes.EN_US, "Spiral");
+
+    public static final LanguageItem SPIRAL_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.SPIRAL)
+            .addTranslation(LanguageTypes.ZH_CN, "幻影剑造成伤害后叠加剑势，达到12层后触发风暴幻影剑。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks sword momentum when phantom swords deal damage. Triggers storm phantom swords at 12 stacks.");
+
+    // 破片
+    public static final LanguageItem FRAGMENT_SE = createSpecialEffectLanguage(SpecialEffectsRegistry.FRAGMENT)
+            .addTranslation(LanguageTypes.ZH_CN, "破片")
+            .addTranslation(LanguageTypes.EN_US, "Fragment");
+
+    public static final LanguageItem FRAGMENT_SE_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.FRAGMENT)
+            .addTranslation(LanguageTypes.ZH_CN, "幻影剑造成伤害时叠加层级，达到32层级时额外造成一次大量的伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks layers when phantom swords deal damage. Deals massive additional damage at 32 layers.");
+
+    // 星闪
+    public static final LanguageItem STAR_BLINK = createSpecialEffectLanguage(SpecialEffectsRegistry.STAR_BLINK)
+            .addTranslation(LanguageTypes.ZH_CN, "星闪")
+            .addTranslation(LanguageTypes.EN_US, "Star Blink");
+
+    public static final LanguageItem STAR_BLINK_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.STAR_BLINK)
+            .addTranslation(LanguageTypes.ZH_CN, "攻击目标叠加层数，达到最大层数时触发额外伤害并重置目标速度。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks layers on targets when attacking. Triggers additional damage and resets target velocity at max stacks.");
+
+    public static final LanguageItem STAR_BLINK_LAMBDA = createSpecialEffectLanguage(SpecialEffectsRegistry.STAR_BLINK_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^星闪")
+            .addTranslation(LanguageTypes.EN_US, "Star Blink Lambda");
+
+    public static final LanguageItem STAR_BLINK_LAMBDA_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.STAR_BLINK_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "攻击目标叠加层数，达到最大层数时触发额外伤害并重置目标速度。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks layers on targets when attacking. Triggers additional damage and resets target velocity at max stacks.");
+
+    // 染色
+    public static final LanguageItem COLOR_DYE = createSpecialEffectLanguage(SpecialEffectsRegistry.COLOR_DYE)
+            .addTranslation(LanguageTypes.ZH_CN, "染色")
+            .addTranslation(LanguageTypes.EN_US, "Color Dye");
+
+    public static final LanguageItem COLOR_DYE_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.COLOR_DYE)
+            .addTranslation(LanguageTypes.ZH_CN, "挥刀时更改刀刃颜色为随机的。")
+            .addTranslation(LanguageTypes.EN_US, "Changes blade color to random when slashing.");
 
     private static LanguageItem createSlashBladeDefinitionLanguage(SlashBladeDefinition definition) {
         return new LanguageItem(definition.getTranslationKey());

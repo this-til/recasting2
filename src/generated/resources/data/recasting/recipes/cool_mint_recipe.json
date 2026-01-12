@@ -1,0 +1,62 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/cool_mint",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:sharpness",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:looting",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:unbreaking",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:sweeping",
+            "lvl": 2
+          }
+        ],
+        "kill": 1000,
+        "name": "recasting:slashblade/blue_cloud_lambda",
+        "refine": 300
+      }
+    },
+    "D": {
+      "item": "recasting:diamond_medium_soul_cube"
+    },
+    "G": {
+      "type": "recasting:se_crystal",
+      "item": "recasting:se_crystal",
+      "request": {
+        "level": 2,
+        "special_effect_type": "recasting:growth"
+      }
+    },
+    "R": {
+      "type": "recasting:se_crystal",
+      "item": "recasting:se_crystal",
+      "request": {
+        "level": 2,
+        "special_effect_type": "recasting:regression"
+      }
+    }
+  },
+  "pattern": [
+    " DR",
+    "DBD",
+    "GD "
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

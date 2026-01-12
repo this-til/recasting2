@@ -3,7 +3,15 @@
   "properties": {
     "attack_base": 5.0,
     "max_damage": 480,
-    "slash_art": "recasting:multiple_judgement_cut"
+    "slash_art": "recasting:multiple_judgement_cut",
+    "special_effects": [
+      "recasting:black_rose"
+    ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:black_rose": 1
+    }
   },
   "render": {
     "carry_type": "default",

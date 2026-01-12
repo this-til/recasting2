@@ -2,7 +2,8 @@
   "name": "recasting:slashblade/silver_wing_lambda",
   "properties": {
     "attack_base": 7.0,
-    "max_damage": 480
+    "max_damage": 480,
+    "slash_art": "recasting:cloud_wheel_storm"
   },
   "properties_extension": {
     "attack_distance": 1.15

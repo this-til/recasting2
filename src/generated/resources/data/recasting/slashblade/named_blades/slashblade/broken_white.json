@@ -2,11 +2,13 @@
   "name": "recasting:slashblade/broken_white",
   "properties": {
     "attack_base": 5.0,
-    "max_damage": 160
+    "max_damage": 160,
+    "slash_art": "recasting:fragment"
   },
   "render": {
     "carry_type": "default",
     "model": "recasting:slashblade/broken_white.obj",
+    "summon_sword_color": -1,
     "texture": "recasting:slashblade/broken_white.png"
   }
 }

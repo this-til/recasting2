@@ -2,13 +2,13 @@
   "name": "recasting:slashblade/dragon",
   "properties": {
     "attack_base": 6.0,
-    "max_damage": 320,
+    "max_damage": 480,
     "slash_art": "recasting:sword_rain"
   },
   "render": {
     "carry_type": "default",
     "model": "recasting:slashblade/dragon.obj",
-    "summon_sword_color": -256,
+    "summon_sword_color": -5458746,
     "texture": "recasting:slashblade/dragon.png"
   }
 }

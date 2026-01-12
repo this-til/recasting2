@@ -2,26 +2,20 @@
   "type": "recasting:se_crystal_shaped",
   "category": "misc",
   "key": {
-    "B": {
+    "A": {
       "item": "minecraft:trident"
     },
     "F": {
       "item": "recasting:royal_flame"
     },
-    "G": {
-      "item": "minecraft:prismarine_crystals"
-    },
     "M": {
       "item": "recasting:gathering_parting_variant"
-    },
-    "T": {
-      "item": "minecraft:glowstone_dust"
     }
   },
   "pattern": [
-    "TMT",
-    "FGF",
-    "FBF"
+    "FAF",
+    "AMA",
+    "FAF"
   ],
   "result": {
     "item": "recasting:se_crystal"

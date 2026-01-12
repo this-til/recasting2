@@ -2,9 +2,12 @@ package com.til.recasting.client;
 
 import com.til.recasting.Recasting;
 import com.til.recasting.client.handler.ClientRenderHandler;
+import com.til.recasting.client.particle.DefaultParticleProvider;
 import com.til.recasting.client.registry.BuffLevelRendererRegistry;
 import com.til.recasting.client.registry.EntityRenderExtensionRegistry;
+import com.til.recasting.registry.RecastingParticleTypes;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -33,6 +36,14 @@ public class ClientSetup {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         // 客户端初始化逻辑
+    }
+
+    /**
+     * 注册粒子提供者
+     */
+    @SubscribeEvent
+    public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
+        event.registerSpecial(RecastingParticleTypes.DEFAULT_PARTICLE.get(), new DefaultParticleProvider());
     }
 }
 

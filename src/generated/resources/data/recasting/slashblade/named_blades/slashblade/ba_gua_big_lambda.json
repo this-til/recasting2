@@ -2,7 +2,8 @@
   "name": "recasting:slashblade/ba_gua_big_lambda",
   "properties": {
     "attack_base": 6.0,
-    "max_damage": 480
+    "max_damage": 480,
+    "slash_art": "recasting:matrix_lambda"
   },
   "render": {
     "carry_type": "default",

@@ -3,6 +3,9 @@
   "blade": "recasting:slashblade/ba_gua",
   "category": "equipment",
   "key": {
+    "C": {
+      "item": "recasting:chaos_flame"
+    },
     "K": {
       "item": "minecraft:black_wool"
     },
@@ -32,9 +35,9 @@
     }
   },
   "pattern": [
-    " P ",
+    "CPC",
     "WSK",
-    " P "
+    "CPC"
   ],
   "result": {
     "item": "slashblade:slashblade"

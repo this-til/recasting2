@@ -1,7 +1,8 @@
 {
   "name": "recasting:slashblade/ba_gua",
   "properties": {
-    "max_damage": 120
+    "max_damage": 120,
+    "slash_art": "recasting:multiple_drive"
   },
   "render": {
     "carry_type": "default",

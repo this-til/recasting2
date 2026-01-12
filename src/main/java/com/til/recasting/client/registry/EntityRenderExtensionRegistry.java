@@ -82,6 +82,19 @@ public class EntityRenderExtensionRegistry {
     );
 
     /**
+     * 雷光渲染扩展
+     * 为拥有雷光buff的实体渲染层级效果
+     */
+    public static final RegistryObject<EntityRenderExtension> THUNDER_LIGHT = ENTITY_RENDER_EXTENSIONS.register(
+            "thunder_light",
+            () -> new EntityRenderExtension.BuffLevelRender(
+                    R.Models.Mark.thunderLight$obj,
+                    new Color(118, 169, 246).getRGB(),
+                    RecastingBuffTypes.THUNDER_LIGHT
+            )
+    );
+
+    /**
      * 灵魂燃烧渲染扩展
      * 为拥有灵魂燃烧buff的实体渲染蓝色火焰效果
      */

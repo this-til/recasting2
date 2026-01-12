@@ -48,6 +48,9 @@ public class Recasting {
         // 注册实体类型
         RecastingEntities.ENTITY_TYPES.register(modEventBus);
 
+        // 注册粒子类型
+        RecastingParticleTypes.PARTICLE_TYPES.register(modEventBus);
+
         // 注册攻击类型注册表
         RecastingAttackTypes.ATTACK_TYPES.register(modEventBus);
 

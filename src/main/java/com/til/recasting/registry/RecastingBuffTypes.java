@@ -44,15 +44,15 @@ public class RecastingBuffTypes {
      * - 用于星闪特效的层数累积
      */
     public static final RegistryObject<BuffType> STAR_BLINK = BUFF_TYPES.register("star_blink",
-            () -> new BuffType(0, 5)
+            () -> new BuffType(0, 4)
     );
 
     /**
      * 演算
-     * - 每层提供10%增伤
+     * - 每层提供5%增伤
      */
     public static final RegistryObject<BuffType> CALCULUS = BUFF_TYPES.register("calculus",
-            () -> new BuffType(60, 16)
+            () -> new BuffType(20, 16)
     );
 
     /**
@@ -68,7 +68,7 @@ public class RecastingBuffTypes {
      * - 用于破片特效的层数累积
      */
     public static final RegistryObject<BuffType> FRAGMENT = BUFF_TYPES.register("fragment",
-            () -> new BuffType(0, 64)
+            () -> new BuffType(5, 32)
     );
 
     /**
@@ -76,6 +76,31 @@ public class RecastingBuffTypes {
      * - 用于回旋特效的层数累积
      */
     public static final RegistryObject<BuffType> SWORD_MOMENTUM = BUFF_TYPES.register("sword_momentum",
-            () -> new BuffType(0, 12)
+            () -> new BuffType(10, 12)
     );
+
+    /**
+     * 电离
+     * - 受到闪电伤害时叠加，每层提供1%增伤
+     */
+    public static final RegistryObject<BuffType> IONIZATION = BUFF_TYPES.register("ionization",
+            () -> new BuffType(20, 64)
+    );
+
+    /**
+     * 蓄能
+     * - 受到伤害时叠加层数，达到48层时触发闪电攻击
+     */
+    public static final RegistryObject<BuffType> ENERGY_STORAGE = BUFF_TYPES.register("energy_storage",
+            () -> new BuffType(20, 12)
+    );
+
+    /**
+     * 雷光
+     * - 受到雷电伤害后获得，持有雷光的实体受到伤害后附加闪电伤害
+     */
+    public static final RegistryObject<BuffType> THUNDER_LIGHT = BUFF_TYPES.register("thunder_light",
+            () -> new BuffType(40, 8)
+    );
+
 }

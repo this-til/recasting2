@@ -1,0 +1,41 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/ba_gua_big",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:smite",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:sharpness",
+            "lvl": 3
+          }
+        ],
+        "kill": 2000,
+        "name": "recasting:slashblade/ba_gua",
+        "refine": 100
+      }
+    },
+    "C": {
+      "item": "recasting:chaos_flame"
+    },
+    "P": {
+      "item": "recasting:poetry_ash_flame"
+    }
+  },
+  "pattern": [
+    "CPC",
+    "PBP",
+    "CPC"
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

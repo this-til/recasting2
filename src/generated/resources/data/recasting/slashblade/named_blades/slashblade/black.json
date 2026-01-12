@@ -2,7 +2,8 @@
   "name": "recasting:slashblade/black",
   "properties": {
     "attack_base": 5.0,
-    "max_damage": 160
+    "max_damage": 160,
+    "slash_art": "recasting:multiple_judgement_cut"
   },
   "render": {
     "carry_type": "default",

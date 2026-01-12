@@ -2,7 +2,16 @@
   "name": "recasting:slashblade/color_wing",
   "properties": {
     "attack_base": 8.0,
-    "max_damage": 560
+    "max_damage": 560,
+    "slash_art": "recasting:heaven_twelve_hit",
+    "special_effects": [
+      "recasting:color_dye"
+    ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:color_dye": 1
+    }
   },
   "render": {
     "carry_type": "default",
