@@ -791,8 +791,8 @@ public class LanguageItems {
 
     // 急行幻影剑介绍
     public static final LanguageItem RAPID_PHANTOM_SWORDS_DESC = createSlashArtsDescription(SlashArtsRegistry.RAPID_PHANTOM_SWORDS)
-            .addTranslation(LanguageTypes.ZH_CN, "在目标位置周围召唤多把幻影剑，击中敌人后给敌人添加发光效果。")
-            .addTranslation(LanguageTypes.EN_US, "Summon multiple phantom swords around the target position. Enemies hit will gain a glowing effect.");
+            .addTranslation(LanguageTypes.ZH_CN, "在目标位置周围召唤多把幻影剑。")
+            .addTranslation(LanguageTypes.EN_US, "Summon multiple phantom swords around the target position.");
 
     // 穷观阵介绍
     public static final LanguageItem MATRIX_DESC = createSlashArtsDescription(SlashArtsRegistry.MATRIX)
@@ -1040,8 +1040,8 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Spiral");
 
     public static final LanguageItem SPIRAL_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.SPIRAL)
-            .addTranslation(LanguageTypes.ZH_CN, "幻影剑造成伤害后叠加剑势，达到12层后触发风暴幻影剑。")
-            .addTranslation(LanguageTypes.EN_US, "Stacks sword momentum when phantom swords deal damage. Triggers storm phantom swords at 12 stacks.");
+            .addTranslation(LanguageTypes.ZH_CN, "幻影剑造成伤害后叠加剑势，达到一定层数后触发风暴幻影剑。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks sword momentum when phantom swords deal damage. Triggers storm phantom swords at certain stacks.");
 
     // 破片
     public static final LanguageItem FRAGMENT_SE = createSpecialEffectLanguage(SpecialEffectsRegistry.FRAGMENT)
@@ -1049,8 +1049,8 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Fragment");
 
     public static final LanguageItem FRAGMENT_SE_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.FRAGMENT)
-            .addTranslation(LanguageTypes.ZH_CN, "幻影剑造成伤害时叠加层级，达到32层级时额外造成一次大量的伤害。")
-            .addTranslation(LanguageTypes.EN_US, "Stacks layers when phantom swords deal damage. Deals massive additional damage at 32 layers.");
+            .addTranslation(LanguageTypes.ZH_CN, "幻影剑造成伤害时叠加层级，达到一定层级时额外造成一次大量的伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks layers when phantom swords deal damage. Deals massive additional damage at certain layers.");
 
     // 星闪
     public static final LanguageItem STAR_BLINK = createSpecialEffectLanguage(SpecialEffectsRegistry.STAR_BLINK)
@@ -1068,6 +1068,15 @@ public class LanguageItems {
     public static final LanguageItem STAR_BLINK_LAMBDA_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.STAR_BLINK_LAMBDA)
             .addTranslation(LanguageTypes.ZH_CN, "攻击目标叠加层数，达到最大层数时触发额外伤害并重置目标速度。")
             .addTranslation(LanguageTypes.EN_US, "Stacks layers on targets when attacking. Triggers additional damage and resets target velocity at max stacks.");
+
+    // 断灭
+    public static final LanguageItem ANNIHILATION = createSpecialEffectLanguage(SpecialEffectsRegistry.ANNIHILATION)
+            .addTranslation(LanguageTypes.ZH_CN, "断灭")
+            .addTranslation(LanguageTypes.EN_US, "Annihilation");
+
+    public static final LanguageItem ANNIHILATION_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.ANNIHILATION)
+            .addTranslation(LanguageTypes.ZH_CN, "召唤一定数量的次元斩之后额外召唤一个巨型次元斩。")
+            .addTranslation(LanguageTypes.EN_US, "After summoning a certain number of judgement cuts, additionally summons a giant judgement cut.");
 
     // 染色
     public static final LanguageItem COLOR_DYE = createSpecialEffectLanguage(SpecialEffectsRegistry.COLOR_DYE)

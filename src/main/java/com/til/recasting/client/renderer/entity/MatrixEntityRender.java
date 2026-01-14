@@ -45,7 +45,7 @@ public class MatrixEntityRender<E extends MatrixEntity> extends EntityRenderer<E
             matrixStack.scale(scale, scale, scale);
             WavefrontObject model = BladeModelManager.getInstance().getModel(entity.getModel());
             BladeRenderState.setCol(entity.getColor());
-            BladeRenderState.renderOverrided(ItemStack.EMPTY, model, "ss", getTextureLocation(entity), matrixStack, bufferIn, BladeRenderState.MAX_LIGHT, RenderStateManage::mackLuminous, true);
+            BladeRenderState.renderOverrided(ItemStack.EMPTY, model, "ss", getTextureLocation(entity), matrixStack, bufferIn, BladeRenderState.MAX_LIGHT, RenderStateManage::mackModel, true);
         }
     }
 }

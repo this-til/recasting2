@@ -142,5 +142,15 @@ public class RecastingAttackTypes {
             ))
     );
 
+    /**
+     * 撕裂攻击类型（魔法伤害）
+     */
+    public static final RegistryObject<AttackType> TEAR_ATTACK = ATTACK_TYPES.register("tear",
+            () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
+                    attacker.damageSources().indirectMagic(target, attacker),
+                    new DamageStructure(1.0f, 0.0f)
+            ))
+    );
+
 }
 

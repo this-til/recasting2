@@ -29,6 +29,7 @@ public class JudgementCutEntity extends ContinuousDamageEntity {
         super(entityTypeIn, worldIn, shooting);
 
         this.setRepeatedAttack(false);
+        this.setAttackInterval(2);
         this.setMaxLifeTime(10);
         this.seed = this.random.nextInt(360);
 

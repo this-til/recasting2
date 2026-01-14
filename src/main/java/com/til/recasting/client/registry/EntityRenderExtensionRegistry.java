@@ -72,6 +72,15 @@ public class EntityRenderExtensionRegistry {
             )
     );
 
+    public static final RegistryObject<EntityRenderExtension> CALCULUS = ENTITY_RENDER_EXTENSIONS.register(
+            "calculus",
+            () -> new EntityRenderExtension.BuffLevelRender(
+                    R.Models.Mark.calculus$obj,
+                    new Color(255, 255, 255).getRGB(),
+                    RecastingBuffTypes.CALCULUS
+            )
+    );
+
     public static final RegistryObject<EntityRenderExtension> SPIRAL_SPECIAL = ENTITY_RENDER_EXTENSIONS.register(
             "spiral_special",
             () -> new EntityRenderExtension.BuffLevelRender(
@@ -91,6 +100,19 @@ public class EntityRenderExtensionRegistry {
                     R.Models.Mark.thunderLight$obj,
                     new Color(118, 169, 246).getRGB(),
                     RecastingBuffTypes.THUNDER_LIGHT
+            )
+    );
+
+    /**
+     * 断灭渲染扩展
+     * 为拥有断灭buff的实体渲染层级效果
+     */
+    public static final RegistryObject<EntityRenderExtension> ANNIHILATION = ENTITY_RENDER_EXTENSIONS.register(
+            "annihilation",
+            () -> new EntityRenderExtension.BuffLevelRender(
+                    R.Models.Mark.annihilation$obj,
+                    new Color(150, 0, 200).getRGB(),
+                    RecastingBuffTypes.ANNIHILATION
             )
     );
 

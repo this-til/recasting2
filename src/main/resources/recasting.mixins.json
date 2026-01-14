@@ -10,6 +10,7 @@
     "DamageSourcesAccessor",
     "EntityAccessor",
     "RecipeProviderMixin",
+    "RequestDefinitionMixin",
     "SlashArtsAccessor",
     "SlashBladeDefinitionBladeComparatorMixin",
     "SlashBladeDefinitionCodecMixin",

@@ -166,6 +166,10 @@ public class SlashArtsRegistry {
                     .next(entity -> SlashBlade.prefix("judgement_cut_slash_air"))
                     .nextOfTimeout(entity -> SlashBlade.prefix("judgement_cut_sheath_air"))
                     .addTickAction(ComboState.TimeLineTickAction.getBuilder().put(0, e -> {
+                        if (e.level().isClientSide()) {
+                            return;
+                        }
+
                         ItemStack mainHandItem = e.getMainHandItem();
                         if (mainHandItem.isEmpty()) {
                             return;
@@ -1153,7 +1157,7 @@ public class SlashArtsRegistry {
 
     /**
      * 急行幻影剑 Slash Arts
-     * 在目标位置周围召唤多把幻影剑，击中敌人后给敌人添加发光效果
+     * 在目标位置周围召唤多把幻影剑
      */
     @Setter
     @Accessors(chain = true)
@@ -1228,11 +1232,11 @@ public class SlashArtsRegistry {
     public static class FragmentSlashArts extends ExtendedSlashArts {
 
         float attack = 0.3f;
-        float basicsRange = 4.0f;
         int life = 10;
 
         @Override
         public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
+
 
             // 调用 AttackHelper.doSlash
             SlashEffectEntity slashEffectEntity = AttackHelper.doSlash(
@@ -1243,9 +1247,13 @@ public class SlashArtsRegistry {
                     false,  // mute
                     true,   // critical
                     new DamageStructure(attack, 0),
-                    basicsRange,
+                    propertiesDefinitionExtension.attackDistance(),
                     KnockBacks.cancel
             );
+
+            if (slashEffectEntity == null) {
+                return;
+            }
 
             slashEffectEntity.setMaxLifeTime(life);
             slashEffectEntity.setRepeatedAttack(true);
@@ -1305,8 +1313,8 @@ public class SlashArtsRegistry {
         int life = 200;
         float size = 16;
 
-        ResourceLocation saTexture = R.Models.Special.matrix$obj;
-        ResourceLocation saModel = R.Models.Special.matrix$png;
+        ResourceLocation saTexture = R.Models.Special.matrix$png;
+        ResourceLocation saModel = R.Models.Special.matrix$obj;
 
         /**
          * 从 Map 中移除指定实体的穷观阵记录
@@ -1360,6 +1368,7 @@ public class SlashArtsRegistry {
             // 设置属性
             matrix.setMaxLifeTime(life);
             matrix.setAttackInterval(attackInterval);
+
             matrix.setModifiedRatio(attack);
             matrix.setColor(slashBladeState.getColorCode());
             matrix.setSize(size);
@@ -1379,6 +1388,8 @@ public class SlashArtsRegistry {
                         // 增加层数
                         int newLevel = currentLevel + 1;
                         buffStackData.setLevel(chaosLayerBuffType, newLevel, world);
+
+                        KnockBacks.cancel.action.accept(hitEntity);
                     }
             ));
 

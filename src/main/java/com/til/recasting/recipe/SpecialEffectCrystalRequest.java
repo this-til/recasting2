@@ -73,6 +73,9 @@ public record SpecialEffectCrystalRequest(
             if (this.level >= 0) {
                 data.setSpecialEffectLevel(this.level);
             }
+            
+            // 将 Capability 数据序列化到 NBT
+            stack.getOrCreateTag().put("se_crystal_data", data.serializeNBT());
         });
     }
 

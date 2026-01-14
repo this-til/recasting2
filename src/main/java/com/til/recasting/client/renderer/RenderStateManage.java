@@ -89,5 +89,31 @@ public class RenderStateManage extends BladeRenderState {
                     .createCompositeState(false)
     );
 
+    protected static final RenderStateShard.TransparencyStateShard MODEL_TRANSPARENCY =
+            new RenderStateShard.TransparencyStateShard("model_transparency", () -> {
+                RenderSystem.enableBlend();
+                RenderSystem.blendFuncSeparate(
+                        GlStateManager.SourceFactor.SRC_ALPHA,
+                        GlStateManager.DestFactor.ONE,
+                        GlStateManager.SourceFactor.ONE,
+                        GlStateManager.DestFactor.ZERO
+                );
+            }, () -> {
+                RenderSystem.disableBlend();
+                RenderSystem.defaultBlendFunc();
+            });
 
+    public static RenderType mackModel(ResourceLocation texture) {
+        RenderType.CompositeState state = RenderType.CompositeState.builder()
+                .setShaderState(RenderStateShard.RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
+                .setOutputState(ITEM_ENTITY_TARGET)
+                .setTextureState(new RenderStateShard.TextureStateShard(texture, true, true))
+                .setTransparencyState(MODEL_TRANSPARENCY)
+                // 移除 lightmap 以禁用全局光照影响，物体将始终保持最大亮度
+                .setOverlayState(OVERLAY)
+                .setWriteMaskState(COLOR_WRITE)
+                .createCompositeState(false);
+
+        return RenderType.create("model_" + texture, DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.TRIANGLES, 256, false, true, state);
+    }
 }

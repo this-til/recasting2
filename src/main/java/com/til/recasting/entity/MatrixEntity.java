@@ -7,9 +7,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class MatrixEntity extends JudgementCutEntity {
+public class MatrixEntity extends ContinuousDamageEntity {
     public MatrixEntity(EntityType<? extends MatrixEntity> entityTypeIn, Level worldIn, LivingEntity shooting) {
         super(entityTypeIn, worldIn, shooting);
+        this.setRepeatedAttack(true);
     }
 
     @Override

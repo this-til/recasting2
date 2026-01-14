@@ -57,6 +57,35 @@ public class SlashBladeDefinitions {
                             .maxDamage(40)
             )
             .build();
+
+    // 法棍
+    public static final SlashBladeDefinition DHARMA_STICK = createBuild(R.Slashblade.dharmaStick)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.dharmaStick$obj)
+                            .textureName(R.Slashblade.dharmaStick$png)
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(2f)
+                            .maxDamage((int) (114f * 40))
+            )
+            .build();
+
+    // 锄头
+    public static final SlashBladeDefinition HOE = createBuild(R.Slashblade.hoe)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.hoe$obj)
+                            .textureName(R.Slashblade.hoe$png)
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(2f)
+                            .maxDamage(5 * 40)
+            )
+            .build();
+
     //endregion
 
     //region t5
@@ -294,6 +323,32 @@ public class SlashBladeDefinitions {
             .build();
 
 
+    public static final SlashBladeDefinition OBLITERATE = createBuild(R.Slashblade.obliterate)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.obliterate$obj)
+                            .textureName(R.Slashblade.obliterate$png)
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .maxDamage(12 * 40))
+            .build();
+
+    // Obliterate Lambda
+    public static final SlashBladeDefinition OBLITERATE_LAMBDA = createBuild(R.Slashblade.obliterateLambda)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.obliterateLambda$obj)
+                            .textureName(R.Slashblade.obliterate$png)
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .maxDamage(16 * 40)
+            )
+            .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.25f))
+            .build();
+
+
     //endregion
 
     //region t2
@@ -363,6 +418,21 @@ public class SlashBladeDefinitions {
             )
             .build();
 
+
+    // 魂刃
+    public static final SlashBladeDefinition SOULBLADE = createBuild(R.Slashblade.soulblade)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.soulblade$obj)
+                            .textureName(R.Slashblade.soulblade$png)
+                            .effectColor(new Color(150, 100, 200).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(18 * 40)
+            )
+            .build();
 
     //endregion
 
@@ -488,35 +558,6 @@ public class SlashBladeDefinitions {
             .addSpecialEffects(SpecialEffectsRegistry.COLOR_DYE)
             .build();
 
-
-    // 法棍
-    public static final SlashBladeDefinition DHARMA_STICK = createBuild(R.Slashblade.dharmaStick)
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.dharmaStick$obj)
-                            .textureName(R.Slashblade.dharmaStick$png)
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(2f)
-                            .maxDamage((int) (114f * 40))
-            )
-            .build();
-
-    // 锄头
-    public static final SlashBladeDefinition HOE = createBuild(R.Slashblade.hoe)
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.hoe$obj)
-                            .textureName(R.Slashblade.hoe$png)
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(2f)
-                            .maxDamage(5 * 40)
-            )
-            .build();
-
     // 长空落日
     public static final SlashBladeDefinition LONG_SKY_SUNSET = createBuild(R.Slashblade.longSkySunset)
             .renderDefinition(
@@ -538,33 +579,6 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
-            )
-            .build();
-
-    public static final SlashBladeDefinition OBLITERATE = createBuild(R.Slashblade.obliterate)
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.obliterate$obj)
-                            .textureName(R.Slashblade.obliterate$png)
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .maxDamage((int) (12f * 40))
-            )
-            .build();
-
-    // Obliterate Lambda
-    public static final SlashBladeDefinition OBLITERATE_LAMBDA = createBuild(R.Slashblade.obliterateLambda)
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.obliterateLambda$obj)
-                            .textureName(R.Slashblade.obliterate$png)
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .maxDamage((int) (16f * 40))
-            )
-            .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.25f)
             )
             .build();
 
@@ -595,20 +609,6 @@ public class SlashBladeDefinitions {
             )
             .build();
 
-    // 魂刃
-    public static final SlashBladeDefinition SOULBLADE = createBuild(R.Slashblade.soulblade)
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.soulblade$obj)
-                            .textureName(R.Slashblade.soulblade$png)
-                            .effectColor(new Color(150, 100, 200).getRGB())
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(8f)
-                            .maxDamage(20 * 40)
-            )
-            .build();
 
     // region ========== Fluorescence SlashBlades ==========
     public static final SlashBladeDefinition FLUORESCENCE_1 = createBuild(R.Slashblade.Fluorescence.fluorescence1)

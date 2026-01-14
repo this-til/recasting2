@@ -68,7 +68,7 @@ public class RecastingBuffTypes {
      * - 用于破片特效的层数累积
      */
     public static final RegistryObject<BuffType> FRAGMENT = BUFF_TYPES.register("fragment",
-            () -> new BuffType(5, 32)
+            () -> new BuffType(5, 12)
     );
 
     /**
@@ -100,7 +100,23 @@ public class RecastingBuffTypes {
      * - 受到雷电伤害后获得，持有雷光的实体受到伤害后附加闪电伤害
      */
     public static final RegistryObject<BuffType> THUNDER_LIGHT = BUFF_TYPES.register("thunder_light",
-            () -> new BuffType(40, 8)
+            () -> new BuffType(20, 8)
+    );
+
+    /**
+     * 撕裂
+     * - 用于撕裂特效的层数累积
+     */
+    public static final RegistryObject<BuffType> TEAR = BUFF_TYPES.register("tear",
+            () -> new BuffType(20, 12)
+    );
+
+    /**
+     * 断灭
+     * - 用于断灭特效的次元斩计数累积
+     */
+    public static final RegistryObject<BuffType> ANNIHILATION = BUFF_TYPES.register("annihilation",
+            () -> new BuffType(0, 6)
     );
 
 }

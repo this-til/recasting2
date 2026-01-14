@@ -31,16 +31,18 @@ public class R {
         }
 
         public static class Mark {
+            public static final ResourceLocation annihilation = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/annihilation");
+            public static final ResourceLocation annihilation$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/annihilation.obj");
             public static final ResourceLocation calculus = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/calculus");
             public static final ResourceLocation calculus$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/calculus.obj");
+            public static final ResourceLocation matrix = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/matrix");
+            public static final ResourceLocation matrix$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/matrix.obj");
             public static final ResourceLocation model = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model");
             public static final ResourceLocation model$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model.obj");
             public static final ResourceLocation model1 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model1");
             public static final ResourceLocation model1$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model1.obj");
             public static final ResourceLocation model2 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model2");
             public static final ResourceLocation model2$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model2.obj");
-            public static final ResourceLocation model3 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model3");
-            public static final ResourceLocation model3$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model3.obj");
             public static final ResourceLocation model4 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model4");
             public static final ResourceLocation model4$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model4.obj");
             public static final ResourceLocation model5 = ResourceLocation.fromNamespaceAndPath("recasting", "models/mark/model5");

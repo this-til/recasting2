@@ -63,7 +63,7 @@ public class SpecialEffectsRegistry {
             Recasting.MODID
     );
 
-    // 协同
+    // 协同 - 挥刀时概率额外挥刀
     public static final RegistryObject<SpecialEffect> COOPERATE_WITH = registerExtendedSE("cooperate_with", CooperateWithSpecialEffect::new);
     // 十字斩 - 挥刀时追加一道剑气
     public static final RegistryObject<SpecialEffect> CROSS_CHOP = registerExtendedSE("cross_chop", CrossChopSpecialEffect::new);
@@ -71,7 +71,7 @@ public class SpecialEffectsRegistry {
     public static final RegistryObject<SpecialEffect> DRIVE_RELEASE = registerExtendedSE("drive_release", DriveReleaseSpecialEffect::new);
     // 生长 - 挥刀时恢复生命
     public static final RegistryObject<SpecialEffect> GROWTH = registerExtendedSE("growth", GrowthSpecialEffect::new);
-    // 吸血转化 - 将攻击伤害的0.01转化为生命恢复
+    // 吸血转化 - 将攻击伤害的一部分转化为生命恢复
     public static final RegistryObject<SpecialEffect> LIFE_STEAL = registerExtendedSE("life_steal", LifeStealSpecialEffect::new);
     // 回溯 - 挥刀时恢复耐久
     public static final RegistryObject<SpecialEffect> REGRESSION = registerExtendedSE("regression", RegressionSpecialEffect::new);
@@ -101,10 +101,16 @@ public class SpecialEffectsRegistry {
     public static final RegistryObject<SpecialEffect> STORM_VARIANT = registerExtendedSE("storm_variant", StormVariantSpecialEffect::new);
     // 分裂 - 挥刀时发射幻影剑进行辅助攻击
     public static final RegistryObject<SpecialEffect> SPLIT = registerExtendedSE("split", SplitSpecialEffect::new);
-    // 回旋 - 幻影剑造成伤害后叠加剑势，达到12层后触发风暴幻影剑
+    // 回旋 - 幻影剑造成伤害后叠加剑势，达到一定层数后触发风暴幻影剑
     public static final RegistryObject<SpecialEffect> SPIRAL = registerExtendedSE("spiral", SpiralSpecialEffect::new);
-    // 破片 - 幻影剑造成伤害时叠加层级，达到32层级时额外造成一次大量的伤害
+    // 破片 - 幻影剑造成伤害时叠加层级，达到一定层级时额外造成一次大量的伤害
     public static final RegistryObject<SpecialEffect> FRAGMENT = registerExtendedSE("fragment", FragmentSpecialEffect::new);
+    // 撕裂 - 次元斩造成伤害后叠加层数，满层级后造成额外的伤害
+    public static final RegistryObject<SpecialEffect> TEAR = registerExtendedSE("tear", TearSpecialEffect::new);
+    // 旋风 - 你的次元斩将允许造成重复的伤害
+    public static final RegistryObject<SpecialEffect> WHIRLWIND = registerExtendedSE("whirlwind", WhirlwindSpecialEffect::new);
+    // 断灭 - 召唤一定数量的次元斩之后额外召唤一个巨型次元斩
+    public static final RegistryObject<SpecialEffect> ANNIHILATION = registerExtendedSE("annihilation", AnnihilationSpecialEffect::new);
 
     // ==================== 攻击类型增幅 SE ====================
 
@@ -1158,11 +1164,6 @@ public class SpecialEffectsRegistry {
                     event.getUser()
             );
 
-            // 设置位置（玩家前方）
-            Vec3 pos = event.getUser().position().add(0.0D, (double) event.getUser().getEyeHeight() * 0.75D, 0.0D)
-                    .add(event.getUser().getLookAngle().scale(1.5f));
-            summondSword.setPos(pos.x, pos.y, pos.z);
-
             // 朝向攻击目标
             summondSword.lookAt(attackPos, false);
 
@@ -1179,7 +1180,7 @@ public class SpecialEffectsRegistry {
 
     /***
      * 吸血转化
-     * 将攻击伤害的0.01转化为生命恢复
+     * 将攻击伤害的一部分转化为生命恢复
      */
     public static class LifeStealSpecialEffect extends ExtendedSpecialEffect {
 
@@ -1247,7 +1248,7 @@ public class SpecialEffectsRegistry {
 
     /***
      * 回旋
-     * 幻影剑造成伤害后叠加剑势，达到12层后触发风暴幻影剑
+     * 幻影剑造成伤害后叠加剑势，达到一定层数后触发风暴幻影剑
      */
     public static class SpiralSpecialEffect extends ExtendedSpecialEffect {
 
@@ -1419,7 +1420,7 @@ public class SpecialEffectsRegistry {
 
     /***
      * 破片
-     * 幻影剑造成伤害时叠加层级，达到32层级时额外造成一次大量的伤害
+     * 幻影剑造成伤害时叠加层级，达到一定层级时额外造成一次大量的伤害
      */
     public static class FragmentSpecialEffect extends ExtendedSpecialEffect {
 
@@ -1481,6 +1482,202 @@ public class SpecialEffectsRegistry {
                         }
                     }
             );
+        }
+
+    }
+
+    /***
+     * 撕裂
+     * 次元斩造成伤害后叠加层数，满层级后造成额外的伤害
+     */
+    public static class TearSpecialEffect extends ExtendedSpecialEffect {
+
+        NumberPack attack = new NumberPack(1.5f, 0.5f); // 额外伤害
+        int addLevel = 1; // 每次叠加的层数
+
+        @SubscribeEvent
+        public void onEvent(AttackAmplifierEvent event) {
+            if (!hasSpecialEffect(event.getSlashBladeState())) {
+                return;
+            }
+
+            // 只在服务端执行
+            if (event.getAttacker().level().isClientSide()) {
+                return;
+            }
+
+            // 检查目标是否是生物实体且存活
+            if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+                return;
+            }
+
+            // 只处理次元斩攻击
+            if (!event.getAttackTypeList().contains(RecastingAttackTypes.JUDGEMENT_CUT_ATTACK.get())) {
+                return;
+            }
+
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(event.getItem());
+            int level = getLevel(properties);
+
+            target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
+                    buffStackData -> {
+                        Level world = target.level();
+                        BuffType tearBuffType = RecastingBuffTypes.TEAR.get();
+
+                        // 获取当前层数
+                        int currentLevel = buffStackData.getLevel(tearBuffType, world);
+
+                        // 增加层数
+                        int newLevel = currentLevel + addLevel;
+                        buffStackData.setLevel(tearBuffType, newLevel, world);
+
+                        // 检查是否达到最大层数
+                        if (newLevel >= tearBuffType.getMaxLevel()) {
+                            // 重置层数
+                            buffStackData.setLevel(tearBuffType, 0, world);
+
+                            // 造成大量额外伤害
+                            float damage = attack.of(level);
+                            AttackHelper.attack(
+                                    event.getAttacker(),
+                                    target,
+                                    new DamageStructure(0f, damage),
+                                    List.of(RecastingAttackTypes.TEAR_ATTACK.get())
+                            );
+
+                            // TODO 粒子 音效
+                        }
+                    }
+            );
+        }
+
+    }
+
+    /***
+     * 旋风
+     * 你的次元斩将允许造成重复的伤害
+     */
+    public static class WhirlwindSpecialEffect extends ExtendedSpecialEffect {
+
+        @SubscribeEvent
+        public void onEvent(EntityJoinLevelEvent event) {
+            // 只在服务端执行
+            if (event.getLevel().isClientSide()) {
+                return;
+            }
+
+            // 检查是否是 JudgementCutEntity
+            if (!(event.getEntity() instanceof JudgementCutEntity jc)) {
+                return;
+            }
+
+            // 获取创建者
+            LivingEntity shooter = jc.getShooter();
+            if (shooter == null) {
+                return;
+            }
+
+            // 检查是否拥有此特效
+            ItemStack blade = shooter.getMainHandItem();
+            if (blade.isEmpty()) {
+                return;
+            }
+
+            blade.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(state -> {
+                if (!hasSpecialEffect(state)) {
+                    return;
+                }
+
+                // 设置次元斩允许重复攻击
+                jc.setRepeatedAttack(true);
+            });
+        }
+
+    }
+
+    /***
+     * 断灭
+     * 召唤一定数量的次元斩之后额外召唤一个巨型次元斩
+     */
+    public static class AnnihilationSpecialEffect extends ExtendedSpecialEffect {
+
+        NumberPack attackRatio = new NumberPack(0.01f, 0.01f); // 攻击倍率
+        int addLevel = 1; // 每次叠加的层数
+        int giantLifetime = 40; // 巨型次元斩的生命时间
+        float giantSize = 6.0f; // 巨型次元斩的大小倍率
+
+        @SubscribeEvent
+        public void onEvent(EntityJoinLevelEvent event) {
+            // 只在服务端执行
+            if (event.getLevel().isClientSide()) {
+                return;
+            }
+
+            // 检查是否是 JudgementCutEntity
+            if (!(event.getEntity() instanceof JudgementCutEntity jc)) {
+                return;
+            }
+
+            // 获取创建者
+            LivingEntity shooter = jc.getShooter();
+            if (shooter == null) {
+                return;
+            }
+
+            // 检查是否拥有此特效
+            ItemStack blade = shooter.getMainHandItem();
+            if (blade.isEmpty()) {
+                return;
+            }
+
+            blade.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(state -> {
+                if (!hasSpecialEffect(state)) {
+                    return;
+                }
+
+                PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(blade);
+                int level = getLevel(properties);
+
+                // 使用Buff系统跟踪次元斩计数
+                shooter.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
+                        buffStackData -> {
+                            Level world = shooter.level();
+                            BuffType annihilationBuffType = RecastingBuffTypes.ANNIHILATION.get();
+
+                            // 获取当前层数
+                            int currentLevel = buffStackData.getLevel(annihilationBuffType, world);
+
+                            // 增加层数
+                            int newLevel = currentLevel + addLevel;
+                            buffStackData.setLevel(annihilationBuffType, newLevel, world);
+
+                            // 检查是否达到最大层数（6层）
+                            if (newLevel >= annihilationBuffType.getMaxLevel()) {
+                                // 重置层数
+                                buffStackData.setLevel(annihilationBuffType, 0, world);
+
+                                // 创建巨型次元斩
+                                Level worldIn = shooter.level();
+                                Vec3 pos = PosHelper.getAttackTargetPosition(shooter, state);
+
+                                JudgementCutEntity giantJc = new JudgementCutEntity(
+                                        RecastingEntities.JUDGEMENT_CUT.get(),
+                                        worldIn,
+                                        shooter
+                                );
+
+                                giantJc.setPos(pos.x, pos.y, pos.z);
+                                giantJc.setColor(state.getColorCode());
+                                giantJc.setModifiedRatio(attackRatio.of(level));
+                                giantJc.setMaxLifeTime(giantLifetime);
+                                giantJc.setSize(jc.getSize() * giantSize);
+
+                                // 添加到世界
+                                worldIn.addFreshEntity(giantJc);
+                            }
+                        }
+                );
+            });
         }
 
     }

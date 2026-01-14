@@ -481,5 +481,183 @@ public class SlashBladeRecipes {
                     .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
                     .save(consumer, recipeId);
 
+    /**
+     * 法棍配方：基础配方，无前置刀
+     * 材料：面包3个 + 耀魂1个
+     * B=面包, P=耀魂
+     */
+    public static final RecipeBuilderWrapper DHARMA_STICK_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.DHARMA_STICK.getName())
+                    .pattern("  B")
+                    .pattern(" B ")
+                    .pattern("BP ")
+                    .define('B', Items.BREAD)
+                    .define('P', SlashBladeItems.PROUDSOUL.get())
+                    .unlockedBy("has_bread", RecipeProviderMixin.invokeHas(Items.BREAD))
+                    .save(consumer, recipeId);
+
+    /**
+     * 锄头配方：基础配方，无前置刀
+     * 材料：耀魂铁锭2个 + 木棍2个
+     * H=耀魂铁锭, S=木棍
+     */
+    public static final RecipeBuilderWrapper HOE_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.HOE.getName())
+                    .pattern(" HH")
+                    .pattern(" S ")
+                    .pattern(" S ")
+                    .define('H', SlashBladeItems.PROUDSOUL_INGOT.get())
+                    .define('S', Items.STICK)
+                    .unlockedBy("has_stick", RecipeProviderMixin.invokeHas(Items.STICK))
+                    .save(consumer, recipeId);
+
+    /**
+     * VOID_1 配方：从黑刃升级
+     * 要求：杀敌3000、锻造500、耐久3附魔、力量5附魔、锋利5附魔、截肢杀手2附魔
+     * SE结晶：震荡l3 2个
+     * 材料：银白色庸魂立方体4个
+     * C=银白色庸魂立方体, S=震荡l3 SE结晶, B=基础刀（黑刃，满足要求）
+     */
+    public static final RecipeBuilderWrapper VOID_1_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.VOID_1.getName())
+                    .pattern(" SC")
+                    .pattern("CBC")
+                    .pattern("CS ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.BLACK.getName())
+                                    .killCount(1500)
+                                    .refineCount(100)
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING), 3))
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE), 5))
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BANE_OF_ARTHROPODS), 2))
+                                    .build()))
+                    .define('C', RecastingItems.IRON_MEDIUM_SOUL_CUBE.get())
+                    .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SHOCK.getId(), 3))
+                    .unlockedBy("has_iron_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.IRON_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * VOID_2 配方：从 VOID_1 升级
+     * 要求：杀敌3000、锻造250
+     * SE结晶：生长l3 2个
+     * 材料：漆黑庸魂立方体4个
+     * C=漆黑庸魂立方体, G=生长l3 SE结晶, B=基础刀（VOID_1，满足要求）
+     */
+    public static final RecipeBuilderWrapper VOID_2_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.VOID_2.getName())
+                    .pattern(" GC")
+                    .pattern("CBC")
+                    .pattern("CG ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.VOID_1.getName())
+                                    .killCount(3000)
+                                    .refineCount(250)
+                                    .build()))
+                    .define('C', RecastingItems.NETHERITE_MEDIUM_SOUL_CUBE.get())
+                    .define('G', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.GROWTH.getId(), 3))
+                    .unlockedBy("has_netherite_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.NETHERITE_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * VOID_3 配方：从 VOID_2 升级
+     * 要求：杀敌5000、锻造500
+     * SE结晶：吸血转化l3 2个
+     * 材料：赤红庸魂立方体4个
+     * C=赤红庸魂立方体, L=吸血转化l3 SE结晶, B=基础刀（VOID_2，满足要求）
+     */
+    public static final RecipeBuilderWrapper VOID_3_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.VOID_3.getName())
+                    .pattern(" LC")
+                    .pattern("CBC")
+                    .pattern("CL ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.VOID_2.getName())
+                                    .killCount(5000)
+                                    .refineCount(500)
+                                    .build()))
+                    .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                    .define('L', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.LIFE_STEAL.getId(), 3))
+                    .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * OBLITERATE 配方：从黑刃升级
+     * 要求：杀敌1000、荣耀50000、火焰附加2附魔
+     * SE结晶：回溯l1 2个
+     * 材料：赤红庸魂立方体4个
+     * C=赤红庸魂立方体, R=回溯l1 SE结晶, B=基础刀（黑刃，满足要求）
+     */
+    public static final RecipeBuilderWrapper OBLITERATE_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.OBLITERATE.getName())
+                    .pattern(" CR")
+                    .pattern("CBC")
+                    .pattern("RC ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.BLACK.getName())
+                                    .killCount(1000)
+                                    .proudSoul(50000)
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_ASPECT), 2))
+                                    .build()))
+                    .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                    .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 1))
+                    .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * OBLITERATE Lambda 配方：从 OBLITERATE 升级
+     * 要求：杀敌2000、荣耀100000
+     * SE结晶：回溯l2 2个
+     * 材料：赤红庸魂立方体4个
+     * C=赤红庸魂立方体, R=回溯l2 SE结晶, B=基础刀（OBLITERATE，满足要求）
+     */
+    public static final RecipeBuilderWrapper OBLITERATE_LAMBDA_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.OBLITERATE_LAMBDA.getName())
+                    .pattern(" CR")
+                    .pattern("CBC")
+                    .pattern("RC ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.OBLITERATE.getName())
+                                    .killCount(2000)
+                                    .proudSoul(100000)
+                                    .build()))
+                    .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                    .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 2))
+                    .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * SOULBLADE 配方：从 OBLITERATE Lambda 升级
+     * 要求：杀敌4000、荣耀200000
+     * SE结晶：回溯l3 2个
+     * 材料：赤红庸魂立方体4个
+     * C=赤红庸魂立方体, R=回溯l3 SE结晶, B=基础刀（OBLITERATE Lambda，满足要求）
+     */
+    public static final RecipeBuilderWrapper SOULBLADE_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SOULBLADE.getName())
+                    .pattern(" CR")
+                    .pattern("CBC")
+                    .pattern("RC ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.OBLITERATE_LAMBDA.getName())
+                                    .killCount(4000)
+                                    .proudSoul(200000)
+                                    .build()))
+                    .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                    .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 3))
+                    .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
 }
 
