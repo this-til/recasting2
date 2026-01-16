@@ -22,7 +22,7 @@ import java.util.function.Consumer;
  * Mixin 用于重写 SlashBlade 原版的 AttackManager 方法
  * 添加自定义攻击距离支持
  */
-@Mixin(value = mods.flammpfeil.slashblade.util.AttackManager.class, remap = false)
+@Mixin(value = mods.flammpfeil.slashblade.util.AttackManager.class)
 public abstract class AttackManagerMixin {
 
     /**

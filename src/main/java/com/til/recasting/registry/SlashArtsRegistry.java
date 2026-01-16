@@ -121,6 +121,9 @@ public class SlashArtsRegistry {
     public static final RegistryObject<ExtendedSlashArts> MATRIX = registerExtendedSA("matrix", new MatrixSlashArts());
     public static final RegistryObject<ExtendedSlashArts> MATRIX_LAMBDA = registerExtendedSA("matrix_lambda", new MatrixSlashArts().setAttackInterval(5));
 
+    // 幻影爆破
+    public static final RegistryObject<ExtendedSlashArts> PHANTOM_EXPLOSION = registerExtendedSA("phantom_explosion", new PhantomExplosionSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> PHANTOM_EXPLOSION_LAMBDA = registerExtendedSA("phantom_explosion_lambda", new PhantomExplosionSlashArts().setGroupCount(5));
 
     /**
      * 注册扩展的 SlashArts，自动关联 ComboState
@@ -1396,6 +1399,155 @@ public class SlashArtsRegistry {
             // 添加到世界
             worldIn.addFreshEntity(matrix);
             matrixEntity.put(livingEntity, matrix);
+        }
+    }
+
+    /**
+     * 幻影爆破 Slash Arts
+     * 在目标周围产生多组螺旋幻影剑，围绕目标旋转
+     */
+    @Setter
+    @Accessors(chain = true)
+    public static class PhantomExplosionSlashArts extends ExtendedSlashArts {
+
+        float attack = 0.15f;
+        int minCount = 12;
+        int maxCount = 24;
+        float minTiltAngle = 0f;
+        float maxTiltAngle = 30f;
+        int groupCount = 3;
+        int groupInterval = 5;
+
+        @Override
+        public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
+            Level worldIn = livingEntity.level();
+
+            // 获取目标实体
+            Entity targetEntity = slashBladeState.getTargetEntity(worldIn);
+            LivingEntity target;
+
+            // 如果有锁定目标且有效，使用锁定目标
+            if (targetEntity != null && targetEntity.isAlive() && !targetEntity.isRemoved() && targetEntity instanceof LivingEntity) {
+                target = (LivingEntity) targetEntity;
+            } else {
+                // 如果没有锁定目标，从看向位置附近选择最近的敌人
+                Vec3 attackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
+                
+                // 获取看向位置附近的可攻击敌人
+                List<LivingEntity> nearbyEntities = EntityHelper.getTargettableLivingEntityWithinAABB(
+                        worldIn,
+                        livingEntity,
+                        attackPos,
+                        16f  // 搜索范围
+                );
+
+                // 选择最近的敌人
+                if (!nearbyEntities.isEmpty()) {
+                    target = nearbyEntities.stream()
+                            .min((e1, e2) -> {
+                                double dist1 = e1.position().distanceToSqr(attackPos);
+                                double dist2 = e2.position().distanceToSqr(attackPos);
+                                return Double.compare(dist1, dist2);
+                            })
+                            .orElse(null);
+                } else {
+                    target = null;
+                }
+            }
+
+            // 如果没有找到目标，直接返回
+            if (target == null) {
+                return;
+            }
+
+            // 获取实体的定时器
+            LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN);
+
+            timeRunOptional.ifPresent(timeRun -> {
+                // 生成多组，每组间隔 groupInterval tick
+                for(int group = 0; group < groupCount; group++) {
+                    int delay = group * groupInterval;
+
+                    timeRun.addTimerCell(
+                            () -> {
+                                // 检查目标是否还活着，如果已死亡则取消后续进程
+                                if (!target.isAlive() || target.isRemoved()) {
+                                    return;
+                                }
+                                
+                                // 生成一组幻影剑
+                                spawnPhantomSwordsGroup(livingEntity, target, slashBladeState, worldIn);
+                            },
+                            delay
+                    );
+                }
+            });
+
+        }
+
+        /**
+         * 生成一组幻影剑
+         */
+        private void spawnPhantomSwordsGroup(LivingEntity livingEntity, LivingEntity target, ISlashBladeState slashBladeState, Level worldIn) {
+            // 随机生成数量（12~24）
+            int count = livingEntity.getRandom().nextInt(maxCount - minCount + 1) + minCount;
+
+            // 随机初始角度偏移
+            float off = livingEntity.getRandom().nextFloat() * 360;
+
+            for(int i = 0; i < count; i++) {
+                SummondSpiralSwordEntity ss = new SummondSpiralSwordEntity(
+                        RecastingEntities.SUMMOND_SPIRAL_SWORD.get(),
+                        worldIn,
+                        livingEntity
+                );
+
+                // 设置旋转中心为目标
+                ss.setCenterEntity(target);
+
+                // 设置旋转参数（使用辅助方法自动计算修饰参数）
+                ss.setRadiusExpansion(2.5f, 8.0f, 30);
+                ss.setSpeedDecay(16.0f, 0.3f, 30);
+                ss.setRotationAngle(off + (360.0f / count * i));
+
+                // 设置旋转轴：Y 轴，稍微倾斜 10~30°
+                float tiltAngle = livingEntity.getRandom().nextFloat() * (maxTiltAngle - minTiltAngle) + minTiltAngle;
+                float tiltRad = (float) Math.toRadians(tiltAngle);
+
+                // 在 XZ 平面上随机选择一个方向
+                float horizontalAngle = livingEntity.getRandom().nextFloat() * 360f;
+                float horizontalRad = (float) Math.toRadians(horizontalAngle);
+
+                // 计算倾斜后的旋转轴向量
+                // Y 分量 = cos(θ)
+                // X 分量 = sin(θ) * cos(φ)
+                // Z 分量 = sin(θ) * sin(φ)
+                double y = Math.cos(tiltRad);
+                double x = Math.sin(tiltRad) * Math.cos(horizontalRad);
+                double z = Math.sin(tiltRad) * Math.sin(horizontalRad);
+
+                ss.setRotationAxis(new Vec3(x, y, z));
+                ss.setRotationDirectionOutward(false);
+                ss.setIgnoringBlock(true);
+
+                // 设置基本属性
+                ss.setModifiedRatio(attack);
+                ss.setColor(slashBladeState.getColorCode());
+                ss.setRoll(0);
+                ss.setStartDelay(30);
+
+                ss.addAttackType(RecastingAttackTypes.NO_SPIRAL_SPECIAL_RECURSION_ATTACK.get());
+
+                worldIn.addFreshEntity(ss);
+
+
+            }
+
+            livingEntity.playSound(
+                    SoundEvents.CHORUS_FRUIT_TELEPORT,
+                    0.2F,
+                    1.45F
+            );
         }
     }
 

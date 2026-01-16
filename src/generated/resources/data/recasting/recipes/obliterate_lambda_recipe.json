@@ -1,0 +1,36 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/obliterate_lambda",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "kill": 2000,
+        "name": "recasting:slashblade/obliterate",
+        "proud_soul": 100000
+      }
+    },
+    "C": {
+      "item": "recasting:redstone_medium_soul_cube"
+    },
+    "R": {
+      "type": "recasting:se_crystal",
+      "item": "recasting:se_crystal",
+      "request": {
+        "level": 2,
+        "special_effect_type": "recasting:regression"
+      }
+    }
+  },
+  "pattern": [
+    " CR",
+    "CBC",
+    "RC "
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

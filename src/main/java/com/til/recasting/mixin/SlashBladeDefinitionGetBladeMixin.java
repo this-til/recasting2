@@ -20,8 +20,11 @@ public abstract class SlashBladeDefinitionGetBladeMixin {
     /**
      * 在 getBlade 方法返回之前，将 SlashBladeDefinition 中的扩展数据设置到 ItemStack 的 Capability 中
      */
-    @Inject(method = "getBlade(Lnet/minecraft/world/item/Item;)Lnet/minecraft/world/item/ItemStack;",
-            at = @At("RETURN"), remap = false)
+    @Inject(
+            method = "getBlade(Lnet/minecraft/world/item/Item;)Lnet/minecraft/world/item/ItemStack;",
+            at = @At("RETURN"),
+            remap = false
+    )
     private void recasting$setExtensionCapabilities(net.minecraft.world.item.Item bladeItem,
                                                     CallbackInfoReturnable<ItemStack> cir) {
         ItemStack result = cir.getReturnValue();

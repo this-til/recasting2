@@ -1,0 +1,36 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/void/void_2",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "kill": 3000,
+        "name": "recasting:slashblade/void/void_1",
+        "refine": 250
+      }
+    },
+    "C": {
+      "item": "recasting:netherite_medium_soul_cube"
+    },
+    "G": {
+      "type": "recasting:se_crystal",
+      "item": "recasting:se_crystal",
+      "request": {
+        "level": 3,
+        "special_effect_type": "recasting:growth"
+      }
+    }
+  },
+  "pattern": [
+    " GC",
+    "CBC",
+    "CG "
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

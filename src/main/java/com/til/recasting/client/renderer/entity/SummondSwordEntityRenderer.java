@@ -38,6 +38,9 @@ public class SummondSwordEntityRenderer<E extends SummondSwordEntity> extends En
 
     @Override
     public void render(SummondSwordEntity entity, float entityYaw, float partialTicks, @NotNull PoseStack matrixStack, @NotNull MultiBufferSource bufferIn, int packedLightIn) {
+        if (entity.tickCount < 2) {
+            return;
+        }
 
         try (MSAutoCloser msac = MSAutoCloser.pushMatrix(matrixStack)) {
 

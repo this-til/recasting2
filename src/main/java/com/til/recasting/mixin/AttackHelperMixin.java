@@ -14,7 +14,7 @@ import java.util.List;
  * Mixin 用于重写 AttackHelper.calculateTotalDamage 方法
  * 修改伤害计算公式为: base * (comboRatio * (other1 + other2))
  */
-@Mixin(value = AttackHelper.class, remap = false)
+@Mixin(value = AttackHelper.class)
 public abstract class AttackHelperMixin {
 
     /**

@@ -46,7 +46,7 @@ import java.util.stream.Stream;
  * Mixin 用于修改召唤剑实体的基础伤害值
  * 将 powerLevel（力量附魔等级）替换为配置的基础伤害倍率
  */
-@Mixin(value = SummonedSwordArts.class, remap = false)
+@Mixin(value = SummonedSwordArts.class)
 public abstract class SummonedSwordArtsMixin {
 
     /**
@@ -54,7 +54,7 @@ public abstract class SummonedSwordArtsMixin {
      * @reason 使用自己的类型
      */
     @SubscribeEvent
-    @Overwrite
+    @Overwrite(remap = false)
     public void onInputChange(InputCommandEvent event) {
     }
 

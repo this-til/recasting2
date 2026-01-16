@@ -3,6 +3,7 @@ package com.til.recasting.registry;
 import com.til.recasting.Recasting;
 import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
+import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.entity.DriveEntity;
 import com.til.recasting.entity.JudgementCutEntity;
@@ -32,6 +33,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -175,6 +177,24 @@ public class SpecialEffectsRegistry {
             }
             //noinspection DataFlowIssue
             return itemStack.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION)
+                    .orElse(null);
+        }
+
+        protected RenderDefinitionExtension getRenderDefinitionExtension(ItemStack itemStack) {
+            if (itemStack == null || itemStack.isEmpty()) {
+                return null;
+            }
+            //noinspection DataFlowIssue
+            return itemStack.getCapability(CapabilityRegistryHandler.RENDER_DEFINITION_EXTENSION)
+                    .orElse(null);
+        }
+
+        protected IBuffStackData getBuffStackData(Entity entity) {
+            if (entity == null) {
+                return null;
+            }
+            //noinspection DataFlowIssue
+            return entity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA)
                     .orElse(null);
         }
 

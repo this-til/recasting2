@@ -396,7 +396,7 @@ public class SummonedSwordHelper {
                     targetPos = startPos.add(forwardDir.scale(40));
                 }
 
-                ss.lookAt(targetPos, false, true);
+                ss.lookAt(targetPos, false);
 
                 worldIn.addFreshEntity(ss);
 

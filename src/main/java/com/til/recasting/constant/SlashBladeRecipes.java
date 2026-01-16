@@ -659,5 +659,113 @@ public class SlashBladeRecipes {
                     .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
                     .save(consumer, recipeId);
 
+    /**
+     * STAR_1 配方：从黑刃升级
+     * 要求：杀敌1000、锻造200
+     * 材料：银白色的庸魂立方体4个
+     * SE结晶：撕裂l2 4个
+     * C=银白色的庸魂立方体, B=基础刀（黑刃，满足要求）, T=撕裂l2 SE结晶
+     */
+    public static final RecipeBuilderWrapper STAR_1_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.STAR_1.getName())
+                    .pattern("TCT")
+                    .pattern("CBC")
+                    .pattern("TCT")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.BLACK.getName())
+                                    .killCount(1000)
+                                    .refineCount(200)
+                                    .build()))
+                    .define('C', RecastingItems.IRON_MEDIUM_SOUL_CUBE.get())
+                    .define('T', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.TEAR.getId(), 2))
+                    .unlockedBy("has_iron_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.IRON_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * STAR_2 配方：从 STAR_1 升级
+     * 要求：杀敌2000、锻造400
+     * SE结晶：旋风l2 4个
+     * W=旋风l2 SE结晶, B=基础刀（STAR_1，满足要求）
+     */
+    public static final RecipeBuilderWrapper STAR_2_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.STAR_2.getName())
+                    .pattern(" W ")
+                    .pattern("WBW")
+                    .pattern(" W ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.STAR_1.getName())
+                                    .killCount(2000)
+                                    .refineCount(400)
+                                    .build()))
+                    .define('W', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.WHIRLWIND.getId(), 2))
+                    .unlockedBy("has_whirlwind_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * STAR_3 配方：从 STAR_2 升级
+     * 要求：杀敌4000、锻造600
+     * SE结晶：断灭l2 4个
+     * A=断灭l2 SE结晶, B=基础刀（STAR_2，满足要求）
+     */
+    public static final RecipeBuilderWrapper STAR_3_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.STAR_3.getName())
+                    .pattern(" A ")
+                    .pattern("ABA")
+                    .pattern(" A ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.STAR_2.getName())
+                                    .killCount(4000)
+                                    .refineCount(600)
+                                    .build()))
+                    .define('A', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.ANNIHILATION.getId(), 2))
+                    .unlockedBy("has_annihilation_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * STAR_4 配方：从 STAR_3 升级
+     * 要求：杀敌6000、锻造800
+     * SE结晶：断却l3 2个
+     * S=断却l3 SE结晶, B=基础刀（STAR_3，满足要求）
+     */
+    public static final RecipeBuilderWrapper STAR_4_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.STAR_4.getName())
+                    .pattern("  S")
+                    .pattern(" B ")
+                    .pattern("S  ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.STAR_3.getName())
+                                    .killCount(6000)
+                                    .refineCount(800)
+                                    .build()))
+                    .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SEVER_BREAK.getId(), 3))
+                    .unlockedBy("has_sever_break_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * STAR_4_LAMBDA 配方：从 STAR_4 升级
+     * 要求：杀敌12000、锻造1600
+     * SE结晶：风暴l3 2个、风暴变体l3 2个
+     * S=风暴l3 SE结晶, V=风暴变体l3 SE结晶, B=基础刀（STAR_4，满足要求）
+     */
+    public static final RecipeBuilderWrapper STAR_4_LAMBDA_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.STAR_4_LAMBDA.getName())
+                    .pattern(" V ")
+                    .pattern("SBS")
+                    .pattern(" V ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.STAR_4.getName())
+                                    .killCount(12000)
+                                    .refineCount(1600)
+                                    .build()))
+                    .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM.getId(), 3))
+                    .define('V', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM_VARIANT.getId(), 3))
+                    .unlockedBy("has_storm_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
+                    .save(consumer, recipeId);
+
 }
 

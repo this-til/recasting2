@@ -9,8 +9,8 @@
     "AttackManagerMixin",
     "DamageSourcesAccessor",
     "EntityAccessor",
+    "JEICompatMixin",
     "RecipeProviderMixin",
-    "RequestDefinitionMixin",
     "SlashArtsAccessor",
     "SlashBladeDefinitionBladeComparatorMixin",
     "SlashBladeDefinitionCodecMixin",
@@ -18,16 +18,11 @@
     "SlashBladeDefinitionMixin",
     "SlashBladeItemsMixin$ProudsoulCrystal",
     "SlashBladeItemsMixin$ProudsoulSphere",
-    "SummonedSwordArtsMixin",
-    "entity.EntityAbstractSummonedSwordMixin",
-    "entity.EntityDriveMixin",
-    "entity.EntityJudgementCutMixin",
-    "entity.EntitySlashEffectMixin"
+    "SummonedSwordArtsMixin"
   ],
   "client": [
     "ItemSlashBladeMixin",
-    "client.ItemModelBuilderMixin",
-    "client.SummonedSwordRendererMixin"
+    "client.ItemModelBuilderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

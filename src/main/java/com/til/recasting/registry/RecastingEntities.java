@@ -9,6 +9,7 @@ import com.til.recasting.entity.SlashEffectEntity;
 import com.til.recasting.entity.StellarRotationEntity;
 import com.til.recasting.entity.SummondSpiralSwordEntity;
 import com.til.recasting.entity.SummondSwordEntity;
+import com.til.recasting.entity.TrackingSummondSwordEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
@@ -102,6 +103,26 @@ public class RecastingEntities {
                     .noSummon()                      // 不能通过命令召唤
                     .setShouldReceiveVelocityUpdates(true)
                     .build("summond_spiral_sword")
+    );
+
+    /**
+     * 追踪幻影剑实体
+     * - 继承自召唤剑实体，具有自动追踪目标的功能
+     * - 可以自动寻找并追踪附近的敌人
+     * - 支持自定义追踪距离、更新间隔
+     * - 当目标死亡或超出范围时会自动寻找新目标
+     */
+    public static final RegistryObject<EntityType<TrackingSummondSwordEntity>> TRACKING_SUMMOND_SWORD = ENTITY_TYPES.register(
+            "tracking_summond_sword",
+            () -> EntityType.Builder.<TrackingSummondSwordEntity>of((e, l) -> new TrackingSummondSwordEntity(e, l, null), MobCategory.MISC)
+                    .sized(0.5f, 0.5f)               // 碰撞箱大小
+                    .clientTrackingRange(64)         // 客户端追踪范围（格）
+                    .updateInterval(20)              // 更新间隔（tick）
+                    .fireImmune()                    // 免疫火焰伤害
+                    .noSave()                        // 不保存到世界数据
+                    .noSummon()                      // 不能通过命令召唤
+                    .setShouldReceiveVelocityUpdates(true)
+                    .build("tracking_summond_sword")
     );
 
     /**

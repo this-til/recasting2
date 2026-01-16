@@ -16,7 +16,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -304,10 +303,10 @@ public abstract class StandardizationAttackEntity extends Entity {
     }
 
     public void lookAt(Vec3 target, boolean isDistance) {
-        lookAt(target, isDistance, true);
+        lookAt(target, isDistance, true, true);
     }
 
-    public void lookAt(Vec3 target, boolean isDistance, boolean prevSynchronous) {
+    public void lookAt(Vec3 target, boolean isDistance, boolean prevSynchronous, boolean updateMotion) {
         Vec3 distance = isDistance
                 ? target
                 : target.subtract(getPos());
@@ -329,6 +328,14 @@ public abstract class StandardizationAttackEntity extends Entity {
         float rotationYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F);
 
         setRot(rotationYaw, rotationPitch, prevSynchronous);
+
+        if (updateMotion) {
+            updateMotion();
+        }
+    }
+
+    public void updateMotion() {
+        updateMotion(1.0f);
     }
 
     public void updateMotion(float seep) {

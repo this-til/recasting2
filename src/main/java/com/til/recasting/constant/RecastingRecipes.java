@@ -26,31 +26,6 @@ import java.util.function.Consumer;
 /**
  * Recasting 模组的配方定义常量类
  * 所有配方定义都在这里，通过反射自动读取并生成
- * 
- * 使用方式：
- * 使用 lambda 表达式定义 RecipeBuilderWrapper，配方ID会自动使用字段名转小写
- * 
- * 示例（有序合成）：
- * 字段名 PROUDSOUL_RED_RECIPE -> 配方ID: recasting:proudsoul_red_recipe
- * public static final RecipeBuilderWrapper PROUDSOUL_RED_RECIPE = (consumer, recipeId) -> 
- *     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.PROUDSOUL_RED.get())
- *         .pattern(" R ")
- *         .pattern("RBR")
- *         .pattern(" R ")
- *         .define('R', Items.REDSTONE)
- *         .define('B', Items.BLAZE_POWDER)
- *         .unlockedBy("has_blaze_powder", RecipeProviderMixin.invokeHas(Items.BLAZE_POWDER))
- *         .save(consumer, recipeId);
- * 
- * 示例（无序合成）：
- * 字段名 OBSESSION_FLAME_RECIPE -> 配方ID: recasting:obsession_flame_recipe
- * public static final RecipeBuilderWrapper OBSESSION_FLAME_RECIPE = (consumer, recipeId) ->
- *     ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RecastingItems.OBSESSION_FLAME.get())
- *         .requires(RecastingItems.PROUDSOUL_RED.get())
- *         .requires(Tags.Items.DYES_ORANGE)
- *         .requires(Items.BONE_MEAL)
- *         .unlockedBy("has_proudsoul_red", RecipeProviderMixin.invokeHas(RecastingItems.PROUDSOUL_RED.get()))
- *         .save(consumer, recipeId);
  */
 public class RecastingRecipes {
     

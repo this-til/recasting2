@@ -2,6 +2,7 @@ package com.til.recasting.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import mods.flammpfeil.slashblade.client.renderer.entity.SummonedSwordRenderer;
 import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;
 import mods.flammpfeil.slashblade.client.renderer.model.obj.WavefrontObject;
 import mods.flammpfeil.slashblade.client.renderer.util.BladeRenderState;
@@ -20,17 +21,17 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 @OnlyIn(Dist.CLIENT)
-@Mixin(targets = "mods.flammpfeil.slashblade.client.renderer.entity.SummonedSwordRenderer", remap = false)
+@Mixin(value = SummonedSwordRenderer.class)
 public abstract class SummonedSwordRendererMixin {
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract @NotNull ResourceLocation getTextureLocation(EntityAbstractSummonedSword entity);
 
     /**
      * @author til
      * @reason 修正渲染位置
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public void render(EntityAbstractSummonedSword entity, float entityYaw, float partialTicks, @NotNull PoseStack matrixStack, @NotNull MultiBufferSource bufferIn, int packedLightIn) {
         try (MSAutoCloser msac = MSAutoCloser.pushMatrix(matrixStack)) {
             Entity hits = entity.getHitEntity();

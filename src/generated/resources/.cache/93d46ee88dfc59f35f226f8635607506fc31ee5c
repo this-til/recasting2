@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-12T23:24:23.3762924	Recasting SlashBlade Definition Registry
+// 1.20.1	2026-01-15T16:56:19.6625497	Recasting SlashBlade Definition Registry
 54425988bdb3a6427dded3c85502e41a5a724eb4 data/recasting/slashblade/named_blades/slashblade/art_knife.json
 10119fb4273eda0d4da12ba0ee9de4b761545aa0 data/recasting/slashblade/named_blades/slashblade/ba_gua.json
 4cfa88446a5c836cf5f26d1ad267c9df8a613baf data/recasting/slashblade/named_blades/slashblade/ba_gua_big.json
@@ -39,7 +39,7 @@ cb24d66b652b27566041560d2682e956c5d3e2ca data/recasting/slashblade/named_blades/
 1415178a50072226f6956c1a984b84569576452a data/recasting/slashblade/named_blades/slashblade/physics_sword.json
 bd0120604f95dacf2d4930333491e0f1acb29e59 data/recasting/slashblade/named_blades/slashblade/silver_wing.json
 13e5ccd589b36fcfef0117299154855f1a9365e6 data/recasting/slashblade/named_blades/slashblade/silver_wing_lambda.json
-0cac9be7fda89c54ed553b339b879a1c140d4d0a data/recasting/slashblade/named_blades/slashblade/soulblade.json
+a7a3936094056408ef2733312ca12d02a7aa2b7f data/recasting/slashblade/named_blades/slashblade/soulblade.json
 50279b1132a3b3c6eda7b37fafa076e521aba7b3 data/recasting/slashblade/named_blades/slashblade/special/htod.json
 3b0e2d4976e1d6d00c0677fa17cd291a1125cce2 data/recasting/slashblade/named_blades/slashblade/special/htod_lambda.json
 3a483f0440276d0bfc38ccd75eeab3b635555de8 data/recasting/slashblade/named_blades/slashblade/special/til.json

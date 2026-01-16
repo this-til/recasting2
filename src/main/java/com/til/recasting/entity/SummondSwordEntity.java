@@ -1,7 +1,6 @@
 package com.til.recasting.entity;
 
 import com.til.recasting.registry.RecastingAttackTypes;
-import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.util.CallbackPoint;
 import com.til.recasting.handler.EntityPredicateHelper;
@@ -30,12 +29,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @Author: til
@@ -130,7 +125,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
             y *= dist;
             z *= dist;
             setPos(shooting.getX() + x, shooting.getY() + y, shooting.getZ() + z);
-            lookAt(getDeltaMovement(), true, true);
+            lookAt(getDeltaMovement(), true);
         }
     }
 
@@ -430,8 +425,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     }
 
     @Override
-    public void lookAt(Vec3 target, boolean isDistance, boolean prevSynchronous) {
-        super.lookAt(target, isDistance, prevSynchronous);
+    public void updateMotion(){
         updateMotion(getSeep());
     }
 

@@ -22,10 +22,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 import java.util.Objects;
 
-@Mixin(targets = "mods.flammpfeil.slashblade.registry.SlashBladeItems$4", remap = false)
+@Mixin(targets = "mods.flammpfeil.slashblade.registry.SlashBladeItems$4")
 public class SlashBladeItemsMixin$ProudsoulSphere {
 
-    @Inject(method = "appendHoverText", at = @At("HEAD"), cancellable = true, remap = false)
+    @Inject(method = "appendHoverText", at = @At("HEAD"), cancellable = true)
     public void onAppendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> components, @NotNull TooltipFlag flag, CallbackInfo ci) {
         if (stack.getTag() == null) {
             return;

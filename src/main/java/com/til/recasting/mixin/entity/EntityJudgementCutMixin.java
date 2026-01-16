@@ -27,28 +27,16 @@ import java.util.function.Consumer;
  * Mixin 用于修改 EntityJudgementCut（幻影剑/次元斩）的持久化行为
  * 防止幻影剑实体被保存到世界文件，并使用正确的攻击类型
  */
-@Mixin(value = EntityJudgementCut.class, remap = false)
+@Mixin(value = EntityJudgementCut.class)
 public abstract class EntityJudgementCutMixin implements EntityAccess {
 
 
-    @Shadow
+    @Shadow(remap = false)
     @Nullable
     public abstract Entity getShooter();
 
-    @Shadow
-    private double damage;
 
-    /**
-     * 获取 EntityData，使用 EntityAccessor
-     */
-    @Unique
-    private SynchedEntityData recasting2$getEntityData() {
-        Entity self = (Entity) (Object) this;
-        return ((EntityAccessor) self).getEntityData();
-    }
-
-
-    @Shadow
+    @Shadow(remap = false)
     public abstract double getDamage();
 
 

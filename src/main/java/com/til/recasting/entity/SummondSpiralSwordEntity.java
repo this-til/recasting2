@@ -6,9 +6,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
@@ -113,19 +111,19 @@ public class SummondSpiralSwordEntity extends SummondSwordEntity {
         // 在 PREPARE 阶段执行旋转逻辑
         if (getActionType() == ActionType.PREPARE) {
             setOldPosAndRot();
-            
+
             // 执行旋转
             performRotation();
-            
+
             // 检查是否需要切换到 FLYING 阶段
             if (tickCount > getStartDelay()) {
                 updateMotion(getSeep());
                 setActionType(ActionType.FLYING);
             }
-            
+
             return;
         }
-        
+
         // 其他阶段使用父类的逻辑
         super.tick();
     }
@@ -188,11 +186,11 @@ public class SummondSpiralSwordEntity extends SummondSwordEntity {
         if (isRotationDirectionOutward()) {
             // 朝外：朝向切线方向（速度方向，垂直于半径和旋转轴）
             Vec3 tangentDirection = rotationAxis.cross(rotatedOffset).normalize();
-            lookAt(tangentDirection, true, false);
+            lookAt(tangentDirection, true, false, false);
         } else {
             // 朝内：朝向中心
             Vec3 directionToCenter = centerPos.subtract(newPos).normalize();
-            lookAt(directionToCenter, true, false);
+            lookAt(directionToCenter, true, false, false);
         }
 
         // 如果启用了旋转时攻击，进行碰撞检测
@@ -372,14 +370,12 @@ public class SummondSpiralSwordEntity extends SummondSwordEntity {
     /**
      * 计算半径修饰参数
      * 根据目标时间、初始半径和目标半径计算修饰系数
-     * 
+     *
      * @param initialRadius 初始半径
-     * @param targetRadius 目标半径
-     * @param ticks 时间（tick数）
+     * @param targetRadius  目标半径
+     * @param ticks         时间（tick数）
      * @return 半径修饰参数（每 tick 半径 × modifier）
-     * 
-     * @example
-     * // 计算 40 tick 后从 2.5 格扩展到 8 格的修饰参数
+     * @example // 计算 40 tick 后从 2.5 格扩展到 8 格的修饰参数
      * float modifier = calculateRadiusModifier(2.5f, 8.0f, 40);
      * // 结果：约 1.0295
      */
@@ -390,7 +386,7 @@ public class SummondSpiralSwordEntity extends SummondSwordEntity {
         if (targetRadius <= 0) {
             targetRadius = 0.01f; // 避免除零，使用很小的值
         }
-        
+
         // modifier^ticks = targetRadius / initialRadius
         // modifier = (targetRadius / initialRadius)^(1/ticks)
         double ratio = targetRadius / initialRadius;
@@ -400,14 +396,12 @@ public class SummondSpiralSwordEntity extends SummondSwordEntity {
     /**
      * 计算速度修饰参数
      * 根据目标时间、初始速度和目标速度计算修饰系数
-     * 
+     *
      * @param initialSpeed 初始速度（度/tick）
-     * @param targetSpeed 目标速度（度/tick），通常接近 0
-     * @param ticks 时间（tick数）
+     * @param targetSpeed  目标速度（度/tick），通常接近 0
+     * @param ticks        时间（tick数）
      * @return 速度修饰参数（每 tick 速度 × modifier）
-     * 
-     * @example
-     * // 计算 40 tick 后从 16 度/tick 衰减到接近 0 的修饰参数
+     * @example // 计算 40 tick 后从 16 度/tick 衰减到接近 0 的修饰参数
      * float modifier = calculateSpeedModifier(16.0f, 0.01f, 40);
      * // 结果：约 0.8316
      */
@@ -418,7 +412,7 @@ public class SummondSpiralSwordEntity extends SummondSwordEntity {
         if (targetSpeed <= 0) {
             targetSpeed = 0.01f; // 避免除零，使用很小的值
         }
-        
+
         // modifier^ticks = targetSpeed / initialSpeed
         // modifier = (targetSpeed / initialSpeed)^(1/ticks)
         double ratio = targetSpeed / initialSpeed;
@@ -427,10 +421,10 @@ public class SummondSpiralSwordEntity extends SummondSwordEntity {
 
     /**
      * 便捷方法：设置半径扩展参数
-     * 
+     *
      * @param initialRadius 初始半径
-     * @param targetRadius 目标半径
-     * @param ticks 时间（tick数）
+     * @param targetRadius  目标半径
+     * @param ticks         时间（tick数）
      */
     public void setRadiusExpansion(float initialRadius, float targetRadius, int ticks) {
         setRotationRadius(initialRadius);
@@ -439,10 +433,10 @@ public class SummondSpiralSwordEntity extends SummondSwordEntity {
 
     /**
      * 便捷方法：设置速度衰减参数
-     * 
+     *
      * @param initialSpeed 初始速度（度/tick）
-     * @param targetSpeed 目标速度（度/tick），通常接近 0
-     * @param ticks 时间（tick数）
+     * @param targetSpeed  目标速度（度/tick），通常接近 0
+     * @param ticks        时间（tick数）
      */
     public void setSpeedDecay(float initialSpeed, float targetSpeed, int ticks) {
         setRotationSpeed(initialSpeed);

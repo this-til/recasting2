@@ -30,27 +30,15 @@ import java.util.List;
  * Mixin 用于修改 EntityDrive (剑气) 的伤害计算
  * 使用自定义的攻击系统
  */
-@Mixin(value = EntityDrive.class, remap = false)
+@Mixin(value = EntityDrive.class)
 public abstract class EntityDriveMixin implements EntityAccess {
 
-    @Shadow
+    @Shadow(remap = false)
     @Nullable
     public abstract Entity getShooter();
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract double getDamage();
-
-    /**
-     * 获取 EntityData，使用 EntityAccessor
-     */
-    @Unique
-    private SynchedEntityData recasting2$getEntityData() {
-        Entity self = (Entity) (Object) this;
-        return ((EntityAccessor) self).getEntityData();
-    }
-
-    @Shadow
-    private double damage;
 
     /**
      * 重定向 onHitEntity 中的伤害计算

@@ -57,10 +57,10 @@ public class RecastingBuffTypes {
 
     /**
      * 灵魂燃烧
-     * - 每层提供6%当前生命值损伤
+     * - 每秒造成当前6%生命值的火属性伤害
      */
     public static final RegistryObject<BuffType> SOUL_BURN = BUFF_TYPES.register("soul_burn",
-            () -> new BuffType(60, 24)
+            () -> new BuffType(20, 99)
     );
 
     /**

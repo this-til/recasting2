@@ -33,14 +33,17 @@ import java.util.List;
  * 在原始方法之后添加 ExtendedSpecialEffect 的等级显示
  * 并在 forEach 中过滤掉 ExtendedSpecialEffect
  */
-@Mixin(value = ItemSlashBlade.class, remap = false)
+@Mixin(value = ItemSlashBlade.class)
 public class ItemSlashBladeMixin {
 
     /**
      * 在 appendSpecialEffects 方法的开头注入，先处理 ExtendedSpecialEffect
      * 然后让原方法继续处理非 ExtendedSpecialEffect 的 SE
+     *
+     * @author til
+     * @reason 为了支持 ExtendedSpecialEffect 的特殊显示逻辑，需要完全重写此方法
      */
-    @Overwrite
+    @Overwrite(remap = false)
     @OnlyIn(Dist.CLIENT)
     public void appendSpecialEffects(List<Component> tooltip, @NotNull ISlashBladeState s) {
 

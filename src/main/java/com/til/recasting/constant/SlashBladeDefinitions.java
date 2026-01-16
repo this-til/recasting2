@@ -852,6 +852,8 @@ public class SlashBladeDefinitions {
             .build();
 
     //region ========== Star SlashBlades ==========
+
+    // t3
     public static final SlashBladeDefinition STAR_1 = createBuild(R.Slashblade.Star.star1)
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
@@ -881,6 +883,7 @@ public class SlashBladeDefinitions {
             )
             .build();
 
+    // t3
     public static final SlashBladeDefinition STAR_3 = createBuild(R.Slashblade.Star.star3)
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
@@ -896,6 +899,7 @@ public class SlashBladeDefinitions {
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(1.5f))
             .build();
 
+    // t2
     public static final SlashBladeDefinition STAR_4 = createBuild(R.Slashblade.Star.star4)
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
@@ -911,6 +915,7 @@ public class SlashBladeDefinitions {
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(2f))
             .build();
 
+    // t2
     public static final SlashBladeDefinition STAR_4_LAMBDA = createBuild(Recasting.prefix("slashblade/star/star_4_lambda"))
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()

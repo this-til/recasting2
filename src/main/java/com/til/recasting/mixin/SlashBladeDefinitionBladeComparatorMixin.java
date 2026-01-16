@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Overwrite;
  * Mixin 用于修复 BladeComparator 的比较逻辑
  * 修复当两个命名空间不同且都不是 "slashblade" 时的排序问题
  */
-@Mixin(targets = "mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition$BladeComparator")
+@Mixin(value = SlashBladeDefinition.BladeComparator.class)
 public abstract class SlashBladeDefinitionBladeComparatorMixin {
 
     /**

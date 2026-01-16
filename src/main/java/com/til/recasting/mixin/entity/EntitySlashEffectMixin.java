@@ -22,24 +22,18 @@ import java.util.function.Consumer;
  * Mixin 用于修改 EntitySlashEffect.tick 方法中的 areaAttack 调用
  * 使用自定义的 AttackManager 并传入攻击距离和攻击类型
  */
-@Mixin(value = EntitySlashEffect.class, remap = false)
+@Mixin(value = EntitySlashEffect.class)
 public abstract class EntitySlashEffectMixin implements EntityAccess {
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract float getBaseSize();
 
-    @Shadow
-    public abstract boolean getIsCritical();
-
-    @Shadow
-    private double damage;
-
-    @Shadow
+    @Shadow(remap = false)
     @Nullable
     public abstract Entity getShooter();
 
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract double getDamage();
 
     /**

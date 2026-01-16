@@ -11,9 +11,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 /**
  * @Author: til
@@ -39,7 +36,7 @@ public class DriveEntity extends SlashEffectEntity {
         if (shooting != null) {
             setPos(shooting.getX(), shooting.getY(), shooting.getZ());
             setRot(shooting.getYRot(), shooting.getXRot());
-            lookAt(getDeltaMovement(), true, true);
+            lookAt(getDeltaMovement(), true);
         }
 
         setAttackInterval(1);
@@ -89,8 +86,8 @@ public class DriveEntity extends SlashEffectEntity {
     }
 
     @Override
-    public void lookAt(Vec3 target, boolean isDistance, boolean prevSynchronous) {
-        super.lookAt(target, isDistance, prevSynchronous);
+    public void lookAt(Vec3 target, boolean isDistance, boolean prevSynchronous, boolean updateMotion) {
+        super.lookAt(target, isDistance, prevSynchronous, updateMotion);
         updateMotion(getSeep());
     }
 

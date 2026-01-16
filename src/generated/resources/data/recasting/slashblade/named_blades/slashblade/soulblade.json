@@ -1,8 +1,8 @@
 {
   "name": "recasting:slashblade/soulblade",
   "properties": {
-    "attack_base": 8.0,
-    "max_damage": 800
+    "attack_base": 6.0,
+    "max_damage": 720
   },
   "render": {
     "carry_type": "default",
