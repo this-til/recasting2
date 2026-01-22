@@ -35,7 +35,6 @@ public class AnvilSpecialEffectEngravingHandler {
         ItemStack leftItem = event.getLeft();      // 铁砧左侧物品
         ItemStack rightItem = event.getRight();    // 铁砧右侧物品
         String inputName = event.getName();        // 玩家输入的名称
-
         // 检查左侧是否为拔刀剑
         if (!(leftItem.getItem() instanceof ItemSlashBlade)) {
             return;
