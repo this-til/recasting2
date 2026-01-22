@@ -16,11 +16,13 @@ import com.til.recasting.event.DoSlashExtendEvent;
 import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.handler.PosHelper;
+import com.til.recasting.mixin.AttackManagerMixin;
 import com.til.recasting.registry.instance.BuffType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
+import mods.flammpfeil.slashblade.util.AttackManager;
 import mods.flammpfeil.slashblade.util.VectorHelper;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.DamageStructure;
@@ -28,7 +30,9 @@ import com.til.recasting.util.NumberPack;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.event.SlashBladeEvent;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -129,12 +133,16 @@ public class SpecialEffectsRegistry {
 
     // ==================== 特殊刀 SE ====================
     // 黑色玫瑰 - 叠加伤害，每 tick 造成伤害，伤害减半
-    public static final RegistryObject<SpecialEffect> BLACK_ROSE = registerExtendedSE("black_rose", () -> new BlackRoseSpecialEffect().setMaxLevel(1));
+    public static final RegistryObject<SpecialEffect> BLACK_ROSE = registerExtendedSE("black_rose", () -> new BlackRoseSpecialEffect().setMaxLevel(1).setSpecial(true));
     // 星闪 - 攻击目标叠加层数，达到最大层数时触发额外伤害并重置目标速度
-    public static final RegistryObject<SpecialEffect> STAR_BLINK = registerExtendedSE("star_blink", () -> new StarBlinkSpecialEffect().setMaxLevel(1));
-    public static final RegistryObject<SpecialEffect> STAR_BLINK_LAMBDA = registerExtendedSE("star_blink_lambda", () -> new StarBlinkSpecialEffect().setAddLevel(2).setMaxLevel(1));
+    public static final RegistryObject<SpecialEffect> STAR_BLINK = registerExtendedSE("star_blink", () -> new StarBlinkSpecialEffect().setMaxLevel(1).setSpecial(true));
+    public static final RegistryObject<SpecialEffect> STAR_BLINK_LAMBDA = registerExtendedSE("star_blink_lambda", () -> new StarBlinkSpecialEffect().setAddLevel(2).setMaxLevel(1).setSpecial(true));
     // 染色 - 挥刀时更改刀刃颜色为随机的
-    public static final RegistryObject<SpecialEffect> COLOR_DYE = registerExtendedSE("color_dye", () -> new ColorDyeSpecialEffect().setMaxLevel(1));
+    public static final RegistryObject<SpecialEffect> COLOR_DYE = registerExtendedSE("color_dye", () -> new ColorDyeSpecialEffect().setMaxLevel(1).setSpecial(true));
+    // 解算 - SE攻击带有演算buff的目标时消耗一层演算，造附加伤害
+    public static final RegistryObject<SpecialEffect> RESOLVE = registerExtendedSE("resolve", () -> new ResolveSpecialEffect().setMaxLevel(1).setSpecial(true));
+    // 燃沫 - 攻击处于灵魂燃烧的目标时，使其额外受到当前生命比值的额外伤害，并有概率增加一层灵魂燃烧
+    public static final RegistryObject<SpecialEffect> FLAME_FOAM = registerExtendedSE("flame_foam", () -> new FlameFoamSpecialEffect().setMaxLevel(1).setSpecial(true));
 
     public static RegistryObject<SpecialEffect> registerExtendedSE(String name, Supplier<SpecialEffect> factory) {
         return SPECIAL_EFFECT.register(name, factory);
@@ -146,6 +154,10 @@ public class SpecialEffectsRegistry {
         @Getter
         @Setter
         int maxLevel = 5;
+
+        @Getter
+        @Setter
+        boolean isSpecial = false;
 
         public ExtendedSpecialEffect() {
             super(0, false, false);
@@ -1494,7 +1506,7 @@ public class SpecialEffectsRegistry {
                             AttackHelper.attack(
                                     event.getAttacker(),
                                     target,
-                                    new DamageStructure(0f, damage),
+                                    new DamageStructure(damage, 0),
                                     List.of(RecastingAttackTypes.FRAGMENT_ATTACK.get())
                             );
 
@@ -1512,7 +1524,7 @@ public class SpecialEffectsRegistry {
      */
     public static class TearSpecialEffect extends ExtendedSpecialEffect {
 
-        NumberPack attack = new NumberPack(1.5f, 0.5f); // 额外伤害
+        NumberPack attack = new NumberPack(0.5f, 0.2f); // 额外伤害
         int addLevel = 1; // 每次叠加的层数
 
         @SubscribeEvent
@@ -1561,7 +1573,7 @@ public class SpecialEffectsRegistry {
                             AttackHelper.attack(
                                     event.getAttacker(),
                                     target,
-                                    new DamageStructure(0f, damage),
+                                    new DamageStructure(damage, 0),
                                     List.of(RecastingAttackTypes.TEAR_ATTACK.get())
                             );
 
@@ -1578,6 +1590,8 @@ public class SpecialEffectsRegistry {
      * 你的次元斩将允许造成重复的伤害
      */
     public static class WhirlwindSpecialEffect extends ExtendedSpecialEffect {
+
+        NumberPack attackInterval = new NumberPack(9, -1);
 
         @SubscribeEvent
         public void onEvent(EntityJoinLevelEvent event) {
@@ -1610,6 +1624,12 @@ public class SpecialEffectsRegistry {
 
                 // 设置次元斩允许重复攻击
                 jc.setRepeatedAttack(true);
+
+                float v = attackInterval.of(getLevel(getPropertiesDefinitionExtension(blade)));
+
+                if (jc.getAttackInterval() > v) {
+                    jc.setAttackInterval((int) v);
+                }
             });
         }
 
@@ -1678,7 +1698,7 @@ public class SpecialEffectsRegistry {
 
                                 // 创建巨型次元斩
                                 Level worldIn = shooter.level();
-                                Vec3 pos = PosHelper.getAttackTargetPosition(shooter, state);
+                                Vec3 pos = jc.position();
 
                                 JudgementCutEntity giantJc = new JudgementCutEntity(
                                         RecastingEntities.JUDGEMENT_CUT.get(),
@@ -1690,7 +1710,7 @@ public class SpecialEffectsRegistry {
                                 giantJc.setColor(state.getColorCode());
                                 giantJc.setModifiedRatio(attackRatio.of(level));
                                 giantJc.setMaxLifeTime(giantLifetime);
-                                giantJc.setSize(jc.getSize() * giantSize);
+                                giantJc.setSize(giantSize);
 
                                 // 添加到世界
                                 worldIn.addFreshEntity(giantJc);
@@ -2143,6 +2163,159 @@ public class SpecialEffectsRegistry {
                                     damageSourceInfo.damageSource(),
                                     new DamageStructure(damageRatioValue, 0f)
                             );
+                        }
+                    }
+            );
+        }
+
+    }
+
+    /***
+     * 解算
+     * SE攻击带有演算buff的目标时消耗一层演算，造成1.75基数的附加伤害，并具有小爆炸的音效和粒子效果
+     */
+    public static class ResolveSpecialEffect extends ExtendedSpecialEffect {
+
+        float damageRatio = 1f;
+
+        @SubscribeEvent
+        public void onEvent(AttackAmplifierEvent event) {
+            // 检查攻击者是否拥有此特效
+            if (!hasSpecialEffect(event.getSlashBladeState())) {
+                return;
+            }
+
+            // 只在服务端执行
+            if (event.getAttacker().level().isClientSide()) {
+                return;
+            }
+
+            // 检查目标是否是生物实体且存活
+            if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+                return;
+            }
+
+            // 排除递归攻击
+            if (event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get())) {
+                return;
+            }
+
+            if (event.getAttackTypeList().contains(RecastingAttackTypes.MATRIX.get())) {
+                return;
+            }
+
+            // 检查目标是否有演算buff
+            Level world = target.level();
+            BuffType calculusBuffType = RecastingBuffTypes.CALCULUS.get();
+
+            target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
+                    buffStackData -> {
+                        int currentLevel = buffStackData.getLevel(calculusBuffType, world);
+                        if (currentLevel <= 0) {
+                            return;
+                        }
+
+                        // 消耗一层演算
+                        int newLevel = Math.max(0, currentLevel - 1);
+                        buffStackData.setLevel(calculusBuffType, newLevel, world);
+
+                        AttackHelper.attack(
+                                event.getAttacker(),
+                                event.getTarget(),
+                                new DamageStructure(damageRatio, 0),
+                                List.of(RecastingAttackTypes.RESOLVE.get(), RecastingAttackTypes.NO_RECURSION_ATTACK.get())
+                        );
+
+
+                        // 播放小爆炸音效和粒子效果
+                        if (world instanceof ServerLevel serverLevel) {
+                            Vec3 pos = target.position().add(0, target.getEyeHeight() * 0.5, 0);
+                            serverLevel.playSound(
+                                    null,
+                                    pos.x, pos.y, pos.z,
+                                    SoundEvents.GENERIC_EXPLODE,
+                                    net.minecraft.sounds.SoundSource.PLAYERS,
+                                    0.3F,
+                                    1.2F + target.getRandom().nextFloat() * 0.3F
+                            );
+
+                            // 生成小爆炸粒子效果
+                            serverLevel.sendParticles(
+                                    ParticleTypes.EXPLOSION,
+                                    pos.x, pos.y, pos.z,
+                                    3,
+                                    0.2, 0.2, 0.2,
+                                    0.1
+                            );
+                        }
+                    }
+            );
+        }
+
+    }
+
+    /***
+     * 燃沫
+     * 攻击处于灵魂燃烧的目标时，使其额外受到当前生命1%的额外伤害，并有概率增加一层灵魂燃烧
+     */
+    public static class FlameFoamSpecialEffect extends ExtendedSpecialEffect {
+
+        float healthDamageRatio = 0.01f; // 额外伤害比例（当前生命值的1%）
+        float addSoulBurnProbability = 0.1f; // 增加灵魂燃烧的概率
+
+        @SubscribeEvent
+        public void onEvent(AttackAmplifierEvent event) {
+            // 检查攻击者是否拥有此特效
+            if (!hasSpecialEffect(event.getSlashBladeState())) {
+                return;
+            }
+
+            // 只在服务端执行
+            if (event.getAttacker().level().isClientSide()) {
+                return;
+            }
+
+            // 检查目标是否是生物实体且存活
+            if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+                return;
+            }
+
+            // 排除递归攻击
+            if (event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get())) {
+                return;
+            }
+
+            // 检查目标是否有灵魂燃烧buff
+            Level world = target.level();
+            BuffType soulBurnBuffType = RecastingBuffTypes.SOUL_BURN.get();
+
+            target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
+                    buffStackData -> {
+                        int currentSoulBurnLevel = buffStackData.getLevel(soulBurnBuffType, world);
+                        if (currentSoulBurnLevel <= 0) {
+                            return;
+                        }
+
+                        // 计算目标当前生命值的1%作为额外伤害
+                        float currentHealth = target.getHealth();
+                        float extraDamage = currentHealth * healthDamageRatio;
+
+                        // 创建魔法伤害源，使用 extraDamage 添加固定数值的额外伤害
+                        AttackType magicAttackType = RecastingAttackTypes.SUMMOND_SWORD_ATTACK.get();
+                        AttackAmplifierEvent.DamageSourceInfo damageSourceInfo = magicAttackType.createDamageSource(event.getAttacker(), target);
+
+                        if (damageSourceInfo != null) {
+                            // 使用 addDamageSourceInfo 添加额外的魔法伤害（固定数值）
+                            event.addDamageSourceInfo(
+                                    damageSourceInfo.damageSource(),
+                                    new DamageStructure(0f, extraDamage)
+                            );
+                        }
+
+                        if (event.getAttacker().getRandom().nextFloat() < addSoulBurnProbability) {
+                            int maxLevel = soulBurnBuffType.getMaxLevel();
+                            int newLevel = Math.min(currentSoulBurnLevel + 1, maxLevel);
+                            buffStackData.setLevel(soulBurnBuffType, newLevel, world);
                         }
                     }
             );

@@ -357,8 +357,8 @@ public class SlashBladeRecipes {
                                             ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SWEEPING_EDGE), 2))
                                     .build()))
                     .define('D', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
-                    .define('G', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.GROWTH.getId(), 2))
-                    .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 2))
+                    .define('G', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.GROWTH.getId(), 1))
+                    .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 1))
                     .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
                     .save(consumer, recipeId);
 
@@ -381,7 +381,7 @@ public class SlashBladeRecipes {
                                     .refineCount(500)
                                     .build()))
                     .define('D', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
-                    .define('C', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.DRIVE_RELEASE.getId(), 2))
+                    .define('C', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.DRIVE_RELEASE.getId(), 1))
                     .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
                     .save(consumer, recipeId);
 
@@ -454,7 +454,7 @@ public class SlashBladeRecipes {
                                     .refineCount(300)
                                     .build()))
                     .define('C', RecastingItems.IRON_MEDIUM_SOUL_CUBE.get())
-                    .define('F', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.FRAGMENT.getId(), 2))
+                    .define('F', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.FRAGMENT.getId(), 1))
                     .unlockedBy("has_iron_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.IRON_MEDIUM_SOUL_CUBE.get()))
                     .save(consumer, recipeId);
 
@@ -477,7 +477,7 @@ public class SlashBladeRecipes {
                                     .refineCount(500)
                                     .build()))
                     .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
-                    .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SPIRAL.getId(), 2))
+                    .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SPIRAL.getId(), 1))
                     .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
                     .save(consumer, recipeId);
 
@@ -538,7 +538,7 @@ public class SlashBladeRecipes {
                                             ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BANE_OF_ARTHROPODS), 2))
                                     .build()))
                     .define('C', RecastingItems.IRON_MEDIUM_SOUL_CUBE.get())
-                    .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SHOCK.getId(), 3))
+                    .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SHOCK.getId(), 1))
                     .unlockedBy("has_iron_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.IRON_MEDIUM_SOUL_CUBE.get()))
                     .save(consumer, recipeId);
 
@@ -561,7 +561,7 @@ public class SlashBladeRecipes {
                                     .refineCount(250)
                                     .build()))
                     .define('C', RecastingItems.NETHERITE_MEDIUM_SOUL_CUBE.get())
-                    .define('G', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.GROWTH.getId(), 3))
+                    .define('G', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.GROWTH.getId(), 1))
                     .unlockedBy("has_netherite_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.NETHERITE_MEDIUM_SOUL_CUBE.get()))
                     .save(consumer, recipeId);
 
@@ -584,7 +584,7 @@ public class SlashBladeRecipes {
                                     .refineCount(500)
                                     .build()))
                     .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
-                    .define('L', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.LIFE_STEAL.getId(), 3))
+                    .define('L', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.LIFE_STEAL.getId(), 1))
                     .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
                     .save(consumer, recipeId);
 
@@ -632,7 +632,7 @@ public class SlashBladeRecipes {
                                     .proudSoul(100000)
                                     .build()))
                     .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
-                    .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 2))
+                    .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 1))
                     .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
                     .save(consumer, recipeId);
 
@@ -655,7 +655,7 @@ public class SlashBladeRecipes {
                                     .proudSoul(200000)
                                     .build()))
                     .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
-                    .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 3))
+                    .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 1))
                     .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
                     .save(consumer, recipeId);
 
@@ -678,7 +678,7 @@ public class SlashBladeRecipes {
                                     .refineCount(200)
                                     .build()))
                     .define('C', RecastingItems.IRON_MEDIUM_SOUL_CUBE.get())
-                    .define('T', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.TEAR.getId(), 2))
+                    .define('T', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.TEAR.getId(), 1))
                     .unlockedBy("has_iron_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.IRON_MEDIUM_SOUL_CUBE.get()))
                     .save(consumer, recipeId);
 
@@ -699,15 +699,15 @@ public class SlashBladeRecipes {
                                     .killCount(2000)
                                     .refineCount(400)
                                     .build()))
-                    .define('W', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.WHIRLWIND.getId(), 2))
+                    .define('W', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.WHIRLWIND.getId(), 1))
                     .unlockedBy("has_whirlwind_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
                     .save(consumer, recipeId);
 
     /**
      * STAR_3 配方：从 STAR_2 升级
      * 要求：杀敌4000、锻造600
-     * SE结晶：断灭l2 4个
-     * A=断灭l2 SE结晶, B=基础刀（STAR_2，满足要求）
+     * SE结晶：断却l1 4个
+     * A=断却l1 SE结晶, B=基础刀（STAR_2，满足要求）
      */
     public static final RecipeBuilderWrapper STAR_3_RECIPE = (consumer, recipeId) ->
             SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.STAR_3.getName())
@@ -720,15 +720,15 @@ public class SlashBladeRecipes {
                                     .killCount(4000)
                                     .refineCount(600)
                                     .build()))
-                    .define('A', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.ANNIHILATION.getId(), 2))
-                    .unlockedBy("has_annihilation_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
+                    .define('A', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SEVER_BREAK.getId(), 1))
+                    .unlockedBy("has_sever_break_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
                     .save(consumer, recipeId);
 
     /**
      * STAR_4 配方：从 STAR_3 升级
      * 要求：杀敌6000、锻造800
-     * SE结晶：断却l3 2个
-     * S=断却l3 SE结晶, B=基础刀（STAR_3，满足要求）
+     * SE结晶：断灭l1 2个
+     * S=断灭l1 SE结晶, B=基础刀（STAR_3，满足要求）
      */
     public static final RecipeBuilderWrapper STAR_4_RECIPE = (consumer, recipeId) ->
             SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.STAR_4.getName())
@@ -741,8 +741,8 @@ public class SlashBladeRecipes {
                                     .killCount(6000)
                                     .refineCount(800)
                                     .build()))
-                    .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SEVER_BREAK.getId(), 3))
-                    .unlockedBy("has_sever_break_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
+                    .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.ANNIHILATION.getId(), 1))
+                    .unlockedBy("has_annihilation_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
                     .save(consumer, recipeId);
 
     /**
@@ -762,9 +762,153 @@ public class SlashBladeRecipes {
                                     .killCount(12000)
                                     .refineCount(1600)
                                     .build()))
-                    .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM.getId(), 3))
-                    .define('V', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM_VARIANT.getId(), 3))
+                    .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM.getId(), 1))
+                    .define('V', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM_VARIANT.getId(), 1))
                     .unlockedBy("has_storm_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * FLUORESCENCE_1 配方：从青锋（木）升级
+     * 材料：青锋（木）1个（中间）+ 荧光墨囊1个（左上）
+     * G=荧光墨囊, B=青锋（木）
+     */
+    public static final RecipeBuilderWrapper FLUORESCENCE_1_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.FLUORESCENCE_1.getName())
+                    .pattern("G  ")
+                    .pattern(" B ")
+                    .pattern("   ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                    .build()))
+                    .define('G', Items.GLOW_INK_SAC)
+                    .unlockedBy("has_green_blade_wood", RecipeProviderMixin.invokeHas(Items.GLOW_INK_SAC))
+                    .save(consumer, recipeId);
+
+    /**
+     * FLUORESCENCE_2 配方：从青锋（木）升级
+     * 材料：青锋（木）1个（中间）+ 荧光墨囊1个（上中）
+     * G=荧光墨囊, B=青锋（木）
+     */
+    public static final RecipeBuilderWrapper FLUORESCENCE_2_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.FLUORESCENCE_2.getName())
+                    .pattern(" G ")
+                    .pattern(" B ")
+                    .pattern("   ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                    .build()))
+                    .define('G', Items.GLOW_INK_SAC)
+                    .unlockedBy("has_green_blade_wood", RecipeProviderMixin.invokeHas(Items.GLOW_INK_SAC))
+                    .save(consumer, recipeId);
+
+    /**
+     * FLUORESCENCE_3 配方：从青锋（木）升级
+     * 材料：青锋（木）1个（中间）+ 荧光墨囊1个（右上）
+     * G=荧光墨囊, B=青锋（木）
+     */
+    public static final RecipeBuilderWrapper FLUORESCENCE_3_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.FLUORESCENCE_3.getName())
+                    .pattern("  G")
+                    .pattern(" B ")
+                    .pattern("   ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                    .build()))
+                    .define('G', Items.GLOW_INK_SAC)
+                    .unlockedBy("has_green_blade_wood", RecipeProviderMixin.invokeHas(Items.GLOW_INK_SAC))
+                    .save(consumer, recipeId);
+
+    /**
+     * FLUORESCENCE_4 配方：从青锋（木）升级
+     * 材料：青锋（木）1个（中间）+ 荧光墨囊1个（左中）
+     * G=荧光墨囊, B=青锋（木）
+     */
+    public static final RecipeBuilderWrapper FLUORESCENCE_4_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.FLUORESCENCE_4.getName())
+                    .pattern("   ")
+                    .pattern("GB ")
+                    .pattern("   ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                    .build()))
+                    .define('G', Items.GLOW_INK_SAC)
+                    .unlockedBy("has_green_blade_wood", RecipeProviderMixin.invokeHas(Items.GLOW_INK_SAC))
+                    .save(consumer, recipeId);
+
+    /**
+     * FLUORESCENCE_5 配方：从青锋（木）升级
+     * 材料：青锋（木）1个（中间）+ 荧光墨囊1个（右中）
+     * G=荧光墨囊, B=青锋（木）
+     */
+    public static final RecipeBuilderWrapper FLUORESCENCE_5_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.FLUORESCENCE_5.getName())
+                    .pattern("   ")
+                    .pattern(" BG")
+                    .pattern("   ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                    .build()))
+                    .define('G', Items.GLOW_INK_SAC)
+                    .unlockedBy("has_green_blade_wood", RecipeProviderMixin.invokeHas(Items.GLOW_INK_SAC))
+                    .save(consumer, recipeId);
+
+    /**
+     * FLUORESCENCE_6 配方：从青锋（木）升级
+     * 材料：青锋（木）1个（中间）+ 荧光墨囊1个（左下）
+     * G=荧光墨囊, B=青锋（木）
+     */
+    public static final RecipeBuilderWrapper FLUORESCENCE_6_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.FLUORESCENCE_6.getName())
+                    .pattern("   ")
+                    .pattern(" B ")
+                    .pattern("G  ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                    .build()))
+                    .define('G', Items.GLOW_INK_SAC)
+                    .unlockedBy("has_green_blade_wood", RecipeProviderMixin.invokeHas(Items.GLOW_INK_SAC))
+                    .save(consumer, recipeId);
+
+    /**
+     * FLUORESCENCE_7 配方：从青锋（木）升级
+     * 材料：青锋（木）1个（中间）+ 荧光墨囊1个（下中）
+     * G=荧光墨囊, B=青锋（木）
+     */
+    public static final RecipeBuilderWrapper FLUORESCENCE_7_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.FLUORESCENCE_7.getName())
+                    .pattern("   ")
+                    .pattern(" B ")
+                    .pattern(" G ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                    .build()))
+                    .define('G', Items.GLOW_INK_SAC)
+                    .unlockedBy("has_green_blade_wood", RecipeProviderMixin.invokeHas(Items.GLOW_INK_SAC))
+                    .save(consumer, recipeId);
+
+    /**
+     * FLUORESCENCE_8 配方：从青锋（木）升级
+     * 材料：青锋（木）1个（中间）+ 荧光墨囊1个（右下）
+     * G=荧光墨囊, B=青锋（木）
+     */
+    public static final RecipeBuilderWrapper FLUORESCENCE_8_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.FLUORESCENCE_8.getName())
+                    .pattern("   ")
+                    .pattern(" B ")
+                    .pattern("  G")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                    .build()))
+                    .define('G', Items.GLOW_INK_SAC)
+                    .unlockedBy("has_green_blade_wood", RecipeProviderMixin.invokeHas(Items.GLOW_INK_SAC))
                     .save(consumer, recipeId);
 
 }

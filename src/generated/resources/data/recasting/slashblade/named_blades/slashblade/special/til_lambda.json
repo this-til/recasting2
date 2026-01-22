@@ -1,4 +1,9 @@
 {
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
   "name": "recasting:slashblade/special/til_lambda",
   "properties": {
     "attack_base": 12.0,
@@ -6,6 +11,9 @@
     "slash_art": "recasting:stellar_rotation",
     "special_effects": [
       "recasting:star_blink_lambda"
+    ],
+    "sword_type": [
+      "bewitched"
     ]
   },
   "properties_extension": {

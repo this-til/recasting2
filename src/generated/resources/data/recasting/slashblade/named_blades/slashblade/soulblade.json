@@ -1,8 +1,25 @@
 {
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
   "name": "recasting:slashblade/soulblade",
   "properties": {
     "attack_base": 6.0,
-    "max_damage": 720
+    "max_damage": 720,
+    "slash_art": "recasting:inferno_lambda",
+    "special_effects": [
+      "recasting:flame_foam"
+    ],
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:flame_foam": 1
+    }
   },
   "render": {
     "carry_type": "default",

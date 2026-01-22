@@ -83,6 +83,11 @@ public class SummondSpiralSwordEntity extends SummondSwordEntity {
      */
     protected static final EntityDataAccessor<Boolean> CAN_ATTACK_DURING_ROTATION = SynchedEntityData.defineId(SummondSpiralSwordEntity.class, EntityDataSerializers.BOOLEAN);
 
+    /**
+     * 旋转中心的高度偏移（相对于中心实体的 eyeHeight / 2.0）
+     */
+    protected static final EntityDataAccessor<Float> CENTER_HEIGHT_OFFSET = SynchedEntityData.defineId(SummondSpiralSwordEntity.class, EntityDataSerializers.FLOAT);
+
     @Nullable
     protected Entity centerEntity;
 
@@ -104,6 +109,7 @@ public class SummondSpiralSwordEntity extends SummondSwordEntity {
         getEntityData().define(ROTATION_AXIS_Z, 0.0f);
         getEntityData().define(ROTATION_DIRECTION_OUTWARD, true); // 默认朝外
         getEntityData().define(CAN_ATTACK_DURING_ROTATION, false); // 默认旋转时不攻击
+        getEntityData().define(CENTER_HEIGHT_OFFSET, 0.0f); // 默认无偏移
     }
 
     @Override
@@ -167,7 +173,9 @@ public class SummondSpiralSwordEntity extends SummondSwordEntity {
 
 
         // 计算新位置 - 使用旋转轴进行旋转
-        Vec3 centerPos = center.position().add(0, center.getEyeHeight() / 2.0, 0);
+        // 应用高度偏移
+        float heightOffset = getCenterHeightOffset();
+        Vec3 centerPos = center.position().add(0, center.getEyeHeight() / 2.0 + heightOffset, 0);
         double angleRad = Math.toRadians(newAngle);
 
         // 获取旋转轴并归一化
@@ -363,6 +371,14 @@ public class SummondSpiralSwordEntity extends SummondSwordEntity {
 
     public void setCanAttackDuringRotation(boolean canAttack) {
         entityData.set(CAN_ATTACK_DURING_ROTATION, canAttack);
+    }
+
+    public float getCenterHeightOffset() {
+        return entityData.get(CENTER_HEIGHT_OFFSET);
+    }
+
+    public void setCenterHeightOffset(float offset) {
+        entityData.set(CENTER_HEIGHT_OFFSET, offset);
     }
 
     // ==================== 辅助计算方法 ====================

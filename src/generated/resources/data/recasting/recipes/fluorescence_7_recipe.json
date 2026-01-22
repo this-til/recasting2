@@ -1,0 +1,26 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/fluorescence/fluorescence_7",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "name": "recasting:slashblade/green_blade_wood"
+      }
+    },
+    "G": {
+      "item": "minecraft:glow_ink_sac"
+    }
+  },
+  "pattern": [
+    "   ",
+    " B ",
+    " G "
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

@@ -6,6 +6,8 @@ import com.til.recasting.registry.RecastingEntityDataSerializers;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.CallbackPoint;
 import com.til.recasting.util.DamageStructure;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -93,6 +95,8 @@ public abstract class StandardizationAttackEntity extends Entity {
     /***
      * 附带的攻击类型
      */
+    @Getter
+    @Setter
     protected List<AttackType> attackTypeModelList = new ArrayList<>();
 
     public StandardizationAttackEntity(EntityType<?> entityTypeIn, Level worldIn, LivingEntity shooting) {
@@ -164,10 +168,6 @@ public abstract class StandardizationAttackEntity extends Entity {
 
     public void addAttackType(AttackType attackType) {
         attackTypeModelList.add(attackType);
-    }
-
-    public List<AttackType> getAttackTypeModelList() {
-        return attackTypeModelList;
     }
 
     @Nullable

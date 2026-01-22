@@ -1,0 +1,33 @@
+{
+  "type": "recasting:se_crystal_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:ender_pearl"
+    },
+    "F": {
+      "item": "recasting:abyss_flame"
+    },
+    "M": {
+      "type": "recasting:se_crystal",
+      "item": "recasting:se_crystal",
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:fragment"
+      }
+    }
+  },
+  "pattern": [
+    "FAF",
+    "AMA",
+    "FAF"
+  ],
+  "result": {
+    "item": "recasting:se_crystal"
+  },
+  "se_crystal": {
+    "level": 1,
+    "special_effect_type": "recasting:spiral"
+  },
+  "show_notification": true
+}

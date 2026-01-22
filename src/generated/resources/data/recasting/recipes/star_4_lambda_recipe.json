@@ -1,0 +1,41 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/star/star_4_lambda",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "kill": 12000,
+        "name": "recasting:slashblade/star/star_4",
+        "refine": 1600
+      }
+    },
+    "S": {
+      "type": "recasting:se_crystal",
+      "item": "recasting:se_crystal",
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:storm"
+      }
+    },
+    "V": {
+      "type": "recasting:se_crystal",
+      "item": "recasting:se_crystal",
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:storm_variant"
+      }
+    }
+  },
+  "pattern": [
+    " V ",
+    "SBS",
+    " V "
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

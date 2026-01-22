@@ -209,6 +209,11 @@ dependencies {
     //开发环境jei
     implementation fg.deobf("curse.maven:jei-238222:7391695")
 
+    //无锋道
+    //implementation fg.deobf("curse.maven:rough_blade-1218145:7411635")
+
+    //implementation fg.deobf("curse.maven:octo_lib-916747:6274623")
+
     //compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
     //compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
     // at runtime, use the full JEI jar for Forge

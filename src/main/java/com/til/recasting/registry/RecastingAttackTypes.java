@@ -122,6 +122,14 @@ public class RecastingAttackTypes {
             () -> new AttackType((attacker, target) -> null)
     );
 
+    public static final RegistryObject<AttackType> MATRIX = ATTACK_TYPES.register("matrix",
+            () -> new AttackType((attacker, target) -> {
+                DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
+                DamageSource damageSource = accessor.callSource(DamageTypes.DRAGON_BREATH, target, attacker);
+                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, new DamageStructure(1.0f, 0.0f));
+            })
+    );
+
     /**
      * 星闪攻击类型（魔法伤害）
      */
@@ -146,10 +154,22 @@ public class RecastingAttackTypes {
      * 撕裂攻击类型（魔法伤害）
      */
     public static final RegistryObject<AttackType> TEAR_ATTACK = ATTACK_TYPES.register("tear",
-            () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
-                    attacker.damageSources().indirectMagic(target, attacker),
-                    new DamageStructure(1.0f, 0.0f)
-            ))
+            () -> new AttackType((attacker, target) -> {
+                DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
+                DamageSource damageSource = accessor.callSource(DamageTypes.DRAGON_BREATH, target, attacker);
+                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, new DamageStructure(1.0f, 0.0f));
+            })
+    );
+
+    /**
+     * 解算攻击类型（爆炸伤害）
+     */
+    public static final RegistryObject<AttackType> RESOLVE = ATTACK_TYPES.register("resolve",
+            () -> new AttackType((attacker, target) -> {
+                DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
+                DamageSource damageSource = accessor.callSource(DamageTypes.EXPLOSION, target, attacker);
+                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, new DamageStructure(1.0f, 0.0f));
+            })
     );
 
 }

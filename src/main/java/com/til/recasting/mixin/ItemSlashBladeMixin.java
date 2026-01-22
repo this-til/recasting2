@@ -3,10 +3,13 @@ package com.til.recasting.mixin;
 import com.til.recasting.capability.ISpecialEffectCrystalData;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.registry.SlashArtsRegistry;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
+import mods.flammpfeil.slashblade.item.SwordType;
 import mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
+import mods.flammpfeil.slashblade.slasharts.SlashArts;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -79,6 +82,7 @@ public class ItemSlashBladeMixin {
 
                     Component valueComponent;
 
+                    Component nameComponent;
                     if (specialEffect instanceof com.til.recasting.registry.SpecialEffectsRegistry.ExtendedSpecialEffect extendedSpecialEffect) {
                         valueComponent = Component.literal(
                                 es.getExtendedSpecialLevels(specialEffectResourceLocation) + "/" + extendedSpecialEffect.getMaxLevel()
@@ -86,6 +90,9 @@ public class ItemSlashBladeMixin {
                                 ChatFormatting.LIGHT_PURPLE
                         )
                         ;
+                        // 特殊SE使用紫色标注名称
+                        nameComponent = SpecialEffect.getDescription(specialEffectResourceLocation)
+                                .withStyle(extendedSpecialEffect.isSpecial() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.GRAY);
                     } else {
                         valueComponent = Component.literal(
                                         showingLevel
@@ -100,16 +107,25 @@ public class ItemSlashBladeMixin {
                                                 ? ChatFormatting.RED
                                                 : ChatFormatting.DARK_GRAY
                                 );
+                        nameComponent = SpecialEffect.getDescription(specialEffectResourceLocation)
+                                .withStyle(ChatFormatting.GRAY);
                     }
 
                     tooltip.add(
                             Component.translatable(
                                             "slashblade.tooltip.special_effect",
-                                            SpecialEffect.getDescription(specialEffectResourceLocation),
+                                            nameComponent,
                                             valueComponent
                                     )
                                     .withStyle(ChatFormatting.GRAY));
 
+                    // 按住Shift时显示SE介绍文本
+                    if (flagIn.isAdvanced() && specialEffect instanceof com.til.recasting.registry.SpecialEffectsRegistry.ExtendedSpecialEffect extendedSE) {
+                        tooltip.add(
+                                Component.translatable(extendedSE.getDescId())
+                                        .withStyle(ChatFormatting.DARK_GRAY)
+                        );
+                    }
                 }
 
             });

@@ -125,6 +125,26 @@ public class SlashArtsRegistry {
     public static final RegistryObject<ExtendedSlashArts> PHANTOM_EXPLOSION = registerExtendedSA("phantom_explosion", new PhantomExplosionSlashArts());
     public static final RegistryObject<ExtendedSlashArts> PHANTOM_EXPLOSION_LAMBDA = registerExtendedSA("phantom_explosion_lambda", new PhantomExplosionSlashArts().setGroupCount(5));
 
+    // 无限剑制
+    public static final RegistryObject<ExtendedSlashArts> UNLIMITED_BLADE_WORKS = registerExtendedSA("unlimited_blade_works", new UnlimitedBladeWorksSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> UNLIMITED_BLADE_WORKS_LAMBDA = registerExtendedSA("unlimited_blade_works_lambda", new UnlimitedBladeWorksSlashArts().setAttack(0.06f));
+
+    // 剑刃风暴
+    public static final RegistryObject<ExtendedSlashArts> BLADE_STORM = registerExtendedSA("blade_storm", new BladeStormSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> BLADE_STORM_LAMBDA = registerExtendedSA("blade_storm_lambda", new BladeStormSlashArts().setTotalSwords(256));
+
+    // 斩铁式·极
+    public static final RegistryObject<ExtendedSlashArts> ZANTETSUDEN_MAX = registerExtendedSA("zantetsuden_max", new ZantetsudenMaxSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> ZANTETSUDEN_MAX_LAMBDA = registerExtendedSA("zantetsuden_max_lambda", new ZantetsudenMaxSlashArts().setAttackNumber(40));
+
+    // 斩铁式·行
+    public static final RegistryObject<ExtendedSlashArts> ZANTETSUDEN_ROW = registerExtendedSA("zantetsuden_row", new ZantetsudenRowSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> ZANTETSUDEN_ROW_LAMBDA = registerExtendedSA("zantetsuden_row_lambda", new ZantetsudenRowSlashArts().setDriveNumber(40));
+
+    // 业火
+    public static final RegistryObject<ExtendedSlashArts> INFERNO = registerExtendedSA("inferno", new InfernoSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> INFERNO_LAMBDA = registerExtendedSA("inferno_lambda", new InfernoSlashArts().setSoulBurnLevel(6));
+
     /**
      * 注册扩展的 SlashArts，自动关联 ComboState
      */
@@ -142,7 +162,6 @@ public class SlashArtsRegistry {
 
         return slashArtsRegistryObject;
     }
-
 
     /**
      * 扩展的 SlashArts 类
@@ -1377,7 +1396,7 @@ public class SlashArtsRegistry {
             matrix.setSize(size);
 
             // 添加攻击类型
-            matrix.addAttackType(RecastingAttackTypes.JUDGEMENT_CUT_ATTACK.get());
+            matrix.setAttackTypeModelList(List.of(RecastingAttackTypes.MATRIX.get()));
 
             // 添加攻击回调：命中时给目标添加混乱层buff
             matrix.attackActionCallbackPoint.register(hitEntity -> hitEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
@@ -1410,7 +1429,7 @@ public class SlashArtsRegistry {
     @Accessors(chain = true)
     public static class PhantomExplosionSlashArts extends ExtendedSlashArts {
 
-        float attack = 0.15f;
+        float attack = 0.02f;
         int minCount = 12;
         int maxCount = 24;
         float minTiltAngle = 0f;
@@ -1432,7 +1451,7 @@ public class SlashArtsRegistry {
             } else {
                 // 如果没有锁定目标，从看向位置附近选择最近的敌人
                 Vec3 attackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
-                
+
                 // 获取看向位置附近的可攻击敌人
                 List<LivingEntity> nearbyEntities = EntityHelper.getTargettableLivingEntityWithinAABB(
                         worldIn,
@@ -1474,7 +1493,7 @@ public class SlashArtsRegistry {
                                 if (!target.isAlive() || target.isRemoved()) {
                                     return;
                                 }
-                                
+
                                 // 生成一组幻影剑
                                 spawnPhantomSwordsGroup(livingEntity, target, slashBladeState, worldIn);
                             },
@@ -1506,8 +1525,8 @@ public class SlashArtsRegistry {
                 ss.setCenterEntity(target);
 
                 // 设置旋转参数（使用辅助方法自动计算修饰参数）
-                ss.setRadiusExpansion(2.5f, 8.0f, 30);
-                ss.setSpeedDecay(16.0f, 0.3f, 30);
+                ss.setRadiusExpansion(2.5f, 12.0f, 30);
+                ss.setSpeedDecay(32.0f, 0.3f, 30);
                 ss.setRotationAngle(off + (360.0f / count * i));
 
                 // 设置旋转轴：Y 轴，稍微倾斜 10~30°
@@ -1548,6 +1567,540 @@ public class SlashArtsRegistry {
                     0.2F,
                     1.45F
             );
+        }
+    }
+
+    /**
+     * 无限剑制 Slash Arts
+     * 在目标位置上方的半球面上生成大量幻影剑，均匀分布并延迟发射
+     */
+    @Setter
+    @Accessors(chain = true)
+    public static class UnlimitedBladeWorksSlashArts extends ExtendedSlashArts {
+
+        float attack = 0.04f;
+        int totalSwords = 1024;
+        int spawnDuration = 40;  // 生成持续时间（tick）
+        float sphereRadius = 64f;  // 半球半径
+        float targetOffsetRange = 8f;  // 命中点偏移范围
+        int maxLaunchDelay = 40;  // 最大发射延迟
+
+        @Override
+        public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
+            Level worldIn = livingEntity.level();
+
+            // 获取目标位置
+            Vec3 targetPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
+
+            // 获取实体的定时器
+            LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN);
+
+            timeRunOptional.ifPresent(timeRun -> {
+                // 计算每个tick需要生成多少把剑
+                int swordsPerTick = (int) Math.ceil((double) totalSwords / spawnDuration);
+
+                // 在40 tick内逐步生成剑
+                for(int tick = 0; tick < spawnDuration; tick++) {
+                    int finalTick = tick;
+
+                    timeRun.addTimerCell(
+                            () -> {
+                                // 计算这个tick要生成的剑的数量
+                                int startIndex = finalTick * swordsPerTick;
+                                int endIndex = Math.min(startIndex + swordsPerTick, totalSwords);
+
+                                // 生成这个tick的剑
+                                for(int i = startIndex; i < endIndex; i++) {
+                                    spawnSwordOnHemisphere(
+                                            livingEntity,
+                                            worldIn,
+                                            targetPos,
+                                            i,
+                                            totalSwords,
+                                            slashBladeState
+                                    );
+                                }
+                            },
+                            tick
+                    );
+                }
+            });
+
+            // 播放音效
+            livingEntity.playSound(
+                    SoundEvents.CHORUS_FRUIT_TELEPORT,
+                    0.5F,
+                    1.2F
+            );
+        }
+
+        /**
+         * 在半球面上生成一把剑
+         */
+        private void spawnSwordOnHemisphere(
+                LivingEntity livingEntity,
+                Level worldIn,
+                Vec3 targetPos,
+                int index,
+                int total,
+                ISlashBladeState slashBladeState
+        ) {
+            net.minecraft.util.RandomSource random = livingEntity.getRandom();
+
+            // 使用 Fibonacci 球面均匀分布算法（仅上半球）
+            // 这种方法比随机采样更均匀
+            double goldenRatio = (1.0 + Math.sqrt(5.0)) / 2.0;
+            double angleIncrement = 2.0 * Math.PI * goldenRatio;
+
+            // 计算极角 theta（0 到 π/2，上半球）
+            // 使用 cos(theta) 在 [0, 1] 均匀分布来保证球面均匀
+            double cosTheta = (double) index / (double) total;  // 0 到 1
+            double theta = Math.acos(cosTheta);  // 0 到 π/2
+
+            // 计算方位角 phi
+            double phi = angleIncrement * index;
+            phi = phi % (2.0 * Math.PI);  // 限制在 [0, 2π)
+
+            // 球坐标转笛卡尔坐标
+            double sinTheta = Math.sin(theta);
+            double x = sphereRadius * sinTheta * Math.cos(phi);
+            double y = sphereRadius * cosTheta;  // 使用 cosTheta（已知值）更精确
+            double z = sphereRadius * sinTheta * Math.sin(phi);
+
+            // 剑的生成位置：目标位置 + 球面偏移
+            Vec3 swordPos = targetPos.add(x, y, z);
+
+            // 创建幻影剑
+            SummondSwordEntity summonedSword = new SummondSwordEntity(
+                    RecastingEntities.SUMMOND_SWORD.get(),
+                    worldIn,
+                    livingEntity
+            );
+
+            // 设置位置
+            summonedSword.setPos(swordPos.x, swordPos.y, swordPos.z);
+
+            // 计算带有正态分布偏移的目标位置
+            Vec3 offsetTargetPos = calculateGaussianOffset(targetPos, random);
+
+            // 设置朝向偏移后的目标位置
+            summonedSword.lookAt(offsetTargetPos, false);
+
+            // 设置属性
+            summonedSword.setColor(slashBladeState.getColorCode());
+            summonedSword.setModifiedRatio(attack);
+
+            // 计算当前剑在第几个tick生成
+            int currentSpawnTick = index / ((int) Math.ceil((double) totalSwords / spawnDuration));
+
+            // 发射延迟 = 等待所有剑生成完毕的时间 + 随机延迟(0~maxLaunchDelay)
+            // 等待时间 = (spawnDuration - currentSpawnTick)，确保所有剑都在第40tick后才开始发射
+            int waitForAllSpawn = spawnDuration - currentSpawnTick;
+            int randomLaunchDelay = random.nextInt(maxLaunchDelay + 1);
+            int totalDelay = waitForAllSpawn + randomLaunchDelay;
+
+            summonedSword.setStartDelay(totalDelay);
+
+            // 设置随机旋转
+            summonedSword.setRoll(random.nextFloat() * 360.0f);
+
+            // 添加到世界
+            worldIn.addFreshEntity(summonedSword);
+        }
+
+        /**
+         * 计算带有正态分布偏移的目标位置
+         */
+        private Vec3 calculateGaussianOffset(Vec3 basePos, net.minecraft.util.RandomSource random) {
+            // 使用 Box-Muller 变换生成正态分布的偏移
+            // 标准差设为 offsetRange/3，使得约99.7%的点在偏移范围内
+            double sigma = targetOffsetRange / 3.0;
+
+            // 生成三个独立的正态分布随机数
+            double offsetX = random.nextGaussian() * sigma;
+            double offsetY = random.nextGaussian() * sigma;
+            double offsetZ = random.nextGaussian() * sigma;
+
+            return basePos.add(offsetX, offsetY, offsetZ);
+        }
+    }
+
+    /**
+     * 剑刃风暴 Slash Arts
+     * 在玩家周围随机位置生成大量高速旋转的幻影剑，持续攻击周围敌人
+     * 类似魔兽世界剑圣的剑刃风暴
+     */
+    @Setter
+    @Accessors(chain = true)
+    public static class BladeStormSlashArts extends ExtendedSlashArts {
+
+        float attack = 0.01f;
+        int totalSwords = 128;         // 总共生成的剑数量
+        float rotationSpeed = 32.0f;  // 旋转速度（度/tick）
+        float minRadius = 1.50f;       // 最小半径
+        float maxRadius = 4.50f;       // 最大半径
+        float minHeightOffset = -2.0f; // 最小高度偏移（相对于玩家中心）
+        float maxHeightOffset = 2.0f;  // 最大高度偏移（相对于玩家中心）
+        int duration = 60;           // 持续时间（tick）
+        float speedVariation = 0.3f;  // 速度随机变化幅度（0.3 = ±30%）
+        boolean randomDirection = true; // 是否随机旋转方向（false=统一顺时针，true=随机顺/逆时针）
+
+        @Override
+        public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
+
+            Level worldIn = livingEntity.level();
+            net.minecraft.util.RandomSource random = livingEntity.getRandom();
+
+            // 生成大量随机位置的旋转剑
+            for(int i = 0; i < totalSwords; i++) {
+                SummondSpiralSwordEntity ss = new SummondSpiralSwordEntity(
+                        RecastingEntities.SUMMOND_SPIRAL_SWORD.get(),
+                        worldIn,
+                        livingEntity
+                );
+
+                // 设置旋转中心为玩家
+                ss.setCenterEntity(livingEntity);
+
+                // 随机半径（在 minRadius 和 maxRadius 之间）
+                float randomRadius = minRadius + random.nextFloat() * (maxRadius - minRadius);
+
+                // 随机初始角度（0-360度）
+                float randomAngle = random.nextFloat() * 360.0f;
+
+                // 随机高度偏移（在 minHeightOffset 和 maxHeightOffset 之间）
+                float randomHeightOffset = minHeightOffset + random.nextFloat() * (maxHeightOffset - minHeightOffset);
+
+                // 随机旋转速度（基础速度 ± speedVariation）
+                float speedModifier = 1.0f + (random.nextFloat() * 2.0f - 1.0f) * speedVariation;
+                float currentSpeed = rotationSpeed * speedModifier;
+
+                // 控制旋转方向
+                if (randomDirection) {
+                    // 随机方向：50%概率顺时针，50%逆时针
+                    if (random.nextBoolean()) {
+                        currentSpeed = -currentSpeed;
+                    }
+                }
+
+                // 统一朝向：所有剑都朝外
+                boolean isOutward = true;
+
+                // 设置旋转参数
+                ss.setRotationRadius(randomRadius);
+                ss.setRotationSpeed(currentSpeed);
+                ss.setRotationRadiusModifier(1.05f);
+                ss.setRotationAngle(randomAngle);   // 随机初始角度
+                ss.setRotationAxis(new Vec3(0, 1, 0)); // 绕 Y 轴旋转
+                ss.setRotationDirectionOutward(isOutward);
+
+                // 设置随机高度偏移，创造立体风暴效果
+                ss.setCenterHeightOffset(randomHeightOffset);
+
+                // 关键：启用旋转时攻击，这样剑就会持续造成伤害而不是飞出去
+                ss.setCanAttackDuringRotation(true);
+
+                // 设置基本属性
+                ss.setModifiedRatio(attack);
+                ss.setColor(slashBladeState.getColorCode());
+                ss.setRoll(0);
+
+                ss.setStartDelay(duration);
+                ss.setMaxLifeTime(duration);
+
+                worldIn.addFreshEntity(ss);
+            }
+
+            // 播放音效
+            livingEntity.playSound(
+                    SoundEvents.CHORUS_FRUIT_TELEPORT,
+                    0.4F,
+                    1.2F
+            );
+        }
+    }
+
+    /**
+     * 斩铁式·极 Slash Arts
+     * 在目标位置超高频率连续发动大量斩击（乱舞的远程版本）
+     * 类似瞬狱杀的效果
+     */
+    @Setter
+    @Accessors(chain = true)
+    public static class ZantetsudenMaxSlashArts extends ExtendedSlashArts {
+
+        int attackNumber = 25;        // 攻击次数
+        int delay = 1;                // 每次攻击间隔（tick）
+        float hit = 0.03f;             // 每次伤害倍率
+        float range = 3.0f;           // 攻击范围（随机偏移）
+        int life = 8;                 // 每次斩击的持续时间
+        float size = 2.0f;            // 斩击大小
+
+        @Override
+        public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
+
+            Level worldIn = livingEntity.level();
+
+            // 获取攻击目标位置（远程锁定点）
+            Vec3 targetPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
+
+            // 在目标位置创建大小为8的次元斩（只生成一次）
+            JudgementCutEntity jc = new JudgementCutEntity(
+                    RecastingEntities.JUDGEMENT_CUT.get(),
+                    worldIn,
+                    livingEntity
+            );
+            jc.setPos(targetPos.x, targetPos.y, targetPos.z);
+            jc.setColor(slashBladeState.getColorCode());
+            jc.setSize(8.0f);
+            jc.setMaxLifeTime(attackNumber * delay);
+            worldIn.addFreshEntity(jc);
+
+            // 获取实体的定时器
+            LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN);
+
+            timeRunOptional.ifPresent(timeRun -> {
+                // 超高频率连续攻击
+                for(int i = 0; i < attackNumber; i++) {
+                    int _delay = delay * i;
+
+                    timeRun.addTimerCell(
+                            () -> {
+                                // 在目标位置附近随机偏移
+                                Vec3 randomOffset = new Vec3(
+                                        (livingEntity.getRandom().nextFloat() - 0.5f) * range,
+                                        (livingEntity.getRandom().nextFloat() - 0.5f) * range,
+                                        (livingEntity.getRandom().nextFloat() - 0.5f) * range
+                                );
+                                Vec3 attackPos = targetPos.add(randomOffset);
+
+                                // 创建斩击特效
+                                SlashEffectEntity slashEffect = new SlashEffectEntity(
+                                        RecastingEntities.SLASH_EFFECT.get(),
+                                        worldIn,
+                                        livingEntity
+                                );
+
+                                // 设置位置
+                                slashEffect.setPos(attackPos.x, attackPos.y, attackPos.z);
+
+                                // 随机朝向（完全随机的 Yaw 和 Pitch）
+                                float randomYaw = livingEntity.getRandom().nextFloat() * 360;
+                                float randomPitch = (livingEntity.getRandom().nextFloat() - 0.5f) * 180; // -90 到 +90 度
+                                slashEffect.setRot(randomYaw, randomPitch, true);
+
+                                // 随机旋转角度（Roll）
+                                float randomRoll = livingEntity.getRandom().nextFloat() * 360;
+                                slashEffect.setRoll(randomRoll);
+
+                                // 设置属性
+                                slashEffect.setColor(slashBladeState.getColorCode());
+                                slashEffect.setModifiedRatio(hit);
+                                slashEffect.setMaxLifeTime(life);
+                                slashEffect.setSize(size);
+                                slashEffect.setThump(true); // 暴击效果
+
+                                // 添加到世界
+                                worldIn.addFreshEntity(slashEffect);
+
+                                // 播放音效（音量较小，因为频率很高）
+                                worldIn.playSound(null, attackPos.x, attackPos.y, attackPos.z,
+                                        SoundEvents.PLAYER_ATTACK_SWEEP,
+                                        net.minecraft.sounds.SoundSource.PLAYERS, 0.15F,
+                                        1.2F + livingEntity.getRandom().nextFloat() * 0.4F);
+                            },
+                            _delay
+                    );
+                }
+            });
+
+            // 播放主音效
+            livingEntity.playSound(
+                    SoundEvents.PLAYER_ATTACK_SWEEP,
+                    1.0F,
+                    0.8F
+            );
+        }
+    }
+
+    /**
+     * 斩铁式·行 Slash Arts
+     * 在目标位置向各个方向发射大量驱动剑气（DriveEntity）
+     * 剑气会从目标位置向四面八方飞散
+     */
+    @Setter
+    @Accessors(chain = true)
+    public static class ZantetsudenRowSlashArts extends ExtendedSlashArts {
+
+        int driveNumber = 20;        // 剑气数量
+        int delay = 1;                // 每次生成间隔（tick）
+        float attack = 0.03f;         // 每次伤害倍率
+        float speed = 2.5f;           // 剑气速度
+        int life = 20;                 // 剑气持续时间
+        float size = 2.0f;             // 剑气大小
+        float range = 2.0f;            // 生成位置随机偏移范围
+        boolean ignoreBlock = true;   // 是否穿透墙体
+
+        @Override
+        public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
+
+            Level worldIn = livingEntity.level();
+
+            // 获取攻击目标位置（远程锁定点）
+            Vec3 targetPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
+
+            // 在目标位置创建大小为8的次元斩（只生成一次）
+            JudgementCutEntity jc = new JudgementCutEntity(
+                    RecastingEntities.JUDGEMENT_CUT.get(),
+                    worldIn,
+                    livingEntity
+            );
+            jc.setPos(targetPos.x, targetPos.y, targetPos.z);
+            jc.setColor(slashBladeState.getColorCode());
+            jc.setSize(8.0f);
+            jc.setMaxLifeTime(driveNumber * delay);
+            worldIn.addFreshEntity(jc);
+
+            // 获取实体的定时器
+            LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN);
+
+            timeRunOptional.ifPresent(timeRun -> {
+                // 延迟生成驱动剑气
+                for(int i = 0; i < driveNumber; i++) {
+                    int _delay = delay * i;
+
+                    timeRun.addTimerCell(
+                            () -> {
+                                net.minecraft.util.RandomSource random = livingEntity.getRandom();
+
+                                DriveEntity driveEntity = new DriveEntity(
+                                        RecastingEntities.DRIVE.get(),
+                                        worldIn,
+                                        livingEntity
+                                );
+
+                                // 在目标位置附近随机偏移
+                                Vec3 randomOffset = new Vec3(
+                                        (random.nextFloat() - 0.5f) * range,
+                                        (random.nextFloat() - 0.5f) * range,
+                                        (random.nextFloat() - 0.5f) * range
+                                );
+                                Vec3 spawnPos = targetPos.add(randomOffset);
+
+                                // 设置位置
+                                driveEntity.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+
+                                // 随机朝向（向各个方向发射）
+                                float randomYaw = random.nextFloat() * 360;
+                                float randomPitch = (random.nextFloat() - 0.5f) * 180; // -90 到 +90 度
+                                driveEntity.setRot(randomYaw, randomPitch, true);
+
+                                // 计算目标方向（从生成位置向随机方向）
+                                Vec3 direction = new Vec3(
+                                        Math.cos(Math.toRadians(randomYaw)) * Math.cos(Math.toRadians(randomPitch)),
+                                        Math.sin(Math.toRadians(randomPitch)),
+                                        Math.sin(Math.toRadians(randomYaw)) * Math.cos(Math.toRadians(randomPitch))
+                                );
+                                Vec3 targetDirection = spawnPos.add(direction.scale(10)); // 向前10格作为目标点
+
+                                // 设置属性
+                                driveEntity.setColor(slashBladeState.getColorCode());
+                                driveEntity.setModifiedRatio(attack);
+                                driveEntity.setMaxLifeTime(life);
+                                driveEntity.setSize(size);
+                                driveEntity.setSeep(speed);
+                                driveEntity.setParameter(ignoreBlock); // 是否穿透墙体
+                                driveEntity.setRoll(random.nextFloat() * 360); // 随机旋转角度
+
+                                // 设置朝向和速度
+                                driveEntity.lookAt(targetDirection, false);
+
+                                // 添加到世界
+                                worldIn.addFreshEntity(driveEntity);
+
+                                // 播放音效（音量较小，因为频率很高）
+                                worldIn.playSound(null, spawnPos.x, spawnPos.y, spawnPos.z,
+                                        SoundEvents.CHORUS_FRUIT_TELEPORT,
+                                        net.minecraft.sounds.SoundSource.PLAYERS, 0.15F,
+                                        1.2F + random.nextFloat() * 0.4F);
+                            },
+                            _delay
+                    );
+                }
+            });
+
+            // 播放主音效
+            livingEntity.playSound(
+                    SoundEvents.CHORUS_FRUIT_TELEPORT,
+                    0.4F,
+                    1.2F
+            );
+        }
+    }
+
+    /**
+     * 业火 Slash Arts
+     * 召唤 size 为 6 的红色次元斩，无重复攻击，为攻击目标附加灵魂燃烧
+     */
+    @Setter
+    @Accessors(chain = true)
+    public static class InfernoSlashArts extends ExtendedSlashArts {
+
+        int soulBurnLevel = 4;  // 默认附加4层灵魂燃烧
+
+        @Override
+        public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
+
+            Level worldIn = livingEntity.level();
+
+            // 获取攻击目标位置
+            Vec3 attackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
+
+            // 创建次元斩
+            JudgementCutEntity jc = new JudgementCutEntity(
+                    RecastingEntities.JUDGEMENT_CUT.get(),
+                    worldIn,
+                    livingEntity
+            );
+
+            // 设置位置
+            jc.setPos(attackPos.x, attackPos.y, attackPos.z);
+
+            // 设置颜色为红色
+            jc.setColor(0xFF0000);
+
+            // 设置大小为 6
+            jc.setSize(6.0f);
+
+            // 设置无重复攻击
+            jc.setRepeatedAttack(false);
+
+            // 添加攻击回调：为攻击目标附加灵魂燃烧
+            int finalSoulBurnLevel = soulBurnLevel;
+            jc.attackActionCallbackPoint.register(hitEntity -> {
+                hitEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
+                        buffStackData -> {
+                            Level world = hitEntity.level();
+                            BuffType soulBurnBuffType = RecastingBuffTypes.SOUL_BURN.get();
+
+                            // 获取当前层数
+                            int currentLevel = buffStackData.getLevel(soulBurnBuffType, world);
+
+                            // 附加指定层数灵魂燃烧
+                            int newLevel = currentLevel + finalSoulBurnLevel;
+                            buffStackData.setLevel(soulBurnBuffType, newLevel, world);
+                        }
+                );
+            });
+
+            // 添加到世界
+            worldIn.addFreshEntity(jc);
+
+            // 播放音效
+            worldIn.playSound(null, jc.getX(), jc.getY(), jc.getZ(),
+                    SoundEvents.ENDERMAN_TELEPORT,
+                    net.minecraft.sounds.SoundSource.PLAYERS, 0.5F,
+                    0.8F / (livingEntity.getRandom().nextFloat() * 0.4F + 0.8F));
         }
     }
 

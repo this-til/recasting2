@@ -1,8 +1,17 @@
 {
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
   "name": "recasting:slashblade/star/star_4_lambda",
   "properties": {
     "attack_base": 8.0,
-    "max_damage": 1280
+    "max_damage": 1280,
+    "slash_art": "recasting:star_4_lambda",
+    "sword_type": [
+      "bewitched"
+    ]
   },
   "properties_extension": {
     "attack_distance": 2.0

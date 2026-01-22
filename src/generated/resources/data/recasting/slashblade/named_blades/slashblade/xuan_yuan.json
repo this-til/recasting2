@@ -1,7 +1,15 @@
 {
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
   "name": "recasting:slashblade/xuan_yuan",
   "properties": {
-    "attack_base": 7.0
+    "attack_base": 7.0,
+    "sword_type": [
+      "bewitched"
+    ]
   },
   "render": {
     "carry_type": "default",

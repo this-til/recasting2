@@ -41,6 +41,14 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "雷光")
             .addTranslation(LanguageTypes.EN_US, "Thunder Light");
 
+    public static final LanguageItem BUFF_TEAR = new LanguageItem("buff.recasting.tear")
+            .addTranslation(LanguageTypes.ZH_CN, "撕裂")
+            .addTranslation(LanguageTypes.EN_US, "Tear");
+
+    public static final LanguageItem BUFF_ANNIHILATION = new LanguageItem("buff.recasting.annihilation")
+            .addTranslation(LanguageTypes.ZH_CN, "断灭")
+            .addTranslation(LanguageTypes.EN_US, "Annihilation");
+
     // ========== Void SlashBlades ==========
     public static final LanguageItem VOID_1 = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.VOID_1)
             .addTranslation(LanguageTypes.ZH_CN, "洞虚利刃")
@@ -373,6 +381,23 @@ public class LanguageItems {
     public static final LanguageItem SE_CRYSTAL = createItemLanguage(RecastingItems.SE_CRYSTAL)
             .addTranslation(LanguageTypes.ZH_CN, "SE结晶")
             .addTranslation(LanguageTypes.EN_US, "SE CRYSTAL");
+
+    // ========== SE 铭刻规则 ==========
+    public static final LanguageItem ENGRAVING_RULE_TITLE = new LanguageItem("recasting.tooltip.engraving_rule.title")
+            .addTranslation(LanguageTypes.ZH_CN, "铭刻规则：")
+            .addTranslation(LanguageTypes.EN_US, "Engraving Rules:");
+
+    public static final LanguageItem ENGRAVING_RULE_MAIN = new LanguageItem("recasting.tooltip.engraving_rule.main")
+            .addTranslation(LanguageTypes.ZH_CN, "• 在铁砧上铭刻：一把刀最多可铭刻 %d 个普通SE和 %d 个特殊SE（创造模式不受限制）")
+            .addTranslation(LanguageTypes.EN_US, "• Engrave on anvil: A blade can engrave up to %d normal SEs and %d special SE (Creative mode has no restrictions)");
+
+    public static final LanguageItem ENGRAVING_RULE_UPGRADE = new LanguageItem("recasting.tooltip.engraving_rule.upgrade")
+            .addTranslation(LanguageTypes.ZH_CN, "• 升级：使用相同类型并且更高级SE的结晶可提升等级")
+            .addTranslation(LanguageTypes.EN_US, "• Upgrade: Use crystals with the same type and higher-level SE to increase level.");
+
+    public static final LanguageItem ENGRAVING_RULE_ERASE = new LanguageItem("recasting.tooltip.engraving_rule.erase")
+            .addTranslation(LanguageTypes.ZH_CN, "• 抹除：使用等级为0的结晶可移除SE")
+            .addTranslation(LanguageTypes.EN_US, "• Erase: Use crystals with level 0 to remove SE");
 
     // 聚散变体名称
     public static final LanguageItem GATHERING_PARTING_VARIANT = createItemLanguage(RecastingItems.GATHERING_PARTING_VARIANT)
@@ -808,6 +833,83 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "发动一次斩击，设置重复攻击和取消击退。")
             .addTranslation(LanguageTypes.EN_US, "Perform a slash with repeated attacks and knockback cancellation.");
 
+    // 幻影爆破
+    public static final LanguageItem PHANTOM_EXPLOSION = createSlashArtsLanguage(SlashArtsRegistry.PHANTOM_EXPLOSION)
+            .addTranslation(LanguageTypes.ZH_CN, "幻影爆破")
+            .addTranslation(LanguageTypes.EN_US, "Phantom Explosion");
+
+    public static final LanguageItem PHANTOM_EXPLOSION_LAMBDA = createSlashArtsLanguage(SlashArtsRegistry.PHANTOM_EXPLOSION_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^幻影爆破")
+            .addTranslation(LanguageTypes.EN_US, "Phantom Explosion Lambda");
+
+    public static final LanguageItem PHANTOM_EXPLOSION_DESC = createSlashArtsDescription(SlashArtsRegistry.PHANTOM_EXPLOSION)
+            .addTranslation(LanguageTypes.ZH_CN, "在目标周围产生多组螺旋幻影剑，围绕目标旋转。")
+            .addTranslation(LanguageTypes.EN_US, "Generate multiple groups of spiral phantom swords around the target that rotate around it.");
+
+    public static final LanguageItem PHANTOM_EXPLOSION_LAMBDA_DESC = createSlashArtsDescription(SlashArtsRegistry.PHANTOM_EXPLOSION_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "在目标周围产生多组螺旋幻影剑，围绕目标旋转。")
+            .addTranslation(LanguageTypes.EN_US, "Generate multiple groups of spiral phantom swords around the target that rotate around it.");
+
+    // 无限剑制
+    public static final LanguageItem UNLIMITED_BLADE_WORKS = createSlashArtsLanguage(SlashArtsRegistry.UNLIMITED_BLADE_WORKS)
+            .addTranslation(LanguageTypes.ZH_CN, "无限剑制")
+            .addTranslation(LanguageTypes.EN_US, "Unlimited Blade Works");
+
+    public static final LanguageItem UNLIMITED_BLADE_WORKS_DESC = createSlashArtsDescription(SlashArtsRegistry.UNLIMITED_BLADE_WORKS)
+            .addTranslation(LanguageTypes.ZH_CN, "在目标位置上方的半球面上生成大量幻影剑，均匀分布并延迟发射。")
+            .addTranslation(LanguageTypes.EN_US, "Generate numerous phantom swords evenly distributed on a hemisphere above the target position, launching them with delays.");
+
+    // 剑刃风暴
+    public static final LanguageItem BLADE_STORM = createSlashArtsLanguage(SlashArtsRegistry.BLADE_STORM)
+            .addTranslation(LanguageTypes.ZH_CN, "剑刃风暴")
+            .addTranslation(LanguageTypes.EN_US, "Blade Storm");
+
+    public static final LanguageItem BLADE_STORM_LAMBDA = createSlashArtsLanguage(SlashArtsRegistry.BLADE_STORM_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^剑刃风暴")
+            .addTranslation(LanguageTypes.EN_US, "Blade Storm Lambda");
+
+    public static final LanguageItem BLADE_STORM_DESC = createSlashArtsDescription(SlashArtsRegistry.BLADE_STORM)
+            .addTranslation(LanguageTypes.ZH_CN, "在玩家周围随机位置生成大量高速旋转的幻影剑，持续攻击周围敌人。")
+            .addTranslation(LanguageTypes.EN_US, "Generate numerous high-speed rotating phantom swords at random positions around the player, continuously attacking nearby enemies.");
+
+    public static final LanguageItem BLADE_STORM_LAMBDA_DESC = createSlashArtsDescription(SlashArtsRegistry.BLADE_STORM_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "在玩家周围随机位置生成大量高速旋转的幻影剑，持续攻击周围敌人。")
+            .addTranslation(LanguageTypes.EN_US, "Generate numerous high-speed rotating phantom swords at random positions around the player, continuously attacking nearby enemies.");
+
+    // 斩铁式·极
+    public static final LanguageItem ZANTETSUDEN_MAX = createSlashArtsLanguage(SlashArtsRegistry.ZANTETSUDEN_MAX)
+            .addTranslation(LanguageTypes.ZH_CN, "斩铁式·极")
+            .addTranslation(LanguageTypes.EN_US, "Zantetsuden Max");
+
+    public static final LanguageItem ZANTETSUDEN_MAX_LAMBDA = createSlashArtsLanguage(SlashArtsRegistry.ZANTETSUDEN_MAX_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^斩铁式·极")
+            .addTranslation(LanguageTypes.EN_US, "Zantetsuden Max Lambda");
+
+    public static final LanguageItem ZANTETSUDEN_MAX_DESC = createSlashArtsDescription(SlashArtsRegistry.ZANTETSUDEN_MAX)
+            .addTranslation(LanguageTypes.ZH_CN, "在目标位置超高频率连续发动大量斩击。")
+            .addTranslation(LanguageTypes.EN_US, "Launch numerous slashes at extremely high frequency at the target position.");
+
+    public static final LanguageItem ZANTETSUDEN_MAX_LAMBDA_DESC = createSlashArtsDescription(SlashArtsRegistry.ZANTETSUDEN_MAX_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "在目标位置超高频率连续发动大量斩击。")
+            .addTranslation(LanguageTypes.EN_US, "Launch numerous slashes at extremely high frequency at the target position.");
+
+    // 斩铁式·行
+    public static final LanguageItem ZANTETSUDEN_ROW = createSlashArtsLanguage(SlashArtsRegistry.ZANTETSUDEN_ROW)
+            .addTranslation(LanguageTypes.ZH_CN, "斩铁式·行")
+            .addTranslation(LanguageTypes.EN_US, "Zantetsuden Row");
+
+    public static final LanguageItem ZANTETSUDEN_ROW_LAMBDA = createSlashArtsLanguage(SlashArtsRegistry.ZANTETSUDEN_ROW_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^斩铁式·行")
+            .addTranslation(LanguageTypes.EN_US, "Zantetsuden Row Lambda");
+
+    public static final LanguageItem ZANTETSUDEN_ROW_DESC = createSlashArtsDescription(SlashArtsRegistry.ZANTETSUDEN_ROW)
+            .addTranslation(LanguageTypes.ZH_CN, "向各个方向发射大量驱动剑气，剑气会从目标位置向四面八方飞散。")
+            .addTranslation(LanguageTypes.EN_US, "Launch numerous drive sword qi in all directions from the target position, scattering in every direction.");
+
+    public static final LanguageItem ZANTETSUDEN_ROW_LAMBDA_DESC = createSlashArtsDescription(SlashArtsRegistry.ZANTETSUDEN_ROW_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "在目标位置向各个方向发射大量驱动剑气，剑气会从目标位置向四面八方飞散。")
+            .addTranslation(LanguageTypes.EN_US, "Launch numerous drive sword qi in all directions from the target position, scattering in every direction.");
+
     // ========== Special Effects ==========
     // 协同攻击
     public static final LanguageItem COOPERATE_WITH = createSpecialEffectLanguage(SpecialEffectsRegistry.COOPERATE_WITH)
@@ -1013,8 +1115,8 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Energy Storage");
 
     public static final LanguageItem ENERGY_STORAGE_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.ENERGY_STORAGE)
-            .addTranslation(LanguageTypes.ZH_CN, "造成伤害后叠加层数，到24层时造成一道闪电攻击目标。")
-            .addTranslation(LanguageTypes.EN_US, "Stacks layers when dealing damage. At 24 stacks, triggers a lightning bolt to attack the target.");
+            .addTranslation(LanguageTypes.ZH_CN, "造成伤害后叠加层数，一定层数后造成一道闪电攻击目标。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks layers when dealing damage. Triggers a lightning bolt to attack the target at certain stacks.");
 
     // 雷云
     public static final LanguageItem THUNDER_CLOUD = createSpecialEffectLanguage(SpecialEffectsRegistry.THUNDER_CLOUD)
@@ -1077,6 +1179,24 @@ public class LanguageItems {
     public static final LanguageItem ANNIHILATION_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.ANNIHILATION)
             .addTranslation(LanguageTypes.ZH_CN, "召唤一定数量的次元斩之后额外召唤一个巨型次元斩。")
             .addTranslation(LanguageTypes.EN_US, "After summoning a certain number of judgement cuts, additionally summons a giant judgement cut.");
+
+    // 撕裂
+    public static final LanguageItem TEAR = createSpecialEffectLanguage(SpecialEffectsRegistry.TEAR)
+            .addTranslation(LanguageTypes.ZH_CN, "撕裂")
+            .addTranslation(LanguageTypes.EN_US, "Tear");
+
+    public static final LanguageItem TEAR_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.TEAR)
+            .addTranslation(LanguageTypes.ZH_CN, "次元斩造成伤害后叠加层数，满层级后造成额外的伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks layers when judgement cuts deal damage. Deals additional damage at max stacks.");
+
+    // 旋风
+    public static final LanguageItem WHIRLWIND = createSpecialEffectLanguage(SpecialEffectsRegistry.WHIRLWIND)
+            .addTranslation(LanguageTypes.ZH_CN, "旋风")
+            .addTranslation(LanguageTypes.EN_US, "Whirlwind");
+
+    public static final LanguageItem WHIRLWIND_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.WHIRLWIND)
+            .addTranslation(LanguageTypes.ZH_CN, "你的次元斩将允许造成重复的伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Your judgement cuts will be allowed to deal repeated damage.");
 
     // 染色
     public static final LanguageItem COLOR_DYE = createSpecialEffectLanguage(SpecialEffectsRegistry.COLOR_DYE)

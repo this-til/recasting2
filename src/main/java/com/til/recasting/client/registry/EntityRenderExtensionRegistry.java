@@ -8,12 +8,14 @@ import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.client.renderer.BuffLevelTextRenderer;
 import com.til.recasting.client.renderer.EntityRenderExtension;
 import com.til.recasting.client.renderer.RenderStateManage;
+import mods.flammpfeil.slashblade.client.renderer.util.MSAutoCloser;
 import com.til.recasting.constant.R;
 import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingBuffTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.ModelManager;
@@ -111,7 +113,7 @@ public class EntityRenderExtensionRegistry {
             "annihilation",
             () -> new EntityRenderExtension.BuffLevelRender(
                     R.Models.Mark.annihilation$obj,
-                    new Color(150, 0, 200).getRGB(),
+                    new Color(28, 50, 112).getRGB(),
                     RecastingBuffTypes.ANNIHILATION
             )
     );
@@ -196,95 +198,98 @@ public class EntityRenderExtensionRegistry {
             int i = 0;
             // 渲染3层火焰
             for(int re = 0; re < 3; re++) {
-                poseStack.pushPose();
-                poseStack.translate((float) x, (float) y, (float) z);
+                try (MSAutoCloser msac = MSAutoCloser.pushMatrix(poseStack)) {
+                    poseStack.translate((float) x, (float) y, (float) z);
 
-                float scale = entity.getBbWidth() * 1.4F;
-                poseStack.scale(scale, scale, scale);
+                    float scale = entity.getBbWidth() * 1.4F;
+                    poseStack.scale(scale, scale, scale);
 
-                float f1 = 0.5F;
-                float f2 = 0.0F;
-                float f3 = entity.getBbHeight() / scale;
-                // f4 是从实体底部到实体Y坐标的偏移（用于正确放置火焰）
-                // 这个偏移是相对于实体底部的，确保火焰从实体底部开始渲染
-                float f4 = (float) (entity.getY() - entity.getBoundingBox().minY);
+                    float f1 = 0.5F;
+                    float f2 = 0.0F;
+                    float f3 = entity.getBbHeight() / scale;
+                    // f4 是从实体底部到实体Y坐标的偏移（用于正确放置火焰）
+                    // 这个偏移是相对于实体底部的，确保火焰从实体底部开始渲染
+                    float f4 = (float) (entity.getY() - entity.getBoundingBox().minY);
 
-                // 旋转以面向玩家视角
-                float playerViewY = Minecraft.getInstance().gameRenderer.getMainCamera().getYRot();
-                poseStack.mulPose(Axis.YP.rotationDegrees(-playerViewY));
-                poseStack.translate(0.0F, 0.0f, -0.3F + (float) ((int) f3) * 0.02F - re * 0.2f);
+                    // 旋转以面向玩家视角
+                    float playerViewY = Minecraft.getInstance().gameRenderer.getMainCamera().getYRot();
+                    poseStack.mulPose(Axis.YP.rotationDegrees(-playerViewY));
+                    poseStack.translate(0.0F, 0.0f, -0.3F + (float) ((int) f3) * 0.02F - re * 0.2f);
 
-                // 缩放后续层
-                if (re > 0) {
-                    float reScale = 1.0f / (re + 0.25f);
-                    poseStack.scale(reScale, 0.75f, reScale);
-                }
-
-                Matrix4f matrix = poseStack.last().pose();
-
-                // 蓝色火焰颜色 (R: 0.1, G: 0.0, B: 1.0, A: 1.0)
-                int r = 25;  // 0.1 * 255
-                int g = 0;
-                int b = 255;
-                int a = 255;
-
-                float f5 = 0.0F;
-                float currentF3 = f3;
-
-                // 构建火焰层
-                while (currentF3 > 0.0F) {
-                    TextureAtlasSprite currentSprite = i % 2 == 0
-                            ? fireSprite0
-                            : fireSprite1;
-                    float f6 = currentSprite.getU0();
-                    float f7 = currentSprite.getV0();
-                    float f8 = currentSprite.getU1();
-                    float f9 = currentSprite.getV1();
-
-                    // 交替翻转纹理
-                    if (i / 2 % 2 == 0) {
-                        float f10 = f8;
-                        f8 = f6;
-                        f6 = f10;
+                    // 缩放后续层
+                    if (re > 0) {
+                        float reScale = 1.0f / (re + 0.25f);
+                        poseStack.scale(reScale, 0.75f, reScale);
                     }
 
-                    // 构建四边形
-                    buffer.vertex(matrix, f1 - f2, 0.0F - f4, f5)
-                            .color(r, g, b, a)
-                            .uv(f8, f9)
-                            .uv2(packedLight)
-                            .normal(0, 1, 0)
-                            .endVertex();
+                    Matrix4f matrix = poseStack.last().pose();
 
-                    buffer.vertex(matrix, -f1 - f2, 0.0F - f4, f5)
-                            .color(r, g, b, a)
-                            .uv(f6, f9)
-                            .uv2(packedLight)
-                            .normal(0, 1, 0)
-                            .endVertex();
+                    // 蓝色火焰颜色 (R: 0.1, G: 0.0, B: 1.0, A: 1.0)
+                    int r = 25;  // 0.1 * 255
+                    int g = 0;
+                    int b = 255;
+                    int a = 255;
 
-                    buffer.vertex(matrix, -f1 - f2, 1.4F - f4, f5)
-                            .color(r, g, b, a)
-                            .uv(f6, f7)
-                            .uv2(packedLight)
-                            .normal(0, 1, 0)
-                            .endVertex();
+                    float f5 = 0.0F;
+                    float currentF3 = f3;
 
-                    buffer.vertex(matrix, f1 - f2, 1.4F - f4, f5)
-                            .color(r, g, b, a)
-                            .uv(f8, f7)
-                            .uv2(packedLight)
-                            .normal(0, 1, 0)
-                            .endVertex();
+                    // 构建火焰层
+                    while (currentF3 > 0.0F) {
+                        TextureAtlasSprite currentSprite = i % 2 == 0
+                                ? fireSprite0
+                                : fireSprite1;
+                        float f6 = currentSprite.getU0();
+                        float f7 = currentSprite.getV0();
+                        float f8 = currentSprite.getU1();
+                        float f9 = currentSprite.getV1();
 
-                    currentF3 -= 0.45F;
-                    f4 -= 0.45F;
-                    f1 *= 0.9F;
-                    f5 += 0.03F;
-                    ++i;
+                        // 交替翻转纹理
+                        if (i / 2 % 2 == 0) {
+                            float f10 = f8;
+                            f8 = f6;
+                            f6 = f10;
+                        }
+
+                        // 构建四边形
+                        buffer.vertex(matrix, f1 - f2, 0.0F - f4, f5)
+                                .color(r, g, b, a)
+                                .uv(f8, f9)
+                                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                                .uv2(packedLight)
+                                .normal(0, 1, 0)
+                                .endVertex();
+
+                        buffer.vertex(matrix, -f1 - f2, 0.0F - f4, f5)
+                                .color(r, g, b, a)
+                                .uv(f6, f9)
+                                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                                .uv2(packedLight)
+                                .normal(0, 1, 0)
+                                .endVertex();
+
+                        buffer.vertex(matrix, -f1 - f2, 1.4F - f4, f5)
+                                .color(r, g, b, a)
+                                .uv(f6, f7)
+                                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                                .uv2(packedLight)
+                                .normal(0, 1, 0)
+                                .endVertex();
+
+                        buffer.vertex(matrix, f1 - f2, 1.4F - f4, f5)
+                                .color(r, g, b, a)
+                                .uv(f8, f7)
+                                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                                .uv2(packedLight)
+                                .normal(0, 1, 0)
+                                .endVertex();
+
+                        currentF3 -= 0.45F;
+                        f4 -= 0.45F;
+                        f1 *= 0.9F;
+                        f5 += 0.03F;
+                        ++i;
+                    }
                 }
-
-                poseStack.popPose();
             }
         }
 

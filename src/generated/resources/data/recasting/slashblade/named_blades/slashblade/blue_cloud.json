@@ -1,9 +1,17 @@
 {
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
   "name": "recasting:slashblade/blue_cloud",
   "properties": {
     "attack_base": 5.0,
     "max_damage": 240,
-    "slash_art": "recasting:cyan_glow"
+    "slash_art": "recasting:cyan_glow",
+    "sword_type": [
+      "bewitched"
+    ]
   },
   "render": {
     "carry_type": "default",

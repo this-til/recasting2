@@ -116,7 +116,7 @@ public class RecastingBuffTypes {
      * - 用于断灭特效的次元斩计数累积
      */
     public static final RegistryObject<BuffType> ANNIHILATION = BUFF_TYPES.register("annihilation",
-            () -> new BuffType(0, 6)
+            () -> new BuffType(0, 7)
     );
 
 }

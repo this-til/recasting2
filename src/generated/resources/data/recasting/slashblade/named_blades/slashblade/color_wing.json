@@ -1,4 +1,9 @@
 {
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
   "name": "recasting:slashblade/color_wing",
   "properties": {
     "attack_base": 8.0,
@@ -6,6 +11,9 @@
     "slash_art": "recasting:heaven_twelve_hit",
     "special_effects": [
       "recasting:color_dye"
+    ],
+    "sword_type": [
+      "bewitched"
     ]
   },
   "properties_extension": {

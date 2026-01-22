@@ -1,7 +1,7 @@
 {
   "name": "recasting:slashblade/fluorescence/fluorescence_2",
   "properties": {
-    "attack_base": 2.0,
+    "attack_base": 1.0,
     "max_damage": 960
   },
   "render": {

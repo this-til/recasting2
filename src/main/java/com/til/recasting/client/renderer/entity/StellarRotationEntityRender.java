@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.til.recasting.entity.StellarRotationEntity;
+import mods.flammpfeil.slashblade.client.renderer.util.MSAutoCloser;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -44,37 +45,36 @@ public class StellarRotationEntityRender<E extends StellarRotationEntity> extend
         Random random = new Random(432L);
         VertexConsumer vertexBuilder = bufferIn.getBuffer(RenderType.lightning());
 
-        matrixStackIn.pushPose();
-        float size = entity.getSize() / 10;
-        matrixStackIn.scale(size, size, size);
+        try (MSAutoCloser msac = MSAutoCloser.pushMatrix(matrixStackIn)) {
+            float size = entity.getSize() / 10;
+            matrixStackIn.scale(size, size, size);
 
-        // 绘制闪电效果
-        for(int i = 0; (float) i < (lifeProgress + lifeProgress * lifeProgress) / 2.0F * 60.0F; ++i) {
-            matrixStackIn.mulPose(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
-            matrixStackIn.mulPose(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
-            matrixStackIn.mulPose(Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F));
-            matrixStackIn.mulPose(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
-            matrixStackIn.mulPose(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
-            matrixStackIn.mulPose(Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F + lifeProgress * 90.0F));
+            // 绘制闪电效果
+            for(int i = 0; (float) i < (lifeProgress + lifeProgress * lifeProgress) / 2.0F * 60.0F; ++i) {
+                matrixStackIn.mulPose(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
+                matrixStackIn.mulPose(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
+                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F));
+                matrixStackIn.mulPose(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
+                matrixStackIn.mulPose(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
+                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F + lifeProgress * 90.0F));
 
-            float length = random.nextFloat() * 20.0F + 5.0F + fadeOut * 10.0F;
-            float width = random.nextFloat() * 2.0F + 1.0F + fadeOut * 2.0F;
-            Matrix4f matrix4f = matrixStackIn.last().pose();
-            int alpha = (int) (255.0F * (1.0F - fadeOut));
+                float length = random.nextFloat() * 20.0F + 5.0F + fadeOut * 10.0F;
+                float width = random.nextFloat() * 2.0F + 1.0F + fadeOut * 2.0F;
+                Matrix4f matrix4f = matrixStackIn.last().pose();
+                int alpha = (int) (255.0F * (1.0F - fadeOut));
 
-            // 绘制三角形组成的闪电效果
-            drawVertex(vertexBuilder, matrix4f, alpha);
-            drawVertex1(vertexBuilder, matrix4f, length, width, color);
-            drawVertex2(vertexBuilder, matrix4f, length, width, color);
-            drawVertex(vertexBuilder, matrix4f, alpha);
-            drawVertex2(vertexBuilder, matrix4f, length, width, color);
-            drawVertex3(vertexBuilder, matrix4f, length, width, color);
-            drawVertex(vertexBuilder, matrix4f, alpha);
-            drawVertex3(vertexBuilder, matrix4f, length, width, color);
-            drawVertex1(vertexBuilder, matrix4f, length, width, color);
+                // 绘制三角形组成的闪电效果
+                drawVertex(vertexBuilder, matrix4f, alpha);
+                drawVertex1(vertexBuilder, matrix4f, length, width, color);
+                drawVertex2(vertexBuilder, matrix4f, length, width, color);
+                drawVertex(vertexBuilder, matrix4f, alpha);
+                drawVertex2(vertexBuilder, matrix4f, length, width, color);
+                drawVertex3(vertexBuilder, matrix4f, length, width, color);
+                drawVertex(vertexBuilder, matrix4f, alpha);
+                drawVertex3(vertexBuilder, matrix4f, length, width, color);
+                drawVertex1(vertexBuilder, matrix4f, length, width, color);
+            }
         }
-
-        matrixStackIn.popPose();
     }
 
     /**

@@ -3,6 +3,7 @@ package com.til.recasting.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.til.recasting.capability.IBuffStackData;
+import mods.flammpfeil.slashblade.client.renderer.util.MSAutoCloser;
 import com.til.recasting.client.registry.BuffLevelRendererRegistry;
 import com.til.recasting.client.registry.instance.BuffLevelRenderConfig;
 import com.til.recasting.handler.CapabilityRegistryHandler;
@@ -110,58 +111,56 @@ public class BuffLevelTextRenderer implements EntityRenderExtension {
         Minecraft minecraft = Minecraft.getInstance();
         Font font = minecraft.font;
 
-        poseStack.pushPose();
+        try (MSAutoCloser msac = MSAutoCloser.pushMatrix(poseStack)) {
+            // 计算实体头顶位置
+            // 名称标签通常在实体高度 + 0.5 的位置
+            float entityHeight = entity.getBbHeight();
+            float nameTagOffset = 0.5F;
+            float baseYOffset = entityHeight + nameTagOffset;
 
-        // 计算实体头顶位置
-        // 名称标签通常在实体高度 + 0.5 的位置
-        float entityHeight = entity.getBbHeight();
-        float nameTagOffset = 0.5F;
-        float baseYOffset = entityHeight + nameTagOffset;
+            // 从名称标签上方开始渲染（每个 Buff 占据 0.25 的高度）
+            float lineHeight = 0.25F;
+            float startY = baseYOffset + lineHeight;
 
-        // 从名称标签上方开始渲染（每个 Buff 占据 0.25 的高度）
-        float lineHeight = 0.25F;
-        float startY = baseYOffset + lineHeight;
+            // 移动到实体头顶
+            poseStack.translate(0.0D, startY, 0.0D);
 
-        // 移动到实体头顶
-        poseStack.translate(0.0D, startY, 0.0D);
+            // 面向玩家视角
+            poseStack.mulPose(minecraft.getEntityRenderDispatcher().cameraOrientation());
+            
+            // 缩放文本（使其更小更精致）
+            float scale = 0.025F;
+            poseStack.scale(-scale, -scale, scale);
 
-        // 面向玩家视角
-        poseStack.mulPose(minecraft.getEntityRenderDispatcher().cameraOrientation());
-        
-        // 缩放文本（使其更小更精致）
-        float scale = 0.025F;
-        poseStack.scale(-scale, -scale, scale);
+            Matrix4f matrix = poseStack.last().pose();
 
-        Matrix4f matrix = poseStack.last().pose();
+            // 从上到下渲染每个 Buff
+            int yOffset = 0;
+            for (BuffInfo buffInfo : buffInfos) {
+                String text = buffInfo.displayText;
+                float textWidth = font.width(text);
+                float x = -textWidth / 2.0F;
 
-        // 从上到下渲染每个 Buff
-        int yOffset = 0;
-        for (BuffInfo buffInfo : buffInfos) {
-            String text = buffInfo.displayText;
-            float textWidth = font.width(text);
-            float x = -textWidth / 2.0F;
+                // 渲染半透明背景（提高可读性）
+                int backgroundOpacity = 64; // 25% 不透明度
+                int backgroundColor = backgroundOpacity << 24; // ARGB格式
+                font.drawInBatch(
+                        text,
+                        x,
+                        yOffset,
+                        0xFFFFFF, // 白色文本
+                        false,
+                        matrix,
+                        bufferSource,
+                        Font.DisplayMode.NORMAL,
+                        backgroundColor,
+                        packedLight
+                );
 
-            // 渲染半透明背景（提高可读性）
-            int backgroundOpacity = 64; // 25% 不透明度
-            int backgroundColor = backgroundOpacity << 24; // ARGB格式
-            font.drawInBatch(
-                    text,
-                    x,
-                    yOffset,
-                    0xFFFFFF, // 白色文本
-                    false,
-                    matrix,
-                    bufferSource,
-                    Font.DisplayMode.NORMAL,
-                    backgroundColor,
-                    packedLight
-            );
-
-            // 移动到下一行
-            yOffset += 10; // 每行间距 10 像素
+                // 移动到下一行
+                yOffset += 10; // 每行间距 10 像素
+            }
         }
-
-        poseStack.popPose();
     }
 
     @Override

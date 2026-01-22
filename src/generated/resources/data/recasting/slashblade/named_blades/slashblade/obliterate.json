@@ -1,7 +1,16 @@
 {
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
   "name": "recasting:slashblade/obliterate",
   "properties": {
-    "max_damage": 480
+    "max_damage": 480,
+    "slash_art": "recasting:inferno",
+    "sword_type": [
+      "bewitched"
+    ]
   },
   "render": {
     "carry_type": "default",

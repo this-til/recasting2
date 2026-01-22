@@ -1,7 +1,16 @@
 {
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
   "name": "recasting:slashblade/obliterate_lambda",
   "properties": {
-    "max_damage": 640
+    "max_damage": 640,
+    "slash_art": "recasting:inferno_lambda",
+    "sword_type": [
+      "bewitched"
+    ]
   },
   "properties_extension": {
     "attack_distance": 1.25

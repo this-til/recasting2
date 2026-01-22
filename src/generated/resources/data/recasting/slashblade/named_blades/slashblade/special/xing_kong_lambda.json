@@ -1,8 +1,16 @@
 {
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
   "name": "recasting:slashblade/special/xing_kong_lambda",
   "properties": {
     "attack_base": 12.0,
-    "max_damage": 1920
+    "max_damage": 1920,
+    "sword_type": [
+      "bewitched"
+    ]
   },
   "render": {
     "carry_type": "default",

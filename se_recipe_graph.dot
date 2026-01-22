@@ -1,0 +1,146 @@
+digraph SE_Recipe_Path {
+    rankdir=TB;
+    bgcolor=white;
+    node [shape=box, style=rounded, fontname="Microsoft YaHei"];
+    edge [color=gray50, arrowhead=vee];
+    
+    // 基础节点（从 GATHERING_PARTING_VARIANT 开始）
+    GATHERING_PARTING_VARIANT [label="聚散变体\n(GATHERING_PARTING_VARIANT)", fillcolor="#E3F2FD", style="filled,rounded", fontcolor=black];
+    
+    // 攻击类型增幅 SE（基础）
+    GREAT_VOID [label="太虚\n(GREAT_VOID)\n火: 蜃楼火\n辅助: 紫水晶碎片", fillcolor="#B3E5FC", style="filled,rounded", fontcolor=black];
+    SHARP_BLADE [label="利刃\n(SHARP_BLADE)\n火: 执念火\n辅助: 下界合金碎片", fillcolor="#B3E5FC", style="filled,rounded", fontcolor=black];
+    SHOCK [label="震荡\n(SHOCK)\n火: 混沌火\n辅助: 末影珍珠", fillcolor="#B3E5FC", style="filled,rounded", fontcolor=black];
+    SWORD_QI_MASTERY [label="剑气纵横\n(SWORD_QI_MASTERY)\n火: 圣愿火\n辅助: 烈焰棒", fillcolor="#B3E5FC", style="filled,rounded", fontcolor=black];
+    THUNDER_STRIKE [label="雷霆万钧\n(THUNDER_STRIKE)\n火: 王权火\n辅助: 海晶石碎片", fillcolor="#B3E5FC", style="filled,rounded", fontcolor=black];
+    
+    // 从 SHARP_BLADE 升级
+    COOPERATE_WITH [label="协同\n(COOPERATE_WITH)\n火: 镜火\n辅助: 金萝卜", fillcolor="#C8E6C9", style="filled,rounded", fontcolor=black];
+    CROSS_CHOP [label="十字斩\n(CROSS_CHOP)\n火: 镜火\n辅助: 金剑", fillcolor="#C8E6C9", style="filled,rounded", fontcolor=black];
+    
+    // 从 COOPERATE_WITH 升级
+    GROWTH [label="生长\n(GROWTH)\n火: 摇篮火\n辅助: 绿宝石", fillcolor="#B3E5FC", style="filled,rounded", fontcolor=black];
+    
+    // 从 GROWTH 升级
+    REGRESSION [label="回溯\n(REGRESSION)\n火: 摇篮火\n辅助: 铁砧", fillcolor="#C8E6C9", style="filled,rounded", fontcolor=black];
+    
+    // 从 REGRESSION 升级
+    LIFE_STEAL [label="吸血转化\n(LIFE_STEAL)\n火: 罪火\n辅助: 金苹果", fillcolor="#FFF9C4", style="filled,rounded", fontcolor=black];
+    
+    // 从 CROSS_CHOP 升级
+    RESIST [label="抵抗\n(RESIST)\n火: 工匠火\n辅助: 盾牌", fillcolor="#FFF9C4", style="filled,rounded", fontcolor=black];
+    
+    // 从 GREAT_VOID 升级
+    FRAGMENT [label="破片\n(FRAGMENT)\n火: 蜃楼火\n辅助: 紫水晶碎片", fillcolor="#FFF9C4", style="filled,rounded", fontcolor=black];
+    
+    // 从 FRAGMENT 升级
+    SPIRAL [label="回旋\n(SPIRAL)\n火: 深渊火\n辅助: 末影珍珠", fillcolor="#FFF9C4", style="filled,rounded", fontcolor=black];
+    
+    // 从 SHOCK 升级
+    TEAR [label="撕裂\n(TEAR)\n火: 混沌火\n辅助: 钻石", fillcolor="#FFF9C4", style="filled,rounded", fontcolor=black];
+    JUDGEMENT [label="断罪\n(JUDGEMENT)\n火: 混沌火\n辅助: 钻石剑", fillcolor="#FFF9C4", style="filled,rounded", fontcolor=black];
+    
+    // 从 TEAR 升级
+    OVERLOAD [label="过载\n(OVERLOAD)\n火: 潮火\n辅助: 红石", fillcolor="#F8BBD0", style="filled,rounded", fontcolor=black];
+    SEVER_BREAK [label="断却\n(SEVER_BREAK)\n火: 彼岸火\n辅助: 钻石剑", fillcolor="#F8BBD0", style="filled,rounded", fontcolor=black];
+    
+    // 从 OVERLOAD 升级
+    WHIRLWIND [label="旋风\n(WHIRLWIND)\n火: 潮火\n辅助: 末影之眼", fillcolor="#FFCCBC", style="filled,rounded", fontcolor=black];
+    
+    // 从 SEVER_BREAK 升级
+    ANNIHILATION [label="断灭\n(ANNIHILATION)\n火: 彼岸火\n辅助: 信标", fillcolor="#FFCCBC", style="filled,rounded", fontcolor=black];
+    
+    // 从 JUDGEMENT 升级
+    STORM [label="风暴\n(STORM)\n火: 混沌火\n辅助: 烈焰棒", fillcolor="#FFF9C4", style="filled,rounded", fontcolor=black];
+    
+    // 从 STORM 升级
+    STORM_VARIANT [label="风暴变体\n(STORM_VARIANT)\n火: 混沌火\n辅助: 三叉戟", fillcolor="#F8BBD0", style="filled,rounded", fontcolor=black];
+    
+    // 从 THUNDER_STRIKE 升级
+    IONIZATION [label="电离\n(IONIZATION)\n火: 记忆火\n辅助: 青金石", fillcolor="#FFF9C4", style="filled,rounded", fontcolor=black];
+    
+    // 从 IONIZATION 升级
+    THUNDERSTORM [label="雷暴\n(THUNDERSTORM)\n火: 记忆火\n辅助: 三叉戟", fillcolor="#F8BBD0", style="filled,rounded", fontcolor=black];
+    THUNDER_GODS_WRATH [label="雷神之怒\n(THUNDER_GODS_WRATH)\n火: 记忆火\n辅助: 金锭", fillcolor="#F8BBD0", style="filled,rounded", fontcolor=black];
+    
+    // 从 THUNDERSTORM 升级
+    THUNDER_CLOUD [label="雷云\n(THUNDER_CLOUD)\n火: 诗灰火\n辅助: 海晶石碎片", fillcolor="#F8BBD0", style="filled,rounded", fontcolor=black];
+    ENERGY_STORAGE [label="蓄能\n(ENERGY_STORAGE)\n火: 潮火\n辅助: 红石", fillcolor="#F8BBD0", style="filled,rounded", fontcolor=black];
+    
+    // 从 SWORD_QI_MASTERY 升级
+    DRIVE_RELEASE [label="剑气释放\n(DRIVE_RELEASE)\n火: 圣愿火\n辅助: 铁剑", fillcolor="#FFF9C4", style="filled,rounded", fontcolor=black];
+    
+    // 从 FRAGMENT 升级
+    SPLIT [label="分裂\n(SPLIT)\n火: 蜃楼火\n辅助: 烈焰棒", fillcolor="#FFF9C4", style="filled,rounded", fontcolor=black];
+    
+    // 从 SPLIT 升级
+    IMPACT [label="冲击\n(IMPACT)\n火: 镜火\n辅助: 铁剑", fillcolor="#F8BBD0", style="filled,rounded", fontcolor=black];
+    
+    // 基础路径
+    GATHERING_PARTING_VARIANT -> GREAT_VOID;
+    GATHERING_PARTING_VARIANT -> SHARP_BLADE;
+    GATHERING_PARTING_VARIANT -> SHOCK;
+    GATHERING_PARTING_VARIANT -> SWORD_QI_MASTERY;
+    GATHERING_PARTING_VARIANT -> THUNDER_STRIKE;
+    
+    // 从 SHARP_BLADE 升级
+    SHARP_BLADE -> COOPERATE_WITH;
+    
+    // 从 COOPERATE_WITH 升级
+    COOPERATE_WITH -> CROSS_CHOP;
+    COOPERATE_WITH -> GROWTH;
+    
+    // 从 GROWTH 升级
+    GROWTH -> REGRESSION;
+    
+    // 从 REGRESSION 升级
+    REGRESSION -> LIFE_STEAL;
+    
+    // 从 CROSS_CHOP 升级
+    CROSS_CHOP -> RESIST;
+    
+    // 从 GREAT_VOID 升级
+    GREAT_VOID -> FRAGMENT;
+    
+    // 从 FRAGMENT 升级
+    FRAGMENT -> SPIRAL;
+    FRAGMENT -> SPLIT;
+    
+    // 从 SHOCK 升级
+    SHOCK -> TEAR;
+    SHOCK -> JUDGEMENT;
+    
+    // 从 TEAR 升级
+    TEAR -> OVERLOAD;
+    TEAR -> SEVER_BREAK;
+    
+    // 从 OVERLOAD 升级
+    OVERLOAD -> WHIRLWIND;
+    
+    // 从 SEVER_BREAK 升级
+    SEVER_BREAK -> ANNIHILATION;
+    
+    // 从 JUDGEMENT 升级
+    JUDGEMENT -> STORM;
+    
+    // 从 STORM 升级
+    STORM -> STORM_VARIANT;
+    
+    // 从 THUNDER_STRIKE 升级
+    THUNDER_STRIKE -> IONIZATION;
+    
+    // 从 IONIZATION 升级
+    IONIZATION -> THUNDERSTORM;
+    IONIZATION -> THUNDER_GODS_WRATH;
+    
+    // 从 THUNDERSTORM 升级
+    THUNDERSTORM -> THUNDER_CLOUD;
+    THUNDERSTORM -> ENERGY_STORAGE;
+    
+    // 从 SWORD_QI_MASTERY 升级
+    SWORD_QI_MASTERY -> DRIVE_RELEASE;
+    
+    // 从 SPLIT 升级
+    SPLIT -> IMPACT;
+
+}

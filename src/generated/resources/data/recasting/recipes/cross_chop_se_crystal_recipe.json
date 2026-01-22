@@ -1,0 +1,33 @@
+{
+  "type": "recasting:se_crystal_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:golden_sword"
+    },
+    "F": {
+      "item": "recasting:mirror_flame"
+    },
+    "M": {
+      "type": "recasting:se_crystal",
+      "item": "recasting:se_crystal",
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:cooperate_with"
+      }
+    }
+  },
+  "pattern": [
+    "FAF",
+    "AMA",
+    "FAF"
+  ],
+  "result": {
+    "item": "recasting:se_crystal"
+  },
+  "se_crystal": {
+    "level": 1,
+    "special_effect_type": "recasting:cross_chop"
+  },
+  "show_notification": true
+}

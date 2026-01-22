@@ -8,6 +8,7 @@ import com.til.recasting.registry.SlashArtsRegistry;
 import com.til.recasting.registry.SpecialEffectsRegistry;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import mods.flammpfeil.slashblade.item.SwordType;
 import mods.flammpfeil.slashblade.registry.slashblade.EnchantmentDefinition;
 import mods.flammpfeil.slashblade.registry.slashblade.PropertiesDefinition;
 import mods.flammpfeil.slashblade.registry.slashblade.RenderDefinition;
@@ -185,6 +186,19 @@ public class SlashBladeDefinitions {
             )
             .build();
 
+    // 物理学圣剑
+    public static final SlashBladeDefinition PHYSICS_SWORD = createBuild(R.Slashblade.physicsSword)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.physicsSword$obj)
+                            .textureName(R.Slashblade.physicsSword$png)
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+            )
+            .build();
+
 
     //endregion
 
@@ -203,7 +217,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(5f)
                             .maxDamage(6 * 40)
                             .slashArtsType(SlashArtsRegistry.CYAN_GLOW.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
     // 青云 Lambda
@@ -219,7 +235,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(6f)
                             .maxDamage(8 * 40)
                             .slashArtsType(SlashArtsRegistry.CYAN_GLOW_LAMBDA.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
     // 龙鳞
@@ -235,7 +253,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(5f)
                             .maxDamage((int) (5f * 40))
                             .slashArtsType(SlashArtsRegistry.STORM_PHANTOM_SWORDS.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
     // 龙鳞 Lambda
@@ -251,7 +271,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(5f)
                             .maxDamage((int) (10f * 40))
                             .slashArtsType(SlashArtsRegistry.STORM_PHANTOM_SWORDS_LAMBDA.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
     // 伞
@@ -267,7 +289,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(5f)
                             .maxDamage(12 * 40)
                             .slashArtsType(SlashArtsRegistry.MULTIPLE_JUDGEMENT_CUT.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .addSpecialEffects(SpecialEffectsRegistry.BLACK_ROSE, 1)
             .build();
 
@@ -284,7 +308,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(6f)
                             .maxDamage(18 * 40)
                             .slashArtsType(SlashArtsRegistry.INFINITE_JUDGEMENT_CUT.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .addSpecialEffects(SpecialEffectsRegistry.BLACK_ROSE, 1)
             .build();
 
@@ -302,7 +328,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(6f)
                             .maxDamage(12 * 40)
                             .slashArtsType(SlashArtsRegistry.MATRIX.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
     // 八卦巨剑 Lambda
@@ -319,7 +347,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(6f)
                             .maxDamage(12 * 40)
                             .slashArtsType(SlashArtsRegistry.MATRIX_LAMBDA.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
 
@@ -331,7 +361,11 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
-                            .maxDamage(12 * 40))
+                            .maxDamage(12 * 40)
+                            .slashArtsType(SlashArtsRegistry.INFERNO.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
     // Obliterate Lambda
@@ -344,7 +378,10 @@ public class SlashBladeDefinitions {
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
                             .maxDamage(16 * 40)
+                            .slashArtsType(SlashArtsRegistry.INFERNO_LAMBDA.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.25f))
             .build();
 
@@ -366,7 +403,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(7f)
                             .maxDamage(16 * 40)
                             .slashArtsType(SlashArtsRegistry.FANATICAL_DANCE.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
     // 冰薄荷 Lambda
@@ -383,7 +422,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(7f)
                             .maxDamage(24 * 40)
                             .slashArtsType(SlashArtsRegistry.FANATICAL_DANCE_LAMBDA.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
     // 龙魂
@@ -399,7 +440,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(6f)
                             .maxDamage(12 * 40)
                             .slashArtsType(SlashArtsRegistry.SWORD_RAIN.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
     // 龙魂 Lambda
@@ -415,7 +458,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(6f)
                             .maxDamage(24 * 40)
                             .slashArtsType(SlashArtsRegistry.SWORD_RAIN_LAMBDA.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
 
@@ -431,11 +476,14 @@ public class SlashBladeDefinitions {
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(6f)
                             .maxDamage(18 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.INFERNO_LAMBDA.getId())
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .addSpecialEffects(SpecialEffectsRegistry.FLAME_FOAM)
             .build();
 
     //endregion
-
 
     //region Void SlashBlades
 
@@ -452,7 +500,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(8f)
                             .maxDamage(12 * 40)
                             .slashArtsType(SlashArtsRegistry.VOID_HOLE.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(1.5f))
             .build();
 
@@ -469,7 +519,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(8f)
                             .maxDamage(24 * 40)
                             .slashArtsType(SlashArtsRegistry.VOID_HOLE_PITCH_BLACK.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(1.5f))
             .build();
 
@@ -486,7 +538,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(8f)
                             .maxDamage(32 * 40)
                             .slashArtsType(SlashArtsRegistry.VOID_HOLE_FISHY_RED.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(1.5f))
             .build();
     //endregion
@@ -505,13 +559,14 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(6f)
                             .maxDamage((int) (8f * 40))
                             .slashArtsType(SlashArtsRegistry.CLOUD_WHEEL.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.15f))
             .build();
 
     // 云翼 Lambda
-    public static final SlashBladeDefinition SILVER_WING_LAMBDA = createBuild(Recasting.prefix("slashblade/silver_wing_lambda")
-    )
+    public static final SlashBladeDefinition SILVER_WING_LAMBDA = createBuild(Recasting.prefix("slashblade/silver_wing_lambda"))
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
                             .modelName(R.Slashblade.silverWing$obj)
@@ -522,7 +577,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(7f)
                             .maxDamage(12 * 40)
                             .slashArtsType(SlashArtsRegistry.CLOUD_WHEEL_STORM.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.15f))
             .build();
 
@@ -538,7 +595,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(8f)
                             .maxDamage(14 * 40)
                             .slashArtsType(SlashArtsRegistry.HEAVEN_TWELVE_HIT.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .addSpecialEffects(SpecialEffectsRegistry.COLOR_DYE)
             .build();
 
@@ -554,7 +613,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(8f)
                             .maxDamage(24 * 40)
                             .slashArtsType(SlashArtsRegistry.HEAVEN_TWELVE_HIT_LAMBDA.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .addSpecialEffects(SpecialEffectsRegistry.COLOR_DYE)
             .build();
 
@@ -567,7 +628,9 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
     // 长空落日 Lambda
@@ -579,20 +642,9 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
-            .build();
-
-    // 物理学圣剑
-    public static final SlashBladeDefinition PHYSICS_SWORD = createBuild(R.Slashblade.physicsSword)
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.physicsSword$obj)
-                            .textureName(R.Slashblade.physicsSword$png)
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(6f)
-            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
 
@@ -606,7 +658,9 @@ public class SlashBladeDefinitions {
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(7f)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
 
@@ -619,7 +673,7 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(2f)
+                            .baseAttackModifier(1f)
                             .maxDamage((int) (24f * 40))
             )
             .build();
@@ -632,7 +686,7 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(2f)
+                            .baseAttackModifier(1f)
                             .maxDamage((int) (24f * 40))
             )
             .build();
@@ -645,7 +699,7 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(2f)
+                            .baseAttackModifier(1f)
                             .maxDamage((int) (24f * 40))
             )
             .build();
@@ -658,7 +712,7 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(2f)
+                            .baseAttackModifier(1f)
                             .maxDamage((int) (24f * 40))
             )
             .build();
@@ -671,7 +725,7 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(2f)
+                            .baseAttackModifier(1f)
                             .maxDamage((int) (24f * 40))
             )
             .build();
@@ -684,7 +738,7 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(2f)
+                            .baseAttackModifier(1f)
                             .maxDamage((int) (24f * 40))
             )
             .build();
@@ -697,7 +751,7 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(2f)
+                            .baseAttackModifier(1f)
                             .maxDamage((int) (24f * 40))
             )
             .build();
@@ -710,7 +764,7 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(2f)
+                            .baseAttackModifier(1f)
                             .maxDamage((int) (24f * 40))
             )
             .build();
@@ -761,7 +815,7 @@ public class SlashBladeDefinitions {
 
     // endregion
 
-    // ========== Special SlashBlades ==========
+    // region ========== Special SlashBlades ==========
     public static final SlashBladeDefinition TIL = createBuild(R.Slashblade.Special.til)
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
@@ -773,9 +827,10 @@ public class SlashBladeDefinitions {
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(10f)
                             .maxDamage(48 * 40)
-                            .slashArtsType(SlashArtsRegistry.STELLAR_ROTATION.getId()
-                            )
+                            .slashArtsType(SlashArtsRegistry.STELLAR_ROTATION.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .addSpecialEffects(SpecialEffectsRegistry.STAR_BLINK, 0)
             .build();
 
@@ -791,7 +846,9 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(12f)
                             .maxDamage(96 * 40)
                             .slashArtsType(SlashArtsRegistry.STELLAR_ROTATION.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .addSpecialEffects(SpecialEffectsRegistry.STAR_BLINK_LAMBDA, 0)
             .build();
 
@@ -806,7 +863,9 @@ public class SlashBladeDefinitions {
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(10f)
                             .maxDamage(48 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
     public static final SlashBladeDefinition HTOD_LAMBDA = createBuild(Recasting.prefix("slashblade/special/htod_lambda"))
@@ -820,7 +879,9 @@ public class SlashBladeDefinitions {
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(12f)
                             .maxDamage(96 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
     public static final SlashBladeDefinition XING_KONG = createBuild(R.Slashblade.Special.xingKong)
@@ -834,7 +895,9 @@ public class SlashBladeDefinitions {
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(10f)
                             .maxDamage(48 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
     public static final SlashBladeDefinition XING_KONG_LAMBDA = createBuild(Recasting.prefix("slashblade/special/xing_kong_lambda"))
@@ -848,8 +911,12 @@ public class SlashBladeDefinitions {
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(12f)
                             .maxDamage(48 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
+
+    // endregion
 
     //region ========== Star SlashBlades ==========
 
@@ -865,7 +932,10 @@ public class SlashBladeDefinitions {
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(4f)
                             .maxDamage(6 * 40)
+                            .slashArtsType(SlashArtsRegistry.STAR_1.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(0.75f))
             .build();
 
@@ -880,7 +950,10 @@ public class SlashBladeDefinitions {
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(5f)
                             .maxDamage(12 * 40)
+                            .slashArtsType(SlashArtsRegistry.STAR_2.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
     // t3
@@ -895,7 +968,10 @@ public class SlashBladeDefinitions {
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(6f)
                             .maxDamage(18 * 40)
+                            .slashArtsType(SlashArtsRegistry.STAR_3.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(1.5f))
             .build();
 
@@ -911,7 +987,10 @@ public class SlashBladeDefinitions {
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(7f)
                             .maxDamage(24 * 40)
+                            .slashArtsType(SlashArtsRegistry.STAR_4.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(2f))
             .build();
 
@@ -927,7 +1006,10 @@ public class SlashBladeDefinitions {
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(8f)
                             .maxDamage(32 * 40)
+                            .slashArtsType(SlashArtsRegistry.STAR_4_LAMBDA.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(2f))
             .build();
 
@@ -1000,10 +1082,8 @@ public class SlashBladeDefinitions {
             }
 
             for(SpecialEffectDefinition specialEffectDefinition : specialEffects) {
-                propertiesDefinition.addSpecialEffect(specialEffectDefinition.specialEffect()
-                );
-                propertiesDefinitionExtension.setExtendedSpecialLevels(specialEffectDefinition.specialEffect(), specialEffectDefinition.level()
-                );
+                propertiesDefinition.addSpecialEffect(specialEffectDefinition.specialEffect());
+                propertiesDefinitionExtension.setExtendedSpecialLevels(specialEffectDefinition.specialEffect(), specialEffectDefinition.level());
             }
 
             RenderDefinition renderDefinitionInstance = renderDefinition.build();
@@ -1048,8 +1128,7 @@ public class SlashBladeDefinitions {
         }
 
         public SlashBladeDefinitionBuild addSpecialEffects(RegistryObject<SpecialEffect> specialEffectRegistryObject, int level) {
-            specialEffects.add(new SpecialEffectDefinition(specialEffectRegistryObject.getId(), level)
-            );
+            specialEffects.add(new SpecialEffectDefinition(specialEffectRegistryObject.getId(), level));
             return this;
         }
     }

@@ -1,0 +1,33 @@
+{
+  "type": "recasting:se_crystal_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:gold_ingot"
+    },
+    "F": {
+      "item": "recasting:memory_flame"
+    },
+    "M": {
+      "type": "recasting:se_crystal",
+      "item": "recasting:se_crystal",
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:ionization"
+      }
+    }
+  },
+  "pattern": [
+    "FAF",
+    "AMA",
+    "FAF"
+  ],
+  "result": {
+    "item": "recasting:se_crystal"
+  },
+  "se_crystal": {
+    "level": 1,
+    "special_effect_type": "recasting:thunder_gods_wrath"
+  },
+  "show_notification": true
+}

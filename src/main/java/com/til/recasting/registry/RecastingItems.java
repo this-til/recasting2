@@ -123,11 +123,15 @@ public class RecastingItems {
                         int currentLevel = data.getSpecialEffectLevel();
                         int maxLevel = extendedSE.getMaxLevel();
 
+                        // 特殊SE使用紫色标注名称
+                        Component nameComponent = net.minecraft.network.chat.Component.translatable(se.getDescriptionId())
+                                .withStyle(extendedSE.isSpecial() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.GRAY);
+
                         // 添加 ExtendedSpecialEffect 的自定义格式
                         components.add(
                                 net.minecraft.network.chat.Component.translatable(
                                         "slashblade.tooltip.special_effect",
-                                        net.minecraft.network.chat.Component.translatable(se.getDescriptionId()),
+                                        nameComponent,
                                         currentLevel + "/" + maxLevel
                                 ).withStyle(ChatFormatting.GRAY)
                         );
@@ -136,6 +140,27 @@ public class RecastingItems {
                         components.add(
                                 Component.translatable(extendedSE.getDescId())
                                         .withStyle(ChatFormatting.DARK_GRAY)
+                        );
+
+                        // 空一行
+                        components.add(Component.empty());
+
+                        // 添加铭刻规则
+                        components.add(
+                                Component.translatable("recasting.tooltip.engraving_rule.title")
+                                        .withStyle(ChatFormatting.YELLOW)
+                        );
+                        components.add(
+                                Component.translatable("recasting.tooltip.engraving_rule.main", 4, 1)
+                                        .withStyle(ChatFormatting.GRAY)
+                        );
+                        components.add(
+                                Component.translatable("recasting.tooltip.engraving_rule.upgrade")
+                                        .withStyle(ChatFormatting.GRAY)
+                        );
+                        components.add(
+                                Component.translatable("recasting.tooltip.engraving_rule.erase")
+                                        .withStyle(ChatFormatting.GRAY)
                         );
                     });
                 }

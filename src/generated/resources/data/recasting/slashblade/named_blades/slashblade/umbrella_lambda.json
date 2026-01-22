@@ -1,4 +1,9 @@
 {
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
   "name": "recasting:slashblade/umbrella_lambda",
   "properties": {
     "attack_base": 6.0,
@@ -6,6 +11,9 @@
     "slash_art": "recasting:infinite_judgement_cut",
     "special_effects": [
       "recasting:black_rose"
+    ],
+    "sword_type": [
+      "bewitched"
     ]
   },
   "properties_extension": {

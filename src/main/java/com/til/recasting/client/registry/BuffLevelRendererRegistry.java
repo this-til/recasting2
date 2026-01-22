@@ -71,4 +71,20 @@ public class BuffLevelRendererRegistry {
             "energy_storage",
             () -> new BuffLevelRenderConfig(RecastingBuffTypes.ENERGY_STORAGE, LanguageItems.BUFF_ENERGY_STORAGE)
     );
+
+    /**
+     * 撕裂 - 显示层数
+     */
+    public static final RegistryObject<BuffLevelRenderConfig> TEAR = BUFF_LEVEL_RENDER_CONFIGS.register(
+            "tear",
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.TEAR, LanguageItems.BUFF_TEAR)
+    );
+
+    /**
+     * 断灭 - 显示层数
+     */
+    //public static final RegistryObject<BuffLevelRenderConfig> ANNIHILATION = BUFF_LEVEL_RENDER_CONFIGS.register(
+    //        "annihilation",
+    //        () -> new BuffLevelRenderConfig(RecastingBuffTypes.ANNIHILATION, LanguageItems.BUFF_ANNIHILATION)
+    //);
 }

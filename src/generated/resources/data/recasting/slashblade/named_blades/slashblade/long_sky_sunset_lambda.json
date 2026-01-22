@@ -1,6 +1,15 @@
 {
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
   "name": "recasting:slashblade/long_sky_sunset_lambda",
-  "properties": {},
+  "properties": {
+    "sword_type": [
+      "bewitched"
+    ]
+  },
   "render": {
     "carry_type": "default",
     "model": "recasting:slashblade/long_sky_sunset.obj",

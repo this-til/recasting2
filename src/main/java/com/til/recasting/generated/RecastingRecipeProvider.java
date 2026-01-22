@@ -14,7 +14,10 @@ import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -94,17 +97,19 @@ public class RecastingRecipeProvider extends RecipeProvider implements IConditio
     }
     
     /**
-     * 扫描指定类中的所有 RecipeBuilderWrapper 静态字段
+     * 扫描指定类中的所有 RecipeBuilderWrapper 静态字段和 List<RecipeBuilderWrapper> 字段
      */
     private List<RecipeBuilderEntry> scanClassForRecipeBuilders(Class<?> recipeClass) {
         List<RecipeBuilderEntry> entries = new ArrayList<>();
         Field[] allFields = recipeClass.getDeclaredFields();
         
         for (Field field : allFields) {
-            // 只处理静态 final 的 RecipeBuilderWrapper 字段
-            if (Modifier.isStatic(field.getModifiers())
-                    && Modifier.isFinal(field.getModifiers())
-                    && field.getType().equals(RecipeBuilderWrapper.class)) {
+            if (!Modifier.isStatic(field.getModifiers()) || !Modifier.isFinal(field.getModifiers())) {
+                continue;
+            }
+            
+            // 处理单个 RecipeBuilderWrapper 字段
+            if (field.getType().equals(RecipeBuilderWrapper.class)) {
                 try {
                     field.setAccessible(true);
                     RecipeBuilderWrapper wrapper = (RecipeBuilderWrapper) field.get(null);
@@ -121,9 +126,55 @@ public class RecastingRecipeProvider extends RecipeProvider implements IConditio
                     log.error("字段 {} (来源类: {}) 不是 RecipeBuilderWrapper 类型", field.getName(), recipeClass.getSimpleName(), e);
                 }
             }
+            // 处理 List<RecipeBuilderWrapper> 字段
+            else if (field.getType().equals(List.class) && isListOfRecipeBuilderWrapper(field)) {
+                try {
+                    field.setAccessible(true);
+                    @SuppressWarnings("unchecked")
+                    List<RecipeBuilderWrapper> wrapperList = (List<RecipeBuilderWrapper>) field.get(null);
+                    
+                    if (wrapperList != null && !wrapperList.isEmpty()) {
+                        int index = 0;
+                        for (RecipeBuilderWrapper wrapper : wrapperList) {
+                            if (wrapper != null) {
+                                // 为列表中的每个配方生成唯一的字段名（添加索引后缀）
+                                String entryName = field.getName() + "_" + index;
+                                entries.add(new RecipeBuilderEntry(entryName, wrapper, recipeClass));
+                                index++;
+                            }
+                        }
+                        log.debug("找到 List<RecipeBuilderWrapper> 字段: {}，包含 {} 个配方 (来源类: {})", 
+                                field.getName(), index, recipeClass.getSimpleName());
+                    } else {
+                        log.warn("List<RecipeBuilderWrapper> 字段 {} (来源类: {}) 的值为 null 或为空，跳过", 
+                                field.getName(), recipeClass.getSimpleName());
+                    }
+                } catch (IllegalAccessException e) {
+                    log.error("无法访问 List<RecipeBuilderWrapper> 字段: {} (来源类: {})", 
+                            field.getName(), recipeClass.getSimpleName(), e);
+                } catch (ClassCastException e) {
+                    log.error("字段 {} (来源类: {}) 不是 List<RecipeBuilderWrapper> 类型", 
+                            field.getName(), recipeClass.getSimpleName(), e);
+                }
+            }
         }
         
         return entries;
+    }
+    
+    /**
+     * 检查字段是否是 List<RecipeBuilderWrapper> 类型
+     */
+    private boolean isListOfRecipeBuilderWrapper(Field field) {
+        Type genericType = field.getGenericType();
+        if (genericType instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) genericType;
+            Type[] typeArguments = parameterizedType.getActualTypeArguments();
+            if (typeArguments.length == 1 && typeArguments[0].equals(RecipeBuilderWrapper.class)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

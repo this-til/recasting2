@@ -1,9 +1,17 @@
 {
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
   "name": "recasting:slashblade/dragon_scale",
   "properties": {
     "attack_base": 5.0,
     "max_damage": 200,
-    "slash_art": "recasting:storm_phantom_swords"
+    "slash_art": "recasting:storm_phantom_swords",
+    "sword_type": [
+      "bewitched"
+    ]
   },
   "render": {
     "carry_type": "default",

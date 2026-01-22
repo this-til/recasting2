@@ -1,9 +1,17 @@
 {
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
   "name": "recasting:slashblade/dragon",
   "properties": {
     "attack_base": 6.0,
     "max_damage": 480,
-    "slash_art": "recasting:sword_rain"
+    "slash_art": "recasting:sword_rain",
+    "sword_type": [
+      "bewitched"
+    ]
   },
   "render": {
     "carry_type": "default",

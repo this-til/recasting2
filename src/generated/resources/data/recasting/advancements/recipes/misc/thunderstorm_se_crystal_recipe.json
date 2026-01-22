@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ionization_se_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "recasting:se_crystal"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "recasting:thunderstorm_se_crystal_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_ionization_se_crystal",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "recasting:thunderstorm_se_crystal_recipe"
+    ]
+  },
+  "sends_telemetry_event": false
+}

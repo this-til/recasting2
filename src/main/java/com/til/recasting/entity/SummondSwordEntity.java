@@ -59,7 +59,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     protected static final EntityDataAccessor<Integer> START_DELAY = SynchedEntityData.defineId(SummondSwordEntity.class, EntityDataSerializers.INT);
 
     /**
-     * 渗透值
+     * 速度
      */
     protected static final EntityDataAccessor<Float> SEEP = SynchedEntityData.defineId(SummondSwordEntity.class, EntityDataSerializers.FLOAT);
 

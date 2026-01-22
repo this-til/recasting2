@@ -19,7 +19,7 @@
       "type": "recasting:se_crystal",
       "item": "recasting:se_crystal",
       "request": {
-        "level": 2,
+        "level": 1,
         "special_effect_type": "recasting:spiral"
       }
     }

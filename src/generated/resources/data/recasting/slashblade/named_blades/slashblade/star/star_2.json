@@ -1,8 +1,17 @@
 {
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
   "name": "recasting:slashblade/star/star_2",
   "properties": {
     "attack_base": 5.0,
-    "max_damage": 480
+    "max_damage": 480,
+    "slash_art": "recasting:star_2",
+    "sword_type": [
+      "bewitched"
+    ]
   },
   "render": {
     "carry_type": "default",
