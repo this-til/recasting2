@@ -120,14 +120,15 @@ public class SpecialEffectRecipes {
                     .save(consumer, recipeId);
 
     /**
-     * 创建 SE 升级配方
+     * 创建 SE 升级配方（含等级 0 制作）
      * 合成表格式：
      * " VS"
      * "VUV"
      * "SV "
-     * 
+     * V = 耀魂碎片；U = 升格变体（升级）或渊寂火（1 级降为 0 级）；S = 当前等级的 SE 结晶
+     *
      * @param seType SE 类型
-     * @return SE 升级配方列表
+     * @return 先为「1 级 + 渊寂火 → 0 级」（若 maxLevel ≥ 1），再为各档升级配方
      */
     public static List<RecipeBuilderWrapper> createSEUpgradeRecipes(RegistryObject<SpecialEffect> seType) {
         List<RecipeBuilderWrapper> recipes = new ArrayList<>();
@@ -145,6 +146,21 @@ public class SpecialEffectRecipes {
         }
         
         int maxLevel = extendedSE.getMaxLevel();
+
+        // 等级 1 结晶 + 渊寂火 → 等级 0 结晶（与升格同形，中间为渊寂火）
+        if (maxLevel >= 1) {
+            final ResourceLocation demoteSeLocation = seLocation;
+            RecipeBuilderWrapper toLevel0 = (consumer, recipeId) ->
+                    SpecialEffectCrystalShapedRecipeBuilder.shaped(seType, 0)
+                            .pattern(" U ")
+                            .pattern("USU")
+                            .pattern(" U ")
+                            .define('U', RecastingItems.ABYSS_FLAME.get())
+                            .define('S', SpecialEffectCrystalIngredient.of(demoteSeLocation, 1))
+                            .unlockedBy("has_se_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
+                            .save(consumer, recipeId);
+            recipes.add(toLevel0);
+        }
         
         // 为每个等级创建升级配方（从 1 升到 2，从 2 升到 3，...）
         for (int currentLevel = 1; currentLevel < maxLevel; currentLevel++) {

@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
 
 public class SlashBladeDefinitions {
@@ -121,6 +120,7 @@ public class SlashBladeDefinitions {
     //endregion
 
     //region t4
+
 
     // 碎白
     public static final SlashBladeDefinition BROKEN_WHITE = createBuild(R.Slashblade.brokenWhite)
@@ -349,6 +349,7 @@ public class SlashBladeDefinitions {
                             .slashArtsType(SlashArtsRegistry.MATRIX_LAMBDA.getId())
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addSpecialEffects(SpecialEffectsRegistry.RESOLVE)
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
@@ -482,6 +483,151 @@ public class SlashBladeDefinitions {
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .addSpecialEffects(SpecialEffectsRegistry.FLAME_FOAM)
             .build();
+
+    // 太极
+    public static final SlashBladeDefinition SUPREME_POLE = createBuild(R.Slashblade.soulblade)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.supremePole$obj)
+                            .textureName(R.Slashblade.supremePole$png)
+                            .effectColor(new Color(255, 255, 255).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(24 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.MATRIX_LAMBDA.getId())
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .addSpecialEffects(SpecialEffectsRegistry.RESOLVE)
+            .build();
+
+    public static final SlashBladeDefinition SUPREME_POLE_LAMBDA = createBuild(R.Slashblade.soulblade)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.supremePole$obj)
+                            .textureName(R.Slashblade.supremePole$png)
+                            .effectColor(new Color(255, 255, 255).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(32 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.MATRIX_LAMBDA.getId())
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .addSpecialEffects(SpecialEffectsRegistry.RESOLVE_LAMBDA)
+            .build();
+
+
+    //风云
+    public static final SlashBladeDefinition WIND_CLOUD = createBuild(R.Slashblade.soulblade)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.windCloud$obj)
+                            .textureName(R.Slashblade.windCloud$png)
+                            .effectColor(new Color(253, 238, 78).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(24 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.PHANTOM_EXPLOSION.getId())
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
+    public static final SlashBladeDefinition WIND_CLOUD_LAMBDA = createBuild(R.Slashblade.soulblade)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.windCloud$obj)
+                            .textureName(R.Slashblade.windCloud$png)
+                            .effectColor(new Color(253, 238, 78).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(32 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.PHANTOM_EXPLOSION_LAMBDA.getId())
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
+    // 灿金
+    public static final SlashBladeDefinition CAN_JIN = createBuild(R.Slashblade.soulblade)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.canjin$obj)
+                            .textureName(R.Slashblade.cancha$png)
+                            .effectColor(new Color(255, 255, 0).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(24 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_MAX.getId())
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
+    public static final SlashBladeDefinition CAN_JIN_LAMBDA = createBuild(R.Slashblade.soulblade)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.canjin$obj)
+                            .textureName(R.Slashblade.cancha$png)
+                            .effectColor(new Color(255, 255, 0).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(32 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_MAX_LAMBDA.getId())
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
+
+    // 灿茶
+    public static final SlashBladeDefinition CAN_CHA = createBuild(R.Slashblade.soulblade)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.cancha$obj)
+                            .textureName(R.Slashblade.cancha$png)
+                            .effectColor(new Color(255, 255, 0).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(24 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_MAX.getId())
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
+    public static final SlashBladeDefinition CAN_CHA_LAMBDA = createBuild(R.Slashblade.soulblade)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.cancha$obj)
+                            .textureName(R.Slashblade.cancha$png)
+                            .effectColor(new Color(255, 255, 0).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(32 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_MAX_LAMBDA.getId())
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
 
     //endregion
 

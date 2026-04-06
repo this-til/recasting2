@@ -9,9 +9,17 @@
     "attack_base": 6.0,
     "max_damage": 480,
     "slash_art": "recasting:matrix_lambda",
+    "special_effects": [
+      "recasting:resolve"
+    ],
     "sword_type": [
       "bewitched"
     ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:resolve": 1
+    }
   },
   "render": {
     "carry_type": "default",

@@ -1,0 +1,33 @@
+{
+  "type": "recasting:se_crystal_shaped",
+  "category": "misc",
+  "key": {
+    "S": {
+      "type": "recasting:se_crystal",
+      "item": "recasting:se_crystal",
+      "request": {
+        "level": 4,
+        "special_effect_type": "recasting:thunderstorm"
+      }
+    },
+    "U": {
+      "item": "recasting:upgrade_variant_4"
+    },
+    "V": {
+      "item": "slashblade:proudsoul"
+    }
+  },
+  "pattern": [
+    " VS",
+    "VUV",
+    "SV "
+  ],
+  "result": {
+    "item": "recasting:se_crystal"
+  },
+  "se_crystal": {
+    "level": 5,
+    "special_effect_type": "recasting:thunderstorm"
+  },
+  "show_notification": true
+}

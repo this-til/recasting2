@@ -859,6 +859,14 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "在目标位置上方的半球面上生成大量幻影剑，均匀分布并延迟发射。")
             .addTranslation(LanguageTypes.EN_US, "Generate numerous phantom swords evenly distributed on a hemisphere above the target position, launching them with delays.");
 
+    public static final LanguageItem UNLIMITED_BLADE_WORKS_LAMBDA = createSlashArtsLanguage(SlashArtsRegistry.UNLIMITED_BLADE_WORKS_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^无限剑制")
+            .addTranslation(LanguageTypes.EN_US, "Unlimited Blade Works Lambda");
+
+    public static final LanguageItem UNLIMITED_BLADE_WORKS_LAMBDA_DESC = createSlashArtsDescription(SlashArtsRegistry.UNLIMITED_BLADE_WORKS_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "在目标位置上方的半球面上生成大量幻影剑。")
+            .addTranslation(LanguageTypes.EN_US, "Generate numerous phantom swords evenly distributed on a hemisphere above the target position.");
+
     // 剑刃风暴
     public static final LanguageItem BLADE_STORM = createSlashArtsLanguage(SlashArtsRegistry.BLADE_STORM)
             .addTranslation(LanguageTypes.ZH_CN, "剑刃风暴")
@@ -909,6 +917,23 @@ public class LanguageItems {
     public static final LanguageItem ZANTETSUDEN_ROW_LAMBDA_DESC = createSlashArtsDescription(SlashArtsRegistry.ZANTETSUDEN_ROW_LAMBDA)
             .addTranslation(LanguageTypes.ZH_CN, "在目标位置向各个方向发射大量驱动剑气，剑气会从目标位置向四面八方飞散。")
             .addTranslation(LanguageTypes.EN_US, "Launch numerous drive sword qi in all directions from the target position, scattering in every direction.");
+
+    // 业火
+    public static final LanguageItem INFERNO = createSlashArtsLanguage(SlashArtsRegistry.INFERNO)
+            .addTranslation(LanguageTypes.ZH_CN, "业火")
+            .addTranslation(LanguageTypes.EN_US, "Inferno");
+
+    public static final LanguageItem INFERNO_LAMBDA = createSlashArtsLanguage(SlashArtsRegistry.INFERNO_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^业火")
+            .addTranslation(LanguageTypes.EN_US, "Inferno Lambda");
+
+    public static final LanguageItem INFERNO_DESC = createSlashArtsDescription(SlashArtsRegistry.INFERNO)
+            .addTranslation(LanguageTypes.ZH_CN, "在目标位置召唤大型次元斩；命中后为敌人叠加灵魂燃烧。")
+            .addTranslation(LanguageTypes.EN_US, "Summons a large judgement cut at the target; applies soul burn stacks on hit.");
+
+    public static final LanguageItem INFERNO_LAMBDA_DESC = createSlashArtsDescription(SlashArtsRegistry.INFERNO_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "在目标位置召唤大型次元斩；命中后为敌人叠加更高层数的灵魂燃烧。")
+            .addTranslation(LanguageTypes.EN_US, "Summons a large judgement cut at the target; applies more soul burn stacks on hit.");
 
     // ========== Special Effects ==========
     // 协同攻击
@@ -1197,6 +1222,24 @@ public class LanguageItems {
     public static final LanguageItem WHIRLWIND_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.WHIRLWIND)
             .addTranslation(LanguageTypes.ZH_CN, "你的次元斩将允许造成重复的伤害。")
             .addTranslation(LanguageTypes.EN_US, "Your judgement cuts will be allowed to deal repeated damage.");
+
+    // 解算
+    public static final LanguageItem RESOLVE = createSpecialEffectLanguage(SpecialEffectsRegistry.RESOLVE)
+            .addTranslation(LanguageTypes.ZH_CN, "解算")
+            .addTranslation(LanguageTypes.EN_US, "Resolve");
+
+    public static final LanguageItem RESOLVE_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.RESOLVE)
+            .addTranslation(LanguageTypes.ZH_CN, "攻击带有演算层数的目标时消耗一层演算，造成附加伤害。")
+            .addTranslation(LanguageTypes.EN_US, "When attacking a target with calculus stacks, consumes one stack, deals bonus damage.");
+
+    // 燃沫
+    public static final LanguageItem FLAME_FOAM = createSpecialEffectLanguage(SpecialEffectsRegistry.FLAME_FOAM)
+            .addTranslation(LanguageTypes.ZH_CN, "燃沫")
+            .addTranslation(LanguageTypes.EN_US, "Flame Foam");
+
+    public static final LanguageItem FLAME_FOAM_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.FLAME_FOAM)
+            .addTranslation(LanguageTypes.ZH_CN, "攻击带有灵魂燃烧的目标时，额外造成基于其当前生命值的伤害。")
+            .addTranslation(LanguageTypes.EN_US, "When attacking a target with soul burn, deals extra damage based on their current health.");
 
     // 染色
     public static final LanguageItem COLOR_DYE = createSpecialEffectLanguage(SpecialEffectsRegistry.COLOR_DYE)

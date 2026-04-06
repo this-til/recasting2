@@ -112,6 +112,7 @@ public class SlashArtsRegistry {
     // 云轮风暴
     public static final RegistryObject<ExtendedSlashArts> CLOUD_WHEEL_STORM = registerExtendedSA("cloud_wheel_storm", new CloudWheelSlashArts().setLightningNumber(7).setAttackNumber(10));
 
+    //星旋
     public static final RegistryObject<ExtendedSlashArts> STELLAR_ROTATION = registerExtendedSA("stellar_rotation", new StellarRotationSlashArts());
 
     // 急行幻影剑
@@ -388,9 +389,12 @@ public class SlashArtsRegistry {
                 summonedSword.setStartDelay(random.nextInt(60));  // 随机延迟发射
                 summonedSword.setRoll(random.nextFloat() * 360.0f);
 
-                // 如果需要集中攻击，则朝向目标位置
+                // 初始化飞行方向：构造函数内 lookAt(getDeltaMovement()) 在速度为零时无法得到正确朝向，必须在 setPos 后重设
                 if (concentrate) {
                     summonedSword.lookAt(attackPos, false);
+                } else {
+                    summonedSword.setRot(livingEntity.getYRot(), livingEntity.getXRot(), true);
+                    summonedSword.updateMotion();
                 }
 
                 // 添加到世界
@@ -1934,7 +1938,7 @@ public class SlashArtsRegistry {
 
         int driveNumber = 20;        // 剑气数量
         int delay = 1;                // 每次生成间隔（tick）
-        float attack = 0.03f;         // 每次伤害倍率
+        float attack = 0.015f;         // 每次伤害倍率
         float speed = 2.5f;           // 剑气速度
         int life = 20;                 // 剑气持续时间
         float size = 2.0f;             // 剑气大小

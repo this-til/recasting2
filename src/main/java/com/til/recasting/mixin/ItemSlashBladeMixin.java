@@ -92,6 +92,7 @@ public class ItemSlashBladeMixin {
                         ;
                         // 特殊SE使用紫色标注名称
                         nameComponent = SpecialEffect.getDescription(specialEffectResourceLocation)
+                                .copy()
                                 .withStyle(extendedSpecialEffect.isSpecial() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.GRAY);
                     } else {
                         valueComponent = Component.literal(
@@ -108,6 +109,7 @@ public class ItemSlashBladeMixin {
                                                 : ChatFormatting.DARK_GRAY
                                 );
                         nameComponent = SpecialEffect.getDescription(specialEffectResourceLocation)
+                                .copy()
                                 .withStyle(ChatFormatting.GRAY);
                     }
 

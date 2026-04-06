@@ -46,23 +46,25 @@ public class AnvilSpecialEffectExtractionHandler {
         AtomicInteger foundSpecialSELevel = new AtomicInteger(0);
         AtomicReference<ResourceLocation> foundSpecialSELocation = new AtomicReference<>(null);
 
-        rightItem.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState -> {
-            rightItem.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> {
-                for (ResourceLocation seLocation : bladeState.getSpecialEffects()) {
-                    SpecialEffect se = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(seLocation);
-                    if (se instanceof com.til.recasting.registry.SpecialEffectsRegistry.ExtendedSpecialEffect extendedSE) {
-                        if (extendedSE.isSpecial()) {
-                            int level = extension.getExtendedSpecialLevels(seLocation);
-                            if (level > 0) {
-                                foundSpecialSELocation.set(seLocation);
-                                foundSpecialSELevel.set(level);
-                                break; // 只提取第一个找到的特殊SE
+        rightItem.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(
+                bladeState -> rightItem.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(
+                        extension -> {
+                            for(ResourceLocation seLocation : bladeState.getSpecialEffects()) {
+                                SpecialEffect se = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(seLocation);
+                                if (se instanceof com.til.recasting.registry.SpecialEffectsRegistry.ExtendedSpecialEffect extendedSE) {
+                                    if (extendedSE.isSpecial()) {
+                                        int level = extension.getExtendedSpecialLevels(seLocation);
+                                        if (level > 0) {
+                                            foundSpecialSELocation.set(seLocation);
+                                            foundSpecialSELevel.set(level);
+                                            break; // 只提取第一个找到的特殊SE
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }
-                }
-            });
-        });
+                )
+        );
 
         // 如果没有找到特殊SE，则不处理
         if (foundSpecialSELocation.get() == null || foundSpecialSELevel.get() == 0) {

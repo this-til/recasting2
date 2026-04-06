@@ -141,6 +141,7 @@ public class SpecialEffectsRegistry {
     public static final RegistryObject<SpecialEffect> COLOR_DYE = registerExtendedSE("color_dye", () -> new ColorDyeSpecialEffect().setMaxLevel(1).setSpecial(true));
     // 解算 - SE攻击带有演算buff的目标时消耗一层演算，造附加伤害
     public static final RegistryObject<SpecialEffect> RESOLVE = registerExtendedSE("resolve", () -> new ResolveSpecialEffect().setMaxLevel(1).setSpecial(true));
+    public static final RegistryObject<SpecialEffect> RESOLVE_LAMBDA = registerExtendedSE("resolve_lambda", () -> new ResolveSpecialEffect().setDamageRatio(1.5f).setMaxLevel(1).setSpecial(true));
     // 燃沫 - 攻击处于灵魂燃烧的目标时，使其额外受到当前生命比值的额外伤害，并有概率增加一层灵魂燃烧
     public static final RegistryObject<SpecialEffect> FLAME_FOAM = registerExtendedSE("flame_foam", () -> new FlameFoamSpecialEffect().setMaxLevel(1).setSpecial(true));
 
@@ -2174,6 +2175,8 @@ public class SpecialEffectsRegistry {
      * 解算
      * SE攻击带有演算buff的目标时消耗一层演算，造成1.75基数的附加伤害，并具有小爆炸的音效和粒子效果
      */
+    @Setter
+    @Accessors(chain = true)
     public static class ResolveSpecialEffect extends ExtendedSpecialEffect {
 
         float damageRatio = 1f;

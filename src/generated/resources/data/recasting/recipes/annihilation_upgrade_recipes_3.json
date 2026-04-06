@@ -6,12 +6,12 @@
       "type": "recasting:se_crystal",
       "item": "recasting:se_crystal",
       "request": {
-        "level": 4,
+        "level": 3,
         "special_effect_type": "recasting:annihilation"
       }
     },
     "U": {
-      "item": "recasting:upgrade_variant_4"
+      "item": "recasting:upgrade_variant_3"
     },
     "V": {
       "item": "slashblade:proudsoul"
@@ -26,7 +26,7 @@
     "item": "recasting:se_crystal"
   },
   "se_crystal": {
-    "level": 5,
+    "level": 4,
     "special_effect_type": "recasting:annihilation"
   },
   "show_notification": true

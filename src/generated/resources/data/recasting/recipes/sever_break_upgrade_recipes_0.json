@@ -11,22 +11,19 @@
       }
     },
     "U": {
-      "item": "recasting:upgrade_variant"
-    },
-    "V": {
-      "item": "slashblade:proudsoul"
+      "item": "recasting:abyss_flame"
     }
   },
   "pattern": [
-    " VS",
-    "VUV",
-    "SV "
+    " U ",
+    "USU",
+    " U "
   ],
   "result": {
     "item": "recasting:se_crystal"
   },
   "se_crystal": {
-    "level": 2,
+    "level": 0,
     "special_effect_type": "recasting:sever_break"
   },
   "show_notification": true
