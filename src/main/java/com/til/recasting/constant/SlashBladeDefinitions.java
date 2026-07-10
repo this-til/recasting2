@@ -1001,7 +1001,8 @@ public class SlashBladeDefinitions {
                             .slashArtsType(SlashArtsRegistry.LASER_1.getId())
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
-            .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR)
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR, 1)
             .build();
 
     public static final SlashBladeDefinition LASER_2 = createBuild(R.Slashblade.Laser.laser2)
@@ -1017,7 +1018,8 @@ public class SlashBladeDefinitions {
                             .slashArtsType(SlashArtsRegistry.LASER_2.getId())
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
-            .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR_2)
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 2))
+            .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR_2, 1)
             .build();
 
     public static final SlashBladeDefinition LASER_3 = createBuild(R.Slashblade.Laser.laser3)
@@ -1034,7 +1036,8 @@ public class SlashBladeDefinitions {
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.2f))
-            .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR_3)
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 3))
+            .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR_3, 1)
             .build();
 
     // endregion
