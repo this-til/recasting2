@@ -1,0 +1,22 @@
+{
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/shine_gold",
+  "properties": {
+    "attack_base": 6.0,
+    "max_damage": 960,
+    "slash_art": "recasting:zantetsuden_max",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/shine_gold.obj",
+    "summon_sword_color": -9216,
+    "texture": "recasting:slashblade/shine_gold.png"
+  }
+}

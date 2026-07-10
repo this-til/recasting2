@@ -92,6 +92,166 @@ public class SlashBladeRecipes {
                     .unlockedBy("has_iron_ingot", RecipeProviderMixin.invokeHas(Items.IRON_INGOT))
                     .save(consumer, recipeId);
 
+    /**
+     * 闪茶配方：从阔刃（铁）升级
+     * 要求：杀敌1000、锻造500
+     * I=荣耀锭, B=阔刃（铁）
+     */
+    public static final RecipeBuilderWrapper SHINE_TEA_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SHINE_TEA.getName())
+                    .pattern("  I")
+                    .pattern(" I ")
+                    .pattern("B  ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.BROADSWORD_IRON.getName())
+                                    .killCount(1000)
+                                    .refineCount(500)
+                                    .build()))
+                    .define('I', SlashBladeItems.PROUDSOUL_INGOT.get())
+                    .unlockedBy("has_iron_ingot", RecipeProviderMixin.invokeHas(Items.IRON_INGOT))
+                    .save(consumer, recipeId);
+
+    /**
+     * 闪茶 Lambda 配方：闪茶 → ^闪茶
+     * 要求：杀敌2000、锻造1000
+     * I=荣耀锭, B=闪茶
+     */
+    public static final RecipeBuilderWrapper SHINE_TEA_LAMBDA_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SHINE_TEA_LAMBDA.getName())
+                    .pattern("  I")
+                    .pattern(" I ")
+                    .pattern("B  ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.SHINE_TEA.getName())
+                                    .killCount(2000)
+                                    .refineCount(1000)
+                                    .build()))
+                    .define('I', SlashBladeItems.PROUDSOUL_INGOT.get())
+                    .unlockedBy("has_iron_ingot", RecipeProviderMixin.invokeHas(Items.IRON_INGOT))
+                    .save(consumer, recipeId);
+
+    /**
+     * 灿茶配方：^闪茶 → 灿茶（链：闪 → ^闪 → 灿 → ^灿）
+     * 要求：杀敌4000、锻造2000
+     * I=荣耀锭, B=闪茶 Lambda
+     */
+    public static final RecipeBuilderWrapper BRILLIANT_TEA_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BRILLIANT_TEA.getName())
+                    .pattern("  I")
+                    .pattern(" I ")
+                    .pattern("B  ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.SHINE_TEA_LAMBDA.getName())
+                                    .killCount(4000)
+                                    .refineCount(2000)
+                                    .build()))
+                    .define('I', SlashBladeItems.PROUDSOUL_INGOT.get())
+                    .unlockedBy("has_iron_ingot", RecipeProviderMixin.invokeHas(Items.IRON_INGOT))
+                    .save(consumer, recipeId);
+
+    /**
+     * 灿茶 Lambda 配方：灿茶 → ^灿茶
+     * 要求：杀敌8000、锻造4000
+     * I=荣耀锭, B=灿茶
+     */
+    public static final RecipeBuilderWrapper BRILLIANT_TEA_LAMBDA_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BRILLIANT_TEA_LAMBDA.getName())
+                    .pattern("  I")
+                    .pattern(" I ")
+                    .pattern("B  ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.BRILLIANT_TEA.getName())
+                                    .killCount(8000)
+                                    .refineCount(4000)
+                                    .build()))
+                    .define('I', SlashBladeItems.PROUDSOUL_INGOT.get())
+                    .unlockedBy("has_iron_ingot", RecipeProviderMixin.invokeHas(Items.IRON_INGOT))
+                    .save(consumer, recipeId);
+
+    /**
+     * 闪金配方：从青锋（铁）升级
+     * 要求：杀敌1000、荣耀50000
+     * I=荣耀锭, B=青锋（铁）
+     */
+    public static final RecipeBuilderWrapper SHINE_GOLD_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SHINE_GOLD.getName())
+                    .pattern(" I ")
+                    .pattern(" I ")
+                    .pattern(" B ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.GREEN_BLADE_IRON.getName())
+                                    .killCount(1000)
+                                    .proudSoul(50000)
+                                    .build()))
+                    .define('I', SlashBladeItems.PROUDSOUL_INGOT.get())
+                    .unlockedBy("has_iron_ingot", RecipeProviderMixin.invokeHas(Items.IRON_INGOT))
+                    .save(consumer, recipeId);
+
+    /**
+     * 闪金 Lambda 配方：闪金 → ^闪金
+     * 要求：杀敌2000、荣耀100000
+     * I=荣耀锭, B=闪金
+     */
+    public static final RecipeBuilderWrapper SHINE_GOLD_LAMBDA_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SHINE_GOLD_LAMBDA.getName())
+                    .pattern(" I ")
+                    .pattern(" I ")
+                    .pattern(" B ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.SHINE_GOLD.getName())
+                                    .killCount(2000)
+                                    .proudSoul(100000)
+                                    .build()))
+                    .define('I', SlashBladeItems.PROUDSOUL_INGOT.get())
+                    .unlockedBy("has_iron_ingot", RecipeProviderMixin.invokeHas(Items.IRON_INGOT))
+                    .save(consumer, recipeId);
+
+    /**
+     * 灿金配方：^闪金 → 灿金（链：闪 → ^闪 → 灿 → ^灿）
+     * 要求：杀敌4000、荣耀200000
+     * I=荣耀锭, B=闪金 Lambda
+     */
+    public static final RecipeBuilderWrapper BRILLIANT_GOLD_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BRILLIANT_GOLD.getName())
+                    .pattern(" I ")
+                    .pattern(" I ")
+                    .pattern(" B ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.SHINE_GOLD_LAMBDA.getName())
+                                    .killCount(4000)
+                                    .proudSoul(200000)
+                                    .build()))
+                    .define('I', SlashBladeItems.PROUDSOUL_INGOT.get())
+                    .unlockedBy("has_iron_ingot", RecipeProviderMixin.invokeHas(Items.IRON_INGOT))
+                    .save(consumer, recipeId);
+
+    /**
+     * 灿金 Lambda 配方：灿金 → ^灿金
+     * 要求：杀敌8000、荣耀400000
+     * I=荣耀锭, B=灿金
+     */
+    public static final RecipeBuilderWrapper BRILLIANT_GOLD_LAMBDA_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BRILLIANT_GOLD_LAMBDA.getName())
+                    .pattern(" I ")
+                    .pattern(" I ")
+                    .pattern(" B ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.BRILLIANT_GOLD.getName())
+                                    .killCount(8000)
+                                    .proudSoul(400000)
+                                    .build()))
+                    .define('I', SlashBladeItems.PROUDSOUL_INGOT.get())
+                    .unlockedBy("has_iron_ingot", RecipeProviderMixin.invokeHas(Items.IRON_INGOT))
+                    .save(consumer, recipeId);
+
 
     /**
      * 碎白配方：从青锋（铁）升级

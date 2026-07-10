@@ -195,6 +195,54 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "魂刃")
             .addTranslation(LanguageTypes.EN_US, "Soulblade");
 
+    public static final LanguageItem SUPREME_POLE = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.SUPREME_POLE)
+            .addTranslation(LanguageTypes.ZH_CN, "太极")
+            .addTranslation(LanguageTypes.EN_US, "Taiji");
+
+    public static final LanguageItem SUPREME_POLE_LAMBDA = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.SUPREME_POLE_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^太极")
+            .addTranslation(LanguageTypes.EN_US, "Taiji Lambda");
+
+    public static final LanguageItem WIND_CLOUD = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.WIND_CLOUD)
+            .addTranslation(LanguageTypes.ZH_CN, "风云")
+            .addTranslation(LanguageTypes.EN_US, "Wind Cloud");
+
+    public static final LanguageItem WIND_CLOUD_LAMBDA = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.WIND_CLOUD_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^风云")
+            .addTranslation(LanguageTypes.EN_US, "Wind Cloud Lambda");
+
+    public static final LanguageItem BRILLIANT_GOLD = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.BRILLIANT_GOLD)
+            .addTranslation(LanguageTypes.ZH_CN, "灿金")
+            .addTranslation(LanguageTypes.EN_US, "Brilliant Gold");
+
+    public static final LanguageItem BRILLIANT_GOLD_LAMBDA = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.BRILLIANT_GOLD_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^灿金")
+            .addTranslation(LanguageTypes.EN_US, "Brilliant Gold Lambda");
+
+    public static final LanguageItem BRILLIANT_TEA = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.BRILLIANT_TEA)
+            .addTranslation(LanguageTypes.ZH_CN, "灿茶")
+            .addTranslation(LanguageTypes.EN_US, "Brilliant Tea");
+
+    public static final LanguageItem BRILLIANT_TEA_LAMBDA = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.BRILLIANT_TEA_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^灿茶")
+            .addTranslation(LanguageTypes.EN_US, "Brilliant Tea Lambda");
+
+    public static final LanguageItem SHINE_GOLD = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.SHINE_GOLD)
+            .addTranslation(LanguageTypes.ZH_CN, "闪金")
+            .addTranslation(LanguageTypes.EN_US, "Shine Gold");
+
+    public static final LanguageItem SHINE_GOLD_LAMBDA = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.SHINE_GOLD_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^闪金")
+            .addTranslation(LanguageTypes.EN_US, "Shine Gold Lambda");
+
+    public static final LanguageItem SHINE_TEA = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.SHINE_TEA)
+            .addTranslation(LanguageTypes.ZH_CN, "闪茶")
+            .addTranslation(LanguageTypes.EN_US, "Shine Tea");
+
+    public static final LanguageItem SHINE_TEA_LAMBDA = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.SHINE_TEA_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^闪茶")
+            .addTranslation(LanguageTypes.EN_US, "Shine Tea Lambda");
+
     // ========== Fluorescence SlashBlades ==========
     public static final LanguageItem FLUORESCENCE_1 = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.FLUORESCENCE_1)
             .addTranslation(LanguageTypes.ZH_CN, "荧光")

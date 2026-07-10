@@ -1,0 +1,22 @@
+{
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/wind_cloud_lambda",
+  "properties": {
+    "attack_base": 6.0,
+    "max_damage": 1280,
+    "slash_art": "recasting:phantom_explosion_lambda",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/wind_cloud.obj",
+    "summon_sword_color": -135602,
+    "texture": "recasting:slashblade/wind_cloud.png"
+  }
+}

@@ -386,6 +386,76 @@ public class SlashBladeDefinitions {
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.25f))
             .build();
 
+    // 闪金（shine_gold）
+    public static final SlashBladeDefinition SHINE_GOLD = createBuild(R.Slashblade.shineGold)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.shineGold$obj)
+                            .textureName(R.Slashblade.shineGold$png)
+                            .effectColor(new Color(255, 220, 0).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(24 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_MAX.getId())
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
+    public static final SlashBladeDefinition SHINE_GOLD_LAMBDA = createBuild(Recasting.prefix("slashblade/shine_gold_lambda"))
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.shineGold$obj)
+                            .textureName(R.Slashblade.shineGold$png)
+                            .effectColor(new Color(255, 220, 0).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(32 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_MAX_LAMBDA.getId())
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
+    // 闪茶（shine_tea）
+    public static final SlashBladeDefinition SHINE_TEA = createBuild(R.Slashblade.shineTea)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.shineTea$obj)
+                            .textureName(R.Slashblade.shineTea$png)
+                            .effectColor(new Color(255, 220, 0).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(24 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_MAX.getId())
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
+    public static final SlashBladeDefinition SHINE_TEA_LAMBDA = createBuild(Recasting.prefix("slashblade/shine_tea_lambda"))
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.shineTea$obj)
+                            .textureName(R.Slashblade.shineTea$png)
+                            .effectColor(new Color(255, 220, 0).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(32 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_MAX_LAMBDA.getId())
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
 
     //endregion
 
@@ -485,7 +555,7 @@ public class SlashBladeDefinitions {
             .build();
 
     // 太极
-    public static final SlashBladeDefinition SUPREME_POLE = createBuild(R.Slashblade.soulblade)
+    public static final SlashBladeDefinition SUPREME_POLE = createBuild(R.Slashblade.supremePole)
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
                             .modelName(R.Slashblade.supremePole$obj)
@@ -503,7 +573,7 @@ public class SlashBladeDefinitions {
             .addSpecialEffects(SpecialEffectsRegistry.RESOLVE)
             .build();
 
-    public static final SlashBladeDefinition SUPREME_POLE_LAMBDA = createBuild(R.Slashblade.soulblade)
+    public static final SlashBladeDefinition SUPREME_POLE_LAMBDA = createBuild(Recasting.prefix("slashblade/supreme_pole_lambda"))
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
                             .modelName(R.Slashblade.supremePole$obj)
@@ -523,7 +593,7 @@ public class SlashBladeDefinitions {
 
 
     //风云
-    public static final SlashBladeDefinition WIND_CLOUD = createBuild(R.Slashblade.soulblade)
+    public static final SlashBladeDefinition WIND_CLOUD = createBuild(R.Slashblade.windCloud)
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
                             .modelName(R.Slashblade.windCloud$obj)
@@ -540,7 +610,7 @@ public class SlashBladeDefinitions {
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
-    public static final SlashBladeDefinition WIND_CLOUD_LAMBDA = createBuild(R.Slashblade.soulblade)
+    public static final SlashBladeDefinition WIND_CLOUD_LAMBDA = createBuild(Recasting.prefix("slashblade/wind_cloud_lambda"))
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
                             .modelName(R.Slashblade.windCloud$obj)
@@ -557,12 +627,12 @@ public class SlashBladeDefinitions {
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
-    // 灿金
-    public static final SlashBladeDefinition CAN_JIN = createBuild(R.Slashblade.soulblade)
+    // 灿金（brilliant_gold）
+    public static final SlashBladeDefinition BRILLIANT_GOLD = createBuild(R.Slashblade.brilliantGold)
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.canjin$obj)
-                            .textureName(R.Slashblade.cancha$png)
+                            .modelName(R.Slashblade.brilliantGold$obj)
+                            .textureName(R.Slashblade.brilliantTea$png)
                             .effectColor(new Color(255, 255, 0).getRGB())
             )
             .propertiesDefinition(
@@ -575,11 +645,11 @@ public class SlashBladeDefinitions {
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
-    public static final SlashBladeDefinition CAN_JIN_LAMBDA = createBuild(R.Slashblade.soulblade)
+    public static final SlashBladeDefinition BRILLIANT_GOLD_LAMBDA = createBuild(Recasting.prefix("slashblade/brilliant_gold_lambda"))
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.canjin$obj)
-                            .textureName(R.Slashblade.cancha$png)
+                            .modelName(R.Slashblade.brilliantGold$obj)
+                            .textureName(R.Slashblade.brilliantTea$png)
                             .effectColor(new Color(255, 255, 0).getRGB())
             )
             .propertiesDefinition(
@@ -593,12 +663,12 @@ public class SlashBladeDefinitions {
             .build();
 
 
-    // 灿茶
-    public static final SlashBladeDefinition CAN_CHA = createBuild(R.Slashblade.soulblade)
+    // 灿茶（brilliant_tea）
+    public static final SlashBladeDefinition BRILLIANT_TEA = createBuild(R.Slashblade.brilliantTea)
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.cancha$obj)
-                            .textureName(R.Slashblade.cancha$png)
+                            .modelName(R.Slashblade.brilliantTea$obj)
+                            .textureName(R.Slashblade.brilliantTea$png)
                             .effectColor(new Color(255, 255, 0).getRGB())
             )
             .propertiesDefinition(
@@ -611,11 +681,11 @@ public class SlashBladeDefinitions {
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
-    public static final SlashBladeDefinition CAN_CHA_LAMBDA = createBuild(R.Slashblade.soulblade)
+    public static final SlashBladeDefinition BRILLIANT_TEA_LAMBDA = createBuild(Recasting.prefix("slashblade/brilliant_tea_lambda"))
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.cancha$obj)
-                            .textureName(R.Slashblade.cancha$png)
+                            .modelName(R.Slashblade.brilliantTea$obj)
+                            .textureName(R.Slashblade.brilliantTea$png)
                             .effectColor(new Color(255, 255, 0).getRGB())
             )
             .propertiesDefinition(
