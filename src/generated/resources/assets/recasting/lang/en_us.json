@@ -132,7 +132,7 @@
   "recasting.tooltip.engraving_rule.main": "• Engrave on anvil: A blade can engrave up to %d normal SEs and %d special SE (special SE can be replaced on the anvil; Creative mode has no restrictions)",
   "recasting.tooltip.engraving_rule.title": "Engraving Rules:",
   "recasting.tooltip.engraving_rule.upgrade": "• Upgrade: Use crystals with the same type and higher-level SE to increase level.",
-  "recasting.tooltip.special_se.badge": "Special SE",
+  "recasting.tooltip.special_se.badge": "(Special)",
   "recasting.tooltip.special_se_extract": "• Extract: Place a blade with a special SE on the anvil's left and Abyss Flame on the right to extract a crystal; the blade is destroyed.",
   "se.recasting.annihilation": "Annihilation",
   "se.recasting.annihilation.desc": "After summoning a certain number of judgement cuts, additionally summons a giant judgement cut.",

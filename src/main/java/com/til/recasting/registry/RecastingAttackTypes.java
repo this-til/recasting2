@@ -172,5 +172,22 @@ public class RecastingAttackTypes {
             })
     );
 
+    /**
+     * 激光直线攻击类型（魔法伤害）
+     */
+    public static final RegistryObject<AttackType> LASER_ATTACK = ATTACK_TYPES.register("laser",
+            () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
+                    attacker.damageSources().indirectMagic(target, attacker),
+                    new DamageStructure(1.0f, 0.0f)
+            ))
+    );
+
+    /**
+     * 光子灼痕引爆标记（防止 SE 递归叠层）
+     */
+    public static final RegistryObject<AttackType> PHOTON_SCAR_ATTACK = ATTACK_TYPES.register("photon_scar",
+            () -> new AttackType((attacker, target) -> null)
+    );
+
 }
 

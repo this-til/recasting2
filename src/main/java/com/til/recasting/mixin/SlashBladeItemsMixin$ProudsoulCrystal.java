@@ -57,12 +57,13 @@ public class SlashBladeItemsMixin$ProudsoulCrystal {
 
         Component nameComponent = Component.translatable(se.getDescriptionId());
         if (extendedSE.isSpecial()) {
-            nameComponent = nameComponent.copy()
-                    .withStyle(ChatFormatting.LIGHT_PURPLE)
-                    .append(Component.literal(" "))
-                    .append(Component.translatable("recasting.tooltip.special_se.badge")
-                            .withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.ITALIC));
-            components.add(nameComponent.copy().withStyle(ChatFormatting.GRAY));
+            components.add(
+                    nameComponent.copy()
+                            .withStyle(ChatFormatting.LIGHT_PURPLE)
+                            .append(Component.literal(" "))
+                            .append(Component.translatable("recasting.tooltip.special_se.badge")
+                                    .withStyle(ChatFormatting.LIGHT_PURPLE))
+            );
         } else {
             components.add(
                     Component.translatable(

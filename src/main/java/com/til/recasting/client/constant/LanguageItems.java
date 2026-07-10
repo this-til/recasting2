@@ -49,6 +49,10 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "断灭")
             .addTranslation(LanguageTypes.EN_US, "Annihilation");
 
+    public static final LanguageItem BUFF_PHOTON_SCAR = new LanguageItem("buff.recasting.photon_scar")
+            .addTranslation(LanguageTypes.ZH_CN, "光子灼痕")
+            .addTranslation(LanguageTypes.EN_US, "Photon Scar");
+
     // ========== Void SlashBlades ==========
     public static final LanguageItem VOID_1 = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.VOID_1)
             .addTranslation(LanguageTypes.ZH_CN, "洞虚利刃")
@@ -452,8 +456,8 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "• Extract: Place a blade with a special SE on the anvil's left and Abyss Flame on the right to extract a crystal; the blade is destroyed.");
 
     public static final LanguageItem SPECIAL_SE_BADGE = new LanguageItem("recasting.tooltip.special_se.badge")
-            .addTranslation(LanguageTypes.ZH_CN, "特殊 SE")
-            .addTranslation(LanguageTypes.EN_US, "Special SE");
+            .addTranslation(LanguageTypes.ZH_CN, "(特殊)")
+            .addTranslation(LanguageTypes.EN_US, "(Special)");
 
     public static final LanguageItem ABYSS_FLAME_EXTRACT_HINT = new LanguageItem("recasting.tooltip.abyss_flame.extract")
             .addTranslation(LanguageTypes.ZH_CN, "• 与带特殊SE的拔刀剑在铁砧合成，可提取特殊SE结晶（刀将被损毁）")
@@ -995,6 +999,31 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "在目标位置召唤大型次元斩；命中后为敌人叠加更高层数的灵魂燃烧。灵魂燃烧：使目标持续受到生命百分比的火焰伤害，层数随时间衰减。")
             .addTranslation(LanguageTypes.EN_US, "Summons a large judgement cut at the target; applies more soul burn stacks on hit. Soul burn: inflicts ongoing fire damage based on current health percentage; stacks decay over time.");
 
+    // 激光
+    public static final LanguageItem LASER_1_SA = createSlashArtsLanguage(SlashArtsRegistry.LASER_1)
+            .addTranslation(LanguageTypes.ZH_CN, "裂空激光")
+            .addTranslation(LanguageTypes.EN_US, "Laser Beam");
+
+    public static final LanguageItem LASER_2_SA = createSlashArtsLanguage(SlashArtsRegistry.LASER_2)
+            .addTranslation(LanguageTypes.ZH_CN, "裂空激光[脉冲]")
+            .addTranslation(LanguageTypes.EN_US, "Laser Beam [Pulse]");
+
+    public static final LanguageItem LASER_3_SA = createSlashArtsLanguage(SlashArtsRegistry.LASER_3)
+            .addTranslation(LanguageTypes.ZH_CN, "裂空激光[阻断]")
+            .addTranslation(LanguageTypes.EN_US, "Laser Beam [Intercept]");
+
+    public static final LanguageItem LASER_1_SA_DESC = createSlashArtsDescription(SlashArtsRegistry.LASER_1)
+            .addTranslation(LanguageTypes.ZH_CN, "沿视线发射直线光束，对路径上的敌人造成伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Fire a straight beam along your view that damages enemies along its path.");
+
+    public static final LanguageItem LASER_2_SA_DESC = createSlashArtsDescription(SlashArtsRegistry.LASER_2)
+            .addTranslation(LanguageTypes.ZH_CN, "沿视线延迟连射多道光束，对路径上的敌人造成伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Fire multiple delayed beams along your view that damage enemies along their path.");
+
+    public static final LanguageItem LASER_3_SA_DESC = createSlashArtsDescription(SlashArtsRegistry.LASER_3)
+            .addTranslation(LanguageTypes.ZH_CN, "沿视线高速连射多道光束，对路径上的敌人造成伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Rapidly fire multiple delayed beams along your view that damage enemies along their path.");
+
     // ========== Special Effects ==========
     // 协同攻击
     public static final LanguageItem COOPERATE_WITH = createSpecialEffectLanguage(SpecialEffectsRegistry.COOPERATE_WITH)
@@ -1317,6 +1346,31 @@ public class LanguageItems {
     public static final LanguageItem COLOR_DYE_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.COLOR_DYE)
             .addTranslation(LanguageTypes.ZH_CN, "挥刀时更改刀刃颜色为随机的。")
             .addTranslation(LanguageTypes.EN_US, "Changes blade color to random when slashing.");
+
+    // 光子灼痕
+    public static final LanguageItem PHOTON_SCAR = createSpecialEffectLanguage(SpecialEffectsRegistry.PHOTON_SCAR)
+            .addTranslation(LanguageTypes.ZH_CN, "光子灼痕")
+            .addTranslation(LanguageTypes.EN_US, "Photon Scar");
+
+    public static final LanguageItem PHOTON_SCAR_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.PHOTON_SCAR)
+            .addTranslation(LanguageTypes.ZH_CN, "攻击范围内命中叠加灼痕，满层释放短直线光束；光束对带有灼痕的目标造成更高伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks scars on targets hit within attack range. At max stacks, fires a short beam. Beams deal more damage to scarred targets.");
+
+    public static final LanguageItem PHOTON_SCAR_2 = createSpecialEffectLanguage(SpecialEffectsRegistry.PHOTON_SCAR_2)
+            .addTranslation(LanguageTypes.ZH_CN, "光子灼痕[脉冲]")
+            .addTranslation(LanguageTypes.EN_US, "Photon Scar [Pulse]");
+
+    public static final LanguageItem PHOTON_SCAR_2_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.PHOTON_SCAR_2)
+            .addTranslation(LanguageTypes.ZH_CN, "攻击范围内命中叠加灼痕，满层释放短直线光束；光束对带有灼痕的目标造成更高伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks scars on targets hit within attack range. At max stacks, fires a short beam. Beams deal more damage to scarred targets.");
+
+    public static final LanguageItem PHOTON_SCAR_3 = createSpecialEffectLanguage(SpecialEffectsRegistry.PHOTON_SCAR_3)
+            .addTranslation(LanguageTypes.ZH_CN, "光子灼痕[阻断]")
+            .addTranslation(LanguageTypes.EN_US, "Photon Scar [Intercept]");
+
+    public static final LanguageItem PHOTON_SCAR_3_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.PHOTON_SCAR_3)
+            .addTranslation(LanguageTypes.ZH_CN, "攻击范围内命中叠加灼痕，满层释放短直线光束；光束对带有灼痕的目标造成更高伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks scars on targets hit within attack range. At max stacks, fires a short beam. Beams deal more damage to scarred targets.");
 
     private static LanguageItem createSlashBladeDefinitionLanguage(SlashBladeDefinition definition) {
         return new LanguageItem(definition.getTranslationKey());

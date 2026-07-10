@@ -10,13 +10,17 @@ import com.til.recasting.util.DamageStructure;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.util.KnockBacks;
 import mods.flammpfeil.slashblade.util.VectorHelper;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -233,5 +237,78 @@ public class AttackHelper {
 
         //ArrowReflector.doReflect(target, attacker);
         //TNTExtinguisher.doExtinguishing(target, attacker);
+    }
+
+    /**
+     * 沿线段粗筛并精筛实体后结算伤害，并在服务端沿线生成尘埃粒子
+     */
+    public static void attackAlongSegment(
+            LivingEntity attacker,
+            Vec3 start,
+            Vec3 end,
+            float radius,
+            DamageStructure damageStructure,
+            List<AttackType> attackTypeList,
+            int color
+    ) {
+        if (attacker.level().isClientSide()) {
+            return;
+        }
+
+        AABB box = new AABB(start, end).inflate(radius);
+        List<LivingEntity> candidates = attacker.level().getEntitiesOfClass(
+                LivingEntity.class,
+                box,
+                entity -> EntityPredicateHelper.canTarget(attacker, entity)
+        );
+
+        for (LivingEntity target : candidates) {
+            Vec3 center = target.getBoundingBox().getCenter();
+            if (PosHelper.distancePointToSegment(center, start, end) > radius) {
+                continue;
+            }
+            attack(attacker, target, damageStructure, attackTypeList);
+        }
+
+        if (attacker.level() instanceof ServerLevel serverLevel) {
+            spawnDustAlongSegment(serverLevel, start, end, color, Math.max(0.25f, radius * 0.5f));
+        }
+    }
+
+    /**
+     * 从眼位沿当前视角方向结算线段伤害
+     */
+    public static void attackAlongLook(
+            LivingEntity attacker,
+            float range,
+            float radius,
+            DamageStructure damageStructure,
+            List<AttackType> attackTypeList,
+            int color
+    ) {
+        Vec3 start = attacker.getEyePosition();
+        Vec3 end = start.add(attacker.getLookAngle().scale(range));
+        attackAlongSegment(attacker, start, end, radius, damageStructure, attackTypeList, color);
+    }
+
+    /**
+     * 沿线采样生成彩色尘埃粒子
+     */
+    public static void spawnDustAlongSegment(ServerLevel serverLevel, Vec3 start, Vec3 end, int color, float spacing) {
+        Vec3 delta = end.subtract(start);
+        double length = delta.length();
+        if (length <= 0.0) {
+            return;
+        }
+        int steps = Math.max(1, (int) Math.ceil(length / spacing));
+        float r = ((color >> 16) & 0xFF) / 255.0f;
+        float g = ((color >> 8) & 0xFF) / 255.0f;
+        float b = (color & 0xFF) / 255.0f;
+        DustParticleOptions dust = new DustParticleOptions(new Vector3f(r, g, b), 1.0f);
+        for (int i = 0; i <= steps; i++) {
+            double t = i / (double) steps;
+            Vec3 pos = start.lerp(end, t);
+            serverLevel.sendParticles(dust, pos.x, pos.y, pos.z, 1, 0.0, 0.0, 0.0, 0.0);
+        }
     }
 }

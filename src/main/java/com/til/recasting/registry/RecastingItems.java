@@ -130,15 +130,15 @@ public class RecastingItems {
                         int currentLevel = data.getSpecialEffectLevel();
                         int maxLevel = extendedSE.getMaxLevel();
 
-                        // 特殊SE使用紫色标注名称
                         Component nameComponent = Component.translatable(se.getDescriptionId())
                                 .withStyle(extendedSE.isSpecial() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.GRAY);
                         if (extendedSE.isSpecial()) {
-                            nameComponent = nameComponent.copy()
-                                    .append(Component.literal(" "))
-                                    .append(Component.translatable("recasting.tooltip.special_se.badge")
-                                            .withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.ITALIC));
-                            components.add(nameComponent.copy().withStyle(ChatFormatting.GRAY));
+                            components.add(
+                                    nameComponent.copy()
+                                            .append(Component.literal(" "))
+                                            .append(Component.translatable("recasting.tooltip.special_se.badge")
+                                                    .withStyle(ChatFormatting.LIGHT_PURPLE))
+                            );
                         } else {
                             components.add(
                                     Component.translatable(

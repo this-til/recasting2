@@ -1,6 +1,7 @@
 package com.til.recasting.client;
 
 import com.til.recasting.Recasting;
+import com.til.recasting.client.particle.StarBlinkParticleProvider;
 import com.til.recasting.client.registry.BuffLevelRendererRegistry;
 import com.til.recasting.client.registry.EntityRenderExtensionRegistry;
 import com.til.recasting.registry.RecastingParticleTypes;
@@ -40,6 +41,7 @@ public class ClientSetup {
      */
     @SubscribeEvent
     public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
+        event.registerSpecial(RecastingParticleTypes.STAR_BLINK.get(), new StarBlinkParticleProvider());
     }
 }
 

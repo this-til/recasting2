@@ -146,6 +146,11 @@ public class SlashArtsRegistry {
     public static final RegistryObject<ExtendedSlashArts> INFERNO = registerExtendedSA("inferno", new InfernoSlashArts());
     public static final RegistryObject<ExtendedSlashArts> INFERNO_LAMBDA = registerExtendedSA("inferno_lambda", new InfernoSlashArts().setSoulBurnLevel(6));
 
+    // 激光
+    public static final RegistryObject<ExtendedSlashArts> LASER_1 = registerExtendedSA("laser_1", new LaserBeamSlashArts().setBeamCount(1).setAttack(1.0f));
+    public static final RegistryObject<ExtendedSlashArts> LASER_2 = registerExtendedSA("laser_2", new LaserBeamSlashArts().setBeamCount(3).setDelay(3).setAttack(0.55f));
+    public static final RegistryObject<ExtendedSlashArts> LASER_3 = registerExtendedSA("laser_3", new LaserBeamSlashArts().setBeamCount(7).setDelay(2).setAttack(0.35f));
+
     /**
      * 注册扩展的 SlashArts，自动关联 ComboState
      */
@@ -2105,6 +2110,53 @@ public class SlashArtsRegistry {
                     SoundEvents.ENDERMAN_TELEPORT,
                     net.minecraft.sounds.SoundSource.PLAYERS, 0.5F,
                     0.8F / (livingEntity.getRandom().nextFloat() * 0.4F + 0.8F));
+        }
+    }
+
+    /**
+     * 激光光束 Slash Arts
+     * 按玩家当前视角延迟连射直线伤害
+     */
+    @Setter
+    @Accessors(chain = true)
+    public static class LaserBeamSlashArts extends ExtendedSlashArts {
+
+        int beamCount = 1;
+        int delay = 3;
+        float attack = 1.0f;
+        float range = 20f;
+        float radius = 0.75f;
+
+        @Override
+        public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
+            if (livingEntity.level().isClientSide()) {
+                return;
+            }
+
+            float distMul = propertiesDefinitionExtension.attackDistance();
+            float finalRange = range * distMul;
+            int color = slashBladeState.getColorCode();
+            DamageStructure damageStructure = new DamageStructure(attack, 0);
+            List<com.til.recasting.registry.instance.AttackType> attackTypes = List.of(RecastingAttackTypes.LASER_ATTACK.get());
+
+            LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN);
+            timeRunOptional.ifPresent(timeRun -> {
+                for (int i = 0; i < beamCount; i++) {
+                    timeRun.addTimerCell(
+                            () -> AttackHelper.attackAlongLook(
+                                    livingEntity,
+                                    finalRange,
+                                    radius,
+                                    damageStructure,
+                                    attackTypes,
+                                    color
+                            ),
+                            delay * i
+                    );
+                }
+            });
+
+            livingEntity.playSound(SoundEvents.BEACON_ACTIVATE, 0.35F, 1.6F);
         }
     }
 

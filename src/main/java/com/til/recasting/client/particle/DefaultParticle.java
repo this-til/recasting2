@@ -1,15 +1,23 @@
 package com.til.recasting.client.particle;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -18,68 +26,51 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import java.awt.*;
-import java.util.stream.Stream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * 默认粒子类 - 从 1.16.5 迁移到 1.20.1
- * 支持自定义纹理、大小、颜色、旋转等效果
- * 
- * @author til
+ * 可链式配置的通用 Billboard 粒子，自 1.16.5 GlowingFireGlow DefaultParticle 迁移。
+ * <p>
+ * 支持自定义纹理、尺寸曲线、速度衰减、重力与自转；无纹理时走 {@link #NULL_TEXTURE}。
  */
 @OnlyIn(Dist.CLIENT)
 public class DefaultParticle extends Particle {
 
-    /**
-     * 生命周期的一半（用于大小变化计算）
-     */
+    /** 生命周期一半的 tick 数，供尺寸曲线将寿命映射为 0→1→0 的三角波。 */
     protected float particleHalfAge;
 
-    /**
-     * 运动衰减系数
-     */
+    /** 每 tick 对速度分量的乘积衰减；为 null 时不衰减。 */
     @Nullable
     protected Vec3 moveAttenuation;
 
-    /**
-     * 重力系数
-     */
+    /** 重力系数；非 0 时每 tick 对 {@code yd} 施加 {@code -0.04 * particleGravity}。 */
     protected float particleGravity;
 
-    /**
-     * 粒子大小
-     */
+    /** 基础渲染半宽（四边形边长的一半）。 */
     protected float size = 1;
 
-    /**
-     * 粒子大小变化类型
-     */
+    /** 生命周期内尺寸变化曲线；为 null 时保持 {@link #size} 不变。 */
     protected SizeChangeType sizeChangeType;
 
-    /**
-     * 粒子的旋转角度（弧度）
-     */
+    /** 当前绕视线轴的滚转角（弧度）。 */
     protected float roll;
 
-    /**
-     * 上一刻的旋转角度
-     */
+    /** 上一 tick 的滚转角，用于渲染插值。 */
     protected float oldRoll;
 
-    /**
-     * 旋转速度（弧度/tick）
-     */
+    /** 每 tick 滚转增量（弧度）。 */
     protected float rollSpeed;
 
-    /**
-     * 是否启用碰撞
-     */
+    /** 为 true 时走 {@link #move} 做方块碰撞；否则直接累加坐标。 */
     protected boolean enableCollision = false;
 
-    /**
-     * 粒子渲染类型（用于自定义纹理）
-     */
+    /** 粒子贴图；为 null 时使用 {@link #NULL_TEXTURE}。 */
     @Nullable
-    protected ParticleRenderType customRenderType;
+    protected ResourceLocation textureName;
+
+    /** 按贴图缓存的 {@link ParticleRenderType}，避免每帧新建。 */
+    public static final Map<ResourceLocation, ParticleRenderType> map = new HashMap<>();
 
     public DefaultParticle(ClientLevel level, double x, double y, double z) {
         super(level, x, y, z);
@@ -91,9 +82,6 @@ public class DefaultParticle extends Particle {
         this.zo = z;
     }
 
-    /**
-     * 设置大小
-     */
     public DefaultParticle setSize(float size) {
         this.size = size;
         this.setSize(size, size);
@@ -101,7 +89,7 @@ public class DefaultParticle extends Particle {
     }
 
     /**
-     * 设置生命周期
+     * 设置生命周期，并同步更新 {@link #particleHalfAge}。
      */
     public DefaultParticle setLifeTime(int lifetime) {
         this.lifetime = lifetime;
@@ -109,9 +97,6 @@ public class DefaultParticle extends Particle {
         return this;
     }
 
-    /**
-     * 设置运动速度
-     */
     public DefaultParticle setMove(double motionX, double motionY, double motionZ) {
         this.xd = motionX;
         this.yd = motionY;
@@ -120,16 +105,13 @@ public class DefaultParticle extends Particle {
     }
 
     /**
-     * 设置移动衰减
+     * 设置速度衰减向量；各分量在每 tick 末乘到对应速度上。
      */
     public DefaultParticle setMoveAttenuation(Vec3 moveAttenuation) {
         this.moveAttenuation = moveAttenuation;
         return this;
     }
 
-    /**
-     * 设置位置
-     */
     public DefaultParticle setPosition(double x, double y, double z) {
         this.xo = x;
         this.yo = y;
@@ -141,9 +123,6 @@ public class DefaultParticle extends Particle {
         return this;
     }
 
-    /**
-     * 设置颜色
-     */
     public DefaultParticle setColor(Color color) {
         this.rCol = color.getRed() / 255f;
         this.gCol = color.getGreen() / 255f;
@@ -152,43 +131,28 @@ public class DefaultParticle extends Particle {
         return this;
     }
 
-    /**
-     * 设置重力
-     */
     public DefaultParticle setParticleGravity(float particleGravity) {
         this.particleGravity = particleGravity;
         return this;
     }
 
-    /**
-     * 设置大小变化类型
-     */
     public DefaultParticle setSizeChangeType(SizeChangeType sizeChangeType) {
         this.sizeChangeType = sizeChangeType;
         return this;
     }
 
-    /**
-     * 设置是否启用碰撞
-     */
     public DefaultParticle setParticleCollide(boolean particleCollide) {
         this.enableCollision = particleCollide;
         return this;
     }
 
-    /**
-     * 设置旋转速度
-     */
     public DefaultParticle setRollSpeed(float rollSpeed) {
         this.rollSpeed = rollSpeed;
         return this;
     }
 
-    /**
-     * 设置自定义渲染类型
-     */
-    public DefaultParticle setCustomRenderType(@Nullable ParticleRenderType renderType) {
-        this.customRenderType = renderType;
+    public DefaultParticle setTextureName(@Nullable ResourceLocation textureName) {
+        this.textureName = textureName;
         return this;
     }
 
@@ -203,7 +167,7 @@ public class DefaultParticle extends Particle {
             return;
         }
 
-        // 处理碰撞
+        // 位移：可选方块碰撞
         if (enableCollision) {
             Vec3 motion = new Vec3(xd, yd, zd);
             this.move(motion.x, motion.y, motion.z);
@@ -213,67 +177,56 @@ public class DefaultParticle extends Particle {
             this.z += this.zd;
         }
 
-        // 应用运动衰减
+        // 速度衰减
         if (moveAttenuation != null) {
             this.xd *= moveAttenuation.x;
             this.yd *= moveAttenuation.y;
             this.zd *= moveAttenuation.z;
         }
 
-        // 应用重力
+        // 重力
         if (particleGravity != 0) {
             this.yd -= 0.04D * (double) this.particleGravity;
         }
 
-        // 更新旋转
         this.oldRoll = this.roll;
         this.roll += this.rollSpeed;
     }
 
     @Override
-    public void render(@NotNull VertexConsumer consumer, Camera camera, float partialTick) {
+    public void render(@NotNull VertexConsumer buffer, Camera camera, float partialTick) {
+        // 相对相机的插值位置
         Vec3 cameraPos = camera.getPosition();
-        
-        // 计算插值后的位置
-        float x = (float) (Mth.lerp(partialTick, this.xo, this.x) - cameraPos.x());
-        float y = (float) (Mth.lerp(partialTick, this.yo, this.y) - cameraPos.y());
-        float z = (float) (Mth.lerp(partialTick, this.zo, this.z) - cameraPos.z());
+        Vector3f addPos = new Vector3f(
+                (float) (Mth.lerp(partialTick, this.xo, this.x) - cameraPos.x()),
+                (float) (Mth.lerp(partialTick, this.yo, this.y) - cameraPos.y()),
+                (float) (Mth.lerp(partialTick, this.zo, this.z) - cameraPos.z())
+        );
 
-        // 获取四元数旋转
+        // Billboard 朝向；有滚转时绕 Z 叠加
         Quaternionf quaternion;
         if (this.roll == 0.0F) {
             quaternion = camera.rotation();
         } else {
             quaternion = new Quaternionf(camera.rotation());
-            float interpolatedRoll = Mth.lerp(partialTick, this.oldRoll, this.roll);
-            quaternion.rotateZ(interpolatedRoll);
+            float f3 = Mth.lerp(partialTick, this.oldRoll, this.roll);
+            quaternion.rotateZ(f3);
         }
 
-        // 计算当前大小
+        // 尺寸曲线：timeLife 为寿命三角波（前半 0→1，后半 1→0）
         float currentSize = size;
         if (sizeChangeType != null) {
             float timeLife = age / particleHalfAge;
             timeLife = timeLife > 1 ? -timeLife + 2 : timeLife;
             switch (sizeChangeType) {
-                case SIN:
-                    currentSize = (float) (size * Math.sin(timeLife * Math.PI / 2));
-                    break;
-                case SQUARE_SIN:
-                    currentSize = (float) (size * Math.sin(Math.sqrt(timeLife) * Math.PI / 2));
-                    break;
-                case COS:
-                    currentSize = (float) (size * Math.cos((1 - timeLife) * Math.PI / 2));
-                    break;
-                case SQUARE_COS:
-                    currentSize = (float) (size * Math.cos(Math.sqrt(1 - timeLife) * Math.PI / 2));
-                    break;
-                case SMOOTH:
-                    currentSize = size * timeLife;
-                    break;
+                case SIN -> currentSize = (float) (size * Math.sin(timeLife));
+                case SQUARE_SIN -> currentSize = (float) (size * Math.sin(Math.sqrt(timeLife)));
+                case COS -> currentSize = (float) (size * Math.cos(timeLife));
+                case SQUARE_COS -> currentSize = (float) (size * Math.cos(Math.sqrt(timeLife)));
+                case SMOOTH -> currentSize = size * timeLife;
             }
         }
 
-        // 创建四个顶点
         Vector3f[] vertices = new Vector3f[]{
                 new Vector3f(-1.0F, -1.0F, 0.0F),
                 new Vector3f(-1.0F, 1.0F, 0.0F),
@@ -281,87 +234,120 @@ public class DefaultParticle extends Particle {
                 new Vector3f(1.0F, -1.0F, 0.0F)
         };
 
-        // 应用旋转和缩放
         for (int i = 0; i < 4; ++i) {
             Vector3f vertex = vertices[i];
             vertex.rotate(quaternion);
             vertex.mul(currentSize);
-            vertex.add(x, y, z);
+            vertex.add(addPos);
         }
 
-        // 光照值（全亮）
-        int light = 15728880; // 等同于 15 << 20 | 15 << 4
+        // 满亮度光照，避免环境光压暗发光粒子
+        int combined = 15 << 20 | 15 << 4;
 
-        // UV 坐标
-        float u0 = 0.0F;
-        float u1 = 1.0F;
-        float v0 = 0.0F;
-        float v1 = 1.0F;
-
-        // 渲染四个顶点
-        consumer.vertex(vertices[0].x(), vertices[0].y(), vertices[0].z())
-                .uv(u1, v1)
+        buffer.vertex(vertices[0].x(), vertices[0].y(), vertices[0].z())
+                .uv(0, 0)
                 .color(this.rCol, this.gCol, this.bCol, this.alpha)
-                .uv2(light)
+                .uv2(combined)
                 .endVertex();
-        
-        consumer.vertex(vertices[1].x(), vertices[1].y(), vertices[1].z())
-                .uv(u1, v0)
+        buffer.vertex(vertices[1].x(), vertices[1].y(), vertices[1].z())
+                .uv(0, 1)
                 .color(this.rCol, this.gCol, this.bCol, this.alpha)
-                .uv2(light)
+                .uv2(combined)
                 .endVertex();
-        
-        consumer.vertex(vertices[2].x(), vertices[2].y(), vertices[2].z())
-                .uv(u0, v0)
+        buffer.vertex(vertices[2].x(), vertices[2].y(), vertices[2].z())
+                .uv(1, 1)
                 .color(this.rCol, this.gCol, this.bCol, this.alpha)
-                .uv2(light)
+                .uv2(combined)
                 .endVertex();
-        
-        consumer.vertex(vertices[3].x(), vertices[3].y(), vertices[3].z())
-                .uv(u0, v1)
+        buffer.vertex(vertices[3].x(), vertices[3].y(), vertices[3].z())
+                .uv(1, 0)
                 .color(this.rCol, this.gCol, this.bCol, this.alpha)
-                .uv2(light)
+                .uv2(combined)
                 .endVertex();
-    }
-
-    @Override
-    public @NotNull ParticleRenderType getRenderType() {
-        // 如果设置了自定义渲染类型，使用自定义的
-        if (customRenderType != null) {
-            return customRenderType;
-        }
-        // 否则使用半透明渲染类型（适合大多数发光粒子）
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     /**
-     * 粒子大小变化类型枚举
+     * 按 {@link #textureName} 返回渲染类型；首次遇到的贴图会创建并缓存到 {@link #map}。
+     * 使用 SRC_ALPHA / ONE 加法混合，适合发光类粒子。
+     */
+    @Override
+    public @NotNull ParticleRenderType getRenderType() {
+        if (textureName == null) {
+            return NULL_TEXTURE;
+        }
+        if (map.containsKey(textureName)) {
+            return map.get(textureName);
+        }
+        ResourceLocation texture = textureName;
+        ParticleRenderType particleRenderType = new ParticleRenderType() {
+            @Override
+            public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
+                RenderSystem.depthMask(false);
+                RenderSystem.enableBlend();
+                RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+                RenderSystem.setShader(GameRenderer::getParticleShader);
+                RenderSystem.setShaderTexture(0, texture);
+                textureManager.getTexture(texture).setFilter(true, false);
+                bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+            }
+
+            @Override
+            public void end(Tesselator tesselator) {
+                tesselator.end();
+                Minecraft.getInstance().getTextureManager().getTexture(TextureAtlas.LOCATION_PARTICLES).setFilter(false, false);
+                RenderSystem.disableBlend();
+                RenderSystem.depthMask(true);
+            }
+
+            @Override
+            public String toString() {
+                return "recasting:" + texture;
+            }
+        };
+        map.put(texture, particleRenderType);
+        return particleRenderType;
+    }
+
+    /**
+     * 无自定义贴图时的回退渲染类型：默认混合、不绑定额外纹理。
+     */
+    public static final ParticleRenderType NULL_TEXTURE = new ParticleRenderType() {
+        @Override
+        public void begin(BufferBuilder buffer, TextureManager textureManager) {
+            RenderSystem.depthMask(false);
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.setShader(GameRenderer::getParticleShader);
+            buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+        }
+
+        @Override
+        public void end(Tesselator tess) {
+            tess.end();
+            RenderSystem.disableBlend();
+            RenderSystem.depthMask(true);
+        }
+
+        @Override
+        public String toString() {
+            return "recasting:null_texture";
+        }
+    };
+
+    /**
+     * 生命周期内尺寸相对 {@link #size} 的变化方式。
+     * 输入为寿命三角波 {@code timeLife ∈ [0, 1]}（前半升、后半降）。
      */
     public enum SizeChangeType {
-        /**
-         * 正弦变化
-         */
+        /** {@code size * sin(timeLife)} */
         SIN,
-        
-        /**
-         * 平方根正弦变化（更缓和）
-         */
+        /** {@code size * sin(√timeLife)}，前半膨胀更快 */
         SQUARE_SIN,
-        
-        /**
-         * 余弦变化
-         */
+        /** {@code size * cos(timeLife)} */
         COS,
-        
-        /**
-         * 平方根余弦变化（更缓和）
-         */
+        /** {@code size * cos(√timeLife)} */
         SQUARE_COS,
-        
-        /**
-         * 线性平滑变化
-         */
+        /** {@code size * timeLife}，随三角波线性缩放 */
         SMOOTH
     }
 }
-

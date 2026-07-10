@@ -998,7 +998,10 @@ public class SlashBladeDefinitions {
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(6f)
                             .maxDamage(10 * 40)
+                            .slashArtsType(SlashArtsRegistry.LASER_1.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR)
             .build();
 
     public static final SlashBladeDefinition LASER_2 = createBuild(R.Slashblade.Laser.laser2)
@@ -1011,7 +1014,10 @@ public class SlashBladeDefinitions {
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(7f)
                             .maxDamage(15 * 40)
+                            .slashArtsType(SlashArtsRegistry.LASER_2.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
+            .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR_2)
             .build();
 
     public static final SlashBladeDefinition LASER_3 = createBuild(R.Slashblade.Laser.laser3)
@@ -1024,9 +1030,11 @@ public class SlashBladeDefinitions {
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(8f)
                             .maxDamage(20 * 40)
+                            .slashArtsType(SlashArtsRegistry.LASER_3.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
-            .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.2f)
-            )
+            .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.2f))
+            .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR_3)
             .build();
 
     // endregion

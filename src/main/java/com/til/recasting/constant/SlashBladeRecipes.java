@@ -642,6 +642,55 @@ public class SlashBladeRecipes {
                     .save(consumer, recipeId);
 
     /**
+     * 风云配方：从龙鳞 Lambda 升级
+     * 要求：杀敌1500、锻造400、锋利3附魔
+     * 材料：金黄色的庸魂立方体4个
+     * SE结晶：旋风l1 4个
+     * C=金黄色的庸魂立方体, B=基础刀（龙鳞 Lambda，满足要求）, W=旋风l1 SE结晶
+     */
+    public static final RecipeBuilderWrapper WIND_CLOUD_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.WIND_CLOUD.getName())
+                    .pattern("CWC")
+                    .pattern("WBW")
+                    .pattern("CWC")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.DRAGON_SCALE_LAMBDA.getName())
+                                    .killCount(1500)
+                                    .refineCount(400)
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 3))
+                                    .build()))
+                    .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
+                    .define('W', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.WHIRLWIND.getId(), 1))
+                    .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * 风云 Lambda 配方：从风云升级
+     * 要求：杀敌2500、锻造600
+     * 材料：金黄色的庸魂立方体4个
+     * SE结晶：风暴l1 2个、风暴变体l1 2个
+     * C=金黄色的庸魂立方体, B=基础刀（风云，满足要求）, S=风暴l1 SE结晶, V=风暴变体l1 SE结晶
+     */
+    public static final RecipeBuilderWrapper WIND_CLOUD_LAMBDA_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.WIND_CLOUD_LAMBDA.getName())
+                    .pattern("CSC")
+                    .pattern("VBV")
+                    .pattern("CSC")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.WIND_CLOUD.getName())
+                                    .killCount(2500)
+                                    .refineCount(600)
+                                    .build()))
+                    .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
+                    .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM.getId(), 1))
+                    .define('V', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM_VARIANT.getId(), 1))
+                    .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
+    /**
      * 法棍配方：基础配方，无前置刀
      * 材料：面包3个 + 耀魂1个
      * B=面包, P=耀魂

@@ -68,4 +68,19 @@ public class PosHelper {
         return new Vec3(x, y, z);
     }
 
+    /**
+     * 点到线段的最短距离
+     */
+    public static double distancePointToSegment(Vec3 point, Vec3 start, Vec3 end) {
+        Vec3 segment = end.subtract(start);
+        double lengthSqr = segment.lengthSqr();
+        if (MathHelper.epsilonEquals(lengthSqr, 0.0)) {
+            return point.distanceTo(start);
+        }
+        double t = point.subtract(start).dot(segment) / lengthSqr;
+        t = Math.max(0.0, Math.min(1.0, t));
+        Vec3 closest = start.add(segment.scale(t));
+        return point.distanceTo(closest);
+    }
+
 }

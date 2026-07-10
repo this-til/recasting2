@@ -15,6 +15,7 @@ import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.event.DoSlashExtendEvent;
 import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.handler.EntityHelper;
+import com.til.recasting.handler.MathHelper;
 import com.til.recasting.handler.PosHelper;
 import com.til.recasting.mixin.AttackManagerMixin;
 import com.til.recasting.registry.instance.BuffType;
@@ -144,6 +145,14 @@ public class SpecialEffectsRegistry {
     public static final RegistryObject<SpecialEffect> RESOLVE_LAMBDA = registerExtendedSE("resolve_lambda", () -> new ResolveSpecialEffect().setDamageRatio(1.5f).setMaxLevel(1).setSpecial(true));
     // 燃沫 - 攻击处于灵魂燃烧的目标时，使其额外受到当前生命比值的额外伤害，并有概率增加一层灵魂燃烧
     public static final RegistryObject<SpecialEffect> FLAME_FOAM = registerExtendedSE("flame_foam", () -> new FlameFoamSpecialEffect().setMaxLevel(1).setSpecial(true));
+
+    // 光子灼痕 - 攻击范围内叠层，满层释放短直线激光；三档冷却
+    public static final RegistryObject<SpecialEffect> PHOTON_SCAR = registerExtendedSE("photon_scar",
+            () -> new PhotonScarSpecialEffect().setCooldownTicks(30).setMaxLevel(1).setSpecial(true));
+    public static final RegistryObject<SpecialEffect> PHOTON_SCAR_2 = registerExtendedSE("photon_scar_2",
+            () -> new PhotonScarSpecialEffect().setCooldownTicks(20).setMaxLevel(1).setSpecial(true));
+    public static final RegistryObject<SpecialEffect> PHOTON_SCAR_3 = registerExtendedSE("photon_scar_3",
+            () -> new PhotonScarSpecialEffect().setCooldownTicks(10).setMaxLevel(1).setSpecial(true));
 
     public static RegistryObject<SpecialEffect> registerExtendedSE(String name, Supplier<SpecialEffect> factory) {
         return SPECIAL_EFFECT.register(name, factory);
@@ -1139,7 +1148,21 @@ public class SpecialEffectsRegistry {
                             // 重置层数
                             buffStackData.setLevel(starBlinkBuffType, 0, world);
 
-                            // TODO: 生成粒子效果（需要客户端代码）
+                            if (world instanceof ServerLevel serverLevel) {
+                                int color = event.getSlashBladeState().getColorCode();
+                                double r = ((color >> 16) & 0xFF) / 255.0;
+                                double g = ((color >> 8) & 0xFF) / 255.0;
+                                double b = (color & 0xFF) / 255.0;
+                                serverLevel.sendParticles(
+                                        RecastingParticleTypes.STAR_BLINK.get(),
+                                        target.getX(),
+                                        target.getY() + target.getBbHeight() * 0.5,
+                                        target.getZ(),
+                                        0,
+                                        r, g, b,
+                                        1.0
+                                );
+                            }
 
                             // 造成伤害
                             AttackHelper.attack(
@@ -2322,6 +2345,114 @@ public class SpecialEffectsRegistry {
                         }
                     }
             );
+        }
+
+    }
+
+    /**
+     * 光子灼痕
+     * 攻击范围内命中叠层；满层释放短直线激光；激光对灼痕目标增伤
+     */
+    @Setter
+    @Accessors(chain = true)
+    public static class PhotonScarSpecialEffect extends ExtendedSpecialEffect {
+
+        float laserBonusPerStack = 0.08f;
+        float miniLaserAttack = 0.6f;
+        float miniLaserRange = 4f;
+        float miniLaserRadius = 0.75f;
+        int cooldownTicks = 30;
+        int addLevel = 1;
+
+        Map<LivingEntity, Long> lastTriggerTimeMap = new WeakHashMap<>();
+
+        @SubscribeEvent
+        public void onEvent(AttackAmplifierEvent event) {
+            if (!hasSpecialEffect(event.getSlashBladeState())) {
+                return;
+            }
+
+            if (event.getAttacker().level().isClientSide()) {
+                return;
+            }
+
+            if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+                return;
+            }
+
+            if (event.getAttackTypeList().contains(RecastingAttackTypes.PHOTON_SCAR_ATTACK.get())) {
+                return;
+            }
+
+            if (event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get())) {
+                return;
+            }
+
+            LivingEntity attacker = event.getAttacker();
+            ItemStack blade = event.getItem();
+            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(blade);
+            float attackDistance = properties == null ? 1.0f : properties.attackDistance();
+            float reach = 4f * attackDistance;
+
+            if (attacker.distanceTo(target) > reach) {
+                return;
+            }
+
+            Level world = target.level();
+            BuffType photonScarBuffType = RecastingBuffTypes.PHOTON_SCAR.get();
+
+            // 激光打灼痕：按层增伤
+            if (event.getAttackTypeList().contains(RecastingAttackTypes.LASER_ATTACK.get())) {
+                target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
+                    int stacks = buffStackData.getLevel(photonScarBuffType, world);
+                    if (stacks > 0) {
+                        event.addModifiedRatioAmplifier(laserBonusPerStack * stacks);
+                    }
+                });
+            }
+
+            long now = world.getGameTime();
+            Long last = lastTriggerTimeMap.get(attacker);
+            if (last != null && now - last < cooldownTicks) {
+                return;
+            }
+
+            target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
+                int currentLevel = buffStackData.getLevel(photonScarBuffType, world);
+                int maxLevel = photonScarBuffType.getMaxLevel();
+
+                if (currentLevel >= maxLevel) {
+                    buffStackData.setLevel(photonScarBuffType, 0, world);
+                    lastTriggerTimeMap.put(attacker, now);
+
+                    Vec3 start = attacker.getEyePosition();
+                    Vec3 direction = target.getBoundingBox().getCenter().subtract(start);
+                    if (MathHelper.epsilonEquals(direction.lengthSqr(), 0.0)) {
+                        direction = attacker.getLookAngle();
+                    } else {
+                        direction = direction.normalize();
+                    }
+                    float range = miniLaserRange * attackDistance;
+                    Vec3 end = start.add(direction.scale(range));
+                    AttackHelper.attackAlongSegment(
+                            attacker,
+                            start,
+                            end,
+                            miniLaserRadius,
+                            new DamageStructure(miniLaserAttack, 0),
+                            List.of(
+                                    RecastingAttackTypes.LASER_ATTACK.get(),
+                                    RecastingAttackTypes.PHOTON_SCAR_ATTACK.get()
+                            ),
+                            event.getSlashBladeState().getColorCode()
+                    );
+                    return;
+                }
+
+                lastTriggerTimeMap.put(attacker, now);
+                int newLevel = Math.min(currentLevel + addLevel, maxLevel);
+                buffStackData.setLevel(photonScarBuffType, newLevel, world);
+            });
         }
 
     }

@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-10T15:51:45.2813803	Recipes
+// 1.20.1	2026-07-10T19:20:34.1017743	Recipes
 a74627e490b2ab2d41e968543fdb44be214ba575 data/recasting/advancements/recipes/combat/art_knife_recipe.json
 e34f310b0027096430bdd3330af671c238f41290 data/recasting/advancements/recipes/combat/ba_gua_big_lambda_recipe.json
 cdf1db26435ca67d99ed739f5f3461befb63733e data/recasting/advancements/recipes/combat/ba_gua_big_recipe.json
@@ -48,6 +48,8 @@ fec2478126811ebb0030a3bd816f9c9aba7c391e data/recasting/advancements/recipes/com
 5bed752a19b10f24b566d0bb43d67b335808630e data/recasting/advancements/recipes/combat/void_1_recipe.json
 d1085fe3a90c013dfceb45f1fb829366760e35d2 data/recasting/advancements/recipes/combat/void_2_recipe.json
 564b1fddc53d2a7a06ab714727beb99dd2beca5b data/recasting/advancements/recipes/combat/void_3_recipe.json
+b6616310bd0008d19693a2c539b5b751db570246 data/recasting/advancements/recipes/combat/wind_cloud_lambda_recipe.json
+a2a8ee2d7da7c006b34d2281af1b3b4e6816df31 data/recasting/advancements/recipes/combat/wind_cloud_recipe.json
 c13a4fada5d66813ef6e539e71ffa7b98abbeac6 data/recasting/advancements/recipes/misc/abyss_flame_recipe.json
 acc42e6840d0b8c4b8d985ff6cd740f6a4dff1af data/recasting/advancements/recipes/misc/annihilation_se_crystal_recipe.json
 71753ac02c745a09b5a165d306540639366d91f7 data/recasting/advancements/recipes/misc/annihilation_upgrade_recipes_0.json
@@ -507,3 +509,5 @@ bc83d0792f0dbe3d7576e4fd15bd81682112569b data/recasting/recipes/whirlwind_upgrad
 a1dd6352d29425081d9fe4ccf51872025dafbf49 data/recasting/recipes/whirlwind_upgrade_recipes_2.json
 fecf75020c371c8e0a19601c5e630e6d96a50ce6 data/recasting/recipes/whirlwind_upgrade_recipes_3.json
 004dfba8654dfc5ae5835b3340aeb25fd6b7f852 data/recasting/recipes/whirlwind_upgrade_recipes_4.json
+050f6c5439ec118203a5f8dd7e3130447fe55ada data/recasting/recipes/wind_cloud_lambda_recipe.json
+e8b577652602e5c09d7e9643b6f1ad03acc5fb45 data/recasting/recipes/wind_cloud_recipe.json

@@ -132,7 +132,7 @@
   "recasting.tooltip.engraving_rule.main": "• 在铁砧上铭刻：一把刀最多可铭刻 %d 个普通SE和 %d 个特殊SE（特殊SE可在铁砧中替换；创造模式不受限制）",
   "recasting.tooltip.engraving_rule.title": "铭刻规则：",
   "recasting.tooltip.engraving_rule.upgrade": "• 升级：使用相同类型并且更高级SE的结晶可提升等级",
-  "recasting.tooltip.special_se.badge": "特殊 SE",
+  "recasting.tooltip.special_se.badge": "(特殊)",
   "recasting.tooltip.special_se_extract": "• 提取：铁砧左侧放带特殊SE的刀、右侧放渊寂火，可提取为结晶；刀将被彻底损毁。",
   "se.recasting.annihilation": "断灭",
   "se.recasting.annihilation.desc": "召唤一定数量的次元斩之后额外召唤一个巨型次元斩。",

@@ -83,16 +83,16 @@ public class ItemSlashBladeMixin {
                     Component nameComponent;
                     Component valueComponent;
                     if (specialEffect instanceof com.til.recasting.registry.SpecialEffectsRegistry.ExtendedSpecialEffect extendedSpecialEffect) {
-                        // 特殊SE使用紫色标注名称
                         nameComponent = SpecialEffect.getDescription(specialEffectResourceLocation)
                                 .copy()
                                 .withStyle(extendedSpecialEffect.isSpecial() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.GRAY);
                         if (extendedSpecialEffect.isSpecial()) {
-                            nameComponent = nameComponent.copy()
-                                    .append(Component.literal(" "))
-                                    .append(Component.translatable("recasting.tooltip.special_se.badge")
-                                            .withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.ITALIC));
-                            tooltip.add(nameComponent.copy().withStyle(ChatFormatting.GRAY));
+                            tooltip.add(
+                                    nameComponent.copy()
+                                            .append(Component.literal(" "))
+                                            .append(Component.translatable("recasting.tooltip.special_se.badge")
+                                                    .withStyle(ChatFormatting.LIGHT_PURPLE))
+                            );
                         } else {
                             valueComponent = Component.literal(
                                     es.getExtendedSpecialLevels(specialEffectResourceLocation) + "/" + extendedSpecialEffect.getMaxLevel()

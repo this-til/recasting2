@@ -24,5 +24,11 @@ public class RecastingParticleTypes {
      */
     public static final RegistryObject<SimpleParticleType> DEFAULT_PARTICLE = 
             PARTICLE_TYPES.register("default_particle", () -> new SimpleParticleType(false));
+
+    /**
+     * 星闪满层触发粒子
+     */
+    public static final RegistryObject<SimpleParticleType> STAR_BLINK =
+            PARTICLE_TYPES.register("star_blink", () -> new SimpleParticleType(false));
 }
 
