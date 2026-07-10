@@ -134,7 +134,7 @@ public class EntityRenderExtensionRegistry {
      */
     public static final RegistryObject<EntityRenderExtension> PHOTON_SCAR = ENTITY_RENDER_EXTENSIONS.register(
             "photon_scar",
-            () -> new BuffFireRenderExtension(RecastingBuffTypes.PHOTON_SCAR, new Color(80, 220, 255))
+            () -> new BuffFireRenderExtension(RecastingBuffTypes.PHOTON_BURN, new Color(80, 220, 255))
     );
 
     /**

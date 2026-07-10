@@ -81,11 +81,19 @@ public class BuffLevelRendererRegistry {
     );
 
     /**
-     * 光子灼痕 - 显示层数
+     * 光子灼痕 - 显示增伤层数
      */
     public static final RegistryObject<BuffLevelRenderConfig> PHOTON_SCAR = BUFF_LEVEL_RENDER_CONFIGS.register(
             "photon_scar",
             () -> new BuffLevelRenderConfig(RecastingBuffTypes.PHOTON_SCAR, LanguageItems.BUFF_PHOTON_SCAR)
+    );
+
+    /**
+     * 光子灼烧 - 显示灼烧层数
+     */
+    public static final RegistryObject<BuffLevelRenderConfig> PHOTON_BURN = BUFF_LEVEL_RENDER_CONFIGS.register(
+            "photon_burn",
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.PHOTON_BURN, LanguageItems.BUFF_PHOTON_BURN)
     );
 
     /**

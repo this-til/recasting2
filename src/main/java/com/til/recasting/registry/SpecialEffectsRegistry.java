@@ -2351,20 +2351,21 @@ public class SpecialEffectsRegistry {
 
     /**
      * 光子灼痕
-     * 命中叠层；满层释放短直线激光；激光对灼痕目标增伤
+     * 灼烧仅激光叠层并提供持续伤害与激光增伤；灼痕仅主动斩击叠层，满层释放光束且不清零
      */
     @Setter
     @Accessors(chain = true)
     public static class PhotonScarSpecialEffect extends ExtendedSpecialEffect {
 
-        float laserBonusPerStack = 0.08f;
+        float maxLaserBonus = 0.66f;
         float miniLaserAttack = 0.6f;
         float miniLaserRange = 4f;
         float miniLaserRadius = 0.75f;
         int cooldownTicks = 30;
         int addLevel = 1;
 
-        Map<LivingEntity, Long> lastTriggerTimeMap = new WeakHashMap<>();
+        Map<LivingEntity, Long> lastBurnTriggerTimeMap = new WeakHashMap<>();
+        Map<LivingEntity, Long> lastScarTriggerTimeMap = new WeakHashMap<>();
 
         @SubscribeEvent
         public void onEvent(AttackAmplifierEvent event) {
@@ -2380,10 +2381,6 @@ public class SpecialEffectsRegistry {
                 return;
             }
 
-            if (event.getAttackTypeList().contains(RecastingAttackTypes.PHOTON_SCAR_ATTACK.get())) {
-                return;
-            }
-
             if (event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get())) {
                 return;
             }
@@ -2395,59 +2392,81 @@ public class SpecialEffectsRegistry {
 
             Level world = target.level();
             BuffType photonScarBuffType = RecastingBuffTypes.PHOTON_SCAR.get();
+            BuffType photonBurnBuffType = RecastingBuffTypes.PHOTON_BURN.get();
+            boolean isLaser = event.getAttackTypeList().contains(RecastingAttackTypes.LASER_ATTACK.get());
+            boolean isActiveSlash = event.getAttackTypeList().contains(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get());
 
-            // 激光打灼痕：按层增伤
-            if (event.getAttackTypeList().contains(RecastingAttackTypes.LASER_ATTACK.get())) {
+            // 激光：按灼烧层数增伤
+            if (isLaser) {
                 target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
-                    int stacks = buffStackData.getLevel(photonScarBuffType, world);
-                    if (stacks > 0) {
-                        event.addModifiedRatioAmplifier(laserBonusPerStack * stacks);
+                    int burnStacks = buffStackData.getLevel(photonBurnBuffType, world);
+                    if (burnStacks > 0) {
+                        int burnMax = Math.max(1, photonBurnBuffType.getMaxLevel());
+                        float bonus = Math.min(maxLaserBonus, maxLaserBonus * burnStacks / burnMax);
+                        event.addModifiedRatioAmplifier(bonus);
                     }
                 });
             }
 
-            long now = world.getGameTime();
-            Long last = lastTriggerTimeMap.get(attacker);
-            if (last != null && now - last < cooldownTicks) {
+            // 引爆光束不叠灼烧
+            if (event.getAttackTypeList().contains(RecastingAttackTypes.PHOTON_SCAR_ATTACK.get())) {
                 return;
             }
 
-            target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
-                int currentLevel = buffStackData.getLevel(photonScarBuffType, world);
-                int maxLevel = photonScarBuffType.getMaxLevel();
+            long now = world.getGameTime();
 
-                if (currentLevel >= maxLevel) {
-                    buffStackData.setLevel(photonScarBuffType, 0, world);
-                    lastTriggerTimeMap.put(attacker, now);
-
-                    Vec3 start = attacker.getEyePosition();
-                    Vec3 direction = target.getBoundingBox().getCenter().subtract(start);
-                    if (MathHelper.epsilonEquals(direction.lengthSqr(), 0.0)) {
-                        direction = attacker.getLookAngle();
-                    } else {
-                        direction = direction.normalize();
-                    }
-                    float range = miniLaserRange * attackDistance;
-                    Vec3 end = start.add(direction.scale(range));
-                    AttackHelper.attackAlongSegment(
-                            attacker,
-                            start,
-                            end,
-                            miniLaserRadius,
-                            new DamageStructure(miniLaserAttack, 0),
-                            List.of(
-                                    RecastingAttackTypes.LASER_ATTACK.get(),
-                                    RecastingAttackTypes.PHOTON_SCAR_ATTACK.get()
-                            ),
-                            event.getSlashBladeState().getColorCode()
-                    );
-                    return;
+            // 灼烧：仅激光叠层（冷却按受攻者计时）
+            if (isLaser) {
+                Long lastBurn = lastBurnTriggerTimeMap.get(target);
+                if (lastBurn == null || now - lastBurn >= cooldownTicks) {
+                    target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
+                        lastBurnTriggerTimeMap.put(target, now);
+                        int burnLevel = buffStackData.getLevel(photonBurnBuffType, world);
+                        int burnMax = photonBurnBuffType.getMaxLevel();
+                        buffStackData.setLevel(photonBurnBuffType, Math.min(burnLevel + addLevel, burnMax), world);
+                    });
                 }
+            }
 
-                lastTriggerTimeMap.put(attacker, now);
-                int newLevel = Math.min(currentLevel + addLevel, maxLevel);
-                buffStackData.setLevel(photonScarBuffType, newLevel, world);
-            });
+            // 灼痕：仅主动斩击叠层，满层释放光束（冷却按受攻者计时）
+            if (isActiveSlash) {
+                Long lastScar = lastScarTriggerTimeMap.get(target);
+                if (lastScar == null || now - lastScar >= cooldownTicks) {
+                    target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
+                        lastScarTriggerTimeMap.put(target, now);
+
+                        int scarLevel = buffStackData.getLevel(photonScarBuffType, world);
+                        int scarMax = photonScarBuffType.getMaxLevel();
+                        if (scarLevel < scarMax) {
+                            buffStackData.setLevel(photonScarBuffType, Math.min(scarLevel + addLevel, scarMax), world);
+                        }
+
+                        if (buffStackData.getLevel(photonScarBuffType, world) >= scarMax) {
+                            Vec3 start = attacker.getEyePosition();
+                            Vec3 direction = target.getBoundingBox().getCenter().subtract(start);
+                            if (MathHelper.epsilonEquals(direction.lengthSqr(), 0.0)) {
+                                direction = attacker.getLookAngle();
+                            } else {
+                                direction = direction.normalize();
+                            }
+                            float range = miniLaserRange * attackDistance;
+                            Vec3 end = start.add(direction.scale(range));
+                            AttackHelper.attackAlongSegment(
+                                    attacker,
+                                    start,
+                                    end,
+                                    miniLaserRadius,
+                                    new DamageStructure(miniLaserAttack, 0),
+                                    List.of(
+                                            RecastingAttackTypes.LASER_ATTACK.get(),
+                                            RecastingAttackTypes.PHOTON_SCAR_ATTACK.get()
+                                    ),
+                                    event.getSlashBladeState().getColorCode()
+                            );
+                        }
+                    });
+                }
+            }
         }
 
     }
