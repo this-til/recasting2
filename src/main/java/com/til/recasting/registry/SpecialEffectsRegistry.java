@@ -146,13 +146,10 @@ public class SpecialEffectsRegistry {
     // 燃沫 - 攻击处于灵魂燃烧的目标时，使其额外受到当前生命比值的额外伤害，并有概率增加一层灵魂燃烧
     public static final RegistryObject<SpecialEffect> FLAME_FOAM = registerExtendedSE("flame_foam", () -> new FlameFoamSpecialEffect().setMaxLevel(1).setSpecial(true));
 
-    // 光子灼痕 - 攻击范围内叠层，满层释放短直线激光；三档冷却
-    public static final RegistryObject<SpecialEffect> PHOTON_SCAR = registerExtendedSE("photon_scar",
-            () -> new PhotonScarSpecialEffect().setCooldownTicks(30).setMaxLevel(1).setSpecial(true));
-    public static final RegistryObject<SpecialEffect> PHOTON_SCAR_2 = registerExtendedSE("photon_scar_2",
-            () -> new PhotonScarSpecialEffect().setCooldownTicks(20).setMaxLevel(1).setSpecial(true));
-    public static final RegistryObject<SpecialEffect> PHOTON_SCAR_3 = registerExtendedSE("photon_scar_3",
-            () -> new PhotonScarSpecialEffect().setCooldownTicks(10).setMaxLevel(1).setSpecial(true));
+    // 光子灼痕 - 任意伤害叠灼痕，满层短光束清零（冷却中只叠不触发）；激光叠灼烧（DoT + 全伤害增伤）；三档冷却
+    public static final RegistryObject<SpecialEffect> PHOTON_SCAR = registerExtendedSE("photon_scar", () -> new PhotonScarSpecialEffect().setCooldownTicks(30).setMaxLevel(1).setSpecial(true));
+    public static final RegistryObject<SpecialEffect> PHOTON_SCAR_2 = registerExtendedSE("photon_scar_2", () -> new PhotonScarSpecialEffect().setCooldownTicks(20).setMaxLevel(1).setSpecial(true));
+    public static final RegistryObject<SpecialEffect> PHOTON_SCAR_3 = registerExtendedSE("photon_scar_3", () -> new PhotonScarSpecialEffect().setCooldownTicks(10).setMaxLevel(1).setSpecial(true));
 
     public static RegistryObject<SpecialEffect> registerExtendedSE(String name, Supplier<SpecialEffect> factory) {
         return SPECIAL_EFFECT.register(name, factory);
@@ -2351,7 +2348,9 @@ public class SpecialEffectsRegistry {
 
     /**
      * 光子灼痕
-     * 灼烧仅激光叠层并提供持续伤害与激光增伤；灼痕仅主动斩击叠层，满层释放光束且不清零
+     * 受到任意伤害叠加一层光子灼痕，满层释放光束且清零；受击者计时冷却，冷却中仍可叠层但不触发
+     * 受击者受到激光伤害时叠加一层光子灼烧，灼烧附带持续伤害和全伤害增伤
+     * 目标处于灼烧时，灼痕叠层与满层短光束均不受 SE 限制
      */
     @Setter
     @Accessors(chain = true)
@@ -2361,11 +2360,9 @@ public class SpecialEffectsRegistry {
         float miniLaserAttack = 0.6f;
         float miniLaserRange = 4f;
         float miniLaserRadius = 0.75f;
+        @Getter
         int cooldownTicks = 30;
         int addLevel = 1;
-
-        Map<LivingEntity, Long> lastBurnTriggerTimeMap = new WeakHashMap<>();
-        Map<LivingEntity, Long> lastScarTriggerTimeMap = new WeakHashMap<>();
 
         @SubscribeEvent
         public void onEvent(AttackAmplifierEvent event) {
@@ -2381,92 +2378,63 @@ public class SpecialEffectsRegistry {
                 return;
             }
 
-            if (event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get())) {
-                return;
-            }
-
             LivingEntity attacker = event.getAttacker();
-            ItemStack blade = event.getItem();
-            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(blade);
-            float attackDistance = properties == null ? 1.0f : properties.attackDistance();
-
             Level world = target.level();
             BuffType photonScarBuffType = RecastingBuffTypes.PHOTON_SCAR.get();
             BuffType photonBurnBuffType = RecastingBuffTypes.PHOTON_BURN.get();
             boolean isLaser = event.getAttackTypeList().contains(RecastingAttackTypes.LASER_ATTACK.get());
-            boolean isActiveSlash = event.getAttackTypeList().contains(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get());
+            boolean isPhotonScarAttack = event.getAttackTypeList().contains(RecastingAttackTypes.PHOTON_SCAR_ATTACK.get());
+            boolean isNoRecursion = event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get());
 
-            // 激光：按灼烧层数增伤
-            if (isLaser) {
-                target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
-                    int burnStacks = buffStackData.getLevel(photonBurnBuffType, world);
-                    if (burnStacks > 0) {
-                        int burnMax = Math.max(1, photonBurnBuffType.getMaxLevel());
-                        float bonus = Math.min(maxLaserBonus, maxLaserBonus * burnStacks / burnMax);
-                        event.addModifiedRatioAmplifier(bonus);
+            target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
+                // 灼烧全伤害增伤
+                int burnLevel = buffStackData.getLevel(photonBurnBuffType, world);
+                if (burnLevel > 0) {
+                    int burnMax = photonBurnBuffType.getMaxLevel();
+                    float damageBonus = burnMax <= 0
+                            ? 0f
+                            : maxLaserBonus * ((float) burnLevel / (float) burnMax);
+                    if (damageBonus > 0f) {
+                        event.addModifiedRatioAmplifier(damageBonus);
                     }
-                });
-            }
-
-            // 引爆光束不叠灼烧
-            if (event.getAttackTypeList().contains(RecastingAttackTypes.PHOTON_SCAR_ATTACK.get())) {
-                return;
-            }
-
-            long now = world.getGameTime();
-
-            // 灼烧：仅激光叠层（冷却按受击者计时）
-            if (isLaser) {
-                Long lastBurn = lastBurnTriggerTimeMap.get(target);
-                if (lastBurn == null || now - lastBurn >= cooldownTicks) {
-                    target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
-                        lastBurnTriggerTimeMap.put(target, now);
-                        int burnLevel = buffStackData.getLevel(photonBurnBuffType, world);
-                        int burnMax = photonBurnBuffType.getMaxLevel();
-                        buffStackData.setLevel(photonBurnBuffType, Math.min(burnLevel + addLevel, burnMax), world);
-                    });
                 }
-            }
 
-            // 灼痕：仅主动斩击叠层，满层释放光束（冷却按受击者计时）
-            if (isActiveSlash) {
-                Long lastScar = lastScarTriggerTimeMap.get(target);
-                if (lastScar == null || now - lastScar >= cooldownTicks) {
-                    target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
-                        lastScarTriggerTimeMap.put(target, now);
-
-                        int scarLevel = buffStackData.getLevel(photonScarBuffType, world);
-                        int scarMax = photonScarBuffType.getMaxLevel();
-                        if (scarLevel < scarMax) {
-                            buffStackData.setLevel(photonScarBuffType, Math.min(scarLevel + addLevel, scarMax), world);
-                        }
-
-                        if (buffStackData.getLevel(photonScarBuffType, world) >= scarMax) {
-                            Vec3 start = attacker.getEyePosition();
-                            Vec3 direction = target.getBoundingBox().getCenter().subtract(start);
-                            if (MathHelper.epsilonEquals(direction.lengthSqr(), 0.0)) {
-                                direction = attacker.getLookAngle();
-                            } else {
-                                direction = direction.normalize();
-                            }
-                            float range = miniLaserRange * attackDistance;
-                            Vec3 end = start.add(direction.scale(range));
-                            AttackHelper.attackAlongSegment(
-                                    attacker,
-                                    start,
-                                    end,
-                                    miniLaserRadius,
-                                    new DamageStructure(miniLaserAttack, 0),
-                                    List.of(
-                                            RecastingAttackTypes.LASER_ATTACK.get(),
-                                            RecastingAttackTypes.PHOTON_SCAR_ATTACK.get()
-                                    ),
-                                    event.getSlashBladeState().getColorCode()
-                            );
-                        }
-                    });
+                if (isNoRecursion) {
+                    return;
                 }
-            }
+
+                // 激光叠灼烧
+                if (isLaser) {
+                    int currentBurn = buffStackData.getLevel(photonBurnBuffType, world);
+                    int newBurn = Math.min(currentBurn + addLevel, photonBurnBuffType.getMaxLevel());
+                    buffStackData.setLevel(photonBurnBuffType, newBurn, world);
+                    burnLevel = newBurn;
+                }
+
+                // 灼烧状态下叠层与满层光束由 PhotonScarBuffHandler 处理，不受 SE 限制
+                if (burnLevel > 0) {
+                    return;
+                }
+
+                if (isPhotonScarAttack) {
+                    return;
+                }
+
+                // 无灼烧时：需 SE，叠灼痕；满层且非冷却时释放短光束并清零
+                int color = event.getSlashBladeState().getColorCode();
+                PhotonScarBuffHandler.stackScarAndMaybeTrigger(
+                        attacker,
+                        target,
+                        buffStackData,
+                        photonScarBuffType,
+                        addLevel,
+                        cooldownTicks,
+                        miniLaserAttack,
+                        miniLaserRange,
+                        miniLaserRadius,
+                        color
+                );
+            });
         }
 
     }

@@ -1357,24 +1357,24 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Photon Scar");
 
     public static final LanguageItem PHOTON_SCAR_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.PHOTON_SCAR)
-            .addTranslation(LanguageTypes.ZH_CN, "激光叠加灼烧并提升后续激光伤害；主动斩击叠加灼痕，满层释放短直线光束且保留增伤。")
-            .addTranslation(LanguageTypes.EN_US, "Laser attacks stack burn and boost further laser damage; active slashes stack scar, and at max scar fire a short beam without clearing the boost.");
+            .addTranslation(LanguageTypes.ZH_CN, "攻击叠加灼痕，满层释放短光束并清零；冷却中仍可叠层但不触发。激光叠加灼烧，提供持续伤害与全伤害增伤；灼烧状态下灼痕叠层与满层光束均不受特效限制。")
+            .addTranslation(LanguageTypes.EN_US, "Attacks stack scar; at max, fire a short beam and clear. Stacking continues during cooldown but does not trigger. Laser stacks burn for DoT and all-damage amp; while burning, scar stacks and max-beam fire without SE restriction.");
 
     public static final LanguageItem PHOTON_SCAR_2 = createSpecialEffectLanguage(SpecialEffectsRegistry.PHOTON_SCAR_2)
             .addTranslation(LanguageTypes.ZH_CN, "光子灼痕[脉冲]")
             .addTranslation(LanguageTypes.EN_US, "Photon Scar [Pulse]");
 
     public static final LanguageItem PHOTON_SCAR_2_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.PHOTON_SCAR_2)
-            .addTranslation(LanguageTypes.ZH_CN, "激光叠加灼烧并提升后续激光伤害；主动斩击叠加灼痕，满层释放短直线光束且保留增伤。")
-            .addTranslation(LanguageTypes.EN_US, "Laser attacks stack burn and boost further laser damage; active slashes stack scar, and at max scar fire a short beam without clearing the boost.");
+            .addTranslation(LanguageTypes.ZH_CN, "攻击叠加灼痕，满层释放短光束并清零；冷却中仍可叠层但不触发。激光叠加灼烧，提供持续伤害与全伤害增伤；灼烧状态下灼痕叠层与满层光束均不受特效限制。")
+            .addTranslation(LanguageTypes.EN_US, "Attacks stack scar; at max, fire a short beam and clear. Stacking continues during cooldown but does not trigger. Laser stacks burn for DoT and all-damage amp; while burning, scar stacks and max-beam fire without SE restriction.");
 
     public static final LanguageItem PHOTON_SCAR_3 = createSpecialEffectLanguage(SpecialEffectsRegistry.PHOTON_SCAR_3)
             .addTranslation(LanguageTypes.ZH_CN, "光子灼痕[阻断]")
             .addTranslation(LanguageTypes.EN_US, "Photon Scar [Intercept]");
 
     public static final LanguageItem PHOTON_SCAR_3_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.PHOTON_SCAR_3)
-            .addTranslation(LanguageTypes.ZH_CN, "激光叠加灼烧并提升后续激光伤害；主动斩击叠加灼痕，满层释放短直线光束且保留增伤。")
-            .addTranslation(LanguageTypes.EN_US, "Laser attacks stack burn and boost further laser damage; active slashes stack scar, and at max scar fire a short beam without clearing the boost.");
+            .addTranslation(LanguageTypes.ZH_CN, "攻击叠加灼痕，满层释放短光束并清零；冷却中仍可叠层但不触发。激光叠加灼烧，提供持续伤害与全伤害增伤；灼烧状态下灼痕叠层与满层光束均不受特效限制。")
+            .addTranslation(LanguageTypes.EN_US, "Attacks stack scar; at max, fire a short beam and clear. Stacking continues during cooldown but does not trigger. Laser stacks burn for DoT and all-damage amp; while burning, scar stacks and max-beam fire without SE restriction.");
 
     private static LanguageItem createSlashBladeDefinitionLanguage(SlashBladeDefinition definition) {
         return new LanguageItem(definition.getTranslationKey());

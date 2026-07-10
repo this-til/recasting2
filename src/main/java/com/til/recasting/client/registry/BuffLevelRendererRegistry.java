@@ -81,7 +81,7 @@ public class BuffLevelRendererRegistry {
     );
 
     /**
-     * 光子灼痕 - 显示增伤层数
+     * 光子灼痕 - 显示灼痕层数
      */
     public static final RegistryObject<BuffLevelRenderConfig> PHOTON_SCAR = BUFF_LEVEL_RENDER_CONFIGS.register(
             "photon_scar",
