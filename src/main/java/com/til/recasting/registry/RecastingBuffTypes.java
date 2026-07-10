@@ -121,10 +121,10 @@ public class RecastingBuffTypes {
 
     /**
      * 光子灼痕
-     * - 用于激光灼痕特效的层数累积
+     * - 用于激光灼痕特效的层数累积（不衰减，满层引爆后清零）
      */
     public static final RegistryObject<BuffType> PHOTON_SCAR = BUFF_TYPES.register("photon_scar",
-            () -> new BuffType(10, 5)
+            () -> new BuffType(0, 5)
     );
 
 }

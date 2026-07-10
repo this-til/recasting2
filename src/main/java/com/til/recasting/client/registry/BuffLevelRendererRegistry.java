@@ -81,6 +81,14 @@ public class BuffLevelRendererRegistry {
     );
 
     /**
+     * 光子灼痕 - 显示层数
+     */
+    public static final RegistryObject<BuffLevelRenderConfig> PHOTON_SCAR = BUFF_LEVEL_RENDER_CONFIGS.register(
+            "photon_scar",
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.PHOTON_SCAR, LanguageItems.BUFF_PHOTON_SCAR)
+    );
+
+    /**
      * 断灭 - 显示层数
      */
     //public static final RegistryObject<BuffLevelRenderConfig> ANNIHILATION = BUFF_LEVEL_RENDER_CONFIGS.register(

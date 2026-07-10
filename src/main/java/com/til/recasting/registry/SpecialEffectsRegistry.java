@@ -2351,7 +2351,7 @@ public class SpecialEffectsRegistry {
 
     /**
      * 光子灼痕
-     * 攻击范围内命中叠层；满层释放短直线激光；激光对灼痕目标增伤
+     * 命中叠层；满层释放短直线激光；激光对灼痕目标增伤
      */
     @Setter
     @Accessors(chain = true)
@@ -2392,11 +2392,6 @@ public class SpecialEffectsRegistry {
             ItemStack blade = event.getItem();
             PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(blade);
             float attackDistance = properties == null ? 1.0f : properties.attackDistance();
-            float reach = 4f * attackDistance;
-
-            if (attacker.distanceTo(target) > reach) {
-                return;
-            }
 
             Level world = target.level();
             BuffType photonScarBuffType = RecastingBuffTypes.PHOTON_SCAR.get();

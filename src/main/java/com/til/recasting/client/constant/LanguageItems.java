@@ -1353,24 +1353,24 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Photon Scar");
 
     public static final LanguageItem PHOTON_SCAR_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.PHOTON_SCAR)
-            .addTranslation(LanguageTypes.ZH_CN, "攻击范围内命中叠加灼痕，满层释放短直线光束；光束对带有灼痕的目标造成更高伤害。")
-            .addTranslation(LanguageTypes.EN_US, "Stacks scars on targets hit within attack range. At max stacks, fires a short beam. Beams deal more damage to scarred targets.");
+            .addTranslation(LanguageTypes.ZH_CN, "命中叠加灼痕，满层释放短直线光束；光束对带有灼痕的目标造成更高伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks scars on hit. At max stacks, fires a short beam. Beams deal more damage to scarred targets.");
 
     public static final LanguageItem PHOTON_SCAR_2 = createSpecialEffectLanguage(SpecialEffectsRegistry.PHOTON_SCAR_2)
             .addTranslation(LanguageTypes.ZH_CN, "光子灼痕[脉冲]")
             .addTranslation(LanguageTypes.EN_US, "Photon Scar [Pulse]");
 
     public static final LanguageItem PHOTON_SCAR_2_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.PHOTON_SCAR_2)
-            .addTranslation(LanguageTypes.ZH_CN, "攻击范围内命中叠加灼痕，满层释放短直线光束；光束对带有灼痕的目标造成更高伤害。")
-            .addTranslation(LanguageTypes.EN_US, "Stacks scars on targets hit within attack range. At max stacks, fires a short beam. Beams deal more damage to scarred targets.");
+            .addTranslation(LanguageTypes.ZH_CN, "命中叠加灼痕，满层释放短直线光束；光束对带有灼痕的目标造成更高伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks scars on hit. At max stacks, fires a short beam. Beams deal more damage to scarred targets.");
 
     public static final LanguageItem PHOTON_SCAR_3 = createSpecialEffectLanguage(SpecialEffectsRegistry.PHOTON_SCAR_3)
             .addTranslation(LanguageTypes.ZH_CN, "光子灼痕[阻断]")
             .addTranslation(LanguageTypes.EN_US, "Photon Scar [Intercept]");
 
     public static final LanguageItem PHOTON_SCAR_3_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.PHOTON_SCAR_3)
-            .addTranslation(LanguageTypes.ZH_CN, "攻击范围内命中叠加灼痕，满层释放短直线光束；光束对带有灼痕的目标造成更高伤害。")
-            .addTranslation(LanguageTypes.EN_US, "Stacks scars on targets hit within attack range. At max stacks, fires a short beam. Beams deal more damage to scarred targets.");
+            .addTranslation(LanguageTypes.ZH_CN, "命中叠加灼痕，满层释放短直线光束；光束对带有灼痕的目标造成更高伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks scars on hit. At max stacks, fires a short beam. Beams deal more damage to scarred targets.");
 
     private static LanguageItem createSlashBladeDefinitionLanguage(SlashBladeDefinition definition) {
         return new LanguageItem(definition.getTranslationKey());
