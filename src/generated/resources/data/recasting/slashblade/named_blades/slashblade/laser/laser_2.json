@@ -2,7 +2,19 @@
   "name": "recasting:slashblade/laser/laser_2",
   "properties": {
     "attack_base": 7.0,
-    "max_damage": 600
+    "max_damage": 600,
+    "slash_art": "recasting:laser_2",
+    "special_effects": [
+      "recasting:photon_scar_2"
+    ],
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:photon_scar_2": 1
+    }
   },
   "render": {
     "carry_type": "default",

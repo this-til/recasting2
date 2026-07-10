@@ -2,10 +2,20 @@
   "name": "recasting:slashblade/laser/laser_3",
   "properties": {
     "attack_base": 8.0,
-    "max_damage": 800
+    "max_damage": 800,
+    "slash_art": "recasting:laser_3",
+    "special_effects": [
+      "recasting:photon_scar_3"
+    ],
+    "sword_type": [
+      "bewitched"
+    ]
   },
   "properties_extension": {
-    "attack_distance": 1.2
+    "attack_distance": 1.2,
+    "extended_special_levels": {
+      "recasting:photon_scar_3": 1
+    }
   },
   "render": {
     "carry_type": "default",
