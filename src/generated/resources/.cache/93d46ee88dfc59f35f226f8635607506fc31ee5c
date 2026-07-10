@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-10T20:33:53.5200188	Recasting SlashBlade Definition Registry
+// 1.20.1	2026-07-10T20:43:37.854952	Recasting SlashBlade Definition Registry
 54425988bdb3a6427dded3c85502e41a5a724eb4 data/recasting/slashblade/named_blades/slashblade/art_knife.json
 10119fb4273eda0d4da12ba0ee9de4b761545aa0 data/recasting/slashblade/named_blades/slashblade/ba_gua.json
 fe0b97917faaa8ea8e0e494f6e26c0cf0a7262a9 data/recasting/slashblade/named_blades/slashblade/ba_gua_big.json
@@ -33,9 +33,9 @@ be2109b58c690f47b865456296dc5962d31d66a6 data/recasting/slashblade/named_blades/
 215af88e84ba85f2360a9ecdd1236bedd2811d3b data/recasting/slashblade/named_blades/slashblade/green_blade_iron.json
 602366ce3e3de05a2938c145aaed274a428b3155 data/recasting/slashblade/named_blades/slashblade/green_blade_wood.json
 7c4c97eb7ad474bcd32962d716545f132457d56b data/recasting/slashblade/named_blades/slashblade/hoe.json
-9a49e8716c4a582d7f03adf0e10ff8342d83514a data/recasting/slashblade/named_blades/slashblade/laser/laser_1.json
-8b89eb317d9e8aad3e92e497d90695c095b72325 data/recasting/slashblade/named_blades/slashblade/laser/laser_2.json
-b3cb62315e114bd38e65743739d323f2505d1b5b data/recasting/slashblade/named_blades/slashblade/laser/laser_3.json
+443da9e67935d65c50e79dc584417d15753c1563 data/recasting/slashblade/named_blades/slashblade/laser/laser_1.json
+41332fa5b37525f16787745dc5ca1668952dd16c data/recasting/slashblade/named_blades/slashblade/laser/laser_2.json
+9b5f3766dfac7cc9e0706cd06efe1211a7dfcb2b data/recasting/slashblade/named_blades/slashblade/laser/laser_3.json
 de3bb3d02c6428aed04c1c62322e1ee7dca3aaae data/recasting/slashblade/named_blades/slashblade/long_sky_sunset.json
 c91a11e8b56daaafd8cb5eca7217707e3409ff78 data/recasting/slashblade/named_blades/slashblade/long_sky_sunset_lambda.json
 8a097de6893601ddcbccb982d0be70f5035a5bd8 data/recasting/slashblade/named_blades/slashblade/obliterate.json

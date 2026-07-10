@@ -1,4 +1,10 @@
 {
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness",
+      "lvl": 2
+    }
+  ],
   "name": "recasting:slashblade/laser/laser_2",
   "properties": {
     "attack_base": 7.0,
