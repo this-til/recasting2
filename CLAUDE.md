@@ -56,6 +56,7 @@
 - **注册表统一走 DeferredRegister** —— 新物品、实体、配方等参照 `RecastingItems`、`RecastingEntities` 等现有注册类，不散落 `Registry.register` 调用
 - **逻辑侧必须区分客户端与服务端** —— 修改世界、实体、Capability、网络同步等须在服务端执行；用 `!level().isClientSide()` / `level().isClientSide()` 或 `@OnlyIn(Dist.CLIENT)`、`DistExecutor` 区分。客户端专用渲染、粒子、按键等放在 `client/` 包下
 - **本地化条目写在 `LanguageItems`** —— 玩家可见文案在 `LanguageItems` 中维护翻译，不直接手改生成的语言文件
+- **描述文案只做定性说明** —— `LanguageItems` 中 SA/SE/Buff 的 `.desc` 与 tooltip 补充句**禁止写入具体数值**（百分比、层数、秒数、材料数量、配方门槛等），只写效果性质与行为；除非用户明确要求写明数字
 - **Mixin 仅用于必要注入** —— 能通过事件、接口扩展、注册表钩子实现的逻辑优先不用 Mixin；Mixin 类放在 `mixin/` 包，访问器放 `mixin/` 或独立 `*Accessor` 接口
 
 ## 拔刀剑（SlashBlade）开发约定

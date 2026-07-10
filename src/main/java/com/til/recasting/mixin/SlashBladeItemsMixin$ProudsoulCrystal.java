@@ -67,7 +67,7 @@ public class SlashBladeItemsMixin$ProudsoulCrystal {
             components.add(
                     Component.translatable(
                             "slashblade.tooltip.special_effect",
-                            nameComponent.withStyle(ChatFormatting.GRAY),
+                            nameComponent.copy().withStyle(ChatFormatting.GRAY),
                             currentLevel + "/" + maxLevel
                     ).withStyle(ChatFormatting.GRAY)
             );

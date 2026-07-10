@@ -1,0 +1,31 @@
+{
+  "version": "1.0",
+  "enabled": true,
+  "observation": {
+    "enabled": true,
+    "retention_days": 90,
+    "max_file_size_mb": 10
+  },
+  "detection": {
+    "enabled": true,
+    "patterns": [
+      "user_corrections",
+      "error_resolutions",
+      "tool_preferences",
+      "project_conventions"
+    ],
+    "min_evidence_count": 2
+  },
+  "instincts": {
+    "min_confidence": 0.3,
+    "auto_apply_threshold": 0.7,
+    "confidence_decay_rate": 0.02,
+    "max_instincts": 100
+  },
+  "evolution": {
+    "enabled": true,
+    "cluster_threshold": 3,
+    "auto_evolve": false,
+    "retention_days": 180
+  }
+}

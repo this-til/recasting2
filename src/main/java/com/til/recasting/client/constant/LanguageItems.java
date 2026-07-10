@@ -988,12 +988,12 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Inferno Lambda");
 
     public static final LanguageItem INFERNO_DESC = createSlashArtsDescription(SlashArtsRegistry.INFERNO)
-            .addTranslation(LanguageTypes.ZH_CN, "在目标位置召唤大型次元斩；命中后为敌人叠加灵魂燃烧。")
-            .addTranslation(LanguageTypes.EN_US, "Summons a large judgement cut at the target; applies soul burn stacks on hit.");
+            .addTranslation(LanguageTypes.ZH_CN, "在目标位置召唤大型次元斩；命中后为敌人叠加灵魂燃烧。灵魂燃烧：使目标持续受到生命百分比的火焰伤害，层数随时间衰减。")
+            .addTranslation(LanguageTypes.EN_US, "Summons a large judgement cut at the target; applies soul burn on hit. Soul burn: inflicts ongoing fire damage based on current health percentage; stacks decay over time.");
 
     public static final LanguageItem INFERNO_LAMBDA_DESC = createSlashArtsDescription(SlashArtsRegistry.INFERNO_LAMBDA)
-            .addTranslation(LanguageTypes.ZH_CN, "在目标位置召唤大型次元斩；命中后为敌人叠加更高层数的灵魂燃烧。")
-            .addTranslation(LanguageTypes.EN_US, "Summons a large judgement cut at the target; applies more soul burn stacks on hit.");
+            .addTranslation(LanguageTypes.ZH_CN, "在目标位置召唤大型次元斩；命中后为敌人叠加更高层数的灵魂燃烧。灵魂燃烧：使目标持续受到生命百分比的火焰伤害，层数随时间衰减。")
+            .addTranslation(LanguageTypes.EN_US, "Summons a large judgement cut at the target; applies more soul burn stacks on hit. Soul burn: inflicts ongoing fire damage based on current health percentage; stacks decay over time.");
 
     // ========== Special Effects ==========
     // 协同攻击
@@ -1306,8 +1306,8 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Flame Foam");
 
     public static final LanguageItem FLAME_FOAM_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.FLAME_FOAM)
-            .addTranslation(LanguageTypes.ZH_CN, "攻击带有灵魂燃烧的目标时，额外造成基于其当前生命值的伤害。")
-            .addTranslation(LanguageTypes.EN_US, "When attacking a target with soul burn, deals extra damage based on their current health.");
+            .addTranslation(LanguageTypes.ZH_CN, "攻击带有灵魂燃烧的目标时，额外造成基于其当前生命值的伤害，并有概率叠加灵魂燃烧。")
+            .addTranslation(LanguageTypes.EN_US, "When attacking a target with soul burn, deals extra damage based on their current health, with a chance to add soul burn.");
 
     // 染色
     public static final LanguageItem COLOR_DYE = createSpecialEffectLanguage(SpecialEffectsRegistry.COLOR_DYE)
