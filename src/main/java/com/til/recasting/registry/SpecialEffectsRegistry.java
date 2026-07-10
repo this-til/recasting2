@@ -2415,7 +2415,7 @@ public class SpecialEffectsRegistry {
 
             long now = world.getGameTime();
 
-            // 灼烧：仅激光叠层（冷却按受攻者计时）
+            // 灼烧：仅激光叠层（冷却按受击者计时）
             if (isLaser) {
                 Long lastBurn = lastBurnTriggerTimeMap.get(target);
                 if (lastBurn == null || now - lastBurn >= cooldownTicks) {
@@ -2428,7 +2428,7 @@ public class SpecialEffectsRegistry {
                 }
             }
 
-            // 灼痕：仅主动斩击叠层，满层释放光束（冷却按受攻者计时）
+            // 灼痕：仅主动斩击叠层，满层释放光束（冷却按受击者计时）
             if (isActiveSlash) {
                 Long lastScar = lastScarTriggerTimeMap.get(target);
                 if (lastScar == null || now - lastScar >= cooldownTicks) {
