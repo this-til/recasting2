@@ -206,7 +206,7 @@ public class SpecialEffectRecipes {
 
     // ==================== SE 升级配方 ====================
     // 以下字段会自动被 RecastingRecipeProvider 扫描并生成配方
-    // 排除特殊刀SE：BLACK_ROSE, STAR_BLINK, STAR_BLINK_LAMBDA, COLOR_DYE
+    // 排除绑刀特殊 SE（仅 1 级，无结晶配方）：BLACK_ROSE, STAR_BLINK, STAR_BLINK_LAMBDA, COLOR_DYE, RESOLVE, RESOLVE_LAMBDA, FLAME_FOAM
 
     /**
      * 协同 SE 结晶配方 - 从利刃升级

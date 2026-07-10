@@ -434,7 +434,7 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(6f)
                             .maxDamage(24 * 40)
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
-                            .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_MAX.getId())
+                            .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_ROW.getId())
             )
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
@@ -451,7 +451,7 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(6f)
                             .maxDamage(32 * 40)
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
-                            .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_MAX_LAMBDA.getId())
+                            .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_ROW_LAMBDA.getId())
             )
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
@@ -632,7 +632,7 @@ public class SlashBladeDefinitions {
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
                             .modelName(R.Slashblade.brilliantGold$obj)
-                            .textureName(R.Slashblade.brilliantTea$png)
+                            .textureName(R.Slashblade.brilliantGold$png)
                             .effectColor(new Color(255, 255, 0).getRGB())
             )
             .propertiesDefinition(
@@ -649,7 +649,7 @@ public class SlashBladeDefinitions {
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
                             .modelName(R.Slashblade.brilliantGold$obj)
-                            .textureName(R.Slashblade.brilliantTea$png)
+                            .textureName(R.Slashblade.brilliantGold$png)
                             .effectColor(new Color(255, 255, 0).getRGB())
             )
             .propertiesDefinition(
@@ -676,7 +676,7 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(6f)
                             .maxDamage(24 * 40)
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
-                            .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_MAX.getId())
+                            .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_ROW.getId())
             )
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
@@ -693,7 +693,7 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(6f)
                             .maxDamage(32 * 40)
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
-                            .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_MAX_LAMBDA.getId())
+                            .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_ROW_LAMBDA.getId())
             )
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
@@ -1047,7 +1047,7 @@ public class SlashBladeDefinitions {
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-            .addSpecialEffects(SpecialEffectsRegistry.STAR_BLINK, 0)
+            .addSpecialEffects(SpecialEffectsRegistry.STAR_BLINK, 1)
             .build();
 
     public static final SlashBladeDefinition TIL_LAMBDA = createBuild(Recasting.prefix("slashblade/special/til_lambda"))
@@ -1065,7 +1065,7 @@ public class SlashBladeDefinitions {
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-            .addSpecialEffects(SpecialEffectsRegistry.STAR_BLINK_LAMBDA, 0)
+            .addSpecialEffects(SpecialEffectsRegistry.STAR_BLINK_LAMBDA, 1)
             .build();
 
     public static final SlashBladeDefinition HTOD = createBuild(R.Slashblade.Special.htod)

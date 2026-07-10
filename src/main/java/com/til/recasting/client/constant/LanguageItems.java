@@ -436,8 +436,8 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Engraving Rules:");
 
     public static final LanguageItem ENGRAVING_RULE_MAIN = new LanguageItem("recasting.tooltip.engraving_rule.main")
-            .addTranslation(LanguageTypes.ZH_CN, "• 在铁砧上铭刻：一把刀最多可铭刻 %d 个普通SE和 %d 个特殊SE（创造模式不受限制）")
-            .addTranslation(LanguageTypes.EN_US, "• Engrave on anvil: A blade can engrave up to %d normal SEs and %d special SE (Creative mode has no restrictions)");
+            .addTranslation(LanguageTypes.ZH_CN, "• 在铁砧上铭刻：一把刀最多可铭刻 %d 个普通SE和 %d 个特殊SE（特殊SE可在铁砧中替换；创造模式不受限制）")
+            .addTranslation(LanguageTypes.EN_US, "• Engrave on anvil: A blade can engrave up to %d normal SEs and %d special SE (special SE can be replaced on the anvil; Creative mode has no restrictions)");
 
     public static final LanguageItem ENGRAVING_RULE_UPGRADE = new LanguageItem("recasting.tooltip.engraving_rule.upgrade")
             .addTranslation(LanguageTypes.ZH_CN, "• 升级：使用相同类型并且更高级SE的结晶可提升等级")
@@ -446,6 +446,18 @@ public class LanguageItems {
     public static final LanguageItem ENGRAVING_RULE_ERASE = new LanguageItem("recasting.tooltip.engraving_rule.erase")
             .addTranslation(LanguageTypes.ZH_CN, "• 抹除：使用等级为0的结晶可移除SE")
             .addTranslation(LanguageTypes.EN_US, "• Erase: Use crystals with level 0 to remove SE");
+
+    public static final LanguageItem SPECIAL_SE_EXTRACT_RULE = new LanguageItem("recasting.tooltip.special_se_extract")
+            .addTranslation(LanguageTypes.ZH_CN, "• 提取：铁砧左侧放带特殊SE的刀、右侧放渊寂火，可提取为结晶；刀将被彻底损毁。")
+            .addTranslation(LanguageTypes.EN_US, "• Extract: Place a blade with a special SE on the anvil's left and Abyss Flame on the right to extract a crystal; the blade is destroyed.");
+
+    public static final LanguageItem SPECIAL_SE_BADGE = new LanguageItem("recasting.tooltip.special_se.badge")
+            .addTranslation(LanguageTypes.ZH_CN, "特殊 SE")
+            .addTranslation(LanguageTypes.EN_US, "Special SE");
+
+    public static final LanguageItem ABYSS_FLAME_EXTRACT_HINT = new LanguageItem("recasting.tooltip.abyss_flame.extract")
+            .addTranslation(LanguageTypes.ZH_CN, "• 与带特殊SE的拔刀剑在铁砧合成，可提取特殊SE结晶（刀将被损毁）")
+            .addTranslation(LanguageTypes.EN_US, "• Combine with a Slash Blade carrying a special SE in an anvil to extract an SE crystal (the blade is destroyed).");
 
     // 聚散变体名称
     public static final LanguageItem GATHERING_PARTING_VARIANT = createItemLanguage(RecastingItems.GATHERING_PARTING_VARIANT)
@@ -1279,6 +1291,14 @@ public class LanguageItems {
     public static final LanguageItem RESOLVE_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.RESOLVE)
             .addTranslation(LanguageTypes.ZH_CN, "攻击带有演算层数的目标时消耗一层演算，造成附加伤害。")
             .addTranslation(LanguageTypes.EN_US, "When attacking a target with calculus stacks, consumes one stack, deals bonus damage.");
+
+    public static final LanguageItem RESOLVE_LAMBDA = createSpecialEffectLanguage(SpecialEffectsRegistry.RESOLVE_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^解算")
+            .addTranslation(LanguageTypes.EN_US, "Resolve Lambda");
+
+    public static final LanguageItem RESOLVE_LAMBDA_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.RESOLVE_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "攻击带有演算层数的目标时消耗一层演算，造成更高的附加伤害。")
+            .addTranslation(LanguageTypes.EN_US, "When attacking a target with calculus stacks, consumes one stack, deals greater bonus damage.");
 
     // 燃沫
     public static final LanguageItem FLAME_FOAM = createSpecialEffectLanguage(SpecialEffectsRegistry.FLAME_FOAM)

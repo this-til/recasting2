@@ -47,7 +47,7 @@ minecraft {
     // When true, this property will have all Eclipse/IntelliJ IDEA run configurations run the "prepareX" task for the given run configuration before launching the game.
     // In most cases, it is not necessary to enable.
     // enableEclipsePrepareRuns = true
-    // enableIdeaPrepareRuns = true
+    enableIdeaPrepareRuns = true
 
     // This property allows configuring Gradle's ProcessResources task(s) to run on IDE output locations before launching the game.
     // It is REQUIRED to be set to true for this template to function.
@@ -218,6 +218,37 @@ dependencies {
     //compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
     // at runtime, use the full JEI jar for Forge
     //runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+}
+
+tasks.register('syncRunMods', Copy) {
+    description = 'Syncs mod dependency JARs into run/mods for dev client launches.'
+    group = 'forgegradle runs'
+
+    from configurations.runtimeClasspath
+    into layout.projectDirectory.dir('run/mods')
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    include { FileTreeElement details ->
+        if (!details.file.name.endsWith('.jar')) {
+            return false
+        }
+        def name = details.file.name.toLowerCase()
+        if (name.startsWith('forge-') || name.startsWith('minecraft-')) {
+            return false
+        }
+        def jarFile = new java.util.zip.ZipFile(details.file)
+        try {
+            return jarFile.getEntry('META-INF/mods.toml') != null
+        } finally {
+            jarFile.close()
+        }
+    }
+}
+
+afterEvaluate {
+    tasks.matching { it.name == 'prepareRuns' }.configureEach {
+        dependsOn 'syncRunMods'
+    }
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

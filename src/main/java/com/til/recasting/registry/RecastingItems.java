@@ -71,7 +71,14 @@ public class RecastingItems {
     public static final RegistryObject<Item> CRADLE_FLAME = ITEMS.register("cradle_flame", () -> new ProudSoulItem(new Item.Properties(), createCradleFlameGradient(), 40.0f));
 
     // 渊寂火：纯粹的哑光黑色，吞噬周围光线
-    public static final RegistryObject<Item> ABYSS_FLAME = ITEMS.register("abyss_flame", () -> new ProudSoulItem(new Item.Properties(), createAbyssFlameGradient(), 25.0f));
+    public static final RegistryObject<Item> ABYSS_FLAME = ITEMS.register("abyss_flame", () -> new ProudSoulItem(new Item.Properties(), createAbyssFlameGradient(), 25.0f) {
+        @Override
+        public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<net.minecraft.network.chat.Component> components, @NotNull TooltipFlag flag) {
+            super.appendHoverText(stack, level, components, flag);
+            components.add(Component.empty());
+            components.add(Component.translatable("recasting.tooltip.abyss_flame.extract").withStyle(ChatFormatting.GRAY));
+        }
+    });
 
     // 王权火：威严的暗金色与深紫色交织，焰形升腾如帝王冠冕
     public static final RegistryObject<Item> ROYAL_FLAME = ITEMS.register("royal_flame", () -> new ProudSoulItem(new Item.Properties(), createRoyalFlameGradient(), 26.0f));
@@ -124,17 +131,23 @@ public class RecastingItems {
                         int maxLevel = extendedSE.getMaxLevel();
 
                         // 特殊SE使用紫色标注名称
-                        Component nameComponent = net.minecraft.network.chat.Component.translatable(se.getDescriptionId())
+                        Component nameComponent = Component.translatable(se.getDescriptionId())
                                 .withStyle(extendedSE.isSpecial() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.GRAY);
-
-                        // 添加 ExtendedSpecialEffect 的自定义格式
-                        components.add(
-                                net.minecraft.network.chat.Component.translatable(
-                                        "slashblade.tooltip.special_effect",
-                                        nameComponent,
-                                        currentLevel + "/" + maxLevel
-                                ).withStyle(ChatFormatting.GRAY)
-                        );
+                        if (extendedSE.isSpecial()) {
+                            nameComponent = nameComponent.copy()
+                                    .append(Component.literal(" "))
+                                    .append(Component.translatable("recasting.tooltip.special_se.badge")
+                                            .withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.ITALIC));
+                            components.add(nameComponent.copy().withStyle(ChatFormatting.GRAY));
+                        } else {
+                            components.add(
+                                    Component.translatable(
+                                            "slashblade.tooltip.special_effect",
+                                            nameComponent,
+                                            currentLevel + "/" + maxLevel
+                                    ).withStyle(ChatFormatting.GRAY)
+                            );
+                        }
 
                         // 添加特殊效果介绍
                         components.add(
@@ -162,6 +175,12 @@ public class RecastingItems {
                                 Component.translatable("recasting.tooltip.engraving_rule.erase")
                                         .withStyle(ChatFormatting.GRAY)
                         );
+                        if (extendedSE.isSpecial()) {
+                            components.add(
+                                    Component.translatable("recasting.tooltip.special_se_extract")
+                                            .withStyle(ChatFormatting.GRAY)
+                            );
+                        }
                     });
                 }
 

@@ -55,13 +55,23 @@ public class SlashBladeItemsMixin$ProudsoulCrystal {
         int currentLevel = tag.getInt("SpecialEffectTypeLevel");
         int maxLevel = extendedSE.getMaxLevel();
 
-        components.add(
-                Component.translatable(
-                        "slashblade.tooltip.special_effect",
-                        Component.translatable(se.getDescriptionId()),
-                        currentLevel + "/" + maxLevel
-                ).withStyle(ChatFormatting.GRAY)
-        );
+        Component nameComponent = Component.translatable(se.getDescriptionId());
+        if (extendedSE.isSpecial()) {
+            nameComponent = nameComponent.copy()
+                    .withStyle(ChatFormatting.LIGHT_PURPLE)
+                    .append(Component.literal(" "))
+                    .append(Component.translatable("recasting.tooltip.special_se.badge")
+                            .withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.ITALIC));
+            components.add(nameComponent.copy().withStyle(ChatFormatting.GRAY));
+        } else {
+            components.add(
+                    Component.translatable(
+                            "slashblade.tooltip.special_effect",
+                            nameComponent.withStyle(ChatFormatting.GRAY),
+                            currentLevel + "/" + maxLevel
+                    ).withStyle(ChatFormatting.GRAY)
+            );
+        }
 
         // 添加特殊效果介绍
         components.add(

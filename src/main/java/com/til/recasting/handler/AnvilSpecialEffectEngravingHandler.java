@@ -1,20 +1,21 @@
 package com.til.recasting.handler;
 
-import com.til.recasting.capability.provider.SlashBladeDefinitionExtensionProvider;
+import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.registry.RecastingItems;
 import com.til.recasting.registry.SpecialEffectsRegistry;
+import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.GameType;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.til.recasting.Recasting.MODID;
@@ -74,6 +75,10 @@ public class AnvilSpecialEffectEngravingHandler {
 
             int crystalLevel = crystalData.getSpecialEffectLevel();
 
+            if (extendedSE.isSpecial() && crystalLevel > 1) {
+                return;
+            }
+
             // 获取拔刀剑当前的特效等级
             AtomicInteger currentLevel = new AtomicInteger(0);
             leftItem.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> currentLevel.set(extension.getExtendedSpecialLevels(seLocation)));
@@ -98,45 +103,25 @@ public class AnvilSpecialEffectEngravingHandler {
                 }
 
                 // 检查SE数量限制（创造模式跳过限制）
-                if (!isCreativeMode) {
-                    boolean isSpecialSE = extendedSE.isSpecial();
-
-                    // 统计刀上已有的SE数量（只统计等级大于0的ExtendedSpecialEffect）
+                if (!isCreativeMode && !extendedSE.isSpecial()) {
                     AtomicInteger normalSECount = new AtomicInteger(0);
-                    AtomicInteger specialSECount = new AtomicInteger(0);
 
-                    // 获取PropertiesDefinitionExtension，用于检查SE等级
                     leftItem.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> {
                         leftItem.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState -> {
-                            for(ResourceLocation existingSE : bladeState.getSpecialEffects()) {
-                                // 检查是否是ExtendedSpecialEffect
+                            for (ResourceLocation existingSE : bladeState.getSpecialEffects()) {
                                 SpecialEffect existingSpecialEffect = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(existingSE);
                                 if (existingSpecialEffect instanceof com.til.recasting.registry.SpecialEffectsRegistry.ExtendedSpecialEffect existingExtendedSE) {
-                                    // 检查该SE是否已有等级（等级大于0才计入）
                                     int existingLevel = extension.getExtendedSpecialLevels(existingSE);
-                                    if (existingLevel > 0) {
-                                        if (existingExtendedSE.isSpecial()) {
-                                            specialSECount.incrementAndGet();
-                                        } else {
-                                            normalSECount.incrementAndGet();
-                                        }
+                                    if (existingLevel > 0 && !existingExtendedSE.isSpecial()) {
+                                        normalSECount.incrementAndGet();
                                     }
                                 }
                             }
                         });
                     });
 
-                    // 检查限制
-                    if (isSpecialSE) {
-                        // 如果要添加的是特殊SE，检查是否已经有特殊SE了
-                        if (currentLevel.get() == 0 && specialSECount.get() >= 1) {
-                            return; // 已经有特殊SE了，无法再添加
-                        }
-                    } else {
-                        // 如果要添加的是普通SE，检查是否已经有4个普通SE了
-                        if (currentLevel.get() == 0 && normalSECount.get() >= 4) {
-                            return; // 已经有4个普通SE了，无法再添加
-                        }
+                    if (currentLevel.get() == 0 && normalSECount.get() >= 4) {
+                        return;
                     }
                 }
             }
@@ -145,8 +130,15 @@ public class AnvilSpecialEffectEngravingHandler {
             ItemStack output = leftItem.copy();
 
             if (crystalLevel > 0) {
-                output.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState -> bladeState.addSpecialEffect(seLocation));
-                output.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> extension.setExtendedSpecialLevels(crystalData.getSpecialEffectType(), crystalData.getSpecialEffectLevel()));
+                output.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState ->
+                        output.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> {
+                            if (extendedSE.isSpecial()) {
+                                removeOtherSpecialEffects(bladeState, extension, seLocation);
+                            }
+                            bladeState.addSpecialEffect(seLocation);
+                            extension.setExtendedSpecialLevels(crystalData.getSpecialEffectType(), crystalData.getSpecialEffectLevel());
+                        })
+                );
             } else {
                 output.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState -> bladeState.removeSpecialEffect(seLocation));
                 output.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> extension.setExtendedSpecialLevels(crystalData.getSpecialEffectType(), 0));
@@ -162,6 +154,31 @@ public class AnvilSpecialEffectEngravingHandler {
             event.setMaterialCost(1);
             event.setCost(1);
         });
+    }
+
+    /**
+     * 铭刻新的特殊 SE 前，移除刀上其余特殊 SE（最多保留一个特殊 SE 槽位，铁砧可替换）。
+     */
+    private static void removeOtherSpecialEffects(
+            ISlashBladeState bladeState,
+            PropertiesDefinitionExtension extension,
+            ResourceLocation keep
+    ) {
+        List<ResourceLocation> toRemove = new ArrayList<>();
+        for (ResourceLocation existingSE : bladeState.getSpecialEffects()) {
+            if (existingSE.equals(keep)) {
+                continue;
+            }
+            SpecialEffect existingEffect = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(existingSE);
+            if (existingEffect instanceof SpecialEffectsRegistry.ExtendedSpecialEffect existingExtendedSE
+                    && existingExtendedSE.isSpecial()) {
+                toRemove.add(existingSE);
+            }
+        }
+        for (ResourceLocation seToRemove : toRemove) {
+            bladeState.removeSpecialEffect(seToRemove);
+            extension.setExtendedSpecialLevels(seToRemove, 0);
+        }
     }
 }
 
