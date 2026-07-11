@@ -6,6 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -32,7 +34,7 @@ public class ParticleHelper {
             try {
                 level.addParticle(
                         type,
-                        false,
+                        true,
                         posX + d1,
                         posY + d3,
                         posZ + d5,
@@ -47,6 +49,27 @@ public class ParticleHelper {
         }
 
 
+    }
+
+    /**
+     * 向维度内玩家发送粒子；使用远距同步（约 512 格），避免默认 32 格截断。
+     * 本版本无 {@code sendParticles(T, boolean, ...)} 重载，需走按玩家重载。
+     */
+    public static <T extends ParticleOptions> void sendParticlesLongRange(
+            ServerLevel serverLevel,
+            T type,
+            double x,
+            double y,
+            double z,
+            int count,
+            double xOffset,
+            double yOffset,
+            double zOffset,
+            double speed
+    ) {
+        for (ServerPlayer player : serverLevel.players()) {
+            serverLevel.sendParticles(player, type, true, x, y, z, count, xOffset, yOffset, zOffset, speed);
+        }
     }
 
     public static void spawnBlockParticle(Entity user, Vec3 targetPos, Vec3 normal, float fallFactor) {

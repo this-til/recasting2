@@ -7,6 +7,7 @@ import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.EntityPredicateHelper;
 import com.til.recasting.handler.PosHelper;
+import com.til.recasting.handler.PrismBeamEffectHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.DamageStructure;
@@ -43,7 +44,6 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
     private static final double SCATTER_BOX_X = 15.0;
     private static final double SCATTER_BOX_Y = 5.0;
     private static final double SCATTER_BOX_Z = 15.0;
-    private static final float PRISM_PARTICLE_SPACING = 0.25f;
 
     /** 脉冲次数 */
     int beamCount = 1;
@@ -193,7 +193,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
             Vec3 aim = randomPointInScatterBox(origin, random);
             // 空分光同样做物理碰撞，只播特效不结算伤害
             PosHelper.BeamHit hit = PosHelper.castLivingBeam(serverLevel, attacker, origin, aim);
-            AttackHelper.spawnPrismAlongSegment(serverLevel, origin, hit.hitPos(), color, PRISM_PARTICLE_SPACING);
+            PrismBeamEffectHelper.sync(serverLevel, origin, hit.hitPos(), color, PrismBeamEffectHelper.DEFAULT_LIFE_TICKS);
         }
 
         if (nextScatterCount <= 0) {
@@ -228,7 +228,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
             int color
     ) {
         PosHelper.BeamHit hit = PosHelper.castLivingBeam(serverLevel, attacker, start, aim);
-        AttackHelper.spawnPrismAlongSegment(serverLevel, start, hit.hitPos(), color, PRISM_PARTICLE_SPACING);
+        PrismBeamEffectHelper.sync(serverLevel, start, hit.hitPos(), color, PrismBeamEffectHelper.DEFAULT_LIFE_TICKS);
         if (hit.entity() != null) {
             AttackHelper.attack(attacker, hit.entity(), new DamageStructure(damageRatio, 0), attackTypes);
         }

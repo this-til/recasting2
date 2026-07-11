@@ -29,6 +29,13 @@ public class NetworkManager {
                 BuffStackSyncMessage::decode,
                 BuffStackSyncMessage::handle
         );
+        INSTANCE.registerMessage(
+                id++,
+                PrismBeamMessage.class,
+                PrismBeamMessage::encode,
+                PrismBeamMessage::decode,
+                PrismBeamMessage::handle
+        );
     }
 }
 

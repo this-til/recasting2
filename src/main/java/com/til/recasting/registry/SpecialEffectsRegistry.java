@@ -98,9 +98,9 @@ public class SpecialEffectsRegistry {
     public static final RegistryObject<SpecialEffect> FLAME_FOAM = registerExtendedSE("flame_foam", () -> new FlameFoamSpecialEffect().setMaxLevel(1).setSpecial(true));
 
     // 光子灼痕 - SE 只叠灼烧；灼痕叠层与满层光束由 Handler 在灼烧状态下处理；三档冷却
-    public static final RegistryObject<SpecialEffect> PHOTON_SCAR = registerExtendedSE("photon_scar", () -> new PhotonScarSpecialEffect().setCooldownTicks(30).setMaxLevel(1).setSpecial(true));
-    public static final RegistryObject<SpecialEffect> PHOTON_SCAR_2 = registerExtendedSE("photon_scar_2", () -> new PhotonScarSpecialEffect().setCooldownTicks(20).setMaxLevel(1).setSpecial(true));
-    public static final RegistryObject<SpecialEffect> PHOTON_SCAR_3 = registerExtendedSE("photon_scar_3", () -> new PhotonScarSpecialEffect().setCooldownTicks(10).setMaxLevel(1).setSpecial(true));
+    public static final RegistryObject<SpecialEffect> PHOTON_SCAR = registerExtendedSE("photon_scar", () -> new PhotonScarSpecialEffect().setMaxLevel(1).setSpecial(true));
+    public static final RegistryObject<SpecialEffect> PHOTON_SCAR_2 = registerExtendedSE("photon_scar_2", () -> new PhotonScarSpecialEffect().setMaxLevel(1).setSpecial(true));
+    public static final RegistryObject<SpecialEffect> PHOTON_SCAR_3 = registerExtendedSE("photon_scar_3", () -> new PhotonScarSpecialEffect().setMaxLevel(1).setSpecial(true));
 
     public static RegistryObject<SpecialEffect> registerExtendedSE(String name, Supplier<SpecialEffect> factory) {
         return SPECIAL_EFFECT.register(name, factory);

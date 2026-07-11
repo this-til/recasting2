@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -157,11 +158,31 @@ public class DefaultParticle extends Particle {
     }
 
     /**
-     * 不按相机视锥/距离裁剪，避免远距离光效突然消失。
+     * 关闭 Forge 视锥剔除；默认粒子包围盒过小，远距会被 frustum 裁掉。
      */
     @Override
     public boolean shouldCull() {
         return false;
+    }
+
+    /**
+     * 放大渲染用包围盒，避免远距/大尺寸粒子因默认 0.2 盒被裁切。
+     * 开启方块碰撞时仍用父类盒，以免碰撞范围异常。
+     */
+    @Override
+    public @NotNull AABB getBoundingBox() {
+        if (enableCollision) {
+            return super.getBoundingBox();
+        }
+        double extent = Math.max(this.size * 2.0, 16.0);
+        return new AABB(
+                this.x - extent,
+                this.y - extent,
+                this.z - extent,
+                this.x + extent,
+                this.y + extent,
+                this.z + extent
+        );
     }
 
     @Override

@@ -5,7 +5,6 @@ import com.til.recasting.entity.SlashEffectEntity;
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.event.DoSlashExtendEvent;
 import com.til.recasting.registry.RecastingEntities;
-import com.til.recasting.registry.RecastingParticleTypes;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.DamageStructure;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
@@ -255,24 +254,6 @@ public class AttackHelper {
             List<AttackType> attackTypeList,
             int color
     ) {
-        return attackAlongSegment(attacker, start, end, radius, damageStructure, attackTypeList, color, false);
-    }
-
-    /**
-     * 沿线段结算伤害；{@code prismVisual} 为真时使用光棱式粒子
-     *
-     * @return 实际命中的实体列表（客户端为空列表）
-     */
-    public static List<LivingEntity> attackAlongSegment(
-            LivingEntity attacker,
-            Vec3 start,
-            Vec3 end,
-            float radius,
-            DamageStructure damageStructure,
-            List<AttackType> attackTypeList,
-            int color,
-            boolean prismVisual
-    ) {
         if (attacker.level().isClientSide()) {
             return List.of();
         }
@@ -295,12 +276,7 @@ public class AttackHelper {
         }
 
         if (attacker.level() instanceof ServerLevel serverLevel) {
-            float spacing = Math.max(0.25f, radius * 0.5f);
-            if (prismVisual) {
-                spawnPrismAlongSegment(serverLevel, start, end, color, spacing);
-            } else {
-                spawnDustAlongSegment(serverLevel, start, end, color, spacing);
-            }
+            spawnDustAlongSegment(serverLevel, start, end, color, Math.max(0.25f, radius * 0.5f));
         }
         return hits;
     }
@@ -338,58 +314,7 @@ public class AttackHelper {
         for (int i = 0; i <= steps; i++) {
             double t = i / (double) steps;
             Vec3 pos = start.lerp(end, t);
-            serverLevel.sendParticles(dust, pos.x, pos.y, pos.z, 1, 0.0, 0.0, 0.0, 0.0);
-        }
-    }
-
-    /**
-     * 光棱坦克风格：白芯 + 刀色外层；使用 PRISM_BEAM（DefaultParticle，远端 force 同步且不裁剪）
-     */
-    public static void spawnPrismAlongSegment(ServerLevel serverLevel, Vec3 start, Vec3 end, int color, float spacing) {
-        Vec3 delta = end.subtract(start);
-        double length = delta.length();
-        if (length <= 0.0) {
-            return;
-        }
-        float step = Math.max(0.15f, spacing * 0.55f);
-        int steps = Math.max(1, (int) Math.ceil(length / step));
-        float r = ((color >> 16) & 0xFF) / 255.0f;
-        float g = ((color >> 8) & 0xFF) / 255.0f;
-        float b = (color & 0xFF) / 255.0f;
-        for (int i = 0; i <= steps; i++) {
-            double t = i / (double) steps;
-            Vec3 pos = start.lerp(end, t);
-            // count=0：偏移通道传入 RGB
-            serverLevel.sendParticles(
-                    RecastingParticleTypes.PRISM_BEAM.get(),
-                    pos.x, pos.y, pos.z,
-                    0,
-                    1.0, 0.95, 0.55,
-                    1.0
-            );
-            serverLevel.sendParticles(
-                    RecastingParticleTypes.PRISM_BEAM.get(),
-                    pos.x, pos.y, pos.z,
-                    0,
-                    r, g, b,
-                    1.0
-            );
-        }
-        serverLevel.sendParticles(
-                RecastingParticleTypes.PRISM_BEAM.get(),
-                end.x, end.y, end.z,
-                0,
-                1.0, 1.0, 0.85,
-                1.0
-        );
-        for (int i = 0; i < 4; i++) {
-            serverLevel.sendParticles(
-                    RecastingParticleTypes.PRISM_BEAM.get(),
-                    end.x, end.y, end.z,
-                    0,
-                    r, g, b,
-                    1.0
-            );
+            ParticleHelper.sendParticlesLongRange(serverLevel, dust, pos.x, pos.y, pos.z, 1, 0.0, 0.0, 0.0, 0.0);
         }
     }
 }

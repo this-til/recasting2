@@ -3,6 +3,7 @@ package com.til.recasting.registry.se;
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.handler.ParticleHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingParticleTypes;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import java.awt.Color;
 import java.util.List;
 
 /***
@@ -63,11 +65,17 @@ public class StarBlinkSpecialEffect extends ExtendedSpecialEffect {
                         buffStackData.setLevel(starBlinkBuffType, 0, world);
 
                         if (world instanceof ServerLevel serverLevel) {
-                            int color = event.getSlashBladeState().getColorCode();
+                            // 随机高饱和度命中粒子颜色
+                            var rand = serverLevel.getRandom();
+                            float hue = rand.nextFloat();
+                            float saturation = 0.7f + rand.nextFloat() * 0.3f;
+                            float brightness = 0.6f + rand.nextFloat() * 0.4f;
+                            int color = Color.HSBtoRGB(hue, saturation, brightness);
                             double r = ((color >> 16) & 0xFF) / 255.0;
                             double g = ((color >> 8) & 0xFF) / 255.0;
                             double b = (color & 0xFF) / 255.0;
-                            serverLevel.sendParticles(
+                            ParticleHelper.sendParticlesLongRange(
+                                    serverLevel,
                                     RecastingParticleTypes.STAR_BLINK.get(),
                                     target.getX(),
                                     target.getY() + target.getBbHeight() * 0.5,

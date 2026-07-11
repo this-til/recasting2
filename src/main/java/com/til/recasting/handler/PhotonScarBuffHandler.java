@@ -4,13 +4,8 @@ import com.til.recasting.Recasting;
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
-import com.til.recasting.registry.SpecialEffectsRegistry;
-import com.til.recasting.registry.se.PhotonScarSpecialEffect;
 import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
-import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
-import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -21,30 +16,32 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
  * 光子灼烧 / 灼痕 Buff 处理器
- * - 灼烧：每 0.25 秒造成固定魔法伤害：0.15 × 层数
- * - 灼痕：目标处于灼烧时叠层；满层释放短光束并清零（冷却中仍可叠层但不触发）
+ * <ul>
+ *   <li>灼烧：服务端周期结算火焰伤害</li>
+ *   <li>灼痕：目标处于灼烧时，受击叠层；满层从攻击者头顶发射短光棱，命中后清零（无冷却）</li>
+ * </ul>
  */
 @Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PhotonScarBuffHandler {
 
+    /** 灼烧每层每次结算的火焰伤害 */
     private static final float DAMAGE_PER_STACK = 0.15f;
+    /** 灼烧结算间隔（tick） */
     private static final int TICKS_PER_INTERVAL = 5;
 
-    private static final float MINI_LASER_ATTACK = 0.15f;
-    private static final int DEFAULT_COOLDOWN_TICKS = 10;
+    /** 灼痕满层短光束伤害倍率 */
+    private static final float MINI_LASER_ATTACK = 0.45f;
+    /** 刀状态缺失时的短光束默认颜色 */
     private static final int DEFAULT_COLOR = 0x50DCFF;
 
-    /** 受击者灼痕满层触发冷却 */
-    public static final Map<LivingEntity, Long> LAST_SCAR_TRIGGER_TIME_MAP = new WeakHashMap<>();
-
+    /**
+     * 灼烧持续伤害：按层数造成火焰伤害
+     */
     @SubscribeEvent
     public static void onLivingTick(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
@@ -68,14 +65,14 @@ public class PhotonScarBuffHandler {
                 return;
             }
 
-            DamageSource damageSource = entity.damageSources().magic();
+            DamageSource damageSource = entity.damageSources().onFire();
             entity.hurt(damageSource, damage);
         });
     }
 
     /**
-     * 灼烧状态下：叠灼痕 + 满层短光束。
-     * 优先级低于 SE，以便同一次激光先叠上灼烧再处理灼痕。
+     * 灼烧状态下叠灼痕；满层触发短光束。
+     * 优先级低于 SE，保证同一次激光先叠灼烧再处理灼痕。
      */
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void onAttackAmplifier(AttackAmplifierEvent event) {
@@ -102,7 +99,6 @@ public class PhotonScarBuffHandler {
                 return;
             }
 
-            int cooldownTicks = resolveCooldownTicks(event.getSlashBladeState());
             int color = event.getSlashBladeState() == null
                     ? DEFAULT_COLOR
                     : event.getSlashBladeState().getColorCode();
@@ -113,40 +109,45 @@ public class PhotonScarBuffHandler {
                     buffStackData,
                     photonScarBuffType,
                     1,
-                    cooldownTicks,
                     MINI_LASER_ATTACK,
                     color
             );
         });
     }
 
+    /**
+     * 叠加灼痕；达到最大层数时清零并发射带物理碰撞的短光棱（火焰激光伤害）
+     */
     private static void stackScarAndMaybeTrigger(
             LivingEntity attacker,
             LivingEntity target,
             com.til.recasting.capability.IBuffStackData buffStackData,
             BuffType photonScarBuffType,
             int addLevel,
-            int cooldownTicks,
             float miniLaserAttack,
             int color
     ) {
         Level world = target.level();
         int currentScar = buffStackData.getLevel(photonScarBuffType, world);
         int newScar = Math.min(currentScar + addLevel, photonScarBuffType.getMaxLevel());
-        long gameTime = world.getGameTime();
-        Long lastScarTrigger = LAST_SCAR_TRIGGER_TIME_MAP.get(target);
-        boolean onCooldown = lastScarTrigger != null && gameTime - lastScarTrigger < cooldownTicks;
 
-        if (newScar >= photonScarBuffType.getMaxLevel() && !onCooldown) {
+        if (newScar >= photonScarBuffType.getMaxLevel()) {
             buffStackData.setLevel(photonScarBuffType, 0, world);
-            LAST_SCAR_TRIGGER_TIME_MAP.put(target, gameTime);
 
+            // 自头顶发射短光棱：先同步线段特效，再仅对实际碰撞到的目标结算伤害
             Vec3 start = PosHelper.getAboveHead(attacker, 0.5);
             Vec3 aim = target.getBoundingBox().getCenter();
             if (start.distanceToSqr(aim) > 1.0E-8) {
                 PosHelper.BeamHit hit = PosHelper.castLivingBeam(world, attacker, start, aim);
                 if (world instanceof ServerLevel serverLevel) {
-                    AttackHelper.spawnPrismAlongSegment(serverLevel, start, hit.hitPos(), color, 0.25f);
+                    // 与 LaserBeamSlashArts 共用命中粒子（FLASH + 白金芯 + 刀色外层）
+                    PrismBeamEffectHelper.sync(
+                            serverLevel,
+                            start,
+                            hit.hitPos(),
+                            color,
+                            PrismBeamEffectHelper.DEFAULT_LIFE_TICKS
+                    );
                 }
                 if (hit.entity() == target) {
                     AttackHelper.attack(
@@ -164,39 +165,5 @@ public class PhotonScarBuffHandler {
         } else {
             buffStackData.setLevel(photonScarBuffType, newScar, world);
         }
-    }
-
-    private static int resolveCooldownTicks(ISlashBladeState slashBladeState) {
-        if (slashBladeState == null) {
-            return DEFAULT_COOLDOWN_TICKS;
-        }
-
-        IForgeRegistry<SpecialEffect> registry =
-                mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get();
-
-        SpecialEffect effect = resolvePhotonScarEffect(slashBladeState, registry);
-        if (effect instanceof PhotonScarSpecialEffect photonScar) {
-            return photonScar.getCooldownTicks();
-        }
-        return DEFAULT_COOLDOWN_TICKS;
-    }
-
-    private static SpecialEffect resolvePhotonScarEffect(
-            ISlashBladeState slashBladeState,
-            IForgeRegistry<SpecialEffect> registry
-    ) {
-        ResourceLocation scar = registry.getKey(SpecialEffectsRegistry.PHOTON_SCAR.get());
-        if (scar != null && slashBladeState.hasSpecialEffect(scar)) {
-            return SpecialEffectsRegistry.PHOTON_SCAR.get();
-        }
-        ResourceLocation scar2 = registry.getKey(SpecialEffectsRegistry.PHOTON_SCAR_2.get());
-        if (scar2 != null && slashBladeState.hasSpecialEffect(scar2)) {
-            return SpecialEffectsRegistry.PHOTON_SCAR_2.get();
-        }
-        ResourceLocation scar3 = registry.getKey(SpecialEffectsRegistry.PHOTON_SCAR_3.get());
-        if (scar3 != null && slashBladeState.hasSpecialEffect(scar3)) {
-            return SpecialEffectsRegistry.PHOTON_SCAR_3.get();
-        }
-        return null;
     }
 }

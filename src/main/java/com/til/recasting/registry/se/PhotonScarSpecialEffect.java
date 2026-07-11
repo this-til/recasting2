@@ -5,7 +5,6 @@ import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.instance.BuffType;
-import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,16 +13,19 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
  * 光子灼痕
- * SE 只负责：激光叠加光子灼烧；灼烧提供全伤害增伤
- * 灼痕叠层与满层短光束由 PhotonScarBuffHandler 在灼烧状态下处理
+ * <ul>
+ *   <li>激光命中叠加光子灼烧</li>
+ *   <li>灼烧层数提供全伤害增伤（上限由 {@code maxLaserBonus} 控制）</li>
+ *   <li>灼痕叠层与满层短光束由 {@link com.til.recasting.handler.PhotonScarBuffHandler} 处理</li>
+ * </ul>
  */
 @Setter
 @Accessors(chain = true)
 public class PhotonScarSpecialEffect extends ExtendedSpecialEffect {
 
+    /** 灼烧满层时的全伤害增伤上限 */
     float maxLaserBonus = 0.33f;
-    @Getter
-    int cooldownTicks = 30;
+    /** 每次激光命中叠加的灼烧层数 */
     int addLevel = 1;
 
     @SubscribeEvent
