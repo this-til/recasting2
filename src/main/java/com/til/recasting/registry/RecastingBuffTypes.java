@@ -121,8 +121,7 @@ public class RecastingBuffTypes {
 
     /**
      * 光子灼痕
-     * - 任意伤害叠层；满层释放短光束并清零；受击者冷却中仍可叠层但不触发
-     * - 目标处于灼烧时，灼痕叠层与满层短光束均不受 SE 限制
+     * - 灼烧状态下任意伤害叠层；满层释放短光束并清零；冷却中仍可叠层但不触发
      */
     public static final RegistryObject<BuffType> PHOTON_SCAR = BUFF_TYPES.register("photon_scar",
             () -> new BuffType(100, 5)

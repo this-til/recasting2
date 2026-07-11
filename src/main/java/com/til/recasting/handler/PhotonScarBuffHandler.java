@@ -14,6 +14,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -27,7 +28,7 @@ import java.util.WeakHashMap;
 /**
  * 光子灼烧 / 灼痕 Buff 处理器
  * - 灼烧：每 0.25 秒造成固定魔法伤害：0.15 × 层数
- * - 灼痕：目标处于灼烧时，叠层与满层短光束均不受 SE 限制
+ * - 灼痕：目标处于灼烧时叠层；满层释放短光束并清零（冷却中仍可叠层但不触发）
  */
 @Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PhotonScarBuffHandler {
@@ -36,12 +37,11 @@ public class PhotonScarBuffHandler {
     private static final int TICKS_PER_INTERVAL = 5;
 
     private static final float MINI_LASER_ATTACK = 0.6f;
-    private static final float MINI_LASER_RANGE = 4f;
     private static final float MINI_LASER_RADIUS = 0.75f;
     private static final int DEFAULT_COOLDOWN_TICKS = 30;
     private static final int DEFAULT_COLOR = 0x50DCFF;
 
-    /** 受击者灼痕满层触发冷却（SE 与无 SE 路径共用） */
+    /** 受击者灼痕满层触发冷却 */
     public static final Map<LivingEntity, Long> LAST_SCAR_TRIGGER_TIME_MAP = new WeakHashMap<>();
 
     @SubscribeEvent
@@ -73,7 +73,7 @@ public class PhotonScarBuffHandler {
     }
 
     /**
-     * 灼烧状态下：叠灼痕 + 满层短光束，均不要求 SE。
+     * 灼烧状态下：叠灼痕 + 满层短光束。
      * 优先级低于 SE，以便同一次激光先叠上灼烧再处理灼痕。
      */
     @SubscribeEvent(priority = EventPriority.LOW)
@@ -114,17 +114,13 @@ public class PhotonScarBuffHandler {
                     1,
                     cooldownTicks,
                     MINI_LASER_ATTACK,
-                    MINI_LASER_RANGE,
                     MINI_LASER_RADIUS,
                     color
             );
         });
     }
 
-    /**
-     * 叠灼痕；满层且非冷却时清零并释放短光束。
-     */
-    public static void stackScarAndMaybeTrigger(
+    private static void stackScarAndMaybeTrigger(
             LivingEntity attacker,
             LivingEntity target,
             com.til.recasting.capability.IBuffStackData buffStackData,
@@ -132,7 +128,6 @@ public class PhotonScarBuffHandler {
             int addLevel,
             int cooldownTicks,
             float miniLaserAttack,
-            float miniLaserRange,
             float miniLaserRadius,
             int color
     ) {
@@ -147,18 +142,23 @@ public class PhotonScarBuffHandler {
             buffStackData.setLevel(photonScarBuffType, 0, world);
             LAST_SCAR_TRIGGER_TIME_MAP.put(target, gameTime);
 
-            AttackHelper.attackAlongLook(
-                    attacker,
-                    miniLaserRange,
-                    miniLaserRadius,
-                    new DamageStructure(miniLaserAttack, 0),
-                    List.of(
-                            RecastingAttackTypes.LASER_ATTACK.get(),
-                            RecastingAttackTypes.PHOTON_SCAR_ATTACK.get()
-                    ),
-                    color
-            );
-            attacker.playSound(SoundEvents.BEACON_ACTIVATE, 0.25F, 1.8F);
+            Vec3 start = attacker.getEyePosition();
+            Vec3 end = target.getBoundingBox().getCenter();
+            if (start.distanceToSqr(end) > 1.0E-8) {
+                AttackHelper.attackAlongSegment(
+                        attacker,
+                        start,
+                        end,
+                        miniLaserRadius,
+                        new DamageStructure(miniLaserAttack, 0),
+                        List.of(
+                                RecastingAttackTypes.LASER_ATTACK.get(),
+                                RecastingAttackTypes.PHOTON_SCAR_ATTACK.get()
+                        ),
+                        color
+                );
+                attacker.playSound(SoundEvents.BEACON_ACTIVATE, 0.25F, 1.8F);
+            }
         } else {
             buffStackData.setLevel(photonScarBuffType, newScar, world);
         }

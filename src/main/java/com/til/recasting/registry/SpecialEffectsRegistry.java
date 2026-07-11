@@ -4,7 +4,7 @@ import com.til.recasting.Recasting;
 import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
-import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.handler.*;
 import com.til.recasting.entity.DriveEntity;
 import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.entity.LightningEntity;
@@ -13,10 +13,6 @@ import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.entity.SummondSpiralSwordEntity;
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.event.DoSlashExtendEvent;
-import com.til.recasting.handler.AttackHelper;
-import com.til.recasting.handler.EntityHelper;
-import com.til.recasting.handler.MathHelper;
-import com.til.recasting.handler.PosHelper;
 import com.til.recasting.mixin.AttackManagerMixin;
 import com.til.recasting.registry.instance.BuffType;
 import lombok.Getter;
@@ -146,7 +142,7 @@ public class SpecialEffectsRegistry {
     // 燃沫 - 攻击处于灵魂燃烧的目标时，使其额外受到当前生命比值的额外伤害，并有概率增加一层灵魂燃烧
     public static final RegistryObject<SpecialEffect> FLAME_FOAM = registerExtendedSE("flame_foam", () -> new FlameFoamSpecialEffect().setMaxLevel(1).setSpecial(true));
 
-    // 光子灼痕 - 任意伤害叠灼痕，满层短光束清零（冷却中只叠不触发）；激光叠灼烧（DoT + 全伤害增伤）；三档冷却
+    // 光子灼痕 - SE 只叠灼烧；灼痕叠层与满层光束由 Handler 在灼烧状态下处理；三档冷却
     public static final RegistryObject<SpecialEffect> PHOTON_SCAR = registerExtendedSE("photon_scar", () -> new PhotonScarSpecialEffect().setCooldownTicks(30).setMaxLevel(1).setSpecial(true));
     public static final RegistryObject<SpecialEffect> PHOTON_SCAR_2 = registerExtendedSE("photon_scar_2", () -> new PhotonScarSpecialEffect().setCooldownTicks(20).setMaxLevel(1).setSpecial(true));
     public static final RegistryObject<SpecialEffect> PHOTON_SCAR_3 = registerExtendedSE("photon_scar_3", () -> new PhotonScarSpecialEffect().setCooldownTicks(10).setMaxLevel(1).setSpecial(true));
@@ -2348,18 +2344,14 @@ public class SpecialEffectsRegistry {
 
     /**
      * 光子灼痕
-     * 受到任意伤害叠加一层光子灼痕，满层释放光束且清零；受击者计时冷却，冷却中仍可叠层但不触发
-     * 受击者受到激光伤害时叠加一层光子灼烧，灼烧附带持续伤害和全伤害增伤
-     * 目标处于灼烧时，灼痕叠层与满层短光束均不受 SE 限制
+     * SE 只负责：激光叠加光子灼烧；灼烧提供全伤害增伤
+     * 灼痕叠层与满层短光束由 PhotonScarBuffHandler 在灼烧状态下处理
      */
     @Setter
     @Accessors(chain = true)
     public static class PhotonScarSpecialEffect extends ExtendedSpecialEffect {
 
         float maxLaserBonus = 0.66f;
-        float miniLaserAttack = 0.6f;
-        float miniLaserRange = 4f;
-        float miniLaserRadius = 0.75f;
         @Getter
         int cooldownTicks = 30;
         int addLevel = 1;
@@ -2378,12 +2370,9 @@ public class SpecialEffectsRegistry {
                 return;
             }
 
-            LivingEntity attacker = event.getAttacker();
             Level world = target.level();
-            BuffType photonScarBuffType = RecastingBuffTypes.PHOTON_SCAR.get();
             BuffType photonBurnBuffType = RecastingBuffTypes.PHOTON_BURN.get();
             boolean isLaser = event.getAttackTypeList().contains(RecastingAttackTypes.LASER_ATTACK.get());
-            boolean isPhotonScarAttack = event.getAttackTypeList().contains(RecastingAttackTypes.PHOTON_SCAR_ATTACK.get());
             boolean isNoRecursion = event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get());
 
             target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
@@ -2408,32 +2397,7 @@ public class SpecialEffectsRegistry {
                     int currentBurn = buffStackData.getLevel(photonBurnBuffType, world);
                     int newBurn = Math.min(currentBurn + addLevel, photonBurnBuffType.getMaxLevel());
                     buffStackData.setLevel(photonBurnBuffType, newBurn, world);
-                    burnLevel = newBurn;
                 }
-
-                // 灼烧状态下叠层与满层光束由 PhotonScarBuffHandler 处理，不受 SE 限制
-                if (burnLevel > 0) {
-                    return;
-                }
-
-                if (isPhotonScarAttack) {
-                    return;
-                }
-
-                // 无灼烧时：需 SE，叠灼痕；满层且非冷却时释放短光束并清零
-                int color = event.getSlashBladeState().getColorCode();
-                PhotonScarBuffHandler.stackScarAndMaybeTrigger(
-                        attacker,
-                        target,
-                        buffStackData,
-                        photonScarBuffType,
-                        addLevel,
-                        cooldownTicks,
-                        miniLaserAttack,
-                        miniLaserRange,
-                        miniLaserRadius,
-                        color
-                );
             });
         }
 
