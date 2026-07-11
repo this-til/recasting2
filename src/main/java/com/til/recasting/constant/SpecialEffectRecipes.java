@@ -6,6 +6,7 @@ import com.til.recasting.recipe.SpecialEffectCrystalIngredient;
 import com.til.recasting.recipe.SpecialEffectCrystalShapedRecipeBuilder;
 import com.til.recasting.registry.RecastingItems;
 import com.til.recasting.registry.SpecialEffectsRegistry;
+import com.til.recasting.registry.se.ExtendedSpecialEffect;
 import com.til.recasting.registry.requir.SlashBladeItems;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.resources.ResourceLocation;
@@ -135,7 +136,7 @@ public class SpecialEffectRecipes {
         
         // 获取 SE 的扩展信息
         SpecialEffect se = seType.get();
-        if (!(se instanceof SpecialEffectsRegistry.ExtendedSpecialEffect extendedSE)) {
+        if (!(se instanceof ExtendedSpecialEffect extendedSE)) {
             return recipes; // 如果不是扩展 SE，返回空列表
         }
         

@@ -1,6 +1,6 @@
 package com.til.recasting.mixin;
 
-import com.til.recasting.registry.SpecialEffectsRegistry;
+import com.til.recasting.registry.se.ExtendedSpecialEffect;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -47,7 +47,7 @@ public class SlashBladeItemsMixin$ProudsoulCrystal {
 
         SpecialEffect se = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(seLocation);
 
-        if (!(se instanceof SpecialEffectsRegistry.ExtendedSpecialEffect extendedSE)) {
+        if (!(se instanceof ExtendedSpecialEffect extendedSE)) {
             return;
         }
 

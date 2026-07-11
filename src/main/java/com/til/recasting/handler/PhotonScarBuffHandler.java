@@ -5,6 +5,7 @@ import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.SpecialEffectsRegistry;
+import com.til.recasting.registry.se.PhotonScarSpecialEffect;
 import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -36,9 +37,9 @@ public class PhotonScarBuffHandler {
     private static final float DAMAGE_PER_STACK = 0.15f;
     private static final int TICKS_PER_INTERVAL = 5;
 
-    private static final float MINI_LASER_ATTACK = 0.6f;
+    private static final float MINI_LASER_ATTACK = 0.3f;
     private static final float MINI_LASER_RADIUS = 0.75f;
-    private static final int DEFAULT_COOLDOWN_TICKS = 30;
+    private static final int DEFAULT_COOLDOWN_TICKS = 10;
     private static final int DEFAULT_COLOR = 0x50DCFF;
 
     /** 受击者灼痕满层触发冷却 */
@@ -173,7 +174,7 @@ public class PhotonScarBuffHandler {
                 mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get();
 
         SpecialEffect effect = resolvePhotonScarEffect(slashBladeState, registry);
-        if (effect instanceof SpecialEffectsRegistry.PhotonScarSpecialEffect photonScar) {
+        if (effect instanceof PhotonScarSpecialEffect photonScar) {
             return photonScar.getCooldownTicks();
         }
         return DEFAULT_COOLDOWN_TICKS;

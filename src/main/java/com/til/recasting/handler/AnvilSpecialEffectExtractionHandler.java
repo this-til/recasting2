@@ -1,7 +1,7 @@
 package com.til.recasting.handler;
 
 import com.til.recasting.registry.RecastingItems;
-import com.til.recasting.registry.SpecialEffectsRegistry;
+import com.til.recasting.registry.se.ExtendedSpecialEffect;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.network.chat.Component;
@@ -136,7 +136,7 @@ public class AnvilSpecialEffectExtractionHandler {
                 bladeStack.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> {
                     for (ResourceLocation seLocation : bladeState.getSpecialEffects()) {
                         SpecialEffect se = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(seLocation);
-                        if (!(se instanceof SpecialEffectsRegistry.ExtendedSpecialEffect extendedSE)) {
+                        if (!(se instanceof ExtendedSpecialEffect extendedSE)) {
                             continue;
                         }
                         if (!extendedSE.isSpecial() || !bladeState.hasSpecialEffect(seLocation)) {

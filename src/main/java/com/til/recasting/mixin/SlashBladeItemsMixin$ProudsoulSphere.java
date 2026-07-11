@@ -1,6 +1,6 @@
 package com.til.recasting.mixin;
 
-import com.til.recasting.registry.SlashArtsRegistry;
+import com.til.recasting.registry.sa.ExtendedSlashArts;
 import com.til.recasting.registry.SpecialEffectsRegistry;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import mods.flammpfeil.slashblade.slasharts.SlashArts;
@@ -51,7 +51,7 @@ public class SlashBladeItemsMixin$ProudsoulSphere {
 
         SlashArts sa = mods.flammpfeil.slashblade.registry.SlashArtsRegistry.REGISTRY.get().getValue(saLocation);
 
-        if (!(sa instanceof SlashArtsRegistry.ExtendedSlashArts extendedSlashArts)) {
+        if (!(sa instanceof ExtendedSlashArts extendedSlashArts)) {
             return;
         }
 

@@ -124,7 +124,7 @@ public class RecastingBuffTypes {
      * - 灼烧状态下任意伤害叠层；满层释放短光束并清零；冷却中仍可叠层但不触发
      */
     public static final RegistryObject<BuffType> PHOTON_SCAR = BUFF_TYPES.register("photon_scar",
-            () -> new BuffType(100, 5)
+            () -> new BuffType(100, 7)
     );
 
     /**
@@ -132,7 +132,7 @@ public class RecastingBuffTypes {
      * - 激光叠层；持续伤害与全伤害增伤均基于此层数
      */
     public static final RegistryObject<BuffType> PHOTON_BURN = BUFF_TYPES.register("photon_burn",
-            () -> new BuffType(60, 20)
+            () -> new BuffType(60, 50)
     );
 
 }

@@ -4,6 +4,7 @@ import com.til.recasting.Recasting;
 import com.til.recasting.capability.ISpecialEffectCrystalData;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.item.ProudSoulItem;
+import com.til.recasting.registry.se.ExtendedSpecialEffect;
 import com.til.recasting.util.Gradient;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.ChatFormatting;
@@ -122,7 +123,7 @@ public class RecastingItems {
 
                         SpecialEffect se = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(seLocation);
 
-                        if (!(se instanceof SpecialEffectsRegistry.ExtendedSpecialEffect extendedSE)) {
+                        if (!(se instanceof ExtendedSpecialEffect extendedSE)) {
                             return;
                         }
 
@@ -648,9 +649,9 @@ public class RecastingItems {
         event.accept(REDSTONE_MEDIUM_SOUL_CUBE);
 
         //mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValues().stream()
-        //        .filter(se -> se instanceof SpecialEffectsRegistry.ExtendedSpecialEffect)
-        //        .map(se -> (SpecialEffectsRegistry.ExtendedSpecialEffect) se)
-        //        .flatMap(se -> IntStream.range(1, se.maxLevel + 1)
+        //        .filter(se -> se instanceof ExtendedSpecialEffect)
+        //        .map(se -> (ExtendedSpecialEffect) se)
+        //        .flatMap(se -> IntStream.range(1, se.getMaxLevel() + 1)
         //                .mapToObj(
         //                        level -> {
         //                            ItemStack itemStack = new ItemStack(SlashBladeItems.PROUDSOUL_CRYSTAL.get());
@@ -665,9 +666,9 @@ public class RecastingItems {
 
 
         mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValues().stream()
-                .filter(se -> se instanceof SpecialEffectsRegistry.ExtendedSpecialEffect)
-                .map(se -> (SpecialEffectsRegistry.ExtendedSpecialEffect) se)
-                .flatMap(se -> IntStream.range(0, se.maxLevel + 1)
+                .filter(se -> se instanceof ExtendedSpecialEffect)
+                .map(se -> (ExtendedSpecialEffect) se)
+                .flatMap(se -> IntStream.range(0, se.getMaxLevel() + 1)
                         .mapToObj(
                                 level -> {
                                     ItemStack itemStack = new ItemStack(RecastingItems.SE_CRYSTAL.get());

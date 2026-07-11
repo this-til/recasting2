@@ -3,6 +3,7 @@ package com.til.recasting.handler;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.registry.RecastingItems;
 import com.til.recasting.registry.SpecialEffectsRegistry;
+import com.til.recasting.registry.se.ExtendedSpecialEffect;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
@@ -69,7 +70,7 @@ public class AnvilSpecialEffectEngravingHandler {
             }
 
             // 检查是否为 ExtendedSpecialEffect
-            if (!(specialEffect instanceof com.til.recasting.registry.SpecialEffectsRegistry.ExtendedSpecialEffect extendedSE)) {
+            if (!(specialEffect instanceof com.til.recasting.registry.se.ExtendedSpecialEffect extendedSE)) {
                 return;
             }
 
@@ -110,7 +111,7 @@ public class AnvilSpecialEffectEngravingHandler {
                         leftItem.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState -> {
                             for (ResourceLocation existingSE : bladeState.getSpecialEffects()) {
                                 SpecialEffect existingSpecialEffect = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(existingSE);
-                                if (existingSpecialEffect instanceof com.til.recasting.registry.SpecialEffectsRegistry.ExtendedSpecialEffect existingExtendedSE) {
+                                if (existingSpecialEffect instanceof com.til.recasting.registry.se.ExtendedSpecialEffect existingExtendedSE) {
                                     int existingLevel = extension.getExtendedSpecialLevels(existingSE);
                                     if (existingLevel > 0 && !existingExtendedSE.isSpecial()) {
                                         normalSECount.incrementAndGet();
@@ -170,7 +171,7 @@ public class AnvilSpecialEffectEngravingHandler {
                 continue;
             }
             SpecialEffect existingEffect = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(existingSE);
-            if (existingEffect instanceof SpecialEffectsRegistry.ExtendedSpecialEffect existingExtendedSE
+            if (existingEffect instanceof ExtendedSpecialEffect existingExtendedSE
                     && existingExtendedSE.isSpecial()) {
                 toRemove.add(existingSE);
             }

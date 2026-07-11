@@ -82,7 +82,7 @@ public class ItemSlashBladeMixin {
 
                     Component nameComponent;
                     Component valueComponent;
-                    if (specialEffect instanceof com.til.recasting.registry.SpecialEffectsRegistry.ExtendedSpecialEffect extendedSpecialEffect) {
+                    if (specialEffect instanceof com.til.recasting.registry.se.ExtendedSpecialEffect extendedSpecialEffect) {
                         nameComponent = SpecialEffect.getDescription(specialEffectResourceLocation)
                                 .copy()
                                 .withStyle(extendedSpecialEffect.isSpecial() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.GRAY);
@@ -132,7 +132,7 @@ public class ItemSlashBladeMixin {
                     }
 
                     // 按住Shift时显示SE介绍文本
-                    if (flagIn.isAdvanced() && specialEffect instanceof com.til.recasting.registry.SpecialEffectsRegistry.ExtendedSpecialEffect extendedSE) {
+                    if (flagIn.isAdvanced() && specialEffect instanceof com.til.recasting.registry.se.ExtendedSpecialEffect extendedSE) {
                         tooltip.add(
                                 Component.translatable(extendedSE.getDescId())
                                         .withStyle(ChatFormatting.DARK_GRAY)
