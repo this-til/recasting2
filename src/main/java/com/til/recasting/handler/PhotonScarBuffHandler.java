@@ -11,6 +11,7 @@ import com.til.recasting.util.DamageStructure;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,8 +38,7 @@ public class PhotonScarBuffHandler {
     private static final float DAMAGE_PER_STACK = 0.15f;
     private static final int TICKS_PER_INTERVAL = 5;
 
-    private static final float MINI_LASER_ATTACK = 0.3f;
-    private static final float MINI_LASER_RADIUS = 0.75f;
+    private static final float MINI_LASER_ATTACK = 0.15f;
     private static final int DEFAULT_COOLDOWN_TICKS = 10;
     private static final int DEFAULT_COLOR = 0x50DCFF;
 
@@ -115,7 +115,6 @@ public class PhotonScarBuffHandler {
                     1,
                     cooldownTicks,
                     MINI_LASER_ATTACK,
-                    MINI_LASER_RADIUS,
                     color
             );
         });
@@ -129,7 +128,6 @@ public class PhotonScarBuffHandler {
             int addLevel,
             int cooldownTicks,
             float miniLaserAttack,
-            float miniLaserRadius,
             int color
     ) {
         Level world = target.level();
@@ -143,22 +141,25 @@ public class PhotonScarBuffHandler {
             buffStackData.setLevel(photonScarBuffType, 0, world);
             LAST_SCAR_TRIGGER_TIME_MAP.put(target, gameTime);
 
-            Vec3 start = attacker.getEyePosition();
-            Vec3 end = target.getBoundingBox().getCenter();
-            if (start.distanceToSqr(end) > 1.0E-8) {
-                AttackHelper.attackAlongSegment(
-                        attacker,
-                        start,
-                        end,
-                        miniLaserRadius,
-                        new DamageStructure(miniLaserAttack, 0),
-                        List.of(
-                                RecastingAttackTypes.LASER_ATTACK.get(),
-                                RecastingAttackTypes.PHOTON_SCAR_ATTACK.get()
-                        ),
-                        color
-                );
-                attacker.playSound(SoundEvents.BEACON_ACTIVATE, 0.25F, 1.8F);
+            Vec3 start = PosHelper.getAboveHead(attacker, 0.5);
+            Vec3 aim = target.getBoundingBox().getCenter();
+            if (start.distanceToSqr(aim) > 1.0E-8) {
+                PosHelper.BeamHit hit = PosHelper.castLivingBeam(world, attacker, start, aim);
+                if (world instanceof ServerLevel serverLevel) {
+                    AttackHelper.spawnPrismAlongSegment(serverLevel, start, hit.hitPos(), color, 0.25f);
+                }
+                if (hit.entity() == target) {
+                    AttackHelper.attack(
+                            attacker,
+                            target,
+                            new DamageStructure(miniLaserAttack, 0),
+                            List.of(
+                                    RecastingAttackTypes.LASER_ATTACK.get(),
+                                    RecastingAttackTypes.PHOTON_SCAR_ATTACK.get()
+                            )
+                    );
+                    attacker.playSound(SoundEvents.BEACON_ACTIVATE, 0.25F, 1.8F);
+                }
             }
         } else {
             buffStackData.setLevel(photonScarBuffType, newScar, world);

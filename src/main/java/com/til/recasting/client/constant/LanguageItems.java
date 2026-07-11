@@ -1003,30 +1003,30 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "在目标位置召唤大型次元斩；命中后为敌人叠加更高层数的灵魂燃烧。灵魂燃烧：使目标持续受到生命百分比的火焰伤害，层数随时间衰减。")
             .addTranslation(LanguageTypes.EN_US, "Summons a large judgement cut at the target; applies more soul burn stacks on hit. Soul burn: inflicts ongoing fire damage based on current health percentage; stacks decay over time.");
 
-    // 激光
+    // 光棱
     public static final LanguageItem LASER_1_SA = createSlashArtsLanguage(SlashArtsRegistry.LASER_1)
-            .addTranslation(LanguageTypes.ZH_CN, "裂空激光")
-            .addTranslation(LanguageTypes.EN_US, "Laser Beam");
+            .addTranslation(LanguageTypes.ZH_CN, "光棱射线")
+            .addTranslation(LanguageTypes.EN_US, "Prism Beam");
 
     public static final LanguageItem LASER_2_SA = createSlashArtsLanguage(SlashArtsRegistry.LASER_2)
-            .addTranslation(LanguageTypes.ZH_CN, "裂空激光[脉冲]")
-            .addTranslation(LanguageTypes.EN_US, "Laser Beam [Pulse]");
+            .addTranslation(LanguageTypes.ZH_CN, "光棱射线[脉冲]")
+            .addTranslation(LanguageTypes.EN_US, "Prism Beam [Pulse]");
 
     public static final LanguageItem LASER_3_SA = createSlashArtsLanguage(SlashArtsRegistry.LASER_3)
-            .addTranslation(LanguageTypes.ZH_CN, "裂空激光[阻断]")
-            .addTranslation(LanguageTypes.EN_US, "Laser Beam [Intercept]");
+            .addTranslation(LanguageTypes.ZH_CN, "光棱射线[连射]")
+            .addTranslation(LanguageTypes.EN_US, "Prism Beam [Barrage]");
 
     public static final LanguageItem LASER_1_SA_DESC = createSlashArtsDescription(SlashArtsRegistry.LASER_1)
-            .addTranslation(LanguageTypes.ZH_CN, "沿视线发射直线光束，对路径上的敌人造成伤害。")
-            .addTranslation(LanguageTypes.EN_US, "Fire a straight beam along your view that damages enemies along its path.");
+            .addTranslation(LanguageTypes.ZH_CN, "自头顶射出光棱，自动锁定敌人；命中后向周围散射分光。")
+            .addTranslation(LanguageTypes.EN_US, "Fires a prism beam from above the head that auto-locks onto foes; on hit, scatters secondary beams outward.");
 
     public static final LanguageItem LASER_2_SA_DESC = createSlashArtsDescription(SlashArtsRegistry.LASER_2)
-            .addTranslation(LanguageTypes.ZH_CN, "沿视线延迟连射多道光束，对路径上的敌人造成伤害。")
-            .addTranslation(LanguageTypes.EN_US, "Fire multiple delayed beams along your view that damage enemies along their path.");
+            .addTranslation(LanguageTypes.ZH_CN, "自头顶脉冲连射光棱，自动锁定敌人；命中后散射，分光还可再次散射。")
+            .addTranslation(LanguageTypes.EN_US, "Pulses prism beams from above the head with auto-lock; on hit, scatters outward, and secondary beams may scatter again.");
 
     public static final LanguageItem LASER_3_SA_DESC = createSlashArtsDescription(SlashArtsRegistry.LASER_3)
-            .addTranslation(LanguageTypes.ZH_CN, "沿视线高速连射多道光束，对路径上的敌人造成伤害。")
-            .addTranslation(LanguageTypes.EN_US, "Rapidly fire multiple delayed beams along your view that damage enemies along their path.");
+            .addTranslation(LanguageTypes.ZH_CN, "自头顶高速连射光棱，自动锁定敌人；命中后散射，分光还可再次散射。")
+            .addTranslation(LanguageTypes.EN_US, "Rapidly barrages prism beams from above the head with auto-lock; on hit, scatters outward, and secondary beams may scatter again.");
 
     // ========== Special Effects ==========
     // 协同攻击

@@ -21,7 +21,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 @Accessors(chain = true)
 public class PhotonScarSpecialEffect extends ExtendedSpecialEffect {
 
-    float maxLaserBonus = 0.66f;
+    float maxLaserBonus = 0.33f;
     @Getter
     int cooldownTicks = 30;
     int addLevel = 1;

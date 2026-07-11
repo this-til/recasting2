@@ -1,13 +1,27 @@
 package com.til.recasting.handler;
 
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import javax.annotation.Nullable;
+
 public class PosHelper {
+
+    /**
+     * 光线物理碰撞结果：落点、命中实体（若有）、是否撞到方块
+     */
+    public record BeamHit(Vec3 hitPos, @Nullable LivingEntity entity, boolean hitBlock) {
+    }
+
     /**
      * 获取攻击目标位置
      * 优先返回锁定目标的位置，如果没有锁定目标则使用视线追踪
@@ -54,6 +68,56 @@ public class PosHelper {
      */
     public static Vec3 getAttackTargetPosition(LivingEntity livingEntity, ISlashBladeState slashBladeState) {
         return getAttackTargetPosition(livingEntity, slashBladeState, 64.0);
+    }
+
+    /**
+     * 头顶上方发射点（头顶再上 {@code offset} 格）
+     */
+    public static Vec3 getAboveHead(LivingEntity livingEntity, double offset) {
+        return livingEntity.position().add(0.0, livingEntity.getBbHeight() + offset, 0.0);
+    }
+
+    /**
+     * 沿线段做方块与可攻击实体碰撞；方块截断射线，实体取截断段内最近命中
+     */
+    public static BeamHit castLivingBeam(Level level, LivingEntity shooter, Vec3 start, Vec3 end) {
+        if (start.distanceToSqr(end) <= 1.0E-8) {
+            return new BeamHit(start, null, false);
+        }
+
+        BlockHitResult blockHit = level.clip(
+                new ClipContext(
+                        start,
+                        end,
+                        ClipContext.Block.COLLIDER,
+                        ClipContext.Fluid.NONE,
+                        shooter
+                )
+        );
+        Vec3 clippedEnd = blockHit.getType() == HitResult.Type.BLOCK ? blockHit.getLocation() : end;
+
+        EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(
+                level,
+                shooter,
+                start,
+                clippedEnd,
+                new AABB(start, clippedEnd).inflate(1.0),
+                entity -> canHitLivingBeam(shooter, entity)
+        );
+
+        if (entityHit != null && entityHit.getEntity() instanceof LivingEntity living) {
+            return new BeamHit(entityHit.getLocation(), living, false);
+        }
+        if (blockHit.getType() == HitResult.Type.BLOCK) {
+            return new BeamHit(blockHit.getLocation(), null, true);
+        }
+        return new BeamHit(clippedEnd, null, false);
+    }
+
+    private static boolean canHitLivingBeam(LivingEntity shooter, Entity entity) {
+        return entity instanceof LivingEntity
+                && entity.isAlive()
+                && EntityPredicateHelper.canTarget(shooter, entity);
     }
 
     /**

@@ -173,13 +173,14 @@ public class RecastingAttackTypes {
     );
 
     /**
-     * 激光直线攻击类型（魔法伤害）
+     * 激光直线攻击类型（火焰伤害）
      */
     public static final RegistryObject<AttackType> LASER_ATTACK = ATTACK_TYPES.register("laser",
-            () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
-                    attacker.damageSources().indirectMagic(target, attacker),
-                    new DamageStructure(1.0f, 0.0f)
-            ))
+            () -> new AttackType((attacker, target) -> {
+                DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
+                DamageSource damageSource = accessor.callSource(DamageTypes.ON_FIRE, target, attacker);
+                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, new DamageStructure(1.0f, 0.0f));
+            })
     );
 
     /**

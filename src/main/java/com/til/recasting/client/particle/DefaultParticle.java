@@ -156,6 +156,14 @@ public class DefaultParticle extends Particle {
         return this;
     }
 
+    /**
+     * 不按相机视锥/距离裁剪，避免远距离光效突然消失。
+     */
+    @Override
+    public boolean shouldCull() {
+        return false;
+    }
+
     @Override
     public void tick() {
         this.xo = this.x;

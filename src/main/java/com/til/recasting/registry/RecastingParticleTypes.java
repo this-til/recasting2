@@ -30,5 +30,11 @@ public class RecastingParticleTypes {
      */
     public static final RegistryObject<SimpleParticleType> STAR_BLINK =
             PARTICLE_TYPES.register("star_blink", () -> new SimpleParticleType(false));
+
+    /**
+     * 光棱射线粒子（DefaultParticle，不裁剪距离）
+     */
+    public static final RegistryObject<SimpleParticleType> PRISM_BEAM =
+            PARTICLE_TYPES.register("prism_beam", () -> new SimpleParticleType(false));
 }
 

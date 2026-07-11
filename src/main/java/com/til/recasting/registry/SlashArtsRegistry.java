@@ -104,10 +104,33 @@ public class SlashArtsRegistry {
     public static final RegistryObject<ExtendedSlashArts> INFERNO = registerExtendedSA("inferno", new InfernoSlashArts());
     public static final RegistryObject<ExtendedSlashArts> INFERNO_LAMBDA = registerExtendedSA("inferno_lambda", new InfernoSlashArts().setSoulBurnLevel(6));
 
-    // 激光
-    public static final RegistryObject<ExtendedSlashArts> LASER_1 = registerExtendedSA("laser_1", new LaserBeamSlashArts().setBeamCount(1).setAttack(1.0f));
-    public static final RegistryObject<ExtendedSlashArts> LASER_2 = registerExtendedSA("laser_2", new LaserBeamSlashArts().setBeamCount(3).setDelay(3).setAttack(0.55f));
-    public static final RegistryObject<ExtendedSlashArts> LASER_3 = registerExtendedSA("laser_3", new LaserBeamSlashArts().setBeamCount(7).setDelay(2).setAttack(0.35f));
+    // 光棱（红警2 光棱坦克：延迟脉冲 + 头顶发射/自动索敌 + 锁定散射）
+    public static final RegistryObject<ExtendedSlashArts> LASER_1 = registerExtendedSA(
+            "laser_1",
+            new LaserBeamSlashArts().setBeamCount(1).setScatterCount(5).setAttack(0.5f).setScatterAttack(0.15f)
+    );
+    public static final RegistryObject<ExtendedSlashArts> LASER_2 = registerExtendedSA(
+            "laser_2",
+            new LaserBeamSlashArts()
+                    .setBeamCount(3)
+                    .setDelay(4)
+                    .setRange(48f)
+                    .setScatterCount(5)
+                    .setSecondaryScatterCount(3)
+                    .setAttack(0.35f)
+                    .setScatterAttack(0.125f)
+    );
+    public static final RegistryObject<ExtendedSlashArts> LASER_3 = registerExtendedSA(
+            "laser_3",
+            new LaserBeamSlashArts()
+                    .setBeamCount(5)
+                    .setDelay(3)
+                    .setRange(72f)
+                    .setScatterCount(5)
+                    .setSecondaryScatterCount(3)
+                    .setAttack(0.25f)
+                    .setScatterAttack(0.14f)
+    );
 
     /**
      * 注册扩展的 SlashArts，自动关联 ComboState
