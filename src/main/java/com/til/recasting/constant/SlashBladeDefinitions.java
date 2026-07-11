@@ -349,7 +349,6 @@ public class SlashBladeDefinitions {
                             .slashArtsType(SlashArtsRegistry.MATRIX_LAMBDA.getId())
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
-            .addSpecialEffects(SpecialEffectsRegistry.RESOLVE)
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 

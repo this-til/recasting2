@@ -359,10 +359,9 @@ public class AttackHelper {
         for (int i = 0; i <= steps; i++) {
             double t = i / (double) steps;
             Vec3 pos = start.lerp(end, t);
-            // count=0：偏移通道传入 RGB；true：远端强制同步
+            // count=0：偏移通道传入 RGB
             serverLevel.sendParticles(
                     RecastingParticleTypes.PRISM_BEAM.get(),
-                    true,
                     pos.x, pos.y, pos.z,
                     0,
                     1.0, 0.95, 0.55,
@@ -370,7 +369,6 @@ public class AttackHelper {
             );
             serverLevel.sendParticles(
                     RecastingParticleTypes.PRISM_BEAM.get(),
-                    true,
                     pos.x, pos.y, pos.z,
                     0,
                     r, g, b,
@@ -379,7 +377,6 @@ public class AttackHelper {
         }
         serverLevel.sendParticles(
                 RecastingParticleTypes.PRISM_BEAM.get(),
-                true,
                 end.x, end.y, end.z,
                 0,
                 1.0, 1.0, 0.85,
@@ -388,7 +385,6 @@ public class AttackHelper {
         for (int i = 0; i < 4; i++) {
             serverLevel.sendParticles(
                     RecastingParticleTypes.PRISM_BEAM.get(),
-                    true,
                     end.x, end.y, end.z,
                     0,
                     r, g, b,

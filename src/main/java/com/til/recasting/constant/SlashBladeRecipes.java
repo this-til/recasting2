@@ -375,6 +375,61 @@ public class SlashBladeRecipes {
                     .unlockedBy("has_copper_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.COPPER_MEDIUM_SOUL_CUBE.get()))
                     .save(consumer, recipeId);
 
+    /**
+     * 太极配方：从八卦巨剑 Lambda 升级
+     * 要求：杀敌8000、锻造500、力量5附魔、锋利5附魔
+     * 材料：诗烬火2个、混沌火4个、白羊毛1个、黑羊毛1个
+     * P=诗烬火, C=混沌火, W=白羊毛, K=黑羊毛, B=基础刀（八卦巨剑 Lambda，满足要求）
+     */
+    public static final RecipeBuilderWrapper SUPREME_POLE_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SUPREME_POLE.getName())
+                    .pattern("CPC")
+                    .pattern("WBK")
+                    .pattern("CPC")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.BA_GUA_BIG_LAMBDA.getName())
+                                    .killCount(8000)
+                                    .refineCount(500)
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE), 5))
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                    .build()))
+                    .define('P', RecastingItems.POETRY_ASH_FLAME.get())
+                    .define('C', RecastingItems.CHAOS_FLAME.get())
+                    .define('W', Items.WHITE_WOOL)
+                    .define('K', Items.BLACK_WOOL)
+                    .unlockedBy("has_poetry_ash_flame", RecipeProviderMixin.invokeHas(RecastingItems.POETRY_ASH_FLAME.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * 太极 Lambda 配方：从太极升级
+     * 要求：杀敌12000、锻造800、力量5附魔、锋利5附魔
+     * 材料：金黄色的庸魂立方体6个
+     * SE结晶：冲击l1 2个
+     * C=金黄色的庸魂立方体, B=基础刀（太极，满足要求）, I=冲击l1 SE结晶
+     */
+    public static final RecipeBuilderWrapper SUPREME_POLE_LAMBDA_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SUPREME_POLE_LAMBDA.getName())
+                    .pattern("CCC")
+                    .pattern("IBI")
+                    .pattern("CCC")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.SUPREME_POLE.getName())
+                                    .killCount(12000)
+                                    .refineCount(800)
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE), 5))
+                                    .addEnchantment(new EnchantmentDefinition(
+                                            ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                    .build()))
+                    .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
+                    .define('I', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.IMPACT.getId(), 1))
+                    .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
     /***
      * 黑刃
      */

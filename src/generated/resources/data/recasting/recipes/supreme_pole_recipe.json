@@ -1,0 +1,47 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/supreme_pole",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:smite",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:sharpness",
+            "lvl": 5
+          }
+        ],
+        "kill": 8000,
+        "name": "recasting:slashblade/ba_gua_big_lambda",
+        "refine": 500
+      }
+    },
+    "C": {
+      "item": "recasting:chaos_flame"
+    },
+    "K": {
+      "item": "minecraft:black_wool"
+    },
+    "P": {
+      "item": "recasting:poetry_ash_flame"
+    },
+    "W": {
+      "item": "minecraft:white_wool"
+    }
+  },
+  "pattern": [
+    "CPC",
+    "WBK",
+    "CPC"
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}
