@@ -106,7 +106,8 @@ public class PosHelper {
         );
 
         if (entityHit != null && entityHit.getEntity() instanceof LivingEntity living) {
-            return new BeamHit(entityHit.getLocation(), living, false);
+            // 特效与线段终点落在实体中心，避免射线贴 AABB 表面偏到脚底
+            return new BeamHit(living.getBoundingBox().getCenter(), living, false);
         }
         if (blockHit.getType() == HitResult.Type.BLOCK) {
             return new BeamHit(blockHit.getLocation(), null, true);

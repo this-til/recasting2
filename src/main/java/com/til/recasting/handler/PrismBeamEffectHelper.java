@@ -2,8 +2,8 @@ package com.til.recasting.handler;
 
 import com.til.recasting.network.NetworkManager;
 import com.til.recasting.network.PrismBeamMessage;
+import com.til.recasting.registry.RecastingParticleTypes;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
@@ -23,7 +23,7 @@ public final class PrismBeamEffectHelper {
     }
 
     /**
-     * 同步光棱线段，并在落点播放命中粒子（白金芯 + 刀色外层 + FLASH）
+     * 同步光棱线段，并在落点播放命中粒子（刀色 DefaultParticle 高闪 + 白金芯/刀色尘埃）
      *
      * @param lifeTicks 客户端线段可见持续时间
      */
@@ -48,7 +48,7 @@ public final class PrismBeamEffectHelper {
     }
 
     /**
-     * 光棱命中点粒子：与 {@link com.til.recasting.registry.sa.LaserBeamSlashArts} 一致
+     * 光棱命中点粒子：刀色 {@code DefaultParticle} 高闪 + 白金芯 + 刀色散射尘埃
      */
     public static void spawnHitParticles(ServerLevel serverLevel, Vec3 end, int color) {
         float r = ((color >> 16) & 0xFF) / 255.0f;
@@ -57,7 +57,19 @@ public final class PrismBeamEffectHelper {
         DustParticleOptions core = new DustParticleOptions(new Vector3f(1.0f, 0.95f, 0.55f), 1.35f);
         DustParticleOptions sheath = new DustParticleOptions(new Vector3f(r, g, b), 1.0f);
 
-        ParticleHelper.sendParticlesLongRange(serverLevel, ParticleTypes.FLASH, end.x, end.y, end.z, 1, 0.0, 0.0, 0.0, 0.0);
+        // 外层高闪：DefaultParticle，颜色走速度通道（与星闪同约定）
+        ParticleHelper.sendParticlesLongRange(
+                serverLevel,
+                RecastingParticleTypes.DEFAULT_PARTICLE.get(),
+                end.x,
+                end.y,
+                end.z,
+                0,
+                r,
+                g,
+                b,
+                1.0
+        );
         ParticleHelper.sendParticlesLongRange(serverLevel, core, end.x, end.y, end.z, 6, 0.12, 0.12, 0.12, 0.0);
         ParticleHelper.sendParticlesLongRange(serverLevel, sheath, end.x, end.y, end.z, 10, 0.2, 0.2, 0.2, 0.0);
     }

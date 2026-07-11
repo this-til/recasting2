@@ -140,7 +140,7 @@ public class PhotonScarBuffHandler {
             if (start.distanceToSqr(aim) > 1.0E-8) {
                 PosHelper.BeamHit hit = PosHelper.castLivingBeam(world, attacker, start, aim);
                 if (world instanceof ServerLevel serverLevel) {
-                    // 与 LaserBeamSlashArts 共用命中粒子（FLASH + 白金芯 + 刀色外层）
+                    // 与 LaserBeamSlashArts 共用命中粒子（刀色 DefaultParticle 高闪）
                     PrismBeamEffectHelper.sync(
                             serverLevel,
                             start,

@@ -3,6 +3,7 @@ package com.til.recasting.client.particle;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -31,12 +32,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 可链式配置的通用 Billboard 粒子，自 1.16.5 GlowingFireGlow DefaultParticle 迁移。
+ * 可链式配置的通用 Billboard 粒子。
  * <p>
- * 支持自定义纹理、尺寸曲线、速度衰减、重力与自转；无纹理时走 {@link #NULL_TEXTURE}。
+ * 独立 {@link ParticleRenderType} 通道 + 自有 {@link BufferBuilder} 批绘。
+ * <p>
+ * 兼容假人（dummmmmmy）伤害数字：其 {@code ParticleRenderType.CUSTOM} 在粒子阶段用 Font +
+ * {@code renderBuffers().bufferSource().endBatch()}，会弄脏 lightmap / 纹理单元 / 混合状态；
+ * Forge 又将自定义 RenderType 排在 CUSTOM 之后，导致同帧后续粒子全灭（同类问题见 Forge#6706）。
+ * 本类在 {@code begin} 中完整恢复渲染状态后再开批。
  */
 @OnlyIn(Dist.CLIENT)
 public class DefaultParticle extends Particle {
+
+    /** 本模组粒子批绘专用 Buffer，与引擎 Tesselator / 共享 BufferSource 隔离。 */
+    private static final BufferBuilder BATCH_BUFFER = new BufferBuilder(512 * 1024);
+
+    /** 当前批正在写入的 Buffer；仅在对应 {@link ParticleRenderType#begin}～{@code end} 期间非 null。 */
+    @Nullable
+    private static BufferBuilder activeBatch;
 
     /** 生命周期一半的 tick 数，供尺寸曲线将寿命映射为 0→1→0 的三角波。 */
     protected float particleHalfAge;
@@ -66,11 +79,11 @@ public class DefaultParticle extends Particle {
     /** 为 true 时走 {@link #move} 做方块碰撞；否则直接累加坐标。 */
     protected boolean enableCollision = false;
 
-    /** 粒子贴图；为 null 时使用 {@link #NULL_TEXTURE}。 */
+    /** 粒子贴图；为 null 时走 {@link #NULL_TEXTURE} 通道。 */
     @Nullable
     protected ResourceLocation textureName;
 
-    /** 按贴图缓存的 {@link ParticleRenderType}，避免每帧新建。 */
+    /** 按贴图缓存的批绘通道，同贴图粒子共用一个 {@link ParticleRenderType}。 */
     public static final Map<ResourceLocation, ParticleRenderType> map = new HashMap<>();
 
     public DefaultParticle(ClientLevel level, double x, double y, double z) {
@@ -94,7 +107,7 @@ public class DefaultParticle extends Particle {
      */
     public DefaultParticle setLifeTime(int lifetime) {
         this.lifetime = lifetime;
-        this.particleHalfAge = lifetime * 0.5f;
+        this.particleHalfAge = Math.max(lifetime * 0.5f, 0.5f);
         return this;
     }
 
@@ -157,18 +170,11 @@ public class DefaultParticle extends Particle {
         return this;
     }
 
-    /**
-     * 关闭 Forge 视锥剔除；默认粒子包围盒过小，远距会被 frustum 裁掉。
-     */
     @Override
     public boolean shouldCull() {
         return false;
     }
 
-    /**
-     * 放大渲染用包围盒，避免远距/大尺寸粒子因默认 0.2 盒被裁切。
-     * 开启方块碰撞时仍用父类盒，以免碰撞范围异常。
-     */
     @Override
     public @NotNull AABB getBoundingBox() {
         if (enableCollision) {
@@ -196,7 +202,6 @@ public class DefaultParticle extends Particle {
             return;
         }
 
-        // 位移：可选方块碰撞
         if (enableCollision) {
             Vec3 motion = new Vec3(xd, yd, zd);
             this.move(motion.x, motion.y, motion.z);
@@ -206,14 +211,12 @@ public class DefaultParticle extends Particle {
             this.z += this.zd;
         }
 
-        // 速度衰减
         if (moveAttenuation != null) {
             this.xd *= moveAttenuation.x;
             this.yd *= moveAttenuation.y;
             this.zd *= moveAttenuation.z;
         }
 
-        // 重力
         if (particleGravity != 0) {
             this.yd -= 0.04D * (double) this.particleGravity;
         }
@@ -223,8 +226,17 @@ public class DefaultParticle extends Particle {
     }
 
     @Override
-    public void render(@NotNull VertexConsumer buffer, Camera camera, float partialTick) {
-        // 相对相机的插值位置
+    public void render(@NotNull VertexConsumer ignored, Camera camera, float partialTick) {
+        BufferBuilder buffer = activeBatch;
+        if (buffer == null) {
+            return;
+        }
+
+        float currentSize = resolveCurrentSize();
+        if (currentSize <= 1.0E-4f || this.alpha <= 1.0E-4f) {
+            return;
+        }
+
         Vec3 cameraPos = camera.getPosition();
         Vector3f addPos = new Vector3f(
                 (float) (Mth.lerp(partialTick, this.xo, this.x) - cameraPos.x()),
@@ -232,7 +244,6 @@ public class DefaultParticle extends Particle {
                 (float) (Mth.lerp(partialTick, this.zo, this.z) - cameraPos.z())
         );
 
-        // Billboard 朝向；有滚转时绕 Z 叠加
         Quaternionf quaternion;
         if (this.roll == 0.0F) {
             quaternion = camera.rotation();
@@ -242,27 +253,12 @@ public class DefaultParticle extends Particle {
             quaternion.rotateZ(f3);
         }
 
-        // 尺寸曲线：timeLife 为寿命三角波（前半 0→1，后半 1→0）
-        float currentSize = size;
-        if (sizeChangeType != null) {
-            float timeLife = age / particleHalfAge;
-            timeLife = timeLife > 1 ? -timeLife + 2 : timeLife;
-            switch (sizeChangeType) {
-                case SIN -> currentSize = (float) (size * Math.sin(timeLife));
-                case SQUARE_SIN -> currentSize = (float) (size * Math.sin(Math.sqrt(timeLife)));
-                case COS -> currentSize = (float) (size * Math.cos(timeLife));
-                case SQUARE_COS -> currentSize = (float) (size * Math.cos(Math.sqrt(timeLife)));
-                case SMOOTH -> currentSize = size * timeLife;
-            }
-        }
-
         Vector3f[] vertices = new Vector3f[]{
                 new Vector3f(-1.0F, -1.0F, 0.0F),
                 new Vector3f(-1.0F, 1.0F, 0.0F),
                 new Vector3f(1.0F, 1.0F, 0.0F),
                 new Vector3f(1.0F, -1.0F, 0.0F)
         };
-
         for (int i = 0; i < 4; ++i) {
             Vector3f vertex = vertices[i];
             vertex.rotate(quaternion);
@@ -270,9 +266,7 @@ public class DefaultParticle extends Particle {
             vertex.add(addPos);
         }
 
-        // 满亮度光照，避免环境光压暗发光粒子
         int combined = 15 << 20 | 15 << 4;
-
         buffer.vertex(vertices[0].x(), vertices[0].y(), vertices[0].z())
                 .uv(0, 0)
                 .color(this.rCol, this.gCol, this.bCol, this.alpha)
@@ -295,88 +289,120 @@ public class DefaultParticle extends Particle {
                 .endVertex();
     }
 
-    /**
-     * 按 {@link #textureName} 返回渲染类型；首次遇到的贴图会创建并缓存到 {@link #map}。
-     * 使用 SRC_ALPHA / ONE 加法混合，适合发光类粒子。
-     */
     @Override
     public @NotNull ParticleRenderType getRenderType() {
         if (textureName == null) {
             return NULL_TEXTURE;
         }
-        if (map.containsKey(textureName)) {
-            return map.get(textureName);
+        ParticleRenderType cached = map.get(textureName);
+        if (cached != null) {
+            return cached;
         }
         ResourceLocation texture = textureName;
-        ParticleRenderType particleRenderType = new ParticleRenderType() {
+        ParticleRenderType type = createBatchType("recasting:default_particle:" + texture, texture);
+        map.put(texture, type);
+        return type;
+    }
+
+    /**
+     * 无贴图时的独立批绘通道（显式绑粒子图集）。
+     */
+    public static final ParticleRenderType NULL_TEXTURE =
+            createBatchType("recasting:default_particle:null", TextureAtlas.LOCATION_PARTICLES);
+
+    private static ParticleRenderType createBatchType(String name, ResourceLocation texture) {
+        return new ParticleRenderType() {
             @Override
-            public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
+            public void begin(BufferBuilder engineBuffer, TextureManager textureManager) {
+                restoreParticlePipelineAfterCustom();
                 RenderSystem.depthMask(false);
                 RenderSystem.enableBlend();
                 RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
                 RenderSystem.setShader(GameRenderer::getParticleShader);
+                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                 RenderSystem.setShaderTexture(0, texture);
                 textureManager.getTexture(texture).setFilter(true, false);
-                bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+                if (BATCH_BUFFER.building()) {
+                    BufferUploader.drawWithShader(BATCH_BUFFER.end());
+                }
+                BATCH_BUFFER.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+                activeBatch = BATCH_BUFFER;
             }
 
             @Override
-            public void end(Tesselator tesselator) {
-                tesselator.end();
+            public void end(Tesselator ignored) {
+                activeBatch = null;
+                if (BATCH_BUFFER.building()) {
+                    BufferUploader.drawWithShader(BATCH_BUFFER.end());
+                }
                 Minecraft.getInstance().getTextureManager().getTexture(TextureAtlas.LOCATION_PARTICLES).setFilter(false, false);
+                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                 RenderSystem.disableBlend();
                 RenderSystem.depthMask(true);
+                RenderSystem.defaultBlendFunc();
+                // 供同帧后续自定义粒子类型继续使用 lightmap
+                Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
             }
 
             @Override
             public String toString() {
-                return "recasting:" + texture;
+                return name;
             }
         };
-        map.put(texture, particleRenderType);
-        return particleRenderType;
     }
 
     /**
-     * 无自定义贴图时的回退渲染类型：默认混合、不绑定额外纹理。
+     * 假人伤害数字在 CUSTOM 阶段 endBatch 后，lightmap / 活动纹理单元往往已被拆掉；
+     * 粒子着色器仍采样 lightmap，未恢复则整批不可见。
      */
-    public static final ParticleRenderType NULL_TEXTURE = new ParticleRenderType() {
-        @Override
-        public void begin(BufferBuilder buffer, TextureManager textureManager) {
-            RenderSystem.depthMask(false);
-            RenderSystem.enableBlend();
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.setShader(GameRenderer::getParticleShader);
-            buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
-        }
+    private static void restoreParticlePipelineAfterCustom() {
+        Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
+        RenderSystem.activeTexture(org.lwjgl.opengl.GL13.GL_TEXTURE2);
+        RenderSystem.activeTexture(org.lwjgl.opengl.GL13.GL_TEXTURE0);
+        RenderSystem.enableDepthTest();
+    }
 
-        @Override
-        public void end(Tesselator tess) {
-            tess.end();
-            RenderSystem.disableBlend();
-            RenderSystem.depthMask(true);
+    private float resolveCurrentSize() {
+        float currentSize = size;
+        if (sizeChangeType == null) {
+            return currentSize;
         }
-
-        @Override
-        public String toString() {
-            return "recasting:null_texture";
-        }
-    };
+        float half = particleHalfAge <= 0.0f ? 0.5f : particleHalfAge;
+        float timeLife = age / half;
+        timeLife = timeLife > 1 ? -timeLife + 2 : timeLife;
+        timeLife = Mth.clamp(timeLife, 0.0f, 1.0f);
+        return switch (sizeChangeType) {
+            case SIN -> (float) (size * Math.sin(timeLife * Math.PI * 0.5));
+            case SQUARE_SIN -> (float) (size * Math.sin(Math.sqrt(timeLife) * Math.PI * 0.5));
+            case FLASH_SIN -> (float) (size * Math.sin(Math.pow(timeLife, 0.25) * Math.PI * 0.5));
+            case COS -> (float) (size * Math.cos(timeLife * Math.PI * 0.5));
+            case SQUARE_COS -> (float) (size * Math.cos(Math.sqrt(timeLife) * Math.PI * 0.5));
+            case FLASH_COS -> (float) (size * Math.cos(Math.pow(timeLife, 0.25) * Math.PI * 0.5));
+            case SMOOTH -> size * timeLife;
+            case FLASH -> (float) (size * Math.pow(timeLife, 0.25));
+        };
+    }
 
     /**
      * 生命周期内尺寸相对 {@link #size} 的变化方式。
      * 输入为寿命三角波 {@code timeLife ∈ [0, 1]}（前半升、后半降）。
      */
     public enum SizeChangeType {
-        /** {@code size * sin(timeLife)} */
+        /** {@code size * sin(π/2 * timeLife)} */
         SIN,
-        /** {@code size * sin(√timeLife)}，前半膨胀更快 */
+        /** {@code size * sin(π/2 * √timeLife)}，前半膨胀更快 */
         SQUARE_SIN,
-        /** {@code size * cos(timeLife)} */
+        /** {@code size * sin(π/2 * ∜timeLife)}，胀缩极快，贴合闪光 */
+        FLASH_SIN,
+        /** {@code size * cos(π/2 * timeLife)} */
         COS,
-        /** {@code size * cos(√timeLife)} */
+        /** {@code size * cos(π/2 * √timeLife)} */
         SQUARE_COS,
+        /** {@code size * cos(π/2 * ∜timeLife)}，衰减极快 */
+        FLASH_COS,
         /** {@code size * timeLife}，随三角波线性缩放 */
-        SMOOTH
+        SMOOTH,
+        /** {@code size * ∜timeLife}，胀缩极快，无 sin 压缩 */
+        FLASH
     }
 }
