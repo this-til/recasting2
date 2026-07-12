@@ -1,14 +1,26 @@
 {
   "enchantments": [
     {
-      "id": "minecraft:sharpness"
+      "id": "minecraft:sharpness",
+      "lvl": 2
     }
   ],
   "name": "recasting:slashblade/long_sky_sunset_lambda",
   "properties": {
+    "attack_base": 7.0,
+    "max_damage": 560,
+    "slash_art": "recasting:long_sky_sunset_lambda",
+    "special_effects": [
+      "recasting:long_sky_sunset"
+    ],
     "sword_type": [
       "bewitched"
     ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:long_sky_sunset": 5
+    }
   },
   "render": {
     "carry_type": "default",

@@ -137,4 +137,22 @@ public class RecastingBuffTypes {
             () -> new BuffType(60, 50)
     );
 
+    /**
+     * 日核
+     * - 不随时间衰减；最大 50 层
+     * - 仅长空落日 SA 幻影剑命中叠加；其它幻影剑触发晖光时消耗
+     */
+    public static final RegistryObject<BuffType> SUNSET_CORE = BUFF_TYPES.register("sunset_core",
+            () -> new BuffType(0, 50)
+    );
+
+    /**
+     * 叠晖
+     * - 衰减间隔 100 tick；最大 50 层
+     * - 有日核时受幻影剑伤害叠加；满层幻影剑伤害翻倍
+     */
+    public static final RegistryObject<BuffType> SUNSET_STACK = BUFF_TYPES.register("sunset_stack",
+            () -> new BuffType(100, 50)
+    );
+
 }

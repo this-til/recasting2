@@ -17,13 +17,13 @@
             "lvl": 5
           }
         ],
-        "kill": 8000,
+        "kill": 12000,
         "name": "recasting:slashblade/ba_gua_big_lambda",
-        "refine": 500
+        "refine": 800
       }
     },
     "C": {
-      "item": "recasting:chaos_flame"
+      "item": "recasting:diamond_medium_soul_cube"
     },
     "K": {
       "item": "minecraft:black_wool"

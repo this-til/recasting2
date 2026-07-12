@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "recasting:supreme_pole_recipe"
+        "recipe": "recasting:laser_3_recipe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "recasting:supreme_pole_recipe"
+      "recasting:laser_3_recipe"
     ]
   },
   "sends_telemetry_event": false

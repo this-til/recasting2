@@ -57,6 +57,14 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "光子灼烧")
             .addTranslation(LanguageTypes.EN_US, "Photon Burn");
 
+    public static final LanguageItem BUFF_SUNSET_CORE = new LanguageItem("buff.recasting.sunset_core")
+            .addTranslation(LanguageTypes.ZH_CN, "日核")
+            .addTranslation(LanguageTypes.EN_US, "Sunset Core");
+
+    public static final LanguageItem BUFF_SUNSET_STACK = new LanguageItem("buff.recasting.sunset_stack")
+            .addTranslation(LanguageTypes.ZH_CN, "叠晖")
+            .addTranslation(LanguageTypes.EN_US, "Sunset Stack");
+
     // ========== Void SlashBlades ==========
     public static final LanguageItem VOID_1 = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.VOID_1)
             .addTranslation(LanguageTypes.ZH_CN, "洞虚利刃")
@@ -296,6 +304,10 @@ public class LanguageItems {
     public static final LanguageItem LASER_3 = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.LASER_3)
             .addTranslation(LanguageTypes.ZH_CN, "激光剑[阻断]")
             .addTranslation(LanguageTypes.EN_US, "Laser Blade III");
+
+    public static final LanguageItem LASER_3_LAMBDA = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.LASER_3_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^激光剑[阻断]")
+            .addTranslation(LanguageTypes.EN_US, "Laser Blade III Lambda");
 
     // ========== Special SlashBlades ==========
     public static final LanguageItem TIL = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.TIL)
@@ -1016,6 +1028,10 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "光棱射线[连射]")
             .addTranslation(LanguageTypes.EN_US, "Prism Beam [Barrage]");
 
+    public static final LanguageItem LASER_3_LAMBDA_SA = createSlashArtsLanguage(SlashArtsRegistry.LASER_3_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^光棱射线[连射]")
+            .addTranslation(LanguageTypes.EN_US, "Prism Beam [Barrage] Lambda");
+
     public static final LanguageItem LASER_1_SA_DESC = createSlashArtsDescription(SlashArtsRegistry.LASER_1)
             .addTranslation(LanguageTypes.ZH_CN, "自头顶射出光棱，自动锁定敌人；命中后向周围散射分光。")
             .addTranslation(LanguageTypes.EN_US, "Fires a prism beam from above the head that auto-locks onto foes; on hit, scatters secondary beams outward.");
@@ -1027,6 +1043,27 @@ public class LanguageItems {
     public static final LanguageItem LASER_3_SA_DESC = createSlashArtsDescription(SlashArtsRegistry.LASER_3)
             .addTranslation(LanguageTypes.ZH_CN, "自头顶高速连射光棱，自动锁定敌人；命中后散射，分光还可再次散射。")
             .addTranslation(LanguageTypes.EN_US, "Rapidly barrages prism beams from above the head with auto-lock; on hit, scatters outward, and secondary beams may scatter again.");
+
+    public static final LanguageItem LASER_3_LAMBDA_SA_DESC = createSlashArtsDescription(SlashArtsRegistry.LASER_3_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "自头顶高速连射光棱，自动锁定敌人；命中后层层散射，分光可继续分裂。")
+            .addTranslation(LanguageTypes.EN_US, "Rapidly barrages prism beams from above the head with auto-lock; on hit, beams cascade through successive scatters.");
+
+    // 长空落日
+    public static final LanguageItem LONG_SKY_SUNSET_SA = createSlashArtsLanguage(SlashArtsRegistry.LONG_SKY_SUNSET)
+            .addTranslation(LanguageTypes.ZH_CN, "叠晖")
+            .addTranslation(LanguageTypes.EN_US, "Sunset Mark");
+
+    public static final LanguageItem LONG_SKY_SUNSET_LAMBDA_SA = createSlashArtsLanguage(SlashArtsRegistry.LONG_SKY_SUNSET_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^叠晖")
+            .addTranslation(LanguageTypes.EN_US, "Sunset Mark Lambda");
+
+    public static final LanguageItem LONG_SKY_SUNSET_SA_DESC = createSlashArtsDescription(SlashArtsRegistry.LONG_SKY_SUNSET)
+            .addTranslation(LanguageTypes.ZH_CN, "向目标周边随机敌人齐射幻影剑，命中叠加日核；带有日核的目标再受幻影剑伤害时触发晖光并叠加叠晖，叠满后幻影剑伤害大幅提升。")
+            .addTranslation(LanguageTypes.EN_US, "Volleys phantom swords at random foes near the aim point, applying Sunset Core on hit. Targets with Sunset Core take Hui Guang and gain Sunset Stack when struck by phantom swords; at full stacks, phantom sword damage rises sharply.");
+
+    public static final LanguageItem LONG_SKY_SUNSET_LAMBDA_SA_DESC = createSlashArtsDescription(SlashArtsRegistry.LONG_SKY_SUNSET_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "向目标周边随机敌人齐射更多幻影剑，命中叠加日核；带有日核的目标再受幻影剑伤害时触发晖光并叠加叠晖，叠满后幻影剑伤害大幅提升。")
+            .addTranslation(LanguageTypes.EN_US, "Volleys more phantom swords at random foes near the aim point, applying Sunset Core on hit. Targets with Sunset Core take Hui Guang and gain Sunset Stack when struck by phantom swords; at full stacks, phantom sword damage rises sharply.");
 
     // ========== Special Effects ==========
     // 协同攻击
@@ -1375,6 +1412,15 @@ public class LanguageItems {
     public static final LanguageItem PHOTON_SCAR_3_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.PHOTON_SCAR_3)
             .addTranslation(LanguageTypes.ZH_CN, "激光叠加灼烧，造成持续火焰伤害并提供全伤害增伤。灼烧状态下攻击叠加灼痕，满层释放短光束并清零。")
             .addTranslation(LanguageTypes.EN_US, "Laser stacks burn for fire DoT and all-damage amp. While burning, attacks stack scar; at max, fires a short beam and clears.");
+
+    // 长空落日
+    public static final LanguageItem LONG_SKY_SUNSET_SE = createSpecialEffectLanguage(SpecialEffectsRegistry.LONG_SKY_SUNSET)
+            .addTranslation(LanguageTypes.ZH_CN, "长空落日")
+            .addTranslation(LanguageTypes.EN_US, "Long Sky Sunset");
+
+    public static final LanguageItem LONG_SKY_SUNSET_SE_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.LONG_SKY_SUNSET)
+            .addTranslation(LanguageTypes.ZH_CN, "对锁定目标持续发射追踪幻影剑；等级越高，辅助剑伤害越高。")
+            .addTranslation(LanguageTypes.EN_US, "Continuously fires tracking phantom swords at the locked target; higher SE levels increase their damage.");
 
     private static LanguageItem createSlashBladeDefinitionLanguage(SlashBladeDefinition definition) {
         return new LanguageItem(definition.getTranslationKey());

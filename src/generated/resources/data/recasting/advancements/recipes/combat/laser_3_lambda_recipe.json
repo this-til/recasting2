@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_diamond_medium_soul_cube": {
+    "has_split_crystal": {
       "conditions": {
         "items": [
           {
             "items": [
-              "recasting:diamond_medium_soul_cube"
+              "recasting:se_crystal"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "recasting:supreme_pole_recipe"
+        "recipe": "recasting:laser_3_lambda_recipe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_diamond_medium_soul_cube",
+      "has_split_crystal",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "recasting:supreme_pole_recipe"
+      "recasting:laser_3_lambda_recipe"
     ]
   },
   "sends_telemetry_event": false

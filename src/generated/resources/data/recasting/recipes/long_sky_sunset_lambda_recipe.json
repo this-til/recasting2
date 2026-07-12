@@ -1,0 +1,36 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/long_sky_sunset_lambda",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "kill": 3000,
+        "name": "recasting:slashblade/long_sky_sunset",
+        "refine": 400
+      }
+    },
+    "C": {
+      "item": "recasting:redstone_medium_soul_cube"
+    },
+    "F": {
+      "type": "recasting:se_crystal",
+      "item": "recasting:se_crystal",
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:fragment"
+      }
+    }
+  },
+  "pattern": [
+    "CFC",
+    "FBF",
+    "CFC"
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

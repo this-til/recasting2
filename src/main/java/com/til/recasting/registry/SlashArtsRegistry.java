@@ -105,31 +105,62 @@ public class SlashArtsRegistry {
     public static final RegistryObject<ExtendedSlashArts> INFERNO_LAMBDA = registerExtendedSA("inferno_lambda", new InfernoSlashArts().setSoulBurnLevel(6));
 
     // 光棱（红警2 光棱坦克：延迟脉冲 + 头顶发射/自动索敌 + 锁定散射）
+    // scatterRange：相对基准散射盒，每级 +33%（1 / 1.33 / 1.66）
     public static final RegistryObject<ExtendedSlashArts> LASER_1 = registerExtendedSA(
             "laser_1",
-            new LaserBeamSlashArts().setBeamCount(1).setScatterCount(5).setAttack(0.5f).setScatterAttack(0.15f)
+            new LaserBeamSlashArts()
+                    .setBeamCount(1)
+                    .setScatterCount(5)
+                    .setScatterRange(1.0f)
+                    .setAttack(0.5f)
+                    .setScatterAttack(0.15f)
     );
     public static final RegistryObject<ExtendedSlashArts> LASER_2 = registerExtendedSA(
             "laser_2",
             new LaserBeamSlashArts()
-                    .setBeamCount(3)
-                    .setDelay(4)
+                    .setBeamCount(4)
+                    .setDelay(5)
                     .setRange(48f)
+                    .setScatterRange(1.33f)
                     .setScatterCount(5)
                     .setSecondaryScatterCount(3)
-                    .setAttack(0.35f)
+                    .setAttack(0.3f)
                     .setScatterAttack(0.125f)
     );
     public static final RegistryObject<ExtendedSlashArts> LASER_3 = registerExtendedSA(
             "laser_3",
             new LaserBeamSlashArts()
                     .setBeamCount(5)
-                    .setDelay(3)
+                    .setDelay(5)
                     .setRange(72f)
+                    .setScatterRange(1.66f)
                     .setScatterCount(5)
                     .setSecondaryScatterCount(3)
-                    .setAttack(0.25f)
+                    .setAttack(0.2f)
                     .setScatterAttack(0.14f)
+    );
+    public static final RegistryObject<ExtendedSlashArts> LASER_3_LAMBDA = registerExtendedSA(
+            "laser_3_lambda",
+            new LaserBeamSlashArts()
+                    .setBeamCount(6)
+                    .setDelay(5)
+                    .setRange(72f)
+                    .setScatterRange(1.66f)
+                    .setScatterCount(5)
+                    .setSecondaryScatterCount(3)
+                    .setTertiaryScatterCount(2)
+                    .setAttack(0.2f)
+                    .setScatterAttack(0.14f)
+    );
+
+    // 长空落日
+    public static final RegistryObject<ExtendedSlashArts> LONG_SKY_SUNSET = registerExtendedSA(
+            "long_sky_sunset",
+            new LongSkySunsetSlashArts()
+    );
+    public static final RegistryObject<ExtendedSlashArts> LONG_SKY_SUNSET_LAMBDA = registerExtendedSA(
+            "long_sky_sunset_lambda",
+            new LongSkySunsetSlashArts().setSwordCount(16)
     );
 
     /**

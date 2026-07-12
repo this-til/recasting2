@@ -97,6 +97,22 @@ public class BuffLevelRendererRegistry {
     );
 
     /**
+     * 日核 - 显示层数
+     */
+    public static final RegistryObject<BuffLevelRenderConfig> SUNSET_CORE = BUFF_LEVEL_RENDER_CONFIGS.register(
+            "sunset_core",
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.SUNSET_CORE, LanguageItems.BUFF_SUNSET_CORE)
+    );
+
+    /**
+     * 叠晖 - 显示层数
+     */
+    public static final RegistryObject<BuffLevelRenderConfig> SUNSET_STACK = BUFF_LEVEL_RENDER_CONFIGS.register(
+            "sunset_stack",
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.SUNSET_STACK, LanguageItems.BUFF_SUNSET_STACK)
+    );
+
+    /**
      * 断灭 - 显示层数
      */
     //public static final RegistryObject<BuffLevelRenderConfig> ANNIHILATION = BUFF_LEVEL_RENDER_CONFIGS.register(

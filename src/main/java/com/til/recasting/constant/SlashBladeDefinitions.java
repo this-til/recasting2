@@ -28,7 +28,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class SlashBladeDefinitions {
 
-    //region  t6
+    //region t6
     // 阔刃（木）
     public static final SlashBladeDefinition BROADSWORD_WOOD = createBuild(R.Slashblade.broadswordWood)
             .renderDefinition(
@@ -834,7 +834,7 @@ public class SlashBladeDefinitions {
             .addSpecialEffects(SpecialEffectsRegistry.COLOR_DYE)
             .build();
 
-    // 长空落日
+    // t3 长空落日
     public static final SlashBladeDefinition LONG_SKY_SUNSET = createBuild(R.Slashblade.longSkySunset)
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
@@ -843,12 +843,16 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(10 * 40)
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.LONG_SKY_SUNSET.getId())
             )
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .addSpecialEffects(SpecialEffectsRegistry.LONG_SKY_SUNSET, 1)
             .build();
 
-    // 长空落日 Lambda
+    // t3 长空落日 Lambda
     public static final SlashBladeDefinition LONG_SKY_SUNSET_LAMBDA = createBuild(Recasting.prefix("slashblade/long_sky_sunset_lambda"))
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
@@ -857,9 +861,13 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(7f)
+                            .maxDamage(14 * 40)
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.LONG_SKY_SUNSET_LAMBDA.getId())
             )
-            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 2))
+            .addSpecialEffects(SpecialEffectsRegistry.LONG_SKY_SUNSET, 5)
             .build();
 
 
@@ -987,6 +995,8 @@ public class SlashBladeDefinitions {
     // endregion
 
     // region ========== Laser SlashBlades ==========
+
+    // t3
     public static final SlashBladeDefinition LASER_1 = createBuild(R.Slashblade.Laser.laser1)
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
@@ -1004,6 +1014,7 @@ public class SlashBladeDefinitions {
             .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR, 1)
             .build();
 
+    // t3
     public static final SlashBladeDefinition LASER_2 = createBuild(R.Slashblade.Laser.laser2)
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
@@ -1021,6 +1032,8 @@ public class SlashBladeDefinitions {
             .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR_2, 1)
             .build();
 
+    
+    // t2
     public static final SlashBladeDefinition LASER_3 = createBuild(R.Slashblade.Laser.laser3)
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
@@ -1032,6 +1045,25 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(8f)
                             .maxDamage(20 * 40)
                             .slashArtsType(SlashArtsRegistry.LASER_3.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.2f))
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 3))
+            .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR_3, 1)
+            .build();
+
+    // t2
+    public static final SlashBladeDefinition LASER_3_LAMBDA = createBuild(Recasting.prefix("slashblade/laser/laser_3_lambda"))
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.Laser.laser3$obj)
+                            .textureName(R.Slashblade.Laser.laser3$png)
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(9f)
+                            .maxDamage(24 * 40)
+                            .slashArtsType(SlashArtsRegistry.LASER_3_LAMBDA.getId())
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.2f))

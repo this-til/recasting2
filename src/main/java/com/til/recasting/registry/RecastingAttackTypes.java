@@ -190,5 +190,22 @@ public class RecastingAttackTypes {
             () -> new AttackType((attacker, target) -> null)
     );
 
+    /**
+     * 长空落日 SA 幻影剑标记（仅标识来源；日核叠层在 SA 命中回调中处理）
+     */
+    public static final RegistryObject<AttackType> SUNSET_CORE_MARK = ATTACK_TYPES.register("sunset_core_mark",
+            () -> new AttackType((attacker, target) -> null)
+    );
+
+    /**
+     * 晖光追加伤害（魔法）；不得再触发晖光/叠晖
+     */
+    public static final RegistryObject<AttackType> HUI_GUANG_ATTACK = ATTACK_TYPES.register("hui_guang",
+            () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
+                    attacker.damageSources().indirectMagic(target, attacker),
+                    new DamageStructure(1.0f, 0.0f)
+            ))
+    );
+
 }
 

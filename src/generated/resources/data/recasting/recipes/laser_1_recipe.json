@@ -1,0 +1,36 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/laser/laser_1",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "kill": 1500,
+        "name": "recasting:slashblade/black",
+        "refine": 200
+      }
+    },
+    "C": {
+      "item": "recasting:iron_medium_soul_cube"
+    },
+    "F": {
+      "type": "recasting:se_crystal",
+      "item": "recasting:se_crystal",
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:fragment"
+      }
+    }
+  },
+  "pattern": [
+    " FC",
+    "CBC",
+    "CF "
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

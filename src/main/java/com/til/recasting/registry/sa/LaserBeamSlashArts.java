@@ -53,10 +53,14 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
     /** 散射分光伤害相对主光束 */
     float scatterAttack = 0.15f;
     float range = 24f;
+    /** 散射索敌/空分光盒相对基准的倍率（每级约 +33%） */
+    float scatterRange = 1.0f;
     /** 主碰撞后同时发出的散射条数 */
     int scatterCount = 5;
     /** 散射命中后再发出的二阶散射条数 */
     int secondaryScatterCount = 0;
+    /** 二阶散射命中后再发出的三阶散射条数 */
+    int tertiaryScatterCount = 0;
 
     @Override
     public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
@@ -136,6 +140,8 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
                     scatterCount,
                     scatterAttack,
                     secondaryScatterCount,
+                    tertiaryScatterCount,
+                    scatterRange,
                     attackTypes,
                     color,
                     exclude
@@ -162,11 +168,13 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
             int count,
             float damageRatio,
             int nextScatterCount,
+            int furtherScatterCount,
+            float scatterRangeMul,
             List<AttackType> attackTypes,
             int color,
             Set<LivingEntity> exclude
     ) {
-        List<LivingEntity> targets = findScatterTargets(attacker, origin, exclude, count);
+        List<LivingEntity> targets = findScatterTargets(attacker, origin, exclude, count, scatterRangeMul);
         List<LivingEntity> scatterHits = new ArrayList<>();
         for (LivingEntity target : targets) {
             exclude.add(target);
@@ -190,7 +198,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
         int remaining = count - targets.size();
         RandomSource random = attacker.getRandom();
         for (int i = 0; i < remaining; i++) {
-            Vec3 aim = randomPointInScatterBox(origin, random);
+            Vec3 aim = randomPointInScatterBox(origin, random, scatterRangeMul);
             // 空分光同样做物理碰撞，只播特效不结算伤害
             PosHelper.BeamHit hit = PosHelper.castLivingBeam(serverLevel, attacker, origin, aim);
             PrismBeamEffectHelper.sync(serverLevel, origin, hit.hitPos(), color, PrismBeamEffectHelper.DEFAULT_LIFE_TICKS);
@@ -207,7 +215,9 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
                     hit.getBoundingBox().getCenter(),
                     nextScatterCount,
                     secondaryDamage,
+                    furtherScatterCount,
                     0,
+                    scatterRangeMul,
                     attackTypes,
                     color,
                     exclude
@@ -279,9 +289,15 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
             LivingEntity attacker,
             Vec3 origin,
             Set<LivingEntity> exclude,
-            int limit
+            int limit,
+            float scatterRangeMul
     ) {
-        AABB box = AABB.ofSize(origin, SCATTER_BOX_X, SCATTER_BOX_Y, SCATTER_BOX_Z);
+        AABB box = AABB.ofSize(
+                origin,
+                SCATTER_BOX_X * scatterRangeMul,
+                SCATTER_BOX_Y * scatterRangeMul,
+                SCATTER_BOX_Z * scatterRangeMul
+        );
         return attacker.level().getEntitiesOfClass(
                         LivingEntity.class,
                         box,
@@ -295,10 +311,10 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
                 .toList();
     }
 
-    private static Vec3 randomPointInScatterBox(Vec3 origin, RandomSource random) {
-        double x = (random.nextDouble() - 0.5) * SCATTER_BOX_X;
-        double y = (random.nextDouble() - 0.5) * SCATTER_BOX_Y;
-        double z = (random.nextDouble() - 0.5) * SCATTER_BOX_Z;
+    private static Vec3 randomPointInScatterBox(Vec3 origin, RandomSource random, float scatterRangeMul) {
+        double x = (random.nextDouble() - 0.5) * SCATTER_BOX_X * scatterRangeMul;
+        double y = (random.nextDouble() - 0.5) * SCATTER_BOX_Y * scatterRangeMul;
+        double z = (random.nextDouble() - 0.5) * SCATTER_BOX_Z * scatterRangeMul;
         return origin.add(x, y, z);
     }
 }
