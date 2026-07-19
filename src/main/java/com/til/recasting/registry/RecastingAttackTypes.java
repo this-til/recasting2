@@ -207,5 +207,19 @@ public class RecastingAttackTypes {
             ))
     );
 
+    /**
+     * 金戈引爆防递归标记
+     */
+    public static final RegistryObject<AttackType> GOLDEN_HALBERD_ATTACK = ATTACK_TYPES.register("golden_halberd",
+            () -> new AttackType((attacker, target) -> null)
+    );
+
+    /**
+     * 茶韵释放防递归标记
+     */
+    public static final RegistryObject<AttackType> TEA_AROMA_ATTACK = ATTACK_TYPES.register("tea_aroma",
+            () -> new AttackType((attacker, target) -> null)
+    );
+
 }
 

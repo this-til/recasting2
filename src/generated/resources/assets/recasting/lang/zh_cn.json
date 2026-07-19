@@ -164,7 +164,7 @@
   "se.recasting.impact": "冲击",
   "se.recasting.impact.desc": "造成伤害有几率召唤幻影剑造成瞬间伤害。",
   "se.recasting.ionization": "电离",
-  "se.recasting.ionization.desc": "受到雷电伤害时叠加电离buff，每层提供1%全伤害增伤，最高64层。",
+  "se.recasting.ionization.desc": "对目标造成闪电伤害时叠加电离层数，根据层数提供全伤害增伤，高等级叠层更快。",
   "se.recasting.judgement": "断罪",
   "se.recasting.judgement.desc": "触发SA时追加次元斩攻击。",
   "se.recasting.life_steal": "吸血转化",

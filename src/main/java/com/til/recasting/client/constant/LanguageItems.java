@@ -1261,8 +1261,8 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Ionization");
 
     public static final LanguageItem IONIZATION_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.IONIZATION)
-            .addTranslation(LanguageTypes.ZH_CN, "受到雷电伤害时叠加电离buff，每层提供1%全伤害增伤，最高64层。")
-            .addTranslation(LanguageTypes.EN_US, "Stacks ionization buff when taking lightning damage. Each stack provides 1% all-damage bonus, up to 64 stacks.");
+            .addTranslation(LanguageTypes.ZH_CN, "对目标造成闪电伤害时叠加电离层数，根据层数提供全伤害增伤，高等级叠层更快。")
+            .addTranslation(LanguageTypes.EN_US, "Stacks ionization on the target when dealing lightning damage, providing all-damage bonus based on stack count. Higher levels stack faster.");
 
     // 蓄能
     public static final LanguageItem ENERGY_STORAGE = createSpecialEffectLanguage(SpecialEffectsRegistry.ENERGY_STORAGE)
@@ -1387,6 +1387,40 @@ public class LanguageItems {
     public static final LanguageItem COLOR_DYE_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.COLOR_DYE)
             .addTranslation(LanguageTypes.ZH_CN, "挥刀时更改刀刃颜色为随机的。")
             .addTranslation(LanguageTypes.EN_US, "Changes blade color to random when slashing.");
+
+    // 金戈
+    public static final LanguageItem GOLDEN_HALBERD = createSpecialEffectLanguage(SpecialEffectsRegistry.GOLDEN_HALBERD)
+            .addTranslation(LanguageTypes.ZH_CN, "金戈")
+            .addTranslation(LanguageTypes.EN_US, "Golden Halberd");
+
+    public static final LanguageItem GOLDEN_HALBERD_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.GOLDEN_HALBERD)
+            .addTranslation(LanguageTypes.ZH_CN, "斩击命中叠加层数，满层引爆额外伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Slash hits stack layers; at max, detonates bonus damage.");
+
+    public static final LanguageItem GOLDEN_HALBERD_LAMBDA = createSpecialEffectLanguage(SpecialEffectsRegistry.GOLDEN_HALBERD_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "金戈.λ")
+            .addTranslation(LanguageTypes.EN_US, "Golden Halberd.λ");
+
+    public static final LanguageItem GOLDEN_HALBERD_LAMBDA_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.GOLDEN_HALBERD_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "斩击命中叠加层数，满层引爆额外伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Slash hits stack layers; at max, detonates bonus damage.");
+
+    // 茶韵
+    public static final LanguageItem TEA_AROMA = createSpecialEffectLanguage(SpecialEffectsRegistry.TEA_AROMA)
+            .addTranslation(LanguageTypes.ZH_CN, "茶韵")
+            .addTranslation(LanguageTypes.EN_US, "Tea Aroma");
+
+    public static final LanguageItem TEA_AROMA_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.TEA_AROMA)
+            .addTranslation(LanguageTypes.ZH_CN, "剑气命中储存部分伤害延迟释放，连续命中累加并刷新倒计时。")
+            .addTranslation(LanguageTypes.EN_US, "Drive hits store delayed damage; consecutive hits accumulate and reset the timer.");
+
+    public static final LanguageItem TEA_AROMA_LAMBDA = createSpecialEffectLanguage(SpecialEffectsRegistry.TEA_AROMA_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "茶韵.λ")
+            .addTranslation(LanguageTypes.EN_US, "Tea Aroma.λ");
+
+    public static final LanguageItem TEA_AROMA_LAMBDA_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.TEA_AROMA_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "剑气命中储存部分伤害延迟释放，连续命中累加并刷新倒计时。")
+            .addTranslation(LanguageTypes.EN_US, "Drive hits store delayed damage; consecutive hits accumulate and reset the timer.");
 
     // 光子灼痕
     public static final LanguageItem PHOTON_SCAR = createSpecialEffectLanguage(SpecialEffectsRegistry.PHOTON_SCAR)

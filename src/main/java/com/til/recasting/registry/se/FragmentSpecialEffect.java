@@ -9,8 +9,14 @@ import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import com.til.recasting.util.NumberPack;
+import com.til.recasting.handler.ParticleHelper;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.List;
@@ -66,6 +72,43 @@ public class FragmentSpecialEffect extends ExtendedSpecialEffect {
                         // 重置层数
                         buffStackData.setLevel(fragmentBuffType, 0, world);
 
+                        // 粒子与音效
+                        if (world instanceof ServerLevel serverLevel) {
+                            Vec3 pos = target.position().add(0, target.getEyeHeight() * 0.5, 0);
+                            serverLevel.playSound(
+                                    null,
+                                    pos.x, pos.y, pos.z,
+                                    SoundEvents.GENERIC_EXPLODE,
+                                    SoundSource.PLAYERS,
+                                    0.4F,
+                                    1.0F + target.getRandom().nextFloat() * 0.3F
+                            );
+                            ParticleHelper.sendParticlesLongRange(
+                                    serverLevel,
+                                    ParticleTypes.EXPLOSION,
+                                    pos.x, pos.y, pos.z,
+                                    3,
+                                    0.2, 0.2, 0.2,
+                                    0.1
+                            );
+                            ParticleHelper.sendParticlesLongRange(
+                                    serverLevel,
+                                    ParticleTypes.CRIT,
+                                    pos.x, pos.y, pos.z,
+                                    20,
+                                    0.5, 0.7, 0.5,
+                                    0.5
+                            );
+                            ParticleHelper.sendParticlesLongRange(
+                                    serverLevel,
+                                    ParticleTypes.ENCHANTED_HIT,
+                                    pos.x, pos.y, pos.z,
+                                    10,
+                                    0.4, 0.4, 0.4,
+                                    0.4
+                            );
+                        }
+
                         // 造成大量额外伤害
                         float damage = attack.of(level);
                         AttackHelper.attack(
@@ -74,8 +117,6 @@ public class FragmentSpecialEffect extends ExtendedSpecialEffect {
                                 new DamageStructure(damage, 0),
                                 List.of(RecastingAttackTypes.FRAGMENT_ATTACK.get())
                         );
-
-                        // TODO 粒子 音效
                     }
                 }
         );

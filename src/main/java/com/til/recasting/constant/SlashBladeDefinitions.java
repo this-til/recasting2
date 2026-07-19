@@ -642,6 +642,7 @@ public class SlashBladeDefinitions {
                             .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_MAX.getId())
             )
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .addSpecialEffects(SpecialEffectsRegistry.GOLDEN_HALBERD, 1)
             .build();
 
     public static final SlashBladeDefinition BRILLIANT_GOLD_LAMBDA = createBuild(Recasting.prefix("slashblade/brilliant_gold_lambda"))
@@ -659,6 +660,7 @@ public class SlashBladeDefinitions {
                             .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_MAX_LAMBDA.getId())
             )
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .addSpecialEffects(SpecialEffectsRegistry.GOLDEN_HALBERD_LAMBDA, 1)
             .build();
 
 
@@ -678,6 +680,7 @@ public class SlashBladeDefinitions {
                             .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_ROW.getId())
             )
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .addSpecialEffects(SpecialEffectsRegistry.TEA_AROMA, 1)
             .build();
 
     public static final SlashBladeDefinition BRILLIANT_TEA_LAMBDA = createBuild(Recasting.prefix("slashblade/brilliant_tea_lambda"))
@@ -695,6 +698,7 @@ public class SlashBladeDefinitions {
                             .slashArtsType(SlashArtsRegistry.ZANTETSUDEN_ROW_LAMBDA.getId())
             )
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .addSpecialEffects(SpecialEffectsRegistry.TEA_AROMA_LAMBDA, 1)
             .build();
 
 
@@ -762,7 +766,7 @@ public class SlashBladeDefinitions {
 
     // ========== Base SlashBlades ==========
 
-    // 云翼
+    // 云翼 t3
     public static final SlashBladeDefinition SILVER_WING = createBuild(R.Slashblade.silverWing)
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
@@ -780,7 +784,7 @@ public class SlashBladeDefinitions {
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.15f))
             .build();
 
-    // 云翼 Lambda
+    // 云翼 Lambda t3
     public static final SlashBladeDefinition SILVER_WING_LAMBDA = createBuild(Recasting.prefix("slashblade/silver_wing_lambda"))
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
@@ -798,7 +802,7 @@ public class SlashBladeDefinitions {
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.15f))
             .build();
 
-    // 彩翼
+    // 彩翼 t2
     public static final SlashBladeDefinition COLOR_WING = createBuild(R.Slashblade.colorWing)
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
@@ -816,7 +820,7 @@ public class SlashBladeDefinitions {
             .addSpecialEffects(SpecialEffectsRegistry.COLOR_DYE)
             .build();
 
-    // 彩翼 Lambda
+    // 彩翼 Lambda t2
     public static final SlashBladeDefinition COLOR_WING_LAMBDA = createBuild(Recasting.prefix("slashblade/color_wing_lambda"))
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()

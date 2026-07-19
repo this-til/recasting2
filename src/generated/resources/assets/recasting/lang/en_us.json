@@ -164,7 +164,7 @@
   "se.recasting.impact": "Impact",
   "se.recasting.impact.desc": "Has a chance to summon phantom swords that deal instant damage when dealing damage.",
   "se.recasting.ionization": "Ionization",
-  "se.recasting.ionization.desc": "Stacks ionization buff when taking lightning damage. Each stack provides 1% all-damage bonus, up to 64 stacks.",
+  "se.recasting.ionization.desc": "Stacks ionization on the target when dealing lightning damage, providing all-damage bonus based on stack count. Higher levels stack faster.",
   "se.recasting.judgement": "Judgement",
   "se.recasting.judgement.desc": "Adds a judgement cut attack when triggering SA.",
   "se.recasting.life_steal": "Life Steal",
