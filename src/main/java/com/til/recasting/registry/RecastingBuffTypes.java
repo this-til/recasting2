@@ -155,4 +155,22 @@ public class RecastingBuffTypes {
             () -> new BuffType(100, 50)
     );
 
+    /**
+     * 金戈
+     * - 衰减间隔 40 tick；最大 12 层
+     * - 斩击命中叠加；满层引爆小范围伤害
+     */
+    public static final RegistryObject<BuffType> GOLDEN_HALBERD = BUFF_TYPES.register("golden_halberd",
+            () -> new BuffType(40, 12)
+    );
+
+    /**
+     * 茶韵
+     * - 不随时间自动衰减（到期由 SE 的 TIME_RUN 结算并清零）；无层数上限
+     * - 层数 = 延迟伤害 × 10（不足 1 记为 1）
+     */
+    public static final RegistryObject<BuffType> TEA_AROMA = BUFF_TYPES.register("tea_aroma",
+            () -> new BuffType(0, 0)
+    );
+
 }

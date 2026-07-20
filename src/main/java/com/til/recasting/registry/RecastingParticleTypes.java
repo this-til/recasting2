@@ -30,5 +30,11 @@ public class RecastingParticleTypes {
      */
     public static final RegistryObject<SimpleParticleType> STAR_BLINK =
             PARTICLE_TYPES.register("star_blink", () -> new SimpleParticleType(true));
+
+    /**
+     * 金戈满层引爆粒子（环状冲击）
+     */
+    public static final RegistryObject<SimpleParticleType> GOLDEN_HALBERD =
+            PARTICLE_TYPES.register("golden_halberd", () -> new SimpleParticleType(true));
 }
 

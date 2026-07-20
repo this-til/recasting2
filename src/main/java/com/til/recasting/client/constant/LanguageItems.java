@@ -65,6 +65,14 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "叠晖")
             .addTranslation(LanguageTypes.EN_US, "Sunset Stack");
 
+    public static final LanguageItem BUFF_GOLDEN_HALBERD = new LanguageItem("buff.recasting.golden_halberd")
+            .addTranslation(LanguageTypes.ZH_CN, "金戈")
+            .addTranslation(LanguageTypes.EN_US, "Golden Halberd");
+
+    public static final LanguageItem BUFF_TEA_AROMA = new LanguageItem("buff.recasting.tea_aroma")
+            .addTranslation(LanguageTypes.ZH_CN, "茶韵")
+            .addTranslation(LanguageTypes.EN_US, "Tea Aroma");
+
     // ========== Void SlashBlades ==========
     public static final LanguageItem VOID_1 = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.VOID_1)
             .addTranslation(LanguageTypes.ZH_CN, "洞虚利刃")
@@ -1394,16 +1402,16 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Golden Halberd");
 
     public static final LanguageItem GOLDEN_HALBERD_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.GOLDEN_HALBERD)
-            .addTranslation(LanguageTypes.ZH_CN, "斩击命中叠加层数，满层引爆额外伤害。")
-            .addTranslation(LanguageTypes.EN_US, "Slash hits stack layers; at max, detonates bonus damage.");
+            .addTranslation(LanguageTypes.ZH_CN, "斩击命中叠加层数，满层对周围造成额外伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Slash hits stack layers; at max, detonates bonus damage nearby.");
 
     public static final LanguageItem GOLDEN_HALBERD_LAMBDA = createSpecialEffectLanguage(SpecialEffectsRegistry.GOLDEN_HALBERD_LAMBDA)
             .addTranslation(LanguageTypes.ZH_CN, "金戈.λ")
             .addTranslation(LanguageTypes.EN_US, "Golden Halberd.λ");
 
     public static final LanguageItem GOLDEN_HALBERD_LAMBDA_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.GOLDEN_HALBERD_LAMBDA)
-            .addTranslation(LanguageTypes.ZH_CN, "斩击命中叠加层数，满层引爆额外伤害。")
-            .addTranslation(LanguageTypes.EN_US, "Slash hits stack layers; at max, detonates bonus damage.");
+            .addTranslation(LanguageTypes.ZH_CN, "斩击命中叠加层数，满层对周围造成额外伤害。")
+            .addTranslation(LanguageTypes.EN_US, "Slash hits stack layers; at max, detonates bonus damage nearby.");
 
     // 茶韵
     public static final LanguageItem TEA_AROMA = createSpecialEffectLanguage(SpecialEffectsRegistry.TEA_AROMA)
@@ -1411,16 +1419,16 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Tea Aroma");
 
     public static final LanguageItem TEA_AROMA_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.TEA_AROMA)
-            .addTranslation(LanguageTypes.ZH_CN, "剑气命中储存部分伤害延迟释放，连续命中累加并刷新倒计时。")
-            .addTranslation(LanguageTypes.EN_US, "Drive hits store delayed damage; consecutive hits accumulate and reset the timer.");
+            .addTranslation(LanguageTypes.ZH_CN, "命中储存部分伤害延迟释放，连续命中累加并刷新倒计时；剑气命中额外叠加层级。")
+            .addTranslation(LanguageTypes.EN_US, "Hits store delayed damage; consecutive hits accumulate and reset the timer; drive hits add bonus stacks.");
 
     public static final LanguageItem TEA_AROMA_LAMBDA = createSpecialEffectLanguage(SpecialEffectsRegistry.TEA_AROMA_LAMBDA)
             .addTranslation(LanguageTypes.ZH_CN, "茶韵.λ")
             .addTranslation(LanguageTypes.EN_US, "Tea Aroma.λ");
 
     public static final LanguageItem TEA_AROMA_LAMBDA_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.TEA_AROMA_LAMBDA)
-            .addTranslation(LanguageTypes.ZH_CN, "剑气命中储存部分伤害延迟释放，连续命中累加并刷新倒计时。")
-            .addTranslation(LanguageTypes.EN_US, "Drive hits store delayed damage; consecutive hits accumulate and reset the timer.");
+            .addTranslation(LanguageTypes.ZH_CN, "命中储存部分伤害延迟释放，连续命中累加并刷新倒计时；剑气命中额外叠加层级。")
+            .addTranslation(LanguageTypes.EN_US, "Hits store delayed damage; consecutive hits accumulate and reset the timer; drive hits add bonus stacks.");
 
     // 光子灼痕
     public static final LanguageItem PHOTON_SCAR = createSpecialEffectLanguage(SpecialEffectsRegistry.PHOTON_SCAR)

@@ -1,9 +1,14 @@
 package com.til.recasting.registry.se;
 
+import com.til.recasting.capability.IBuffStackData;
+import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.handler.AttackHelper;
+import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.ParticleHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
+import com.til.recasting.registry.RecastingBuffTypes;
+import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -12,19 +17,22 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.joml.Vector3f;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /***
  * 茶韵
- * 剑气命中储存部分伤害延迟释放；连续命中累加并刷新倒计时
+ * 命中储存部分伤害延迟释放；连续命中累加并刷新倒计时
+ * 剑气命中额外叠加固定层级
+ * 延迟伤害以 Buff 层数记录（伤害 × 10，不足 1 记为 1）
  */
 @Setter
 @Accessors(chain = true)
@@ -32,10 +40,16 @@ public class TeaAromaSpecialEffect extends ExtendedSpecialEffect {
 
     float storeRatio = 0.2f;
     int delayTicks = 30;
+    /** 剑气命中时额外叠加的 Buff 层级 */
+    int driveBonusStacks = 10;
 
-    Map<LivingEntity, Map<LivingEntity, DelayedEntry>> delayedMap = new HashMap<>();
+    /** 目标 UUID → 待释放定时器；连续命中只重置已有任务的计时 */
+    private final Map<UUID, ITimeRun.TimerCell> pendingReleases = new ConcurrentHashMap<>();
 
-    @SubscribeEvent
+    /**
+     * 在所有倍率结算之后读取最终伤害，写入目标茶韵 Buff，并调度延迟释放。
+     */
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onAttackAmplifier(AttackAmplifierEvent event) {
         if (!hasSpecialEffect(event.getSlashBladeState())) {
             return;
@@ -44,9 +58,6 @@ public class TeaAromaSpecialEffect extends ExtendedSpecialEffect {
             return;
         }
         if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
-            return;
-        }
-        if (!event.getAttackTypeList().contains(RecastingAttackTypes.DRIVE_ATTACK.get())) {
             return;
         }
         if (event.getAttackTypeList().contains(RecastingAttackTypes.TEA_AROMA_ATTACK.get())) {
@@ -58,88 +69,86 @@ public class TeaAromaSpecialEffect extends ExtendedSpecialEffect {
         if (attribute == null) {
             return;
         }
+
         float baseDamage = (float) (attribute.getValue() * event.getUltimatelyModifiedRatio());
         baseDamage += event.getExtraDamage();
         float storedDamage = baseDamage * storeRatio;
-
-        Map<LivingEntity, DelayedEntry> targetMap = delayedMap.computeIfAbsent(attacker, k -> new HashMap<>());
-        DelayedEntry existing = targetMap.get(target);
-        if (existing != null) {
-            existing.damage += storedDamage;
-            existing.ticksLeft = delayTicks;
-        } else {
-            targetMap.put(target, new DelayedEntry(storedDamage, delayTicks));
+        int addUnits = Math.max(1, (int) (storedDamage * 10f));
+        if (event.getAttackTypeList().contains(RecastingAttackTypes.DRIVE_ATTACK.get())) {
+            addUnits += driveBonusStacks;
         }
+
+        Level world = target.level();
+        BuffType teaAromaBuffType = RecastingBuffTypes.TEA_AROMA.get();
+
+        target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
+            int current = buffStackData.getLevel(teaAromaBuffType, world);
+            buffStackData.setLevel(teaAromaBuffType, current + addUnits, world);
+
+            UUID targetId = target.getUUID();
+            ITimeRun.TimerCell existing = pendingReleases.get(targetId);
+            if (existing != null && existing.isValid()) {
+                // 重置已过时间，等价于把唤醒点重新推后 delayTicks
+                existing.use(false);
+                return;
+            }
+
+            ITimeRun.TimerCell timerCell = new ITimeRun.TimerCell(
+                    () -> {
+                        pendingReleases.remove(targetId);
+                        tryRelease(attacker, target, teaAromaBuffType);
+                    },
+                    delayTicks
+            );
+            pendingReleases.put(targetId, timerCell);
+
+            attacker.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun ->
+                    timeRun.addTimerCell(timerCell)
+            );
+        });
     }
 
-    @SubscribeEvent
-    public void onServerTick(TickEvent.ServerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) {
+    private void tryRelease(LivingEntity attacker, LivingEntity target, BuffType teaAromaBuffType) {
+        if (attacker.level().isClientSide()) {
             return;
         }
-        if (delayedMap.isEmpty()) {
+        if (!target.isAlive() || target.level() != attacker.level()) {
             return;
         }
 
-        Iterator<Map.Entry<LivingEntity, Map<LivingEntity, DelayedEntry>>> outerIter = delayedMap.entrySet().iterator();
-        while (outerIter.hasNext()) {
-            Map.Entry<LivingEntity, Map<LivingEntity, DelayedEntry>> outerEntry = outerIter.next();
-            LivingEntity attacker = outerEntry.getKey();
-            Map<LivingEntity, DelayedEntry> targetMap = outerEntry.getValue();
-
-            if (attacker == null || !attacker.isAlive() || attacker.level().isClientSide()) {
-                outerIter.remove();
-                continue;
+        target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
+            IBuffStackData.BuffEntry entry = buffStackData.getEntry(teaAromaBuffType);
+            if (entry == null || entry.getLevel() <= 0) {
+                return;
             }
 
-            Iterator<Map.Entry<LivingEntity, DelayedEntry>> innerIter = targetMap.entrySet().iterator();
-            while (innerIter.hasNext()) {
-                Map.Entry<LivingEntity, DelayedEntry> innerEntry = innerIter.next();
-                LivingEntity target = innerEntry.getKey();
-                DelayedEntry delayed = innerEntry.getValue();
+            int units = entry.getLevel();
+            buffStackData.setLevel(teaAromaBuffType, 0, target.level());
 
-                if (target == null || !target.isAlive() || target.level() != attacker.level()) {
-                    innerIter.remove();
-                    continue;
-                }
-
-                delayed.ticksLeft--;
-                if (delayed.ticksLeft <= 0) {
-                    float releaseDamage = delayed.damage;
-                    innerIter.remove();
-
-                    AttackHelper.attack(
-                            attacker,
-                            target,
-                            new DamageStructure(0f, releaseDamage),
-                            List.of(RecastingAttackTypes.TEA_AROMA_ATTACK.get())
-                    );
-
-                    if (target.level() instanceof ServerLevel serverLevel) {
-                        Vec3 pos = target.position().add(0, target.getEyeHeight() * 0.5, 0);
-                        ParticleHelper.sendParticlesLongRange(
-                                serverLevel,
-                                new DustParticleOptions(new Vector3f(180f / 255f, 140f / 255f, 80f / 255f), 1.0f),
-                                pos.x, pos.y, pos.z,
-                                12, 0.4, 0.4, 0.4, 0.03
-                        );
-                    }
-                }
+            if (!attacker.isAlive()) {
+                return;
             }
 
-            if (targetMap.isEmpty()) {
-                outerIter.remove();
+            float releaseDamage = units / 10f;
+            AttackHelper.attack(
+                    attacker,
+                    target,
+                    new DamageStructure(0f, releaseDamage),
+                    List.of(
+                            RecastingAttackTypes.TEA_AROMA_ATTACK.get(),
+                            RecastingAttackTypes.NO_RECURSION_ATTACK.get()
+                    )
+            );
+
+            if (target.level() instanceof ServerLevel serverLevel) {
+                Vec3 pos = target.position().add(0, target.getEyeHeight() * 0.5, 0);
+                ParticleHelper.sendParticlesLongRange(
+                        serverLevel,
+                        new DustParticleOptions(new Vector3f(180f / 255f, 140f / 255f, 80f / 255f), 1.0f),
+                        pos.x, pos.y, pos.z,
+                        8, 0.3, 0.3, 0.3, 0.02
+                );
             }
-        }
-    }
-
-    private static class DelayedEntry {
-        float damage;
-        int ticksLeft;
-
-        DelayedEntry(float damage, int ticksLeft) {
-            this.damage = damage;
-            this.ticksLeft = ticksLeft;
-        }
+        });
     }
 }

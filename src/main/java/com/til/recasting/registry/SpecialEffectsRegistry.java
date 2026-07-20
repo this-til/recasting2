@@ -97,12 +97,12 @@ public class SpecialEffectsRegistry {
     // 燃沫 - 攻击处于灵魂燃烧的目标时，使其额外受到当前生命比值的额外伤害，并有概率增加一层灵魂燃烧
     public static final RegistryObject<SpecialEffect> FLAME_FOAM = registerExtendedSE("flame_foam", () -> new FlameFoamSpecialEffect().setMaxLevel(1).setSpecial(true));
 
-    // 金戈 - 斩击命中叠加层数，满层引爆额外伤害
+    // 金戈 - 斩击命中叠加层数，满层引爆小范围额外伤害
     public static final RegistryObject<SpecialEffect> GOLDEN_HALBERD = registerExtendedSE("golden_halberd", () -> new GoldenHalberdSpecialEffect().setMaxStacks(12).setBurstRatio(1.5f).setStacksPerHit(1).setMaxLevel(1).setSpecial(true));
     public static final RegistryObject<SpecialEffect> GOLDEN_HALBERD_LAMBDA = registerExtendedSE("golden_halberd_lambda", () -> new GoldenHalberdSpecialEffect().setMaxStacks(8).setBurstRatio(2.0f).setStacksPerHit(2).setMaxLevel(1).setSpecial(true));
-    // 茶韵 - 剑气命中储存部分伤害延迟释放；连续命中累加并刷新倒计时
-    public static final RegistryObject<SpecialEffect> TEA_AROMA = registerExtendedSE("tea_aroma", () -> new TeaAromaSpecialEffect().setStoreRatio(0.2f).setDelayTicks(30).setMaxLevel(1).setSpecial(true));
-    public static final RegistryObject<SpecialEffect> TEA_AROMA_LAMBDA = registerExtendedSE("tea_aroma_lambda", () -> new TeaAromaSpecialEffect().setStoreRatio(0.3f).setDelayTicks(30).setMaxLevel(1).setSpecial(true));
+    // 茶韵 - 命中储存部分伤害延迟释放；剑气额外叠层；连续命中累加并刷新倒计时
+    public static final RegistryObject<SpecialEffect> TEA_AROMA = registerExtendedSE("tea_aroma", () -> new TeaAromaSpecialEffect().setStoreRatio(0.2f).setDelayTicks(30).setDriveBonusStacks(10).setMaxLevel(1).setSpecial(true));
+    public static final RegistryObject<SpecialEffect> TEA_AROMA_LAMBDA = registerExtendedSE("tea_aroma_lambda", () -> new TeaAromaSpecialEffect().setStoreRatio(0.3f).setDelayTicks(30).setDriveBonusStacks(15).setMaxLevel(1).setSpecial(true));
 
     // 光子灼痕 - SE 只叠灼烧；灼痕叠层与满层光束由 Handler 在灼烧状态下处理；三档冷却
     public static final RegistryObject<SpecialEffect> PHOTON_SCAR = registerExtendedSE("photon_scar", () -> new PhotonScarSpecialEffect().setMaxLevel(1).setSpecial(true));

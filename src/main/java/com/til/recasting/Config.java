@@ -67,6 +67,18 @@ public class Config {
             .comment("精炼等级超过10000的伤害加成")
             .defineInRange("tenThousandRefineAttackBonus", 0.1, 0.0, 10.0);
 
+    // 手持拔刀剑击杀掉落耀魂
+    public static final ForgeConfigSpec.DoubleValue PROUD_SOUL_TINY_DROP_CHANCE = BUILDER
+            .comment("手持拔刀剑击败生物时，掉落破碎的耀魂（proudsoul_tiny）的概率")
+            .defineInRange("proudSoulTinyDropChance", 0.08, 0.0, 1.0);
+
+    public static final ForgeConfigSpec.DoubleValue PROUD_SOUL_DROP_CHANCE = BUILDER
+            .comment("手持拔刀剑击败生物时，掉落耀魂碎片（proudsoul）的概率")
+            .defineInRange("proudSoulDropChance", 0.04, 0.0, 1.0);
+
+    public static final ForgeConfigSpec.DoubleValue PROUD_SOUL_ENCHANTED_TINY_DROP_CHANCE = BUILDER
+            .comment("手持拔刀剑击败生物时，掉落带1级随机附魔的破碎的耀魂的概率")
+            .defineInRange("proudSoulEnchantedTinyDropChance", 0.02, 0.0, 1.0);
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
 

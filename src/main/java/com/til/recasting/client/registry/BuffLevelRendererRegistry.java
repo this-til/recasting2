@@ -113,6 +113,22 @@ public class BuffLevelRendererRegistry {
     );
 
     /**
+     * 金戈 - 显示层数
+     */
+    public static final RegistryObject<BuffLevelRenderConfig> GOLDEN_HALBERD = BUFF_LEVEL_RENDER_CONFIGS.register(
+            "golden_halberd",
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.GOLDEN_HALBERD, LanguageItems.BUFF_GOLDEN_HALBERD)
+    );
+
+    /**
+     * 茶韵 - 显示延迟伤害单位（伤害 × 10）
+     */
+    public static final RegistryObject<BuffLevelRenderConfig> TEA_AROMA = BUFF_LEVEL_RENDER_CONFIGS.register(
+            "tea_aroma",
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.TEA_AROMA, LanguageItems.BUFF_TEA_AROMA)
+    );
+
+    /**
      * 断灭 - 显示层数
      */
     //public static final RegistryObject<BuffLevelRenderConfig> ANNIHILATION = BUFF_LEVEL_RENDER_CONFIGS.register(

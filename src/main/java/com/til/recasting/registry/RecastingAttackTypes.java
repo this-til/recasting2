@@ -208,17 +208,23 @@ public class RecastingAttackTypes {
     );
 
     /**
-     * 金戈引爆防递归标记
+     * 金戈引爆（魔法伤害）；需配合 {@link #NO_RECURSION_ATTACK} 防递归
      */
     public static final RegistryObject<AttackType> GOLDEN_HALBERD_ATTACK = ATTACK_TYPES.register("golden_halberd",
-            () -> new AttackType((attacker, target) -> null)
+            () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
+                    attacker.damageSources().indirectMagic(target, attacker),
+                    new DamageStructure(1.0f, 0.0f)
+            ))
     );
 
     /**
-     * 茶韵释放防递归标记
+     * 茶韵延迟释放（魔法伤害）；需配合 {@link #NO_RECURSION_ATTACK} 防递归
      */
     public static final RegistryObject<AttackType> TEA_AROMA_ATTACK = ATTACK_TYPES.register("tea_aroma",
-            () -> new AttackType((attacker, target) -> null)
+            () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
+                    attacker.damageSources().indirectMagic(target, attacker),
+                    new DamageStructure(1.0f, 0.0f)
+            ))
     );
 
 }
