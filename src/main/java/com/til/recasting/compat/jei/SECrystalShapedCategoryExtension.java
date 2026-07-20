@@ -68,7 +68,7 @@ public class SECrystalShapedCategoryExtension implements ICraftingCategoryExtens
             // 通过 Capability 设置 SE 信息
             output.getCapability(CapabilityRegistryHandler.SE_CRYSTAL_DATA).ifPresent(data -> {
                 data.setSpecialEffectType(seType);
-                if (level > 0) {
+                if (level >= 0) {
                     data.setSpecialEffectLevel(level);
                 }
 

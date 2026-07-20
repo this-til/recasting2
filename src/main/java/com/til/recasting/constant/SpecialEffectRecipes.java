@@ -121,6 +121,37 @@ public class SpecialEffectRecipes {
                     .save(consumer, recipeId);
 
     /**
+     * 创建「1 级结晶 + 渊寂火 → 0 级结晶」配方（用于抹除 SE）。
+     * 普通 SE 与特殊 SE 均可使用；特殊 SE 无升格配方，仅注册本降级配方。
+     */
+    public static List<RecipeBuilderWrapper> createSEDemoteRecipes(RegistryObject<SpecialEffect> seType) {
+        List<RecipeBuilderWrapper> recipes = new ArrayList<>();
+
+        SpecialEffect se = seType.get();
+        if (!(se instanceof ExtendedSpecialEffect)) {
+            return recipes;
+        }
+
+        ResourceLocation seLocation = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getKey(se);
+        if (seLocation == null) {
+            return recipes;
+        }
+
+        final ResourceLocation demoteSeLocation = seLocation;
+        RecipeBuilderWrapper toLevel0 = (consumer, recipeId) ->
+                SpecialEffectCrystalShapedRecipeBuilder.shaped(seType, 0)
+                        .pattern(" U ")
+                        .pattern("USU")
+                        .pattern(" U ")
+                        .define('U', RecastingItems.ABYSS_FLAME.get())
+                        .define('S', SpecialEffectCrystalIngredient.of(demoteSeLocation, 1))
+                        .unlockedBy("has_se_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
+                        .save(consumer, recipeId);
+        recipes.add(toLevel0);
+        return recipes;
+    }
+
+    /**
      * 创建 SE 升级配方（含等级 0 制作）
      * 合成表格式：
      * " VS"
@@ -148,19 +179,9 @@ public class SpecialEffectRecipes {
         
         int maxLevel = extendedSE.getMaxLevel();
 
-        // 等级 1 结晶 + 渊寂火 → 等级 0 结晶（与升格同形，中间为渊寂火）
+        // 等级 1 结晶 + 渊寂火 → 等级 0 结晶
         if (maxLevel >= 1) {
-            final ResourceLocation demoteSeLocation = seLocation;
-            RecipeBuilderWrapper toLevel0 = (consumer, recipeId) ->
-                    SpecialEffectCrystalShapedRecipeBuilder.shaped(seType, 0)
-                            .pattern(" U ")
-                            .pattern("USU")
-                            .pattern(" U ")
-                            .define('U', RecastingItems.ABYSS_FLAME.get())
-                            .define('S', SpecialEffectCrystalIngredient.of(demoteSeLocation, 1))
-                            .unlockedBy("has_se_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
-                            .save(consumer, recipeId);
-            recipes.add(toLevel0);
+            recipes.addAll(createSEDemoteRecipes(seType));
         }
         
         // 为每个等级创建升级配方（从 1 升到 2，从 2 升到 3，...）
@@ -207,7 +228,7 @@ public class SpecialEffectRecipes {
 
     // ==================== SE 升级配方 ====================
     // 以下字段会自动被 RecastingRecipeProvider 扫描并生成配方
-    // 排除绑刀特殊 SE（仅 1 级，无结晶配方）：BLACK_ROSE, STAR_BLINK, STAR_BLINK_LAMBDA, COLOR_DYE, RESOLVE, RESOLVE_LAMBDA, FLAME_FOAM
+    // 特殊 SE：无初合成/升格配方（铁砧提取），但保留 1→0 降级配方用于抹除
 
     /**
      * 协同 SE 结晶配方 - 从利刃升级
@@ -697,6 +718,23 @@ public class SpecialEffectRecipes {
     public static final List<RecipeBuilderWrapper> SHOCK_UPGRADE_RECIPES = createSEUpgradeRecipes(SpecialEffectsRegistry.SHOCK);
     public static final List<RecipeBuilderWrapper> SWORD_QI_MASTERY_UPGRADE_RECIPES = createSEUpgradeRecipes(SpecialEffectsRegistry.SWORD_QI_MASTERY);
     public static final List<RecipeBuilderWrapper> THUNDER_STRIKE_UPGRADE_RECIPES = createSEUpgradeRecipes(SpecialEffectsRegistry.THUNDER_STRIKE);
+
+    // 特殊 SE：仅 1→0 降级结晶（用于铁砧抹除）
+    public static final List<RecipeBuilderWrapper> BLACK_ROSE_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.BLACK_ROSE);
+    public static final List<RecipeBuilderWrapper> STAR_BLINK_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.STAR_BLINK);
+    public static final List<RecipeBuilderWrapper> STAR_BLINK_LAMBDA_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.STAR_BLINK_LAMBDA);
+    public static final List<RecipeBuilderWrapper> COLOR_DYE_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.COLOR_DYE);
+    public static final List<RecipeBuilderWrapper> RESOLVE_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.RESOLVE);
+    public static final List<RecipeBuilderWrapper> RESOLVE_LAMBDA_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.RESOLVE_LAMBDA);
+    public static final List<RecipeBuilderWrapper> FLAME_FOAM_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.FLAME_FOAM);
+    public static final List<RecipeBuilderWrapper> GOLDEN_HALBERD_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.GOLDEN_HALBERD);
+    public static final List<RecipeBuilderWrapper> GOLDEN_HALBERD_LAMBDA_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.GOLDEN_HALBERD_LAMBDA);
+    public static final List<RecipeBuilderWrapper> TEA_AROMA_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.TEA_AROMA);
+    public static final List<RecipeBuilderWrapper> TEA_AROMA_LAMBDA_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.TEA_AROMA_LAMBDA);
+    public static final List<RecipeBuilderWrapper> PHOTON_SCAR_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.PHOTON_SCAR);
+    public static final List<RecipeBuilderWrapper> PHOTON_SCAR_2_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.PHOTON_SCAR_2);
+    public static final List<RecipeBuilderWrapper> PHOTON_SCAR_3_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.PHOTON_SCAR_3);
+    public static final List<RecipeBuilderWrapper> LONG_SKY_SUNSET_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.LONG_SKY_SUNSET);
 
 }
 

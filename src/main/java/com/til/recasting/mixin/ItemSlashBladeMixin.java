@@ -86,25 +86,21 @@ public class ItemSlashBladeMixin {
                         nameComponent = SpecialEffect.getDescription(specialEffectResourceLocation)
                                 .copy()
                                 .withStyle(extendedSpecialEffect.isSpecial() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.GRAY);
+                        valueComponent = Component.literal(
+                                es.getExtendedSpecialLevels(specialEffectResourceLocation) + "/" + extendedSpecialEffect.getMaxLevel()
+                        ).withStyle(ChatFormatting.LIGHT_PURPLE);
+                        Component line = Component.translatable(
+                                "slashblade.tooltip.special_effect",
+                                nameComponent,
+                                valueComponent
+                        ).withStyle(extendedSpecialEffect.isSpecial() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.GRAY);
                         if (extendedSpecialEffect.isSpecial()) {
-                            tooltip.add(
-                                    nameComponent.copy()
-                                            .append(Component.literal(" "))
-                                            .append(Component.translatable("recasting.tooltip.special_se.badge")
-                                                    .withStyle(ChatFormatting.LIGHT_PURPLE))
-                            );
-                        } else {
-                            valueComponent = Component.literal(
-                                    es.getExtendedSpecialLevels(specialEffectResourceLocation) + "/" + extendedSpecialEffect.getMaxLevel()
-                            ).withStyle(ChatFormatting.LIGHT_PURPLE);
-                            tooltip.add(
-                                    Component.translatable(
-                                            "slashblade.tooltip.special_effect",
-                                            nameComponent,
-                                            valueComponent
-                                    ).withStyle(ChatFormatting.GRAY)
-                            );
+                            line = line.copy()
+                                    .append(Component.literal(" "))
+                                    .append(Component.translatable("recasting.tooltip.special_se.badge")
+                                            .withStyle(ChatFormatting.LIGHT_PURPLE));
                         }
+                        tooltip.add(line);
                     } else {
                         valueComponent = Component.literal(
                                         showingLevel
