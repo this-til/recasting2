@@ -61,6 +61,39 @@ public class SlashArtsRegistry {
     // 引雷
     public static final RegistryObject<ExtendedSlashArts> LIGHTNING_CALL = registerExtendedSA("lightning_call", new LightningCallSlashArts());
 
+    // 闪电链（对齐光棱：脉冲连射；1/2/3 级：脉冲数 / 跳数 / 范围；3 级允许重复跳跃）
+    public static final RegistryObject<ExtendedSlashArts> LIGHTNING_CHAIN_1 = registerExtendedSA(
+            "lightning_chain_1",
+            new LightningChainSlashArts()
+                    .setChainCount(1)
+                    .setMaxHops(6)
+                    .setHopRange(8f)
+                    .setSeedRadius(2.5f)
+    );
+    public static final RegistryObject<ExtendedSlashArts> LIGHTNING_CHAIN_2 = registerExtendedSA(
+            "lightning_chain_2",
+            new LightningChainSlashArts()
+                    .setChainCount(3)
+                    .setDelay(5)
+                    .setMaxHops(6)
+                    .setHopRange(11f)
+                    .setSeedRadius(3.5f)
+                    .setFirstAttack(0.4f)
+                    .setChainAttack(0.3f)
+    );
+    public static final RegistryObject<ExtendedSlashArts> LIGHTNING_CHAIN_3 = registerExtendedSA(
+            "lightning_chain_3",
+            new LightningChainSlashArts()
+                    .setChainCount(6)
+                    .setDelay(5)
+                    .setMaxHops(8)
+                    .setHopRange(15f)
+                    .setSeedRadius(5.0f)
+                    .setAllowRepeatJump(true)
+                    .setFirstAttack(0.3f)
+                    .setChainAttack(0.25f)
+    );
+
     // 苍穹十二连
     public static final RegistryObject<ExtendedSlashArts> HEAVEN_TWELVE_HIT = registerExtendedSA("heaven_twelve_hit", new HeavenTwelveHitSlashArts());
     public static final RegistryObject<ExtendedSlashArts> HEAVEN_TWELVE_HIT_LAMBDA = registerExtendedSA("heaven_twelve_hit_lambda", new HeavenTwelveHitSlashArts().setLightningNumber(18).setLightningAttack(1.3f).setAttack(0.5f));

@@ -3,6 +3,7 @@ package com.til.recasting.client;
 import com.til.recasting.Recasting;
 import com.til.recasting.client.particle.AttackParticleProvider;
 import com.til.recasting.client.particle.GoldenHalberdParticleProvider;
+import com.til.recasting.client.particle.LightningHitParticleProvider;
 import com.til.recasting.client.particle.StarBlinkParticleProvider;
 import com.til.recasting.client.particle.TeaAromaParticleProvider;
 import com.til.recasting.client.registry.BuffLevelRendererRegistry;
@@ -48,6 +49,7 @@ public class ClientSetup {
         event.registerSpecial(RecastingParticleTypes.STAR_BLINK.get(), new StarBlinkParticleProvider());
         event.registerSpecial(RecastingParticleTypes.GOLDEN_HALBERD.get(), new GoldenHalberdParticleProvider());
         event.registerSpecial(RecastingParticleTypes.TEA_AROMA.get(), new TeaAromaParticleProvider());
+        event.registerSpecial(RecastingParticleTypes.LIGHTNING_HIT.get(), new LightningHitParticleProvider());
     }
 }
 

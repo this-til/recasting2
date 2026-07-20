@@ -36,6 +36,13 @@ public class NetworkManager {
                 PrismBeamMessage::decode,
                 PrismBeamMessage::handle
         );
+        INSTANCE.registerMessage(
+                id++,
+                LightningChainMessage.class,
+                LightningChainMessage::encode,
+                LightningChainMessage::decode,
+                LightningChainMessage::handle
+        );
     }
 }
 

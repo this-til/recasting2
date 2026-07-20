@@ -42,5 +42,11 @@ public class RecastingParticleTypes {
      */
     public static final RegistryObject<SimpleParticleType> TEA_AROMA =
             PARTICLE_TYPES.register("tea_aroma", () -> new SimpleParticleType(true));
+
+    /**
+     * 闪电链命中闪光（flashlight）
+     */
+    public static final RegistryObject<SimpleParticleType> LIGHTNING_HIT =
+            PARTICLE_TYPES.register("lightning_hit", () -> new SimpleParticleType(true));
 }
 

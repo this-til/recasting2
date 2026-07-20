@@ -763,6 +763,19 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "引雷")
             .addTranslation(LanguageTypes.EN_US, "Lightning Call");
 
+    // 闪电链
+    public static final LanguageItem LIGHTNING_CHAIN_1_SA = createSlashArtsLanguage(SlashArtsRegistry.LIGHTNING_CHAIN_1)
+            .addTranslation(LanguageTypes.ZH_CN, "闪电链")
+            .addTranslation(LanguageTypes.EN_US, "Lightning Chain");
+
+    public static final LanguageItem LIGHTNING_CHAIN_2_SA = createSlashArtsLanguage(SlashArtsRegistry.LIGHTNING_CHAIN_2)
+            .addTranslation(LanguageTypes.ZH_CN, "闪电链[脉冲]")
+            .addTranslation(LanguageTypes.EN_US, "Lightning Chain [Pulse]");
+
+    public static final LanguageItem LIGHTNING_CHAIN_3_SA = createSlashArtsLanguage(SlashArtsRegistry.LIGHTNING_CHAIN_3)
+            .addTranslation(LanguageTypes.ZH_CN, "闪电链[连射]")
+            .addTranslation(LanguageTypes.EN_US, "Lightning Chain [Barrage]");
+
     // 星旋
     public static final LanguageItem STELLAR_ROTATION = createSlashArtsLanguage(SlashArtsRegistry.STELLAR_ROTATION)
             .addTranslation(LanguageTypes.ZH_CN, "星旋")
@@ -900,6 +913,19 @@ public class LanguageItems {
     public static final LanguageItem LIGHTNING_CALL_DESC = createSlashArtsDescription(SlashArtsRegistry.LIGHTNING_CALL)
             .addTranslation(LanguageTypes.ZH_CN, "在目标位置召唤一道闪电。")
             .addTranslation(LanguageTypes.EN_US, "Summon a lightning bolt at the target position.");
+
+    // 闪电链介绍
+    public static final LanguageItem LIGHTNING_CHAIN_1_SA_DESC = createSlashArtsDescription(SlashArtsRegistry.LIGHTNING_CHAIN_1)
+            .addTranslation(LanguageTypes.ZH_CN, "击中看向处目标后，闪电在周围敌人间跳跃传导。")
+            .addTranslation(LanguageTypes.EN_US, "Strike the look-at target, then leap the lightning between nearby enemies.");
+
+    public static final LanguageItem LIGHTNING_CHAIN_2_SA_DESC = createSlashArtsDescription(SlashArtsRegistry.LIGHTNING_CHAIN_2)
+            .addTranslation(LanguageTypes.ZH_CN, "脉冲连射闪电链，索敌范围更大。")
+            .addTranslation(LanguageTypes.EN_US, "Pulses lightning chains repeatedly, with a wider seek range.");
+
+    public static final LanguageItem LIGHTNING_CHAIN_3_SA_DESC = createSlashArtsDescription(SlashArtsRegistry.LIGHTNING_CHAIN_3)
+            .addTranslation(LanguageTypes.ZH_CN, "高速连射闪电链，范围更广，可反复跃向已击中的敌人。")
+            .addTranslation(LanguageTypes.EN_US, "Rapidly barrages lightning chains with greater range that can leap back onto already-struck foes.");
 
     // 星旋介绍
     public static final LanguageItem STELLAR_ROTATION_DESC = createSlashArtsDescription(SlashArtsRegistry.STELLAR_ROTATION)
