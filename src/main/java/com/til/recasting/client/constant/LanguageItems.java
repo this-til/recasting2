@@ -472,8 +472,8 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "• Extract: Place a blade with a special SE on the anvil's left and Abyss Flame on the right to extract a crystal; the blade is destroyed.");
 
     public static final LanguageItem SPECIAL_SE_BADGE = new LanguageItem("recasting.tooltip.special_se.badge")
-            .addTranslation(LanguageTypes.ZH_CN, "(特殊)")
-            .addTranslation(LanguageTypes.EN_US, "(Special)");
+            .addTranslation(LanguageTypes.ZH_CN, "(特殊 SE)")
+            .addTranslation(LanguageTypes.EN_US, "(Special SE)");
 
     public static final LanguageItem ABYSS_FLAME_EXTRACT_HINT = new LanguageItem("recasting.tooltip.abyss_flame.extract")
             .addTranslation(LanguageTypes.ZH_CN, "• 与带特殊SE的拔刀剑在铁砧合成，可提取特殊SE结晶（刀将被损毁）")

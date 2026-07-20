@@ -9,9 +9,17 @@
     "attack_base": 6.0,
     "max_damage": 960,
     "slash_art": "recasting:zantetsuden_max",
+    "special_effects": [
+      "recasting:golden_halberd"
+    ],
     "sword_type": [
       "bewitched"
     ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:golden_halberd": 1
+    }
   },
   "render": {
     "carry_type": "default",
