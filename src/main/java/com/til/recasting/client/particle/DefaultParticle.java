@@ -49,7 +49,7 @@ public class DefaultParticle extends Particle {
 
     /** 当前批正在写入的 Buffer；仅在对应 {@link ParticleRenderType#begin}～{@code end} 期间非 null。 */
     @Nullable
-    private static BufferBuilder activeBatch;
+    protected static BufferBuilder activeBatch;
 
     /** 生命周期一半的 tick 数，供尺寸曲线将寿命映射为 0→1→0 的三角波。 */
     protected float particleHalfAge;

@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_se_crystal": {
+    "has_iron_ingot": {
       "conditions": {
         "items": [
           {
             "items": [
-              "recasting:se_crystal"
+              "minecraft:iron_ingot"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "recasting:tea_aroma_demote_recipes_0"
+        "recipe": "recasting:physics_sword_recipe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_se_crystal",
+      "has_iron_ingot",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "recasting:tea_aroma_demote_recipes_0"
+      "recasting:physics_sword_recipe"
     ]
   },
   "sends_telemetry_event": false

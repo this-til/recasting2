@@ -1,15 +1,15 @@
 {
-  "name": "recasting:slashblade/dharma_stick",
+  "name": "recasting:slashblade/dharma_stick_lambda",
   "properties": {
     "attack_base": 0.1,
-    "max_damage": 4560,
+    "max_damage": 9120,
     "special_effects": [
-      "recasting:eat"
+      "recasting:enlarge"
     ]
   },
   "properties_extension": {
     "extended_special_levels": {
-      "recasting:eat": 1
+      "recasting:enlarge": 1
     }
   },
   "render": {

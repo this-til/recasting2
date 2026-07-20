@@ -8,12 +8,14 @@ import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.ParticleHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
+import com.til.recasting.registry.RecastingParticleTypes;
 import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -21,7 +23,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.joml.Vector3f;
 
 import java.util.List;
 import java.util.Map;
@@ -77,13 +78,14 @@ public class TeaAromaSpecialEffect extends ExtendedSpecialEffect {
         if (event.getAttackTypeList().contains(RecastingAttackTypes.DRIVE_ATTACK.get())) {
             addUnits += driveBonusStacks;
         }
+        int finalAddUnits = addUnits;
 
         Level world = target.level();
         BuffType teaAromaBuffType = RecastingBuffTypes.TEA_AROMA.get();
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
             int current = buffStackData.getLevel(teaAromaBuffType, world);
-            buffStackData.setLevel(teaAromaBuffType, current + addUnits, world);
+            buffStackData.setLevel(teaAromaBuffType, current + finalAddUnits, world);
 
             UUID targetId = target.getUUID();
             ITimeRun.TimerCell existing = pendingReleases.get(targetId);
@@ -142,11 +144,29 @@ public class TeaAromaSpecialEffect extends ExtendedSpecialEffect {
 
             if (target.level() instanceof ServerLevel serverLevel) {
                 Vec3 pos = target.position().add(0, target.getEyeHeight() * 0.5, 0);
+                // 裂隙撕开：锐利斩击感 + 空间回缝感，不用爆炸声
+                serverLevel.playSound(
+                        null, pos.x, pos.y, pos.z,
+                        SoundEvents.PLAYER_ATTACK_SWEEP,
+                        SoundSource.PLAYERS,
+                        0.55F,
+                        0.75F + target.getRandom().nextFloat() * 0.2F
+                );
+                serverLevel.playSound(
+                        null, pos.x, pos.y, pos.z,
+                        SoundEvents.ENDERMAN_TELEPORT,
+                        SoundSource.PLAYERS,
+                        0.25F,
+                        1.4F + target.getRandom().nextFloat() * 0.3F
+                );
+                // 茶色 RGB(180, 140, 80) 经速度通道传入粒子着色
                 ParticleHelper.sendParticlesLongRange(
                         serverLevel,
-                        new DustParticleOptions(new Vector3f(180f / 255f, 140f / 255f, 80f / 255f), 1.0f),
+                        RecastingParticleTypes.TEA_AROMA.get(),
                         pos.x, pos.y, pos.z,
-                        8, 0.3, 0.3, 0.3, 0.02
+                        0,
+                        180.0 / 255.0, 140.0 / 255.0, 80.0 / 255.0,
+                        1.0
                 );
             }
         });

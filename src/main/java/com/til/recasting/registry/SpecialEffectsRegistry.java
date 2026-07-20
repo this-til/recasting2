@@ -99,7 +99,7 @@ public class SpecialEffectsRegistry {
 
     // 金戈 - 斩击命中叠加层数，满层引爆小范围额外伤害
     public static final RegistryObject<SpecialEffect> GOLDEN_HALBERD = registerExtendedSE("golden_halberd", () -> new GoldenHalberdSpecialEffect().setMaxStacks(12).setBurstRatio(1.5f).setStacksPerHit(1).setMaxLevel(1).setSpecial(true));
-    public static final RegistryObject<SpecialEffect> GOLDEN_HALBERD_LAMBDA = registerExtendedSE("golden_halberd_lambda", () -> new GoldenHalberdSpecialEffect().setMaxStacks(8).setBurstRatio(2.0f).setStacksPerHit(2).setMaxLevel(1).setSpecial(true));
+    public static final RegistryObject<SpecialEffect> GOLDEN_HALBERD_LAMBDA = registerExtendedSE("golden_halberd_lambda", () -> new GoldenHalberdSpecialEffect().setMaxStacks(12).setBurstRatio(2.0f).setStacksPerHit(2).setMaxLevel(1).setSpecial(true));
     // 茶韵 - 命中储存部分伤害延迟释放；剑气额外叠层；连续命中累加并刷新倒计时
     public static final RegistryObject<SpecialEffect> TEA_AROMA = registerExtendedSE("tea_aroma", () -> new TeaAromaSpecialEffect().setStoreRatio(0.2f).setDelayTicks(30).setDriveBonusStacks(10).setMaxLevel(1).setSpecial(true));
     public static final RegistryObject<SpecialEffect> TEA_AROMA_LAMBDA = registerExtendedSE("tea_aroma_lambda", () -> new TeaAromaSpecialEffect().setStoreRatio(0.3f).setDelayTicks(30).setDriveBonusStacks(15).setMaxLevel(1).setSpecial(true));
@@ -113,6 +113,27 @@ public class SpecialEffectsRegistry {
     public static final RegistryObject<SpecialEffect> LONG_SKY_SUNSET = registerExtendedSE(
             "long_sky_sunset",
             () -> new LongSkySunsetSpecialEffect().setMaxLevel(5).setSpecial(true)
+    );
+
+    // 击晕 - 命中目标短暂击晕
+    public static final RegistryObject<SpecialEffect> STUN = registerExtendedSE(
+            "stun",
+            () -> new StunSpecialEffect().setMaxLevel(1).setSpecial(true)
+    );
+    // 催熟 - 挥刀时对周围随机作物施加骨粉效果
+    public static final RegistryObject<SpecialEffect> FERTILIZE = registerExtendedSE(
+            "fertilize",
+            () -> new FertilizeSpecialEffect().setMaxLevel(1).setSpecial(true)
+    );
+    // 吃 - 挥刀时消耗耐久，恢复饱和度
+    public static final RegistryObject<SpecialEffect> EAT = registerExtendedSE(
+            "eat",
+            () -> new EatSpecialEffect().setMaxLevel(1).setSpecial(true)
+    );
+    // 变大！ - 挥刀时大幅增加攻击范围
+    public static final RegistryObject<SpecialEffect> ENLARGE = registerExtendedSE(
+            "enlarge",
+            () -> new EnlargeSpecialEffect().setMaxLevel(1).setSpecial(true)
     );
 
     public static RegistryObject<SpecialEffect> registerExtendedSE(String name, Supplier<SpecialEffect> factory) {

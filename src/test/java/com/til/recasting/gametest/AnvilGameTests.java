@@ -18,7 +18,7 @@ import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 /**
- * 铁砧 SE 铭刻、特殊 SE 提取、SA 提取的正/负向用例。
+ * 铁砧 SE 铭刻、渊寂火去除/提取特殊 SE、SA 提取的正/负向用例。
  */
 @GameTestHolder(Recasting.MODID)
 @PrefixGameTestTemplate(false)
@@ -107,7 +107,7 @@ public final class AnvilGameTests {
     }
 
     @GameTest(template = "empty", batch = "recastingAnvil")
-    public static void extractSpecialSe_withAbyssFlame(GameTestHelper helper) {
+    public static void removeSpecialSe_bladeThenAbyssFlame(GameTestHelper helper) {
         ResourceLocation seId = SpecialEffectsRegistry.BLACK_ROSE.getId();
         ItemStack blade = TestItemFactory.bladeWithSpecialEffect(
                 helper.getLevel().registryAccess(),
@@ -118,7 +118,38 @@ public final class AnvilGameTests {
         ItemStack abyss = new ItemStack(RecastingItems.ABYSS_FLAME.get());
         ItemStack output = AnvilTestHelper.preview(blade, abyss, helper.makeMockPlayer());
         try {
-            AnvilTestHelper.assertHasOutput(output, "extractSpecialSe_withAbyssFlame");
+            AnvilTestHelper.assertHasOutput(output, "removeSpecialSe_bladeThenAbyssFlame");
+            if (!(output.getItem() instanceof ItemSlashBlade)) {
+                helper.fail("Expected blade output after remove");
+                return;
+            }
+            boolean stillHas = output.getCapability(ItemSlashBlade.BLADESTATE)
+                    .map(state -> state.hasSpecialEffect(seId))
+                    .orElse(true);
+            if (stillHas) {
+                helper.fail("Special SE should be removed: " + seId);
+                return;
+            }
+        } catch (AssertionError error) {
+            helper.fail(error.getMessage());
+            return;
+        }
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", batch = "recastingAnvil")
+    public static void extractSpecialSe_abyssFlameThenBlade(GameTestHelper helper) {
+        ResourceLocation seId = SpecialEffectsRegistry.BLACK_ROSE.getId();
+        ItemStack blade = TestItemFactory.bladeWithSpecialEffect(
+                helper.getLevel().registryAccess(),
+                SlashBladeDefinitions.UMBRELLA.getName(),
+                seId,
+                1
+        );
+        ItemStack abyss = new ItemStack(RecastingItems.ABYSS_FLAME.get());
+        ItemStack output = AnvilTestHelper.preview(abyss, blade, helper.makeMockPlayer());
+        try {
+            AnvilTestHelper.assertHasOutput(output, "extractSpecialSe_abyssFlameThenBlade");
             if (!output.is(RecastingItems.SE_CRYSTAL.get())) {
                 helper.fail("Expected SE crystal output");
                 return;
@@ -138,15 +169,17 @@ public final class AnvilGameTests {
     }
 
     @GameTest(template = "empty", batch = "recastingAnvil")
-    public static void extractSpecialSe_withoutSpecial_noOutput(GameTestHelper helper) {
+    public static void abyssFlame_withoutSpecial_noOutput(GameTestHelper helper) {
         ItemStack blade = TestItemFactory.bladeFromDefinition(
                 helper.getLevel().registryAccess(),
                 SlashBladeDefinitions.BROADSWORD_WOOD.getName()
         );
         ItemStack abyss = new ItemStack(RecastingItems.ABYSS_FLAME.get());
-        ItemStack output = AnvilTestHelper.preview(blade, abyss, helper.makeMockPlayer());
+        ItemStack removeOutput = AnvilTestHelper.preview(blade, abyss, helper.makeMockPlayer());
+        ItemStack extractOutput = AnvilTestHelper.preview(abyss, blade, helper.makeMockPlayer());
         try {
-            AnvilTestHelper.assertNoOutput(output, "extractSpecialSe_withoutSpecial_noOutput");
+            AnvilTestHelper.assertNoOutput(removeOutput, "abyssFlame_withoutSpecial_remove");
+            AnvilTestHelper.assertNoOutput(extractOutput, "abyssFlame_withoutSpecial_extract");
         } catch (AssertionError error) {
             helper.fail(error.getMessage());
             return;

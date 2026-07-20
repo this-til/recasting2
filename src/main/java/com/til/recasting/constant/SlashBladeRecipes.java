@@ -761,6 +761,26 @@ public class SlashBladeRecipes {
                     .save(consumer, recipeId);
 
     /**
+     * 法棍 Lambda 配方：从法棍升级
+     * 要求：杀敌10000
+     * 材料：面包8个
+     * D=法棍（满足要求）, B=面包
+     */
+    public static final RecipeBuilderWrapper DHARMA_STICK_LAMBDA_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.DHARMA_STICK_LAMBDA.getName())
+                    .pattern("BBB")
+                    .pattern("BDB")
+                    .pattern("BBB")
+                    .define('D',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.DHARMA_STICK.getName())
+                                    .killCount(10000)
+                                    .build()))
+                    .define('B', Items.BREAD)
+                    .unlockedBy("has_bread", RecipeProviderMixin.invokeHas(Items.BREAD))
+                    .save(consumer, recipeId);
+
+    /**
      * 锄头配方：基础配方，无前置刀
      * 材料：耀魂铁锭2个 + 木棍2个
      * H=耀魂铁锭, S=木棍
@@ -773,6 +793,21 @@ public class SlashBladeRecipes {
                     .define('H', SlashBladeItems.PROUDSOUL_INGOT.get())
                     .define('S', Items.STICK)
                     .unlockedBy("has_stick", RecipeProviderMixin.invokeHas(Items.STICK))
+                    .save(consumer, recipeId);
+
+    /**
+     * 物理学圣剑配方：整活刀，无前置
+     * 材料：铁锭3个（L 形）+ 耀魂1个
+     * I=铁锭, P=耀魂
+     */
+    public static final RecipeBuilderWrapper PHYSICS_SWORD_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.PHYSICS_SWORD.getName())
+                    .pattern("I  ")
+                    .pattern("IP ")
+                    .pattern("II ")
+                    .define('I', Items.IRON_INGOT)
+                    .define('P', SlashBladeItems.PROUDSOUL.get())
+                    .unlockedBy("has_iron_ingot", RecipeProviderMixin.invokeHas(Items.IRON_INGOT))
                     .save(consumer, recipeId);
 
     /**

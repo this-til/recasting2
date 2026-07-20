@@ -121,14 +121,14 @@ public class SpecialEffectRecipes {
                     .save(consumer, recipeId);
 
     /**
-     * 创建「1 级结晶 + 渊寂火 → 0 级结晶」配方（用于抹除 SE）。
-     * 普通 SE 与特殊 SE 均可使用；特殊 SE 无升格配方，仅注册本降级配方。
+     * 创建「1 级结晶 + 渊寂火 → 0 级结晶」配方（用于抹除普通 SE）。
+     * 特殊 SE 不注册 0 级结晶配方（铁砧渊寂火去除）。
      */
     public static List<RecipeBuilderWrapper> createSEDemoteRecipes(RegistryObject<SpecialEffect> seType) {
         List<RecipeBuilderWrapper> recipes = new ArrayList<>();
 
         SpecialEffect se = seType.get();
-        if (!(se instanceof ExtendedSpecialEffect)) {
+        if (!(se instanceof ExtendedSpecialEffect extendedSE) || extendedSE.isSpecial()) {
             return recipes;
         }
 
@@ -718,23 +718,6 @@ public class SpecialEffectRecipes {
     public static final List<RecipeBuilderWrapper> SHOCK_UPGRADE_RECIPES = createSEUpgradeRecipes(SpecialEffectsRegistry.SHOCK);
     public static final List<RecipeBuilderWrapper> SWORD_QI_MASTERY_UPGRADE_RECIPES = createSEUpgradeRecipes(SpecialEffectsRegistry.SWORD_QI_MASTERY);
     public static final List<RecipeBuilderWrapper> THUNDER_STRIKE_UPGRADE_RECIPES = createSEUpgradeRecipes(SpecialEffectsRegistry.THUNDER_STRIKE);
-
-    // 特殊 SE：仅 1→0 降级结晶（用于铁砧抹除）
-    public static final List<RecipeBuilderWrapper> BLACK_ROSE_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.BLACK_ROSE);
-    public static final List<RecipeBuilderWrapper> STAR_BLINK_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.STAR_BLINK);
-    public static final List<RecipeBuilderWrapper> STAR_BLINK_LAMBDA_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.STAR_BLINK_LAMBDA);
-    public static final List<RecipeBuilderWrapper> COLOR_DYE_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.COLOR_DYE);
-    public static final List<RecipeBuilderWrapper> RESOLVE_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.RESOLVE);
-    public static final List<RecipeBuilderWrapper> RESOLVE_LAMBDA_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.RESOLVE_LAMBDA);
-    public static final List<RecipeBuilderWrapper> FLAME_FOAM_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.FLAME_FOAM);
-    public static final List<RecipeBuilderWrapper> GOLDEN_HALBERD_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.GOLDEN_HALBERD);
-    public static final List<RecipeBuilderWrapper> GOLDEN_HALBERD_LAMBDA_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.GOLDEN_HALBERD_LAMBDA);
-    public static final List<RecipeBuilderWrapper> TEA_AROMA_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.TEA_AROMA);
-    public static final List<RecipeBuilderWrapper> TEA_AROMA_LAMBDA_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.TEA_AROMA_LAMBDA);
-    public static final List<RecipeBuilderWrapper> PHOTON_SCAR_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.PHOTON_SCAR);
-    public static final List<RecipeBuilderWrapper> PHOTON_SCAR_2_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.PHOTON_SCAR_2);
-    public static final List<RecipeBuilderWrapper> PHOTON_SCAR_3_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.PHOTON_SCAR_3);
-    public static final List<RecipeBuilderWrapper> LONG_SKY_SUNSET_DEMOTE_RECIPES = createSEDemoteRecipes(SpecialEffectsRegistry.LONG_SKY_SUNSET);
 
 }
 

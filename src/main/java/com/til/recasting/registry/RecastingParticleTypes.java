@@ -36,5 +36,11 @@ public class RecastingParticleTypes {
      */
     public static final RegistryObject<SimpleParticleType> GOLDEN_HALBERD =
             PARTICLE_TYPES.register("golden_halberd", () -> new SimpleParticleType(true));
+
+    /**
+     * 茶韵延迟释放裂隙斩粒子（快速撕裂、缓慢愈合）
+     */
+    public static final RegistryObject<SimpleParticleType> TEA_AROMA =
+            PARTICLE_TYPES.register("tea_aroma", () -> new SimpleParticleType(true));
 }
 

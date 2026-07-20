@@ -1,7 +1,9 @@
 package com.til.recasting.handler;
 
+import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.registry.RecastingItems;
 import com.til.recasting.registry.se.ExtendedSpecialEffect;
+import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.network.chat.Component;
@@ -14,14 +16,19 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.til.recasting.Recasting.MODID;
 
 /**
- * 铁砧特殊 SE 提取：左侧拔刀剑 + 右侧渊寂火 → 特殊 SE 结晶。
- * 生存与创造模式下刀都会被销毁；渊寂火消耗 1 个。
+ * 铁砧渊寂火与特殊 SE：
+ * <ul>
+ *   <li>左侧拔刀剑 + 右侧渊寂火 → 去除特殊 SE（保留刀）</li>
+ *   <li>左侧渊寂火 + 右侧拔刀剑 → 提取特殊 SE 结晶（刀损毁）</li>
+ * </ul>
  */
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class AnvilSpecialEffectExtractionHandler {
@@ -32,7 +39,7 @@ public class AnvilSpecialEffectExtractionHandler {
     }
 
     /**
-     * 铁砧预览：左侧刀 + 右侧渊寂火 → 输出特殊 SE 结晶（无刀）。
+     * 铁砧预览：按左右物品顺序区分去除与提取。
      */
     @SubscribeEvent
     public static void onAnvilUpdate(AnvilUpdateEvent event) {
@@ -40,26 +47,40 @@ public class AnvilSpecialEffectExtractionHandler {
         ItemStack rightItem = event.getRight();
         String inputName = event.getName();
 
-        if (!(leftItem.getItem() instanceof ItemSlashBlade)) {
-            return;
-        }
-        if (!rightItem.is(RecastingItems.ABYSS_FLAME.get())) {
+        // 刀 + 火 → 去除特殊 SE
+        if (leftItem.getItem() instanceof ItemSlashBlade && rightItem.is(RecastingItems.ABYSS_FLAME.get())) {
+            Optional<SpecialSESnapshot> specialSE = findBladeSpecialSE(leftItem);
+            if (specialSE.isEmpty()) {
+                return;
+            }
+
+            ItemStack output = leftItem.copy();
+            removeAllSpecialEffects(output);
+            if (inputName != null && !inputName.isEmpty()) {
+                output.setHoverName(Component.literal(inputName));
+            }
+            event.setOutput(output);
+            event.setMaterialCost(1);
+            event.setCost(1);
             return;
         }
 
-        Optional<SpecialSESnapshot> specialSE = findBladeSpecialSE(leftItem);
-        if (specialSE.isEmpty()) {
-            return;
-        }
+        // 火 + 刀 → 提取特殊 SE 结晶
+        if (leftItem.is(RecastingItems.ABYSS_FLAME.get()) && rightItem.getItem() instanceof ItemSlashBlade) {
+            Optional<SpecialSESnapshot> specialSE = findBladeSpecialSE(rightItem);
+            if (specialSE.isEmpty()) {
+                return;
+            }
 
-        ItemStack output = createSpecialSECrystal(specialSE.get(), inputName);
-        event.setOutput(output);
-        event.setMaterialCost(1);
-        event.setCost(5);
+            ItemStack output = createSpecialSECrystal(specialSE.get(), inputName);
+            event.setOutput(output);
+            event.setMaterialCost(1);
+            event.setCost(5);
+        }
     }
 
     /**
-     * 创造模式铁砧默认不消耗材料；提取特殊 SE 时仍强制销毁刀并消耗渊寂火。
+     * 创造模式铁砧默认不消耗材料；提取特殊 SE 时仍强制销毁渊寂火与刀。
      */
     @SubscribeEvent
     public static void onAnvilRepair(AnvilRepairEvent event) {
@@ -85,17 +106,17 @@ public class AnvilSpecialEffectExtractionHandler {
     }
 
     private static boolean matchesSpecialSeExtraction(ItemStack leftItem, ItemStack rightItem, ItemStack output) {
-        if (!(leftItem.getItem() instanceof ItemSlashBlade)) {
+        if (!leftItem.is(RecastingItems.ABYSS_FLAME.get())) {
             return false;
         }
-        if (!rightItem.is(RecastingItems.ABYSS_FLAME.get())) {
+        if (!(rightItem.getItem() instanceof ItemSlashBlade)) {
             return false;
         }
         if (!output.is(RecastingItems.SE_CRYSTAL.get())) {
             return false;
         }
 
-        Optional<SpecialSESnapshot> specialSE = findBladeSpecialSE(leftItem);
+        Optional<SpecialSESnapshot> specialSE = findBladeSpecialSE(rightItem);
         if (specialSE.isEmpty()) {
             return false;
         }
@@ -151,5 +172,28 @@ public class AnvilSpecialEffectExtractionHandler {
                 })
         );
         return Optional.ofNullable(found.get());
+    }
+
+    private static void removeAllSpecialEffects(ItemStack bladeStack) {
+        bladeStack.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState ->
+                bladeStack.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension ->
+                        clearSpecialEffects(bladeState, extension)
+                )
+        );
+    }
+
+    private static void clearSpecialEffects(ISlashBladeState bladeState, PropertiesDefinitionExtension extension) {
+        List<ResourceLocation> toRemove = new ArrayList<>();
+        for (ResourceLocation existingSE : bladeState.getSpecialEffects()) {
+            SpecialEffect existingEffect = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(existingSE);
+            if (existingEffect instanceof ExtendedSpecialEffect existingExtendedSE
+                    && existingExtendedSE.isSpecial()) {
+                toRemove.add(existingSE);
+            }
+        }
+        for (ResourceLocation seToRemove : toRemove) {
+            bladeState.removeSpecialEffect(seToRemove);
+            extension.setExtendedSpecialLevels(seToRemove, 0);
+        }
     }
 }

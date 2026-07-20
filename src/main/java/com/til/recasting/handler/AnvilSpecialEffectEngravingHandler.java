@@ -76,7 +76,8 @@ public class AnvilSpecialEffectEngravingHandler {
 
             int crystalLevel = crystalData.getSpecialEffectLevel();
 
-            if (extendedSE.isSpecial() && crystalLevel > 1) {
+            // 特殊 SE 仅允许 1 级结晶铭刻/替换；不提供 0 级抹除
+            if (extendedSE.isSpecial() && crystalLevel != 1) {
                 return;
             }
 

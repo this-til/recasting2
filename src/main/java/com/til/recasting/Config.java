@@ -50,6 +50,10 @@ public class Config {
     public  static final ForgeConfigSpec.DoubleValue SUMMONED_SWORD_BASE_DAMAGE = BUILDER
             .comment("召唤剑基础伤害倍率")
             .defineInRange("summonedSwordBaseDamage", 0.1, 0.0, 100.0);
+
+    public static final ForgeConfigSpec.DoubleValue JUDGEMENT_CUT_SLASH_DAMAGE = BUILDER
+            .comment("次元斩生成的斩击效果伤害倍率")
+            .defineInRange("judgementCutSlashDamage", 0.1, 0.0, 100.0);
     
     public  static final ForgeConfigSpec.DoubleValue THOUSAND_KILL_ATTACK_BONUS = BUILDER
             .comment("击杀数超过1000的伤害加成")

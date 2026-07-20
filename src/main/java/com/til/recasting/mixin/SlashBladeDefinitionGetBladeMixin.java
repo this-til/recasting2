@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.HashMap;
+
 /**
  * Mixin 用于在 SlashBladeDefinition.getBlade 方法中设置扩展 Capability 的值
  */
@@ -43,6 +45,7 @@ public abstract class SlashBladeDefinitionGetBladeMixin {
                     PropertiesDefinitionExtension source = extension.getRecasting$propertiesDefinitionExtension();
                     if (source != null) {
                         capability.attackDistance(source.attackDistance());
+                        capability.extendedSpecialLevels(new HashMap<>(source.extendedSpecialLevels()));
                     }
                 });
 

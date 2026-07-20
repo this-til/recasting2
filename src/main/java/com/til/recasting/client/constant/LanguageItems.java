@@ -143,6 +143,10 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "法棍")
             .addTranslation(LanguageTypes.EN_US, "Dharma Stick");
 
+    public static final LanguageItem DHARMA_STICK_LAMBDA = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.DHARMA_STICK_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^法棍")
+            .addTranslation(LanguageTypes.EN_US, "Dharma Stick Lambda");
+
     public static final LanguageItem DRAGON_SCALE = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.DRAGON_SCALE)
             .addTranslation(LanguageTypes.ZH_CN, "龙鳞")
             .addTranslation(LanguageTypes.EN_US, "Dragon Scale");
@@ -476,16 +480,16 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "• Erase: Use crystals with level 0 to remove SE");
 
     public static final LanguageItem SPECIAL_SE_EXTRACT_RULE = new LanguageItem("recasting.tooltip.special_se_extract")
-            .addTranslation(LanguageTypes.ZH_CN, "• 提取：铁砧左侧放带特殊SE的刀、右侧放渊寂火，可提取为结晶；刀将被彻底损毁。")
-            .addTranslation(LanguageTypes.EN_US, "• Extract: Place a blade with a special SE on the anvil's left and Abyss Flame on the right to extract a crystal; the blade is destroyed.");
+            .addTranslation(LanguageTypes.ZH_CN, "• 渊寂火：左刀右火去除特殊SE（保留刀）；左火右刀提取为结晶（刀损毁）")
+            .addTranslation(LanguageTypes.EN_US, "• Abyss Flame: blade+flame removes special SE (keeps blade); flame+blade extracts a crystal (destroys blade)");
 
     public static final LanguageItem SPECIAL_SE_BADGE = new LanguageItem("recasting.tooltip.special_se.badge")
             .addTranslation(LanguageTypes.ZH_CN, "(特殊)")
             .addTranslation(LanguageTypes.EN_US, "(Special)");
 
     public static final LanguageItem ABYSS_FLAME_EXTRACT_HINT = new LanguageItem("recasting.tooltip.abyss_flame.extract")
-            .addTranslation(LanguageTypes.ZH_CN, "• 与带特殊SE的拔刀剑在铁砧合成，可提取特殊SE结晶（刀将被损毁）")
-            .addTranslation(LanguageTypes.EN_US, "• Combine with a Slash Blade carrying a special SE in an anvil to extract an SE crystal (the blade is destroyed).");
+            .addTranslation(LanguageTypes.ZH_CN, "• 铁砧：左刀右火去除特殊SE；左火右刀提取结晶（刀损毁）")
+            .addTranslation(LanguageTypes.EN_US, "• Anvil: blade+flame removes special SE; flame+blade extracts a crystal (blade destroyed)");
 
     // 聚散变体名称
     public static final LanguageItem GATHERING_PARTING_VARIANT = createItemLanguage(RecastingItems.GATHERING_PARTING_VARIANT)
@@ -1419,16 +1423,16 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Tea Aroma");
 
     public static final LanguageItem TEA_AROMA_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.TEA_AROMA)
-            .addTranslation(LanguageTypes.ZH_CN, "命中储存部分伤害延迟释放，连续命中累加并刷新倒计时；剑气命中额外叠加层级。")
-            .addTranslation(LanguageTypes.EN_US, "Hits store delayed damage; consecutive hits accumulate and reset the timer; drive hits add bonus stacks.");
+            .addTranslation(LanguageTypes.ZH_CN, "命中储存部分伤害延迟释放，裂隙斩开后缓慢愈合；连续命中累加并刷新倒计时；剑气命中额外叠加层级。")
+            .addTranslation(LanguageTypes.EN_US, "Hits store delayed damage released as a tearing rift that slowly seals; consecutive hits accumulate and reset the timer; drive hits add bonus stacks.");
 
     public static final LanguageItem TEA_AROMA_LAMBDA = createSpecialEffectLanguage(SpecialEffectsRegistry.TEA_AROMA_LAMBDA)
             .addTranslation(LanguageTypes.ZH_CN, "茶韵.λ")
             .addTranslation(LanguageTypes.EN_US, "Tea Aroma.λ");
 
     public static final LanguageItem TEA_AROMA_LAMBDA_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.TEA_AROMA_LAMBDA)
-            .addTranslation(LanguageTypes.ZH_CN, "命中储存部分伤害延迟释放，连续命中累加并刷新倒计时；剑气命中额外叠加层级。")
-            .addTranslation(LanguageTypes.EN_US, "Hits store delayed damage; consecutive hits accumulate and reset the timer; drive hits add bonus stacks.");
+            .addTranslation(LanguageTypes.ZH_CN, "命中储存部分伤害延迟释放，裂隙斩开后缓慢愈合；连续命中累加并刷新倒计时；剑气命中额外叠加层级。")
+            .addTranslation(LanguageTypes.EN_US, "Hits store delayed damage released as a tearing rift that slowly seals; consecutive hits accumulate and reset the timer; drive hits add bonus stacks.");
 
     // 光子灼痕
     public static final LanguageItem PHOTON_SCAR = createSpecialEffectLanguage(SpecialEffectsRegistry.PHOTON_SCAR)
@@ -1463,6 +1467,42 @@ public class LanguageItems {
     public static final LanguageItem LONG_SKY_SUNSET_SE_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.LONG_SKY_SUNSET)
             .addTranslation(LanguageTypes.ZH_CN, "对锁定目标持续发射追踪幻影剑；等级越高，辅助剑伤害越高。")
             .addTranslation(LanguageTypes.EN_US, "Continuously fires tracking phantom swords at the locked target; higher SE levels increase their damage.");
+
+    // 击晕
+    public static final LanguageItem STUN = createSpecialEffectLanguage(SpecialEffectsRegistry.STUN)
+            .addTranslation(LanguageTypes.ZH_CN, "击晕")
+            .addTranslation(LanguageTypes.EN_US, "Stun");
+
+    public static final LanguageItem STUN_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.STUN)
+            .addTranslation(LanguageTypes.ZH_CN, "命中目标时使其短暂击晕，无法移动。")
+            .addTranslation(LanguageTypes.EN_US, "Stuns the hit target briefly, preventing movement.");
+
+    // 催熟
+    public static final LanguageItem FERTILIZE = createSpecialEffectLanguage(SpecialEffectsRegistry.FERTILIZE)
+            .addTranslation(LanguageTypes.ZH_CN, "催熟")
+            .addTranslation(LanguageTypes.EN_US, "Fertilize");
+
+    public static final LanguageItem FERTILIZE_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.FERTILIZE)
+            .addTranslation(LanguageTypes.ZH_CN, "挥刀时对周围随机作物施加骨粉效果。")
+            .addTranslation(LanguageTypes.EN_US, "Applies bone meal to a random nearby crop when slashing.");
+
+    // 吃
+    public static final LanguageItem EAT = createSpecialEffectLanguage(SpecialEffectsRegistry.EAT)
+            .addTranslation(LanguageTypes.ZH_CN, "吃")
+            .addTranslation(LanguageTypes.EN_US, "Eat");
+
+    public static final LanguageItem EAT_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.EAT)
+            .addTranslation(LanguageTypes.ZH_CN, "挥刀时消耗耐久，恢复饱和度。")
+            .addTranslation(LanguageTypes.EN_US, "Consumes durability to restore saturation when slashing.");
+
+    // 变大！
+    public static final LanguageItem ENLARGE = createSpecialEffectLanguage(SpecialEffectsRegistry.ENLARGE)
+            .addTranslation(LanguageTypes.ZH_CN, "变大！")
+            .addTranslation(LanguageTypes.EN_US, "Enlarge!");
+
+    public static final LanguageItem ENLARGE_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.ENLARGE)
+            .addTranslation(LanguageTypes.ZH_CN, "挥刀时大幅增加攻击范围。移植此 SE 到其他刀上会发生不好的事。")
+            .addTranslation(LanguageTypes.EN_US, "Greatly increases attack range when slashing. Transplanting this SE onto other blades will lead to misfortune.");
 
     private static LanguageItem createSlashBladeDefinitionLanguage(SlashBladeDefinition definition) {
         return new LanguageItem(definition.getTranslationKey());

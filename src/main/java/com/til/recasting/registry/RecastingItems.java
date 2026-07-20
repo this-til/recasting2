@@ -164,17 +164,18 @@ public class RecastingItems {
                                 Component.translatable("recasting.tooltip.engraving_rule.main", 4, 1)
                                         .withStyle(ChatFormatting.GRAY)
                         );
-                        components.add(
-                                Component.translatable("recasting.tooltip.engraving_rule.upgrade")
-                                        .withStyle(ChatFormatting.GRAY)
-                        );
-                        components.add(
-                                Component.translatable("recasting.tooltip.engraving_rule.erase")
-                                        .withStyle(ChatFormatting.GRAY)
-                        );
                         if (extendedSE.isSpecial()) {
                             components.add(
                                     Component.translatable("recasting.tooltip.special_se_extract")
+                                            .withStyle(ChatFormatting.GRAY)
+                            );
+                        } else {
+                            components.add(
+                                    Component.translatable("recasting.tooltip.engraving_rule.upgrade")
+                                            .withStyle(ChatFormatting.GRAY)
+                            );
+                            components.add(
+                                    Component.translatable("recasting.tooltip.engraving_rule.erase")
                                             .withStyle(ChatFormatting.GRAY)
                             );
                         }
@@ -664,20 +665,22 @@ public class RecastingItems {
         mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValues().stream()
                 .filter(se -> se instanceof ExtendedSpecialEffect)
                 .map(se -> (ExtendedSpecialEffect) se)
-                .flatMap(se -> IntStream.range(0, se.getMaxLevel() + 1)
-                        .mapToObj(
-                                level -> {
-                                    ItemStack itemStack = new ItemStack(RecastingItems.SE_CRYSTAL.get());
-                                    // 使用能力系统设置数据
-                                    itemStack.getCapability(CapabilityRegistryHandler.SE_CRYSTAL_DATA).ifPresent(data -> {
-                                        ResourceLocation seKey = Objects.requireNonNull(mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getKey(se));
-                                        data.setSpecialEffectType(seKey);
-                                        data.setSpecialEffectLevel(level);
-                                    });
-                                    return itemStack;
-                                }
-                        )
-                )
+                .flatMap(se -> {
+                    // 特殊 SE 不提供 0 级结晶（去除走铁砧渊寂火）
+                    int startLevel = se.isSpecial() ? 1 : 0;
+                    return IntStream.range(startLevel, se.getMaxLevel() + 1)
+                            .mapToObj(
+                                    level -> {
+                                        ItemStack itemStack = new ItemStack(RecastingItems.SE_CRYSTAL.get());
+                                        itemStack.getCapability(CapabilityRegistryHandler.SE_CRYSTAL_DATA).ifPresent(data -> {
+                                            ResourceLocation seKey = Objects.requireNonNull(mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getKey(se));
+                                            data.setSpecialEffectType(seKey);
+                                            data.setSpecialEffectLevel(level);
+                                        });
+                                        return itemStack;
+                                    }
+                            );
+                })
                 .forEach(event::accept);
     }
 }

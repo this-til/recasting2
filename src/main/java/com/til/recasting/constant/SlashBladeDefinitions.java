@@ -67,9 +67,25 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(2f)
+                            .baseAttackModifier(0.1f)
                             .maxDamage((int) (114f * 40))
             )
+            .addSpecialEffects(SpecialEffectsRegistry.EAT)
+            .build();
+
+    // 法棍 Lambda
+    public static final SlashBladeDefinition DHARMA_STICK_LAMBDA = createBuild(Recasting.prefix("slashblade/dharma_stick_lambda"))
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.dharmaStick$obj)
+                            .textureName(R.Slashblade.dharmaStick$png)
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(0.1f)
+                            .maxDamage((int) (114f * 80))
+            )
+            .addSpecialEffects(SpecialEffectsRegistry.ENLARGE)
             .build();
 
     // 锄头
@@ -84,6 +100,7 @@ public class SlashBladeDefinitions {
                             .baseAttackModifier(2f)
                             .maxDamage(5 * 40)
             )
+            .addSpecialEffects(SpecialEffectsRegistry.FERTILIZE)
             .build();
 
     //endregion
@@ -197,6 +214,7 @@ public class SlashBladeDefinitions {
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(6f)
             )
+            .addSpecialEffects(SpecialEffectsRegistry.STUN)
             .build();
 
 

@@ -1,7 +1,15 @@
 {
   "name": "recasting:slashblade/physics_sword",
   "properties": {
-    "attack_base": 6.0
+    "attack_base": 6.0,
+    "special_effects": [
+      "recasting:stun"
+    ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:stun": 1
+    }
   },
   "render": {
     "carry_type": "default",

@@ -1,6 +1,6 @@
 package com.til.recasting.mixin.entity;
 
-import com.til.recasting.mixin.EntityAccessor;
+import com.til.recasting.Config;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.util.DamageStructure;
@@ -115,7 +115,7 @@ public abstract class EntityJudgementCutMixin implements EntityAccess {
     )
     private boolean redirectAddFreshEntity(Level level, Entity entity) {
         if (entity instanceof EntitySlashEffect slashEffect) {
-            slashEffect.setDamage(0.1 * this.getDamage()); // TODO 写入配置
+            slashEffect.setDamage(Config.JUDGEMENT_CUT_SLASH_DAMAGE.get() * this.getDamage());
         }
 
         // 执行原始的 addFreshEntity
