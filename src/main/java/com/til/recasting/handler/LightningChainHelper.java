@@ -117,7 +117,7 @@ public final class LightningChainHelper {
             List<AttackType> attackTypes,
             boolean allowRepeat
     ) {
-        Vec3 from = PosHelper.getPhantomSwordSpawnPos(attacker);
+        Vec3 from = PosHelper.getAboveHead(attacker, 0.5);
         Vec3 seedPos = seed.getBoundingBox().getCenter();
         LightningChainEffectHelper.sync(serverLevel, from, seedPos, color);
         AttackHelper.attack(attacker, seed, new DamageStructure(firstRatio, 0), attackTypes);

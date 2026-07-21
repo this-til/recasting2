@@ -127,7 +127,7 @@ public class StaticAfterglowSpecialEffect extends ExtendedSpecialEffect {
                 List<AttackType> attackTypes = List.of(
                         RecastingAttackTypes.LIGHTNING_ATTACK.get()
                 );
-                Vec3 from = PosHelper.getPhantomSwordSpawnPos(attacker);
+                Vec3 from = PosHelper.getAboveHead(attacker, 0.5);
                 Vec3 seedPos = target.getBoundingBox().getCenter();
                 LightningChainEffectHelper.sync(serverLevel, from, seedPos, color);
                 LightningChainHelper.playThunderSound(serverLevel, seedPos, 0);

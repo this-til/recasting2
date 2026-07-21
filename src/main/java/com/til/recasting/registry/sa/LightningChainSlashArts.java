@@ -118,7 +118,7 @@ public class LightningChainSlashArts extends ExtendedSlashArts {
         LivingEntity seed = resolveSeed(livingEntity, slashBladeState, lookPos, seedRadius);
 
         Set<LivingEntity> hit = new HashSet<>();
-        Vec3 from = PosHelper.getPhantomSwordSpawnPos(livingEntity);
+        Vec3 from = PosHelper.getAboveHead(livingEntity, 0.5);
         final Vec3 tip;
         @Nullable LivingEntity lastHit = null;
 
