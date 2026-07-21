@@ -16,6 +16,7 @@
     "SlashBladeDefinitionCodecMixin",
     "SlashBladeDefinitionGetBladeMixin",
     "SlashBladeDefinitionMixin",
+    "SlashBladeShapedRecipeMixin",
     "SlashBladeItemsMixin$ProudsoulCrystal",
     "SlashBladeItemsMixin$ProudsoulSphere",
     "SummonedSwordArtsMixin"

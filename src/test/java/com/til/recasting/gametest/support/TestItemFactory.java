@@ -8,6 +8,8 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 
 /**
  * 铁砧与配方测试共用的物品构造。
@@ -31,6 +33,43 @@ public final class TestItemFactory {
         SlashBladeDefinition definition = access.registryOrThrow(SlashBladeDefinition.REGISTRY_KEY)
                 .getOrThrow(ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, bladeId));
         return definition.getBlade();
+    }
+
+    public static ItemStack bladeWithStats(
+            RegistryAccess access,
+            ResourceLocation bladeId,
+            int killCount,
+            int refineCount
+    ) {
+        ItemStack blade = bladeFromDefinition(access, bladeId);
+        blade.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(state -> {
+            state.setKillCount(killCount);
+            state.setRefine(refineCount);
+            blade.getOrCreateTag().put("bladeState", state.serializeNBT());
+        });
+        return blade;
+    }
+
+    public static ItemStack bladeWithRequirements(
+            RegistryAccess access,
+            ResourceLocation bladeId,
+            int killCount,
+            int refineCount,
+            ResourceLocation seId,
+            int seLevel,
+            Enchantment enchantment,
+            int enchantmentLevel
+    ) {
+        ItemStack blade = bladeWithSpecialEffect(access, bladeId, seId, seLevel);
+        blade.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(state -> {
+            state.setKillCount(killCount);
+            state.setRefine(refineCount);
+            blade.getOrCreateTag().put("bladeState", state.serializeNBT());
+        });
+        if (enchantment != null && enchantmentLevel > 0) {
+            blade.enchant(enchantment, enchantmentLevel);
+        }
+        return blade;
     }
 
     public static ItemStack bladeWithSpecialEffect(

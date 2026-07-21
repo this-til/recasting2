@@ -78,6 +78,19 @@ public class PosHelper {
     }
 
     /**
+     * 幻影剑默认生成位置：实体附近随机偏移（yaw 方向散布 + 高度偏移）
+     */
+    public static Vec3 getPhantomSwordSpawnPos(LivingEntity entity) {
+        float dist = 2.0f;
+        double ran = (entity.getRandom().nextFloat() - 0.5) * 2.0;
+        double yaw = Math.toRadians(-entity.getYRot() + 90);
+        double x = ran * Math.sin(yaw) * dist;
+        double y = (1.0 - Math.abs(ran)) * dist;
+        double z = ran * Math.cos(yaw) * dist;
+        return new Vec3(entity.getX() + x, entity.getY() + y, entity.getZ() + z);
+    }
+
+    /**
      * 沿线段做方块与可攻击实体碰撞；方块截断射线，实体取截断段内最近命中
      */
     public static BeamHit castLivingBeam(Level level, LivingEntity shooter, Vec3 start, Vec3 end) {

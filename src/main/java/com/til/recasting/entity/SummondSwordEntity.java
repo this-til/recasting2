@@ -4,6 +4,7 @@ import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.util.CallbackPoint;
 import com.til.recasting.handler.EntityPredicateHelper;
+import com.til.recasting.handler.PosHelper;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.ability.StunManager;
@@ -115,16 +116,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
         //设定初始角度等信息
         if (shooting != null) {
             setShooter(shooting);
-            float dist = 2.0f;
-            double ran = (random.nextFloat() - 0.5) * 2.0;
-            double yaw = Math.toRadians(-shooting.getYRot() + 90);
-            double x = ran * Math.sin(yaw);
-            double y = 1.0 - Math.abs(ran);
-            double z = ran * Math.cos(yaw);
-            x *= dist;
-            y *= dist;
-            z *= dist;
-            setPos(shooting.getX() + x, shooting.getY() + y, shooting.getZ() + z);
+            setPos(PosHelper.getPhantomSwordSpawnPos(shooting));
             lookAt(getDeltaMovement(), true);
         }
     }

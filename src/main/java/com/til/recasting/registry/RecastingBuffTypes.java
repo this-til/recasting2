@@ -174,16 +174,8 @@ public class RecastingBuffTypes {
     );
 
     /**
-     * 静电余韵
-     * - 衰减间隔 1 tick；层数 = 剩余持续 tick（SA 触发时写入，自然衰减至 0）
-     */
-    public static final RegistryObject<BuffType> STATIC_AFTERGLOW = BUFF_TYPES.register("static_afterglow",
-            () -> new BuffType(1, 0)
-    );
-
-    /**
      * 静电余韵 · 附加伤害冷却
-     * - 衰减间隔 1 tick；层数 = 剩余冷却 tick
+     * - 衰减间隔 1 tick；层数 = 剩余冷却 tick（记录在受击目标）
      */
     public static final RegistryObject<BuffType> STATIC_AFTERGLOW_DAMAGE_CD = BUFF_TYPES.register("static_afterglow_damage_cd",
             () -> new BuffType(1, 0)

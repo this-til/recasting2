@@ -73,9 +73,6 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "茶韵")
             .addTranslation(LanguageTypes.EN_US, "Tea Aroma");
 
-    public static final LanguageItem BUFF_STATIC_AFTERGLOW = new LanguageItem("buff.recasting.static_afterglow")
-            .addTranslation(LanguageTypes.ZH_CN, "静电余韵")
-            .addTranslation(LanguageTypes.EN_US, "Static Afterglow");
 
     // ========== Void SlashBlades ==========
     public static final LanguageItem VOID_1 = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.VOID_1)

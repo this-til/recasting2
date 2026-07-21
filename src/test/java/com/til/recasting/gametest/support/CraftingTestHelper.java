@@ -52,6 +52,58 @@ public final class CraftingTestHelper {
         return recipe.assemble(grid, level.registryAccess());
     }
 
+    public static ItemStack assembleMatchingWithBladeOverride(
+            Level level,
+            CraftingRecipe recipe,
+            ItemStack bladeOverride
+    ) {
+        if (!(recipe instanceof ShapedRecipe shaped)) {
+            throw new IllegalArgumentException("Expected ShapedRecipe: " + recipe.getId());
+        }
+        CraftingContainer grid = newEmptyGrid();
+        IngredientStackFactory.fillMatching(grid, shaped);
+        replaceBladeIngredient(grid, bladeOverride);
+        if (!recipe.matches(grid, level)) {
+            throw new IllegalStateException("Recipe did not match with blade override: " + recipe.getId());
+        }
+        return recipe.assemble(grid, level.registryAccess());
+    }
+
+    private static void replaceBladeIngredient(CraftingContainer grid, ItemStack bladeOverride) {
+        for (int slot = 0; slot < grid.getContainerSize(); slot++) {
+            ItemStack stack = grid.getItem(slot);
+            if (!stack.isEmpty() && stack.getItem() instanceof ItemSlashBlade) {
+                grid.setItem(slot, bladeOverride.copy());
+                return;
+            }
+        }
+        throw new IllegalStateException("No slash blade slot found in crafting grid");
+    }
+
+    public static void assertHasSpecialEffect(ItemStack blade, ResourceLocation seId, int level) {
+        boolean hasSe = blade.getCapability(ItemSlashBlade.BLADESTATE)
+                .map(state -> state.hasSpecialEffect(seId))
+                .orElse(false);
+        if (!hasSe) {
+            throw new AssertionError("Missing SE " + seId);
+        }
+        int actualLevel = blade.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION)
+                .map(ext -> ext.getExtendedSpecialLevels(seId))
+                .orElse(0);
+        if (actualLevel != level) {
+            throw new AssertionError("SE level mismatch for " + seId + " expected=" + level + " actual=" + actualLevel);
+        }
+    }
+
+    public static void assertMissingSpecialEffect(ItemStack blade, ResourceLocation seId) {
+        boolean hasSe = blade.getCapability(ItemSlashBlade.BLADESTATE)
+                .map(state -> state.hasSpecialEffect(seId))
+                .orElse(false);
+        if (hasSe) {
+            throw new AssertionError("Unexpected SE " + seId);
+        }
+    }
+
     public static void assertResultMatchesExpected(Recipe<?> recipe, ItemStack actual, RegistryAccess access) {
         ItemStack expected = recipe.getResultItem(access).copy();
         if (recipe instanceof SpecialEffectCrystalShapedRecipe seRecipe) {

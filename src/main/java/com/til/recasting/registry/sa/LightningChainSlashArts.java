@@ -7,11 +7,11 @@ import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.EntityPredicateHelper;
 import com.til.recasting.handler.LightningChainEffectHelper;
+import com.til.recasting.handler.LightningChainHelper;
 import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.DamageStructure;
-import java.util.concurrent.atomic.AtomicReference;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -30,7 +30,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 
 /**
  * 闪电链 Slash Arts
@@ -119,7 +118,7 @@ public class LightningChainSlashArts extends ExtendedSlashArts {
         LivingEntity seed = resolveSeed(livingEntity, slashBladeState, lookPos, seedRadius);
 
         Set<LivingEntity> hit = new HashSet<>();
-        Vec3 from = livingEntity.getEyePosition(1.0f);
+        Vec3 from = PosHelper.getPhantomSwordSpawnPos(livingEntity);
         final Vec3 tip;
         @Nullable LivingEntity lastHit = null;
 
@@ -129,7 +128,7 @@ public class LightningChainSlashArts extends ExtendedSlashArts {
             AttackHelper.attack(livingEntity, seed, new DamageStructure(firstAttack, 0), attackTypes);
             hit.add(seed);
             lastHit = seed;
-            playThunderSound(serverLevel, tip, pulseIndex);
+            LightningChainHelper.playThunderSound(serverLevel, tip, pulseIndex);
         } else {
             Vec3 landPos = lookPos;
             LightningChainEffectHelper.sync(serverLevel, from, landPos, color);
@@ -149,58 +148,13 @@ public class LightningChainSlashArts extends ExtendedSlashArts {
             } else {
                 tip = landPos;
             }
-            playThunderSound(serverLevel, tip, pulseIndex);
+            LightningChainHelper.playThunderSound(serverLevel, tip, pulseIndex);
         }
 
-        LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN);
-        LivingEntity initialLast = lastHit;
-        timeRunOptional.ifPresent(timeRun -> {
-            AtomicReference<Vec3> tipRef = new AtomicReference<>(tip);
-            AtomicReference<LivingEntity> lastRef = new AtomicReference<>(initialLast);
-            float decayedRatio = chainAttack;
-            for (int hop = 1; hop < maxHops; hop++) {
-                int hopTick = hopDelay * hop;
-                float ratio = decayedRatio;
-                timeRun.addTimerCell(
-                        () -> hopStrike(livingEntity, serverLevel, tipRef, lastRef, hit, ratio, color, attackTypes),
-                        hopTick
-                );
-                decayedRatio *= 0.9f;
-            }
-        });
-    }
-
-    private void hopStrike(
-            LivingEntity livingEntity,
-            ServerLevel serverLevel,
-            AtomicReference<Vec3> tipRef,
-            AtomicReference<LivingEntity> lastRef,
-            Set<LivingEntity> hit,
-            float ratio,
-            int color,
-            List<AttackType> attackTypes
-    ) {
-        if (!livingEntity.isAlive() || livingEntity.level().isClientSide()) {
-            return;
-        }
-        LivingEntity next = findNext(
-                livingEntity,
-                tipRef.get(),
-                hopRange,
-                hit,
-                lastRef.get(),
-                allowRepeatJump
+        LightningChainHelper.startHopSequence(
+                livingEntity, tip, lastHit, serverLevel, color,
+                maxHops - 1, hopDelay, hopRange, chainAttack, attackTypes, allowRepeatJump
         );
-        if (next == null) {
-            return;
-        }
-        Vec3 nextPos = next.getBoundingBox().getCenter();
-        LightningChainEffectHelper.sync(serverLevel, tipRef.get(), nextPos, color);
-        AttackHelper.attack(livingEntity, next, new DamageStructure(ratio, 0), attackTypes);
-        hit.add(next);
-        lastRef.set(next);
-        tipRef.set(nextPos);
-        playImpactSound(serverLevel, nextPos);
     }
 
     @Nullable
@@ -226,84 +180,5 @@ public class LightningChainSlashArts extends ExtendedSlashArts {
                 .stream()
                 .min(Comparator.comparingDouble(e -> e.distanceToSqr(lookPos)))
                 .orElse(null);
-    }
-
-    @Nullable
-    private static LivingEntity findNext(
-            LivingEntity attacker,
-            Vec3 origin,
-            float range,
-            Set<LivingEntity> hit,
-            @Nullable LivingEntity lastHit,
-            boolean allowRepeat
-    ) {
-        AABB box = AABB.ofSize(origin, range * 2.0, range * 2.0, range * 2.0);
-        LivingEntity unhit = nearestInBox(
-                attacker,
-                origin,
-                box,
-                entity -> entity != lastHit && !hit.contains(entity)
-        );
-        if (unhit != null) {
-            return unhit;
-        }
-        if (!allowRepeat) {
-            return null;
-        }
-        // 范围内可攻击目标均已命中：清空名单后重新跳跃
-        hit.clear();
-        return nearestInBox(
-                attacker,
-                origin,
-                box,
-                entity -> entity != lastHit
-        );
-    }
-
-    @Nullable
-    private static LivingEntity nearestInBox(
-            LivingEntity attacker,
-            Vec3 origin,
-            AABB box,
-            java.util.function.            Predicate<LivingEntity> extraFilter
-    ) {
-        return attacker.level().getEntitiesOfClass(
-                        LivingEntity.class,
-                        box,
-                        entity -> EntityPredicateHelper.canTarget(attacker, entity)
-                                && entity.isAlive()
-                                && extraFilter.test(entity)
-                )
-                .stream()
-                .min(Comparator.comparingDouble(e -> e.getBoundingBox().getCenter().distanceToSqr(origin)))
-                .orElse(null);
-    }
-
-    private static void playThunderSound(ServerLevel level, Vec3 pos, int pulseIndex) {
-        float pitch = 1.35F + pulseIndex * 0.08F + level.random.nextFloat() * 0.1F;
-        level.playSound(
-                null,
-                pos.x,
-                pos.y,
-                pos.z,
-                SoundEvents.LIGHTNING_BOLT_THUNDER,
-                SoundSource.PLAYERS,
-                0.35F,
-                pitch
-        );
-        playImpactSound(level, pos);
-    }
-
-    private static void playImpactSound(ServerLevel level, Vec3 pos) {
-        level.playSound(
-                null,
-                pos.x,
-                pos.y,
-                pos.z,
-                SoundEvents.LIGHTNING_BOLT_IMPACT,
-                SoundSource.PLAYERS,
-                0.8F,
-                0.9F + level.random.nextFloat() * 0.3F
-        );
     }
 }

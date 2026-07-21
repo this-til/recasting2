@@ -40,7 +40,6 @@ import java.util.Set;
 @Accessors(chain = true)
 public class LaserBeamSlashArts extends ExtendedSlashArts {
 
-    private static final double FIRE_HEIGHT_OFFSET = 0.5;
     private static final double SCATTER_BOX_X = 15.0;
     private static final double SCATTER_BOX_Y = 5.0;
     private static final double SCATTER_BOX_Z = 15.0;
@@ -111,7 +110,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
             return;
         }
 
-        Vec3 start = PosHelper.getAboveHead(livingEntity, FIRE_HEIGHT_OFFSET);
+        Vec3 start = PosHelper.getPhantomSwordSpawnPos(livingEntity);
         LivingEntity aimed = resolvePrimaryTarget(livingEntity, slashBladeState, finalRange);
         Vec3 aimPoint = aimed != null
                 ? aimed.getBoundingBox().getCenter()
@@ -258,7 +257,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
             }
         }
 
-        Vec3 start = PosHelper.getAboveHead(attacker, FIRE_HEIGHT_OFFSET);
+        Vec3 start = PosHelper.getPhantomSwordSpawnPos(attacker);
         Vec3 lookEnd = start.add(attacker.getLookAngle().scale(maxDistance));
         AABB searchBox = new AABB(start, lookEnd).inflate(2.0);
         LivingEntity best = null;

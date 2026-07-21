@@ -121,7 +121,6 @@ public class SpecialEffectsRegistry {
     // 静电余韵 - 释放SA后一段时间内造成伤害附带雷电附加伤害，造成雷电伤害有概率触发闪电链
     public static final RegistryObject<SpecialEffect> STATIC_AFTERGLOW = registerExtendedSE("static_afterglow", () -> new StaticAfterglowSpecialEffect().setMaxLevel(1).setSpecial(true));
     public static final RegistryObject<SpecialEffect> STATIC_AFTERGLOW_LAMBDA = registerExtendedSE("static_afterglow_lambda", () -> new StaticAfterglowSpecialEffect()
-            .setDurationTick(300)
             .setLightningDamageRatio(0.4f)
             .setDamageCooldownTick(3)
             .setChainChance(0.15f)
