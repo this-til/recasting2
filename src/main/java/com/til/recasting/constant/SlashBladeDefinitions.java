@@ -1033,7 +1033,6 @@ public class SlashBladeDefinitions {
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-            .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR, 1)
             .build();
 
     // t3
@@ -1051,7 +1050,6 @@ public class SlashBladeDefinitions {
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 2))
-            .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR_2, 1)
             .build();
 
     
@@ -1071,7 +1069,7 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.2f))
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 3))
-            .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR_3, 1)
+            .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR, 1)
             .build();
 
     // t2
@@ -1090,7 +1088,7 @@ public class SlashBladeDefinitions {
             )
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.2f))
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 3))
-            .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR_3, 1)
+            .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR, 1)
             .build();
 
     // endregion

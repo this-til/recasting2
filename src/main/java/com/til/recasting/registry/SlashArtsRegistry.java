@@ -66,18 +66,18 @@ public class SlashArtsRegistry {
             "lightning_chain_1",
             new LightningChainSlashArts()
                     .setChainCount(1)
-                    .setMaxHops(6)
+                    .setMaxHops(8)
                     .setHopRange(8f)
-                    .setSeedRadius(2.5f)
+                    .setSeedRadius(5.0f)
     );
     public static final RegistryObject<ExtendedSlashArts> LIGHTNING_CHAIN_2 = registerExtendedSA(
             "lightning_chain_2",
             new LightningChainSlashArts()
                     .setChainCount(3)
                     .setDelay(5)
-                    .setMaxHops(6)
+                    .setMaxHops(8)
                     .setHopRange(11f)
-                    .setSeedRadius(3.5f)
+                    .setSeedRadius(6.0f)
                     .setFirstAttack(0.4f)
                     .setChainAttack(0.3f)
     );
@@ -86,9 +86,21 @@ public class SlashArtsRegistry {
             new LightningChainSlashArts()
                     .setChainCount(6)
                     .setDelay(5)
-                    .setMaxHops(8)
+                    .setMaxHops(12)
                     .setHopRange(15f)
-                    .setSeedRadius(5.0f)
+                    .setSeedRadius(7.0f)
+                    .setAllowRepeatJump(true)
+                    .setFirstAttack(0.3f)
+                    .setChainAttack(0.25f)
+    );
+    public static final RegistryObject<ExtendedSlashArts> LIGHTNING_CHAIN_3_LAMBDA = registerExtendedSA(
+            "lightning_chain_3_lambda",
+            new LightningChainSlashArts()
+                    .setChainCount(8)
+                    .setDelay(5)
+                    .setMaxHops(14)
+                    .setHopRange(15f)
+                    .setSeedRadius(8.0f)
                     .setAllowRepeatJump(true)
                     .setFirstAttack(0.3f)
                     .setChainAttack(0.25f)

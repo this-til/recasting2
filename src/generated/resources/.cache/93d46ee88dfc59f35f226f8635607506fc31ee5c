@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-21T18:03:06.8060218	Recasting SlashBlade Definition Registry
+// 1.20.1	2026-07-21T22:14:58.5687999	Recasting SlashBlade Definition Registry
 54425988bdb3a6427dded3c85502e41a5a724eb4 data/recasting/slashblade/named_blades/slashblade/art_knife.json
 10119fb4273eda0d4da12ba0ee9de4b761545aa0 data/recasting/slashblade/named_blades/slashblade/ba_gua.json
 fe0b97917faaa8ea8e0e494f6e26c0cf0a7262a9 data/recasting/slashblade/named_blades/slashblade/ba_gua_big.json
@@ -34,10 +34,10 @@ be2109b58c690f47b865456296dc5962d31d66a6 data/recasting/slashblade/named_blades/
 215af88e84ba85f2360a9ecdd1236bedd2811d3b data/recasting/slashblade/named_blades/slashblade/green_blade_iron.json
 602366ce3e3de05a2938c145aaed274a428b3155 data/recasting/slashblade/named_blades/slashblade/green_blade_wood.json
 1dead644388babe56e976bd67674e75b865d2d41 data/recasting/slashblade/named_blades/slashblade/hoe.json
-443da9e67935d65c50e79dc584417d15753c1563 data/recasting/slashblade/named_blades/slashblade/laser/laser_1.json
-41332fa5b37525f16787745dc5ca1668952dd16c data/recasting/slashblade/named_blades/slashblade/laser/laser_2.json
-9b5f3766dfac7cc9e0706cd06efe1211a7dfcb2b data/recasting/slashblade/named_blades/slashblade/laser/laser_3.json
-40e0ed9b1eeb23ed6a58794ef3b4d63ee8b6cf27 data/recasting/slashblade/named_blades/slashblade/laser/laser_3_lambda.json
+e548f2e31de3e46e03773154c1f6233996812e69 data/recasting/slashblade/named_blades/slashblade/laser/laser_1.json
+aecffff7eda7371abfe6c32de6c1f2d424ccbcd8 data/recasting/slashblade/named_blades/slashblade/laser/laser_2.json
+4e763195c503d509fb01433ee93baa64484a88d6 data/recasting/slashblade/named_blades/slashblade/laser/laser_3.json
+d9c5e9c34f211c2037856116337304d285441090 data/recasting/slashblade/named_blades/slashblade/laser/laser_3_lambda.json
 c2481a0f6c5d538e534ce9b69f229b3f68b446ac data/recasting/slashblade/named_blades/slashblade/long_sky_sunset.json
 eefaa0f081dd0198d07d581282297690834773b9 data/recasting/slashblade/named_blades/slashblade/long_sky_sunset_lambda.json
 8a097de6893601ddcbccb982d0be70f5035a5bd8 data/recasting/slashblade/named_blades/slashblade/obliterate.json

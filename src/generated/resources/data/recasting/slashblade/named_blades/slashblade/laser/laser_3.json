@@ -11,7 +11,7 @@
     "max_damage": 800,
     "slash_art": "recasting:laser_3",
     "special_effects": [
-      "recasting:photon_scar_3"
+      "recasting:photon_scar"
     ],
     "sword_type": [
       "bewitched"
@@ -20,7 +20,7 @@
   "properties_extension": {
     "attack_distance": 1.2,
     "extended_special_levels": {
-      "recasting:photon_scar_3": 1
+      "recasting:photon_scar": 1
     }
   },
   "render": {

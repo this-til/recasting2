@@ -777,6 +777,11 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "闪电链[连射]")
             .addTranslation(LanguageTypes.EN_US, "Lightning Chain [Barrage]");
 
+    public static final LanguageItem LIGHTNING_CHAIN_3_LAMBDA_SA = createSlashArtsLanguage(SlashArtsRegistry.LIGHTNING_CHAIN_3_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^闪电链[连射]")
+            .addTranslation(LanguageTypes.EN_US, "^Lightning Chain [Barrage]");
+
+
     // 星旋
     public static final LanguageItem STELLAR_ROTATION = createSlashArtsLanguage(SlashArtsRegistry.STELLAR_ROTATION)
             .addTranslation(LanguageTypes.ZH_CN, "星旋")
@@ -925,6 +930,10 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Pulses lightning chains repeatedly, with a wider seek range.");
 
     public static final LanguageItem LIGHTNING_CHAIN_3_SA_DESC = createSlashArtsDescription(SlashArtsRegistry.LIGHTNING_CHAIN_3)
+            .addTranslation(LanguageTypes.ZH_CN, "高速连射闪电链，范围更广，可反复跃向已击中的敌人。")
+            .addTranslation(LanguageTypes.EN_US, "Rapidly barrages lightning chains with greater range that can leap back onto already-struck foes.");
+
+    public static final LanguageItem LIGHTNING_CHAIN_3_SA_LAMBDA_DESC = createSlashArtsDescription(SlashArtsRegistry.LIGHTNING_CHAIN_3_LAMBDA)
             .addTranslation(LanguageTypes.ZH_CN, "高速连射闪电链，范围更广，可反复跃向已击中的敌人。")
             .addTranslation(LanguageTypes.EN_US, "Rapidly barrages lightning chains with greater range that can leap back onto already-struck foes.");
 
@@ -1467,22 +1476,6 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.EN_US, "Photon Scar");
 
     public static final LanguageItem PHOTON_SCAR_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.PHOTON_SCAR)
-            .addTranslation(LanguageTypes.ZH_CN, "激光叠加灼烧，造成持续火焰伤害并提供全伤害增伤。灼烧状态下攻击叠加灼痕，满层释放短光束并清零。")
-            .addTranslation(LanguageTypes.EN_US, "Laser stacks burn for fire DoT and all-damage amp. While burning, attacks stack scar; at max, fires a short beam and clears.");
-
-    public static final LanguageItem PHOTON_SCAR_2 = createSpecialEffectLanguage(SpecialEffectsRegistry.PHOTON_SCAR_2)
-            .addTranslation(LanguageTypes.ZH_CN, "光子灼痕[脉冲]")
-            .addTranslation(LanguageTypes.EN_US, "Photon Scar [Pulse]");
-
-    public static final LanguageItem PHOTON_SCAR_2_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.PHOTON_SCAR_2)
-            .addTranslation(LanguageTypes.ZH_CN, "激光叠加灼烧，造成持续火焰伤害并提供全伤害增伤。灼烧状态下攻击叠加灼痕，满层释放短光束并清零。")
-            .addTranslation(LanguageTypes.EN_US, "Laser stacks burn for fire DoT and all-damage amp. While burning, attacks stack scar; at max, fires a short beam and clears.");
-
-    public static final LanguageItem PHOTON_SCAR_3 = createSpecialEffectLanguage(SpecialEffectsRegistry.PHOTON_SCAR_3)
-            .addTranslation(LanguageTypes.ZH_CN, "光子灼痕[阻断]")
-            .addTranslation(LanguageTypes.EN_US, "Photon Scar [Intercept]");
-
-    public static final LanguageItem PHOTON_SCAR_3_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.PHOTON_SCAR_3)
             .addTranslation(LanguageTypes.ZH_CN, "激光叠加灼烧，造成持续火焰伤害并提供全伤害增伤。灼烧状态下攻击叠加灼痕，满层释放短光束并清零。")
             .addTranslation(LanguageTypes.EN_US, "Laser stacks burn for fire DoT and all-damage amp. While burning, attacks stack scar; at max, fires a short beam and clears.");
 
