@@ -118,7 +118,7 @@ public class RecastingAttackTypes {
             () -> new AttackType((attacker, target) -> null)
     );
 
-    public static final RegistryObject<AttackType> NO_SPIRAL_SPECIAL_RECURSION_ATTACK = ATTACK_TYPES.register("no_spiral_special_recursion",
+    public static final RegistryObject<AttackType> SPIRAL_SWORD_ATTACK = ATTACK_TYPES.register("no_spiral_special_recursion",
             () -> new AttackType((attacker, target) -> null)
     );
 

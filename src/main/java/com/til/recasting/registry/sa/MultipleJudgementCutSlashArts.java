@@ -7,6 +7,7 @@ import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingEntities;
+import java.util.concurrent.atomic.AtomicReference;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -33,7 +34,7 @@ public class MultipleJudgementCutSlashArts extends ExtendedSlashArts {
     public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
 
         // 用于记录上一次次元斩的位置
-        final Vec3[] lastPos = {null};
+        final AtomicReference<Vec3> lastPos = new AtomicReference<>(null);
 
         // 获取实体的定时器
         LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN);
@@ -48,8 +49,8 @@ public class MultipleJudgementCutSlashArts extends ExtendedSlashArts {
 
                             // 确定生成位置：如果有上次的位置，使用上次的位置，否则使用目标位置
                             Vec3 pos;
-                            if (lastPos[0] != null) {
-                                pos = lastPos[0];
+                            if (lastPos.get() != null) {
+                                pos = lastPos.get();
                             } else {
                                 pos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
                             }
@@ -78,7 +79,7 @@ public class MultipleJudgementCutSlashArts extends ExtendedSlashArts {
                             worldIn.addFreshEntity(jc);
 
                             // 更新位置记录
-                            lastPos[0] = pos;
+                            lastPos.set(pos);
 
                             // 播放音效
                             worldIn.playSound(null, jc.getX(), jc.getY(), jc.getZ(),

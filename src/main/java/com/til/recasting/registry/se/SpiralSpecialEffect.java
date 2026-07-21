@@ -59,7 +59,7 @@ public class SpiralSpecialEffect extends ExtendedSpecialEffect {
             return;
         }
 
-        if (event.getAttackTypeList().contains(RecastingAttackTypes.NO_SPIRAL_SPECIAL_RECURSION_ATTACK.get())) {
+        if (event.getAttackTypeList().contains(RecastingAttackTypes.SPIRAL_SWORD_ATTACK.get())) {
             return;
         }
 
@@ -153,7 +153,7 @@ public class SpiralSpecialEffect extends ExtendedSpecialEffect {
             ss.setRoll(0);
             ss.setStartDelay(30);
 
-            ss.addAttackType(RecastingAttackTypes.NO_SPIRAL_SPECIAL_RECURSION_ATTACK.get());
+            ss.addAttackType(RecastingAttackTypes.SPIRAL_SWORD_ATTACK.get());
 
             worldIn.addFreshEntity(ss);
 

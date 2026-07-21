@@ -73,6 +73,10 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "茶韵")
             .addTranslation(LanguageTypes.EN_US, "Tea Aroma");
 
+    public static final LanguageItem BUFF_STATIC_AFTERGLOW = new LanguageItem("buff.recasting.static_afterglow")
+            .addTranslation(LanguageTypes.ZH_CN, "静电余韵")
+            .addTranslation(LanguageTypes.EN_US, "Static Afterglow");
+
     // ========== Void SlashBlades ==========
     public static final LanguageItem VOID_1 = createSlashBladeDefinitionLanguage(SlashBladeDefinitions.VOID_1)
             .addTranslation(LanguageTypes.ZH_CN, "洞虚利刃")
@@ -1529,6 +1533,23 @@ public class LanguageItems {
     public static final LanguageItem ENLARGE_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.ENLARGE)
             .addTranslation(LanguageTypes.ZH_CN, "挥刀时大幅增加攻击范围。移植此 SE 到其他刀上会发生不好的事。")
             .addTranslation(LanguageTypes.EN_US, "Greatly increases attack range when slashing. Transplanting this SE onto other blades will lead to misfortune.");
+
+    // 静电余韵
+    public static final LanguageItem STATIC_AFTERGLOW = createSpecialEffectLanguage(SpecialEffectsRegistry.STATIC_AFTERGLOW)
+            .addTranslation(LanguageTypes.ZH_CN, "静电余韵")
+            .addTranslation(LanguageTypes.EN_US, "Static Afterglow");
+
+    public static final LanguageItem STATIC_AFTERGLOW_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.STATIC_AFTERGLOW)
+            .addTranslation(LanguageTypes.ZH_CN, "释放 SA 后的一段时间内，造成伤害时附带雷电附加伤害；造成雷电伤害时有概率触发闪电链。")
+            .addTranslation(LanguageTypes.EN_US, "For a period after releasing SA, dealing damage adds bonus lightning damage; dealing lightning damage may trigger a lightning chain.");
+
+    public static final LanguageItem STATIC_AFTERGLOW_LAMBDA = createSpecialEffectLanguage(SpecialEffectsRegistry.STATIC_AFTERGLOW_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "^静电余韵")
+            .addTranslation(LanguageTypes.EN_US, "^Static Afterglow");
+
+    public static final LanguageItem STATIC_AFTERGLOW_LAMBDA_DESC = createSpecialEffectDescription(SpecialEffectsRegistry.STATIC_AFTERGLOW_LAMBDA)
+            .addTranslation(LanguageTypes.ZH_CN, "释放 SA 后的一段时间内，造成伤害时附带更强的雷电附加伤害；造成雷电伤害时有更高概率触发闪电链。")
+            .addTranslation(LanguageTypes.EN_US, "For a longer period after releasing SA, dealing damage adds stronger bonus lightning damage; dealing lightning damage has a higher chance to trigger a lightning chain.");
 
     private static LanguageItem createSlashBladeDefinitionLanguage(SlashBladeDefinition definition) {
         return new LanguageItem(definition.getTranslationKey());

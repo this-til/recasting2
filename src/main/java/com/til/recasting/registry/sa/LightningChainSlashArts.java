@@ -11,6 +11,7 @@ import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.DamageStructure;
+import java.util.concurrent.atomic.AtomicReference;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -154,8 +155,8 @@ public class LightningChainSlashArts extends ExtendedSlashArts {
         LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN);
         LivingEntity initialLast = lastHit;
         timeRunOptional.ifPresent(timeRun -> {
-            Vec3[] tipRef = {tip};
-            LivingEntity[] lastRef = {initialLast};
+            AtomicReference<Vec3> tipRef = new AtomicReference<>(tip);
+            AtomicReference<LivingEntity> lastRef = new AtomicReference<>(initialLast);
             float decayedRatio = chainAttack;
             for (int hop = 1; hop < maxHops; hop++) {
                 int hopTick = hopDelay * hop;
@@ -172,8 +173,8 @@ public class LightningChainSlashArts extends ExtendedSlashArts {
     private void hopStrike(
             LivingEntity livingEntity,
             ServerLevel serverLevel,
-            Vec3[] tipRef,
-            LivingEntity[] lastRef,
+            AtomicReference<Vec3> tipRef,
+            AtomicReference<LivingEntity> lastRef,
             Set<LivingEntity> hit,
             float ratio,
             int color,
@@ -184,21 +185,21 @@ public class LightningChainSlashArts extends ExtendedSlashArts {
         }
         LivingEntity next = findNext(
                 livingEntity,
-                tipRef[0],
+                tipRef.get(),
                 hopRange,
                 hit,
-                lastRef[0],
+                lastRef.get(),
                 allowRepeatJump
         );
         if (next == null) {
             return;
         }
         Vec3 nextPos = next.getBoundingBox().getCenter();
-        LightningChainEffectHelper.sync(serverLevel, tipRef[0], nextPos, color);
+        LightningChainEffectHelper.sync(serverLevel, tipRef.get(), nextPos, color);
         AttackHelper.attack(livingEntity, next, new DamageStructure(ratio, 0), attackTypes);
         hit.add(next);
-        lastRef[0] = next;
-        tipRef[0] = nextPos;
+        lastRef.set(next);
+        tipRef.set(nextPos);
         playImpactSound(serverLevel, nextPos);
     }
 
