@@ -10,12 +10,14 @@ import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import com.til.recasting.util.NumberPack;
 import com.til.recasting.handler.ParticleHelper;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -72,40 +74,28 @@ public class FragmentSpecialEffect extends ExtendedSpecialEffect {
                         // 重置层数
                         buffStackData.setLevel(fragmentBuffType, 0, world);
 
-                        // 粒子与音效
+                        // 玻璃破碎音效与粒子
                         if (world instanceof ServerLevel serverLevel) {
                             Vec3 pos = target.position().add(0, target.getEyeHeight() * 0.5, 0);
                             serverLevel.playSound(
                                     null,
                                     pos.x, pos.y, pos.z,
-                                    SoundEvents.GENERIC_EXPLODE,
+                                    SoundEvents.GLASS_BREAK,
                                     SoundSource.PLAYERS,
-                                    0.4F,
-                                    1.0F + target.getRandom().nextFloat() * 0.3F
+                                    1.0F,
+                                    0.9F + target.getRandom().nextFloat() * 0.2F
+                            );
+                            BlockParticleOption glassShard = new BlockParticleOption(
+                                    ParticleTypes.BLOCK,
+                                    Blocks.GLASS.defaultBlockState()
                             );
                             ParticleHelper.sendParticlesLongRange(
                                     serverLevel,
-                                    ParticleTypes.EXPLOSION,
+                                    glassShard,
                                     pos.x, pos.y, pos.z,
-                                    3,
-                                    0.2, 0.2, 0.2,
-                                    0.1
-                            );
-                            ParticleHelper.sendParticlesLongRange(
-                                    serverLevel,
-                                    ParticleTypes.CRIT,
-                                    pos.x, pos.y, pos.z,
-                                    20,
-                                    0.5, 0.7, 0.5,
-                                    0.5
-                            );
-                            ParticleHelper.sendParticlesLongRange(
-                                    serverLevel,
-                                    ParticleTypes.ENCHANTED_HIT,
-                                    pos.x, pos.y, pos.z,
-                                    10,
-                                    0.4, 0.4, 0.4,
-                                    0.4
+                                    40,
+                                    0.5, 0.6, 0.5,
+                                    0.15
                             );
                         }
 
