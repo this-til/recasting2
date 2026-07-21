@@ -16,10 +16,7 @@ public class SpecialEffectsRegistry {
     /**
      * 创建 DeferredRegister，用于注册 Special Effects
      */
-    public static final DeferredRegister<SpecialEffect> SPECIAL_EFFECT = DeferredRegister.create(
-            SpecialEffect.REGISTRY_KEY,
-            Recasting.MODID
-    );
+    public static final DeferredRegister<SpecialEffect> SPECIAL_EFFECT = DeferredRegister.create(SpecialEffect.REGISTRY_KEY, Recasting.MODID);
 
     // 协同 - 挥刀时概率额外挥刀
     public static final RegistryObject<SpecialEffect> COOPERATE_WITH = registerExtendedSE("cooperate_with", CooperateWithSpecialEffect::new);
@@ -110,31 +107,16 @@ public class SpecialEffectsRegistry {
     public static final RegistryObject<SpecialEffect> PHOTON_SCAR_3 = registerExtendedSE("photon_scar_3", () -> new PhotonScarSpecialEffect().setMaxLevel(1).setSpecial(true));
 
     // 长空落日 - Shift 锁敌持续幻影剑；伤害随层数提升
-    public static final RegistryObject<SpecialEffect> LONG_SKY_SUNSET = registerExtendedSE(
-            "long_sky_sunset",
-            () -> new LongSkySunsetSpecialEffect().setMaxLevel(1).setSpecial(true)
-    );
+    public static final RegistryObject<SpecialEffect> LONG_SKY_SUNSET = registerExtendedSE("long_sky_sunset", () -> new LongSkySunsetSpecialEffect().setMaxLevel(1).setSpecial(true));
 
     // 击晕 - 命中目标短暂击晕
-    public static final RegistryObject<SpecialEffect> STUN = registerExtendedSE(
-            "stun",
-            () -> new StunSpecialEffect().setMaxLevel(1).setSpecial(true)
-    );
+    public static final RegistryObject<SpecialEffect> STUN = registerExtendedSE("stun", () -> new StunSpecialEffect().setMaxLevel(1).setSpecial(true));
     // 催熟 - 挥刀时对周围随机作物施加骨粉效果
-    public static final RegistryObject<SpecialEffect> FERTILIZE = registerExtendedSE(
-            "fertilize",
-            () -> new FertilizeSpecialEffect().setMaxLevel(1).setSpecial(true)
-    );
+    public static final RegistryObject<SpecialEffect> FERTILIZE = registerExtendedSE("fertilize", () -> new FertilizeSpecialEffect().setMaxLevel(1).setSpecial(true));
     // 吃 - 挥刀时消耗耐久，恢复饱和度
-    public static final RegistryObject<SpecialEffect> EAT = registerExtendedSE(
-            "eat",
-            () -> new EatSpecialEffect().setMaxLevel(1).setSpecial(true)
-    );
+    public static final RegistryObject<SpecialEffect> EAT = registerExtendedSE("eat", () -> new EatSpecialEffect().setMaxLevel(1).setSpecial(true));
     // 变大！ - 挥刀时大幅增加攻击范围
-    public static final RegistryObject<SpecialEffect> ENLARGE = registerExtendedSE(
-            "enlarge",
-            () -> new EnlargeSpecialEffect().setMaxLevel(1).setSpecial(true)
-    );
+    public static final RegistryObject<SpecialEffect> ENLARGE = registerExtendedSE("enlarge", () -> new EnlargeSpecialEffect().setMaxLevel(1).setSpecial(true));
 
     public static RegistryObject<SpecialEffect> registerExtendedSE(String name, Supplier<SpecialEffect> factory) {
         return SPECIAL_EFFECT.register(name, factory);
