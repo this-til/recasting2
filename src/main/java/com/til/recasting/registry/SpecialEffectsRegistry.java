@@ -112,7 +112,7 @@ public class SpecialEffectsRegistry {
     // 长空落日 - Shift 锁敌持续幻影剑；伤害随层数提升
     public static final RegistryObject<SpecialEffect> LONG_SKY_SUNSET = registerExtendedSE(
             "long_sky_sunset",
-            () -> new LongSkySunsetSpecialEffect().setMaxLevel(5).setSpecial(true)
+            () -> new LongSkySunsetSpecialEffect().setMaxLevel(1).setSpecial(true)
     );
 
     // 击晕 - 命中目标短暂击晕
