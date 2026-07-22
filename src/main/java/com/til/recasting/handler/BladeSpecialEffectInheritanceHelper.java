@@ -9,7 +9,7 @@ import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -41,7 +41,7 @@ public final class BladeSpecialEffectInheritanceHelper {
 
     public static void apply(
             ItemStack result,
-            CraftingContainer container,
+            Container container,
             RegistryAccess access,
             ResourceLocation outputBladeId
     ) {
@@ -175,10 +175,11 @@ public final class BladeSpecialEffectInheritanceHelper {
     }
 
     private static Optional<EffectEntry> findInputSpecialEffect(
-            CraftingContainer container,
+            Container container,
             IForgeRegistry<SpecialEffect> registry
     ) {
-        for (ItemStack stack : container.getItems()) {
+        for (int i = 0; i < container.getContainerSize(); i++) {
+            ItemStack stack = container.getItem(i);
             if (stack.isEmpty() || !(stack.getItem() instanceof ItemSlashBlade)) {
                 continue;
             }
@@ -191,11 +192,12 @@ public final class BladeSpecialEffectInheritanceHelper {
     }
 
     private static Map<ResourceLocation, Integer> findInputNormalEffects(
-            CraftingContainer container,
+            Container container,
             IForgeRegistry<SpecialEffect> registry
     ) {
         Map<ResourceLocation, Integer> inheritedEffects = new LinkedHashMap<>();
-        for (ItemStack stack : container.getItems()) {
+        for (int i = 0; i < container.getContainerSize(); i++) {
+            ItemStack stack = container.getItem(i);
             if (stack.isEmpty() || !(stack.getItem() instanceof ItemSlashBlade)) {
                 continue;
             }
