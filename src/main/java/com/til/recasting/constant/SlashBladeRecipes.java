@@ -1302,6 +1302,103 @@ public class SlashBladeRecipes {
                     .save(consumer, recipeId);
 
     /**
+     * 云翼配方（t3）：从黑刃升级
+     * 要求：杀敌1000、锻造200
+     * 材料：银白色庸魂立方体4个
+     * SE结晶：分裂 2个
+     * C=银白色庸魂立方体, S=分裂 SE结晶, B=基础刀（黑刃，满足要求）
+     */
+    public static final RecipeBuilderWrapper SILVER_WING_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SILVER_WING.getName())
+                    .pattern(" SC")
+                    .pattern("CBC")
+                    .pattern("CS ")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.BLACK.getName())
+                                    .killCount(1000)
+                                    .refineCount(200)
+                                    .build()))
+                    .define('C', RecastingItems.IRON_MEDIUM_SOUL_CUBE.get())
+                    .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SPLIT.getId(), 1))
+                    .unlockedBy("has_iron_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.IRON_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * 云翼 Lambda 配方（t3）：从云翼升级
+     * 要求：杀敌2000、锻造400
+     * 材料：金黄色庸魂立方体4个
+     * SE结晶：风暴 2个、风暴变体 2个
+     * C=金黄色庸魂立方体, S=风暴 SE结晶, V=风暴变体 SE结晶, B=基础刀（云翼，满足要求）
+     */
+    public static final RecipeBuilderWrapper SILVER_WING_LAMBDA_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SILVER_WING_LAMBDA.getName())
+                    .pattern("CSC")
+                    .pattern("VBV")
+                    .pattern("CSC")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.SILVER_WING.getName())
+                                    .killCount(2000)
+                                    .refineCount(400)
+                                    .build()))
+                    .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
+                    .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM.getId(), 1))
+                    .define('V', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM_VARIANT.getId(), 1))
+                    .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * 彩翼配方（t2）：从云翼升级
+     * 要求：杀敌5000、锻造600
+     * 材料：钻石庸魂立方体4个
+     * 染料：红色、黄色、黄绿色、蓝色各1个
+     * C=钻石庸魂立方体, X=基础刀（云翼，满足要求）, R=红色染料, Y=黄色染料, L=黄绿色染料, B=蓝色染料
+     */
+    public static final RecipeBuilderWrapper COLOR_WING_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.COLOR_WING.getName())
+                    .pattern("CRC")
+                    .pattern("YXL")
+                    .pattern("CBC")
+                    .define('X',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.SILVER_WING.getName())
+                                    .killCount(5000)
+                                    .refineCount(600)
+                                    .build()))
+                    .define('C', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                    .define('R', Items.RED_DYE)
+                    .define('Y', Items.YELLOW_DYE)
+                    .define('L', Items.LIME_DYE)
+                    .define('B', Items.BLUE_DYE)
+                    .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
+    /**
+     * 彩翼 Lambda 配方（t2）：从彩翼升级
+     * 要求：杀敌10000、锻造1200
+     * 材料：赤红庸魂立方体4个、荧光墨囊4个
+     * SE结晶：雷暴 2个
+     * C=赤红庸魂立方体, G=荧光墨囊, T=雷暴 SE结晶, B=基础刀（彩翼，满足要求）
+     */
+    public static final RecipeBuilderWrapper COLOR_WING_LAMBDA_RECIPE = (consumer, recipeId) ->
+            SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.COLOR_WING_LAMBDA.getName())
+                    .pattern("GTG")
+                    .pattern("CBC")
+                    .pattern("GTG")
+                    .define('B',
+                            SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                    .name(SlashBladeDefinitions.COLOR_WING.getName())
+                                    .killCount(10000)
+                                    .refineCount(1200)
+                                    .build()))
+                    .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                    .define('G', Items.GLOW_INK_SAC)
+                    .define('T', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.THUNDERSTORM.getId(), 1))
+                    .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                    .save(consumer, recipeId);
+
+    /**
      * 长空落日配方（t3）：从黑刃升级
      * 要求：杀敌1500、锻造200
      * 材料：赤红庸魂立方体4个
@@ -1348,4 +1445,3 @@ public class SlashBladeRecipes {
                     .save(consumer, recipeId);
 
 }
-

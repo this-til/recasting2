@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+
+HOOK_DIR="$(cd "$(dirname "$0")" && pwd)"
+powershell -NoProfile -ExecutionPolicy Bypass -File "$HOOK_DIR/increment-mod-version.ps1"
