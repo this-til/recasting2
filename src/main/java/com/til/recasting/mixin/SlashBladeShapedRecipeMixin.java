@@ -3,7 +3,6 @@ package com.til.recasting.mixin;
 import com.til.recasting.handler.BladeSpecialEffectInheritanceHelper;
 import mods.flammpfeil.slashblade.recipe.SlashBladeShapedRecipe;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.world.Container;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,25 +28,6 @@ public abstract class SlashBladeShapedRecipeMixin {
     )
     private void recasting$inheritSpecialEffect(
             CraftingContainer container,
-            RegistryAccess access,
-            CallbackInfoReturnable<ItemStack> cir
-    ) {
-        BladeSpecialEffectInheritanceHelper.apply(
-                cir.getReturnValue(),
-                container,
-                access,
-                getOutputBlade()
-        );
-    }
-
-    @Inject(
-            method = "assemble(Lnet/minecraft/world/Container;Lnet/minecraft/core/RegistryAccess;)Lnet/minecraft/world/item/ItemStack;",
-            at = @At("RETURN"),
-            require = 0,
-            remap = false
-    )
-    private void recasting$inheritSpecialEffectBridge(
-            Container container,
             RegistryAccess access,
             CallbackInfoReturnable<ItemStack> cir
     ) {
