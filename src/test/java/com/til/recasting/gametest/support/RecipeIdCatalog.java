@@ -1,9 +1,9 @@
 package com.til.recasting.gametest.support;
 
 import com.til.recasting.Recasting;
-import com.til.recasting.constant.RecastingRecipes;
-import com.til.recasting.constant.SlashBladeRecipes;
-import com.til.recasting.constant.SpecialEffectRecipes;
+import com.til.recasting.generated.RecastingRecipes;
+import com.til.recasting.generated.SlashBladeRecipes;
+import com.til.recasting.generated.SpecialEffectRecipes;
 import com.til.recasting.generated.RecipeBuilderWrapper;
 import net.minecraft.resources.ResourceLocation;
 

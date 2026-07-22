@@ -3,7 +3,6 @@ package com.til.recasting.generated;
 
 import com.til.recasting.Recasting;
 import lombok.extern.log4j.Log4j2;
-import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
@@ -40,10 +39,19 @@ public class DataGenerator {
                 }
         );
 
-        // 注册配方生成器（扫描所有配方类）
         dataGenerator.addProvider(
                 event.includeServer(),
-                new RecastingRecipeProvider(packOutput)
+                new RecastingRecipes(packOutput)
+        );
+
+        dataGenerator.addProvider(
+                event.includeServer(),
+                new SlashBladeRecipes(packOutput)
+        );
+
+        dataGenerator.addProvider(
+                event.includeServer(),
+                new SpecialEffectRecipes(packOutput)
         );
 
     }
