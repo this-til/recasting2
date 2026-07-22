@@ -100,7 +100,7 @@ public class AnvilSpecialEffectEngravingHandler {
                 // 检查玩家是否在创造模式（排除创造模式的限制）
                 boolean isCreativeMode = false;
                 Player player = event.getPlayer();
-                if (player != null && !player.level().isClientSide()) {
+                if (player != null) {
                     isCreativeMode = player.getAbilities().instabuild;
                 }
 

@@ -1,7 +1,6 @@
 package com.til.recasting.client.registry;
 
 import com.til.recasting.Recasting;
-import com.til.recasting.client.constant.LanguageItems;
 import com.til.recasting.client.registry.instance.BuffLevelRenderConfig;
 import com.til.recasting.registry.RecastingBuffTypes;
 import net.minecraft.core.Registry;
@@ -46,14 +45,14 @@ public class BuffLevelRendererRegistry {
      */
     public static final RegistryObject<BuffLevelRenderConfig> SOUL_BURN = BUFF_LEVEL_RENDER_CONFIGS.register(
             "soul_burn",
-            () -> new BuffLevelRenderConfig(RecastingBuffTypes.SOUL_BURN, LanguageItems.BUFF_SOUL_BURN)
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.SOUL_BURN, "buff.recasting.soul_burn")
     );
     /**
      * 剑势 - 显示层数
      */
     public static final RegistryObject<BuffLevelRenderConfig> FRAGMENT = BUFF_LEVEL_RENDER_CONFIGS.register(
             "sword_momentum",
-            () -> new BuffLevelRenderConfig(RecastingBuffTypes.FRAGMENT, LanguageItems.BUFF_FRAGMENT)
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.FRAGMENT, "buff.recasting.fragment")
     );
 
     /**
@@ -61,7 +60,7 @@ public class BuffLevelRendererRegistry {
      */
     public static final RegistryObject<BuffLevelRenderConfig> IONIZATION = BUFF_LEVEL_RENDER_CONFIGS.register(
             "ionization",
-            () -> new BuffLevelRenderConfig(RecastingBuffTypes.IONIZATION, LanguageItems.BUFF_IONIZATION)
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.IONIZATION, "buff.recasting.ionization")
     );
 
     /**
@@ -69,7 +68,7 @@ public class BuffLevelRendererRegistry {
      */
     public static final RegistryObject<BuffLevelRenderConfig> ENERGY_STORAGE = BUFF_LEVEL_RENDER_CONFIGS.register(
             "energy_storage",
-            () -> new BuffLevelRenderConfig(RecastingBuffTypes.ENERGY_STORAGE, LanguageItems.BUFF_ENERGY_STORAGE)
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.ENERGY_STORAGE, "buff.recasting.energy_storage")
     );
 
     /**
@@ -77,7 +76,7 @@ public class BuffLevelRendererRegistry {
      */
     public static final RegistryObject<BuffLevelRenderConfig> TEAR = BUFF_LEVEL_RENDER_CONFIGS.register(
             "tear",
-            () -> new BuffLevelRenderConfig(RecastingBuffTypes.TEAR, LanguageItems.BUFF_TEAR)
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.TEAR, "buff.recasting.tear")
     );
 
     /**
@@ -85,7 +84,7 @@ public class BuffLevelRendererRegistry {
      */
     public static final RegistryObject<BuffLevelRenderConfig> PHOTON_SCAR = BUFF_LEVEL_RENDER_CONFIGS.register(
             "photon_scar",
-            () -> new BuffLevelRenderConfig(RecastingBuffTypes.PHOTON_SCAR, LanguageItems.BUFF_PHOTON_SCAR)
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.PHOTON_SCAR, "buff.recasting.photon_scar")
     );
 
     /**
@@ -93,7 +92,7 @@ public class BuffLevelRendererRegistry {
      */
     public static final RegistryObject<BuffLevelRenderConfig> PHOTON_BURN = BUFF_LEVEL_RENDER_CONFIGS.register(
             "photon_burn",
-            () -> new BuffLevelRenderConfig(RecastingBuffTypes.PHOTON_BURN, LanguageItems.BUFF_PHOTON_BURN)
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.PHOTON_BURN, "buff.recasting.photon_burn")
     );
 
     /**
@@ -101,7 +100,7 @@ public class BuffLevelRendererRegistry {
      */
     public static final RegistryObject<BuffLevelRenderConfig> SUNSET_CORE = BUFF_LEVEL_RENDER_CONFIGS.register(
             "sunset_core",
-            () -> new BuffLevelRenderConfig(RecastingBuffTypes.SUNSET_CORE, LanguageItems.BUFF_SUNSET_CORE)
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.SUNSET_CORE, "buff.recasting.sunset_core")
     );
 
     /**
@@ -109,7 +108,7 @@ public class BuffLevelRendererRegistry {
      */
     public static final RegistryObject<BuffLevelRenderConfig> SUNSET_STACK = BUFF_LEVEL_RENDER_CONFIGS.register(
             "sunset_stack",
-            () -> new BuffLevelRenderConfig(RecastingBuffTypes.SUNSET_STACK, LanguageItems.BUFF_SUNSET_STACK)
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.SUNSET_STACK, "buff.recasting.sunset_stack")
     );
 
     /**
@@ -117,7 +116,7 @@ public class BuffLevelRendererRegistry {
      */
     public static final RegistryObject<BuffLevelRenderConfig> GOLDEN_HALBERD = BUFF_LEVEL_RENDER_CONFIGS.register(
             "golden_halberd",
-            () -> new BuffLevelRenderConfig(RecastingBuffTypes.GOLDEN_HALBERD, LanguageItems.BUFF_GOLDEN_HALBERD)
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.GOLDEN_HALBERD, "buff.recasting.golden_halberd")
     );
 
     /**
@@ -125,14 +124,7 @@ public class BuffLevelRendererRegistry {
      */
     public static final RegistryObject<BuffLevelRenderConfig> TEA_AROMA = BUFF_LEVEL_RENDER_CONFIGS.register(
             "tea_aroma",
-            () -> new BuffLevelRenderConfig(RecastingBuffTypes.TEA_AROMA, LanguageItems.BUFF_TEA_AROMA)
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.TEA_AROMA, "buff.recasting.tea_aroma")
     );
 
-    /**
-     * 断灭 - 显示层数
-     */
-    //public static final RegistryObject<BuffLevelRenderConfig> ANNIHILATION = BUFF_LEVEL_RENDER_CONFIGS.register(
-    //        "annihilation",
-    //        () -> new BuffLevelRenderConfig(RecastingBuffTypes.ANNIHILATION, LanguageItems.BUFF_ANNIHILATION)
-    //);
 }

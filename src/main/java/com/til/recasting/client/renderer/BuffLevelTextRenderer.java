@@ -3,11 +3,11 @@ package com.til.recasting.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.til.recasting.capability.IBuffStackData;
-import mods.flammpfeil.slashblade.client.renderer.util.MSAutoCloser;
 import com.til.recasting.client.registry.BuffLevelRendererRegistry;
 import com.til.recasting.client.registry.instance.BuffLevelRenderConfig;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.instance.BuffType;
+import mods.flammpfeil.slashblade.client.renderer.util.MSAutoCloser;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -64,14 +64,16 @@ public class BuffLevelTextRenderer implements EntityRenderExtension {
         if (registry == null) {
             return;
         }
-        
+
         for (BuffLevelRenderConfig config : registry.getValues()) {
             BuffType buffType = config.getBuffType();
+            if (buffType == null) {
+                continue;
+            }
             int level = buffData.getLevel(buffType, entity.level());
 
             // 只显示层数不为 0 的 Buff
             if (level != 0) {
-                // 使用 LanguageItem 获取翻译键（禁止硬编码）
                 String translationKey = config.getTranslationKey();
                 String buffName = Component.translatable(translationKey).getString();
                 

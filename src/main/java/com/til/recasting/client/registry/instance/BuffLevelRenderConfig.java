@@ -1,6 +1,5 @@
 package com.til.recasting.client.registry.instance;
 
-import com.til.recasting.client.generated.language.LanguageItem;
 import com.til.recasting.registry.instance.BuffType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,22 +20,12 @@ public class BuffLevelRenderConfig {
     private final Supplier<BuffType> buffTypeSupplier;
 
     /**
-     * 关联的 LanguageItem，用于获取翻译键
+     * 直接使用的翻译键
      */
-    private final LanguageItem languageItem;
+    private final String translationKey;
 
-    /**
-     * 获取关联的 BuffType
-     */
     public BuffType getBuffType() {
         return buffTypeSupplier.get();
-    }
-
-    /**
-     * 获取翻译键
-     */
-    public String getTranslationKey() {
-        return languageItem.getKey();
     }
 }
 
