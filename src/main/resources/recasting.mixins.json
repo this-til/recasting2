@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "com.til.recasting.mixin",
   "compatibilityLevel": "JAVA_17",
+  "plugin": "com.til.recasting.mixin.RecastingMixinPlugin",
   "refmap": "recasting.refmap.json",
   "mixins": [
     "AttackHelperMixin",

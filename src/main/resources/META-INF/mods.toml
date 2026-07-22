@@ -67,3 +67,9 @@ mandatory = true
 versionRange = "[1.8,)"
 ordering = "AFTER"
 side = "BOTH"
+[[dependencies."${mod_id}"]]
+modId = "jei"
+mandatory = false
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "CLIENT"

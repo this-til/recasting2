@@ -184,11 +184,9 @@ public class RecastingItems {
 
                 @Override
                 public @Nullable Gradient getGradient(ItemStack itemStack, int level) {
-                    //noinspection DataFlowIssue
                     ISpecialEffectCrystalData iSpecialEffectCrystalData = itemStack.getCapability(CapabilityRegistryHandler.SE_CRYSTAL_DATA).orElse(null);
 
-                    //noinspection ConstantValue
-                    if (iSpecialEffectCrystalData != null) {
+                    if (iSpecialEffectCrystalData == null) {
                         return invalid;
                     }
 

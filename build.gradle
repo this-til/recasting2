@@ -176,6 +176,13 @@ repositories {
 
 }
 
+configurations {
+    runModLibraries {
+        canBeConsumed = false
+        canBeResolved = true
+    }
+}
+
 dependencies {
     // Specify the version of Minecraft to use.
     // Any artifact can be supplied so long as it has a "userdev" classifier artifact and is a compatible patcher artifact.
@@ -208,25 +215,25 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
 
-    //nbt编辑器
-    implementation fg.deobf("curse.maven:ibe-editor-256822:4994072")
-
     //implementation fg.deobf("mods.flammpfeil.slashblade:SlashBlade_Resharped:${slash_blade_version}")
     implementation fg.deobf("curse.maven:SlashBlade_Resharped-1022428:7363505")
+    runModLibraries fg.deobf("curse.maven:SlashBlade_Resharped-1022428:7363505")
 
 
-    //伤害数值显示
-    implementation fg.deobf("curse.maven:damage-number-998849:5538112")
     //nbt编辑器
-    implementation fg.deobf("curse.maven:ibe-editor-256822:4994072")
+    runModLibraries fg.deobf("curse.maven:ibe-editor-256822:4994072")
+    //伤害数值显示
+    runModLibraries fg.deobf("curse.maven:damage-number-998849:5538112")
     //curios
     implementation fg.deobf("curse.maven:curios-309927:5680164")
+    runModLibraries fg.deobf("curse.maven:curios-309927:5680164")
     //假人前置
-    implementation fg.deobf("curse.maven:selene-499980:5942980")
+    runModLibraries fg.deobf("curse.maven:selene-499980:5942980")
     //训练假人
-    implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:5737040")
-    //开发环境jei
-    implementation fg.deobf("curse.maven:jei-238222:7391695")
+    runModLibraries fg.deobf("curse.maven:mmmmmmmmmmmm-225738:5737040")
+    //JEI API 参与编译，完整 Mod 仅在开发环境运行时注入
+    compileOnly fg.deobf("curse.maven:jei-238222:7391695")
+    runModLibraries fg.deobf("curse.maven:jei-238222:7391695")
 
     //无锋道
     //implementation fg.deobf("curse.maven:rough_blade-1218145:7411635")
@@ -247,7 +254,7 @@ tasks.register('syncRunMods', Copy) {
     description = 'Syncs mod dependency JARs into run/mods for dev client launches.'
     group = 'forgegradle runs'
 
-    from configurations.runtimeClasspath
+    from configurations.runModLibraries
     into layout.projectDirectory.dir('run/mods')
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
