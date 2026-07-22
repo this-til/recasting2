@@ -1,5 +1,6 @@
 package com.til.recasting.registry;
 
+import com.til.recasting.Config;
 import com.til.recasting.Recasting;
 import com.til.recasting.capability.ISpecialEffectCrystalData;
 import com.til.recasting.handler.CapabilityRegistryHandler;
@@ -160,10 +161,24 @@ public class RecastingItems {
                                 Component.translatable("recasting.tooltip.engraving_rule.title")
                                         .withStyle(ChatFormatting.YELLOW)
                         );
-                        components.add(
-                                Component.translatable("recasting.tooltip.engraving_rule.main", 4, 1)
-                                        .withStyle(ChatFormatting.GRAY)
-                        );
+                        if (Config.isUnlimitedSeEngraving()) {
+                            components.add(
+                                    Component.translatable("recasting.tooltip.engraving_rule.main_unlimited")
+                                            .withStyle(ChatFormatting.GRAY)
+                            );
+                            components.add(
+                                    Component.translatable("recasting.tooltip.engraving_rule.unlimited_hint")
+                                            .withStyle(ChatFormatting.DARK_GRAY)
+                            );
+                        } else {
+                            components.add(
+                                    Component.translatable(
+                                            "recasting.tooltip.engraving_rule.main",
+                                            Config.getNormalSeEngravingLimit(),
+                                            Config.getSpecialSeEngravingLimit()
+                                    ).withStyle(ChatFormatting.GRAY)
+                            );
+                        }
                         if (extendedSE.isSpecial()) {
                             components.add(
                                     Component.translatable("recasting.tooltip.special_se_extract")

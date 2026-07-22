@@ -1,5 +1,6 @@
 package com.til.recasting.handler;
 
+import com.til.recasting.Config;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.registry.RecastingItems;
 import com.til.recasting.registry.SpecialEffectsRegistry;
@@ -105,7 +106,7 @@ public class AnvilSpecialEffectEngravingHandler {
                 }
 
                 // 检查SE数量限制（创造模式跳过限制）
-                if (!isCreativeMode && !extendedSE.isSpecial()) {
+                if (!isCreativeMode && !extendedSE.isSpecial() && !Config.isUnlimitedSeEngraving()) {
                     AtomicInteger normalSECount = new AtomicInteger(0);
 
                     leftItem.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> {
@@ -122,7 +123,7 @@ public class AnvilSpecialEffectEngravingHandler {
                         });
                     });
 
-                    if (currentLevel.get() == 0 && normalSECount.get() >= 4) {
+                    if (currentLevel.get() == 0 && normalSECount.get() >= Config.getNormalSeEngravingLimit()) {
                         return;
                     }
                 }
@@ -134,7 +135,7 @@ public class AnvilSpecialEffectEngravingHandler {
             if (crystalLevel > 0) {
                 output.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState ->
                         output.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> {
-                            if (extendedSE.isSpecial()) {
+                            if (extendedSE.isSpecial() && !Config.isUnlimitedSeEngraving()) {
                                 removeOtherSpecialEffects(bladeState, extension, seLocation);
                             }
                             bladeState.addSpecialEffect(seLocation);
@@ -159,7 +160,7 @@ public class AnvilSpecialEffectEngravingHandler {
     }
 
     /**
-     * 铭刻新的特殊 SE 前，移除刀上其余特殊 SE（最多保留一个特殊 SE 槽位，铁砧可替换）。
+     * 铭刻新的特殊 SE 前，移除刀上其余特殊 SE。
      */
     private static void removeOtherSpecialEffects(
             ISlashBladeState bladeState,

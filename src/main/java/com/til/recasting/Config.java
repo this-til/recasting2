@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 @Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Config {
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+    private static final int NORMAL_SE_ENGRAVING_LIMIT = 4;
+    private static final int SPECIAL_SE_ENGRAVING_LIMIT = 1;
 
 
     // 附魔加成
@@ -84,7 +86,31 @@ public class Config {
             .comment("手持拔刀剑击败生物时，掉落带1级随机附魔的破碎的耀魂的概率")
             .defineInRange("proudSoulEnchantedTinyDropChance", 0.02, 0.0, 1.0);
 
+    public static final ForgeConfigSpec.IntValue PROUD_SOUL_ENCHANTED_TINY_LEVEL = BUILDER
+            .comment("掉落的随机附魔破碎耀魂的附魔等级")
+            .defineInRange("proudSoulEnchantedTinyLevel", 1, 1, Integer.MAX_VALUE);
+
+    public static final ForgeConfigSpec.BooleanValue PROUD_SOUL_ENCHANTMENT_IGNORE_MAX_LEVEL = BUILDER
+            .comment("掉落的随机附魔破碎耀魂是否无视附魔自身的最大等级限制")
+            .define("proudSoulEnchantmentIgnoreMaxLevel", false);
+
+    public static final ForgeConfigSpec.BooleanValue UNLIMITED_SE_ENGRAVING = BUILDER
+            .comment("是否解除铁砧 SE 铭刻数量限制。开启后，普通 SE 与特殊 SE 都不再受数量上限约束")
+            .define("unlimitedSeEngraving", false);
+
     static final ForgeConfigSpec SPEC = BUILDER.build();
+
+    public static boolean isUnlimitedSeEngraving() {
+        return UNLIMITED_SE_ENGRAVING.get();
+    }
+
+    public static int getNormalSeEngravingLimit() {
+        return NORMAL_SE_ENGRAVING_LIMIT;
+    }
+
+    public static int getSpecialSeEngravingLimit() {
+        return SPECIAL_SE_ENGRAVING_LIMIT;
+    }
 
 
 

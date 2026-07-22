@@ -57,7 +57,7 @@ public class ProudSoulDropHandler {
     }
 
     /**
-     * 生成携带任意 1 级随机附魔的破碎的耀魂。
+     * 生成携带随机附魔的破碎的耀魂。
      */
     private static ItemStack createEnchantedTinyProudSoul(RandomSource random) {
         List<Enchantment> enchantments = new ArrayList<>();
@@ -72,7 +72,12 @@ public class ProudSoulDropHandler {
 
         Enchantment chosen = enchantments.get(random.nextInt(enchantments.size()));
         ItemStack stack = new ItemStack(SlashBladeItems.PROUDSOUL_TINY.get());
-        stack.enchant(chosen, 1);
+        int configuredLevel = Math.max(1, Config.PROUD_SOUL_ENCHANTED_TINY_LEVEL.get());
+        int enchantLevel = configuredLevel;
+        if (!Config.PROUD_SOUL_ENCHANTMENT_IGNORE_MAX_LEVEL.get()) {
+            enchantLevel = Math.min(configuredLevel, chosen.getMaxLevel());
+        }
+        stack.enchant(chosen, enchantLevel);
         return stack;
     }
 }

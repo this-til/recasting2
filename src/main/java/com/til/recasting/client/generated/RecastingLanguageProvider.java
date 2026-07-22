@@ -136,8 +136,10 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(itemKey(RecastingItems.SE_CRYSTAL), "SE结晶", "SE CRYSTAL");
         translation(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_TITLE, "铭刻规则：", "Engraving Rules:");
         translation(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_MAIN, "• 在铁砧上铭刻：一把刀最多可铭刻 %d 个普通SE和 %d 个特殊SE（特殊SE可在铁砧中替换；创造模式不受限制）", "• Engrave on anvil: A blade can engrave up to %d normal SEs and %d special SE (special SE can be replaced on the anvil; Creative mode has no restrictions)");
+        translation(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_MAIN_UNLIMITED, "• 在铁砧上铭刻：已解除 SE 数量限制", "• Engrave on anvil: SE count limits are disabled");
         translation(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_UPGRADE, "• 升级：使用相同类型并且更高级SE的结晶可提升等级", "• Upgrade: Use crystals with the same type and higher-level SE to increase level.");
         translation(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_ERASE, "• 抹除：使用等级为0的结晶可移除SE", "• Erase: Use crystals with level 0 to remove SE");
+        translation(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_UNLIMITED_HINT, "• 当前配置：普通SE与特殊SE都不受铭刻数量上限约束", "• Current config: normal and special SE engraving counts are both unlimited");
         translation(RecastingLanguageKeys.TOOLTIP_SPECIAL_SE_EXTRACT, "• 渊寂火：左刀右火去除特殊SE（保留刀）；左火右刀提取为结晶（刀损毁）", "• Abyss Flame: blade+flame removes special SE (keeps blade); flame+blade extracts a crystal (destroys blade)");
         translation(RecastingLanguageKeys.TOOLTIP_SPECIAL_SE_BADGE, "(特殊)", "(Special)");
         translation(RecastingLanguageKeys.TOOLTIP_ABYSS_FLAME_EXTRACT, "• 铁砧：左刀右火去除特殊SE；左火右刀提取结晶（刀损毁）", "• Anvil: blade+flame removes special SE; flame+blade extracts a crystal (blade destroyed)");

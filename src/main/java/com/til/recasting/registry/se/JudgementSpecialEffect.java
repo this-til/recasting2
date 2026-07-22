@@ -8,6 +8,7 @@ import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.util.NumberPack;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.event.SlashBladeEvent;
+import mods.flammpfeil.slashblade.registry.ComboStateRegistry;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -34,8 +35,8 @@ public class JudgementSpecialEffect extends ExtendedSpecialEffect {
             return;
         }
 
-        // 检查是否成功触发SA（不是失败）
-        if (event.getType() == mods.flammpfeil.slashblade.slasharts.SlashArts.ArtsType.Fail) {
+        // 仅在 SA 实际进入有效连段时追加效果，避免依赖不同 SlashBlade 版本里的 type 访问器。
+        if (event.getComboState() == null || ComboStateRegistry.NONE.getId().equals(event.getComboState())) {
             return;
         }
 
