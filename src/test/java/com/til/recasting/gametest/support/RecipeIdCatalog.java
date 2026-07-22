@@ -1,81 +1,290 @@
 package com.til.recasting.gametest.support;
 
 import com.til.recasting.Recasting;
-import com.til.recasting.generated.RecastingRecipes;
-import com.til.recasting.generated.SlashBladeRecipes;
-import com.til.recasting.generated.SpecialEffectRecipes;
-import com.til.recasting.generated.RecipeBuilderWrapper;
 import net.minecraft.resources.ResourceLocation;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
- * 与 {@link com.til.recasting.generated.RecastingRecipeProvider} 相同规则枚举期望配方 ID。
+ * 显式维护当前应存在的配方 ID，避免再从 provider 字段或反射推导。
  */
 public final class RecipeIdCatalog {
-
-    private static final List<Class<?>> RECIPE_CLASSES = Arrays.asList(
-            RecastingRecipes.class,
-            SlashBladeRecipes.class,
-            SpecialEffectRecipes.class
-    );
 
     private RecipeIdCatalog() {
     }
 
     public static List<ResourceLocation> allExpectedIds() {
-        List<ResourceLocation> ids = new ArrayList<>();
-        for (Class<?> recipeClass : RECIPE_CLASSES) {
-            for (String fieldName : scanFieldNames(recipeClass)) {
-                ids.add(Recasting.prefix(fieldName.toLowerCase()));
-            }
-        }
-        return ids;
-    }
-
-    private static List<String> scanFieldNames(Class<?> recipeClass) {
-        List<String> names = new ArrayList<>();
-        for (Field field : recipeClass.getDeclaredFields()) {
-            if (!Modifier.isStatic(field.getModifiers()) || !Modifier.isFinal(field.getModifiers())) {
-                continue;
-            }
-            if (field.getType().equals(RecipeBuilderWrapper.class)) {
-                names.add(field.getName());
-                continue;
-            }
-            if (field.getType().equals(List.class) && isListOfRecipeBuilderWrapper(field)) {
-                try {
-                    field.setAccessible(true);
-                    @SuppressWarnings("unchecked")
-                    List<RecipeBuilderWrapper> list = (List<RecipeBuilderWrapper>) field.get(null);
-                    if (list == null) {
-                        continue;
-                    }
-                    for (int i = 0; i < list.size(); i++) {
-                        if (list.get(i) != null) {
-                            names.add(field.getName() + "_" + i);
-                        }
-                    }
-                } catch (IllegalAccessException ignored) {
-                    // skip inaccessible list field
-                }
-            }
-        }
-        return names;
-    }
-
-    private static boolean isListOfRecipeBuilderWrapper(Field field) {
-        Type genericType = field.getGenericType();
-        if (!(genericType instanceof ParameterizedType parameterizedType)) {
-            return false;
-        }
-        Type[] typeArguments = parameterizedType.getActualTypeArguments();
-        return typeArguments.length == 1 && typeArguments[0].equals(RecipeBuilderWrapper.class);
+        return List.of(
+                Recasting.prefix("abyss_flame_recipe"),
+                Recasting.prefix("annihilation_se_crystal_recipe"),
+                Recasting.prefix("annihilation_upgrade_recipes_0"),
+                Recasting.prefix("annihilation_upgrade_recipes_1"),
+                Recasting.prefix("annihilation_upgrade_recipes_2"),
+                Recasting.prefix("annihilation_upgrade_recipes_3"),
+                Recasting.prefix("annihilation_upgrade_recipes_4"),
+                Recasting.prefix("art_knife_recipe"),
+                Recasting.prefix("ba_gua_big_lambda_recipe"),
+                Recasting.prefix("ba_gua_big_recipe"),
+                Recasting.prefix("ba_gua_recipe"),
+                Recasting.prefix("black_recipe"),
+                Recasting.prefix("blue_cloud_lambda_recipe"),
+                Recasting.prefix("blue_cloud_recipe"),
+                Recasting.prefix("brilliant_gold_lambda_recipe"),
+                Recasting.prefix("brilliant_gold_recipe"),
+                Recasting.prefix("brilliant_tea_lambda_recipe"),
+                Recasting.prefix("brilliant_tea_recipe"),
+                Recasting.prefix("broadsword_iron_recipe"),
+                Recasting.prefix("broadsword_wood_recipe"),
+                Recasting.prefix("broken_white_recipe"),
+                Recasting.prefix("chaos_flame_recipe"),
+                Recasting.prefix("color_wing_lambda_recipe"),
+                Recasting.prefix("color_wing_recipe"),
+                Recasting.prefix("cool_mint_lambda_recipe"),
+                Recasting.prefix("cool_mint_recipe"),
+                Recasting.prefix("cooperate_with_se_crystal_recipe"),
+                Recasting.prefix("cooperate_with_upgrade_recipes_0"),
+                Recasting.prefix("cooperate_with_upgrade_recipes_1"),
+                Recasting.prefix("cooperate_with_upgrade_recipes_2"),
+                Recasting.prefix("cooperate_with_upgrade_recipes_3"),
+                Recasting.prefix("cooperate_with_upgrade_recipes_4"),
+                Recasting.prefix("copper_medium_soul_cube_recipe"),
+                Recasting.prefix("cradle_flame_recipe"),
+                Recasting.prefix("craftsman_flame_recipe"),
+                Recasting.prefix("cross_chop_se_crystal_recipe"),
+                Recasting.prefix("cross_chop_upgrade_recipes_0"),
+                Recasting.prefix("cross_chop_upgrade_recipes_1"),
+                Recasting.prefix("cross_chop_upgrade_recipes_2"),
+                Recasting.prefix("cross_chop_upgrade_recipes_3"),
+                Recasting.prefix("cross_chop_upgrade_recipes_4"),
+                Recasting.prefix("dharma_stick_lambda_recipe"),
+                Recasting.prefix("dharma_stick_recipe"),
+                Recasting.prefix("diamond_medium_soul_cube_recipe"),
+                Recasting.prefix("dragon_lambda_recipe"),
+                Recasting.prefix("dragon_recipe"),
+                Recasting.prefix("dragon_scale_lambda_recipe"),
+                Recasting.prefix("dragon_scale_recipe"),
+                Recasting.prefix("drive_release_se_crystal_recipe"),
+                Recasting.prefix("drive_release_upgrade_recipes_0"),
+                Recasting.prefix("drive_release_upgrade_recipes_1"),
+                Recasting.prefix("drive_release_upgrade_recipes_2"),
+                Recasting.prefix("drive_release_upgrade_recipes_3"),
+                Recasting.prefix("drive_release_upgrade_recipes_4"),
+                Recasting.prefix("emerald_medium_soul_cube_recipe"),
+                Recasting.prefix("energy_storage_se_crystal_recipe"),
+                Recasting.prefix("energy_storage_upgrade_recipes_0"),
+                Recasting.prefix("energy_storage_upgrade_recipes_1"),
+                Recasting.prefix("energy_storage_upgrade_recipes_2"),
+                Recasting.prefix("energy_storage_upgrade_recipes_3"),
+                Recasting.prefix("energy_storage_upgrade_recipes_4"),
+                Recasting.prefix("fluorescence_1_recipe"),
+                Recasting.prefix("fluorescence_2_recipe"),
+                Recasting.prefix("fluorescence_3_recipe"),
+                Recasting.prefix("fluorescence_4_recipe"),
+                Recasting.prefix("fluorescence_5_recipe"),
+                Recasting.prefix("fluorescence_6_recipe"),
+                Recasting.prefix("fluorescence_7_recipe"),
+                Recasting.prefix("fluorescence_8_recipe"),
+                Recasting.prefix("fragment_se_crystal_recipe"),
+                Recasting.prefix("fragment_upgrade_recipes_0"),
+                Recasting.prefix("fragment_upgrade_recipes_1"),
+                Recasting.prefix("fragment_upgrade_recipes_2"),
+                Recasting.prefix("fragment_upgrade_recipes_3"),
+                Recasting.prefix("fragment_upgrade_recipes_4"),
+                Recasting.prefix("gathering_parting_variant_recipe"),
+                Recasting.prefix("gold_medium_soul_cube_recipe"),
+                Recasting.prefix("great_void_se_crystal_recipe"),
+                Recasting.prefix("great_void_upgrade_recipes_0"),
+                Recasting.prefix("great_void_upgrade_recipes_1"),
+                Recasting.prefix("great_void_upgrade_recipes_2"),
+                Recasting.prefix("great_void_upgrade_recipes_3"),
+                Recasting.prefix("great_void_upgrade_recipes_4"),
+                Recasting.prefix("green_blade_iron_recipe"),
+                Recasting.prefix("green_blade_wood_recipe"),
+                Recasting.prefix("growth_se_crystal_recipe"),
+                Recasting.prefix("growth_upgrade_recipes_0"),
+                Recasting.prefix("growth_upgrade_recipes_1"),
+                Recasting.prefix("growth_upgrade_recipes_2"),
+                Recasting.prefix("growth_upgrade_recipes_3"),
+                Recasting.prefix("growth_upgrade_recipes_4"),
+                Recasting.prefix("hoe_recipe"),
+                Recasting.prefix("holy_flame_recipe"),
+                Recasting.prefix("ice_core_flame_recipe"),
+                Recasting.prefix("impact_se_crystal_recipe"),
+                Recasting.prefix("impact_upgrade_recipes_0"),
+                Recasting.prefix("impact_upgrade_recipes_1"),
+                Recasting.prefix("impact_upgrade_recipes_2"),
+                Recasting.prefix("impact_upgrade_recipes_3"),
+                Recasting.prefix("impact_upgrade_recipes_4"),
+                Recasting.prefix("ionization_se_crystal_recipe"),
+                Recasting.prefix("ionization_upgrade_recipes_0"),
+                Recasting.prefix("ionization_upgrade_recipes_1"),
+                Recasting.prefix("ionization_upgrade_recipes_2"),
+                Recasting.prefix("ionization_upgrade_recipes_3"),
+                Recasting.prefix("ionization_upgrade_recipes_4"),
+                Recasting.prefix("iron_medium_soul_cube_recipe"),
+                Recasting.prefix("judgement_se_crystal_recipe"),
+                Recasting.prefix("judgement_upgrade_recipes_0"),
+                Recasting.prefix("judgement_upgrade_recipes_1"),
+                Recasting.prefix("judgement_upgrade_recipes_2"),
+                Recasting.prefix("judgement_upgrade_recipes_3"),
+                Recasting.prefix("judgement_upgrade_recipes_4"),
+                Recasting.prefix("karma_flame_recipe"),
+                Recasting.prefix("lapis_medium_soul_cube_recipe"),
+                Recasting.prefix("laser_1_recipe"),
+                Recasting.prefix("laser_2_recipe"),
+                Recasting.prefix("laser_3_lambda_recipe"),
+                Recasting.prefix("laser_3_recipe"),
+                Recasting.prefix("last_words_flame_recipe"),
+                Recasting.prefix("life_steal_se_crystal_recipe"),
+                Recasting.prefix("life_steal_upgrade_recipes_0"),
+                Recasting.prefix("life_steal_upgrade_recipes_1"),
+                Recasting.prefix("life_steal_upgrade_recipes_2"),
+                Recasting.prefix("life_steal_upgrade_recipes_3"),
+                Recasting.prefix("life_steal_upgrade_recipes_4"),
+                Recasting.prefix("long_sky_sunset_lambda_recipe"),
+                Recasting.prefix("long_sky_sunset_recipe"),
+                Recasting.prefix("memory_flame_recipe"),
+                Recasting.prefix("mirage_flame_recipe"),
+                Recasting.prefix("mirror_flame_recipe"),
+                Recasting.prefix("netherite_medium_soul_cube_recipe"),
+                Recasting.prefix("obliterate_lambda_recipe"),
+                Recasting.prefix("obliterate_recipe"),
+                Recasting.prefix("obsession_flame_recipe"),
+                Recasting.prefix("other_shore_flame_recipe"),
+                Recasting.prefix("ouroboros_flame_recipe"),
+                Recasting.prefix("overload_se_crystal_recipe"),
+                Recasting.prefix("overload_upgrade_recipes_0"),
+                Recasting.prefix("overload_upgrade_recipes_1"),
+                Recasting.prefix("overload_upgrade_recipes_2"),
+                Recasting.prefix("overload_upgrade_recipes_3"),
+                Recasting.prefix("overload_upgrade_recipes_4"),
+                Recasting.prefix("physics_sword_recipe"),
+                Recasting.prefix("poetry_ash_flame_recipe"),
+                Recasting.prefix("redstone_medium_soul_cube_recipe"),
+                Recasting.prefix("regression_se_crystal_recipe"),
+                Recasting.prefix("regression_upgrade_recipes_0"),
+                Recasting.prefix("regression_upgrade_recipes_1"),
+                Recasting.prefix("regression_upgrade_recipes_2"),
+                Recasting.prefix("regression_upgrade_recipes_3"),
+                Recasting.prefix("regression_upgrade_recipes_4"),
+                Recasting.prefix("resist_se_crystal_recipe"),
+                Recasting.prefix("resist_upgrade_recipes_0"),
+                Recasting.prefix("resist_upgrade_recipes_1"),
+                Recasting.prefix("resist_upgrade_recipes_2"),
+                Recasting.prefix("resist_upgrade_recipes_3"),
+                Recasting.prefix("resist_upgrade_recipes_4"),
+                Recasting.prefix("royal_flame_recipe"),
+                Recasting.prefix("sever_break_se_crystal_recipe"),
+                Recasting.prefix("sever_break_upgrade_recipes_0"),
+                Recasting.prefix("sever_break_upgrade_recipes_1"),
+                Recasting.prefix("sever_break_upgrade_recipes_2"),
+                Recasting.prefix("sever_break_upgrade_recipes_3"),
+                Recasting.prefix("sever_break_upgrade_recipes_4"),
+                Recasting.prefix("sharp_blade_se_crystal_recipe"),
+                Recasting.prefix("sharp_blade_upgrade_recipes_0"),
+                Recasting.prefix("sharp_blade_upgrade_recipes_1"),
+                Recasting.prefix("sharp_blade_upgrade_recipes_2"),
+                Recasting.prefix("sharp_blade_upgrade_recipes_3"),
+                Recasting.prefix("sharp_blade_upgrade_recipes_4"),
+                Recasting.prefix("shine_gold_lambda_recipe"),
+                Recasting.prefix("shine_gold_recipe"),
+                Recasting.prefix("shine_tea_lambda_recipe"),
+                Recasting.prefix("shine_tea_recipe"),
+                Recasting.prefix("shock_se_crystal_recipe"),
+                Recasting.prefix("shock_upgrade_recipes_0"),
+                Recasting.prefix("shock_upgrade_recipes_1"),
+                Recasting.prefix("shock_upgrade_recipes_2"),
+                Recasting.prefix("shock_upgrade_recipes_3"),
+                Recasting.prefix("shock_upgrade_recipes_4"),
+                Recasting.prefix("silver_wing_lambda_recipe"),
+                Recasting.prefix("silver_wing_recipe"),
+                Recasting.prefix("sin_flame_recipe"),
+                Recasting.prefix("soulblade_recipe"),
+                Recasting.prefix("spiral_se_crystal_recipe"),
+                Recasting.prefix("spiral_upgrade_recipes_0"),
+                Recasting.prefix("spiral_upgrade_recipes_1"),
+                Recasting.prefix("spiral_upgrade_recipes_2"),
+                Recasting.prefix("spiral_upgrade_recipes_3"),
+                Recasting.prefix("spiral_upgrade_recipes_4"),
+                Recasting.prefix("split_se_crystal_recipe"),
+                Recasting.prefix("split_upgrade_recipes_0"),
+                Recasting.prefix("split_upgrade_recipes_1"),
+                Recasting.prefix("split_upgrade_recipes_2"),
+                Recasting.prefix("split_upgrade_recipes_3"),
+                Recasting.prefix("split_upgrade_recipes_4"),
+                Recasting.prefix("star_1_recipe"),
+                Recasting.prefix("star_2_recipe"),
+                Recasting.prefix("star_3_recipe"),
+                Recasting.prefix("star_4_lambda_recipe"),
+                Recasting.prefix("star_4_recipe"),
+                Recasting.prefix("storm_se_crystal_recipe"),
+                Recasting.prefix("storm_upgrade_recipes_0"),
+                Recasting.prefix("storm_upgrade_recipes_1"),
+                Recasting.prefix("storm_upgrade_recipes_2"),
+                Recasting.prefix("storm_upgrade_recipes_3"),
+                Recasting.prefix("storm_upgrade_recipes_4"),
+                Recasting.prefix("storm_variant_se_crystal_recipe"),
+                Recasting.prefix("storm_variant_upgrade_recipes_0"),
+                Recasting.prefix("storm_variant_upgrade_recipes_1"),
+                Recasting.prefix("storm_variant_upgrade_recipes_2"),
+                Recasting.prefix("storm_variant_upgrade_recipes_3"),
+                Recasting.prefix("storm_variant_upgrade_recipes_4"),
+                Recasting.prefix("supreme_pole_lambda_recipe"),
+                Recasting.prefix("supreme_pole_recipe"),
+                Recasting.prefix("sword_qi_mastery_se_crystal_recipe"),
+                Recasting.prefix("sword_qi_mastery_upgrade_recipes_0"),
+                Recasting.prefix("sword_qi_mastery_upgrade_recipes_1"),
+                Recasting.prefix("sword_qi_mastery_upgrade_recipes_2"),
+                Recasting.prefix("sword_qi_mastery_upgrade_recipes_3"),
+                Recasting.prefix("sword_qi_mastery_upgrade_recipes_4"),
+                Recasting.prefix("tear_se_crystal_recipe"),
+                Recasting.prefix("tear_upgrade_recipes_0"),
+                Recasting.prefix("tear_upgrade_recipes_1"),
+                Recasting.prefix("tear_upgrade_recipes_2"),
+                Recasting.prefix("tear_upgrade_recipes_3"),
+                Recasting.prefix("tear_upgrade_recipes_4"),
+                Recasting.prefix("thunder_cloud_se_crystal_recipe"),
+                Recasting.prefix("thunder_cloud_upgrade_recipes_0"),
+                Recasting.prefix("thunder_cloud_upgrade_recipes_1"),
+                Recasting.prefix("thunder_cloud_upgrade_recipes_2"),
+                Recasting.prefix("thunder_cloud_upgrade_recipes_3"),
+                Recasting.prefix("thunder_cloud_upgrade_recipes_4"),
+                Recasting.prefix("thunder_gods_wrath_se_crystal_recipe"),
+                Recasting.prefix("thunder_gods_wrath_upgrade_recipes_0"),
+                Recasting.prefix("thunder_gods_wrath_upgrade_recipes_1"),
+                Recasting.prefix("thunder_gods_wrath_upgrade_recipes_2"),
+                Recasting.prefix("thunder_gods_wrath_upgrade_recipes_3"),
+                Recasting.prefix("thunder_gods_wrath_upgrade_recipes_4"),
+                Recasting.prefix("thunder_strike_se_crystal_recipe"),
+                Recasting.prefix("thunder_strike_upgrade_recipes_0"),
+                Recasting.prefix("thunder_strike_upgrade_recipes_1"),
+                Recasting.prefix("thunder_strike_upgrade_recipes_2"),
+                Recasting.prefix("thunder_strike_upgrade_recipes_3"),
+                Recasting.prefix("thunder_strike_upgrade_recipes_4"),
+                Recasting.prefix("thunderstorm_se_crystal_recipe"),
+                Recasting.prefix("thunderstorm_upgrade_recipes_0"),
+                Recasting.prefix("thunderstorm_upgrade_recipes_1"),
+                Recasting.prefix("thunderstorm_upgrade_recipes_2"),
+                Recasting.prefix("thunderstorm_upgrade_recipes_3"),
+                Recasting.prefix("thunderstorm_upgrade_recipes_4"),
+                Recasting.prefix("tide_flame_recipe"),
+                Recasting.prefix("umbrella_lambda_recipe"),
+                Recasting.prefix("umbrella_recipe"),
+                Recasting.prefix("upgrade_variant_2_recipe"),
+                Recasting.prefix("upgrade_variant_3_recipe"),
+                Recasting.prefix("upgrade_variant_4_recipe"),
+                Recasting.prefix("upgrade_variant_recipe"),
+                Recasting.prefix("void_1_recipe"),
+                Recasting.prefix("void_2_recipe"),
+                Recasting.prefix("void_3_recipe"),
+                Recasting.prefix("whirlwind_se_crystal_recipe"),
+                Recasting.prefix("whirlwind_upgrade_recipes_0"),
+                Recasting.prefix("whirlwind_upgrade_recipes_1"),
+                Recasting.prefix("whirlwind_upgrade_recipes_2"),
+                Recasting.prefix("whirlwind_upgrade_recipes_3"),
+                Recasting.prefix("whirlwind_upgrade_recipes_4"),
+                Recasting.prefix("wind_cloud_lambda_recipe"),
+                Recasting.prefix("wind_cloud_recipe")
+        );
     }
 }

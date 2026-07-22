@@ -2,6 +2,7 @@ package com.til.recasting.mixin;
 
 import com.til.recasting.handler.SlashBladeRegistryHelper;
 import mezz.jei.api.ingredients.subtypes.UidContext;
+import mods.flammpfeil.slashblade.compat.jei.JEICompat;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -14,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * 混入 JEICompat 的 syncSlashBlade 方法
  * 当贴图和模型为空时，从 SlashBladeRegistryHelper 查找注册项并设置参数
  */
-@Mixin(targets = "mods.flammpfeil.slashblade.compat.jei.JEICompat", remap = false)
+@Mixin(value = JEICompat.class, remap = false)
 public class JEICompatMixin {
 
     /**

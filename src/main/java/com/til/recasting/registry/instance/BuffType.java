@@ -62,6 +62,11 @@ public class BuffType {
         return null;
     }
 
+    public String getDescriptionId() {
+        ResourceLocation key = Objects.requireNonNull(getKey());
+        return "buff." + key.getNamespace() + "." + key.getPath();
+    }
+
     public String toString() {
         return Objects.requireNonNull((RecastingBuffTypes.REGISTRY.get()).getKey(this)).toString();
     }

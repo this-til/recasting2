@@ -5,6 +5,8 @@ import com.til.recasting.Recasting;
 import lombok.extern.log4j.Log4j2;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.data.CachedOutput;
+import net.minecraft.data.DataProvider;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
@@ -41,19 +43,33 @@ public class DataGenerator {
 
         dataGenerator.addProvider(
                 event.includeServer(),
-                new RecastingRecipes(packOutput)
+                namedProvider("Recasting Recipes", new RecastingRecipes(packOutput))
         );
 
         dataGenerator.addProvider(
                 event.includeServer(),
-                new SlashBladeRecipes(packOutput)
+                namedProvider("Recasting SlashBlade Recipes", new SlashBladeRecipes(packOutput))
         );
 
         dataGenerator.addProvider(
                 event.includeServer(),
-                new SpecialEffectRecipes(packOutput)
+                namedProvider("Recasting Special Effect Recipes", new SpecialEffectRecipes(packOutput))
         );
 
+    }
+
+    private static DataProvider namedProvider(String name, DataProvider delegate) {
+        return new DataProvider() {
+            @Override
+            public CompletableFuture<?> run(CachedOutput output) {
+                return delegate.run(output);
+            }
+
+            @Override
+            public String getName() {
+                return name;
+            }
+        };
     }
 
 }

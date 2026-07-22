@@ -1,10 +1,13 @@
 package com.til.recasting.client.generated;
 
 import com.til.recasting.Recasting;
+import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.constant.SlashBladeDefinitions;
 import com.til.recasting.registry.RecastingItems;
+import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.SlashArtsRegistry;
 import com.til.recasting.registry.SpecialEffectsRegistry;
+import com.til.recasting.registry.instance.BuffType;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import mods.flammpfeil.slashblade.slasharts.SlashArts;
@@ -26,20 +29,20 @@ public class RecastingLanguageProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        translation("other.test", "总该说些什么...", "I should say something...");
-        translation("buff.recasting.soul_burn", "灵魂燃烧", "Soul Burn");
-        translation("buff.recasting.fragment", "破片", "Fragment");
-        translation("buff.recasting.ionization", "电离", "Ionization");
-        translation("buff.recasting.energy_storage", "蓄能", "Energy Storage");
-        translation("buff.recasting.thunder_light", "雷光", "Thunder Light");
-        translation("buff.recasting.tear", "撕裂", "Tear");
-        translation("buff.recasting.annihilation", "断灭", "Annihilation");
-        translation("buff.recasting.photon_scar", "光子灼痕", "Photon Scar");
-        translation("buff.recasting.photon_burn", "光子灼烧", "Photon Burn");
-        translation("buff.recasting.sunset_core", "日核", "Sunset Core");
-        translation("buff.recasting.sunset_stack", "叠晖", "Sunset Stack");
-        translation("buff.recasting.golden_halberd", "金戈", "Golden Halberd");
-        translation("buff.recasting.tea_aroma", "茶韵", "Tea Aroma");
+        translation(RecastingLanguageKeys.OTHER_TEST, "总该说些什么...", "I should say something...");
+        translation(buffKey(RecastingBuffTypes.SOUL_BURN), "灵魂燃烧", "Soul Burn");
+        translation(buffKey(RecastingBuffTypes.FRAGMENT), "破片", "Fragment");
+        translation(buffKey(RecastingBuffTypes.IONIZATION), "电离", "Ionization");
+        translation(buffKey(RecastingBuffTypes.ENERGY_STORAGE), "蓄能", "Energy Storage");
+        translation(buffKey(RecastingBuffTypes.THUNDER_LIGHT), "雷光", "Thunder Light");
+        translation(buffKey(RecastingBuffTypes.TEAR), "撕裂", "Tear");
+        translation(buffKey(RecastingBuffTypes.ANNIHILATION), "断灭", "Annihilation");
+        translation(buffKey(RecastingBuffTypes.PHOTON_SCAR), "光子灼痕", "Photon Scar");
+        translation(buffKey(RecastingBuffTypes.PHOTON_BURN), "光子灼烧", "Photon Burn");
+        translation(buffKey(RecastingBuffTypes.SUNSET_CORE), "日核", "Sunset Core");
+        translation(buffKey(RecastingBuffTypes.SUNSET_STACK), "叠晖", "Sunset Stack");
+        translation(buffKey(RecastingBuffTypes.GOLDEN_HALBERD), "金戈", "Golden Halberd");
+        translation(buffKey(RecastingBuffTypes.TEA_AROMA), "茶韵", "Tea Aroma");
         translation(slashBladeKey(SlashBladeDefinitions.VOID_1), "洞虚利刃", "Void Blade I");
         translation(slashBladeKey(SlashBladeDefinitions.VOID_2), "洞虚利刃[漆黑]", "Void Blade II");
         translation(slashBladeKey(SlashBladeDefinitions.VOID_3), "洞虚利刃[猩红]", "Void Blade III");
@@ -131,13 +134,13 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(itemKey(RecastingItems.LAST_WORDS_FLAME), "遗言火", "Last Words Flame");
         translation(itemKey(RecastingItems.TIDE_FLAME), "潮汐火", "Tide Flame");
         translation(itemKey(RecastingItems.SE_CRYSTAL), "SE结晶", "SE CRYSTAL");
-        translation("recasting.tooltip.engraving_rule.title", "铭刻规则：", "Engraving Rules:");
-        translation("recasting.tooltip.engraving_rule.main", "• 在铁砧上铭刻：一把刀最多可铭刻 %d 个普通SE和 %d 个特殊SE（特殊SE可在铁砧中替换；创造模式不受限制）", "• Engrave on anvil: A blade can engrave up to %d normal SEs and %d special SE (special SE can be replaced on the anvil; Creative mode has no restrictions)");
-        translation("recasting.tooltip.engraving_rule.upgrade", "• 升级：使用相同类型并且更高级SE的结晶可提升等级", "• Upgrade: Use crystals with the same type and higher-level SE to increase level.");
-        translation("recasting.tooltip.engraving_rule.erase", "• 抹除：使用等级为0的结晶可移除SE", "• Erase: Use crystals with level 0 to remove SE");
-        translation("recasting.tooltip.special_se_extract", "• 渊寂火：左刀右火去除特殊SE（保留刀）；左火右刀提取为结晶（刀损毁）", "• Abyss Flame: blade+flame removes special SE (keeps blade); flame+blade extracts a crystal (destroys blade)");
-        translation("recasting.tooltip.special_se.badge", "(特殊)", "(Special)");
-        translation("recasting.tooltip.abyss_flame.extract", "• 铁砧：左刀右火去除特殊SE；左火右刀提取结晶（刀损毁）", "• Anvil: blade+flame removes special SE; flame+blade extracts a crystal (blade destroyed)");
+        translation(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_TITLE, "铭刻规则：", "Engraving Rules:");
+        translation(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_MAIN, "• 在铁砧上铭刻：一把刀最多可铭刻 %d 个普通SE和 %d 个特殊SE（特殊SE可在铁砧中替换；创造模式不受限制）", "• Engrave on anvil: A blade can engrave up to %d normal SEs and %d special SE (special SE can be replaced on the anvil; Creative mode has no restrictions)");
+        translation(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_UPGRADE, "• 升级：使用相同类型并且更高级SE的结晶可提升等级", "• Upgrade: Use crystals with the same type and higher-level SE to increase level.");
+        translation(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_ERASE, "• 抹除：使用等级为0的结晶可移除SE", "• Erase: Use crystals with level 0 to remove SE");
+        translation(RecastingLanguageKeys.TOOLTIP_SPECIAL_SE_EXTRACT, "• 渊寂火：左刀右火去除特殊SE（保留刀）；左火右刀提取为结晶（刀损毁）", "• Abyss Flame: blade+flame removes special SE (keeps blade); flame+blade extracts a crystal (destroys blade)");
+        translation(RecastingLanguageKeys.TOOLTIP_SPECIAL_SE_BADGE, "(特殊)", "(Special)");
+        translation(RecastingLanguageKeys.TOOLTIP_ABYSS_FLAME_EXTRACT, "• 铁砧：左刀右火去除特殊SE；左火右刀提取结晶（刀损毁）", "• Anvil: blade+flame removes special SE; flame+blade extracts a crystal (blade destroyed)");
         translation(itemKey(RecastingItems.GATHERING_PARTING_VARIANT), "聚散变体", "Gathering Parting Variant");
         translation(itemKey(RecastingItems.UPGRADE_VARIANT), "升格变体 I", "Upgrade Variant II");
         translation(itemKey(RecastingItems.UPGRADE_VARIANT_2), "升格变体 II", "Upgrade Variant II");
@@ -385,6 +388,10 @@ public class RecastingLanguageProvider extends LanguageProvider {
 
     private static String itemDescKey(RegistryObject<Item> item) {
         return item.get().getDescriptionId() + ".desc";
+    }
+
+    private static String buffKey(RegistryObject<BuffType> buffType) {
+        return buffType.get().getDescriptionId();
     }
 
     private static String slashArtKey(RegistryObject<? extends SlashArts> slashArts) {
