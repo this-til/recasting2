@@ -1,7 +1,9 @@
 package com.til.recasting.registry.se;
 
 import com.til.recasting.event.AttackAmplifierEvent;
+import com.til.recasting.handler.BuffSourceHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.handler.PhotonScarBuffHandler;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.instance.BuffType;
@@ -42,6 +44,7 @@ public class PhotonScarSpecialEffect extends ExtendedSpecialEffect {
             return;
         }
 
+        LivingEntity attacker = event.getAttacker();
         Level world = target.level();
         BuffType photonBurnBuffType = RecastingBuffTypes.PHOTON_BURN.get();
         boolean isLaser = event.getAttackTypeList().contains(RecastingAttackTypes.LASER_ATTACK.get());
@@ -69,6 +72,8 @@ public class PhotonScarSpecialEffect extends ExtendedSpecialEffect {
                 int currentBurn = buffStackData.getLevel(photonBurnBuffType, world);
                 int newBurn = Math.min(currentBurn + addLevel, photonBurnBuffType.getMaxLevel());
                 buffStackData.setLevel(photonBurnBuffType, newBurn, world);
+                BuffSourceHelper.recordSourceEntity(buffStackData, photonBurnBuffType, target, attacker);
+                PhotonScarBuffHandler.ensurePhotonBurnTimer(target);
             }
         });
     }

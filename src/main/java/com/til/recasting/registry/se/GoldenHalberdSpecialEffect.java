@@ -15,8 +15,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -55,14 +53,6 @@ public class GoldenHalberdSpecialEffect extends ExtendedSpecialEffect {
         }
 
         LivingEntity attacker = event.getAttacker();
-        AttributeInstance attribute = attacker.getAttribute(Attributes.ATTACK_DAMAGE);
-        if (attribute == null) {
-            return;
-        }
-        float baseDamage = (float) (attribute.getValue() * event.getUltimatelyModifiedRatio());
-        baseDamage += event.getExtraDamage();
-
-        float finalBaseDamage = baseDamage;
         int colorCode = event.getSlashBladeState().getColorCode();
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
@@ -79,7 +69,7 @@ public class GoldenHalberdSpecialEffect extends ExtendedSpecialEffect {
                 AttackHelper.areaAttack(
                         attacker,
                         pos,
-                        new DamageStructure(0f, finalBaseDamage * burstRatio),
+                        new DamageStructure(burstRatio, 0f),
                         burstRange,
                         List.of(
                                 RecastingAttackTypes.GOLDEN_HALBERD_ATTACK.get(),

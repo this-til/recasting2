@@ -80,6 +80,14 @@ public class RecastingBuffTypes {
     );
 
     /**
+     * 回旋冷却
+     * - 衰减间隔 1 tick；层数 = 剩余冷却 tick
+     */
+    public static final RegistryObject<BuffType> SPIRAL_COOLDOWN = BUFF_TYPES.register("spiral_cooldown",
+            () -> new BuffType(1, 0)
+    );
+
+    /**
      * 电离
      * - 受到闪电伤害时叠加，每层提供1%增伤
      */
@@ -165,9 +173,19 @@ public class RecastingBuffTypes {
     );
 
     /**
+     * 黑色玫瑰
+     * - 不随时间自动衰减；层数 = 持续伤害 × 10
+     * - 来源实体记录在自定义数据中，用于后续持续伤害追踪
+     */
+    public static final RegistryObject<BuffType> BLACK_ROSE = BUFF_TYPES.register("black_rose",
+            () -> new BuffType(0, 0)
+    );
+
+    /**
      * 茶韵
      * - 不随时间自动衰减（到期由 SE 的 TIME_RUN 结算并清零）；无层数上限
      * - 层数 = 延迟伤害 × 10（不足 1 记为 1）
+     * - 来源实体记录在自定义数据中，用于后续持续伤害追踪
      */
     public static final RegistryObject<BuffType> TEA_AROMA = BUFF_TYPES.register("tea_aroma",
             () -> new BuffType(0, 0)

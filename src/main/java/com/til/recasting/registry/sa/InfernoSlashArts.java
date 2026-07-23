@@ -3,8 +3,10 @@ package com.til.recasting.registry.sa;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.entity.JudgementCutEntity;
+import com.til.recasting.handler.BuffSourceHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.PosHelper;
+import com.til.recasting.handler.SoulBurnBuffHandler;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.registry.instance.BuffType;
@@ -68,6 +70,8 @@ public class InfernoSlashArts extends ExtendedSlashArts {
                         // 附加指定层数灵魂燃烧
                         int newLevel = currentLevel + finalSoulBurnLevel;
                         buffStackData.setLevel(soulBurnBuffType, newLevel, world);
+                        BuffSourceHelper.recordSourceEntity(buffStackData, soulBurnBuffType, hitEntity, livingEntity);
+                        SoulBurnBuffHandler.ensureSoulBurnTimer(hitEntity);
                     }
             );
         });

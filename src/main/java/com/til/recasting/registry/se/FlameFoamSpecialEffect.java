@@ -2,6 +2,7 @@ package com.til.recasting.registry.se;
 
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.handler.SoulBurnBuffHandler;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.instance.AttackType;
@@ -73,6 +74,7 @@ public class FlameFoamSpecialEffect extends ExtendedSpecialEffect {
                         int maxLevel = soulBurnBuffType.getMaxLevel();
                         int newLevel = Math.min(currentSoulBurnLevel + 1, maxLevel);
                         buffStackData.setLevel(soulBurnBuffType, newLevel, world);
+                        SoulBurnBuffHandler.ensureSoulBurnTimer(target);
                     }
                 }
         );

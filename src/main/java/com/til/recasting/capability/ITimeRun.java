@@ -1,7 +1,10 @@
 package com.til.recasting.capability;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.annotation.Nullable;
 
 /**
  * 基于实体的定时器接口
@@ -18,8 +21,28 @@ public interface ITimeRun {
      */
     void addTimerCell(TimerCell timerCell);
 
+    /**
+     * 添加具名定时任务；同名任务会替换旧任务
+     */
+    void addNamedTimerCell(String name, TimerCell timerCell);
+
+    /**
+     * 获取具名定时任务
+     */
+    @Nullable
+    TimerCell getNamedTimerCell(String name);
+
+    /**
+     * 移除具名定时任务
+     */
+    void removeNamedTimerCell(String name);
+
     default void addTimerCell(Runnable runnable, int time) {
         addTimerCell(new TimerCell(runnable, time));
+    }
+
+    default void addNamedTimerCell(String name, Runnable runnable, int time) {
+        addNamedTimerCell(name, new TimerCell(runnable, time));
     }
 
     /**
@@ -28,6 +51,7 @@ public interface ITimeRun {
     class TimeRun implements ITimeRun {
         protected final List<TimerCell> runList = new ArrayList<>();
         protected final List<TimerCell> beAdded = new ArrayList<>();
+        protected final Map<String, TimerCell> namedTimerCellMap = new HashMap<>();
         protected boolean isRun;
 
         @Override
@@ -50,6 +74,7 @@ public interface ITimeRun {
                     }
 
                     if (!timerCell.isValid()) {
+                        this.removeNamedTimerCell(timerCell);
                         this.runList.remove(i);
                         --i;
                     }
@@ -64,28 +89,63 @@ public interface ITimeRun {
             }
         }
 
-        /**
-         * 将待添加的任务按优先级插入到运行列表
-         */
-        protected void upBeAdded() {
-            for(TimerCell timerCell : this.beAdded) {
-                boolean needInsert = true;
-
-                for(int i = 0; i < this.runList.size(); ++i) {
-                    TimerCell timerCell1 = this.runList.get(i);
-                    if (timerCell1.priority <= timerCell.priority) {
-                        this.runList.add(i, timerCell);
-                        needInsert = false;
-                        break;
-                    }
-                }
-
-                if (needInsert) {
-                    this.runList.add(timerCell);
-                }
+        @Override
+        public void addNamedTimerCell(String name, TimerCell timerCell) {
+            if (name == null || name.isEmpty() || !timerCell.isValid()) {
+                return;
             }
 
+            TimerCell existing = this.namedTimerCellMap.put(name, timerCell);
+            if (existing != null) {
+                existing.setFail();
+            }
+            this.beAdded.add(timerCell);
+        }
+
+        @Override
+        @Nullable
+        public TimerCell getNamedTimerCell(String name) {
+            if (name == null || name.isEmpty()) {
+                return null;
+            }
+
+            TimerCell timerCell = this.namedTimerCellMap.get(name);
+            if (timerCell == null) {
+                return null;
+            }
+            if (!timerCell.isValid()) {
+                this.namedTimerCellMap.remove(name);
+                return null;
+            }
+            return timerCell;
+        }
+
+        @Override
+        public void removeNamedTimerCell(String name) {
+            if (name == null || name.isEmpty()) {
+                return;
+            }
+
+            TimerCell timerCell = this.namedTimerCellMap.remove(name);
+            if (timerCell != null) {
+                timerCell.setFail();
+            }
+        }
+
+        /**
+         * 将待添加的任务追加到运行列表
+         */
+        protected void upBeAdded() {
+            if (this.beAdded.isEmpty()) {
+                return;
+            }
+
+            this.runList.addAll(this.beAdded);
             this.beAdded.clear();
+        }
+
+        protected void removeNamedTimerCell(TimerCell timerCell) {
+            this.namedTimerCellMap.entrySet().removeIf(entry -> entry.getValue() == timerCell);
         }
     }
 
@@ -99,21 +159,9 @@ public interface ITimeRun {
         protected int time;            // 当前已经过的时间
         protected boolean _use;        // 是否启用
         protected boolean valid;       // 是否有效
-        public int priority;           // 优先级
 
         public TimerCell(Runnable run, int time) {
-            this(run, time, 0);
-        }
-
-        /**
-         * 创建一次性定时任务
-         *
-         * @param run      要执行的任务
-         * @param time     延迟时间（tick）
-         * @param priority 优先级
-         */
-        public TimerCell(Runnable run, int time, int priority) {
-            this(run, time, false, priority);
+            this(run, time, false);
         }
 
         /**
@@ -122,15 +170,13 @@ public interface ITimeRun {
          * @param run      要执行的任务
          * @param timer    延迟时间（tick）
          * @param cycle    是否循环执行
-         * @param priority 优先级
          */
-        public TimerCell(Runnable run, int timer, boolean cycle, int priority) {
+        public TimerCell(Runnable run, int timer, boolean cycle) {
             this._use = true;
             this.valid = true;
             this.run = run;
             this.timer = timer;
             this.cycle = cycle;
-            this.priority = priority;
         }
 
         /**

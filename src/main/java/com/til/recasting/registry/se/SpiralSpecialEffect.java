@@ -16,12 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /***
  * 回旋
@@ -33,10 +28,6 @@ public class SpiralSpecialEffect extends ExtendedSpecialEffect {
     NumberPack count = new NumberPack(4, 1);
     int addLevel = 1; // 每次叠加的层数
     NumberPack triggerInterval = new NumberPack(40, 0); // 触发间隔（tick）
-
-
-    // 存储每个攻击者的最后触发时间
-    Map<LivingEntity, Long> lastTriggerTimeMap = new HashMap<>();
 
     @SubscribeEvent
     public void onAttackEvent(AttackAmplifierEvent event) {
@@ -68,9 +59,6 @@ public class SpiralSpecialEffect extends ExtendedSpecialEffect {
         }
 
         LivingEntity attacker = event.getAttacker();
-        long currentTime = target.level().getGameTime();
-
-
         ItemStack blade = event.getItem();
 
         //noinspection DataFlowIssue
@@ -90,15 +78,15 @@ public class SpiralSpecialEffect extends ExtendedSpecialEffect {
 
         Level world = target.level();
         BuffType swordMomentumBuffType = RecastingBuffTypes.SWORD_MOMENTUM.get();
+        BuffType spiralCooldownBuffType = RecastingBuffTypes.SPIRAL_COOLDOWN.get();
 
         // 获取当前层数
         int currentLevel = buffStackData.getLevel(swordMomentumBuffType, world);
-
-        Long lastTriggerTime = lastTriggerTimeMap.get(target);
         int interval = (int) triggerInterval.of(getLevel(se));
+        int cooldown = buffStackData.getLevel(spiralCooldownBuffType, world);
 
         // 如果触发间隔还没到，不触发风暴效果，也不叠加层数
-        if (lastTriggerTime != null && (currentTime - lastTriggerTime) < interval) {
+        if (cooldown > 0) {
             return;
         }
 
@@ -110,7 +98,9 @@ public class SpiralSpecialEffect extends ExtendedSpecialEffect {
 
         // 触发间隔到了，触发风暴效果并重置层数
         buffStackData.setLevel(swordMomentumBuffType, 0, world);
-        lastTriggerTimeMap.put(target, currentTime);
+        if (interval > 0) {
+            buffStackData.setLevel(spiralCooldownBuffType, interval, world);
+        }
 
         // 触发风暴效果
         performStormSwordsInternal(
@@ -121,7 +111,6 @@ public class SpiralSpecialEffect extends ExtendedSpecialEffect {
         );
 
     }
-
 
     public void performStormSwordsInternal(LivingEntity entity, LivingEntity target, ISlashBladeState state, PropertiesDefinitionExtension propertiesDefinitionExtension) {
         Level worldIn = entity.level();
@@ -162,34 +151,6 @@ public class SpiralSpecialEffect extends ExtendedSpecialEffect {
                     0.2F,
                     1.45F
             );
-        }
-    }
-
-    @SubscribeEvent
-    public void onServerTick(TickEvent.ServerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) {
-            return;
-        }
-
-        long currentTime = event.getServer().getTickCount();
-        if (currentTime % 20 != 0) {
-            return;
-        }
-        // 如果没有实体，直接返回
-        if (lastTriggerTimeMap.isEmpty()) {
-            return;
-        }
-
-        // 清理无效的实体，防止内存泄漏
-        Iterator<Map.Entry<LivingEntity, Long>> iterator = lastTriggerTimeMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<LivingEntity, Long> entry = iterator.next();
-            LivingEntity target = entry.getKey();
-
-            // 如果实体无效（null、死亡、被移除或在客户端），清除条目
-            if (target == null || !target.isAlive() || target.isRemoved() || target.level().isClientSide()) {
-                iterator.remove();
-            }
         }
     }
 

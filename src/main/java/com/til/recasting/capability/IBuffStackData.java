@@ -32,6 +32,12 @@ public interface IBuffStackData {
     class BuffEntry {
         private int level;
         private long lastUpdateTime;
+        @Nullable
+        private CompoundTag customData;
+
+        public BuffEntry(int level, long lastUpdateTime) {
+            this(level, lastUpdateTime, null);
+        }
     }
 
     /**
@@ -59,6 +65,15 @@ public interface IBuffStackData {
      */
     @Nullable
     BuffEntry getEntry(BuffType buffType);
+
+    /**
+     * 获取指定buff类型的自定义数据，为空时创建并返回
+     *
+     * @param buffType BuffType对象
+     * @param world    当前世界
+     * @return 自定义数据标签
+     */
+    CompoundTag getOrCreateCustomData(BuffType buffType, Level world);
 
     /**
      * 直接设置指定buff类型的条目
@@ -90,6 +105,7 @@ public interface IBuffStackData {
         private static final String KEY_BUFFS = "Buffs";
         private static final String KEY_LEVEL = "Level";
         private static final String KEY_LAST_UPDATE_TIME = "LastUpdateTime";
+        private static final String KEY_CUSTOM_DATA = "CustomData";
 
         private final Map<BuffType, BuffEntry> buffs = new HashMap<>();
         @Nullable
@@ -180,6 +196,29 @@ public interface IBuffStackData {
         }
 
         @Override
+        public CompoundTag getOrCreateCustomData(BuffType buffType, Level world) {
+            if (buffType == null || world == null) {
+                return new CompoundTag();
+            }
+
+            BuffEntry entry = buffs.get(buffType);
+            if (entry == null) {
+                entry = new BuffEntry(0, world.getGameTime(), new CompoundTag());
+                buffs.put(buffType, entry);
+                notifyUpdate(buffType);
+                return entry.getCustomData();
+            }
+
+            CompoundTag customData = entry.getCustomData();
+            if (customData == null) {
+                customData = new CompoundTag();
+                entry.setCustomData(customData);
+                notifyUpdate(buffType);
+            }
+            return customData;
+        }
+
+        @Override
         public void setEntry(BuffType buffType, BuffEntry entry) {
             if (buffType == null) {
                 return;
@@ -227,6 +266,9 @@ public interface IBuffStackData {
                 CompoundTag entryTag = new CompoundTag();
                 entryTag.putInt(KEY_LEVEL, entry.getValue().getLevel());
                 entryTag.putLong(KEY_LAST_UPDATE_TIME, entry.getValue().getLastUpdateTime());
+                if (entry.getValue().getCustomData() != null) {
+                    entryTag.put(KEY_CUSTOM_DATA, entry.getValue().getCustomData());
+                }
                 buffsTag.put(key.toString(), entryTag);
             }
 
@@ -263,8 +305,12 @@ public interface IBuffStackData {
                 CompoundTag entryTag = buffsTag.getCompound(key);
                 int level = entryTag.getInt(KEY_LEVEL);
                 long lastUpdateTime = entryTag.getLong(KEY_LAST_UPDATE_TIME);
+                CompoundTag customData = null;
+                if (entryTag.contains(KEY_CUSTOM_DATA)) {
+                    customData = entryTag.getCompound(KEY_CUSTOM_DATA);
+                }
                 // 即使level为0也保留条目
-                buffs.put(buffType, new BuffEntry(level, lastUpdateTime));
+                buffs.put(buffType, new BuffEntry(level, lastUpdateTime, customData));
             }
         }
     }

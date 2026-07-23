@@ -2,14 +2,15 @@ package com.til.recasting.handler;
 
 import com.til.recasting.Recasting;
 import com.til.recasting.capability.IBuffStackData;
-import com.til.recasting.mixin.DamageSourcesAccessor;
+import com.til.recasting.capability.ITimeRun;
+import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
+import com.til.recasting.registry.instance.BuffType;
+import com.til.recasting.util.DamageStructure;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.List;
 
 /**
  * 灵魂燃烧Buff处理器
@@ -19,6 +20,8 @@ import net.minecraftforge.fml.common.Mod;
  */
 @Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class SoulBurnBuffHandler {
+
+    private static final String TIMER_NAME = "soul_burn_tick";
 
     /**
      * 火焰伤害比例（对当前生命值的百分比）
@@ -31,43 +34,71 @@ public class SoulBurnBuffHandler {
     private static final int TICKS_PER_SECOND = 20;
 
     /**
-     * 处理生物实体每tick事件
-     * 每20个tick（1秒）检查实体是否有 soul_burn buff，如果有则造成火焰伤害
+     * 确保目标已注册灵魂燃烧持续伤害定时器。
      */
-    @SubscribeEvent
-    public static void onLivingTick(LivingEvent.LivingTickEvent event) {
-        LivingEntity entity = event.getEntity();
-        
-        // 只在服务端处理
-        if (entity.level().isClientSide()) {
+    public static void ensureSoulBurnTimer(LivingEntity target) {
+        if (target.level().isClientSide()) {
             return;
         }
 
-        // 每20个tick（1秒）触发一次
-        if (entity.tickCount % TICKS_PER_SECOND != 0) {
-            return;
-        }
-
-        // 获取实体的 buff 数据
-        entity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
-            // 获取当前 soul_burn buff 的层数
-            int currentLevel = data.getLevel(RecastingBuffTypes.SOUL_BURN.get(), entity.level());
-            
-            // 如果有层数，则造成火焰伤害
-            if (currentLevel > 0) {
-                // 计算实体当前生命值
-                float currentHealth = entity.getHealth();
-                
-                // 计算火焰伤害（当前生命值的 6%）
-                float fireDamage = currentHealth * FIRE_DAMAGE_PERCENTAGE;
-                
-                // 创建火焰伤害源
-                DamageSource fireDamageSource = entity.damageSources().inFire();
-                
-                // 造成火焰伤害
-                entity.hurt(fireDamageSource, fireDamage);
+        BuffType soulBurnBuffType = RecastingBuffTypes.SOUL_BURN.get();
+        target.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
+            if (timeRun.getNamedTimerCell(TIMER_NAME) != null) {
+                return;
             }
+
+            timeRun.addNamedTimerCell(
+                    TIMER_NAME,
+                    new ITimeRun.TimerCell(
+                            () -> tickSoulBurn(target, soulBurnBuffType, timeRun),
+                            TICKS_PER_SECOND,
+                            true
+                    )
+            );
         });
+    }
+
+    private static void tickSoulBurn(LivingEntity target, BuffType soulBurnBuffType, ITimeRun timeRun) {
+        if (!target.isAlive() || target.level().isClientSide()) {
+            removeSoulBurnTimer(timeRun);
+            return;
+        }
+
+        target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
+            int currentLevel = data.getLevel(soulBurnBuffType, target.level());
+            if (currentLevel <= 0) {
+                removeSoulBurnTimer(timeRun);
+                return;
+            }
+
+            float currentHealth = target.getHealth();
+            float fireDamage = currentHealth * FIRE_DAMAGE_PERCENTAGE;
+            if (fireDamage <= 0) {
+                removeSoulBurnTimer(timeRun);
+                return;
+            }
+
+            IBuffStackData.BuffEntry entry = data.getEntry(soulBurnBuffType);
+            LivingEntity source = BuffSourceHelper.getSourceEntity(entry, target.level());
+            if (source == null) {
+                removeSoulBurnTimer(timeRun);
+                return;
+            }
+
+            AttackHelper.attack(
+                    source,
+                    target,
+                    new DamageStructure(0f, fireDamage),
+                    List.of(
+                            RecastingAttackTypes.SOUL_BURN_ATTACK.get(),
+                            RecastingAttackTypes.NO_RECURSION_ATTACK.get()
+                    )
+            );
+        });
+    }
+
+    private static void removeSoulBurnTimer(ITimeRun timeRun) {
+        timeRun.removeNamedTimerCell(TIMER_NAME);
     }
 }
 

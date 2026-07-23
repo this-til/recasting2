@@ -1,6 +1,8 @@
 package com.til.recasting.handler;
 
 import com.til.recasting.Recasting;
+import com.til.recasting.capability.IBuffStackData;
+import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
@@ -8,11 +10,9 @@ import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -29,6 +29,8 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PhotonScarBuffHandler {
 
+    private static final String PHOTON_BURN_TIMER_NAME = "photon_burn_tick";
+
     /** 灼烧每层每次结算的火焰伤害 */
     private static final float DAMAGE_PER_STACK = 0.1f;
     /** 灼烧结算间隔（tick） */
@@ -39,35 +41,68 @@ public class PhotonScarBuffHandler {
     /** 刀状态缺失时的短光束默认颜色 */
     private static final int DEFAULT_COLOR = 0x50DCFF;
 
-    /**
-     * 灼烧持续伤害：按层数造成火焰伤害
-     */
-    @SubscribeEvent
-    public static void onLivingTick(LivingEvent.LivingTickEvent event) {
-        LivingEntity entity = event.getEntity();
-
-        if (entity.level().isClientSide()) {
+    public static void ensurePhotonBurnTimer(LivingEntity target) {
+        if (target.level().isClientSide()) {
             return;
         }
 
-        if (entity.tickCount % TICKS_PER_INTERVAL != 0) {
+        BuffType photonBurnBuffType = RecastingBuffTypes.PHOTON_BURN.get();
+        target.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
+            if (timeRun.getNamedTimerCell(PHOTON_BURN_TIMER_NAME) != null) {
+                return;
+            }
+
+            timeRun.addNamedTimerCell(
+                    PHOTON_BURN_TIMER_NAME,
+                    new ITimeRun.TimerCell(
+                            () -> tickPhotonBurn(target, photonBurnBuffType, timeRun),
+                            TICKS_PER_INTERVAL,
+                            true
+                    )
+            );
+        });
+    }
+
+    private static void tickPhotonBurn(LivingEntity target, BuffType photonBurnBuffType, ITimeRun timeRun) {
+        if (!target.isAlive() || target.level().isClientSide()) {
+            removePhotonBurnTimer(timeRun);
             return;
         }
 
-        entity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
-            int currentLevel = data.getLevel(RecastingBuffTypes.PHOTON_BURN.get(), entity.level());
+        target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
+            int currentLevel = data.getLevel(photonBurnBuffType, target.level());
             if (currentLevel <= 0) {
+                removePhotonBurnTimer(timeRun);
                 return;
             }
 
             float damage = currentLevel * DAMAGE_PER_STACK;
             if (damage <= 0) {
+                removePhotonBurnTimer(timeRun);
                 return;
             }
 
-            DamageSource damageSource = entity.damageSources().onFire();
-            entity.hurt(damageSource, damage);
+            IBuffStackData.BuffEntry entry = data.getEntry(photonBurnBuffType);
+            LivingEntity source = BuffSourceHelper.getSourceEntity(entry, target.level());
+            if (source == null) {
+                removePhotonBurnTimer(timeRun);
+                return;
+            }
+
+            AttackHelper.attack(
+                    source,
+                    target,
+                    new DamageStructure(0f, damage),
+                    List.of(
+                            RecastingAttackTypes.PHOTON_BURN_ATTACK.get(),
+                            RecastingAttackTypes.NO_RECURSION_ATTACK.get()
+                    )
+            );
         });
+    }
+
+    private static void removePhotonBurnTimer(ITimeRun timeRun) {
+        timeRun.removeNamedTimerCell(PHOTON_BURN_TIMER_NAME);
     }
 
     /**

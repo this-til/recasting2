@@ -6,6 +6,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public final class PrismBeamClientEffects {
 
     private static final List<Beam> BEAMS = new ArrayList<>();
+    private static final List<Beam> BEAMS_VIEW = Collections.unmodifiableList(BEAMS);
 
     private PrismBeamClientEffects() {
     }
@@ -43,7 +45,7 @@ public final class PrismBeamClientEffects {
     }
 
     public static List<Beam> snapshot() {
-        return List.copyOf(BEAMS);
+        return BEAMS_VIEW;
     }
 
     public record Beam(Vec3 start, Vec3 end, int color, int lifeTicks, long startGameTime) {

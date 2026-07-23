@@ -218,6 +218,28 @@ public class RecastingAttackTypes {
     );
 
     /**
+     * 灵魂燃烧持续伤害（火焰伤害）；需配合 {@link #NO_RECURSION_ATTACK} 防递归
+     */
+    public static final RegistryObject<AttackType> SOUL_BURN_ATTACK = ATTACK_TYPES.register("soul_burn",
+            () -> new AttackType((attacker, target) -> {
+                DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
+                DamageSource damageSource = accessor.callSource(DamageTypes.IN_FIRE, target, attacker);
+                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, new DamageStructure(1.0f, 0.0f));
+            })
+    );
+
+    /**
+     * 光子灼烧持续伤害（火焰伤害）；需配合 {@link #NO_RECURSION_ATTACK} 防递归
+     */
+    public static final RegistryObject<AttackType> PHOTON_BURN_ATTACK = ATTACK_TYPES.register("photon_burn",
+            () -> new AttackType((attacker, target) -> {
+                DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
+                DamageSource damageSource = accessor.callSource(DamageTypes.ON_FIRE, target, attacker);
+                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, new DamageStructure(1.0f, 0.0f));
+            })
+    );
+
+    /**
      * 茶韵延迟释放（魔法伤害）；需配合 {@link #NO_RECURSION_ATTACK} 防递归
      */
     public static final RegistryObject<AttackType> TEA_AROMA_ATTACK = ATTACK_TYPES.register("tea_aroma",
@@ -228,4 +250,3 @@ public class RecastingAttackTypes {
     );
 
 }
-

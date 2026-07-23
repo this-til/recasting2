@@ -4,6 +4,7 @@ import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.handler.AttackHelper;
+import com.til.recasting.handler.BuffSourceHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.ParticleHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
@@ -25,9 +26,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 /***
  * 茶韵
@@ -43,9 +42,6 @@ public class TeaAromaSpecialEffect extends ExtendedSpecialEffect {
     int delayTicks = 30;
     /** 剑气命中时额外叠加的 Buff 层级 */
     int driveBonusStacks = 10;
-
-    /** 目标 UUID → 待释放定时器；连续命中只重置已有任务的计时 */
-    private final Map<UUID, ITimeRun.TimerCell> pendingReleases = new ConcurrentHashMap<>();
 
     /**
      * 在所有倍率结算之后读取最终伤害，写入目标茶韵 Buff，并调度延迟释放。
@@ -86,28 +82,30 @@ public class TeaAromaSpecialEffect extends ExtendedSpecialEffect {
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
             int current = buffStackData.getLevel(teaAromaBuffType, world);
             buffStackData.setLevel(teaAromaBuffType, current + finalAddUnits, world);
+            BuffSourceHelper.recordSourceEntity(buffStackData, teaAromaBuffType, target, attacker);
 
-            UUID targetId = target.getUUID();
-            ITimeRun.TimerCell existing = pendingReleases.get(targetId);
-            if (existing != null && existing.isValid()) {
-                // 重置已过时间，等价于把唤醒点重新推后 delayTicks
-                existing.use(false);
-                return;
-            }
+            attacker.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
+                String timerName = buildReleaseTimerName(target.getUUID());
+                ITimeRun.TimerCell existing = timeRun.getNamedTimerCell(timerName);
+                if (existing != null) {
+                    // 重置已过时间，等价于把唤醒点重新推后 delayTicks
+                    existing.use(false);
+                    return;
+                }
 
-            ITimeRun.TimerCell timerCell = new ITimeRun.TimerCell(
-                    () -> {
-                        pendingReleases.remove(targetId);
-                        tryRelease(attacker, target, teaAromaBuffType);
-                    },
-                    delayTicks
-            );
-            pendingReleases.put(targetId, timerCell);
-
-            attacker.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun ->
-                    timeRun.addTimerCell(timerCell)
-            );
+                timeRun.addNamedTimerCell(
+                        timerName,
+                        new ITimeRun.TimerCell(
+                                () -> tryRelease(attacker, target, teaAromaBuffType),
+                                delayTicks
+                        )
+                );
+            });
         });
+    }
+
+    private String buildReleaseTimerName(UUID targetId) {
+        return "tea_aroma_release:" + targetId;
     }
 
     private void tryRelease(LivingEntity attacker, LivingEntity target, BuffType teaAromaBuffType) {
@@ -124,16 +122,17 @@ public class TeaAromaSpecialEffect extends ExtendedSpecialEffect {
                 return;
             }
 
+            LivingEntity source = BuffSourceHelper.getSourceEntity(entry, target.level());
             int units = entry.getLevel();
             buffStackData.setLevel(teaAromaBuffType, 0, target.level());
 
-            if (!attacker.isAlive()) {
+            if (source == null) {
                 return;
             }
 
             float releaseDamage = units / 10f;
             AttackHelper.attack(
-                    attacker,
+                    source,
                     target,
                     new DamageStructure(0f, releaseDamage),
                     List.of(
