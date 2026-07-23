@@ -43,6 +43,8 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(buffKey(RecastingBuffTypes.SUNSET_STACK), "叠晖", "Sunset Stack");
         translation(buffKey(RecastingBuffTypes.GOLDEN_HALBERD), "金戈", "Golden Halberd");
         translation(buffKey(RecastingBuffTypes.TEA_AROMA), "茶韵", "Tea Aroma");
+        translation(buffKey(RecastingBuffTypes.QING_JIE_DOMAIN), "青界", "Qing Jie Domain");
+        translation(buffKey(RecastingBuffTypes.JADE_FIRE), "翠火", "Jade Fire");
         translation(slashBladeKey(SlashBladeDefinitions.VOID_1), "洞虚利刃", "Void Blade I");
         translation(slashBladeKey(SlashBladeDefinitions.VOID_2), "洞虚利刃[漆黑]", "Void Blade II");
         translation(slashBladeKey(SlashBladeDefinitions.VOID_3), "洞虚利刃[猩红]", "Void Blade III");
@@ -74,6 +76,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashBladeKey(SlashBladeDefinitions.UMBRELLA), "伞", "Umbrella");
         translation(slashBladeKey(SlashBladeDefinitions.UMBRELLA_LAMBDA), "^伞", "Umbrella Lambda");
         translation(slashBladeKey(SlashBladeDefinitions.XUAN_YUAN), "轩辕剑", "Xuan Yuan");
+        translation(slashBladeKey(SlashBladeDefinitions.XUAN_YUAN_LIBERATED), "轩辕·解放", "Xuan Yuan Liberated");
         translation(slashBladeKey(SlashBladeDefinitions.BROADSWORD_IRON), "阔刃（铁）", "Broadsword (Iron)");
         translation(slashBladeKey(SlashBladeDefinitions.BROADSWORD_WOOD), "阔刃（木）", "Broadsword (Wood)");
         translation(slashBladeKey(SlashBladeDefinitions.BROKEN_WHITE), "碎白", "Broken White");
@@ -84,10 +87,14 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashBladeKey(SlashBladeDefinitions.SUPREME_POLE_LAMBDA), "^太极", "Taiji Lambda");
         translation(slashBladeKey(SlashBladeDefinitions.WIND_CLOUD), "风云", "Wind Cloud");
         translation(slashBladeKey(SlashBladeDefinitions.WIND_CLOUD_LAMBDA), "^风云", "Wind Cloud Lambda");
+        translation(slashBladeKey(SlashBladeDefinitions.GUI_QIE), "鬼切", "Gui Qie");
+        translation(slashBladeKey(SlashBladeDefinitions.JING_HONG), "惊鸿", "Jing Hong");
         translation(slashBladeKey(SlashBladeDefinitions.BRILLIANT_GOLD), "灿金", "Brilliant Gold");
         translation(slashBladeKey(SlashBladeDefinitions.BRILLIANT_GOLD_LAMBDA), "^灿金", "Brilliant Gold Lambda");
         translation(slashBladeKey(SlashBladeDefinitions.BRILLIANT_TEA), "灿茶", "Brilliant Tea");
         translation(slashBladeKey(SlashBladeDefinitions.BRILLIANT_TEA_LAMBDA), "^灿茶", "Brilliant Tea Lambda");
+        translation(slashBladeKey(SlashBladeDefinitions.CANG_JING), "苍景", "Cang Jing");
+        translation(slashBladeKey(SlashBladeDefinitions.JING_CHU), "荆楚", "Jing Chu");
         translation(slashBladeKey(SlashBladeDefinitions.SHINE_GOLD), "闪金", "Shine Gold");
         translation(slashBladeKey(SlashBladeDefinitions.SHINE_GOLD_LAMBDA), "^闪金", "Shine Gold Lambda");
         translation(slashBladeKey(SlashBladeDefinitions.SHINE_TEA), "闪茶", "Shine Tea");
@@ -108,6 +115,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashBladeKey(SlashBladeDefinitions.TIL_LAMBDA), "^til的刀", "TIL Lambda");
         translation(slashBladeKey(SlashBladeDefinitions.HTOD), "HTOD的刀", "HTOD");
         translation(slashBladeKey(SlashBladeDefinitions.HTOD_LAMBDA), "^HTOD的刀", "HTOD Lambda");
+        translation(slashBladeKey(SlashBladeDefinitions.TU_WU), "涂巫", "Tu Wu");
         translation(slashBladeKey(SlashBladeDefinitions.XING_KONG), "星空的刀", "Xing Kong");
         translation(slashBladeKey(SlashBladeDefinitions.XING_KONG_LAMBDA), "^星空的刀", "Xing Kong Lambda");
         translation(slashBladeKey(SlashBladeDefinitions.STAR_1), "星流利刃I", "Star Blade I");
@@ -207,6 +215,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtKey(SlashArtsRegistry.RAPID_PHANTOM_SWORDS), "急行幻影剑", "Rapid Phantom Swords");
         translation(slashArtKey(SlashArtsRegistry.MATRIX), "穷观阵", "Matrix");
         translation(slashArtKey(SlashArtsRegistry.MATRIX_LAMBDA), "^穷观阵", "Matrix Lambda");
+        translation(slashArtKey(SlashArtsRegistry.DUAN_PO), "断魄", "Duan Po");
         translation(slashArtKey(SlashArtsRegistry.FRAGMENT), "碎段", "Fragment");
         translation(slashArtDescKey(SlashArtsRegistry.CYAN_GLOW), "快速连续发动多次均匀角度的斩击。", "Quickly launch multiple slashes at evenly distributed angles in succession.");
         translation(slashArtDescKey(SlashArtsRegistry.CYAN_GLOW_LAMBDA), "快速连续发动多次均匀角度的斩击。", "Quickly launch multiple slashes at evenly distributed angles in succession.");
@@ -241,6 +250,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtDescKey(SlashArtsRegistry.RAPID_PHANTOM_SWORDS), "在目标位置周围召唤多把幻影剑。", "Summon multiple phantom swords around the target position.");
         translation(slashArtDescKey(SlashArtsRegistry.MATRIX), "在目标位置创建一个穷观阵，持续造成伤害，同时叠加演算buff层数，演算使目标受到的伤害更高。", "Create a matrix at the target position that deals continuous damage and stacks calculus buff layers, increasing damage taken by targets.");
         translation(slashArtDescKey(SlashArtsRegistry.MATRIX_LAMBDA), "在目标位置创建一个穷观阵，持续造成伤害，同时叠加演算buff层数，演算使目标受到的伤害更高。", "Create a matrix at the target position that deals continuous damage and stacks calculus buff layers, increasing damage taken by targets.");
+        translation(slashArtDescKey(SlashArtsRegistry.DUAN_PO), "先展开虚无刀界般的刀幕，随后对范围内敌人降下次元斩，并追加更强的终结斩击。", "Unfold a void-blade domain before bringing judgement cuts down on nearby enemies, followed by stronger finishing strikes.");
         translation(slashArtDescKey(SlashArtsRegistry.FRAGMENT), "发动一次斩击，设置重复攻击和取消击退。", "Perform a slash with repeated attacks and knockback cancellation.");
         translation(slashArtKey(SlashArtsRegistry.PHANTOM_EXPLOSION), "幻影爆破", "Phantom Explosion");
         translation(slashArtKey(SlashArtsRegistry.PHANTOM_EXPLOSION_LAMBDA), "^幻影爆破", "Phantom Explosion Lambda");
@@ -278,6 +288,8 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtKey(SlashArtsRegistry.LONG_SKY_SUNSET_LAMBDA), "^叠晖", "Sunset Mark Lambda");
         translation(slashArtDescKey(SlashArtsRegistry.LONG_SKY_SUNSET), "向目标周边随机敌人齐射幻影剑，命中叠加日核；带有日核的目标再受幻影剑伤害时触发晖光并叠加叠晖，叠满后幻影剑伤害大幅提升。", "Volleys phantom swords at random foes near the aim point, applying Sunset Core on hit. Targets with Sunset Core take Hui Guang and gain Sunset Stack when struck by phantom swords; at full stacks, phantom sword damage rises sharply.");
         translation(slashArtDescKey(SlashArtsRegistry.LONG_SKY_SUNSET_LAMBDA), "向目标周边随机敌人齐射更多幻影剑，命中叠加日核；带有日核的目标再受幻影剑伤害时触发晖光并叠加叠晖，叠满后幻影剑伤害大幅提升。", "Volleys more phantom swords at random foes near the aim point, applying Sunset Core on hit. Targets with Sunset Core take Hui Guang and gain Sunset Stack when struck by phantom swords; at full stacks, phantom sword damage rises sharply.");
+        translation(slashArtKey(SlashArtsRegistry.QING_JIE), "青界", "Qing Jie");
+        translation(slashArtDescKey(SlashArtsRegistry.QING_JIE), "展开持续一段时间的青界，对周围活体附加翠火。翠火会造成持续火焰伤害、定住目标并提高其受到的全部伤害；领域会周期性对随机目标发动刃解。", "Unfolds a lasting Qing Jie domain that applies Jade Fire to nearby living beings. Jade Fire deals periodic fire damage, roots targets in place, and amplifies all damage they take; the domain periodically performs a blade release on a random target.");
         translation(specialEffectKey(SpecialEffectsRegistry.COOPERATE_WITH), "协同攻击", "Cooperate With");
         translation(specialEffectDescKey(SpecialEffectsRegistry.COOPERATE_WITH), "挥刀时概率额外挥刀。", "Has a chance to perform an additional slash when slashing.");
         translation(specialEffectKey(SpecialEffectsRegistry.CROSS_CHOP), "十字斩", "Cross Chop");

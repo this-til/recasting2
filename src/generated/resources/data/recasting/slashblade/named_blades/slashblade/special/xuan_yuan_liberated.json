@@ -1,0 +1,21 @@
+{
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/special/xuan_yuan_liberated",
+  "properties": {
+    "attack_base": 10.0,
+    "max_damage": 1920,
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/special/xuan_yuan_liberated.obj",
+    "summon_sword_color": -3034022,
+    "texture": "recasting:slashblade/special/xuan_yuan_liberated.png"
+  }
+}

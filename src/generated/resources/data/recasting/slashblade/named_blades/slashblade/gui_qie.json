@@ -1,0 +1,22 @@
+{
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/gui_qie",
+  "properties": {
+    "attack_base": 6.0,
+    "max_damage": 960,
+    "slash_art": "recasting:duan_po",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/gui_qie.obj",
+    "summon_sword_color": -9807037,
+    "texture": "recasting:slashblade/gui_qie.png"
+  }
+}

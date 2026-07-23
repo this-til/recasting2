@@ -198,13 +198,14 @@ public class RecastingAttackTypes {
     );
 
     /**
-     * 晖光追加伤害（魔法）；不得再触发晖光/叠晖
+     * 晖光追加伤害（火焰）；不得再触发晖光/叠晖
      */
     public static final RegistryObject<AttackType> HUI_GUANG_ATTACK = ATTACK_TYPES.register("hui_guang",
-            () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
-                    attacker.damageSources().indirectMagic(target, attacker),
-                    new DamageStructure(1.0f, 0.0f)
-            ))
+            () -> new AttackType((attacker, target) -> {
+                DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
+                DamageSource damageSource = accessor.callSource(DamageTypes.ON_FIRE, target, attacker);
+                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, new DamageStructure(1.0f, 0.0f));
+            })
     );
 
     /**
@@ -232,6 +233,17 @@ public class RecastingAttackTypes {
      * 光子灼烧持续伤害（火焰伤害）；需配合 {@link #NO_RECURSION_ATTACK} 防递归
      */
     public static final RegistryObject<AttackType> PHOTON_BURN_ATTACK = ATTACK_TYPES.register("photon_burn",
+            () -> new AttackType((attacker, target) -> {
+                DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
+                DamageSource damageSource = accessor.callSource(DamageTypes.ON_FIRE, target, attacker);
+                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, new DamageStructure(1.0f, 0.0f));
+            })
+    );
+
+    /**
+     * 翠火持续伤害（火焰伤害）；需配合 {@link #NO_RECURSION_ATTACK} 防递归
+     */
+    public static final RegistryObject<AttackType> JADE_FIRE_ATTACK = ATTACK_TYPES.register("jade_fire",
             () -> new AttackType((attacker, target) -> {
                 DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
                 DamageSource damageSource = accessor.callSource(DamageTypes.ON_FIRE, target, attacker);

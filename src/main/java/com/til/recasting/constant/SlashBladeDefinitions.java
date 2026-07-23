@@ -473,6 +473,131 @@ public class SlashBladeDefinitions {
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
+    // 云翼 t3
+    public static final SlashBladeDefinition SILVER_WING = createBuild(R.Slashblade.silverWing)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.silverWing$obj)
+                            .textureName(R.Slashblade.silverWing$png)
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage((int) (8f * 40))
+                            .slashArtsType(SlashArtsRegistry.CLOUD_WHEEL.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.15f))
+            .build();
+
+    // 云翼 Lambda t3
+    public static final SlashBladeDefinition SILVER_WING_LAMBDA = createBuild(Recasting.prefix("slashblade/silver_wing_lambda"))
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.silverWing$obj)
+                            .textureName(R.Slashblade.silverWing$png)
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(7f)
+                            .maxDamage(12 * 40)
+                            .slashArtsType(SlashArtsRegistry.CLOUD_WHEEL_STORM.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.15f))
+            .build();
+
+    // 彩翼 t2
+    public static final SlashBladeDefinition COLOR_WING = createBuild(R.Slashblade.colorWing)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.colorWing$obj)
+                            .textureName(R.Slashblade.colorWing$png)
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(8f)
+                            .maxDamage(14 * 40)
+                            .slashArtsType(SlashArtsRegistry.HEAVEN_TWELVE_HIT.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .addSpecialEffects(SpecialEffectsRegistry.COLOR_DYE)
+            .build();
+
+    // 彩翼 Lambda t2
+    public static final SlashBladeDefinition COLOR_WING_LAMBDA = createBuild(Recasting.prefix("slashblade/color_wing_lambda"))
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.colorWing$obj)
+                            .textureName(R.Slashblade.colorWing$png)
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(8f)
+                            .maxDamage(24 * 40)
+                            .slashArtsType(SlashArtsRegistry.HEAVEN_TWELVE_HIT_LAMBDA.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .addSpecialEffects(SpecialEffectsRegistry.COLOR_DYE)
+            .build();
+
+    // t3 长空落日
+    public static final SlashBladeDefinition LONG_SKY_SUNSET = createBuild(R.Slashblade.longSkySunset)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.longSkySunset$obj)
+                            .textureName(R.Slashblade.longSkySunset$png)
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(10 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.LONG_SKY_SUNSET.getId())
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .addSpecialEffects(SpecialEffectsRegistry.LONG_SKY_SUNSET, 1)
+            .build();
+
+    // t3 长空落日 Lambda
+    public static final SlashBladeDefinition LONG_SKY_SUNSET_LAMBDA = createBuild(Recasting.prefix("slashblade/long_sky_sunset_lambda"))
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.longSkySunset$obj)
+                            .textureName(R.Slashblade.longSkySunset$png)
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(7f)
+                            .maxDamage(14 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+                            .slashArtsType(SlashArtsRegistry.LONG_SKY_SUNSET_LAMBDA.getId())
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 2))
+            .addSpecialEffects(SpecialEffectsRegistry.LONG_SKY_SUNSET, 5)
+            .build();
+
+    // 轩辕剑
+    public static final SlashBladeDefinition XUAN_YUAN = createBuild(R.Slashblade.xuanYuan)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.xuanYuan$obj)
+                            .textureName(R.Slashblade.xuanYuan$png)
+                            .effectColor(new Color(255, 255, 0).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(10 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
 
     //endregion
 
@@ -719,194 +844,218 @@ public class SlashBladeDefinitions {
             .addSpecialEffects(SpecialEffectsRegistry.TEA_AROMA_LAMBDA, 1)
             .build();
 
-
-    //endregion
-
-    //region Void SlashBlades
-
-    // t3
-    public static final SlashBladeDefinition VOID_1 = createBuild(R.Slashblade.Void.void1)
+    // 惊鸿
+    public static final SlashBladeDefinition JING_HONG = createBuild(R.Slashblade.jingHong)
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.Void._void$obj)
-                            .textureName(R.Slashblade.Void.void1$png)
-                            .effectColor(0xFF001E)
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(8f)
-                            .maxDamage(12 * 40)
-                            .slashArtsType(SlashArtsRegistry.VOID_HOLE.getId())
-                            .defaultSwordType(List.of(SwordType.BEWITCHED))
-            )
-            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-            .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(1.5f))
-            .build();
-
-    // t3
-    public static final SlashBladeDefinition VOID_2 = createBuild(R.Slashblade.Void.void2)
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.Void._void$obj)
-                            .textureName(R.Slashblade.Void.void2$png)
-                            .effectColor(0xFF001E)
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(8f)
-                            .maxDamage(24 * 40)
-                            .slashArtsType(SlashArtsRegistry.VOID_HOLE_PITCH_BLACK.getId())
-                            .defaultSwordType(List.of(SwordType.BEWITCHED))
-            )
-            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-            .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(1.5f))
-            .build();
-
-    // t2
-    public static final SlashBladeDefinition VOID_3 = createBuild(R.Slashblade.Void.void3)
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.Void._void$obj)
-                            .textureName(R.Slashblade.Void.void3$png)
-                            .effectColor(0xFF001E)
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(8f)
-                            .maxDamage(32 * 40)
-                            .slashArtsType(SlashArtsRegistry.VOID_HOLE_FISHY_RED.getId())
-                            .defaultSwordType(List.of(SwordType.BEWITCHED))
-            )
-            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-            .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(1.5f))
-            .build();
-    //endregion
-
-    // ========== Base SlashBlades ==========
-
-    // 云翼 t3
-    public static final SlashBladeDefinition SILVER_WING = createBuild(R.Slashblade.silverWing)
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.silverWing$obj)
-                            .textureName(R.Slashblade.silverWing$png)
+                            .modelName(R.Slashblade.jingHong$obj)
+                            .textureName(R.Slashblade.jingHong$png)
+                            .effectColor(new Color(0x9A4D4D).getRGB())
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(6f)
-                            .maxDamage((int) (8f * 40))
-                            .slashArtsType(SlashArtsRegistry.CLOUD_WHEEL.getId())
-                            .defaultSwordType(List.of(SwordType.BEWITCHED))
-            )
-            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-            .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.15f))
-            .build();
-
-    // 云翼 Lambda t3
-    public static final SlashBladeDefinition SILVER_WING_LAMBDA = createBuild(Recasting.prefix("slashblade/silver_wing_lambda"))
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.silverWing$obj)
-                            .textureName(R.Slashblade.silverWing$png)
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(7f)
-                            .maxDamage(12 * 40)
-                            .slashArtsType(SlashArtsRegistry.CLOUD_WHEEL_STORM.getId())
-                            .defaultSwordType(List.of(SwordType.BEWITCHED))
-            )
-            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-            .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.15f))
-            .build();
-
-    // 彩翼 t2
-    public static final SlashBladeDefinition COLOR_WING = createBuild(R.Slashblade.colorWing)
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.colorWing$obj)
-                            .textureName(R.Slashblade.colorWing$png)
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(8f)
-                            .maxDamage(14 * 40)
-                            .slashArtsType(SlashArtsRegistry.HEAVEN_TWELVE_HIT.getId())
-                            .defaultSwordType(List.of(SwordType.BEWITCHED))
-            )
-            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-            .addSpecialEffects(SpecialEffectsRegistry.COLOR_DYE)
-            .build();
-
-    // 彩翼 Lambda t2
-    public static final SlashBladeDefinition COLOR_WING_LAMBDA = createBuild(Recasting.prefix("slashblade/color_wing_lambda"))
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.colorWing$obj)
-                            .textureName(R.Slashblade.colorWing$png)
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(8f)
                             .maxDamage(24 * 40)
-                            .slashArtsType(SlashArtsRegistry.HEAVEN_TWELVE_HIT_LAMBDA.getId())
+                            .slashArtsType(SlashArtsRegistry.DUAN_PO.getId())
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-            .addSpecialEffects(SpecialEffectsRegistry.COLOR_DYE)
             .build();
 
-    // t3 长空落日
-    public static final SlashBladeDefinition LONG_SKY_SUNSET = createBuild(R.Slashblade.longSkySunset)
+
+    // 荆楚
+    public static final SlashBladeDefinition JING_CHU = createBuild(R.Slashblade.jingChu)
             .renderDefinition(
                     RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.longSkySunset$obj)
-                            .textureName(R.Slashblade.longSkySunset$png)
+                            .modelName(R.Slashblade.jingChu$obj)
+                            .textureName(R.Slashblade.jingChu$png)
+                            .effectColor(new Color(0x5D6E2D).getRGB())
             )
             .propertiesDefinition(
                     PropertiesDefinition.Builder.newInstance()
                             .baseAttackModifier(6f)
-                            .maxDamage(10 * 40)
-                            .defaultSwordType(List.of(SwordType.BEWITCHED))
-                            .slashArtsType(SlashArtsRegistry.LONG_SKY_SUNSET.getId())
-            )
-            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-            .addSpecialEffects(SpecialEffectsRegistry.LONG_SKY_SUNSET, 1)
-            .build();
-
-    // t3 长空落日 Lambda
-    public static final SlashBladeDefinition LONG_SKY_SUNSET_LAMBDA = createBuild(Recasting.prefix("slashblade/long_sky_sunset_lambda"))
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.longSkySunset$obj)
-                            .textureName(R.Slashblade.longSkySunset$png)
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(7f)
-                            .maxDamage(14 * 40)
-                            .defaultSwordType(List.of(SwordType.BEWITCHED))
-                            .slashArtsType(SlashArtsRegistry.LONG_SKY_SUNSET_LAMBDA.getId())
-            )
-            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 2))
-            .addSpecialEffects(SpecialEffectsRegistry.LONG_SKY_SUNSET, 5)
-            .build();
-
-
-    public static final SlashBladeDefinition XUAN_YUAN = createBuild(R.Slashblade.xuanYuan)
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.xuanYuan$obj)
-                            .textureName(R.Slashblade.xuanYuan$png)
-                            .effectColor(new Color(255, 255, 0).getRGB())
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(7f)
+                            .maxDamage(24 * 40)
                             .defaultSwordType(List.of(SwordType.BEWITCHED))
             )
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
+
+    // 鬼切
+    public static final SlashBladeDefinition GUI_QIE = createBuild(R.Slashblade.guiQie)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.guiQie$obj)
+                            .textureName(R.Slashblade.guiQie$png)
+                            .effectColor(new Color(0x6A5B43).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(24 * 40)
+                            .slashArtsType(SlashArtsRegistry.DUAN_PO.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
+    // 苍景
+    public static final SlashBladeDefinition CANG_JING = createBuild(R.Slashblade.cangJing)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.cangJing$obj)
+                            .textureName(R.Slashblade.cangJing$png)
+                            .effectColor(new Color(0x4C8A8D).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(6f)
+                            .maxDamage(24 * 40)
+                            .slashArtsType(SlashArtsRegistry.QING_JIE.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
+
+    //endregion
+
+    //region t1
+
+    public static final SlashBladeDefinition TIL = createBuild(R.Slashblade.Special.til)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.Special.til$obj)
+                            .textureName(R.Slashblade.Special.til$png)
+                            .effectColor(new Color(210, 118, 246).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(10f)
+                            .maxDamage(48 * 40)
+                            .slashArtsType(SlashArtsRegistry.STELLAR_ROTATION.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .addSpecialEffects(SpecialEffectsRegistry.STAR_BLINK, 1)
+            .build();
+
+    public static final SlashBladeDefinition TIL_LAMBDA = createBuild(Recasting.prefix("slashblade/special/til_lambda"))
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.Special.til$obj)
+                            .textureName(R.Slashblade.Special.til$png)
+                            .effectColor(new Color(210, 118, 246).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(12f)
+                            .maxDamage(96 * 40)
+                            .slashArtsType(SlashArtsRegistry.STELLAR_ROTATION.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .addSpecialEffects(SpecialEffectsRegistry.STAR_BLINK_LAMBDA, 1)
+            .build();
+
+    public static final SlashBladeDefinition HTOD = createBuild(R.Slashblade.Special.htod)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.Special.htod$obj)
+                            .textureName(R.Slashblade.Special.htod$png)
+                            .effectColor(new Color(246, 67, 67, 255).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(10f)
+                            .maxDamage(48 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
+    public static final SlashBladeDefinition HTOD_LAMBDA = createBuild(Recasting.prefix("slashblade/special/htod_lambda"))
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.Special.htod$obj)
+                            .textureName(R.Slashblade.Special.htod$png)
+                            .effectColor(new Color(246, 67, 67, 255).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(12f)
+                            .maxDamage(96 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
+    public static final SlashBladeDefinition XING_KONG = createBuild(R.Slashblade.Special.xingKong)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.Special.xingKong$obj)
+                            .textureName(R.Slashblade.Special.xingKong$png)
+                            .effectColor(new Color(0, 17, 86).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(10f)
+                            .maxDamage(48 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
+    public static final SlashBladeDefinition XING_KONG_LAMBDA = createBuild(Recasting.prefix("slashblade/special/xing_kong_lambda"))
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.Special.xingKong$obj)
+                            .textureName(R.Slashblade.Special.xingKong$png)
+                            .effectColor(new Color(0, 17, 86).getRGB()
+                            ))
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(12f)
+                            .maxDamage(48 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
+    // 涂巫
+    public static final SlashBladeDefinition TU_WU = createBuild(R.Slashblade.Special.tuWu)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.Special.tuWu$obj)
+                            .textureName(R.Slashblade.Special.tuWu$png)
+                            .effectColor(new Color(0xA5527B).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(10f)
+                            .maxDamage(48 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
+    // 轩辕·解放
+    public static final SlashBladeDefinition XUAN_YUAN_LIBERATED = createBuild(R.Slashblade.Special.xuanYuanLiberated)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.Special.xuanYuanLiberated$obj)
+                            .textureName(R.Slashblade.Special.xuanYuanLiberated$png)
+                            .effectColor(new Color(0xD1B45A).getRGB())
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(10f)
+                            .maxDamage(48 * 40)
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .build();
+
+    //endregion
 
 
     // region ========== Fluorescence SlashBlades ==========
@@ -1052,7 +1201,7 @@ public class SlashBladeDefinitions {
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 2))
             .build();
 
-    
+
     // t2
     public static final SlashBladeDefinition LASER_3 = createBuild(R.Slashblade.Laser.laser3)
             .renderDefinition(
@@ -1089,109 +1238,6 @@ public class SlashBladeDefinitions {
             .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.2f))
             .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 3))
             .addSpecialEffects(SpecialEffectsRegistry.PHOTON_SCAR, 1)
-            .build();
-
-    // endregion
-
-    // region ========== Special SlashBlades ==========
-    public static final SlashBladeDefinition TIL = createBuild(R.Slashblade.Special.til)
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.Special.til$obj)
-                            .textureName(R.Slashblade.Special.til$png)
-                            .effectColor(new Color(210, 118, 246).getRGB())
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(10f)
-                            .maxDamage(48 * 40)
-                            .slashArtsType(SlashArtsRegistry.STELLAR_ROTATION.getId())
-                            .defaultSwordType(List.of(SwordType.BEWITCHED))
-            )
-            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-            .addSpecialEffects(SpecialEffectsRegistry.STAR_BLINK, 1)
-            .build();
-
-    public static final SlashBladeDefinition TIL_LAMBDA = createBuild(Recasting.prefix("slashblade/special/til_lambda"))
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.Special.til$obj)
-                            .textureName(R.Slashblade.Special.til$png)
-                            .effectColor(new Color(210, 118, 246).getRGB())
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(12f)
-                            .maxDamage(96 * 40)
-                            .slashArtsType(SlashArtsRegistry.STELLAR_ROTATION.getId())
-                            .defaultSwordType(List.of(SwordType.BEWITCHED))
-            )
-            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-            .addSpecialEffects(SpecialEffectsRegistry.STAR_BLINK_LAMBDA, 1)
-            .build();
-
-    public static final SlashBladeDefinition HTOD = createBuild(R.Slashblade.Special.htod)
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.Special.htod$obj)
-                            .textureName(R.Slashblade.Special.htod$png)
-                            .effectColor(new Color(246, 67, 67, 255).getRGB())
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(10f)
-                            .maxDamage(48 * 40)
-                            .defaultSwordType(List.of(SwordType.BEWITCHED))
-            )
-            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-            .build();
-
-    public static final SlashBladeDefinition HTOD_LAMBDA = createBuild(Recasting.prefix("slashblade/special/htod_lambda"))
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.Special.htod$obj)
-                            .textureName(R.Slashblade.Special.htod$png)
-                            .effectColor(new Color(246, 67, 67, 255).getRGB())
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(12f)
-                            .maxDamage(96 * 40)
-                            .defaultSwordType(List.of(SwordType.BEWITCHED))
-            )
-            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-            .build();
-
-    public static final SlashBladeDefinition XING_KONG = createBuild(R.Slashblade.Special.xingKong)
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.Special.xingKong$obj)
-                            .textureName(R.Slashblade.Special.xingKong$png)
-                            .effectColor(new Color(0, 17, 86).getRGB())
-            )
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(10f)
-                            .maxDamage(48 * 40)
-                            .defaultSwordType(List.of(SwordType.BEWITCHED))
-            )
-            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-            .build();
-
-    public static final SlashBladeDefinition XING_KONG_LAMBDA = createBuild(Recasting.prefix("slashblade/special/xing_kong_lambda"))
-            .renderDefinition(
-                    RenderDefinition.Builder.newInstance()
-                            .modelName(R.Slashblade.Special.xingKong$obj)
-                            .textureName(R.Slashblade.Special.xingKong$png)
-                            .effectColor(new Color(0, 17, 86).getRGB()
-                            ))
-            .propertiesDefinition(
-                    PropertiesDefinition.Builder.newInstance()
-                            .baseAttackModifier(12f)
-                            .maxDamage(48 * 40)
-                            .defaultSwordType(List.of(SwordType.BEWITCHED))
-            )
-            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
             .build();
 
     // endregion
@@ -1292,6 +1338,67 @@ public class SlashBladeDefinitions {
             .build();
 
     // endregion
+
+    //region ========== Void SlashBlades ==========
+
+    // t3
+    public static final SlashBladeDefinition VOID_1 = createBuild(R.Slashblade.Void.void1)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.Void._void$obj)
+                            .textureName(R.Slashblade.Void.void1$png)
+                            .effectColor(0xFF001E)
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(8f)
+                            .maxDamage(12 * 40)
+                            .slashArtsType(SlashArtsRegistry.VOID_HOLE.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(1.5f))
+            .build();
+
+    // t3
+    public static final SlashBladeDefinition VOID_2 = createBuild(R.Slashblade.Void.void2)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.Void._void$obj)
+                            .textureName(R.Slashblade.Void.void2$png)
+                            .effectColor(0xFF001E)
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(8f)
+                            .maxDamage(24 * 40)
+                            .slashArtsType(SlashArtsRegistry.VOID_HOLE_PITCH_BLACK.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(1.5f))
+            .build();
+
+    // t2
+    public static final SlashBladeDefinition VOID_3 = createBuild(R.Slashblade.Void.void3)
+            .renderDefinition(
+                    RenderDefinition.Builder.newInstance()
+                            .modelName(R.Slashblade.Void._void$obj)
+                            .textureName(R.Slashblade.Void.void3$png)
+                            .effectColor(0xFF001E)
+            )
+            .propertiesDefinition(
+                    PropertiesDefinition.Builder.newInstance()
+                            .baseAttackModifier(8f)
+                            .maxDamage(32 * 40)
+                            .slashArtsType(SlashArtsRegistry.VOID_HOLE_FISHY_RED.getId())
+                            .defaultSwordType(List.of(SwordType.BEWITCHED))
+            )
+            .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+            .propertiesDefinitionExtension(new PropertiesDefinitionExtension().attackDistance(1.5f))
+            .build();
+    //endregion
+
 
     private static ResourceLocation getEnchantmentID(Enchantment enchantment) {
         return ForgeRegistries.ENCHANTMENTS.getKey(enchantment);

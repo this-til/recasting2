@@ -1,8 +1,7 @@
 package com.til.recasting.registry.se;
 
 import com.til.recasting.event.AttackAmplifierEvent;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
+import mods.flammpfeil.slashblade.ability.StunManager;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -28,9 +27,6 @@ public class StunSpecialEffect extends ExtendedSpecialEffect {
             return;
         }
 
-        // 高等级缓慢等效击晕：无法有效移动
-        target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, STUN_TICKS, 255, false, false, true));
-        target.setDeltaMovement(0, target.getDeltaMovement().y, 0);
-        target.hurtMarked = true;
+        StunManager.setStun(target, STUN_TICKS);
     }
 }

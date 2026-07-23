@@ -1,0 +1,22 @@
+{
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/jing_hong",
+  "properties": {
+    "attack_base": 6.0,
+    "max_damage": 960,
+    "slash_art": "recasting:duan_po",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/jing_hong.obj",
+    "summon_sword_color": -6664883,
+    "texture": "recasting:slashblade/jing_hong.png"
+  }
+}

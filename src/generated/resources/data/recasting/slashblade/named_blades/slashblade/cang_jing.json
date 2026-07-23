@@ -1,0 +1,22 @@
+{
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/cang_jing",
+  "properties": {
+    "attack_base": 6.0,
+    "max_damage": 960,
+    "slash_art": "recasting:qing_jie",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/cang_jing.obj",
+    "summon_sword_color": -11761011,
+    "texture": "recasting:slashblade/cang_jing.png"
+  }
+}

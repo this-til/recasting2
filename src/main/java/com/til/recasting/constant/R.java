@@ -93,6 +93,76 @@ public class R {
         }
     }
 
+    public static class Particle {
+        public static final ResourceLocation starBlink = ResourceLocation.fromNamespaceAndPath("recasting", "particle/star_blink");
+        public static final ResourceLocation starBlink$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/star_blink.png");
+
+        public static class Other {
+            public static final ResourceLocation divergence = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/divergence");
+            public static final ResourceLocation divergence$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/divergence.png");
+            public static final ResourceLocation flashlight = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/flashlight");
+            public static final ResourceLocation flashlight$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/flashlight.png");
+            public static final ResourceLocation lizi10 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-10");
+            public static final ResourceLocation lizi10$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-10.png");
+            public static final ResourceLocation lizi11 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-11");
+            public static final ResourceLocation lizi11$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-11.png");
+            public static final ResourceLocation lizi12 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-12");
+            public static final ResourceLocation lizi12$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-12.png");
+            public static final ResourceLocation lizi13 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-13");
+            public static final ResourceLocation lizi13$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-13.png");
+            public static final ResourceLocation lizi14 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-14");
+            public static final ResourceLocation lizi14$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-14.png");
+            public static final ResourceLocation lizi15 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-15");
+            public static final ResourceLocation lizi15$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-15.png");
+            public static final ResourceLocation lizi16 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-16");
+            public static final ResourceLocation lizi16$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-16.png");
+            public static final ResourceLocation lizi17 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-17");
+            public static final ResourceLocation lizi17$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-17.png");
+            public static final ResourceLocation lizi18 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-18");
+            public static final ResourceLocation lizi18$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-18.png");
+            public static final ResourceLocation lizi22 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-22");
+            public static final ResourceLocation lizi22$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-22.png");
+            public static final ResourceLocation lizi23 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-23");
+            public static final ResourceLocation lizi23$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-23.png");
+            public static final ResourceLocation lizi24 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-24");
+            public static final ResourceLocation lizi24$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-24.png");
+            public static final ResourceLocation lizi25 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-25");
+            public static final ResourceLocation lizi25$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-25.png");
+            public static final ResourceLocation lizi26 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-26");
+            public static final ResourceLocation lizi26$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-26.png");
+            public static final ResourceLocation lizi27 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-27");
+            public static final ResourceLocation lizi27$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-27.png");
+            public static final ResourceLocation lizi28 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-28");
+            public static final ResourceLocation lizi28$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-28.png");
+            public static final ResourceLocation lizi29 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-29");
+            public static final ResourceLocation lizi29$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-29.png");
+            public static final ResourceLocation lizi30 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-30");
+            public static final ResourceLocation lizi30$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-30.png");
+            public static final ResourceLocation lizi31 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-31");
+            public static final ResourceLocation lizi31$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-31.png");
+            public static final ResourceLocation lizi32 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-32");
+            public static final ResourceLocation lizi32$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-32.png");
+            public static final ResourceLocation lizi35 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-35");
+            public static final ResourceLocation lizi35$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-35.png");
+            public static final ResourceLocation lizi40 = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-40");
+            public static final ResourceLocation lizi40$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/lizi-40.png");
+            public static final ResourceLocation modparticle = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/modparticle");
+            public static final ResourceLocation modparticle$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/modparticle.png");
+            public static final ResourceLocation netherstar = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/netherstar");
+            public static final ResourceLocation netherstar$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/netherstar.png");
+            public static final ResourceLocation radiation = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/radiation");
+            public static final ResourceLocation radiation$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/radiation.png");
+            public static final ResourceLocation shimmer = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/shimmer");
+            public static final ResourceLocation shimmer$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/shimmer.png");
+            public static final ResourceLocation small = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/small");
+            public static final ResourceLocation small$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/small.png");
+            public static final ResourceLocation stars = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/stars");
+            public static final ResourceLocation stars$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/stars.png");
+            public static final ResourceLocation vortex = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/vortex");
+            public static final ResourceLocation vortex$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/vortex.png");
+        }
+    }
+
     public static class Slashblade {
         public static final ResourceLocation artKnife = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/art_knife");
         public static final ResourceLocation artKnife$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/art_knife.obj");
@@ -124,6 +194,9 @@ public class R {
         public static final ResourceLocation brokenWhite = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/broken_white");
         public static final ResourceLocation brokenWhite$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/broken_white.obj");
         public static final ResourceLocation brokenWhite$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/broken_white.png");
+        public static final ResourceLocation cangJing = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/cang_jing");
+        public static final ResourceLocation cangJing$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/cang_jing.obj");
+        public static final ResourceLocation cangJing$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/cang_jing.png");
         public static final ResourceLocation colorWing = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/color_wing");
         public static final ResourceLocation colorWing$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/color_wing.obj");
         public static final ResourceLocation colorWing$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/color_wing.png");
@@ -148,9 +221,18 @@ public class R {
         public static final ResourceLocation greenBladeWood = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/green_blade_wood");
         public static final ResourceLocation greenBladeWood$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/green_blade_wood.obj");
         public static final ResourceLocation greenBladeWood$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/green_blade_wood.png");
+        public static final ResourceLocation guiQie = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/gui_qie");
+        public static final ResourceLocation guiQie$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/gui_qie.obj");
+        public static final ResourceLocation guiQie$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/gui_qie.png");
         public static final ResourceLocation hoe = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/hoe");
         public static final ResourceLocation hoe$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/hoe.obj");
         public static final ResourceLocation hoe$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/hoe.png");
+        public static final ResourceLocation jingChu = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/jing_chu");
+        public static final ResourceLocation jingChu$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/jing_chu.obj");
+        public static final ResourceLocation jingChu$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/jing_chu.png");
+        public static final ResourceLocation jingHong = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/jing_hong");
+        public static final ResourceLocation jingHong$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/jing_hong.obj");
+        public static final ResourceLocation jingHong$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/jing_hong.png");
         public static final ResourceLocation longSkySunset = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/long_sky_sunset");
         public static final ResourceLocation longSkySunset$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/long_sky_sunset.obj");
         public static final ResourceLocation longSkySunset$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/long_sky_sunset.png");
@@ -235,9 +317,15 @@ public class R {
             public static final ResourceLocation til = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/til");
             public static final ResourceLocation til$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/til.obj");
             public static final ResourceLocation til$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/til.png");
+            public static final ResourceLocation tuWu = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/tu_wu");
+            public static final ResourceLocation tuWu$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/tu_wu.obj");
+            public static final ResourceLocation tuWu$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/tu_wu.png");
             public static final ResourceLocation xingKong = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/xing_kong");
             public static final ResourceLocation xingKong$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/xing_kong.obj");
             public static final ResourceLocation xingKong$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/xing_kong.png");
+            public static final ResourceLocation xuanYuanLiberated = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/xuan_yuan_liberated");
+            public static final ResourceLocation xuanYuanLiberated$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/xuan_yuan_liberated.obj");
+            public static final ResourceLocation xuanYuanLiberated$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/xuan_yuan_liberated.png");
         }
 
         public static class Star {

@@ -147,11 +147,11 @@ public class RecastingBuffTypes {
 
     /**
      * 日核
-     * - 不随时间衰减；最大 50 层
+     * - 不随时间衰减；无层数上限
      * - 仅长空落日 SA 幻影剑命中叠加；其它幻影剑触发晖光时消耗
      */
     public static final RegistryObject<BuffType> SUNSET_CORE = BUFF_TYPES.register("sunset_core",
-            () -> new BuffType(0, 50)
+            () -> new BuffType(0, 0)
     );
 
     /**
@@ -189,6 +189,23 @@ public class RecastingBuffTypes {
      */
     public static final RegistryObject<BuffType> TEA_AROMA = BUFF_TYPES.register("tea_aroma",
             () -> new BuffType(0, 0)
+    );
+
+    /**
+     * 青界领域
+     * - 不随时间自动衰减；层数仅表示领域是否展开
+     */
+    public static final RegistryObject<BuffType> QING_JIE_DOMAIN = BUFF_TYPES.register("qing_jie_domain",
+            () -> new BuffType(0, 1)
+    );
+
+    /**
+     * 翠火
+     * - 衰减间隔 10 tick；领域每 10 tick 刷新为 1 层
+     * - 持续期间显示绿色火焰、造成持续伤害并提高所受伤害
+     */
+    public static final RegistryObject<BuffType> JADE_FIRE = BUFF_TYPES.register("jade_fire",
+            () -> new BuffType(10, 1)
     );
 
     /**

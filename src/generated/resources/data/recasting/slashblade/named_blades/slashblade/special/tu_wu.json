@@ -1,0 +1,21 @@
+{
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/special/tu_wu",
+  "properties": {
+    "attack_base": 10.0,
+    "max_damage": 1920,
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/special/tu_wu.obj",
+    "summon_sword_color": -5942661,
+    "texture": "recasting:slashblade/special/tu_wu.png"
+  }
+}

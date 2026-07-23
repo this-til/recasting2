@@ -125,6 +125,9 @@ public class SlashArtsRegistry {
     public static final RegistryObject<ExtendedSlashArts> MATRIX = registerExtendedSA("matrix", new MatrixSlashArts());
     public static final RegistryObject<ExtendedSlashArts> MATRIX_LAMBDA = registerExtendedSA("matrix_lambda", new MatrixSlashArts().setAttackInterval(5));
 
+    // 断魄
+    public static final RegistryObject<ExtendedSlashArts> DUAN_PO = registerExtendedSA("duan_po", new DuanPoSlashArts());
+
     // 幻影爆破
     public static final RegistryObject<ExtendedSlashArts> PHANTOM_EXPLOSION = registerExtendedSA("phantom_explosion", new PhantomExplosionSlashArts());
     public static final RegistryObject<ExtendedSlashArts> PHANTOM_EXPLOSION_LAMBDA = registerExtendedSA("phantom_explosion_lambda", new PhantomExplosionSlashArts().setGroupCount(5));
@@ -206,6 +209,12 @@ public class SlashArtsRegistry {
     public static final RegistryObject<ExtendedSlashArts> LONG_SKY_SUNSET_LAMBDA = registerExtendedSA(
             "long_sky_sunset_lambda",
             new LongSkySunsetSlashArts().setSwordCount(16)
+    );
+
+    // 青界
+    public static final RegistryObject<ExtendedSlashArts> QING_JIE = registerExtendedSA(
+            "qing_jie",
+            new QingJieSlashArts()
     );
 
     /**
