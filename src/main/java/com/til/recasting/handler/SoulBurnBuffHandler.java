@@ -89,10 +89,7 @@ public class SoulBurnBuffHandler {
                     source,
                     target,
                     new DamageStructure(0f, fireDamage),
-                    List.of(
-                            RecastingAttackTypes.SOUL_BURN_ATTACK.get(),
-                            RecastingAttackTypes.NO_RECURSION_ATTACK.get()
-                    )
+                    List.of(RecastingAttackTypes.SOUL_BURN_ATTACK.get())
             );
         });
     }

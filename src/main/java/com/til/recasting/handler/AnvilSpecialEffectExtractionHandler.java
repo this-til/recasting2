@@ -24,10 +24,10 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.til.recasting.Recasting.MODID;
 
 /**
- * 铁砧渊寂火与特殊 SE：
+ * 铁砧材料与特殊 SE：
  * <ul>
  *   <li>左侧拔刀剑 + 右侧渊寂火 → 去除特殊 SE（保留刀）</li>
- *   <li>左侧渊寂火 + 右侧拔刀剑 → 提取特殊 SE 结晶（刀损毁）</li>
+ *   <li>左侧拔刀剑 + 右侧聚散变体 → 提取特殊 SE 结晶（刀损毁）</li>
  * </ul>
  */
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -39,7 +39,7 @@ public class AnvilSpecialEffectExtractionHandler {
     }
 
     /**
-     * 铁砧预览：按左右物品顺序区分去除与提取。
+     * 铁砧预览：刀配渊寂火用于去除，刀配聚散变体用于提取。
      */
     @SubscribeEvent
     public static void onAnvilUpdate(AnvilUpdateEvent event) {
@@ -65,9 +65,9 @@ public class AnvilSpecialEffectExtractionHandler {
             return;
         }
 
-        // 火 + 刀 → 提取特殊 SE 结晶
-        if (leftItem.is(RecastingItems.ABYSS_FLAME.get()) && rightItem.getItem() instanceof ItemSlashBlade) {
-            Optional<SpecialSESnapshot> specialSE = findBladeSpecialSE(rightItem);
+        // 刀 + 聚散变体 → 提取特殊 SE 结晶
+        if (leftItem.getItem() instanceof ItemSlashBlade && rightItem.is(RecastingItems.GATHERING_PARTING_VARIANT.get())) {
+            Optional<SpecialSESnapshot> specialSE = findBladeSpecialSE(leftItem);
             if (specialSE.isEmpty()) {
                 return;
             }
@@ -80,7 +80,7 @@ public class AnvilSpecialEffectExtractionHandler {
     }
 
     /**
-     * 创造模式铁砧默认不消耗材料；提取特殊 SE 时仍强制销毁渊寂火与刀。
+     * 创造模式铁砧默认不消耗材料；提取特殊 SE 时仍强制销毁聚散变体与刀。
      */
     @SubscribeEvent
     public static void onAnvilRepair(AnvilRepairEvent event) {
@@ -106,17 +106,17 @@ public class AnvilSpecialEffectExtractionHandler {
     }
 
     private static boolean matchesSpecialSeExtraction(ItemStack leftItem, ItemStack rightItem, ItemStack output) {
-        if (!leftItem.is(RecastingItems.ABYSS_FLAME.get())) {
+        if (!(leftItem.getItem() instanceof ItemSlashBlade)) {
             return false;
         }
-        if (!(rightItem.getItem() instanceof ItemSlashBlade)) {
+        if (!rightItem.is(RecastingItems.GATHERING_PARTING_VARIANT.get())) {
             return false;
         }
         if (!output.is(RecastingItems.SE_CRYSTAL.get())) {
             return false;
         }
 
-        Optional<SpecialSESnapshot> specialSE = findBladeSpecialSE(rightItem);
+        Optional<SpecialSESnapshot> specialSE = findBladeSpecialSE(leftItem);
         if (specialSE.isEmpty()) {
             return false;
         }

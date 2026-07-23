@@ -80,10 +80,7 @@ public final class JadeFireBuffHandler {
                     source,
                     target,
                     new DamageStructure(DOT_RATIO, 0f),
-                    List.of(
-                            RecastingAttackTypes.JADE_FIRE_ATTACK.get(),
-                            RecastingAttackTypes.NO_RECURSION_ATTACK.get()
-                    )
+                    List.of(RecastingAttackTypes.JADE_FIRE_ATTACK.get())
             );
         });
     }

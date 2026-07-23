@@ -193,10 +193,10 @@ public class RecastingBuffTypes {
 
     /**
      * 青界领域
-     * - 不随时间自动衰减；层数仅表示领域是否展开
+     * - 每 20 tick 衰减 1 层；层数表示领域剩余秒数
      */
     public static final RegistryObject<BuffType> QING_JIE_DOMAIN = BUFF_TYPES.register("qing_jie_domain",
-            () -> new BuffType(0, 1)
+            () -> new BuffType(20, 0)
     );
 
     /**

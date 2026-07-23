@@ -40,7 +40,8 @@ public class QingJieSlashArts extends ExtendedSlashArts {
     private static final int DEFAULT_COLOR = 0x4C8A8D;
 
     private static final int DOMAIN_DURATION = 20 * 30;
-    private static final int DOMAIN_TICK_INTERVAL = 5;
+    private static final int DOMAIN_TICK_INTERVAL = 10;
+    private static final int DOMAIN_STACKS = DOMAIN_DURATION / 20;
     private static final int BLADE_RELEASE_INTERVAL = 30;
     private static final float DOMAIN_RANGE = 32.0f;
 
@@ -48,7 +49,7 @@ public class QingJieSlashArts extends ExtendedSlashArts {
     private static final float JUDGEMENT_CUT_ATTACK = 0.3f;
     private static final float JUDGEMENT_CUT_SIZE = 1.5f;
     private static final float PHANTOM_EXPLOSION_ATTACK = 0.02f;
-    private static final int PHANTOM_SWORD_START_DELAY = 30;
+    private static final int PHANTOM_SWORD_START_DELAY = 20;
     private static final float PHANTOM_EXPLOSION_MIN_TILT_ANGLE = 0f;
     private static final float PHANTOM_EXPLOSION_MAX_TILT_ANGLE = 30f;
 
@@ -66,7 +67,7 @@ public class QingJieSlashArts extends ExtendedSlashArts {
 
         BuffType domainBuffType = RecastingBuffTypes.QING_JIE_DOMAIN.get();
         livingEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffData -> {
-            buffData.setLevel(domainBuffType, 1, livingEntity.level());
+            buffData.setLevel(domainBuffType, DOMAIN_STACKS, livingEntity.level());
             BuffSourceHelper.recordSourceEntity(buffData, domainBuffType, livingEntity, livingEntity);
             buffData.getOrCreateCustomData(domainBuffType, livingEntity.level()).putInt(KEY_COLOR, slashBladeState.getColorCode());
         });
@@ -100,10 +101,7 @@ public class QingJieSlashArts extends ExtendedSlashArts {
                     caster,
                     target,
                     new DamageStructure(JADE_FIRE_DOT_RATIO, 0f),
-                    List.of(
-                            RecastingAttackTypes.JADE_FIRE_ATTACK.get(),
-                            RecastingAttackTypes.NO_RECURSION_ATTACK.get()
-                    )
+                    List.of(RecastingAttackTypes.JADE_FIRE_ATTACK.get())
             );
         }
     }
@@ -144,8 +142,10 @@ public class QingJieSlashArts extends ExtendedSlashArts {
 
         int swordCount = Mth.nextInt(caster.getRandom(), 4, 7);
         float angleOffset = caster.getRandom().nextFloat() * 360.0f;
+        float tiltAngle = caster.getRandom().nextFloat() * (PHANTOM_EXPLOSION_MAX_TILT_ANGLE - PHANTOM_EXPLOSION_MIN_TILT_ANGLE) + PHANTOM_EXPLOSION_MIN_TILT_ANGLE;
+        float horizontalAngle = caster.getRandom().nextFloat() * 360f;
         for (int i = 0; i < swordCount; i++) {
-            spawnSmallPhantomSword(world, caster, target, color, angleOffset, swordCount, i);
+            spawnSmallPhantomSword(world, caster, target, color, angleOffset, tiltAngle, horizontalAngle, swordCount, i);
         }
     }
 
@@ -184,6 +184,8 @@ public class QingJieSlashArts extends ExtendedSlashArts {
             LivingEntity target,
             int color,
             float angleOffset,
+            float tiltAngle,
+            float horizontalAngle,
             int swordCount,
             int swordIndex
     ) {
@@ -193,13 +195,11 @@ public class QingJieSlashArts extends ExtendedSlashArts {
                 caster
         );
         summonedSword.setCenterEntity(target);
-        summonedSword.setRadiusExpansion(2.5f, 12.0f, 30);
-        summonedSword.setSpeedDecay(32.0f, 0.3f, 30);
+        summonedSword.setRadiusExpansion(2.5f, 6.0f, 30);
+        summonedSword.setSpeedDecay(16.0f, 0.3f, 30);
         summonedSword.setRotationAngle(angleOffset + (360.0f / swordCount * swordIndex));
 
-        float tiltAngle = caster.getRandom().nextFloat() * (PHANTOM_EXPLOSION_MAX_TILT_ANGLE - PHANTOM_EXPLOSION_MIN_TILT_ANGLE) + PHANTOM_EXPLOSION_MIN_TILT_ANGLE;
         float tiltRad = (float) Math.toRadians(tiltAngle);
-        float horizontalAngle = caster.getRandom().nextFloat() * 360f;
         float horizontalRad = (float) Math.toRadians(horizontalAngle);
 
         double y = Math.cos(tiltRad);
@@ -228,7 +228,7 @@ public class QingJieSlashArts extends ExtendedSlashArts {
 
         @Override
         public void run() {
-            if (!caster.isAlive() || caster.isRemoved() || caster.level().isClientSide() || livedTicks >= DOMAIN_DURATION) {
+            if (!caster.isAlive() || caster.isRemoved() || caster.level().isClientSide()) {
                 stopDomain(caster);
                 return;
             }

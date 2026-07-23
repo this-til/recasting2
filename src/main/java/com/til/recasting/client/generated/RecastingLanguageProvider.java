@@ -148,9 +148,9 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_UPGRADE, "• 升级：使用相同类型并且更高级SE的结晶可提升等级", "• Upgrade: Use crystals with the same type and higher-level SE to increase level.");
         translation(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_ERASE, "• 抹除：使用等级为0的结晶可移除SE", "• Erase: Use crystals with level 0 to remove SE");
         translation(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_UNLIMITED_HINT, "• 当前配置：普通SE与特殊SE都不受铭刻数量上限约束", "• Current config: normal and special SE engraving counts are both unlimited");
-        translation(RecastingLanguageKeys.TOOLTIP_SPECIAL_SE_EXTRACT, "• 渊寂火：左刀右火去除特殊SE（保留刀）；左火右刀提取为结晶（刀损毁）", "• Abyss Flame: blade+flame removes special SE (keeps blade); flame+blade extracts a crystal (destroys blade)");
+        translation(RecastingLanguageKeys.TOOLTIP_SPECIAL_SE_EXTRACT, "• 特殊SE：左刀右渊寂火去除特殊SE（保留刀）；左刀右聚散变体提取为结晶（刀损毁）", "• Special SE: blade+abyss flame removes special SE (keeps blade); blade+gathering parting variant extracts a crystal (destroys blade)");
         translation(RecastingLanguageKeys.TOOLTIP_SPECIAL_SE_BADGE, "(特殊)", "(Special)");
-        translation(RecastingLanguageKeys.TOOLTIP_ABYSS_FLAME_EXTRACT, "• 铁砧：左刀右火去除特殊SE；左火右刀提取结晶（刀损毁）", "• Anvil: blade+flame removes special SE; flame+blade extracts a crystal (blade destroyed)");
+        translation(RecastingLanguageKeys.TOOLTIP_ABYSS_FLAME_EXTRACT, "• 铁砧：左刀右渊寂火去除特殊SE；左刀右聚散变体提取结晶（刀损毁）", "• Anvil: blade+abyss flame removes special SE; blade+gathering parting variant extracts a crystal (blade destroyed)");
         translation(itemKey(RecastingItems.GATHERING_PARTING_VARIANT), "聚散变体", "Gathering Parting Variant");
         translation(itemKey(RecastingItems.UPGRADE_VARIANT), "升格变体 I", "Upgrade Variant II");
         translation(itemKey(RecastingItems.UPGRADE_VARIANT_2), "升格变体 II", "Upgrade Variant II");

@@ -219,7 +219,7 @@ public class RecastingAttackTypes {
     );
 
     /**
-     * 灵魂燃烧持续伤害（火焰伤害）；需配合 {@link #NO_RECURSION_ATTACK} 防递归
+     * 灵魂燃烧持续伤害（火焰伤害）
      */
     public static final RegistryObject<AttackType> SOUL_BURN_ATTACK = ATTACK_TYPES.register("soul_burn",
             () -> new AttackType((attacker, target) -> {
@@ -230,7 +230,7 @@ public class RecastingAttackTypes {
     );
 
     /**
-     * 光子灼烧持续伤害（火焰伤害）；需配合 {@link #NO_RECURSION_ATTACK} 防递归
+     * 光子灼烧持续伤害（火焰伤害）
      */
     public static final RegistryObject<AttackType> PHOTON_BURN_ATTACK = ATTACK_TYPES.register("photon_burn",
             () -> new AttackType((attacker, target) -> {
@@ -241,7 +241,7 @@ public class RecastingAttackTypes {
     );
 
     /**
-     * 翠火持续伤害（火焰伤害）；需配合 {@link #NO_RECURSION_ATTACK} 防递归
+     * 翠火持续伤害（火焰伤害）
      */
     public static final RegistryObject<AttackType> JADE_FIRE_ATTACK = ATTACK_TYPES.register("jade_fire",
             () -> new AttackType((attacker, target) -> {
@@ -259,6 +259,17 @@ public class RecastingAttackTypes {
                     attacker.damageSources().indirectMagic(target, attacker),
                     new DamageStructure(1.0f, 0.0f)
             ))
+    );
+
+    /**
+     * 断魄延迟追击（虚空伤害）；仅供断魄 SA 的延迟结算使用
+     */
+    public static final RegistryObject<AttackType> DUAN_PO_DELAYED_ATTACK = ATTACK_TYPES.register("duan_po_delayed",
+            () -> new AttackType((attacker, target) -> {
+                DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
+                DamageSource damageSource = accessor.callSource(DamageTypes.FELL_OUT_OF_WORLD, target, attacker);
+                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, new DamageStructure(1.0f, 0.0f));
+            })
     );
 
 }

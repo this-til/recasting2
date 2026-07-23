@@ -93,10 +93,7 @@ public class PhotonScarBuffHandler {
                     source,
                     target,
                     new DamageStructure(0f, damage),
-                    List.of(
-                            RecastingAttackTypes.PHOTON_BURN_ATTACK.get(),
-                            RecastingAttackTypes.NO_RECURSION_ATTACK.get()
-                    )
+                    List.of(RecastingAttackTypes.PHOTON_BURN_ATTACK.get())
             );
         });
     }

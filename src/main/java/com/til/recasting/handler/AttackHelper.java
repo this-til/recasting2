@@ -7,6 +7,8 @@ import com.til.recasting.event.DoSlashExtendEvent;
 import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.DamageStructure;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.damagesource.DamageTypes;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.util.KnockBacks;
 import mods.flammpfeil.slashblade.util.VectorHelper;
@@ -104,7 +106,11 @@ public class AttackHelper {
                             info -> {
                                 target.invulnerableTime = 0;
                                 DamageStructure structure = info.damageStructure();
-                                return target.hurt(info.damageSource(), (float) (finalDamage * structure.modifiedRatio()) + structure.extraDamage());
+                                boolean hurt = target.hurt(info.damageSource(), (float) (finalDamage * structure.modifiedRatio()) + structure.extraDamage());
+                                if (hurt) {
+                                    spawnDamageParticlesIfNeeded(target, info);
+                                }
+                                return hurt;
                             }
                     )
                     .toList()
@@ -122,6 +128,18 @@ public class AttackHelper {
 
         });
 
+    }
+
+    private static void spawnDamageParticlesIfNeeded(Entity target, AttackAmplifierEvent.DamageSourceInfo info) {
+        if (!info.damageSource().is(DamageTypes.FELL_OUT_OF_WORLD)) {
+            return;
+        }
+        if (!(target.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        Vec3 center = target.getBoundingBox().getCenter();
+        ParticleHelper.sendParticlesLongRange(serverLevel, ParticleTypes.PORTAL, center.x, center.y, center.z, 16, 0.35, 0.45, 0.35, 0.08);
     }
 
     public static SlashEffectEntity doSlash(

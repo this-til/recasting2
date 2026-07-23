@@ -127,12 +127,4 @@ public class BuffLevelRendererRegistry {
             () -> new BuffLevelRenderConfig(RecastingBuffTypes.TEA_AROMA, "buff.recasting.tea_aroma")
     );
 
-    /**
-     * 翠火 - 显示层数
-     */
-    public static final RegistryObject<BuffLevelRenderConfig> JADE_FIRE = BUFF_LEVEL_RENDER_CONFIGS.register(
-            "jade_fire",
-            () -> new BuffLevelRenderConfig(RecastingBuffTypes.JADE_FIRE, "buff.recasting.jade_fire")
-    );
-
 }

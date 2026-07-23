@@ -8,10 +8,7 @@ import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.registry.RecastingAttackTypes;
-import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.DamageStructure;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -40,13 +37,11 @@ import org.jetbrains.annotations.NotNull;
 public class DuanPoSlashArts extends ExtendedSlashArts {
 
     private int slashLife = 36;
-    private float slashAttack = 1.6f;
+    private float slashAttack = 3.25f;
     private float slashSize = 3f;
-    private float judgementCutAttack = 1.0f;
     private float giantJudgementCutAttack = 1.5f;
-    private float judgementCutSize = 1f;
     private float giantJudgementCutSize = 6f;
-    private int extraJudgementCutCount = 4;
+    private int giantJudgementCutCount = 5;
 
     @Override
     public void trigger(
@@ -143,15 +138,39 @@ public class DuanPoSlashArts extends ExtendedSlashArts {
             ISlashBladeState slashBladeState,
             Vec3 pos,
             float attack,
-            float size
+            float size,
+            int delay
     ) {
-        int delay = livingEntity.getRandom().nextInt(6);
         livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(
                 timeRun -> timeRun.addTimerCell(
                         () -> spawnJudgementCutNow(worldIn, livingEntity, slashBladeState, pos, attack, size),
                         delay
                 )
         );
+    }
+
+    private void spawnOrderedGiantJudgementCuts(
+            LivingEntity shooter,
+            ISlashBladeState slashBladeState,
+            List<Vec3> targetPositions
+    ) {
+        if (targetPositions.isEmpty()) {
+            return;
+        }
+
+        int count = Math.min(giantJudgementCutCount, targetPositions.size());
+        for (int i = 0; i < count; i++) {
+            int delay = i + 1;
+            spawnJudgementCut(
+                    shooter.level(),
+                    shooter,
+                    slashBladeState,
+                    targetPositions.get(i),
+                    giantJudgementCutAttack,
+                    giantJudgementCutSize,
+                    delay
+            );
+        }
     }
 
     private void spawnJudgementCutNow(
@@ -192,6 +211,19 @@ public class DuanPoSlashArts extends ExtendedSlashArts {
                 target.getY() + target.getEyeHeight() * 0.5,
                 target.getZ()
         );
+    }
+
+    private List<Vec3> planRepeatableTargetPositions(LivingEntity shooter, List<LivingEntity> hitTargets) {
+        if (hitTargets.isEmpty()) {
+            return List.of();
+        }
+
+        return java.util.stream.IntStream.range(0, giantJudgementCutCount)
+                .mapToObj(i -> {
+                    LivingEntity target = hitTargets.get(hitTargets.size() == 1 ? 0 : shooter.getRandom().nextInt(hitTargets.size()));
+                    return getTargetPos(target);
+                })
+                .toList();
     }
 
     private static class LockedJudgementCutEntity extends JudgementCutEntity {
@@ -255,32 +287,24 @@ public class DuanPoSlashArts extends ExtendedSlashArts {
             List<LivingEntity> hitTargets = (this.alreadyHits == null ? List.<Entity>of() : this.alreadyHits).stream()
                     .filter(LivingEntity.class::isInstance)
                     .map(LivingEntity.class::cast)
-                    .filter(LivingEntity::isAlive)
+                    .filter(target -> target != shooter)
                     .toList();
 
+            List<Vec3> plannedTargetPositions = planRepeatableTargetPositions(shooter, hitTargets);
+
             for (LivingEntity target : hitTargets) {
+                if (!target.isAlive()) {
+                    continue;
+                }
                 AttackHelper.doMeleeAttack(
                         shooter,
                         target,
                         new DamageStructure(slashAttack, 0f),
-                        List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get())
+                        List.of(RecastingAttackTypes.DUAN_PO_DELAYED_ATTACK.get())
                 );
-                spawnJudgementCut(level(), shooter, slashBladeState, getTargetPos(target), judgementCutAttack, judgementCutSize);
             }
 
-            List<LivingEntity> randomTargets = new ArrayList<>(hitTargets);
-            Collections.shuffle(randomTargets, new java.util.Random(shooter.getRandom().nextLong()));
-            int extraCount = Math.min(extraJudgementCutCount, randomTargets.size());
-            for (int i = 0; i < extraCount; i++) {
-                spawnJudgementCut(
-                        level(),
-                        shooter,
-                        slashBladeState,
-                        getTargetPos(randomTargets.get(i)),
-                        giantJudgementCutAttack,
-                        giantJudgementCutSize
-                );
-            }
+            spawnOrderedGiantJudgementCuts(shooter, slashBladeState, plannedTargetPositions);
         }
     }
 }
