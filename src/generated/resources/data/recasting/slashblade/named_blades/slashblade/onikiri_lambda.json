@@ -1,0 +1,22 @@
+{
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/onikiri_lambda",
+  "properties": {
+    "attack_base": 7.0,
+    "max_damage": 1440,
+    "slash_art": "recasting:soul_sever_lambda",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/onikiri.obj",
+    "summon_sword_color": -9807037,
+    "texture": "recasting:slashblade/onikiri.png"
+  }
+}

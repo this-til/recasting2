@@ -14,6 +14,8 @@ import mods.flammpfeil.slashblade.util.KnockBacks;
 import mods.flammpfeil.slashblade.util.VectorHelper;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -139,7 +141,13 @@ public class AttackHelper {
         }
 
         Vec3 center = target.getBoundingBox().getCenter();
-        ParticleHelper.sendParticlesLongRange(serverLevel, ParticleTypes.PORTAL, center.x, center.y, center.z, 16, 0.35, 0.45, 0.35, 0.08);
+        serverLevel.playSound(null, center.x, center.y, center.z, SoundEvents.ENDER_DRAGON_HURT, SoundSource.PLAYERS, 1.6F, 1.15F);
+        ParticleHelper.sendParticlesLongRange(serverLevel, ParticleTypes.PORTAL, center.x, center.y, center.z, 64, 0.3, 0.45, 0.3, 0.32);
+        ParticleHelper.sendParticlesLongRange(serverLevel, ParticleTypes.DRAGON_BREATH, center.x, center.y, center.z, 48, 0.4, 0.55, 0.4, 0.22);
+        ParticleHelper.sendParticlesLongRange(serverLevel, ParticleTypes.PORTAL, center.x, center.y, center.z, 72, 0.95, 1.15, 0.95, 0.08);
+        ParticleHelper.sendParticlesLongRange(serverLevel, ParticleTypes.END_ROD, center.x, center.y, center.z, 18, 0.35, 0.5, 0.35, 0.16);
+        ParticleHelper.sendParticlesLongRange(serverLevel, ParticleTypes.ENCHANTED_HIT, center.x, center.y, center.z, 28, 0.45, 0.6, 0.45, 0.28);
+        ParticleHelper.sendParticlesLongRange(serverLevel, ParticleTypes.WITCH, center.x, center.y, center.z, 24, 0.5, 0.7, 0.5, 0.12);
     }
 
     public static SlashEffectEntity doSlash(

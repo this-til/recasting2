@@ -126,7 +126,16 @@ public class SlashArtsRegistry {
     public static final RegistryObject<ExtendedSlashArts> MATRIX_LAMBDA = registerExtendedSA("matrix_lambda", new MatrixSlashArts().setAttackInterval(5));
 
     // 断魄
-    public static final RegistryObject<ExtendedSlashArts> DUAN_PO = registerExtendedSA("duan_po", new DuanPoSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> SOUL_SEVER = registerExtendedSA("soul_sever", new SoulSeverSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> SOUL_SEVER_LAMBDA = registerExtendedSA(
+            "soul_sever_lambda",
+            new SoulSeverSlashArts()
+                    .setSlashAttack(4.3225f)
+                    .setSlashSize(4.0f)
+                    .setGiantJudgementCutAttack(1.995f)
+                    .setGiantJudgementCutSize(8.0f)
+                    .setGiantJudgementCutCount(7)
+    );
 
     // 幻影爆破
     public static final RegistryObject<ExtendedSlashArts> PHANTOM_EXPLOSION = registerExtendedSA("phantom_explosion", new PhantomExplosionSlashArts());
@@ -212,9 +221,49 @@ public class SlashArtsRegistry {
     );
 
     // 青界
-    public static final RegistryObject<ExtendedSlashArts> QING_JIE = registerExtendedSA(
-            "qing_jie",
-            new QingJieSlashArts()
+    public static final RegistryObject<ExtendedSlashArts> JADE_DOMAIN = registerExtendedSA(
+            "jade_domain",
+            new JadeDomainSlashArts()
+    );
+    public static final RegistryObject<ExtendedSlashArts> JADE_DOMAIN_LAMBDA = registerExtendedSA(
+            "jade_domain_lambda",
+            new JadeDomainSlashArts()
+                    .setJudgementCutAttack(0.399f)
+                    .setPhantomSwordAttack(0.0266f)
+                    .setMinPhantomSwordCount(9)
+                    .setMaxPhantomSwordCount(12)
+                    .setInitialBladeReleaseCount(13)
+    );
+
+    // 裂岚
+    public static final RegistryObject<ExtendedSlashArts> RIFT_GALE = registerExtendedSA(
+            "rift_gale",
+            new RiftGaleSlashArts()
+    );
+    public static final RegistryObject<ExtendedSlashArts> RIFT_GALE_LAMBDA = registerExtendedSA(
+            "rift_gale_lambda",
+            new RiftGaleSlashArts()
+                    .setDriveDuration(30)
+                    .setDriveAttack(0.133f)
+                    .setDriveLife(15)
+                    .setCrossAttack(1.7955f)
+                    .setCrossSize(4.655f)
+    );
+
+    // 掠影
+    public static final RegistryObject<ExtendedSlashArts> FLEETING_SHADOW = registerExtendedSA(
+            "fleeting_shadow",
+            new FleetingShadowSlashArts()
+    );
+    public static final RegistryObject<ExtendedSlashArts> FLEETING_SHADOW_LAMBDA = registerExtendedSA(
+            "fleeting_shadow_lambda",
+            new FleetingShadowSlashArts()
+                    .setJumpCount(26)
+                    .setJumpInterval(2)
+                    .setSlashTicksPerJump(1)
+                    .setSlashesPerTick(2)
+                    .setSearchRange(48.0f)
+                    .setSlashHit(0.1206f)
     );
 
     /**

@@ -195,17 +195,17 @@ public class RecastingBuffTypes {
      * 青界领域
      * - 每 20 tick 衰减 1 层；层数表示领域剩余秒数
      */
-    public static final RegistryObject<BuffType> QING_JIE_DOMAIN = BUFF_TYPES.register("qing_jie_domain",
+    public static final RegistryObject<BuffType> JADE_DOMAIN = BUFF_TYPES.register("jade_domain",
             () -> new BuffType(20, 0)
     );
 
     /**
      * 翠火
-     * - 衰减间隔 10 tick；领域每 10 tick 刷新为 1 层
-     * - 持续期间显示绿色火焰、造成持续伤害并提高所受伤害
+     * - 每 20 tick 衰减 1 层；最大 40 层
+     * - 持续期间造成固定火焰伤害并按层提高所受伤害
      */
     public static final RegistryObject<BuffType> JADE_FIRE = BUFF_TYPES.register("jade_fire",
-            () -> new BuffType(10, 1)
+            () -> new BuffType(20, 40)
     );
 
     /**
@@ -221,6 +221,14 @@ public class RecastingBuffTypes {
      * - 衰减间隔 1 tick；层数 = 剩余冷却 tick（记录在起始目标）
      */
     public static final RegistryObject<BuffType> STATIC_AFTERGLOW_CHAIN_CD = BUFF_TYPES.register("static_afterglow_chain_cd",
+            () -> new BuffType(1, 0)
+    );
+
+    /**
+     * 宝具连发冷却
+     * - 衰减间隔 1 tick；层数 = 剩余冷却 tick（记录在释放者）
+     */
+    public static final RegistryObject<BuffType> TREASURE_BARRAGE_COOLDOWN = BUFF_TYPES.register("treasure_barrage_cooldown",
             () -> new BuffType(1, 0)
     );
 

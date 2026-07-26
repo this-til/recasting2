@@ -10,25 +10,23 @@ import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import java.util.List;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
  * 翠火 Buff 处理器
  * <ul>
- *   <li>服务端每 10 tick 造成一次火焰持续伤害</li>
- *   <li>结算时清空目标速度</li>
- *   <li>目标承受的全部伤害提高 20%</li>
+ *   <li>服务端每秒造成固定火焰伤害</li>
+ *   <li>目标承受的全部伤害按层提高</li>
  * </ul>
  */
 @Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class JadeFireBuffHandler {
 
     private static final String TIMER_NAME = "jade_fire_tick";
-    private static final float DOT_RATIO = 0.05f;
-    private static final float DAMAGE_AMP = 0.2f;
-    private static final int TICKS_PER_INTERVAL = 10;
+    private static final float FIXED_FIRE_DAMAGE = 0.5f;
+    private static final float DAMAGE_AMP_PER_LEVEL = 0.4f;
+    private static final int TICKS_PER_INTERVAL = 20;
 
     private JadeFireBuffHandler() {
     }
@@ -75,11 +73,10 @@ public final class JadeFireBuffHandler {
                 return;
             }
 
-            target.setDeltaMovement(Vec3.ZERO);
             AttackHelper.attack(
                     source,
                     target,
-                    new DamageStructure(DOT_RATIO, 0f),
+                    new DamageStructure(0f, FIXED_FIRE_DAMAGE),
                     List.of(RecastingAttackTypes.JADE_FIRE_ATTACK.get())
             );
         });
@@ -102,7 +99,7 @@ public final class JadeFireBuffHandler {
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
             int currentLevel = data.getLevel(RecastingBuffTypes.JADE_FIRE.get(), target.level());
             if (currentLevel > 0) {
-                event.addModifiedRatioAmplifier(DAMAGE_AMP);
+                event.addModifiedRatioAmplifier(currentLevel * DAMAGE_AMP_PER_LEVEL);
             }
         });
     }

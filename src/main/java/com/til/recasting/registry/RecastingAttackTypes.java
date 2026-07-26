@@ -264,7 +264,7 @@ public class RecastingAttackTypes {
     /**
      * 断魄延迟追击（虚空伤害）；仅供断魄 SA 的延迟结算使用
      */
-    public static final RegistryObject<AttackType> DUAN_PO_DELAYED_ATTACK = ATTACK_TYPES.register("duan_po_delayed",
+    public static final RegistryObject<AttackType> SOUL_SEVER_DELAYED_ATTACK = ATTACK_TYPES.register("soul_sever_delayed",
             () -> new AttackType((attacker, target) -> {
                 DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
                 DamageSource damageSource = accessor.callSource(DamageTypes.FELL_OUT_OF_WORLD, target, attacker);

@@ -1,6 +1,7 @@
+
 package com.til.recasting.registry.se;
 
-import com.til.recasting.constant.SlashBladeDefinitions;
+import com.til.recasting.constant.RecastingSlashBladeKeys;
 import com.til.recasting.event.DoSlashExtendEvent;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +22,7 @@ public class EnlargeSpecialEffect extends ExtendedSpecialEffect {
         }
 
         ISlashBladeState state = event.getSlashBladeState();
-        String allowedKey = SlashBladeDefinitions.DHARMA_STICK_LAMBDA.getTranslationKey();
+        String allowedKey = RecastingSlashBladeKeys.DHARMA_STICK_LAMBDA.location().toLanguageKey("item");
         if (!allowedKey.equals(state.getTranslationKey())) {
             if (event.getUser().level().isClientSide()) {
                 return;

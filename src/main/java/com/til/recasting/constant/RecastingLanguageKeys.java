@@ -4,6 +4,19 @@ public final class RecastingLanguageKeys {
 
     public static final String OTHER_TEST = "other.test";
 
+    public static final String BUFF_SOUL_BURN = "buff.recasting.soul_burn";
+    public static final String BUFF_FRAGMENT = "buff.recasting.fragment";
+    public static final String BUFF_IONIZATION = "buff.recasting.ionization";
+    public static final String BUFF_ENERGY_STORAGE = "buff.recasting.energy_storage";
+    public static final String BUFF_TEAR = "buff.recasting.tear";
+    public static final String BUFF_PHOTON_SCAR = "buff.recasting.photon_scar";
+    public static final String BUFF_PHOTON_BURN = "buff.recasting.photon_burn";
+    public static final String BUFF_SUNSET_CORE = "buff.recasting.sunset_core";
+    public static final String BUFF_SUNSET_STACK = "buff.recasting.sunset_stack";
+    public static final String BUFF_GOLDEN_HALBERD = "buff.recasting.golden_halberd";
+    public static final String BUFF_TEA_AROMA = "buff.recasting.tea_aroma";
+    public static final String BUFF_JADE_FIRE = "buff.recasting.jade_fire";
+
     public static final String TOOLTIP_ENGRAVING_RULE_TITLE = "recasting.tooltip.engraving_rule.title";
     public static final String TOOLTIP_ENGRAVING_RULE_MAIN = "recasting.tooltip.engraving_rule.main";
     public static final String TOOLTIP_ENGRAVING_RULE_MAIN_UNLIMITED = "recasting.tooltip.engraving_rule.main_unlimited";

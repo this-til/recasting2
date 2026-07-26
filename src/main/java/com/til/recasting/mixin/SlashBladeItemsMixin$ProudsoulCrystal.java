@@ -1,5 +1,6 @@
 package com.til.recasting.mixin;
 
+import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.registry.se.ExtendedSpecialEffect;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.ChatFormatting;
@@ -65,8 +66,8 @@ public class SlashBladeItemsMixin$ProudsoulCrystal {
         if (extendedSE.isSpecial()) {
             line = line.copy()
                     .append(Component.literal(" "))
-                    .append(Component.translatable("recasting.tooltip.special_se.badge")
-                            .withStyle(ChatFormatting.LIGHT_PURPLE));
+                                    .append(Component.translatable(RecastingLanguageKeys.TOOLTIP_SPECIAL_SE_BADGE)
+                                            .withStyle(ChatFormatting.LIGHT_PURPLE));
         }
         components.add(line);
 

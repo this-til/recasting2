@@ -96,7 +96,7 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
         }
 
         // 计算目标位置（考虑预测提前量）
-        Vec3 targetPos = calculatePredictedTargetPosition(target);
+        Vec3 targetPos = MathHelper.predictEntityCenterPosition(this, target, getPredictionFactor());
         
         // 计算目标方向向量
         Vec3 desiredDirection = targetPos.subtract(getPos()).normalize();
@@ -105,94 +105,16 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
         Vec3 currentVelocity = getDeltaMovement();
         Vec3 currentDirection = currentVelocity.length() > 0.001 ? currentVelocity.normalize() : desiredDirection;
         
-        // 使用速度向量的平滑插值来实现物理弹道效果
-        float smoothness = getTurnSmoothness();
+        Vec3 newDirection = MathHelper.smoothDirection(
+                currentDirection,
+                desiredDirection,
+                getMaxTurnSpeed(),
+                getTurnSmoothness()
+        );
 
-        // 计算转向角度
-        double dot = currentDirection.dot(desiredDirection);
-        dot = MathHelper.clamp(dot, -1.0, 1.0);
-        double angle = Math.acos(dot);
-        
-        // 如果角度很小，直接使用目标方向
-        if (angle < 0.01) {
-            lookAt(desiredDirection, true, false, false);
-            updateMotion(getSeep());
-            return;
-        }
-        
-        // 计算最大可转向角度（基于最大转向速度）
-        float maxTurnSpeed = getMaxTurnSpeed();
-        double maxTurnAngle = Math.toRadians(maxTurnSpeed);
-        
-        // 限制转向角度
-        double turnAngle = Math.min(angle, maxTurnAngle);
-        
-        // 计算插值参数（基于平滑度和转向角度）
-        double t = smoothness * (turnAngle / angle);
-        t = MathHelper.clamp(t, 0.0, 1.0);
-        
-        // 使用球面线性插值（SLERP）来平滑转向
-        Vec3 newDirection = slerp(currentDirection, desiredDirection, t);
-        
         // 更新朝向和速度
         lookAt(newDirection, true, false, false);
         updateMotion(getSeep());
-    }
-    
-    /**
-     * 计算预测的目标位置（考虑目标的移动速度）
-     */
-    protected Vec3 calculatePredictedTargetPosition(Entity target) {
-        Vec3 targetPos = target.position().add(0, target.getBbHeight() * 0.5, 0);
-        float predictionFactor = getPredictionFactor();
-        
-        if (predictionFactor <= 0.0f) {
-            return targetPos;
-        }
-        
-        // 获取目标的速度
-        Vec3 targetVelocity = target.getDeltaMovement();
-        
-        // 计算到达目标所需的时间（简化估算）
-        Vec3 toTarget = targetPos.subtract(getPos());
-        double distance = toTarget.length();
-        double speed = getDeltaMovement().length();
-        
-        if (speed > 0.001 && distance > 0.001) {
-            double timeToTarget = distance / speed;
-            // 应用预测因子
-            timeToTarget *= predictionFactor;
-            
-            // 预测目标未来位置
-            Vec3 predictedPos = targetPos.add(targetVelocity.scale(timeToTarget));
-            return predictedPos;
-        }
-        
-        return targetPos;
-    }
-    
-    /**
-     * 球面线性插值（SLERP）
-     * 
-     * @param start 起始方向向量（已归一化）
-     * @param end 目标方向向量（已归一化）
-     * @param t 插值参数（0.0-1.0）
-     * @return 插值后的方向向量（已归一化）
-     */
-    protected Vec3 slerp(Vec3 start, Vec3 end, double t) {
-        double dot = MathHelper.clamp(start.dot(end), -1.0, 1.0);
-        double angle = Math.acos(dot);
-        double sinAngle = Math.sin(angle);
-        
-        if (sinAngle < 0.001) {
-            // 角度太小，直接线性插值并归一化
-            return start.scale(1.0 - t).add(end.scale(t)).normalize();
-        }
-        
-        double t1 = Math.sin((1.0 - t) * angle) / sinAngle;
-        double t2 = Math.sin(t * angle) / sinAngle;
-        
-        return start.scale(t1).add(end.scale(t2)).normalize();
     }
 
 
@@ -269,4 +191,3 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
         entityData.set(PREDICTION_FACTOR, Math.max(0.0f, predictionFactor));
     }
 }
-

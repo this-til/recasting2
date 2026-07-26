@@ -2,6 +2,8 @@ package com.til.recasting.handler;
 
 
 import net.minecraft.Util;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -166,6 +168,56 @@ public class MathHelper {
                     ? max
                     : num;
         }
+    }
+
+    public static Vec3 predictEntityCenterPosition(Entity source, Entity target, float predictionFactor) {
+        Vec3 targetPos = target.position().add(0, target.getBbHeight() * 0.5, 0);
+
+        if (predictionFactor <= 0.0f) {
+            return targetPos;
+        }
+
+        Vec3 targetVelocity = target.getDeltaMovement();
+        Vec3 toTarget = targetPos.subtract(source.position());
+        double distance = toTarget.length();
+        double speed = source.getDeltaMovement().length();
+
+        if (speed > 0.001 && distance > 0.001) {
+            double timeToTarget = distance / speed * predictionFactor;
+            return targetPos.add(targetVelocity.scale(timeToTarget));
+        }
+
+        return targetPos;
+    }
+
+    public static Vec3 smoothDirection(Vec3 currentDirection, Vec3 desiredDirection, float maxTurnSpeed, float smoothness) {
+        double dot = clamp(currentDirection.dot(desiredDirection), -1.0, 1.0);
+        double angle = Math.acos(dot);
+
+        if (angle < 0.01) {
+            return desiredDirection;
+        }
+
+        double maxTurnAngle = Math.toRadians(maxTurnSpeed);
+        double turnAngle = Math.min(angle, maxTurnAngle);
+        double t = clamp(smoothness * (turnAngle / angle), 0.0, 1.0);
+
+        return slerpDirection(currentDirection, desiredDirection, t);
+    }
+
+    public static Vec3 slerpDirection(Vec3 start, Vec3 end, double t) {
+        double dot = clamp(start.dot(end), -1.0, 1.0);
+        double angle = Math.acos(dot);
+        double sinAngle = Math.sin(angle);
+
+        if (sinAngle < 0.001) {
+            return start.scale(1.0 - t).add(end.scale(t)).normalize();
+        }
+
+        double t1 = Math.sin((1.0 - t) * angle) / sinAngle;
+        double t2 = Math.sin(t * angle) / sinAngle;
+
+        return start.scale(t1).add(end.scale(t2)).normalize();
     }
 
     public static double clampedLerp(double lowerBnd, double upperBnd, double slide) {

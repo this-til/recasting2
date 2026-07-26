@@ -125,6 +125,12 @@ public class SpecialEffectsRegistry {
             .setChainCooldownTick(10)
             .setMaxLevel(1)
             .setSpecial(true));
+    // 宝具连发 - 释放SA后延迟再次触发一次，带内置冷却
+    public static final RegistryObject<SpecialEffect> TREASURE_BARRAGE = registerExtendedSE("treasure_barrage", () -> new TreasureBarrageSpecialEffect().setMaxLevel(1).setSpecial(true));
+    public static final RegistryObject<SpecialEffect> TREASURE_BARRAGE_LAMBDA = registerExtendedSE("treasure_barrage_lambda", () -> new TreasureBarrageSpecialEffect()
+            .setCooldownTicks(40)
+            .setMaxLevel(1)
+            .setSpecial(true));
 
     public static RegistryObject<SpecialEffect> registerExtendedSE(String name, Supplier<SpecialEffect> factory) {
         return SPECIAL_EFFECT.register(name, factory);

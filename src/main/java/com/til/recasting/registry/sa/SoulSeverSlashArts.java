@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @Setter
 @Accessors(chain = true)
-public class DuanPoSlashArts extends ExtendedSlashArts {
+public class SoulSeverSlashArts extends ExtendedSlashArts {
 
     private int slashLife = 36;
     private float slashAttack = 3.25f;
@@ -300,7 +300,7 @@ public class DuanPoSlashArts extends ExtendedSlashArts {
                         shooter,
                         target,
                         new DamageStructure(slashAttack, 0f),
-                        List.of(RecastingAttackTypes.DUAN_PO_DELAYED_ATTACK.get())
+                        List.of(RecastingAttackTypes.SOUL_SEVER_DELAYED_ATTACK.get())
                 );
             }
 

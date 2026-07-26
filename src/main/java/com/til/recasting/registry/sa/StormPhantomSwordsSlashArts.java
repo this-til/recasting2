@@ -42,6 +42,8 @@ public class StormPhantomSwordsSlashArts extends ExtendedSlashArts {
                         ? 1
                         : -1));
 
+        float roll = livingEntity.getRandom().nextFloat() * 360.0f;
+
         // 创建多把召唤剑
         for(int i = 0; i < number; i++) {
             SummondSwordEntity summonedSword =
@@ -60,7 +62,7 @@ public class StormPhantomSwordsSlashArts extends ExtendedSlashArts {
             // 设置属性
             summonedSword.setColor(slashBladeState.getColorCode());
             summonedSword.setStartDelay(i);  // 延迟发射
-            summonedSword.setRoll(livingEntity.getRandom().nextFloat() * 360.0f);
+            summonedSword.setRoll(roll);
             summonedSword.setModifiedRatio(attack);
 
             // 添加到世界

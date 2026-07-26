@@ -3,6 +3,7 @@ package com.til.recasting.mixin;
 import com.til.recasting.capability.ISpecialEffectCrystalData;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.registry.SlashArtsRegistry;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
@@ -97,7 +98,7 @@ public class ItemSlashBladeMixin {
                         if (extendedSpecialEffect.isSpecial()) {
                             line = line.copy()
                                     .append(Component.literal(" "))
-                                    .append(Component.translatable("recasting.tooltip.special_se.badge")
+                                    .append(Component.translatable(RecastingLanguageKeys.TOOLTIP_SPECIAL_SE_BADGE)
                                             .withStyle(ChatFormatting.LIGHT_PURPLE));
                         }
                         tooltip.add(line);
@@ -144,4 +145,3 @@ public class ItemSlashBladeMixin {
     }
 
 }
-

@@ -4,18 +4,19 @@
       "id": "minecraft:sharpness"
     }
   ],
-  "name": "recasting:slashblade/jing_chu",
+  "name": "recasting:slashblade/onikiri",
   "properties": {
     "attack_base": 6.0,
     "max_damage": 960,
+    "slash_art": "recasting:soul_sever",
     "sword_type": [
       "bewitched"
     ]
   },
   "render": {
     "carry_type": "default",
-    "model": "recasting:slashblade/jing_chu.obj",
-    "summon_sword_color": -10654163,
-    "texture": "recasting:slashblade/jing_chu.png"
+    "model": "recasting:slashblade/onikiri.obj",
+    "summon_sword_color": -9807037,
+    "texture": "recasting:slashblade/onikiri.png"
   }
 }

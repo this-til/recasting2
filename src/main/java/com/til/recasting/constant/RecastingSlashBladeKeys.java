@@ -1,0 +1,94 @@
+package com.til.recasting.constant;
+
+import com.til.recasting.Recasting;
+import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
+import net.minecraft.resources.ResourceKey;
+
+/** Recasting SlashBlade 定义的稳定注册 key。 */
+public final class RecastingSlashBladeKeys {
+    private RecastingSlashBladeKeys() {
+    }
+
+    public static final ResourceKey<SlashBladeDefinition> BROADSWORD_WOOD = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.broadswordWood);
+    public static final ResourceKey<SlashBladeDefinition> GREEN_BLADE_WOOD = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.greenBladeWood);
+    public static final ResourceKey<SlashBladeDefinition> DHARMA_STICK = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.dharmaStick);
+    public static final ResourceKey<SlashBladeDefinition> DHARMA_STICK_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/dharma_stick_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> HOE = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.hoe);
+    public static final ResourceKey<SlashBladeDefinition> BROADSWORD_IRON = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.broadswordIron);
+    public static final ResourceKey<SlashBladeDefinition> GREEN_BLADE_IRON = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.greenBladeIron);
+    public static final ResourceKey<SlashBladeDefinition> BROKEN_WHITE = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.brokenWhite);
+    public static final ResourceKey<SlashBladeDefinition> BLACK = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.black);
+    public static final ResourceKey<SlashBladeDefinition> ART_KNIFE = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.artKnife);
+    public static final ResourceKey<SlashBladeDefinition> BA_GUA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.baGua);
+    public static final ResourceKey<SlashBladeDefinition> PHYSICS_SWORD = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.physicsSword);
+    public static final ResourceKey<SlashBladeDefinition> BLUE_CLOUD = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.blueCloud);
+    public static final ResourceKey<SlashBladeDefinition> BLUE_CLOUD_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/blue_cloud_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> DRAGON_SCALE = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.dragonScale);
+    public static final ResourceKey<SlashBladeDefinition> DRAGON_SCALE_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/dragon_scale_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> UMBRELLA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.umbrella);
+    public static final ResourceKey<SlashBladeDefinition> UMBRELLA_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.umbrellaLambda);
+    public static final ResourceKey<SlashBladeDefinition> BA_GUA_BIG = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.baGuaBig);
+    public static final ResourceKey<SlashBladeDefinition> BA_GUA_BIG_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/ba_gua_big_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> OBLITERATE = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.obliterate);
+    public static final ResourceKey<SlashBladeDefinition> OBLITERATE_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.obliterateLambda);
+    public static final ResourceKey<SlashBladeDefinition> SHINE_GOLD = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.shineGold);
+    public static final ResourceKey<SlashBladeDefinition> SHINE_GOLD_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/shine_gold_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> SHINE_TEA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.shineTea);
+    public static final ResourceKey<SlashBladeDefinition> SHINE_TEA_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/shine_tea_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> SILVER_WING = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.silverWing);
+    public static final ResourceKey<SlashBladeDefinition> SILVER_WING_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/silver_wing_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> COLOR_WING = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.colorWing);
+    public static final ResourceKey<SlashBladeDefinition> COLOR_WING_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/color_wing_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> LONG_SKY_SUNSET = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.longSkySunset);
+    public static final ResourceKey<SlashBladeDefinition> LONG_SKY_SUNSET_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/long_sky_sunset_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> XUAN_YUAN = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.xuanYuan);
+    public static final ResourceKey<SlashBladeDefinition> COOL_MINT = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.coolMint);
+    public static final ResourceKey<SlashBladeDefinition> COOL_MINT_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/cool_mint_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> DRAGON = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.dragon);
+    public static final ResourceKey<SlashBladeDefinition> DRAGON_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.dragonLambda);
+    public static final ResourceKey<SlashBladeDefinition> SOULBLADE = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.soulblade);
+    public static final ResourceKey<SlashBladeDefinition> SUPREME_POLE = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.supremePole);
+    public static final ResourceKey<SlashBladeDefinition> SUPREME_POLE_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/supreme_pole_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> WIND_CLOUD = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.windCloud);
+    public static final ResourceKey<SlashBladeDefinition> WIND_CLOUD_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/wind_cloud_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> BRILLIANT_GOLD = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.brilliantGold);
+    public static final ResourceKey<SlashBladeDefinition> BRILLIANT_GOLD_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/brilliant_gold_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> BRILLIANT_TEA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.brilliantTea);
+    public static final ResourceKey<SlashBladeDefinition> BRILLIANT_TEA_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/brilliant_tea_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> STARTLED_SWAN = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.startledSwan);
+    public static final ResourceKey<SlashBladeDefinition> STARTLED_SWAN_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/startled_swan_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> BRIARLAND = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.briarland);
+    public static final ResourceKey<SlashBladeDefinition> BRIARLAND_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/briarland_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> ONIKIRI = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.onikiri);
+    public static final ResourceKey<SlashBladeDefinition> ONIKIRI_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/onikiri_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> AZURE_VISTA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.azureVista);
+    public static final ResourceKey<SlashBladeDefinition> AZURE_VISTA_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/azure_vista_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> TIL = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Special.til);
+    public static final ResourceKey<SlashBladeDefinition> TIL_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/special/til_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> HTOD = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Special.htod);
+    public static final ResourceKey<SlashBladeDefinition> HTOD_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/special/htod_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> XING_KONG = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Special.xingKong);
+    public static final ResourceKey<SlashBladeDefinition> XING_KONG_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/special/xing_kong_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> TU_WU = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Special.tuWu);
+    public static final ResourceKey<SlashBladeDefinition> XUAN_YUAN_LIBERATED = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Special.xuanYuanLiberated);
+    public static final ResourceKey<SlashBladeDefinition> FLUORESCENCE_1 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Fluorescence.fluorescence1);
+    public static final ResourceKey<SlashBladeDefinition> FLUORESCENCE_2 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Fluorescence.fluorescence2);
+    public static final ResourceKey<SlashBladeDefinition> FLUORESCENCE_3 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Fluorescence.fluorescence3);
+    public static final ResourceKey<SlashBladeDefinition> FLUORESCENCE_4 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Fluorescence.fluorescence4);
+    public static final ResourceKey<SlashBladeDefinition> FLUORESCENCE_5 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Fluorescence.fluorescence5);
+    public static final ResourceKey<SlashBladeDefinition> FLUORESCENCE_6 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Fluorescence.fluorescence6);
+    public static final ResourceKey<SlashBladeDefinition> FLUORESCENCE_7 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Fluorescence.fluorescence7);
+    public static final ResourceKey<SlashBladeDefinition> FLUORESCENCE_8 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Fluorescence.fluorescence8);
+    public static final ResourceKey<SlashBladeDefinition> LASER_1 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Laser.laser1);
+    public static final ResourceKey<SlashBladeDefinition> LASER_2 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Laser.laser2);
+    public static final ResourceKey<SlashBladeDefinition> LASER_3 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Laser.laser3);
+    public static final ResourceKey<SlashBladeDefinition> LASER_3_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/laser/laser_3_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> STAR_1 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Star.star1);
+    public static final ResourceKey<SlashBladeDefinition> STAR_2 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Star.star2);
+    public static final ResourceKey<SlashBladeDefinition> STAR_3 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Star.star3);
+    public static final ResourceKey<SlashBladeDefinition> STAR_4 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Star.star4);
+    public static final ResourceKey<SlashBladeDefinition> STAR_4_LAMBDA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, Recasting.prefix("slashblade/star/star_4_lambda"));
+    public static final ResourceKey<SlashBladeDefinition> VOID_1 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Void.void1);
+    public static final ResourceKey<SlashBladeDefinition> VOID_2 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Void.void2);
+    public static final ResourceKey<SlashBladeDefinition> VOID_3 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Void.void3);
+}

@@ -218,6 +218,8 @@ dependencies {
     //implementation fg.deobf("mods.flammpfeil.slashblade:SlashBlade_Resharped:${slash_blade_version}")
     implementation fg.deobf("curse.maven:SlashBlade_Resharped-1022428:7363505")
     runModLibraries fg.deobf("curse.maven:SlashBlade_Resharped-1022428:7363505")
+    //拔刀剑物品栏/图标渲染预热优化，仅开发运行时注入
+    runModLibraries fg.deobf("curse.maven:slashblade-model-warmup-1468875:7663355")
 
 
     //nbt编辑器
@@ -299,6 +301,93 @@ tasks.named('processResources', ProcessResources).configure {
     }
 }
 
+def resizePngToMaxDimension(byte[] sourceBytes, int maxDimension) {
+    def sourceImage = javax.imageio.ImageIO.read(new ByteArrayInputStream(sourceBytes))
+    if (sourceImage == null) {
+        return sourceBytes
+    }
+
+    int sourceWidth = sourceImage.getWidth()
+    int sourceHeight = sourceImage.getHeight()
+    int longestSide = Math.max(sourceWidth, sourceHeight)
+    if (longestSide <= maxDimension) {
+        return sourceBytes
+    }
+
+    double scale = maxDimension / (double) longestSide
+    int targetWidth = Math.max(1, Math.round(sourceWidth * scale) as int)
+    int targetHeight = Math.max(1, Math.round(sourceHeight * scale) as int)
+    def targetImage = new java.awt.image.BufferedImage(targetWidth, targetHeight, java.awt.image.BufferedImage.TYPE_INT_ARGB)
+    def graphics = targetImage.createGraphics()
+    try {
+        graphics.setRenderingHint(java.awt.RenderingHints.KEY_INTERPOLATION, java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR)
+        graphics.setRenderingHint(java.awt.RenderingHints.KEY_RENDERING, java.awt.RenderingHints.VALUE_RENDER_QUALITY)
+        graphics.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON)
+        graphics.drawImage(sourceImage, 0, 0, targetWidth, targetHeight, null)
+    } finally {
+        graphics.dispose()
+    }
+
+    def output = new ByteArrayOutputStream()
+    javax.imageio.ImageIO.write(targetImage, 'png', output)
+    return output.toByteArray()
+}
+
+tasks.register('compressed512Jar') {
+    description = 'Builds an additional mod JAR with PNG resources capped to 512 pixels.'
+    group = 'build'
+
+    dependsOn 'reobfJar'
+
+    def sourceJarProvider = tasks.named('jar', Jar).flatMap { it.archiveFile }
+    def outputJarProvider = layout.buildDirectory.file("libs/${base.archivesName.get()}-${project.version}-compressed-512.jar")
+
+    inputs.file(sourceJarProvider)
+    outputs.file(outputJarProvider)
+
+    doLast {
+        def sourceJar = sourceJarProvider.get().asFile
+        def outputJar = outputJarProvider.get().asFile
+        outputJar.parentFile.mkdirs()
+
+        def compressedCount = 0
+        def copiedCount = 0
+        def zipFile = new java.util.zip.ZipFile(sourceJar)
+        def zipOutput = new java.util.zip.ZipOutputStream(new BufferedOutputStream(new FileOutputStream(outputJar)))
+        try {
+            zipFile.entries().each { entry ->
+                def outputEntry = new java.util.zip.ZipEntry(entry.name)
+                outputEntry.time = entry.time
+                if (entry.directory) {
+                    zipOutput.putNextEntry(outputEntry)
+                    zipOutput.closeEntry()
+                    copiedCount++
+                    return
+                }
+
+                byte[] bytes = zipFile.getInputStream(entry).withCloseable { it.bytes }
+                if (entry.name.toLowerCase(Locale.ROOT).endsWith('.png')) {
+                    byte[] resizedBytes = resizePngToMaxDimension(bytes, 512)
+                    if (resizedBytes.length != bytes.length) {
+                        compressedCount++
+                    }
+                    bytes = resizedBytes
+                }
+
+                zipOutput.putNextEntry(outputEntry)
+                zipOutput.write(bytes)
+                zipOutput.closeEntry()
+                copiedCount++
+            }
+        } finally {
+            zipOutput.close()
+            zipFile.close()
+        }
+
+        logger.lifecycle("Created ${outputJar} with ${compressedCount} PNG resources capped to 512px across ${copiedCount} entries.")
+    }
+}
+
 // Example for how to get properties into the manifest for reading at runtime.
 tasks.named('jar', Jar).configure {
     manifest {
@@ -313,6 +402,7 @@ tasks.named('jar', Jar).configure {
 
     // This is the preferred method to reobfuscate your jar file
     finalizedBy 'reobfJar'
+    finalizedBy 'compressed512Jar'
 }
 
 tasks.withType(JavaCompile).configureEach {

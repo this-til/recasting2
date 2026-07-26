@@ -1,0 +1,22 @@
+{
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/azure_vista_lambda",
+  "properties": {
+    "attack_base": 7.0,
+    "max_damage": 1440,
+    "slash_art": "recasting:jade_domain_lambda",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/azure_vista.obj",
+    "summon_sword_color": -11761011,
+    "texture": "recasting:slashblade/azure_vista.png"
+  }
+}

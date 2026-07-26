@@ -2,6 +2,7 @@ package com.til.recasting.registry;
 
 import com.til.recasting.Config;
 import com.til.recasting.Recasting;
+import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.capability.ISpecialEffectCrystalData;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.item.ProudSoulItem;
@@ -78,7 +79,7 @@ public class RecastingItems {
         public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<net.minecraft.network.chat.Component> components, @NotNull TooltipFlag flag) {
             super.appendHoverText(stack, level, components, flag);
             components.add(Component.empty());
-            components.add(Component.translatable("recasting.tooltip.abyss_flame.extract").withStyle(ChatFormatting.GRAY));
+            components.add(Component.translatable(RecastingLanguageKeys.TOOLTIP_ABYSS_FLAME_EXTRACT).withStyle(ChatFormatting.GRAY));
         }
     });
 
@@ -142,7 +143,7 @@ public class RecastingItems {
                         if (extendedSE.isSpecial()) {
                             line = line.copy()
                                     .append(Component.literal(" "))
-                                    .append(Component.translatable("recasting.tooltip.special_se.badge")
+                                    .append(Component.translatable(RecastingLanguageKeys.TOOLTIP_SPECIAL_SE_BADGE)
                                             .withStyle(ChatFormatting.LIGHT_PURPLE));
                         }
                         components.add(line);
@@ -158,22 +159,22 @@ public class RecastingItems {
 
                         // 添加铭刻规则
                         components.add(
-                                Component.translatable("recasting.tooltip.engraving_rule.title")
+                                Component.translatable(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_TITLE)
                                         .withStyle(ChatFormatting.YELLOW)
                         );
                         if (Config.isUnlimitedSeEngraving()) {
                             components.add(
-                                    Component.translatable("recasting.tooltip.engraving_rule.main_unlimited")
+                                    Component.translatable(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_MAIN_UNLIMITED)
                                             .withStyle(ChatFormatting.GRAY)
                             );
                             components.add(
-                                    Component.translatable("recasting.tooltip.engraving_rule.unlimited_hint")
+                                    Component.translatable(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_UNLIMITED_HINT)
                                             .withStyle(ChatFormatting.DARK_GRAY)
                             );
                         } else {
                             components.add(
                                     Component.translatable(
-                                            "recasting.tooltip.engraving_rule.main",
+                                            RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_MAIN,
                                             Config.getNormalSeEngravingLimit(),
                                             Config.getSpecialSeEngravingLimit()
                                     ).withStyle(ChatFormatting.GRAY)
@@ -181,16 +182,16 @@ public class RecastingItems {
                         }
                         if (extendedSE.isSpecial()) {
                             components.add(
-                                    Component.translatable("recasting.tooltip.special_se_extract")
+                                    Component.translatable(RecastingLanguageKeys.TOOLTIP_SPECIAL_SE_EXTRACT)
                                             .withStyle(ChatFormatting.GRAY)
                             );
                         } else {
                             components.add(
-                                    Component.translatable("recasting.tooltip.engraving_rule.upgrade")
+                                    Component.translatable(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_UPGRADE)
                                             .withStyle(ChatFormatting.GRAY)
                             );
                             components.add(
-                                    Component.translatable("recasting.tooltip.engraving_rule.erase")
+                                    Component.translatable(RecastingLanguageKeys.TOOLTIP_ENGRAVING_RULE_ERASE)
                                             .withStyle(ChatFormatting.GRAY)
                             );
                         }

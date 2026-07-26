@@ -1,7 +1,8 @@
+
 package com.til.recasting.generated;
 
 import com.til.recasting.Recasting;
-import com.til.recasting.constant.SlashBladeDefinitions;
+import com.til.recasting.constant.RecastingSlashBladeKeys;
 import com.til.recasting.mixin.RecipeProviderMixin;
 import com.til.recasting.recipe.SpecialEffectCrystalIngredient;
 import com.til.recasting.registry.RecastingItems;
@@ -105,7 +106,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveBroadswordWoodRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("broadsword_wood_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BROADSWORD_WOOD.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BROADSWORD_WOOD.location())
                             .pattern("  W")
                             .pattern(" W ")
                             .pattern("SP ")
@@ -124,7 +125,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveGreenBladeWoodRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("green_blade_wood_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.GREEN_BLADE_WOOD.location())
                             .pattern(" W ")
                             .pattern(" W ")
                             .pattern(" SP")
@@ -142,13 +143,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveBroadswordIronRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("broadsword_iron_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BROADSWORD_IRON.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BROADSWORD_IRON.location())
                             .pattern("  I")
                             .pattern(" I ")
                             .pattern("B  ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BROADSWORD_WOOD.getName())
+                                            .name(RecastingSlashBladeKeys.BROADSWORD_WOOD.location())
                                             .killCount(50)
                                             .refineCount(5)
                                             .build()))
@@ -164,13 +165,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveGreenBladeIronRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("green_blade_iron_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.GREEN_BLADE_IRON.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.GREEN_BLADE_IRON.location())
                             .pattern(" I ")
                             .pattern(" I ")
                             .pattern(" B ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                            .name(RecastingSlashBladeKeys.GREEN_BLADE_WOOD.location())
                                             .killCount(50)
                                             .refineCount(5)
                                             .build()))
@@ -187,13 +188,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveShineTeaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("shine_tea_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SHINE_TEA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.SHINE_TEA.location())
                             .pattern("  I")
                             .pattern(" I ")
                             .pattern("B  ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BROADSWORD_IRON.getName())
+                                            .name(RecastingSlashBladeKeys.BROADSWORD_IRON.location())
                                             .killCount(1000)
                                             .refineCount(500)
                                             .build()))
@@ -210,13 +211,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveShineTeaLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("shine_tea_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SHINE_TEA_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.SHINE_TEA_LAMBDA.location())
                             .pattern("  I")
                             .pattern(" I ")
                             .pattern("B  ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.SHINE_TEA.getName())
+                                            .name(RecastingSlashBladeKeys.SHINE_TEA.location())
                                             .killCount(2000)
                                             .refineCount(1000)
                                             .build()))
@@ -233,13 +234,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveBrilliantTeaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("brilliant_tea_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BRILLIANT_TEA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BRILLIANT_TEA.location())
                             .pattern("  I")
                             .pattern(" I ")
                             .pattern("B  ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.SHINE_TEA_LAMBDA.getName())
+                                            .name(RecastingSlashBladeKeys.SHINE_TEA_LAMBDA.location())
                                             .killCount(4000)
                                             .refineCount(2000)
                                             .build()))
@@ -256,13 +257,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveBrilliantTeaLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("brilliant_tea_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BRILLIANT_TEA_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BRILLIANT_TEA_LAMBDA.location())
                             .pattern("  I")
                             .pattern(" I ")
                             .pattern("B  ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BRILLIANT_TEA.getName())
+                                            .name(RecastingSlashBladeKeys.BRILLIANT_TEA.location())
                                             .killCount(8000)
                                             .refineCount(4000)
                                             .build()))
@@ -279,13 +280,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveShineGoldRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("shine_gold_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SHINE_GOLD.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.SHINE_GOLD.location())
                             .pattern(" I ")
                             .pattern(" I ")
                             .pattern(" B ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.GREEN_BLADE_IRON.getName())
+                                            .name(RecastingSlashBladeKeys.GREEN_BLADE_IRON.location())
                                             .killCount(1000)
                                             .proudSoul(50000)
                                             .build()))
@@ -302,13 +303,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveShineGoldLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("shine_gold_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SHINE_GOLD_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.SHINE_GOLD_LAMBDA.location())
                             .pattern(" I ")
                             .pattern(" I ")
                             .pattern(" B ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.SHINE_GOLD.getName())
+                                            .name(RecastingSlashBladeKeys.SHINE_GOLD.location())
                                             .killCount(2000)
                                             .proudSoul(100000)
                                             .build()))
@@ -325,13 +326,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveBrilliantGoldRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("brilliant_gold_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BRILLIANT_GOLD.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BRILLIANT_GOLD.location())
                             .pattern(" I ")
                             .pattern(" I ")
                             .pattern(" B ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.SHINE_GOLD_LAMBDA.getName())
+                                            .name(RecastingSlashBladeKeys.SHINE_GOLD_LAMBDA.location())
                                             .killCount(4000)
                                             .proudSoul(200000)
                                             .build()))
@@ -348,13 +349,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveBrilliantGoldLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("brilliant_gold_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BRILLIANT_GOLD_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BRILLIANT_GOLD_LAMBDA.location())
                             .pattern(" I ")
                             .pattern(" I ")
                             .pattern(" B ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BRILLIANT_GOLD.getName())
+                                            .name(RecastingSlashBladeKeys.BRILLIANT_GOLD.location())
                                             .killCount(8000)
                                             .proudSoul(400000)
                                             .build()))
@@ -372,13 +373,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveBrokenWhiteRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("broken_white_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BROKEN_WHITE.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BROKEN_WHITE.location())
                             .pattern("  O")
                             .pattern(" B ")
                             .pattern("O  ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.GREEN_BLADE_IRON.getName())
+                                            .name(RecastingSlashBladeKeys.GREEN_BLADE_IRON.location())
                                             .killCount(300)
                                             .refineCount(30)
                                             .build()))
@@ -396,13 +397,14 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveArtKnifeRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("art_knife_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.ART_KNIFE.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.ART_KNIFE.location())
                             .pattern("  C")
+
                             .pattern(" B ")
                             .pattern("C  ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BROADSWORD_IRON.getName())
+                                            .name(RecastingSlashBladeKeys.BROADSWORD_IRON.location())
                                             .killCount(50)
                                             .refineCount(20)
                                             .addEnchantment(new EnchantmentDefinition(
@@ -420,13 +422,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveBaGuaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("ba_gua_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BA_GUA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BA_GUA.location())
                             .pattern("CPC")
                             .pattern("WSK")
                             .pattern("CPC")
                             .define('S',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BROKEN_WHITE.getName())
+                                            .name(RecastingSlashBladeKeys.BROKEN_WHITE.location())
                                             .killCount(500)
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE), 2))
@@ -450,13 +452,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveBaGuaBigRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("ba_gua_big_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BA_GUA_BIG.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BA_GUA_BIG.location())
                             .pattern("CPC")
                             .pattern("PBP")
                             .pattern("CPC")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BA_GUA.getName())
+                                            .name(RecastingSlashBladeKeys.BA_GUA.location())
                                             .killCount(2000)
                                             .refineCount(100)
                                             .addEnchantment(new EnchantmentDefinition(
@@ -480,13 +482,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveBaGuaBigLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("ba_gua_big_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BA_GUA_BIG_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BA_GUA_BIG_LAMBDA.location())
                             .pattern("CCC")
                             .pattern("IBI")
                             .pattern("CCC")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BA_GUA_BIG.getName())
+                                            .name(RecastingSlashBladeKeys.BA_GUA_BIG.location())
                                             .killCount(5000)
                                             .refineCount(300)
                                             .addEnchantment(new EnchantmentDefinition(
@@ -509,13 +511,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveSupremePoleRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("supreme_pole_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SUPREME_POLE.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.SUPREME_POLE.location())
                             .pattern("CPC")
                             .pattern("WBK")
                             .pattern("CPC")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BA_GUA_BIG_LAMBDA.getName())
+                                            .name(RecastingSlashBladeKeys.BA_GUA_BIG_LAMBDA.location())
                                             .killCount(12000)
                                             .refineCount(800)
                                             .addEnchantment(new EnchantmentDefinition(
@@ -541,13 +543,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveSupremePoleLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("supreme_pole_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SUPREME_POLE_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.SUPREME_POLE_LAMBDA.location())
                             .pattern("CCC")
                             .pattern("IBI")
                             .pattern("CCC")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.SUPREME_POLE.getName())
+                                            .name(RecastingSlashBladeKeys.SUPREME_POLE.location())
                                             .killCount(16000)
                                             .refineCount(1200)
                                             .addEnchantment(new EnchantmentDefinition(
@@ -567,13 +569,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveBlackRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("black_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BLACK.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BLACK.location())
                             .pattern("  S")
                             .pattern(" B ")
                             .pattern("O  ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BROADSWORD_IRON.getName())
+                                            .name(RecastingSlashBladeKeys.BROADSWORD_IRON.location())
                                             .killCount(200)
                                             .refineCount(20)
                                             .addEnchantment(new EnchantmentDefinition(
@@ -595,13 +597,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveUmbrellaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("umbrella_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.UMBRELLA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.UMBRELLA.location())
                             .pattern("  S")
                             .pattern("CBC")
                             .pattern("S  ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BLACK.getName())
+                                            .name(RecastingSlashBladeKeys.BLACK.location())
                                             .killCount(500)
                                             .refineCount(100)
                                             .build()))
@@ -620,13 +622,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveUmbrellaLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("umbrella_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.UMBRELLA_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.UMBRELLA_LAMBDA.location())
                             .pattern("CSC")
                             .pattern("VBV")
                             .pattern("CSC")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.UMBRELLA.getName())
+                                            .name(RecastingSlashBladeKeys.UMBRELLA.location())
                                             .build()))
                             .define('C', RecastingItems.NETHERITE_MEDIUM_SOUL_CUBE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM.getId(), 1))
@@ -645,13 +647,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveBlueCloudRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("blue_cloud_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BLUE_CLOUD.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BLUE_CLOUD.location())
                             .pattern(" E ")
                             .pattern("CBC")
                             .pattern(" E ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BROKEN_WHITE.getName())
+                                            .name(RecastingSlashBladeKeys.BROKEN_WHITE.location())
                                             .killCount(500)
                                             .refineCount(20)
                                             .addEnchantment(new EnchantmentDefinition(
@@ -673,13 +675,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveBlueCloudLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("blue_cloud_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.BLUE_CLOUD_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BLUE_CLOUD_LAMBDA.location())
                             .pattern("EEE")
                             .pattern("XBX")
                             .pattern("EEE")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BLUE_CLOUD.getName())
+                                            .name(RecastingSlashBladeKeys.BLUE_CLOUD.location())
                                             .killCount(750)
                                             .refineCount(125)
                                             .addEnchantment(new EnchantmentDefinition(
@@ -701,13 +703,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveCoolMintRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("cool_mint_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.COOL_MINT.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.COOL_MINT.location())
                             .pattern(" DR")
                             .pattern("DBD")
                             .pattern("GD ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BLUE_CLOUD_LAMBDA.getName())
+                                            .name(RecastingSlashBladeKeys.BLUE_CLOUD_LAMBDA.location())
                                             .killCount(1000)
                                             .refineCount(300)
                                             .addEnchantment(new EnchantmentDefinition(
@@ -736,13 +738,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveCoolMintLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("cool_mint_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.COOL_MINT_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.COOL_MINT_LAMBDA.location())
                             .pattern(" DC")
                             .pattern("DBD")
                             .pattern("CD ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.COOL_MINT.getName())
+                                            .name(RecastingSlashBladeKeys.COOL_MINT.location())
                                             .killCount(200)
                                             .refineCount(500)
                                             .build()))
@@ -761,13 +763,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveDragonScaleRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("dragon_scale_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.DRAGON_SCALE.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.DRAGON_SCALE.location())
                             .pattern("  I")
                             .pattern(" B ")
                             .pattern("I  ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BA_GUA.getName())
+                                            .name(RecastingSlashBladeKeys.BA_GUA.location())
                                             .killCount(300)
                                             .refineCount(50)
                                             .addEnchantment(new EnchantmentDefinition(
@@ -790,14 +792,15 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveDragonScaleLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("dragon_scale_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.DRAGON_SCALE_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.DRAGON_SCALE_LAMBDA.location())
                             .pattern("CCC")
                             .pattern("IBI")
                             .pattern("CCC")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.DRAGON_SCALE.getName())
+                                            .name(RecastingSlashBladeKeys.DRAGON_SCALE.location())
                                             .killCount(500)
+
                                             .refineCount(200)
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE), 5))
@@ -818,13 +821,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveDragonRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("dragon_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.DRAGON.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.DRAGON.location())
                             .pattern("CFC")
                             .pattern("FBF")
                             .pattern("CFC")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.DRAGON_SCALE_LAMBDA.getName())
+                                            .name(RecastingSlashBladeKeys.DRAGON_SCALE_LAMBDA.location())
                                             .killCount(1000)
                                             .refineCount(300)
                                             .build()))
@@ -844,13 +847,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveDragonLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("dragon_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.DRAGON_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.DRAGON_LAMBDA.location())
                             .pattern("CSC")
                             .pattern("SBS")
                             .pattern("CSC")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.DRAGON.getName())
+                                            .name(RecastingSlashBladeKeys.DRAGON.location())
                                             .killCount(2000)
                                             .refineCount(500)
                                             .build()))
@@ -870,13 +873,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveWindCloudRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("wind_cloud_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.WIND_CLOUD.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.WIND_CLOUD.location())
                             .pattern("CWC")
                             .pattern("WBW")
                             .pattern("CWC")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.DRAGON_SCALE_LAMBDA.getName())
+                                            .name(RecastingSlashBladeKeys.DRAGON_SCALE_LAMBDA.location())
                                             .killCount(1500)
                                             .refineCount(400)
                                             .addEnchantment(new EnchantmentDefinition(
@@ -898,13 +901,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveWindCloudLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("wind_cloud_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.WIND_CLOUD_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.WIND_CLOUD_LAMBDA.location())
                             .pattern("CSC")
                             .pattern("VBV")
                             .pattern("CSC")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.WIND_CLOUD.getName())
+                                            .name(RecastingSlashBladeKeys.WIND_CLOUD.location())
                                             .killCount(2500)
                                             .refineCount(600)
                                             .build()))
@@ -923,7 +926,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveDharmaStickRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("dharma_stick_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.DHARMA_STICK.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.DHARMA_STICK.location())
                             .pattern("  B")
                             .pattern(" B ")
                             .pattern("BP ")
@@ -942,13 +945,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveDharmaStickLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("dharma_stick_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.DHARMA_STICK_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.DHARMA_STICK_LAMBDA.location())
                             .pattern("BBB")
                             .pattern("BDB")
                             .pattern("BBB")
                             .define('D',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.DHARMA_STICK.getName())
+                                            .name(RecastingSlashBladeKeys.DHARMA_STICK.location())
                                             .killCount(10000)
                                             .build()))
                             .define('B', Items.BREAD)
@@ -964,7 +967,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveHoeRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("hoe_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.HOE.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.HOE.location())
                             .pattern(" HH")
                             .pattern(" S ")
                             .pattern(" S ")
@@ -982,7 +985,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void savePhysicsSwordRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("physics_sword_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.PHYSICS_SWORD.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.PHYSICS_SWORD.location())
                             .pattern("I  ")
                             .pattern("IP ")
                             .pattern("II ")
@@ -1002,13 +1005,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveVoid1Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("void_1_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.VOID_1.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.VOID_1.location())
                             .pattern(" SC")
                             .pattern("CBC")
                             .pattern("CS ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BLACK.getName())
+                                            .name(RecastingSlashBladeKeys.BLACK.location())
                                             .killCount(1500)
                                             .refineCount(100)
                                             .addEnchantment(new EnchantmentDefinition(
@@ -1036,13 +1039,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveVoid2Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("void_2_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.VOID_2.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.VOID_2.location())
                             .pattern(" GC")
                             .pattern("CBC")
                             .pattern("CG ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.VOID_1.getName())
+                                            .name(RecastingSlashBladeKeys.VOID_1.location())
                                             .killCount(3000)
                                             .refineCount(250)
                                             .build()))
@@ -1062,13 +1065,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveVoid3Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("void_3_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.VOID_3.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.VOID_3.location())
                             .pattern(" LC")
                             .pattern("CBC")
                             .pattern("CL ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.VOID_2.getName())
+                                            .name(RecastingSlashBladeKeys.VOID_2.location())
                                             .killCount(5000)
                                             .refineCount(500)
                                             .build()))
@@ -1088,13 +1091,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveObliterateRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("obliterate_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.OBLITERATE.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.OBLITERATE.location())
                             .pattern(" CR")
                             .pattern("CBC")
                             .pattern("RC ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BLACK.getName())
+                                            .name(RecastingSlashBladeKeys.BLACK.location())
                                             .killCount(1000)
                                             .proudSoul(50000)
                                             .addEnchantment(new EnchantmentDefinition(
@@ -1116,13 +1119,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveObliterateLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("obliterate_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.OBLITERATE_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.OBLITERATE_LAMBDA.location())
                             .pattern(" CR")
                             .pattern("CBC")
                             .pattern("RC ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.OBLITERATE.getName())
+                                            .name(RecastingSlashBladeKeys.OBLITERATE.location())
                                             .killCount(2000)
                                             .proudSoul(100000)
                                             .build()))
@@ -1142,13 +1145,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveSoulbladeRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("soulblade_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SOULBLADE.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.SOULBLADE.location())
                             .pattern(" CR")
                             .pattern("CBC")
                             .pattern("RC ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.OBLITERATE_LAMBDA.getName())
+                                            .name(RecastingSlashBladeKeys.OBLITERATE_LAMBDA.location())
                                             .killCount(4000)
                                             .proudSoul(200000)
                                             .build()))
@@ -1168,13 +1171,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveStar1Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("star_1_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.STAR_1.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.STAR_1.location())
                             .pattern("TCT")
                             .pattern("CBC")
                             .pattern("TCT")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BLACK.getName())
+                                            .name(RecastingSlashBladeKeys.BLACK.location())
                                             .killCount(1000)
                                             .refineCount(200)
                                             .build()))
@@ -1193,13 +1196,14 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveStar2Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("star_2_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.STAR_2.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.STAR_2.location())
                             .pattern(" W ")
                             .pattern("WBW")
                             .pattern(" W ")
                             .define('B',
+
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.STAR_1.getName())
+                                            .name(RecastingSlashBladeKeys.STAR_1.location())
                                             .killCount(2000)
                                             .refineCount(400)
                                             .build()))
@@ -1217,13 +1221,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveStar3Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("star_3_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.STAR_3.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.STAR_3.location())
                             .pattern(" A ")
                             .pattern("ABA")
                             .pattern(" A ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.STAR_2.getName())
+                                            .name(RecastingSlashBladeKeys.STAR_2.location())
                                             .killCount(4000)
                                             .refineCount(600)
                                             .build()))
@@ -1241,13 +1245,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveStar4Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("star_4_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.STAR_4.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.STAR_4.location())
                             .pattern("  S")
                             .pattern(" B ")
                             .pattern("S  ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.STAR_3.getName())
+                                            .name(RecastingSlashBladeKeys.STAR_3.location())
                                             .killCount(6000)
                                             .refineCount(800)
                                             .build()))
@@ -1265,13 +1269,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveStar4LambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("star_4_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.STAR_4_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.STAR_4_LAMBDA.location())
                             .pattern(" V ")
                             .pattern("SBS")
                             .pattern(" V ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.STAR_4.getName())
+                                            .name(RecastingSlashBladeKeys.STAR_4.location())
                                             .killCount(12000)
                                             .refineCount(1600)
                                             .build()))
@@ -1291,13 +1295,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveLaser1Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("laser_1_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.LASER_1.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.LASER_1.location())
                             .pattern(" FC")
                             .pattern("CBC")
                             .pattern("CF ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BLACK.getName())
+                                            .name(RecastingSlashBladeKeys.BLACK.location())
                                             .killCount(1500)
                                             .refineCount(200)
                                             .build()))
@@ -1317,13 +1321,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveLaser2Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("laser_2_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.LASER_2.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.LASER_2.location())
                             .pattern(" SC")
                             .pattern("CBC")
                             .pattern("CS ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.LASER_1.getName())
+                                            .name(RecastingSlashBladeKeys.LASER_1.location())
                                             .killCount(3000)
                                             .refineCount(400)
                                             .build()))
@@ -1343,13 +1347,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveLaser3Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("laser_3_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.LASER_3.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.LASER_3.location())
                             .pattern(" IC")
                             .pattern("CBC")
                             .pattern("CI ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.LASER_2.getName())
+                                            .name(RecastingSlashBladeKeys.LASER_2.location())
                                             .killCount(5000)
                                             .refineCount(600)
                                             .build()))
@@ -1368,13 +1372,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveLaser3LambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("laser_3_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.LASER_3_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.LASER_3_LAMBDA.location())
                             .pattern(" I ")
                             .pattern("SBS")
                             .pattern(" I ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.LASER_3.getName())
+                                            .name(RecastingSlashBladeKeys.LASER_3.location())
                                             .killCount(10000)
                                             .refineCount(1200)
                                             .build()))
@@ -1392,13 +1396,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveFluorescence1Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("fluorescence_1_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.FLUORESCENCE_1.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.FLUORESCENCE_1.location())
                             .pattern("G  ")
                             .pattern(" B ")
                             .pattern("   ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                            .name(RecastingSlashBladeKeys.GREEN_BLADE_WOOD.location())
                                             .build()))
                             .define('G', Items.GLOW_INK_SAC)
                             .unlockedBy("has_green_blade_wood", RecipeProviderMixin.invokeHas(Items.GLOW_INK_SAC))
@@ -1413,13 +1417,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveFluorescence2Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("fluorescence_2_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.FLUORESCENCE_2.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.FLUORESCENCE_2.location())
                             .pattern(" G ")
                             .pattern(" B ")
                             .pattern("   ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                            .name(RecastingSlashBladeKeys.GREEN_BLADE_WOOD.location())
                                             .build()))
                             .define('G', Items.GLOW_INK_SAC)
                             .unlockedBy("has_green_blade_wood", RecipeProviderMixin.invokeHas(Items.GLOW_INK_SAC))
@@ -1434,13 +1438,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveFluorescence3Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("fluorescence_3_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.FLUORESCENCE_3.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.FLUORESCENCE_3.location())
                             .pattern("  G")
                             .pattern(" B ")
                             .pattern("   ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                            .name(RecastingSlashBladeKeys.GREEN_BLADE_WOOD.location())
                                             .build()))
                             .define('G', Items.GLOW_INK_SAC)
                             .unlockedBy("has_green_blade_wood", RecipeProviderMixin.invokeHas(Items.GLOW_INK_SAC))
@@ -1455,13 +1459,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveFluorescence4Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("fluorescence_4_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.FLUORESCENCE_4.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.FLUORESCENCE_4.location())
                             .pattern("   ")
                             .pattern("GB ")
                             .pattern("   ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                            .name(RecastingSlashBladeKeys.GREEN_BLADE_WOOD.location())
                                             .build()))
                             .define('G', Items.GLOW_INK_SAC)
                             .unlockedBy("has_green_blade_wood", RecipeProviderMixin.invokeHas(Items.GLOW_INK_SAC))
@@ -1476,13 +1480,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveFluorescence5Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("fluorescence_5_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.FLUORESCENCE_5.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.FLUORESCENCE_5.location())
                             .pattern("   ")
                             .pattern(" BG")
                             .pattern("   ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                            .name(RecastingSlashBladeKeys.GREEN_BLADE_WOOD.location())
                                             .build()))
                             .define('G', Items.GLOW_INK_SAC)
                             .unlockedBy("has_green_blade_wood", RecipeProviderMixin.invokeHas(Items.GLOW_INK_SAC))
@@ -1497,13 +1501,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveFluorescence6Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("fluorescence_6_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.FLUORESCENCE_6.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.FLUORESCENCE_6.location())
                             .pattern("   ")
                             .pattern(" B ")
                             .pattern("G  ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                            .name(RecastingSlashBladeKeys.GREEN_BLADE_WOOD.location())
                                             .build()))
                             .define('G', Items.GLOW_INK_SAC)
                             .unlockedBy("has_green_blade_wood", RecipeProviderMixin.invokeHas(Items.GLOW_INK_SAC))
@@ -1518,13 +1522,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveFluorescence7Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("fluorescence_7_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.FLUORESCENCE_7.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.FLUORESCENCE_7.location())
                             .pattern("   ")
                             .pattern(" B ")
                             .pattern(" G ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                            .name(RecastingSlashBladeKeys.GREEN_BLADE_WOOD.location())
                                             .build()))
                             .define('G', Items.GLOW_INK_SAC)
                             .unlockedBy("has_green_blade_wood", RecipeProviderMixin.invokeHas(Items.GLOW_INK_SAC))
@@ -1539,13 +1543,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveFluorescence8Recipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("fluorescence_8_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.FLUORESCENCE_8.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.FLUORESCENCE_8.location())
                             .pattern("   ")
                             .pattern(" B ")
                             .pattern("  G")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.GREEN_BLADE_WOOD.getName())
+                                            .name(RecastingSlashBladeKeys.GREEN_BLADE_WOOD.location())
                                             .build()))
                             .define('G', Items.GLOW_INK_SAC)
                             .unlockedBy("has_green_blade_wood", RecipeProviderMixin.invokeHas(Items.GLOW_INK_SAC))
@@ -1562,13 +1566,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveSilverWingRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("silver_wing_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SILVER_WING.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.SILVER_WING.location())
                             .pattern(" SC")
                             .pattern("CBC")
                             .pattern("CS ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BLACK.getName())
+                                            .name(RecastingSlashBladeKeys.BLACK.location())
                                             .killCount(1000)
                                             .refineCount(200)
                                             .build()))
@@ -1588,16 +1592,17 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveSilverWingLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("silver_wing_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.SILVER_WING_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.SILVER_WING_LAMBDA.location())
                             .pattern("CSC")
                             .pattern("VBV")
                             .pattern("CSC")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.SILVER_WING.getName())
+                                            .name(RecastingSlashBladeKeys.SILVER_WING.location())
                                             .killCount(2000)
                                             .refineCount(400)
                                             .build()))
+
                             .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM.getId(), 1))
                             .define('V', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM_VARIANT.getId(), 1))
@@ -1615,13 +1620,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveColorWingRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("color_wing_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.COLOR_WING.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.COLOR_WING.location())
                             .pattern("CRC")
                             .pattern("YXL")
                             .pattern("CBC")
                             .define('X',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.SILVER_WING.getName())
+                                            .name(RecastingSlashBladeKeys.SILVER_WING.location())
                                             .killCount(5000)
                                             .refineCount(600)
                                             .build()))
@@ -1644,13 +1649,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveColorWingLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("color_wing_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.COLOR_WING_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.COLOR_WING_LAMBDA.location())
                             .pattern("GTG")
                             .pattern("CBC")
                             .pattern("GTG")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.COLOR_WING.getName())
+                                            .name(RecastingSlashBladeKeys.COLOR_WING.location())
                                             .killCount(10000)
                                             .refineCount(1200)
                                             .build()))
@@ -1671,13 +1676,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveLongSkySunsetRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("long_sky_sunset_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.LONG_SKY_SUNSET.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.LONG_SKY_SUNSET.location())
                             .pattern("CSC")
                             .pattern("SBS")
                             .pattern("CSC")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.BLACK.getName())
+                                            .name(RecastingSlashBladeKeys.BLACK.location())
                                             .killCount(1500)
                                             .refineCount(200)
                                             .build()))
@@ -1697,13 +1702,13 @@ public class SlashBladeRecipes extends RecipeProvider {
     
     private void saveLongSkySunsetLambdaRecipe(Consumer<FinishedRecipe> consumer) {
         ResourceLocation recipeId = Recasting.prefix("long_sky_sunset_lambda_recipe");
-        SlashBladeShapedRecipeBuilder.shaped(SlashBladeDefinitions.LONG_SKY_SUNSET_LAMBDA.getName())
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.LONG_SKY_SUNSET_LAMBDA.location())
                             .pattern("CFC")
                             .pattern("FBF")
                             .pattern("CFC")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(SlashBladeDefinitions.LONG_SKY_SUNSET.getName())
+                                            .name(RecastingSlashBladeKeys.LONG_SKY_SUNSET.location())
                                             .killCount(3000)
                                             .refineCount(400)
                                             .build()))
