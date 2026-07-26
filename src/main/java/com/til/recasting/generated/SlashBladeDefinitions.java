@@ -1,6 +1,8 @@
 
-package com.til.recasting.constant;
+package com.til.recasting.generated;
 
+import com.til.recasting.constant.R;
+import com.til.recasting.constant.RecastingSlashBladeKeys;
 import com.til.recasting.Recasting;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
@@ -1598,7 +1600,6 @@ public final class SlashBladeDefinitions {
             return this;
         }
     }
-
     public record SpecialEffectDefinition(ResourceLocation specialEffect, int level) {
     }
 

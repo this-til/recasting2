@@ -29,7 +29,7 @@ public class DataGenerator {
         PackOutput packOutput = dataGenerator.getPackOutput();
 
         // 注册 SlashBlade 定义数据包生成
-        final RegistrySetBuilder bladeBuilder = new RegistrySetBuilder().add(SlashBladeDefinition.REGISTRY_KEY, RecastingSlashBladeBuiltInRegistry::registerAll);
+        final RegistrySetBuilder bladeBuilder = new RegistrySetBuilder().add(SlashBladeDefinition.REGISTRY_KEY, SlashBladeDefinitions::registerAll);
 
         dataGenerator.addProvider(
                 event.includeServer(),

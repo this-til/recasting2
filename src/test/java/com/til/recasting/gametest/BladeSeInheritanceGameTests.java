@@ -1,7 +1,7 @@
 package com.til.recasting.gametest;
 
 import com.til.recasting.Recasting;
-import com.til.recasting.constant.SlashBladeDefinitions;
+import com.til.recasting.constant.RecastingSlashBladeKeys;
 import com.til.recasting.gametest.support.CraftingTestHelper;
 import com.til.recasting.gametest.support.TestItemFactory;
 import com.til.recasting.registry.SpecialEffectsRegistry;
@@ -33,7 +33,7 @@ public final class BladeSeInheritanceGameTests {
         Recipe<?> recipe = requireRecipe(helper, DRAGON_SCALE_LAMBDA_RECIPE);
         ItemStack input = TestItemFactory.bladeWithRequirements(
                 helper.getLevel().registryAccess(),
-                SlashBladeDefinitions.DRAGON_SCALE.getName(),
+        RecastingSlashBladeKeys.DRAGON_SCALE.location(),
                 500,
                 200,
                 SpecialEffectsRegistry.BLACK_ROSE.getId(),
@@ -61,7 +61,7 @@ public final class BladeSeInheritanceGameTests {
         Recipe<?> recipe = requireRecipe(helper, SHINE_TEA_LAMBDA_RECIPE);
         ItemStack input = TestItemFactory.bladeWithStats(
                 helper.getLevel().registryAccess(),
-                SlashBladeDefinitions.SHINE_TEA.getName(),
+        RecastingSlashBladeKeys.SHINE_TEA.location(),
                 2000,
                 1000
         );
@@ -86,7 +86,7 @@ public final class BladeSeInheritanceGameTests {
         Recipe<?> recipe = requireRecipe(helper, DRAGON_SCALE_LAMBDA_RECIPE);
         ItemStack input = TestItemFactory.bladeWithRequirements(
                 helper.getLevel().registryAccess(),
-                SlashBladeDefinitions.DRAGON_SCALE.getName(),
+        RecastingSlashBladeKeys.DRAGON_SCALE.location(),
                 500,
                 200,
                 SpecialEffectsRegistry.SHARP_BLADE.getId(),
@@ -114,7 +114,7 @@ public final class BladeSeInheritanceGameTests {
         Recipe<?> recipe = requireRecipe(helper, DRAGON_SCALE_LAMBDA_RECIPE);
         ItemStack input = TestItemFactory.bladeWithRequirements(
                 helper.getLevel().registryAccess(),
-                SlashBladeDefinitions.DRAGON_SCALE.getName(),
+        RecastingSlashBladeKeys.DRAGON_SCALE.location(),
                 500,
                 200,
                 SpecialEffectsRegistry.SHARP_BLADE.getId(),

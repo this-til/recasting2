@@ -1,7 +1,7 @@
 package com.til.recasting.gametest;
 
 import com.til.recasting.Recasting;
-import com.til.recasting.constant.SlashBladeDefinitions;
+import com.til.recasting.constant.RecastingSlashBladeKeys;
 import com.til.recasting.gametest.support.AnvilTestHelper;
 import com.til.recasting.gametest.support.TestItemFactory;
 import com.til.recasting.handler.CapabilityRegistryHandler;
@@ -32,7 +32,7 @@ public final class AnvilGameTests {
         ResourceLocation seId = SpecialEffectsRegistry.SHARP_BLADE.getId();
         ItemStack blade = TestItemFactory.bladeFromDefinition(
                 helper.getLevel().registryAccess(),
-                SlashBladeDefinitions.BROADSWORD_WOOD.getName()
+        RecastingSlashBladeKeys.BROADSWORD_WOOD.location()
         );
         ItemStack crystal = TestItemFactory.seCrystal(seId, 1);
         ItemStack output = AnvilTestHelper.preview(blade, crystal, helper.makeMockPlayer());
@@ -64,7 +64,7 @@ public final class AnvilGameTests {
         ResourceLocation seId = SpecialEffectsRegistry.SHARP_BLADE.getId();
         ItemStack blade = TestItemFactory.bladeWithSpecialEffect(
                 helper.getLevel().registryAccess(),
-                SlashBladeDefinitions.BROADSWORD_WOOD.getName(),
+        RecastingSlashBladeKeys.BROADSWORD_WOOD.location(),
                 seId,
                 2
         );
@@ -84,7 +84,7 @@ public final class AnvilGameTests {
         ResourceLocation seId = SpecialEffectsRegistry.SHARP_BLADE.getId();
         ItemStack blade = TestItemFactory.bladeWithSpecialEffect(
                 helper.getLevel().registryAccess(),
-                SlashBladeDefinitions.BROADSWORD_WOOD.getName(),
+        RecastingSlashBladeKeys.BROADSWORD_WOOD.location(),
                 seId,
                 1
         );
@@ -111,7 +111,7 @@ public final class AnvilGameTests {
         ResourceLocation seId = SpecialEffectsRegistry.BLACK_ROSE.getId();
         ItemStack blade = TestItemFactory.bladeWithSpecialEffect(
                 helper.getLevel().registryAccess(),
-                SlashBladeDefinitions.UMBRELLA.getName(),
+        RecastingSlashBladeKeys.UMBRELLA.location(),
                 seId,
                 1
         );
@@ -142,7 +142,7 @@ public final class AnvilGameTests {
         ResourceLocation seId = SpecialEffectsRegistry.BLACK_ROSE.getId();
         ItemStack blade = TestItemFactory.bladeWithSpecialEffect(
                 helper.getLevel().registryAccess(),
-                SlashBladeDefinitions.UMBRELLA.getName(),
+        RecastingSlashBladeKeys.UMBRELLA.location(),
                 seId,
                 1
         );
@@ -172,7 +172,7 @@ public final class AnvilGameTests {
     public static void extractOrRemoveSpecialSe_withoutSpecial_noOutput(GameTestHelper helper) {
         ItemStack blade = TestItemFactory.bladeFromDefinition(
                 helper.getLevel().registryAccess(),
-                SlashBladeDefinitions.BROADSWORD_WOOD.getName()
+        RecastingSlashBladeKeys.BROADSWORD_WOOD.location()
         );
         ItemStack abyss = new ItemStack(RecastingItems.ABYSS_FLAME.get());
         ItemStack variant = new ItemStack(RecastingItems.GATHERING_PARTING_VARIANT.get());
@@ -193,7 +193,7 @@ public final class AnvilGameTests {
         ItemStack sphere = new ItemStack(SlashBladeItems.PROUDSOUL_SPHERE.get());
         ItemStack blade = TestItemFactory.bladeFromDefinition(
                 helper.getLevel().registryAccess(),
-                SlashBladeDefinitions.BROADSWORD_WOOD.getName()
+        RecastingSlashBladeKeys.BROADSWORD_WOOD.location()
         );
         ItemStack output = AnvilTestHelper.preview(sphere, blade, helper.makeMockPlayer());
         try {
@@ -215,7 +215,7 @@ public final class AnvilGameTests {
         ItemStack sphere = new ItemStack(SlashBladeItems.PROUDSOUL_SPHERE.get());
         ItemStack blade = TestItemFactory.bladeWithoutSlashArts(
                 helper.getLevel().registryAccess(),
-                SlashBladeDefinitions.BROADSWORD_WOOD.getName()
+        RecastingSlashBladeKeys.BROADSWORD_WOOD.location()
         );
         ItemStack output = AnvilTestHelper.preview(sphere, blade, helper.makeMockPlayer());
         try {
