@@ -228,8 +228,8 @@ public class SlashArtsRegistry {
     public static final RegistryObject<ExtendedSlashArts> JADE_DOMAIN_LAMBDA = registerExtendedSA(
             "jade_domain_lambda",
             new JadeDomainSlashArts()
-                    .setJudgementCutAttack(0.399f)
-                    .setPhantomSwordAttack(0.0266f)
+                    .setJudgementCutAttack(0.1197f)
+                    .setPhantomSwordAttack(0.00798f)
                     .setMinPhantomSwordCount(9)
                     .setMaxPhantomSwordCount(12)
                     .setInitialBladeReleaseCount(13)

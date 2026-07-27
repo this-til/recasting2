@@ -33,7 +33,7 @@ import java.util.List;
 @Accessors(chain = true)
 public class LongSkySunsetSlashArts extends ExtendedSlashArts {
 
-    private static final int CORE_ADD_PER_HIT = 4;
+    private final int coreAddPerHit = 4;
 
     int swordCount = 8;
     float attack = 0.12f;
@@ -80,19 +80,19 @@ public class LongSkySunsetSlashArts extends ExtendedSlashArts {
         livingEntity.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
     }
 
-    private static void applySunsetCore(Entity hitEntity, Level world) {
+    private void applySunsetCore(Entity hitEntity, Level world) {
         if (!(hitEntity instanceof LivingEntity living) || !living.isAlive()) {
             return;
         }
         living.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
             BuffType coreType = RecastingBuffTypes.SUNSET_CORE.get();
             int currentCore = buffStackData.getLevel(coreType, world);
-            buffStackData.setLevel(coreType, currentCore + CORE_ADD_PER_HIT, world);
+            buffStackData.setLevel(coreType, currentCore + coreAddPerHit, world);
         });
         spawnSunsetCoreHitParticles(living);
     }
 
-    private static void spawnSunsetCoreHitParticles(LivingEntity target) {
+    private void spawnSunsetCoreHitParticles(LivingEntity target) {
         if (!(target.level() instanceof ServerLevel serverLevel)) {
             return;
         }

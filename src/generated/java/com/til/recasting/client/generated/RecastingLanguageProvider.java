@@ -122,7 +122,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashBladeKey(RecastingSlashBladeKeys.TIL_LAMBDA), "^til的刀", "TIL Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.HTOD), "HTOD的刀", "HTOD");
         translation(slashBladeKey(RecastingSlashBladeKeys.HTOD_LAMBDA), "^HTOD的刀", "HTOD Lambda");
-        translation(slashBladeKey(RecastingSlashBladeKeys.TU_WU), "涂巫", "Tu Wu");
+        translation(slashBladeKey(RecastingSlashBladeKeys.TU_WU), "屠巫", "Tu Wu");
         translation(slashBladeKey(RecastingSlashBladeKeys.XING_KONG), "星空的刀", "Xing Kong");
         translation(slashBladeKey(RecastingSlashBladeKeys.XING_KONG_LAMBDA), "^星空的刀", "Xing Kong Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.STAR_1), "星流利刃I", "Star Blade I");

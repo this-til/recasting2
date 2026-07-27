@@ -7,16 +7,22 @@ import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.entity.SummondSpiralSwordEntity;
 import com.til.recasting.handler.BuffSourceHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.handler.JadeFireBuffHandler;
+import com.til.recasting.handler.ParticleHelper;
+import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.registry.instance.BuffType;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -25,6 +31,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 
 /**
  * 青界 Slash Arts
@@ -34,25 +41,31 @@ import net.minecraft.world.phys.Vec3;
 @Accessors(chain = true)
 public class JadeDomainSlashArts extends ExtendedSlashArts {
 
-    private static final String DOMAIN_TIMER = "jade_domain";
-    private static final int DEFAULT_COLOR = 0x4C8A8D;
+    private final String domainTimer = "jade_domain";
+    private final String domainVisualTimer = "jade_domain_visual";
+    private final int defaultColor = 0x4C8A8D;
 
-    private static final int DOMAIN_DURATION = 20 * 30;
-    private static final int DOMAIN_TICK_INTERVAL = 20;
-    private static final int DOMAIN_STACKS = DOMAIN_DURATION / 20;
+    private final int domainDuration = 20 * 30;
+    private final int domainTickInterval = 20;
+    private final int domainVisualTickInterval = 1;
+    private final int domainStacks = domainDuration / 20;
     private int initialBladeReleaseCount = 7;
-    private static final int INITIAL_BLADE_RELEASE_DELAY = 2;
-    private static final int JADE_FIRE_STACKS_PER_RELEASE = 10;
-    private static final float DOMAIN_RANGE = 32.0f;
+    private final int initialBladeReleaseDelay = 2;
+    private final int jadeFireStacksPerRelease = 10;
+    private final float domainRange = 32.0f;
+    private final float domainEmitterParticleSize = 1.5f;
+    private final int domainEmitterParticleCount = 4;
+    private final double domainEmitterAngularSpeed = Math.PI / 40.0;
+    private final double domainEmitterPhaseOffset = Math.PI;
 
-    private float judgementCutAttack = 0.3f;
-    private static final float JUDGEMENT_CUT_SIZE = 1.5f;
-    private float phantomSwordAttack = 0.02f;
+    private float judgementCutAttack = 0.09f;
+    private final float judgementCutSize = 1.5f;
+    private float phantomSwordAttack = 0.006f;
     private int minPhantomSwordCount = 6;
     private int maxPhantomSwordCount = 9;
-    private static final int PHANTOM_SWORD_START_DELAY = 20;
-    private static final float PHANTOM_SWORD_MIN_TILT_ANGLE = 0f;
-    private static final float PHANTOM_SWORD_MAX_TILT_ANGLE = 30f;
+    private final int phantomSwordStartDelay = 20;
+    private final float phantomSwordMinTiltAngle = 0f;
+    private final float phantomSwordMaxTiltAngle = 30f;
 
     @Override
     public void trigger(
@@ -68,41 +81,98 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
 
         BuffType domainBuffType = RecastingBuffTypes.JADE_DOMAIN.get();
         livingEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffData -> {
-            buffData.setLevel(domainBuffType, DOMAIN_STACKS, livingEntity.level());
+            buffData.setLevel(domainBuffType, domainStacks, livingEntity.level());
             BuffSourceHelper.recordSourceEntity(buffData, domainBuffType, livingEntity, livingEntity);
         });
+        renderDomainEmitters(livingEntity, 0.0);
 
+        Vec3 initialAttackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
+        List<LivingEntity> initialTargets = new ArrayList<>(EntityHelper.getTargettableLivingEntityWithinAABB(
+                livingEntity.level(),
+                livingEntity,
+                initialAttackPos,
+                domainRange
+        ));
         livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             for (int i = 0; i < initialBladeReleaseCount; i++) {
                 timeRun.addTimerCell(
-                        () -> triggerBladeReleaseAtRandomTarget(livingEntity, slashBladeState.getColorCode()),
-                        INITIAL_BLADE_RELEASE_DELAY * (i + 1)
+                        () -> triggerInitialBladeRelease(
+                                livingEntity,
+                                initialTargets,
+                                initialAttackPos,
+                                slashBladeState.getColorCode()
+                        ),
+                        initialBladeReleaseDelay * i
                 );
             }
         });
 
-        livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun ->
-                timeRun.addNamedTimerCell(
-                        DOMAIN_TIMER,
-                        new ITimeRun.TimerCell(new DomainTick(livingEntity), DOMAIN_TICK_INTERVAL, true)
-                )
-        );
+        livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
+            timeRun.addNamedTimerCell(
+                    domainTimer,
+                    new ITimeRun.TimerCell(new DomainTick(livingEntity), domainTickInterval, true)
+            );
+            timeRun.addNamedTimerCell(
+                    domainVisualTimer,
+                    new ITimeRun.TimerCell(
+                            new DomainVisualTick(livingEntity),
+                            domainVisualTickInterval,
+                            true
+                    )
+            );
+        });
     }
 
     private void stopDomain(LivingEntity caster) {
-        caster.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> timeRun.removeNamedTimerCell(DOMAIN_TIMER));
+        caster.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
+            timeRun.removeNamedTimerCell(domainTimer);
+            timeRun.removeNamedTimerCell(domainVisualTimer);
+        });
         caster.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffData ->
                 buffData.setLevel(RecastingBuffTypes.JADE_DOMAIN.get(), 0, caster.level())
         );
     }
 
     private List<LivingEntity> getLivingWithinRange(LivingEntity caster) {
-        AABB aabb = caster.getBoundingBox().inflate(DOMAIN_RANGE);
+        AABB aabb = caster.getBoundingBox().inflate(domainRange);
         return caster.level().getEntitiesOfClass(
                 LivingEntity.class,
                 aabb,
                 entity -> entity.isAlive() && entity != caster
         );
+    }
+
+    private void renderDomainEmitters(LivingEntity caster, double baseAngle) {
+        if (!(caster.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        float red = ((defaultColor >> 16) & 0xFF) / 255.0f;
+        float green = ((defaultColor >> 8) & 0xFF) / 255.0f;
+        float blue = (defaultColor & 0xFF) / 255.0f;
+        DustParticleOptions particle = new DustParticleOptions(
+                new Vector3f(red, green, blue),
+                domainEmitterParticleSize
+        );
+        double y = caster.getY() + 0.25;
+
+        for (int i = 0; i < 2; i++) {
+            double angle = baseAngle + domainEmitterPhaseOffset * i;
+            double x = caster.getX() + Math.cos(angle) * domainRange;
+            double z = caster.getZ() + Math.sin(angle) * domainRange;
+            ParticleHelper.sendParticlesLongRange(
+                    serverLevel,
+                    particle,
+                    x,
+                    y,
+                    z,
+                    domainEmitterParticleCount,
+                    0.15,
+                    0.1,
+                    0.15,
+                    0.01
+            );
+        }
     }
 
     private LivingEntity pickRandomTarget(LivingEntity caster) {
@@ -112,6 +182,38 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
         }
 
         return candidates.get(caster.getRandom().nextInt(candidates.size()));
+    }
+
+    private void triggerInitialBladeRelease(
+            LivingEntity caster,
+            List<LivingEntity> targets,
+            Vec3 fallbackPos,
+            int color
+    ) {
+        if (!caster.isAlive() || caster.isRemoved() || caster.level().isClientSide()) {
+            return;
+        }
+
+        LivingEntity target = pickRandomAliveTarget(caster, targets);
+        if (target != null) {
+            triggerBladeRelease(caster, target, color);
+            return;
+        }
+
+        spawnJudgementCut(caster.level(), caster, fallbackPos, color);
+    }
+
+    private LivingEntity pickRandomAliveTarget(LivingEntity caster, List<LivingEntity> targets) {
+        for (int attempt = 0; attempt < 10 && !targets.isEmpty(); attempt++) {
+            LivingEntity candidate = targets.get(caster.getRandom().nextInt(targets.size()));
+            if (candidate.isAlive()) {
+                return candidate;
+            }
+
+            targets.remove(candidate);
+        }
+
+        return null;
     }
 
     private void triggerBladeReleaseAtRandomTarget(LivingEntity caster, int color) {
@@ -148,7 +250,7 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
         judgementCut.setPos(targetPos.x, targetPos.y, targetPos.z);
         judgementCut.setColor(color);
         judgementCut.setModifiedRatio(judgementCutAttack);
-        judgementCut.setSize(JUDGEMENT_CUT_SIZE);
+        judgementCut.setSize(judgementCutSize);
         judgementCut.setRepeatedAttack(false);
         judgementCut.setRoll(Mth.nextFloat(caster.getRandom(), 0.0f, 360.0f));
         judgementCut.attackActionCallbackPoint.register(hitEntity -> applyJadeFire(hitEntity, caster));
@@ -162,7 +264,7 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
     private void spawnSmallPhantomSwords(Level world, LivingEntity caster, LivingEntity target, int color) {
         int swordCount = Mth.nextInt(caster.getRandom(), minPhantomSwordCount, maxPhantomSwordCount);
         float angleOffset = caster.getRandom().nextFloat() * 360.0f;
-        float tiltAngle = caster.getRandom().nextFloat() * (PHANTOM_SWORD_MAX_TILT_ANGLE - PHANTOM_SWORD_MIN_TILT_ANGLE) + PHANTOM_SWORD_MIN_TILT_ANGLE;
+        float tiltAngle = caster.getRandom().nextFloat() * (phantomSwordMaxTiltAngle - phantomSwordMinTiltAngle) + phantomSwordMinTiltAngle;
         float horizontalAngle = caster.getRandom().nextFloat() * 360f;
 
         for (int i = 0; i < swordCount; i++) {
@@ -204,7 +306,7 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
         summonedSword.setColor(color);
         summonedSword.setModifiedRatio(phantomSwordAttack);
         summonedSword.setRoll(0);
-        summonedSword.setStartDelay(PHANTOM_SWORD_START_DELAY);
+        summonedSword.setStartDelay(phantomSwordStartDelay);
         summonedSword.addAttackType(RecastingAttackTypes.SPIRAL_SWORD_ATTACK.get());
         world.addFreshEntity(summonedSword);
     }
@@ -213,7 +315,7 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffData -> {
             BuffType jadeFireBuffType = RecastingBuffTypes.JADE_FIRE.get();
             int currentLevel = buffData.getLevel(jadeFireBuffType, target.level());
-            buffData.setLevel(jadeFireBuffType, currentLevel + JADE_FIRE_STACKS_PER_RELEASE, target.level());
+            buffData.setLevel(jadeFireBuffType, currentLevel + jadeFireStacksPerRelease, target.level());
             BuffSourceHelper.recordSourceEntity(buffData, jadeFireBuffType, target, caster);
             JadeFireBuffHandler.ensureJadeFireTimer(target);
         });
@@ -249,7 +351,36 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
             return caster.getMainHandItem()
                     .getCapability(ItemSlashBlade.BLADESTATE)
                     .map(ISlashBladeState::getColorCode)
-                    .orElse(DEFAULT_COLOR);
+                .orElse(defaultColor);
+        }
+    }
+
+    private class DomainVisualTick implements Runnable {
+
+        private final LivingEntity caster;
+        private double angle;
+
+        private DomainVisualTick(LivingEntity caster) {
+            this.caster = caster;
+        }
+
+        @Override
+        public void run() {
+            if (!caster.isAlive() || caster.isRemoved() || caster.level().isClientSide()) {
+                stopDomain(caster);
+                return;
+            }
+
+            boolean hasDomainBuff = caster.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA)
+                    .map(data -> data.getLevel(RecastingBuffTypes.JADE_DOMAIN.get(), caster.level()) > 0)
+                    .orElse(false);
+            if (!hasDomainBuff) {
+                stopDomain(caster);
+                return;
+            }
+
+            renderDomainEmitters(caster, angle);
+            angle += domainEmitterAngularSpeed;
         }
     }
 }

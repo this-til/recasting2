@@ -41,10 +41,10 @@ public class FleetingShadowSlashArts extends ExtendedSlashArts {
     private float healAmount = 1.0f;
     private float slashHit = 0.18f;
     private float slashOffset = 3.0f;
-    private static final float TARGET_SIDE_DISTANCE = 2.0f;
-    private static final float TRACKING_MAX_TURN_SPEED = 15.0f;
-    private static final float TRACKING_SMOOTHNESS = 0.3f;
-    private static final float TRACKING_PREDICTION_FACTOR = 0.5f;
+    private final float targetSideDistance = 2.0f;
+    private final float trackingMaxTurnSpeed = 15.0f;
+    private final float trackingSmoothness = 0.3f;
+    private final float trackingPredictionFactor = 0.5f;
 
     @Override
     public void trigger(
@@ -177,7 +177,7 @@ public class FleetingShadowSlashArts extends ExtendedSlashArts {
     }
 
     private Vec3 calculateTrackingSidePosition(LivingEntity livingEntity, Entity target) {
-        Vec3 targetPos = MathHelper.predictEntityCenterPosition(livingEntity, target, TRACKING_PREDICTION_FACTOR);
+        Vec3 targetPos = MathHelper.predictEntityCenterPosition(livingEntity, target, trackingPredictionFactor);
         Vec3 desiredDirection = targetPos.subtract(livingEntity.position());
 
         if (desiredDirection.lengthSqr() < 0.001) {
@@ -194,11 +194,11 @@ public class FleetingShadowSlashArts extends ExtendedSlashArts {
         Vec3 approachDirection = MathHelper.smoothDirection(
                 currentDirection,
                 desiredDirection,
-                TRACKING_MAX_TURN_SPEED,
-                TRACKING_SMOOTHNESS
+                trackingMaxTurnSpeed,
+                trackingSmoothness
         );
 
-        return targetPos.subtract(approachDirection.scale(TARGET_SIDE_DISTANCE));
+        return targetPos.subtract(approachDirection.scale(targetSideDistance));
     }
 
     private void lookAtTarget(LivingEntity livingEntity, LivingEntity target) {

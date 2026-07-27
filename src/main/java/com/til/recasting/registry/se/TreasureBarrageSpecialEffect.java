@@ -21,7 +21,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  */
 public class TreasureBarrageSpecialEffect extends ExtendedSpecialEffect {
 
-    private static final int RECAST_DELAY_TICKS = 20;
+    private final int recastDelayTicks = 20;
 
     private int cooldownTicks = 60;
 
@@ -60,7 +60,7 @@ public class TreasureBarrageSpecialEffect extends ExtendedSpecialEffect {
         buffStackData.setLevel(cooldownBuff, cooldownTicks, level);
 
         user.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
-            timeRun.addTimerCell(() -> recast(user, artsType), RECAST_DELAY_TICKS);
+            timeRun.addTimerCell(() -> recast(user, artsType), recastDelayTicks);
         });
     }
 

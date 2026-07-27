@@ -40,10 +40,10 @@ import java.util.Set;
 @Accessors(chain = true)
 public class LaserBeamSlashArts extends ExtendedSlashArts {
 
-    private static final double FIRE_HEIGHT_OFFSET = 0.5;
-    private static final double SCATTER_BOX_X = 15.0;
-    private static final double SCATTER_BOX_Y = 5.0;
-    private static final double SCATTER_BOX_Z = 15.0;
+    private final double fireHeightOffset = 0.5;
+    private final double scatterBoxX = 15.0;
+    private final double scatterBoxY = 5.0;
+    private final double scatterBoxZ = 15.0;
 
     /** 脉冲次数 */
     int beamCount = 1;
@@ -111,7 +111,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
             return;
         }
 
-        Vec3 start = PosHelper.getAboveHead(livingEntity, FIRE_HEIGHT_OFFSET);
+        Vec3 start = PosHelper.getAboveHead(livingEntity, fireHeightOffset);
         LivingEntity aimed = resolvePrimaryTarget(livingEntity, slashBladeState, finalRange);
         Vec3 aimPoint = aimed != null
                 ? aimed.getBoundingBox().getCenter()
@@ -228,7 +228,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
     /**
      * 向瞄准点发射带物理碰撞的光棱；仅碰撞到的实体受伤
      */
-    private static PosHelper.BeamHit fireCollidingBeam(
+    private PosHelper.BeamHit fireCollidingBeam(
             LivingEntity attacker,
             ServerLevel serverLevel,
             Vec3 start,
@@ -246,7 +246,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
     }
 
     @Nullable
-    private static LivingEntity resolvePrimaryTarget(
+    private LivingEntity resolvePrimaryTarget(
             LivingEntity attacker,
             ISlashBladeState slashBladeState,
             float maxDistance
@@ -258,7 +258,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
             }
         }
 
-        Vec3 start = PosHelper.getAboveHead(attacker, FIRE_HEIGHT_OFFSET);
+        Vec3 start = PosHelper.getAboveHead(attacker, fireHeightOffset);
         Vec3 lookEnd = start.add(attacker.getLookAngle().scale(maxDistance));
         AABB searchBox = new AABB(start, lookEnd).inflate(2.0);
         LivingEntity best = null;
@@ -285,7 +285,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
         return best;
     }
 
-    private static List<LivingEntity> findScatterTargets(
+    private List<LivingEntity> findScatterTargets(
             LivingEntity attacker,
             Vec3 origin,
             Set<LivingEntity> exclude,
@@ -294,9 +294,9 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
     ) {
         AABB box = AABB.ofSize(
                 origin,
-                SCATTER_BOX_X * scatterRangeMul,
-                SCATTER_BOX_Y * scatterRangeMul,
-                SCATTER_BOX_Z * scatterRangeMul
+                scatterBoxX * scatterRangeMul,
+                scatterBoxY * scatterRangeMul,
+                scatterBoxZ * scatterRangeMul
         );
         return attacker.level().getEntitiesOfClass(
                         LivingEntity.class,
@@ -311,10 +311,10 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
                 .toList();
     }
 
-    private static Vec3 randomPointInScatterBox(Vec3 origin, RandomSource random, float scatterRangeMul) {
-        double x = (random.nextDouble() - 0.5) * SCATTER_BOX_X * scatterRangeMul;
-        double y = (random.nextDouble() - 0.5) * SCATTER_BOX_Y * scatterRangeMul;
-        double z = (random.nextDouble() - 0.5) * SCATTER_BOX_Z * scatterRangeMul;
+    private Vec3 randomPointInScatterBox(Vec3 origin, RandomSource random, float scatterRangeMul) {
+        double x = (random.nextDouble() - 0.5) * scatterBoxX * scatterRangeMul;
+        double y = (random.nextDouble() - 0.5) * scatterBoxY * scatterRangeMul;
+        double z = (random.nextDouble() - 0.5) * scatterBoxZ * scatterRangeMul;
         return origin.add(x, y, z);
     }
 }

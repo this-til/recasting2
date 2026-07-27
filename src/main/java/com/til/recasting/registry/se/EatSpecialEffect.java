@@ -12,8 +12,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  */
 public class EatSpecialEffect extends ExtendedSpecialEffect {
 
-    private static final int DURABILITY_COST = 12;
-    private static final float SATURATION_RESTORE = 1f;
+    private final int durabilityCost = 12;
+    private final float saturationRestore = 1f;
 
     @SubscribeEvent
     public void onEvent(DoSlashExtendEvent event) {
@@ -37,17 +37,17 @@ public class EatSpecialEffect extends ExtendedSpecialEffect {
 
         int currentDamage = state.getDamage();
         int remaining = maxDamage - currentDamage;
-        if (remaining < DURABILITY_COST) {
+        if (remaining < durabilityCost) {
             return;
         }
 
         FoodData foodData = player.getFoodData();
-        float newSaturation = Math.min(foodData.getFoodLevel(), foodData.getSaturationLevel() + SATURATION_RESTORE);
+        float newSaturation = Math.min(foodData.getFoodLevel(), foodData.getSaturationLevel() + saturationRestore);
         if (newSaturation <= foodData.getSaturationLevel()) {
             return;
         }
 
-        state.setDamage(currentDamage + DURABILITY_COST);
+        state.setDamage(currentDamage + durabilityCost);
         foodData.setSaturation(newSaturation);
     }
 }

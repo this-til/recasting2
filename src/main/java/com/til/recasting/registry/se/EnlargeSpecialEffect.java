@@ -13,7 +13,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  */
 public class EnlargeSpecialEffect extends ExtendedSpecialEffect {
 
-    private static final float ATTACK_RANGE_BONUS = 48f;
+    private final float attackRangeBonus = 48f;
 
     @SubscribeEvent
     public void onEvent(DoSlashExtendEvent event) {
@@ -31,7 +31,7 @@ public class EnlargeSpecialEffect extends ExtendedSpecialEffect {
             return;
         }
 
-        event.addAttackRange(ATTACK_RANGE_BONUS);
+        event.addAttackRange(attackRangeBonus);
     }
 
     private static void breakBlade(ItemStack blade, ISlashBladeState state) {

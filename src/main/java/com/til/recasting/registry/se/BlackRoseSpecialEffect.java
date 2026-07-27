@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class BlackRoseSpecialEffect extends ExtendedSpecialEffect {
 
-    private static final String TIMER_NAME = "black_rose_tick";
+    private final String timerName = "black_rose_tick";
 
     float attack = 0.05f;
     float attenuation = 0.75f;
@@ -59,12 +59,12 @@ public class BlackRoseSpecialEffect extends ExtendedSpecialEffect {
 
     private void ensureBlackRoseTimer(LivingEntity target, BuffType blackRoseBuffType) {
         target.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
-            if (timeRun.getNamedTimerCell(TIMER_NAME) != null) {
+            if (timeRun.getNamedTimerCell(timerName) != null) {
                 return;
             }
 
             timeRun.addNamedTimerCell(
-                    TIMER_NAME,
+                    timerName,
                     new ITimeRun.TimerCell(
                             () -> tickBlackRose(target, blackRoseBuffType, timeRun),
                             attackInterval,
@@ -76,14 +76,14 @@ public class BlackRoseSpecialEffect extends ExtendedSpecialEffect {
 
     private void tickBlackRose(LivingEntity target, BuffType blackRoseBuffType, ITimeRun timeRun) {
         if (!target.isAlive() || target.level().isClientSide()) {
-            timeRun.removeNamedTimerCell(TIMER_NAME);
+            timeRun.removeNamedTimerCell(timerName);
             return;
         }
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
             int units = buffStackData.getLevel(blackRoseBuffType, target.level());
             if (units <= 0) {
-                timeRun.removeNamedTimerCell(TIMER_NAME);
+                timeRun.removeNamedTimerCell(timerName);
                 return;
             }
 
@@ -91,14 +91,14 @@ public class BlackRoseSpecialEffect extends ExtendedSpecialEffect {
             LivingEntity attacker = BuffSourceHelper.getSourceEntity(entry, target.level());
             if (attacker == null) {
                 buffStackData.setLevel(blackRoseBuffType, 0, target.level());
-                timeRun.removeNamedTimerCell(TIMER_NAME);
+                timeRun.removeNamedTimerCell(timerName);
                 return;
             }
 
             float damage = units / 10f;
             if (damage <= 0) {
                 buffStackData.setLevel(blackRoseBuffType, 0, target.level());
-                timeRun.removeNamedTimerCell(TIMER_NAME);
+                timeRun.removeNamedTimerCell(timerName);
                 return;
             }
 
@@ -115,7 +115,7 @@ public class BlackRoseSpecialEffect extends ExtendedSpecialEffect {
             int nextUnits = (int) (units * attenuation);
             if (nextUnits <= 0) {
                 buffStackData.setLevel(blackRoseBuffType, 0, target.level());
-                timeRun.removeNamedTimerCell(TIMER_NAME);
+            timeRun.removeNamedTimerCell(timerName);
                 return;
             }
 

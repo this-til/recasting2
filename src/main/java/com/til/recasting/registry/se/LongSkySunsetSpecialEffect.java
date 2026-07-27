@@ -19,14 +19,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 @Accessors(chain = true)
 public class LongSkySunsetSpecialEffect extends ExtendedSpecialEffect {
 
-    private static final int COOLDOWN_TICKS = 5;
+    private final int cooldownTicks = 5;
 
     float baseAttack = 0.15f;
 
     @SubscribeEvent
     public void onSlashBladeLockTargetTick(SlashBladeLockTargetTickEvent event) {
         LivingEntity user = event.getUser();
-        if (user.tickCount % COOLDOWN_TICKS != 0) {
+        if (user.tickCount % cooldownTicks != 0) {
             return;
         }
 

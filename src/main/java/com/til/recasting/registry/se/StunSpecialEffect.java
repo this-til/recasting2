@@ -11,7 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  */
 public class StunSpecialEffect extends ExtendedSpecialEffect {
 
-    private static final int STUN_TICKS = 20;
+    private final int stunTicks = 20;
 
     @SubscribeEvent
     public void onEvent(AttackAmplifierEvent event) {
@@ -20,6 +20,6 @@ public class StunSpecialEffect extends ExtendedSpecialEffect {
             return;
         }
 
-        StunManager.setStun(target, STUN_TICKS);
+        StunManager.setStun(target, stunTicks);
     }
 }
