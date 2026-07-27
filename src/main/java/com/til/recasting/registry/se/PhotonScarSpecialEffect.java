@@ -32,15 +32,8 @@ public class PhotonScarSpecialEffect extends ExtendedSpecialEffect {
 
     @SubscribeEvent
     public void onEvent(AttackAmplifierEvent event) {
-        if (!hasSpecialEffect(event.getSlashBladeState())) {
-            return;
-        }
-
-        if (event.getAttacker().level().isClientSide()) {
-            return;
-        }
-
-        if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+        LivingEntity target = resolveServerLivingTarget(event);
+        if (target == null) {
             return;
         }
 

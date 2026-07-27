@@ -48,13 +48,8 @@ public class TeaAromaSpecialEffect extends ExtendedSpecialEffect {
      */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onAttackAmplifier(AttackAmplifierEvent event) {
-        if (!hasSpecialEffect(event.getSlashBladeState())) {
-            return;
-        }
-        if (event.getAttacker().level().isClientSide()) {
-            return;
-        }
-        if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+        LivingEntity target = resolveServerLivingTarget(event);
+        if (target == null) {
             return;
         }
         if (event.getAttackTypeList().contains(RecastingAttackTypes.TEA_AROMA_ATTACK.get())) {

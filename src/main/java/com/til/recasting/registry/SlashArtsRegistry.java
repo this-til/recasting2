@@ -243,6 +243,7 @@ public class SlashArtsRegistry {
     public static final RegistryObject<ExtendedSlashArts> RIFT_GALE_LAMBDA = registerExtendedSA(
             "rift_gale_lambda",
             new RiftGaleSlashArts()
+                    .setDriveCount(30)
                     .setDriveDuration(30)
                     .setDriveAttack(0.133f)
                     .setDriveLife(15)

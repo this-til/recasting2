@@ -1,9 +1,8 @@
 package com.til.recasting.mixin;
 
-import com.til.recasting.constant.RecastingLanguageKeys;
+import com.til.recasting.handler.SpecialEffectTooltipHelper;
 import com.til.recasting.registry.se.ExtendedSpecialEffect;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
-import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -56,26 +55,14 @@ public class SlashBladeItemsMixin$ProudsoulCrystal {
         int currentLevel = tag.getInt("SpecialEffectTypeLevel");
         int maxLevel = extendedSE.getMaxLevel();
 
-        Component nameComponent = Component.translatable(se.getDescriptionId())
-                .withStyle(extendedSE.isSpecial() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.GRAY);
-        Component line = Component.translatable(
-                "slashblade.tooltip.special_effect",
-                nameComponent,
-                currentLevel + "/" + maxLevel
-        ).withStyle(extendedSE.isSpecial() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.GRAY);
-        if (extendedSE.isSpecial()) {
-            line = line.copy()
-                    .append(Component.literal(" "))
-                                    .append(Component.translatable(RecastingLanguageKeys.TOOLTIP_SPECIAL_SE_BADGE)
-                                            .withStyle(ChatFormatting.LIGHT_PURPLE));
-        }
-        components.add(line);
+        components.add(SpecialEffectTooltipHelper.createEffectLine(
+                extendedSE,
+                Component.translatable(se.getDescriptionId()),
+                Component.literal(currentLevel + "/" + maxLevel)
+        ));
 
         // 添加特殊效果介绍
-        components.add(
-                Component.translatable(extendedSE.getDescId())
-                        .withStyle(ChatFormatting.DARK_GRAY)
-        );
+        components.add(SpecialEffectTooltipHelper.createDescription(extendedSE));
 
         // 取消原始逻辑
         ci.cancel();

@@ -32,17 +32,8 @@ public class TearSpecialEffect extends ExtendedSpecialEffect {
 
     @SubscribeEvent
     public void onEvent(AttackAmplifierEvent event) {
-        if (!hasSpecialEffect(event.getSlashBladeState())) {
-            return;
-        }
-
-        // 只在服务端执行
-        if (event.getAttacker().level().isClientSide()) {
-            return;
-        }
-
-        // 检查目标是否是生物实体且存活
-        if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+        LivingEntity target = resolveServerLivingTarget(event);
+        if (target == null) {
             return;
         }
 

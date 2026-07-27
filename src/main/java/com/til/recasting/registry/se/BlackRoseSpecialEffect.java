@@ -30,13 +30,8 @@ public class BlackRoseSpecialEffect extends ExtendedSpecialEffect {
 
     @SubscribeEvent
     public void onAttackAmplifier(AttackAmplifierEvent event) {
-        if (!hasSpecialEffect(event.getSlashBladeState())) {
-            return;
-        }
-        if (event.getAttacker().level().isClientSide()) {
-            return;
-        }
-        if (!(event.getTarget() instanceof LivingEntity target) || !target.isAlive()) {
+        LivingEntity target = resolveServerLivingTarget(event);
+        if (target == null) {
             return;
         }
         if (event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get())) {

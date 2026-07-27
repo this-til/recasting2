@@ -1,7 +1,6 @@
 package com.til.recasting.handler;
 
 import com.til.recasting.capability.PropertiesDefinitionExtension;
-import com.til.recasting.registry.se.ExtendedSpecialEffect;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
@@ -11,9 +10,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.IForgeRegistry;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -55,19 +52,18 @@ public final class BladeSpecialEffectInheritanceHelper {
             return;
         }
 
-        IForgeRegistry<SpecialEffect> registry = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get();
-        Map<ResourceLocation, Integer> definitionNormals = collectDefinitionNormalEffects(outputDefinition, registry);
-        boolean definitionHasSpecial = definitionHasSpecialEffect(outputDefinition, registry);
+        Map<ResourceLocation, Integer> definitionNormals = collectDefinitionNormalEffects(outputDefinition);
+        boolean definitionHasSpecial = definitionHasSpecialEffect(outputDefinition);
 
         if (!definitionHasSpecial) {
-            findInputSpecialEffect(container, registry).ifPresent(source ->
-                    applySpecialEffect(result, registry, source.seId(), source.level())
+            findInputSpecialEffect(container).ifPresent(source ->
+                    applySpecialEffect(result, source.seId(), source.level())
             );
         }
 
-        Map<ResourceLocation, Integer> inheritedNormals = findInputNormalEffects(container, registry);
+        Map<ResourceLocation, Integer> inheritedNormals = findInputNormalEffects(container);
         Map<ResourceLocation, Integer> mergedNormals = mergeNormalEffects(definitionNormals, inheritedNormals);
-        applyNormalEffects(result, registry, mergedNormals);
+        applyNormalEffects(result, mergedNormals);
     }
 
     /**
@@ -108,14 +104,13 @@ public final class BladeSpecialEffectInheritanceHelper {
 
     private static void applyNormalEffects(
             ItemStack result,
-            IForgeRegistry<SpecialEffect> registry,
             Map<ResourceLocation, Integer> mergedNormals
     ) {
         result.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState ->
                 result.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> {
                     List<ResourceLocation> toRemove = new ArrayList<>();
                     for (ResourceLocation existingSeId : bladeState.getSpecialEffects()) {
-                        if (isSpecialEffect(registry, existingSeId)) {
+                        if (BladeSpecialEffectHelper.isSpecialExtendedEffect(existingSeId)) {
                             continue;
                         }
                         if (!mergedNormals.containsKey(existingSeId)) {
@@ -138,8 +133,7 @@ public final class BladeSpecialEffectInheritanceHelper {
     }
 
     private static Map<ResourceLocation, Integer> collectDefinitionNormalEffects(
-            SlashBladeDefinition definition,
-            IForgeRegistry<SpecialEffect> registry
+            SlashBladeDefinition definition
     ) {
         Map<ResourceLocation, Integer> normals = new LinkedHashMap<>();
         PropertiesDefinitionExtension extension = null;
@@ -147,7 +141,7 @@ public final class BladeSpecialEffectInheritanceHelper {
             extension = stateExtension.getRecasting$propertiesDefinitionExtension();
         }
         for (ResourceLocation seId : definition.getStateDefinition().getSpecialEffects()) {
-            if (isSpecialEffect(registry, seId)) {
+            if (BladeSpecialEffectHelper.isSpecialExtendedEffect(seId)) {
                 continue;
             }
             int level = 1;
@@ -162,27 +156,21 @@ public final class BladeSpecialEffectInheritanceHelper {
         return normals;
     }
 
-    private static boolean definitionHasSpecialEffect(
-            SlashBladeDefinition definition,
-            IForgeRegistry<SpecialEffect> registry
-    ) {
+    private static boolean definitionHasSpecialEffect(SlashBladeDefinition definition) {
         for (ResourceLocation seId : definition.getStateDefinition().getSpecialEffects()) {
-            if (isSpecialEffect(registry, seId)) {
+            if (BladeSpecialEffectHelper.isSpecialExtendedEffect(seId)) {
                 return true;
             }
         }
         return false;
     }
 
-    private static Optional<EffectEntry> findInputSpecialEffect(
-            CraftingContainer container,
-            IForgeRegistry<SpecialEffect> registry
-    ) {
+    private static Optional<EffectEntry> findInputSpecialEffect(CraftingContainer container) {
         for (ItemStack stack : container.getItems()) {
             if (stack.isEmpty() || !(stack.getItem() instanceof ItemSlashBlade)) {
                 continue;
             }
-            Optional<EffectEntry> inherited = findSpecialEffectOnBlade(stack, registry);
+            Optional<EffectEntry> inherited = findSpecialEffectOnBlade(stack);
             if (inherited.isPresent()) {
                 return inherited;
             }
@@ -190,16 +178,13 @@ public final class BladeSpecialEffectInheritanceHelper {
         return Optional.empty();
     }
 
-    private static Map<ResourceLocation, Integer> findInputNormalEffects(
-            CraftingContainer container,
-            IForgeRegistry<SpecialEffect> registry
-    ) {
+    private static Map<ResourceLocation, Integer> findInputNormalEffects(CraftingContainer container) {
         Map<ResourceLocation, Integer> inheritedEffects = new LinkedHashMap<>();
         for (ItemStack stack : container.getItems()) {
             if (stack.isEmpty() || !(stack.getItem() instanceof ItemSlashBlade)) {
                 continue;
             }
-            for (EffectEntry entry : findNormalEffectsOnBlade(stack, registry)) {
+            for (EffectEntry entry : findNormalEffectsOnBlade(stack)) {
                 Integer existing = inheritedEffects.get(entry.seId());
                 if (existing == null || entry.level() > existing) {
                     inheritedEffects.put(entry.seId(), entry.level());
@@ -209,33 +194,12 @@ public final class BladeSpecialEffectInheritanceHelper {
         return inheritedEffects;
     }
 
-    private static Optional<EffectEntry> findSpecialEffectOnBlade(
-            ItemStack blade,
-            IForgeRegistry<SpecialEffect> registry
-    ) {
-        PropertiesDefinitionExtension extension = blade.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION)
-                .orElse(null);
-        ISlashBladeState bladeState = blade.getCapability(ItemSlashBlade.BLADESTATE).orElse(null);
-        if (extension == null || bladeState == null) {
-            return Optional.empty();
-        }
-
-        for (ResourceLocation seId : bladeState.getSpecialEffects()) {
-            if (!isSpecialEffect(registry, seId)) {
-                continue;
-            }
-            int level = extension.getExtendedSpecialLevels(seId);
-            if (level > 0) {
-                return Optional.of(new EffectEntry(seId, level));
-            }
-        }
-        return Optional.empty();
+    private static Optional<EffectEntry> findSpecialEffectOnBlade(ItemStack blade) {
+        return BladeSpecialEffectHelper.findFirstSpecialEffect(blade)
+                .map(entry -> new EffectEntry(entry.id(), entry.level()));
     }
 
-    private static List<EffectEntry> findNormalEffectsOnBlade(
-            ItemStack blade,
-            IForgeRegistry<SpecialEffect> registry
-    ) {
+    private static List<EffectEntry> findNormalEffectsOnBlade(ItemStack blade) {
         List<EffectEntry> effects = new ArrayList<>();
         PropertiesDefinitionExtension extension = blade.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION)
                 .orElse(null);
@@ -245,7 +209,7 @@ public final class BladeSpecialEffectInheritanceHelper {
         }
 
         for (ResourceLocation seId : bladeState.getSpecialEffects()) {
-            if (isSpecialEffect(registry, seId)) {
+            if (BladeSpecialEffectHelper.isSpecialExtendedEffect(seId)) {
                 continue;
             }
             int level = extension.getExtendedSpecialLevels(seId);
@@ -261,45 +225,21 @@ public final class BladeSpecialEffectInheritanceHelper {
 
     private static void applySpecialEffect(
             ItemStack result,
-            IForgeRegistry<SpecialEffect> registry,
             ResourceLocation seId,
             int level
     ) {
         result.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState ->
                 result.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> {
-                    removeOtherSpecialEffects(bladeState, extension, registry, seId);
+                    BladeSpecialEffectHelper.removeSpecialEffectsExcept(
+                            bladeState,
+                            extension,
+                            seId
+                    );
                     bladeState.addSpecialEffect(seId);
                     extension.setExtendedSpecialLevels(seId, level);
                     persistBladeState(result, bladeState);
                 })
         );
-    }
-
-    private static boolean isSpecialEffect(IForgeRegistry<SpecialEffect> registry, ResourceLocation seId) {
-        SpecialEffect specialEffect = registry.getValue(seId);
-        return specialEffect instanceof ExtendedSpecialEffect extendedSpecialEffect
-                && extendedSpecialEffect.isSpecial();
-    }
-
-    private static void removeOtherSpecialEffects(
-            ISlashBladeState bladeState,
-            PropertiesDefinitionExtension extension,
-            IForgeRegistry<SpecialEffect> registry,
-            @Nullable ResourceLocation keep
-    ) {
-        List<ResourceLocation> toRemove = new ArrayList<>();
-        for (ResourceLocation existingSeId : bladeState.getSpecialEffects()) {
-            if (existingSeId.equals(keep)) {
-                continue;
-            }
-            if (isSpecialEffect(registry, existingSeId)) {
-                toRemove.add(existingSeId);
-            }
-        }
-        for (ResourceLocation seToRemove : toRemove) {
-            bladeState.removeSpecialEffect(seToRemove);
-            extension.setExtendedSpecialLevels(seToRemove, 0);
-        }
     }
 
     private static void persistBladeState(ItemStack stack, ISlashBladeState bladeState) {

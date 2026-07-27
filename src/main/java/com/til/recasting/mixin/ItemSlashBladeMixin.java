@@ -3,7 +3,7 @@ package com.til.recasting.mixin;
 import com.til.recasting.capability.ISpecialEffectCrystalData;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.handler.CapabilityRegistryHandler;
-import com.til.recasting.constant.RecastingLanguageKeys;
+import com.til.recasting.handler.SpecialEffectTooltipHelper;
 import com.til.recasting.registry.SlashArtsRegistry;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
@@ -90,18 +90,11 @@ public class ItemSlashBladeMixin {
                         valueComponent = Component.literal(
                                 es.getExtendedSpecialLevels(specialEffectResourceLocation) + "/" + extendedSpecialEffect.getMaxLevel()
                         ).withStyle(ChatFormatting.LIGHT_PURPLE);
-                        Component line = Component.translatable(
-                                "slashblade.tooltip.special_effect",
+                        tooltip.add(SpecialEffectTooltipHelper.createEffectLine(
+                                extendedSpecialEffect,
                                 nameComponent,
                                 valueComponent
-                        ).withStyle(extendedSpecialEffect.isSpecial() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.GRAY);
-                        if (extendedSpecialEffect.isSpecial()) {
-                            line = line.copy()
-                                    .append(Component.literal(" "))
-                                    .append(Component.translatable(RecastingLanguageKeys.TOOLTIP_SPECIAL_SE_BADGE)
-                                            .withStyle(ChatFormatting.LIGHT_PURPLE));
-                        }
-                        tooltip.add(line);
+                        ));
                     } else {
                         valueComponent = Component.literal(
                                         showingLevel
@@ -130,10 +123,7 @@ public class ItemSlashBladeMixin {
 
                     // 按住Shift时显示SE介绍文本
                     if (flagIn.isAdvanced() && specialEffect instanceof com.til.recasting.registry.se.ExtendedSpecialEffect extendedSE) {
-                        tooltip.add(
-                                Component.translatable(extendedSE.getDescId())
-                                        .withStyle(ChatFormatting.DARK_GRAY)
-                        );
+                        tooltip.add(SpecialEffectTooltipHelper.createDescription(extendedSE));
                     }
                 }
 

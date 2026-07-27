@@ -1,16 +1,9 @@
 package com.til.recasting.client.handler;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import com.til.recasting.Recasting;
 import com.til.recasting.client.effect.LightningChainClientEffects;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
@@ -24,7 +17,7 @@ import java.util.List;
 /**
  * 闪电链折线自定义渲染（沿 start→end 分段抖动的发光四边形带）。
  * <p>
- * 使用自有 {@link BufferBuilder} 批绘，避免与假人伤害数字等对共享 BufferSource 的干扰。
+ * 使用发光线段公共渲染器的专用批绘 Buffer，避免与假人伤害数字等共享 BufferSource。
  */
 @Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class LightningChainRenderHandler {
@@ -33,8 +26,6 @@ public class LightningChainRenderHandler {
     private static final float CORE_HALF_WIDTH = 0.04f;
     private static final float SHEATH_HALF_WIDTH = 0.14f;
     private static final float BRANCH_OFFSET_SCALE = 0.35f;
-
-    private static final BufferBuilder BATCH_BUFFER = new BufferBuilder(256 * 1024);
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
@@ -64,7 +55,7 @@ public class LightningChainRenderHandler {
         long gameTime = minecraft.level.getGameTime();
         float partialTick = event.getPartialTick();
 
-        beginBatch();
+        CameraFacingBeamRenderer.begin();
         for (LightningChainClientEffects.Bolt bolt : bolts) {
             float alpha = bolt.alpha(gameTime, partialTick);
             if (alpha <= 0.01f) {
@@ -76,8 +67,12 @@ public class LightningChainRenderHandler {
             float b = (color & 0xFF) / 255.0f;
 
             Vec3[] points = bolt.points();
-            drawPolyline(matrix, camera, points, SHEATH_HALF_WIDTH, r, g, b, alpha * 0.5f);
-            drawPolyline(matrix, camera, points, CORE_HALF_WIDTH, 0.85f, 0.95f, 1.0f, alpha);
+            CameraFacingBeamRenderer.drawPolyline(
+                    matrix, camera, points, SHEATH_HALF_WIDTH, r, g, b, alpha * 0.5f
+            );
+            CameraFacingBeamRenderer.drawPolyline(
+                    matrix, camera, points, CORE_HALF_WIDTH, 0.85f, 0.95f, 1.0f, alpha
+            );
 
             // 短分支
             for (int i = 2; i < points.length - 2; i += 2) {
@@ -92,11 +87,17 @@ public class LightningChainRenderHandler {
                 dir = dir.normalize();
                 Vec3 side = orthogonal(dir, bolt.seed(), i).scale(branchLengthScale(bolt.seed(), i));
                 Vec3 branchEnd = mid.add(side);
-                drawBeamQuad(matrix, camera, mid, branchEnd, SHEATH_HALF_WIDTH * 0.6f, r, g, b, alpha * 0.35f);
-                drawBeamQuad(matrix, camera, mid, branchEnd, CORE_HALF_WIDTH * 0.6f, 0.85f, 0.95f, 1.0f, alpha * 0.7f);
+                CameraFacingBeamRenderer.drawQuad(
+                        matrix, camera, mid, branchEnd,
+                        SHEATH_HALF_WIDTH * 0.6f, r, g, b, alpha * 0.35f
+                );
+                CameraFacingBeamRenderer.drawQuad(
+                        matrix, camera, mid, branchEnd,
+                        CORE_HALF_WIDTH * 0.6f, 0.85f, 0.95f, 1.0f, alpha * 0.7f
+                );
             }
         }
-        endBatch();
+        CameraFacingBeamRenderer.end();
     }
 
     private static boolean shouldDrawBranch(long seed, int segmentIndex) {
@@ -131,94 +132,4 @@ public class LightningChainRenderHandler {
         return (hash(seed, segmentIndex, salt) & 0x7FFFFFFF) / (float) Integer.MAX_VALUE;
     }
 
-    private static void drawPolyline(
-            Matrix4f matrix,
-            Vec3 camera,
-            Vec3[] points,
-            float halfWidth,
-            float r,
-            float g,
-            float b,
-            float a
-    ) {
-        for (int i = 0; i < points.length - 1; i++) {
-            drawBeamQuad(matrix, camera, points[i], points[i + 1], halfWidth, r, g, b, a);
-        }
-    }
-
-    private static void beginBatch() {
-        if (BATCH_BUFFER.building()) {
-            BufferUploader.drawWithShader(BATCH_BUFFER.end());
-        }
-        RenderSystem.enableDepthTest();
-        RenderSystem.depthMask(true);
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
-        RenderSystem.setShader(GameRenderer::getRendertypeLightningShader);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        BATCH_BUFFER.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-    }
-
-    private static void endBatch() {
-        if (BATCH_BUFFER.building()) {
-            BufferUploader.drawWithShader(BATCH_BUFFER.end());
-        }
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        RenderSystem.disableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.depthMask(true);
-    }
-
-    private static void drawBeamQuad(
-            Matrix4f matrix,
-            Vec3 camera,
-            Vec3 start,
-            Vec3 end,
-            float halfWidth,
-            float r,
-            float g,
-            float b,
-            float a
-    ) {
-        Vec3 delta = end.subtract(start);
-        double lengthSqr = delta.lengthSqr();
-        if (lengthSqr <= 1.0E-8) {
-            return;
-        }
-        Vec3 dir = delta.scale(1.0 / Math.sqrt(lengthSqr));
-        Vec3 mid = start.add(end).scale(0.5);
-        Vec3 toCam = camera.subtract(mid);
-        Vec3 side = dir.cross(toCam);
-        if (side.lengthSqr() <= 1.0E-8) {
-            side = dir.cross(new Vec3(0.0, 1.0, 0.0));
-            if (side.lengthSqr() <= 1.0E-8) {
-                side = dir.cross(new Vec3(1.0, 0.0, 0.0));
-            }
-        }
-        side = side.normalize().scale(halfWidth);
-
-        put(matrix, camera, start.subtract(side), r, g, b, a);
-        put(matrix, camera, start.add(side), r, g, b, a);
-        put(matrix, camera, end.add(side), r, g, b, a);
-        put(matrix, camera, end.subtract(side), r, g, b, a);
-    }
-
-    private static void put(
-            Matrix4f matrix,
-            Vec3 camera,
-            Vec3 pos,
-            float r,
-            float g,
-            float b,
-            float a
-    ) {
-        BATCH_BUFFER.vertex(
-                        matrix,
-                        (float) (pos.x - camera.x),
-                        (float) (pos.y - camera.y),
-                        (float) (pos.z - camera.z)
-                )
-                .color(r, g, b, a)
-                .endVertex();
-    }
 }

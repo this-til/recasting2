@@ -1,13 +1,8 @@
 package com.til.recasting.handler;
 
-import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.registry.RecastingItems;
-import com.til.recasting.registry.se.ExtendedSpecialEffect;
-import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
-import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -16,10 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.til.recasting.Recasting.MODID;
 
@@ -35,9 +27,6 @@ public class AnvilSpecialEffectExtractionHandler {
 
     private static final int SPECIAL_SE_CRYSTAL_LEVEL = 1;
 
-    private record SpecialSESnapshot(ResourceLocation seLocation) {
-    }
-
     /**
      * 铁砧预览：刀配渊寂火用于去除，刀配聚散变体用于提取。
      */
@@ -49,13 +38,21 @@ public class AnvilSpecialEffectExtractionHandler {
 
         // 刀 + 火 → 去除特殊 SE
         if (leftItem.getItem() instanceof ItemSlashBlade && rightItem.is(RecastingItems.ABYSS_FLAME.get())) {
-            Optional<SpecialSESnapshot> specialSE = findBladeSpecialSE(leftItem);
+            Optional<BladeSpecialEffectHelper.EffectEntry> specialSE =
+                    BladeSpecialEffectHelper.findFirstSpecialEffect(leftItem);
             if (specialSE.isEmpty()) {
                 return;
             }
 
             ItemStack output = leftItem.copy();
-            removeAllSpecialEffects(output);
+            output.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState ->
+                    output.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION)
+                            .ifPresent(properties -> BladeSpecialEffectHelper.removeSpecialEffectsExcept(
+                                    bladeState,
+                                    properties,
+                                    null
+                            ))
+            );
             if (inputName != null && !inputName.isEmpty()) {
                 output.setHoverName(Component.literal(inputName));
             }
@@ -67,7 +64,8 @@ public class AnvilSpecialEffectExtractionHandler {
 
         // 刀 + 聚散变体 → 提取特殊 SE 结晶
         if (leftItem.getItem() instanceof ItemSlashBlade && rightItem.is(RecastingItems.GATHERING_PARTING_VARIANT.get())) {
-            Optional<SpecialSESnapshot> specialSE = findBladeSpecialSE(leftItem);
+            Optional<BladeSpecialEffectHelper.EffectEntry> specialSE =
+                    BladeSpecialEffectHelper.findFirstSpecialEffect(leftItem);
             if (specialSE.isEmpty()) {
                 return;
             }
@@ -116,14 +114,15 @@ public class AnvilSpecialEffectExtractionHandler {
             return false;
         }
 
-        Optional<SpecialSESnapshot> specialSE = findBladeSpecialSE(leftItem);
+        Optional<BladeSpecialEffectHelper.EffectEntry> specialSE =
+                BladeSpecialEffectHelper.findFirstSpecialEffect(leftItem);
         if (specialSE.isEmpty()) {
             return false;
         }
 
         return output.getCapability(CapabilityRegistryHandler.SE_CRYSTAL_DATA)
                 .map(crystalData -> {
-                    if (!specialSE.get().seLocation().equals(crystalData.getSpecialEffectType())) {
+                    if (!specialSE.get().id().equals(crystalData.getSpecialEffectType())) {
                         return false;
                     }
                     return crystalData.getSpecialEffectLevel() == SPECIAL_SE_CRYSTAL_LEVEL;
@@ -131,10 +130,13 @@ public class AnvilSpecialEffectExtractionHandler {
                 .orElse(false);
     }
 
-    private static ItemStack createSpecialSECrystal(SpecialSESnapshot specialSE, @Nullable String inputName) {
+    private static ItemStack createSpecialSECrystal(
+            BladeSpecialEffectHelper.EffectEntry specialSE,
+            @Nullable String inputName
+    ) {
         ItemStack output = new ItemStack(RecastingItems.SE_CRYSTAL.get());
         output.getCapability(CapabilityRegistryHandler.SE_CRYSTAL_DATA).ifPresent(crystalData -> {
-            crystalData.setSpecialEffectType(specialSE.seLocation());
+            crystalData.setSpecialEffectType(specialSE.id());
             crystalData.setSpecialEffectLevel(SPECIAL_SE_CRYSTAL_LEVEL);
         });
 
@@ -144,56 +146,4 @@ public class AnvilSpecialEffectExtractionHandler {
         return output;
     }
 
-    /**
-     * 查找刀上第一个特殊 SE，提取结晶固定为 1 级。
-     */
-    private static Optional<SpecialSESnapshot> findBladeSpecialSE(ItemStack bladeStack) {
-        if (!(bladeStack.getItem() instanceof ItemSlashBlade)) {
-            return Optional.empty();
-        }
-
-        AtomicReference<SpecialSESnapshot> found = new AtomicReference<>();
-        bladeStack.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState ->
-                bladeStack.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> {
-                    for (ResourceLocation seLocation : bladeState.getSpecialEffects()) {
-                        SpecialEffect se = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(seLocation);
-                        if (!(se instanceof ExtendedSpecialEffect extendedSE)) {
-                            continue;
-                        }
-                        if (!extendedSE.isSpecial() || !bladeState.hasSpecialEffect(seLocation)) {
-                            continue;
-                        }
-                        if (extension.getExtendedSpecialLevels(seLocation) <= 0) {
-                            continue;
-                        }
-                        found.set(new SpecialSESnapshot(seLocation));
-                        return;
-                    }
-                })
-        );
-        return Optional.ofNullable(found.get());
-    }
-
-    private static void removeAllSpecialEffects(ItemStack bladeStack) {
-        bladeStack.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState ->
-                bladeStack.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension ->
-                        clearSpecialEffects(bladeState, extension)
-                )
-        );
-    }
-
-    private static void clearSpecialEffects(ISlashBladeState bladeState, PropertiesDefinitionExtension extension) {
-        List<ResourceLocation> toRemove = new ArrayList<>();
-        for (ResourceLocation existingSE : bladeState.getSpecialEffects()) {
-            SpecialEffect existingEffect = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(existingSE);
-            if (existingEffect instanceof ExtendedSpecialEffect existingExtendedSE
-                    && existingExtendedSE.isSpecial()) {
-                toRemove.add(existingSE);
-            }
-        }
-        for (ResourceLocation seToRemove : toRemove) {
-            bladeState.removeSpecialEffect(seToRemove);
-            extension.setExtendedSpecialLevels(seToRemove, 0);
-        }
-    }
 }

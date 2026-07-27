@@ -1,11 +1,7 @@
 package com.til.recasting.handler;
 
 import com.til.recasting.Config;
-import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.registry.RecastingItems;
-import com.til.recasting.registry.SpecialEffectsRegistry;
-import com.til.recasting.registry.se.ExtendedSpecialEffect;
-import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.network.chat.Component;
@@ -16,8 +12,6 @@ import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.til.recasting.Recasting.MODID;
@@ -107,23 +101,8 @@ public class AnvilSpecialEffectEngravingHandler {
 
                 // 检查SE数量限制（创造模式跳过限制）
                 if (!isCreativeMode && !extendedSE.isSpecial() && !Config.isUnlimitedSeEngraving()) {
-                    AtomicInteger normalSECount = new AtomicInteger(0);
-
-                    leftItem.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> {
-                        leftItem.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState -> {
-                            for (ResourceLocation existingSE : bladeState.getSpecialEffects()) {
-                                SpecialEffect existingSpecialEffect = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(existingSE);
-                                if (existingSpecialEffect instanceof com.til.recasting.registry.se.ExtendedSpecialEffect existingExtendedSE) {
-                                    int existingLevel = extension.getExtendedSpecialLevels(existingSE);
-                                    if (existingLevel > 0 && !existingExtendedSE.isSpecial()) {
-                                        normalSECount.incrementAndGet();
-                                    }
-                                }
-                            }
-                        });
-                    });
-
-                    if (currentLevel.get() == 0 && normalSECount.get() >= Config.getNormalSeEngravingLimit()) {
+                    int normalSECount = BladeSpecialEffectHelper.countActiveNormalExtendedEffects(leftItem);
+                    if (currentLevel.get() == 0 && normalSECount >= Config.getNormalSeEngravingLimit()) {
                         return;
                     }
                 }
@@ -136,7 +115,11 @@ public class AnvilSpecialEffectEngravingHandler {
                 output.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState ->
                         output.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> {
                             if (extendedSE.isSpecial() && !Config.isUnlimitedSeEngraving()) {
-                                removeOtherSpecialEffects(bladeState, extension, seLocation);
+                                BladeSpecialEffectHelper.removeSpecialEffectsExcept(
+                                        bladeState,
+                                        extension,
+                                        seLocation
+                                );
                             }
                             bladeState.addSpecialEffect(seLocation);
                             extension.setExtendedSpecialLevels(crystalData.getSpecialEffectType(), crystalData.getSpecialEffectLevel());
@@ -159,29 +142,5 @@ public class AnvilSpecialEffectEngravingHandler {
         });
     }
 
-    /**
-     * 铭刻新的特殊 SE 前，移除刀上其余特殊 SE。
-     */
-    private static void removeOtherSpecialEffects(
-            ISlashBladeState bladeState,
-            PropertiesDefinitionExtension extension,
-            ResourceLocation keep
-    ) {
-        List<ResourceLocation> toRemove = new ArrayList<>();
-        for (ResourceLocation existingSE : bladeState.getSpecialEffects()) {
-            if (existingSE.equals(keep)) {
-                continue;
-            }
-            SpecialEffect existingEffect = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(existingSE);
-            if (existingEffect instanceof ExtendedSpecialEffect existingExtendedSE
-                    && existingExtendedSE.isSpecial()) {
-                toRemove.add(existingSE);
-            }
-        }
-        for (ResourceLocation seToRemove : toRemove) {
-            bladeState.removeSpecialEffect(seToRemove);
-            extension.setExtendedSpecialLevels(seToRemove, 0);
-        }
-    }
 }
 

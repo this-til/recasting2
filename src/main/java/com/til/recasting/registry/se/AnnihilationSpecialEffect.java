@@ -1,15 +1,11 @@
 package com.til.recasting.registry.se;
 
-import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.NumberPack;
-import mods.flammpfeil.slashblade.item.ItemSlashBlade;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -28,35 +24,14 @@ public class AnnihilationSpecialEffect extends ExtendedSpecialEffect {
 
     @SubscribeEvent
     public void onEvent(EntityJoinLevelEvent event) {
-        // 只在服务端执行
-        if (event.getLevel().isClientSide()) {
+        JudgementCutContext context = resolveJudgementCutContext(event);
+        if (context == null) {
             return;
         }
-
-        // 检查是否是 JudgementCutEntity
-        if (!(event.getEntity() instanceof JudgementCutEntity jc)) {
-            return;
-        }
-
-        // 获取创建者
-        LivingEntity shooter = jc.getShooter();
-        if (shooter == null) {
-            return;
-        }
-
-        // 检查是否拥有此特效
-        ItemStack blade = shooter.getMainHandItem();
-        if (blade.isEmpty()) {
-            return;
-        }
-
-        blade.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(state -> {
-            if (!hasSpecialEffect(state)) {
-                return;
-            }
-
-            PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(blade);
-            int level = getLevel(properties);
+        JudgementCutEntity jc = context.judgementCut();
+        var shooter = context.shooter();
+        var state = context.state();
+        int level = context.effectLevel();
 
             // 使用Buff系统跟踪次元斩计数
             shooter.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
@@ -97,7 +72,6 @@ public class AnnihilationSpecialEffect extends ExtendedSpecialEffect {
                         }
                     }
             );
-        });
     }
 
 }

@@ -5,6 +5,7 @@ import com.til.recasting.Recasting;
 import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.capability.ISpecialEffectCrystalData;
 import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.handler.SpecialEffectTooltipHelper;
 import com.til.recasting.item.ProudSoulItem;
 import com.til.recasting.registry.se.ExtendedSpecialEffect;
 import com.til.recasting.util.Gradient;
@@ -133,26 +134,14 @@ public class RecastingItems {
                         int currentLevel = data.getSpecialEffectLevel();
                         int maxLevel = extendedSE.getMaxLevel();
 
-                        Component nameComponent = Component.translatable(se.getDescriptionId())
-                                .withStyle(extendedSE.isSpecial() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.GRAY);
-                        Component line = Component.translatable(
-                                "slashblade.tooltip.special_effect",
-                                nameComponent,
-                                currentLevel + "/" + maxLevel
-                        ).withStyle(extendedSE.isSpecial() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.GRAY);
-                        if (extendedSE.isSpecial()) {
-                            line = line.copy()
-                                    .append(Component.literal(" "))
-                                    .append(Component.translatable(RecastingLanguageKeys.TOOLTIP_SPECIAL_SE_BADGE)
-                                            .withStyle(ChatFormatting.LIGHT_PURPLE));
-                        }
-                        components.add(line);
+                        components.add(SpecialEffectTooltipHelper.createEffectLine(
+                                extendedSE,
+                                Component.translatable(se.getDescriptionId()),
+                                Component.literal(currentLevel + "/" + maxLevel)
+                        ));
 
                         // 添加特殊效果介绍
-                        components.add(
-                                Component.translatable(extendedSE.getDescId())
-                                        .withStyle(ChatFormatting.DARK_GRAY)
-                        );
+                        components.add(SpecialEffectTooltipHelper.createDescription(extendedSE));
 
                         // 空一行
                         components.add(Component.empty());
