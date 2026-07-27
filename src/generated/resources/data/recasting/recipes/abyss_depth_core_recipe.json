@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "recasting:abyss_flame"
+    },
+    "E": {
+      "item": "minecraft:echo_shard"
+    },
+    "N": {
+      "item": "recasting:netherite_medium_soul_cube"
+    }
+  },
+  "pattern": [
+    "ANA",
+    "NEN",
+    "ANA"
+  ],
+  "result": {
+    "item": "recasting:abyss_depth_core"
+  },
+  "show_notification": true
+}

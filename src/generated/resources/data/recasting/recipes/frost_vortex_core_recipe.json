@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "recasting:diamond_medium_soul_cube"
+    },
+    "H": {
+      "item": "minecraft:heart_of_the_sea"
+    },
+    "I": {
+      "item": "recasting:ice_core_flame"
+    }
+  },
+  "pattern": [
+    "IDI",
+    "DHD",
+    "IDI"
+  ],
+  "result": {
+    "item": "recasting:frost_vortex_core"
+  },
+  "show_notification": true
+}

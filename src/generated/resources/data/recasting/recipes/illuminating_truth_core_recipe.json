@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "item": "recasting:gold_medium_soul_cube"
+    },
+    "H": {
+      "item": "recasting:holy_flame"
+    },
+    "S": {
+      "item": "minecraft:nether_star"
+    }
+  },
+  "pattern": [
+    "HGH",
+    "GSG",
+    "HGH"
+  ],
+  "result": {
+    "item": "recasting:illuminating_truth_core"
+  },
+  "show_notification": true
+}

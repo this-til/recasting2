@@ -261,6 +261,68 @@ public class RecastingItems {
     public static final RegistryObject<Item> REDSTONE_MEDIUM_SOUL_CUBE = ITEMS.register("redstone_medium_soul_cube", () ->
             new ProudSoulItem(new Item.Properties(), createRedstoneMediumSoulCubeGradient(), 16.0f));
 
+    // ========== 核心材料（高于庸魂立方体） ==========
+    // 霜璇核心
+    public static final RegistryObject<Item> FROST_VORTEX_CORE = ITEMS.register("frost_vortex_core", () ->
+            new ProudSoulItem(new Item.Properties(), createFrostVortexCoreGradient(), 20.0f));
+
+    // 檀韵核心
+    public static final RegistryObject<Item> SANDALWOOD_RHYME_CORE = ITEMS.register("sandalwood_rhyme_core", () ->
+            new ProudSoulItem(new Item.Properties(), createSandalwoodRhymeCoreGradient(), 20.0f));
+
+    // 燎焰核心
+    public static final RegistryObject<Item> BLAZING_FLAME_CORE = ITEMS.register("blazing_flame_core", () ->
+            new ProudSoulItem(new Item.Properties(), createBlazingFlameCoreGradient(), 20.0f));
+
+    // 照谛核心
+    public static final RegistryObject<Item> ILLUMINATING_TRUTH_CORE = ITEMS.register("illuminating_truth_core", () ->
+            new ProudSoulItem(new Item.Properties(), createIlluminatingTruthCoreGradient(), 20.0f));
+
+    // 冥渊核心
+    public static final RegistryObject<Item> ABYSS_DEPTH_CORE = ITEMS.register("abyss_depth_core", () ->
+            new ProudSoulItem(new Item.Properties(), createAbyssDepthCoreGradient(), 20.0f));
+
+    // ========== 相变材料（双核心反应结晶） ==========
+    // 爆燃相变：燎焰 + 霜璇
+    public static final RegistryObject<Item> DETONATION_PHASE_TRANSITION = ITEMS.register("detonation_phase_transition", () ->
+            new ProudSoulItem(new Item.Properties(), createDetonationPhaseTransitionGradient(), 22.0f));
+
+    // 燃烧相变：燎焰 + 檀韵
+    public static final RegistryObject<Item> BURNING_PHASE_TRANSITION = ITEMS.register("burning_phase_transition", () ->
+            new ProudSoulItem(new Item.Properties(), createBurningPhaseTransitionGradient(), 22.0f));
+
+    // 致盲相变：燎焰 + 照谛
+    public static final RegistryObject<Item> BLIND_PHASE_TRANSITION = ITEMS.register("blind_phase_transition", () ->
+            new ProudSoulItem(new Item.Properties(), createBlindPhaseTransitionGradient(), 22.0f));
+
+    // 火毒相变：燎焰 + 冥渊
+    public static final RegistryObject<Item> FIRE_TOXIN_PHASE_TRANSITION = ITEMS.register("fire_toxin_phase_transition", () ->
+            new ProudSoulItem(new Item.Properties(), createFireToxinPhaseTransitionGradient(), 22.0f));
+
+    // 蔓延相变：霜璇 + 檀韵
+    public static final RegistryObject<Item> SPREAD_PHASE_TRANSITION = ITEMS.register("spread_phase_transition", () ->
+            new ProudSoulItem(new Item.Properties(), createSpreadPhaseTransitionGradient(), 22.0f));
+
+    // 折射相变：霜璇 + 照谛
+    public static final RegistryObject<Item> REFRACTION_PHASE_TRANSITION = ITEMS.register("refraction_phase_transition", () ->
+            new ProudSoulItem(new Item.Properties(), createRefractionPhaseTransitionGradient(), 22.0f));
+
+    // 藏锋相变：霜璇 + 冥渊
+    public static final RegistryObject<Item> CONCEALED_EDGE_PHASE_TRANSITION = ITEMS.register("concealed_edge_phase_transition", () ->
+            new ProudSoulItem(new Item.Properties(), createConcealedEdgePhaseTransitionGradient(), 22.0f));
+
+    // 缠绕相变：檀韵 + 照谛
+    public static final RegistryObject<Item> WINDING_PHASE_TRANSITION = ITEMS.register("winding_phase_transition", () ->
+            new ProudSoulItem(new Item.Properties(), createWindingPhaseTransitionGradient(), 22.0f));
+
+    // 侵蚀相变：檀韵 + 冥渊
+    public static final RegistryObject<Item> EROSION_PHASE_TRANSITION = ITEMS.register("erosion_phase_transition", () ->
+            new ProudSoulItem(new Item.Properties(), createErosionPhaseTransitionGradient(), 22.0f));
+
+    // 交错相变：照谛 + 冥渊
+    public static final RegistryObject<Item> INTERLACE_PHASE_TRANSITION = ITEMS.register("interlace_phase_transition", () ->
+            new ProudSoulItem(new Item.Properties(), createInterlacePhaseTransitionGradient(), 22.0f));
+
 
     /**
      * 创建执念火渐变：橘红色，焰心处有苍白闪烁
@@ -519,6 +581,151 @@ public class RecastingItems {
     }
 
     /**
+     * 霜璇核心渐变：冰蓝与银白旋流
+     */
+    private static Gradient createFrostVortexCoreGradient() {
+        List<Gradient.ColorKey> colors = new ArrayList<>();
+        colors.add(new Gradient.ColorKey(0.55f, 0.85f, 1.0f, 1.0f, 0.0f));
+        colors.add(new Gradient.ColorKey(0.85f, 0.95f, 1.0f, 1.0f, 0.35f));
+        colors.add(new Gradient.ColorKey(0.35f, 0.65f, 0.95f, 1.0f, 0.55f));
+        colors.add(new Gradient.ColorKey(0.85f, 0.95f, 1.0f, 1.0f, 0.8f));
+        colors.add(new Gradient.ColorKey(0.55f, 0.85f, 1.0f, 1.0f, 1.0f));
+        return new Gradient(colors, null, Gradient.Mode.BLEND);
+    }
+
+    /**
+     * 檀韵核心渐变：暖褐与檀香金
+     */
+    private static Gradient createSandalwoodRhymeCoreGradient() {
+        List<Gradient.ColorKey> colors = new ArrayList<>();
+        colors.add(new Gradient.ColorKey(0.55f, 0.35f, 0.18f, 1.0f, 0.0f));
+        colors.add(new Gradient.ColorKey(0.75f, 0.55f, 0.28f, 1.0f, 0.35f));
+        colors.add(new Gradient.ColorKey(0.9f, 0.75f, 0.45f, 1.0f, 0.55f));
+        colors.add(new Gradient.ColorKey(0.75f, 0.55f, 0.28f, 1.0f, 0.8f));
+        colors.add(new Gradient.ColorKey(0.55f, 0.35f, 0.18f, 1.0f, 1.0f));
+        return new Gradient(colors, null, Gradient.Mode.BLEND);
+    }
+
+    /**
+     * 燎焰核心渐变：赤橙焰心
+     */
+    private static Gradient createBlazingFlameCoreGradient() {
+        List<Gradient.ColorKey> colors = new ArrayList<>();
+        colors.add(new Gradient.ColorKey(0.7f, 0.15f, 0.0f, 1.0f, 0.0f));
+        colors.add(new Gradient.ColorKey(1.0f, 0.4f, 0.05f, 1.0f, 0.35f));
+        colors.add(new Gradient.ColorKey(1.0f, 0.85f, 0.35f, 1.0f, 0.55f));
+        colors.add(new Gradient.ColorKey(1.0f, 0.4f, 0.05f, 1.0f, 0.8f));
+        colors.add(new Gradient.ColorKey(0.7f, 0.15f, 0.0f, 1.0f, 1.0f));
+        return new Gradient(colors, null, Gradient.Mode.BLEND);
+    }
+
+    /**
+     * 照谛核心渐变：乳白与金辉
+     */
+    private static Gradient createIlluminatingTruthCoreGradient() {
+        List<Gradient.ColorKey> colors = new ArrayList<>();
+        colors.add(new Gradient.ColorKey(0.95f, 0.92f, 0.8f, 1.0f, 0.0f));
+        colors.add(new Gradient.ColorKey(1.0f, 0.98f, 0.9f, 1.0f, 0.35f));
+        colors.add(new Gradient.ColorKey(1.0f, 0.88f, 0.45f, 1.0f, 0.55f));
+        colors.add(new Gradient.ColorKey(1.0f, 0.98f, 0.9f, 1.0f, 0.8f));
+        colors.add(new Gradient.ColorKey(0.95f, 0.92f, 0.8f, 1.0f, 1.0f));
+        return new Gradient(colors, null, Gradient.Mode.BLEND);
+    }
+
+    /**
+     * 冥渊核心渐变：深黑与幽紫
+     */
+    private static Gradient createAbyssDepthCoreGradient() {
+        List<Gradient.ColorKey> colors = new ArrayList<>();
+        colors.add(new Gradient.ColorKey(0.05f, 0.02f, 0.08f, 1.0f, 0.0f));
+        colors.add(new Gradient.ColorKey(0.18f, 0.08f, 0.28f, 1.0f, 0.35f));
+        colors.add(new Gradient.ColorKey(0.35f, 0.15f, 0.5f, 1.0f, 0.55f));
+        colors.add(new Gradient.ColorKey(0.18f, 0.08f, 0.28f, 1.0f, 0.8f));
+        colors.add(new Gradient.ColorKey(0.05f, 0.02f, 0.08f, 1.0f, 1.0f));
+        return new Gradient(colors, null, Gradient.Mode.BLEND);
+    }
+
+    private static Gradient createDetonationPhaseTransitionGradient() {
+        List<Gradient.ColorKey> colors = new ArrayList<>();
+        colors.add(new Gradient.ColorKey(1.0f, 0.35f, 0.05f, 1.0f, 0.0f));
+        colors.add(new Gradient.ColorKey(0.55f, 0.85f, 1.0f, 1.0f, 0.5f));
+        colors.add(new Gradient.ColorKey(1.0f, 0.35f, 0.05f, 1.0f, 1.0f));
+        return new Gradient(colors, null, Gradient.Mode.BLEND);
+    }
+
+    private static Gradient createBurningPhaseTransitionGradient() {
+        List<Gradient.ColorKey> colors = new ArrayList<>();
+        colors.add(new Gradient.ColorKey(1.0f, 0.4f, 0.05f, 1.0f, 0.0f));
+        colors.add(new Gradient.ColorKey(0.75f, 0.55f, 0.28f, 1.0f, 0.5f));
+        colors.add(new Gradient.ColorKey(1.0f, 0.4f, 0.05f, 1.0f, 1.0f));
+        return new Gradient(colors, null, Gradient.Mode.BLEND);
+    }
+
+    private static Gradient createBlindPhaseTransitionGradient() {
+        List<Gradient.ColorKey> colors = new ArrayList<>();
+        colors.add(new Gradient.ColorKey(1.0f, 0.45f, 0.1f, 1.0f, 0.0f));
+        colors.add(new Gradient.ColorKey(1.0f, 0.95f, 0.75f, 1.0f, 0.5f));
+        colors.add(new Gradient.ColorKey(1.0f, 0.45f, 0.1f, 1.0f, 1.0f));
+        return new Gradient(colors, null, Gradient.Mode.BLEND);
+    }
+
+    private static Gradient createFireToxinPhaseTransitionGradient() {
+        List<Gradient.ColorKey> colors = new ArrayList<>();
+        colors.add(new Gradient.ColorKey(0.85f, 0.2f, 0.05f, 1.0f, 0.0f));
+        colors.add(new Gradient.ColorKey(0.25f, 0.08f, 0.3f, 1.0f, 0.5f));
+        colors.add(new Gradient.ColorKey(0.85f, 0.2f, 0.05f, 1.0f, 1.0f));
+        return new Gradient(colors, null, Gradient.Mode.BLEND);
+    }
+
+    private static Gradient createSpreadPhaseTransitionGradient() {
+        List<Gradient.ColorKey> colors = new ArrayList<>();
+        colors.add(new Gradient.ColorKey(0.55f, 0.85f, 1.0f, 1.0f, 0.0f));
+        colors.add(new Gradient.ColorKey(0.7f, 0.5f, 0.25f, 1.0f, 0.5f));
+        colors.add(new Gradient.ColorKey(0.55f, 0.85f, 1.0f, 1.0f, 1.0f));
+        return new Gradient(colors, null, Gradient.Mode.BLEND);
+    }
+
+    private static Gradient createRefractionPhaseTransitionGradient() {
+        List<Gradient.ColorKey> colors = new ArrayList<>();
+        colors.add(new Gradient.ColorKey(0.7f, 0.9f, 1.0f, 1.0f, 0.0f));
+        colors.add(new Gradient.ColorKey(1.0f, 0.95f, 0.8f, 1.0f, 0.5f));
+        colors.add(new Gradient.ColorKey(0.7f, 0.9f, 1.0f, 1.0f, 1.0f));
+        return new Gradient(colors, null, Gradient.Mode.BLEND);
+    }
+
+    private static Gradient createConcealedEdgePhaseTransitionGradient() {
+        List<Gradient.ColorKey> colors = new ArrayList<>();
+        colors.add(new Gradient.ColorKey(0.4f, 0.7f, 0.9f, 1.0f, 0.0f));
+        colors.add(new Gradient.ColorKey(0.1f, 0.05f, 0.15f, 1.0f, 0.5f));
+        colors.add(new Gradient.ColorKey(0.4f, 0.7f, 0.9f, 1.0f, 1.0f));
+        return new Gradient(colors, null, Gradient.Mode.BLEND);
+    }
+
+    private static Gradient createWindingPhaseTransitionGradient() {
+        List<Gradient.ColorKey> colors = new ArrayList<>();
+        colors.add(new Gradient.ColorKey(0.7f, 0.5f, 0.25f, 1.0f, 0.0f));
+        colors.add(new Gradient.ColorKey(1.0f, 0.92f, 0.7f, 1.0f, 0.5f));
+        colors.add(new Gradient.ColorKey(0.7f, 0.5f, 0.25f, 1.0f, 1.0f));
+        return new Gradient(colors, null, Gradient.Mode.BLEND);
+    }
+
+    private static Gradient createErosionPhaseTransitionGradient() {
+        List<Gradient.ColorKey> colors = new ArrayList<>();
+        colors.add(new Gradient.ColorKey(0.65f, 0.45f, 0.22f, 1.0f, 0.0f));
+        colors.add(new Gradient.ColorKey(0.2f, 0.08f, 0.28f, 1.0f, 0.5f));
+        colors.add(new Gradient.ColorKey(0.65f, 0.45f, 0.22f, 1.0f, 1.0f));
+        return new Gradient(colors, null, Gradient.Mode.BLEND);
+    }
+
+    private static Gradient createInterlacePhaseTransitionGradient() {
+        List<Gradient.ColorKey> colors = new ArrayList<>();
+        colors.add(new Gradient.ColorKey(1.0f, 0.95f, 0.8f, 1.0f, 0.0f));
+        colors.add(new Gradient.ColorKey(0.15f, 0.05f, 0.25f, 1.0f, 0.5f));
+        colors.add(new Gradient.ColorKey(1.0f, 0.95f, 0.8f, 1.0f, 1.0f));
+        return new Gradient(colors, null, Gradient.Mode.BLEND);
+    }
+
+    /**
      * 创建升格变体 II 渐变：金色
      */
     private static Gradient createUpgradeVariant2Gradient() {
@@ -594,7 +801,22 @@ public class RecastingItems {
                 EMERALD_MEDIUM_SOUL_CUBE,
                 NETHERITE_MEDIUM_SOUL_CUBE,
                 LAPIS_MEDIUM_SOUL_CUBE,
-                REDSTONE_MEDIUM_SOUL_CUBE
+                REDSTONE_MEDIUM_SOUL_CUBE,
+                FROST_VORTEX_CORE,
+                SANDALWOOD_RHYME_CORE,
+                BLAZING_FLAME_CORE,
+                ILLUMINATING_TRUTH_CORE,
+                ABYSS_DEPTH_CORE,
+                DETONATION_PHASE_TRANSITION,
+                BURNING_PHASE_TRANSITION,
+                BLIND_PHASE_TRANSITION,
+                FIRE_TOXIN_PHASE_TRANSITION,
+                SPREAD_PHASE_TRANSITION,
+                REFRACTION_PHASE_TRANSITION,
+                CONCEALED_EDGE_PHASE_TRANSITION,
+                WINDING_PHASE_TRANSITION,
+                EROSION_PHASE_TRANSITION,
+                INTERLACE_PHASE_TRANSITION
         );
     }
 
@@ -647,6 +869,23 @@ public class RecastingItems {
         event.accept(NETHERITE_MEDIUM_SOUL_CUBE);
         event.accept(LAPIS_MEDIUM_SOUL_CUBE);
         event.accept(REDSTONE_MEDIUM_SOUL_CUBE);
+
+        event.accept(FROST_VORTEX_CORE);
+        event.accept(SANDALWOOD_RHYME_CORE);
+        event.accept(BLAZING_FLAME_CORE);
+        event.accept(ILLUMINATING_TRUTH_CORE);
+        event.accept(ABYSS_DEPTH_CORE);
+
+        event.accept(DETONATION_PHASE_TRANSITION);
+        event.accept(BURNING_PHASE_TRANSITION);
+        event.accept(BLIND_PHASE_TRANSITION);
+        event.accept(FIRE_TOXIN_PHASE_TRANSITION);
+        event.accept(SPREAD_PHASE_TRANSITION);
+        event.accept(REFRACTION_PHASE_TRANSITION);
+        event.accept(CONCEALED_EDGE_PHASE_TRANSITION);
+        event.accept(WINDING_PHASE_TRANSITION);
+        event.accept(EROSION_PHASE_TRANSITION);
+        event.accept(INTERLACE_PHASE_TRANSITION);
 
         //mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValues().stream()
         //        .filter(se -> se instanceof ExtendedSpecialEffect)

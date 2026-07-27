@@ -1,6 +1,6 @@
 package com.til.recasting.client.particle;
 
-import com.til.recasting.Recasting;
+import com.til.recasting.constant.R;
 import com.til.recasting.util.NumberPack;
 import com.til.recasting.util.RandomUtil;
 import net.minecraft.client.Minecraft;
@@ -25,7 +25,7 @@ import java.util.Random;
 @OnlyIn(Dist.CLIENT)
 public class StarBlinkParticleProvider implements ParticleProvider<SimpleParticleType> {
 
-    public static final ResourceLocation TEXTURE = Recasting.prefix("particle/star_blink.png");
+    public static final ResourceLocation TEXTURE = R.Particle.starBlink$png;
 
     private final float size = 4.5f;
     private final int life = 9;

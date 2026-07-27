@@ -45,6 +45,25 @@ public class RecastingItemModelProvider extends ItemModelProvider {
         generateProudsoulModel(RecastingItems.NETHERITE_MEDIUM_SOUL_CUBE, 5);
         generateProudsoulModel(RecastingItems.LAPIS_MEDIUM_SOUL_CUBE, 5);
         generateProudsoulModel(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE, 5);
+
+        // 核心材料（soul_1）
+        generateProudsoulModel(RecastingItems.FROST_VORTEX_CORE, 1);
+        generateProudsoulModel(RecastingItems.SANDALWOOD_RHYME_CORE, 1);
+        generateProudsoulModel(RecastingItems.BLAZING_FLAME_CORE, 1);
+        generateProudsoulModel(RecastingItems.ILLUMINATING_TRUTH_CORE, 1);
+        generateProudsoulModel(RecastingItems.ABYSS_DEPTH_CORE, 1);
+
+        // 相变材料（soul_6）
+        generateProudsoulModel(RecastingItems.DETONATION_PHASE_TRANSITION, 6);
+        generateProudsoulModel(RecastingItems.BURNING_PHASE_TRANSITION, 6);
+        generateProudsoulModel(RecastingItems.BLIND_PHASE_TRANSITION, 6);
+        generateProudsoulModel(RecastingItems.FIRE_TOXIN_PHASE_TRANSITION, 6);
+        generateProudsoulModel(RecastingItems.SPREAD_PHASE_TRANSITION, 6);
+        generateProudsoulModel(RecastingItems.REFRACTION_PHASE_TRANSITION, 6);
+        generateProudsoulModel(RecastingItems.CONCEALED_EDGE_PHASE_TRANSITION, 6);
+        generateProudsoulModel(RecastingItems.WINDING_PHASE_TRANSITION, 6);
+        generateProudsoulModel(RecastingItems.EROSION_PHASE_TRANSITION, 6);
+        generateProudsoulModel(RecastingItems.INTERLACE_PHASE_TRANSITION, 6);
     }
 
     public ItemModelBuilder generateProudsoulModel(RegistryObject<Item> item) {

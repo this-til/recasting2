@@ -1,6 +1,6 @@
 package com.til.recasting.client.particle;
 
-import com.til.recasting.Recasting;
+import com.til.recasting.constant.R;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
@@ -21,7 +21,7 @@ import java.awt.*;
 @OnlyIn(Dist.CLIENT)
 public class GoldenHalberdParticleProvider implements ParticleProvider<SimpleParticleType> {
 
-    public static final ResourceLocation TEXTURE = Recasting.prefix("particle/other/lizi-18.png");
+    public static final ResourceLocation TEXTURE = R.Particle.Other.lizi18$png;
 
     private final float size = 3.5f;
     private final int life = 12;

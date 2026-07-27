@@ -1,6 +1,6 @@
 package com.til.recasting.client.particle;
 
-import com.til.recasting.Recasting;
+import com.til.recasting.constant.R;
 import com.til.recasting.util.RandomUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -25,8 +25,8 @@ import java.util.Random;
 @OnlyIn(Dist.CLIENT)
 public class LightningHitParticleProvider implements ParticleProvider<SimpleParticleType> {
 
-    public static final ResourceLocation CLOUD_TEXTURE = Recasting.prefix("particle/other/shimmer.png");
-    public static final ResourceLocation SPARK_TEXTURE = Recasting.prefix("particle/other/flashlight.png");
+    public static final ResourceLocation CLOUD_TEXTURE = R.Particle.Other.shimmer$png;
+    public static final ResourceLocation SPARK_TEXTURE = R.Particle.Other.flashlight$png;
 
     private static final int CLOUD_COUNT = 5;
     private static final int SPARK_COUNT = 7;

@@ -1,6 +1,6 @@
 package com.til.recasting.client.particle;
 
-import com.til.recasting.Recasting;
+import com.til.recasting.constant.R;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -24,7 +24,7 @@ import java.util.Random;
 @OnlyIn(Dist.CLIENT)
 public class TeaAromaParticleProvider implements ParticleProvider<SimpleParticleType> {
 
-    public static final ResourceLocation SLASH_TEXTURE = Recasting.prefix("particle/other/divergence.png");
+    public static final ResourceLocation SLASH_TEXTURE = R.Particle.Other.divergence$png;
 
     private static final int SMALL_RIFT_COUNT = 4;
     private static final int SMALL_RIFT_LIFE = 16;

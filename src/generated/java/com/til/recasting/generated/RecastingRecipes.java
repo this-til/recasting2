@@ -519,7 +519,221 @@ public class RecastingRecipes extends RecipeProvider {
                 .define('U', RecastingItems.UPGRADE_VARIANT_3.get())
                 .unlockedBy("has_upgrade_variant_3", RecipeProviderMixin.invokeHas(RecastingItems.UPGRADE_VARIANT_3.get()))
                 .save(consumer, Recasting.prefix("upgrade_variant_4_recipe"));
-    
+
+        /**
+         * 霜璇核心：中间海之心，天蓝庸魂立方体 4 个，冰核火 4 个
+         * I=ICE_CORE_FLAME, D=DIAMOND_MEDIUM_SOUL_CUBE, H=HEART_OF_THE_SEA
+         */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.FROST_VORTEX_CORE.get())
+                .pattern("IDI")
+                .pattern("DHD")
+                .pattern("IDI")
+                .define('I', RecastingItems.ICE_CORE_FLAME.get())
+                .define('D', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                .define('H', Items.HEART_OF_THE_SEA)
+                .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                .save(consumer, Recasting.prefix("frost_vortex_core_recipe"));
+
+        /**
+         * 檀韵核心：中间不灭图腾，翠绿庸魂立方体 4 个，诗烬火 4 个
+         * P=POETRY_ASH_FLAME, E=EMERALD_MEDIUM_SOUL_CUBE, T=TOTEM_OF_UNDYING
+         */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.SANDALWOOD_RHYME_CORE.get())
+                .pattern("PEP")
+                .pattern("ETE")
+                .pattern("PEP")
+                .define('P', RecastingItems.POETRY_ASH_FLAME.get())
+                .define('E', RecastingItems.EMERALD_MEDIUM_SOUL_CUBE.get())
+                .define('T', Items.TOTEM_OF_UNDYING)
+                .unlockedBy("has_emerald_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.EMERALD_MEDIUM_SOUL_CUBE.get()))
+                .save(consumer, Recasting.prefix("sandalwood_rhyme_core_recipe"));
+
+        /**
+         * 燎焰核心：中间附魔金苹果，赤红庸魂立方体 4 个，执念火 4 个
+         * O=OBSESSION_FLAME, R=REDSTONE_MEDIUM_SOUL_CUBE, A=ENCHANTED_GOLDEN_APPLE
+         */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.BLAZING_FLAME_CORE.get())
+                .pattern("ORO")
+                .pattern("RAR")
+                .pattern("ORO")
+                .define('O', RecastingItems.OBSESSION_FLAME.get())
+                .define('R', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                .define('A', Items.ENCHANTED_GOLDEN_APPLE)
+                .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                .save(consumer, Recasting.prefix("blazing_flame_core_recipe"));
+
+        /**
+         * 照谛核心：中间下界之星，金黄庸魂立方体 4 个，圣愿火 4 个
+         * H=HOLY_FLAME, G=GOLD_MEDIUM_SOUL_CUBE, S=NETHER_STAR
+         */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.ILLUMINATING_TRUTH_CORE.get())
+                .pattern("HGH")
+                .pattern("GSG")
+                .pattern("HGH")
+                .define('H', RecastingItems.HOLY_FLAME.get())
+                .define('G', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
+                .define('S', Items.NETHER_STAR)
+                .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
+                .save(consumer, Recasting.prefix("illuminating_truth_core_recipe"));
+
+        /**
+         * 冥渊核心：中间回响碎片，漆黑庸魂立方体 4 个，渊寂火 4 个
+         * A=ABYSS_FLAME, N=NETHERITE_MEDIUM_SOUL_CUBE, E=ECHO_SHARD
+         */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.ABYSS_DEPTH_CORE.get())
+                .pattern("ANA")
+                .pattern("NEN")
+                .pattern("ANA")
+                .define('A', RecastingItems.ABYSS_FLAME.get())
+                .define('N', RecastingItems.NETHERITE_MEDIUM_SOUL_CUBE.get())
+                .define('E', Items.ECHO_SHARD)
+                .unlockedBy("has_netherite_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.NETHERITE_MEDIUM_SOUL_CUBE.get()))
+                .save(consumer, Recasting.prefix("abyss_depth_core_recipe"));
+
+        // ========== 相变：两核心 + 聚散变体 + 4 耀魂宝珠 ==========
+        // 图案：S=耀魂宝珠, G=聚散变体, C/A=两核心
+        //  SA / SGS / CS
+
+        /**
+         * 爆燃相变：燎焰 + 霜璇
+         */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.DETONATION_PHASE_TRANSITION.get())
+                .pattern(" SA")
+                .pattern("SGS")
+                .pattern("CS ")
+                .define('S', SlashBladeItems.PROUDSOUL_SPHERE.get())
+                .define('G', RecastingItems.GATHERING_PARTING_VARIANT.get())
+                .define('C', RecastingItems.BLAZING_FLAME_CORE.get())
+                .define('A', RecastingItems.FROST_VORTEX_CORE.get())
+                .unlockedBy("has_gathering_parting_variant", RecipeProviderMixin.invokeHas(RecastingItems.GATHERING_PARTING_VARIANT.get()))
+                .save(consumer, Recasting.prefix("detonation_phase_transition_recipe"));
+
+        /**
+         * 燃烧相变：燎焰 + 檀韵
+         */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.BURNING_PHASE_TRANSITION.get())
+                .pattern(" SA")
+                .pattern("SGS")
+                .pattern("CS ")
+                .define('S', SlashBladeItems.PROUDSOUL_SPHERE.get())
+                .define('G', RecastingItems.GATHERING_PARTING_VARIANT.get())
+                .define('C', RecastingItems.BLAZING_FLAME_CORE.get())
+                .define('A', RecastingItems.SANDALWOOD_RHYME_CORE.get())
+                .unlockedBy("has_gathering_parting_variant", RecipeProviderMixin.invokeHas(RecastingItems.GATHERING_PARTING_VARIANT.get()))
+                .save(consumer, Recasting.prefix("burning_phase_transition_recipe"));
+
+        /**
+         * 致盲相变：燎焰 + 照谛
+         */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.BLIND_PHASE_TRANSITION.get())
+                .pattern(" SA")
+                .pattern("SGS")
+                .pattern("CS ")
+                .define('S', SlashBladeItems.PROUDSOUL_SPHERE.get())
+                .define('G', RecastingItems.GATHERING_PARTING_VARIANT.get())
+                .define('C', RecastingItems.BLAZING_FLAME_CORE.get())
+                .define('A', RecastingItems.ILLUMINATING_TRUTH_CORE.get())
+                .unlockedBy("has_gathering_parting_variant", RecipeProviderMixin.invokeHas(RecastingItems.GATHERING_PARTING_VARIANT.get()))
+                .save(consumer, Recasting.prefix("blind_phase_transition_recipe"));
+
+        /**
+         * 火毒相变：燎焰 + 冥渊
+         */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.FIRE_TOXIN_PHASE_TRANSITION.get())
+                .pattern(" SA")
+                .pattern("SGS")
+                .pattern("CS ")
+                .define('S', SlashBladeItems.PROUDSOUL_SPHERE.get())
+                .define('G', RecastingItems.GATHERING_PARTING_VARIANT.get())
+                .define('C', RecastingItems.BLAZING_FLAME_CORE.get())
+                .define('A', RecastingItems.ABYSS_DEPTH_CORE.get())
+                .unlockedBy("has_gathering_parting_variant", RecipeProviderMixin.invokeHas(RecastingItems.GATHERING_PARTING_VARIANT.get()))
+                .save(consumer, Recasting.prefix("fire_toxin_phase_transition_recipe"));
+
+        /**
+         * 蔓延相变：霜璇 + 檀韵
+         */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.SPREAD_PHASE_TRANSITION.get())
+                .pattern(" SA")
+                .pattern("SGS")
+                .pattern("CS ")
+                .define('S', SlashBladeItems.PROUDSOUL_SPHERE.get())
+                .define('G', RecastingItems.GATHERING_PARTING_VARIANT.get())
+                .define('C', RecastingItems.FROST_VORTEX_CORE.get())
+                .define('A', RecastingItems.SANDALWOOD_RHYME_CORE.get())
+                .unlockedBy("has_gathering_parting_variant", RecipeProviderMixin.invokeHas(RecastingItems.GATHERING_PARTING_VARIANT.get()))
+                .save(consumer, Recasting.prefix("spread_phase_transition_recipe"));
+
+        /**
+         * 折射相变：霜璇 + 照谛
+         */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.REFRACTION_PHASE_TRANSITION.get())
+                .pattern(" SA")
+                .pattern("SGS")
+                .pattern("CS ")
+                .define('S', SlashBladeItems.PROUDSOUL_SPHERE.get())
+                .define('G', RecastingItems.GATHERING_PARTING_VARIANT.get())
+                .define('C', RecastingItems.FROST_VORTEX_CORE.get())
+                .define('A', RecastingItems.ILLUMINATING_TRUTH_CORE.get())
+                .unlockedBy("has_gathering_parting_variant", RecipeProviderMixin.invokeHas(RecastingItems.GATHERING_PARTING_VARIANT.get()))
+                .save(consumer, Recasting.prefix("refraction_phase_transition_recipe"));
+
+        /**
+         * 藏锋相变：霜璇 + 冥渊
+         */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.CONCEALED_EDGE_PHASE_TRANSITION.get())
+                .pattern(" SA")
+                .pattern("SGS")
+                .pattern("CS ")
+                .define('S', SlashBladeItems.PROUDSOUL_SPHERE.get())
+                .define('G', RecastingItems.GATHERING_PARTING_VARIANT.get())
+                .define('C', RecastingItems.FROST_VORTEX_CORE.get())
+                .define('A', RecastingItems.ABYSS_DEPTH_CORE.get())
+                .unlockedBy("has_gathering_parting_variant", RecipeProviderMixin.invokeHas(RecastingItems.GATHERING_PARTING_VARIANT.get()))
+                .save(consumer, Recasting.prefix("concealed_edge_phase_transition_recipe"));
+
+        /**
+         * 缠绕相变：檀韵 + 照谛
+         */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.WINDING_PHASE_TRANSITION.get())
+                .pattern(" SA")
+                .pattern("SGS")
+                .pattern("CS ")
+                .define('S', SlashBladeItems.PROUDSOUL_SPHERE.get())
+                .define('G', RecastingItems.GATHERING_PARTING_VARIANT.get())
+                .define('C', RecastingItems.SANDALWOOD_RHYME_CORE.get())
+                .define('A', RecastingItems.ILLUMINATING_TRUTH_CORE.get())
+                .unlockedBy("has_gathering_parting_variant", RecipeProviderMixin.invokeHas(RecastingItems.GATHERING_PARTING_VARIANT.get()))
+                .save(consumer, Recasting.prefix("winding_phase_transition_recipe"));
+
+        /**
+         * 侵蚀相变：檀韵 + 冥渊
+         */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.EROSION_PHASE_TRANSITION.get())
+                .pattern(" SA")
+                .pattern("SGS")
+                .pattern("CS ")
+                .define('S', SlashBladeItems.PROUDSOUL_SPHERE.get())
+                .define('G', RecastingItems.GATHERING_PARTING_VARIANT.get())
+                .define('C', RecastingItems.SANDALWOOD_RHYME_CORE.get())
+                .define('A', RecastingItems.ABYSS_DEPTH_CORE.get())
+                .unlockedBy("has_gathering_parting_variant", RecipeProviderMixin.invokeHas(RecastingItems.GATHERING_PARTING_VARIANT.get()))
+                .save(consumer, Recasting.prefix("erosion_phase_transition_recipe"));
+
+        /**
+         * 交错相变：照谛 + 冥渊
+         */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.INTERLACE_PHASE_TRANSITION.get())
+                .pattern(" SA")
+                .pattern("SGS")
+                .pattern("CS ")
+                .define('S', SlashBladeItems.PROUDSOUL_SPHERE.get())
+                .define('G', RecastingItems.GATHERING_PARTING_VARIANT.get())
+                .define('C', RecastingItems.ILLUMINATING_TRUTH_CORE.get())
+                .define('A', RecastingItems.ABYSS_DEPTH_CORE.get())
+                .unlockedBy("has_gathering_parting_variant", RecipeProviderMixin.invokeHas(RecastingItems.GATHERING_PARTING_VARIANT.get()))
+                .save(consumer, Recasting.prefix("interlace_phase_transition_recipe"));
+
     }
 
 

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_gathering_parting_variant": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "recasting:gathering_parting_variant"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "recasting:refraction_phase_transition_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_gathering_parting_variant",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "recasting:refraction_phase_transition_recipe"
+    ]
+  },
+  "sends_telemetry_event": false
+}
