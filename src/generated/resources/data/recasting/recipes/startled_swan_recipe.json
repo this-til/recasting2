@@ -1,0 +1,39 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/startled_swan",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "kill": 1000,
+        "name": "recasting:slashblade/cool_mint_lambda",
+        "refine": 1000
+      }
+    },
+    "E": {
+      "item": "minecraft:chorus_fruit"
+    },
+    "J": {
+      "type": "recasting:se_crystal",
+      "item": "recasting:se_crystal",
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:judgement"
+      }
+    },
+    "P": {
+      "item": "minecraft:ender_pearl"
+    }
+  },
+  "pattern": [
+    "PEP",
+    "JBJ",
+    "PEP"
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

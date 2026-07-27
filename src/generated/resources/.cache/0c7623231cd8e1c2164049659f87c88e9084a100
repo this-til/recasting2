@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-27T03:04:45.5987256	Recasting SlashBlade Recipes
+// 1.20.1	2026-07-27T22:25:40.9001338	Recasting SlashBlade Recipes
 a74627e490b2ab2d41e968543fdb44be214ba575 data/recasting/advancements/recipes/combat/art_knife_recipe.json
 e34f310b0027096430bdd3330af671c238f41290 data/recasting/advancements/recipes/combat/ba_gua_big_lambda_recipe.json
 cdf1db26435ca67d99ed739f5f3461befb63733e data/recasting/advancements/recipes/combat/ba_gua_big_recipe.json
@@ -50,6 +50,8 @@ e28f787a22e4f3dea9387e1ba75dd2c34fb89b4b data/recasting/advancements/recipes/com
 c2e0b6d274891dea5bd88b6ded718984f1c16b0f data/recasting/advancements/recipes/combat/silver_wing_lambda_recipe.json
 da0b0a6f3ec83e02dd8e7517ec579167b64825b6 data/recasting/advancements/recipes/combat/silver_wing_recipe.json
 7ff465a5e1ad22dacc6883d406c1290df76333a1 data/recasting/advancements/recipes/combat/soulblade_recipe.json
+02e70b06b13fac18a69293af6c8f7859c7bf382a data/recasting/advancements/recipes/combat/startled_swan_lambda_recipe.json
+dcd740232603b76eaa0279297cdcd670cc89f661 data/recasting/advancements/recipes/combat/startled_swan_recipe.json
 e75ab06cf3691a1310f87fb9d05afa39a6bc4fbc data/recasting/advancements/recipes/combat/star_1_recipe.json
 fe09914d4ad6580be0b0ee3260f5b90b2dd08c47 data/recasting/advancements/recipes/combat/star_2_recipe.json
 fd1129018b3543b7d7d4b4b720006af5c2947afd data/recasting/advancements/recipes/combat/star_3_recipe.json
@@ -115,6 +117,8 @@ a6850be2b44df81a5409f29ee1c239d403cf9dff data/recasting/recipes/obliterate_recip
 e1e3a9f1ce615e0b80437957f1fbca3f3dbfad19 data/recasting/recipes/silver_wing_lambda_recipe.json
 23d4d4c61fbb36971568eb07275f8e613fc7d461 data/recasting/recipes/silver_wing_recipe.json
 4029e8a9dc9ceca1375e65d381f80309789c5a2b data/recasting/recipes/soulblade_recipe.json
+a0803f707f10aaa91f774eec84a864d9f865288a data/recasting/recipes/startled_swan_lambda_recipe.json
+06e37e5e73c0d32c25e8ae2debcc01efe6c0ebee data/recasting/recipes/startled_swan_recipe.json
 49debc0a41da928a5e50056e620372e840b314dc data/recasting/recipes/star_1_recipe.json
 dcd3504c435aeda3224f187725006f72af30caa6 data/recasting/recipes/star_2_recipe.json
 8063c094635389276a3f0f1f2b39ebbe587e713e data/recasting/recipes/star_3_recipe.json

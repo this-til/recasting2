@@ -108,7 +108,6 @@ public class SpecialEffectRecipes extends RecipeProvider {
             String unlockName,
             ItemLike unlockItem
     ) {
-        ResourceLocation recipeId = Recasting.prefix(path);
         SpecialEffectCrystalShapedRecipeBuilder.shaped(effect, 1)
                 .pattern("FAF")
                 .pattern("AMA")
@@ -117,7 +116,7 @@ public class SpecialEffectRecipes extends RecipeProvider {
                 .define('A', accent)
                 .define('M', center)
                 .unlockedBy(unlockName, RecipeProviderMixin.invokeHas(unlockItem))
-                .save(consumer, recipeId);
+                .save(consumer, Recasting.prefix(path));
     }
 
     /**
@@ -158,7 +157,6 @@ public class SpecialEffectRecipes extends RecipeProvider {
             RegistryObject<SpecialEffect> seType,
             ResourceLocation seLocation
     ) {
-        ResourceLocation recipeId = Recasting.prefix(baseId + "_" + index);
         SpecialEffectCrystalShapedRecipeBuilder.shaped(seType, 0)
                 .pattern(" U ")
                 .pattern("USU")
@@ -166,7 +164,7 @@ public class SpecialEffectRecipes extends RecipeProvider {
                 .define('U', RecastingItems.ABYSS_FLAME.get())
                 .define('S', SpecialEffectCrystalIngredient.of(seLocation, 1))
                 .unlockedBy("has_se_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
-                .save(consumer, recipeId);
+                .save(consumer, Recasting.prefix(baseId + "_" + index));
     }
 
     /**
@@ -182,7 +180,6 @@ public class SpecialEffectRecipes extends RecipeProvider {
             int level,
             int nextLevel
     ) {
-        ResourceLocation recipeId = Recasting.prefix(baseId + "_" + index);
         SpecialEffectCrystalShapedRecipeBuilder.shaped(seType, nextLevel)
                 .pattern(" VS")
                 .pattern("VUV")
@@ -191,7 +188,7 @@ public class SpecialEffectRecipes extends RecipeProvider {
                 .define('U', getUpgradeVariantForLevel(level))
                 .define('S', SpecialEffectCrystalIngredient.of(seLocation, level))
                 .unlockedBy("has_se_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
-                .save(consumer, recipeId);
+                .save(consumer, Recasting.prefix(baseId + "_" + index));
     }
 
     /**
