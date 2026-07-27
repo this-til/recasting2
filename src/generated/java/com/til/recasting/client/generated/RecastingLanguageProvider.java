@@ -12,6 +12,7 @@ import com.til.recasting.registry.instance.BuffType;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import mods.flammpfeil.slashblade.slasharts.SlashArts;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
+import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
@@ -313,7 +314,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
     }
 
     private static String slashBladeKey(ResourceKey<SlashBladeDefinition> key) {
-        return key.location().toLanguageKey("item");
+        return Util.makeDescriptionId("item", key.location());
     }
 
     private static String itemKey(RegistryObject<Item> item) {
