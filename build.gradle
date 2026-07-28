@@ -333,6 +333,23 @@ tasks.named('processResources', ProcessResources).configure {
     }
 }
 
+def sha256Hex(byte[] bytes) {
+    def digest = java.security.MessageDigest.getInstance('SHA-256').digest(bytes)
+    return digest.collect { String.format('%02x', it) }.join('')
+}
+
+def sha256FileHex(File file) {
+    def md = java.security.MessageDigest.getInstance('SHA-256')
+    file.withInputStream { stream ->
+        byte[] buffer = new byte[8192]
+        int read
+        while ((read = stream.read(buffer)) >= 0) {
+            md.update(buffer, 0, read)
+        }
+    }
+    return md.digest().collect { String.format('%02x', it) }.join('')
+}
+
 def resizePngToMaxDimension(byte[] sourceBytes, int maxDimension) {
     def sourceImage = javax.imageio.ImageIO.read(new ByteArrayInputStream(sourceBytes))
     if (sourceImage == null) {
@@ -365,25 +382,57 @@ def resizePngToMaxDimension(byte[] sourceBytes, int maxDimension) {
     return output.toByteArray()
 }
 
+/**
+ * 按原始 PNG 内容哈希复用已缩放结果；命中时跳过 ImageIO。
+ */
+def resolveCompressedPng(byte[] sourceBytes, int maxDimension, File cacheDir) {
+    def cacheFile = new File(cacheDir, "${sha256Hex(sourceBytes)}-${maxDimension}.png")
+    if (cacheFile.isFile()) {
+        return [bytes: cacheFile.bytes, cacheHit: true]
+    }
+
+    byte[] resizedBytes = resizePngToMaxDimension(sourceBytes, maxDimension)
+    cacheFile.parentFile.mkdirs()
+    cacheFile.bytes = resizedBytes
+    return [bytes: resizedBytes, cacheHit: false]
+}
+
 tasks.register('compressed512Jar') {
     description = 'Builds an additional mod JAR with PNG resources capped to 512 pixels.'
     group = 'build'
 
     dependsOn 'reobfJar'
 
+    def maxDimension = 512
     def sourceJarProvider = tasks.named('jar', Jar).flatMap { it.archiveFile }
-    // 输出：recasting2-1.20.1-{version}-compressed-512[-SNAPSHOT].jar
-    def outputJarProvider = layout.buildDirectory.file("libs/${base.archivesName.get()}-${modVersionBase}-compressed-512${snapshotSuffix}.jar")
+    // 输出：recasting2-1.20.1-{version}-COMPRESSED[-SNAPSHOT].jar
+    def outputJarProvider = layout.buildDirectory.file("libs/${base.archivesName.get()}-${modVersionBase}-COMPRESSED${snapshotSuffix}.jar")
+    def cacheDirProvider = layout.buildDirectory.dir('compressed512-cache')
+    def fingerprintProvider = layout.buildDirectory.file('compressed512-cache/source-fingerprint.txt')
 
     inputs.file(sourceJarProvider)
+    inputs.property('maxDimension', maxDimension)
     outputs.file(outputJarProvider)
+    outputs.cacheIf { true }
 
     doLast {
         def sourceJar = sourceJarProvider.get().asFile
         def outputJar = outputJarProvider.get().asFile
+        def cacheDir = cacheDirProvider.get().asFile
+        def fingerprintFile = fingerprintProvider.get().asFile
+        def sourceFingerprint = sha256FileHex(sourceJar)
         outputJar.parentFile.mkdirs()
+        cacheDir.mkdirs()
+
+        // 源 jar 内容哈希未变且产物仍在：整包跳过
+        if (outputJar.isFile() && fingerprintFile.isFile() && fingerprintFile.text.trim() == sourceFingerprint) {
+            logger.lifecycle("Skipped ${outputJar.name}: source jar fingerprint unchanged.")
+            return
+        }
 
         def compressedCount = 0
+        def cacheHitCount = 0
+        def cacheMissCount = 0
         def copiedCount = 0
         def zipFile = new java.util.zip.ZipFile(sourceJar)
         def zipOutput = new java.util.zip.ZipOutputStream(new BufferedOutputStream(new FileOutputStream(outputJar)))
@@ -400,11 +449,17 @@ tasks.register('compressed512Jar') {
 
                 byte[] bytes = zipFile.getInputStream(entry).withCloseable { it.bytes }
                 if (entry.name.toLowerCase(Locale.ROOT).endsWith('.png')) {
-                    byte[] resizedBytes = resizePngToMaxDimension(bytes, 512)
-                    if (resizedBytes.length != bytes.length) {
+                    int originalLength = bytes.length
+                    def resolved = resolveCompressedPng(bytes, maxDimension, cacheDir)
+                    bytes = resolved.bytes as byte[]
+                    if (resolved.cacheHit) {
+                        cacheHitCount++
+                    } else {
+                        cacheMissCount++
+                    }
+                    if (bytes.length != originalLength) {
                         compressedCount++
                     }
-                    bytes = resizedBytes
                 }
 
                 zipOutput.putNextEntry(outputEntry)
@@ -417,7 +472,8 @@ tasks.register('compressed512Jar') {
             zipFile.close()
         }
 
-        logger.lifecycle("Created ${outputJar} with ${compressedCount} PNG resources capped to 512px across ${copiedCount} entries.")
+        fingerprintFile.text = sourceFingerprint
+        logger.lifecycle("Created ${outputJar} with ${compressedCount} PNG capped to ${maxDimension}px across ${copiedCount} entries (png cache hit=${cacheHitCount}, miss=${cacheMissCount}).")
     }
 }
 
