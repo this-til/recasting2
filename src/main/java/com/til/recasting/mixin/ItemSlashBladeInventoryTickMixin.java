@@ -17,7 +17,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = ItemSlashBlade.class)
 public class ItemSlashBladeInventoryTickMixin {
 
-    @Inject(method = "inventoryTick", at = @At("TAIL"), remap = false)
+    // inventoryTick 继承自原版 Item，运行时为 SRG 名，必须 remap
+    @Inject(method = "inventoryTick", at = @At("TAIL"))
     private void recasting2$publishLockTargetTick(
             @NotNull ItemStack stack,
             @NotNull Level worldIn,
