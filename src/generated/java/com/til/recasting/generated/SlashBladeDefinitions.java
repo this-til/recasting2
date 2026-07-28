@@ -547,7 +547,7 @@ public final class SlashBladeDefinitions {
                                 .slashArtsType(SlashArtsRegistry.LONG_SKY_SUNSET_LAMBDA.getId())
                 )
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 2))
-                .addSpecialEffects(SpecialEffectsRegistry.LONG_SKY_SUNSET, 5)
+                .addSpecialEffects(SpecialEffectsRegistry.LONG_SKY_SUNSET, 1)
                 .build();
 
         // 轩辕剑

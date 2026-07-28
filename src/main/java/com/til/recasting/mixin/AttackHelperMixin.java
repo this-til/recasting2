@@ -6,24 +6,30 @@ import mods.flammpfeil.slashblade.util.AttackHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
 /**
- * Mixin 用于重写 AttackHelper.calculateTotalDamage 方法
- * 修改伤害计算公式为: base * (comboRatio * (other1 + other2))
+ * 接管 {@link AttackHelper#attack}；使用 HEAD cancellable 保留原方法体，
+ * 供 sbr_core 等模组的 WrapOperation 找到注入点。
  */
 @Mixin(value = AttackHelper.class)
 public abstract class AttackHelperMixin {
 
-    /**
-     * @author til
-     * @reason 修改伤害计算公式，基础伤害和附加伤害分开计算
-     */
-    @Overwrite(remap = false)
-    public static void attack(LivingEntity attacker, Entity target, float modifiedRatio) {
-        com.til.recasting.handler.AttackHelper.attack(attacker, target, new DamageStructure(modifiedRatio, 0), List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get()));
+    @Inject(
+            method = "attack(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/Entity;F)V",
+            at = @At("HEAD"),
+            cancellable = true,
+            remap = false
+    )
+    private static void recasting$attack(LivingEntity attacker, Entity target, float modifiedRatio, CallbackInfo ci) {
+        com.til.recasting.handler.AttackHelper.attack(
+                attacker, target, new DamageStructure(modifiedRatio, 0),
+                List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get())
+        );
+        ci.cancel();
     }
 }
-

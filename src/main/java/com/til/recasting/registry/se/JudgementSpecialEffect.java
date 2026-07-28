@@ -25,7 +25,7 @@ public class JudgementSpecialEffect extends ExtendedSpecialEffect {
     int delay = 5;
 
     @SubscribeEvent
-    public void onEvent(SlashBladeEvent.ChargeActionEvent event) {
+    public void onEvent(SlashBladeEvent.PerformSlashArtEvent event) {
         if (!hasSpecialEffect(event.getSlashBladeState())) {
             return;
         }

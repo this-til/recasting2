@@ -6,6 +6,9 @@ import mods.flammpfeil.slashblade.slasharts.SlashArts;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
+
 /**
  * Slash Arts (SA) 注册表
  */
@@ -19,52 +22,55 @@ public class SlashArtsRegistry {
     );
 
     // 碎段
-    public static final RegistryObject<ExtendedSlashArts> FRAGMENT = registerExtendedSA("fragment", new FragmentSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> FRAGMENT = registerExtendedSA("fragment", FragmentSlashArts::new);
 
     // 青芒
-    public static final RegistryObject<ExtendedSlashArts> CYAN_GLOW = registerExtendedSA("cyan_glow", new CyanGlowSlashArts());
-    public static final RegistryObject<ExtendedSlashArts> CYAN_GLOW_LAMBDA = registerExtendedSA("cyan_glow_lambda", new CyanGlowSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> CYAN_GLOW = registerExtendedSA("cyan_glow", CyanGlowSlashArts::new);
+    public static final RegistryObject<ExtendedSlashArts> CYAN_GLOW_LAMBDA = registerExtendedSA("cyan_glow_lambda", CyanGlowSlashArts::new);
 
     // 乱舞
-    public static final RegistryObject<ExtendedSlashArts> FANATICAL_DANCE = registerExtendedSA("fanatical_dance", new FanaticalDanceSlashArts());
-    public static final RegistryObject<ExtendedSlashArts> FANATICAL_DANCE_LAMBDA = registerExtendedSA("fanatical_dance_lambda", new FanaticalDanceSlashArts().setAttackNumber(21).setAttackDeviation(4).setHit(0.6f));
+    public static final RegistryObject<ExtendedSlashArts> FANATICAL_DANCE = registerExtendedSA("fanatical_dance", FanaticalDanceSlashArts::new);
+    public static final RegistryObject<ExtendedSlashArts> FANATICAL_DANCE_LAMBDA = registerExtendedSA(
+            "fanatical_dance_lambda",
+            () -> new FanaticalDanceSlashArts().setAttackNumber(21).setAttackDeviation(4).setHit(0.6f)
+    );
 
     // 风暴幻影剑
-    public static final RegistryObject<ExtendedSlashArts> STORM_PHANTOM_SWORDS = registerExtendedSA("storm_phantom_swords", new StormPhantomSwordsSlashArts());
-    public static final RegistryObject<ExtendedSlashArts> STORM_PHANTOM_SWORDS_LAMBDA = registerExtendedSA("storm_phantom_swords_lambda", new StormPhantomSwordsSlashArts().setNumber(24));
+    public static final RegistryObject<ExtendedSlashArts> STORM_PHANTOM_SWORDS = registerExtendedSA("storm_phantom_swords", StormPhantomSwordsSlashArts::new);
+    public static final RegistryObject<ExtendedSlashArts> STORM_PHANTOM_SWORDS_LAMBDA = registerExtendedSA("storm_phantom_swords_lambda", () -> new StormPhantomSwordsSlashArts().setNumber(24));
 
     // 剑雨
-    public static final RegistryObject<ExtendedSlashArts> SWORD_RAIN = registerExtendedSA("sword_rain", new SwordRainSlashArts());
-    public static final RegistryObject<ExtendedSlashArts> SWORD_RAIN_LAMBDA = registerExtendedSA("sword_rain_lambda", new SwordRainSlashArts().setConcentrate(true));
+    public static final RegistryObject<ExtendedSlashArts> SWORD_RAIN = registerExtendedSA("sword_rain", SwordRainSlashArts::new);
+    public static final RegistryObject<ExtendedSlashArts> SWORD_RAIN_LAMBDA = registerExtendedSA("sword_rain_lambda", () -> new SwordRainSlashArts().setConcentrate(true));
 
     // 拟似黑洞
-    public static final RegistryObject<ExtendedSlashArts> VOID_HOLE = registerExtendedSA("void_hole", new VoidHoleSlashArts());
-    public static final RegistryObject<ExtendedSlashArts> VOID_HOLE_PITCH_BLACK = registerExtendedSA("void_hole_pitch_black", new VoidHoleSlashArts().setLife(40).setRange(45).setPower(0.02f));
-    public static final RegistryObject<ExtendedSlashArts> VOID_HOLE_FISHY_RED = registerExtendedSA("void_hole_fishy_red", new VoidHoleSlashArts().setLife(80).setRange(64).setPower(0.02f));
+    public static final RegistryObject<ExtendedSlashArts> VOID_HOLE = registerExtendedSA("void_hole", VoidHoleSlashArts::new);
+    public static final RegistryObject<ExtendedSlashArts> VOID_HOLE_PITCH_BLACK = registerExtendedSA("void_hole_pitch_black", () -> new VoidHoleSlashArts().setLife(40).setRange(45).setPower(0.02f));
+    public static final RegistryObject<ExtendedSlashArts> VOID_HOLE_FISHY_RED = registerExtendedSA("void_hole_fishy_red", () -> new VoidHoleSlashArts().setLife(80).setRange(64).setPower(0.02f));
 
     // 多重次元斩·决
-    public static final RegistryObject<ExtendedSlashArts> MULTIPLE_JUDGEMENT_CUT = registerExtendedSA("multiple_judgement_cut", new MultipleJudgementCutSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> MULTIPLE_JUDGEMENT_CUT = registerExtendedSA("multiple_judgement_cut", MultipleJudgementCutSlashArts::new);
     // 无限次元斩
-    public static final RegistryObject<ExtendedSlashArts> INFINITE_JUDGEMENT_CUT = registerExtendedSA("infinite_judgement_cut", new InfiniteJudgementCutSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> INFINITE_JUDGEMENT_CUT = registerExtendedSA("infinite_judgement_cut", InfiniteJudgementCutSlashArts::new);
 
     // 星
-    public static final RegistryObject<ExtendedSlashArts> STAR_1 = registerExtendedSA("star_1", new StarSlashArts());
-    public static final RegistryObject<ExtendedSlashArts> STAR_2 = registerExtendedSA("star_2", new StarSlashArts().setAttackNumber(8).setRange(16));
-    public static final RegistryObject<ExtendedSlashArts> STAR_3 = registerExtendedSA("star_3", new StarSlashArts().setAttackNumber(12).setRange(20));
-    public static final RegistryObject<ExtendedSlashArts> STAR_4 = registerExtendedSA("star_4", new StarSlashArts().setAttackNumber(16).setRange(32));
-    public static final RegistryObject<ExtendedSlashArts> STAR_4_LAMBDA = registerExtendedSA("star_4_lambda", new StarSlashArts().setAttackNumber(24).setRange(32).setZoneNumber(5));
+    public static final RegistryObject<ExtendedSlashArts> STAR_1 = registerExtendedSA("star_1", StarSlashArts::new);
+    public static final RegistryObject<ExtendedSlashArts> STAR_2 = registerExtendedSA("star_2", () -> new StarSlashArts().setAttackNumber(8).setRange(16));
+    public static final RegistryObject<ExtendedSlashArts> STAR_3 = registerExtendedSA("star_3", () -> new StarSlashArts().setAttackNumber(12).setRange(20));
+    public static final RegistryObject<ExtendedSlashArts> STAR_4 = registerExtendedSA("star_4", () -> new StarSlashArts().setAttackNumber(16).setRange(32));
+    public static final RegistryObject<ExtendedSlashArts> STAR_4_LAMBDA = registerExtendedSA("star_4_lambda", () -> new StarSlashArts().setAttackNumber(24).setRange(32).setZoneNumber(5));
 
     // 多重剑气
-    public static final RegistryObject<ExtendedSlashArts> MULTIPLE_DRIVE = registerExtendedSA("multiple_drive", new MultipleDriveSlashArts());
-    public static final RegistryObject<ExtendedSlashArts> MULTIPLE_DRIVE_LAMBDA = registerExtendedSA("multiple_drive_lambda", new MultipleDriveSlashArts().setAttack(8).setAttack(0.2f));
+    public static final RegistryObject<ExtendedSlashArts> MULTIPLE_DRIVE = registerExtendedSA("multiple_drive", MultipleDriveSlashArts::new);
+    public static final RegistryObject<ExtendedSlashArts> MULTIPLE_DRIVE_LAMBDA = registerExtendedSA("multiple_drive_lambda", () -> new MultipleDriveSlashArts().setAttack(8).setAttack(0.2f));
 
     // 引雷
-    public static final RegistryObject<ExtendedSlashArts> LIGHTNING_CALL = registerExtendedSA("lightning_call", new LightningCallSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> LIGHTNING_CALL = registerExtendedSA("lightning_call", LightningCallSlashArts::new);
 
     // 闪电链（对齐光棱：脉冲连射；1/2/3 级：脉冲数 / 跳数 / 范围；3 级允许重复跳跃）
     public static final RegistryObject<ExtendedSlashArts> LIGHTNING_CHAIN_1 = registerExtendedSA(
             "lightning_chain_1",
-            new LightningChainSlashArts()
+            () -> new LightningChainSlashArts()
                     .setChainCount(1)
                     .setMaxHops(8)
                     .setHopRange(8f)
@@ -72,7 +78,7 @@ public class SlashArtsRegistry {
     );
     public static final RegistryObject<ExtendedSlashArts> LIGHTNING_CHAIN_2 = registerExtendedSA(
             "lightning_chain_2",
-            new LightningChainSlashArts()
+            () -> new LightningChainSlashArts()
                     .setChainCount(3)
                     .setDelay(5)
                     .setMaxHops(8)
@@ -83,7 +89,7 @@ public class SlashArtsRegistry {
     );
     public static final RegistryObject<ExtendedSlashArts> LIGHTNING_CHAIN_3 = registerExtendedSA(
             "lightning_chain_3",
-            new LightningChainSlashArts()
+            () -> new LightningChainSlashArts()
                     .setChainCount(6)
                     .setDelay(5)
                     .setMaxHops(12)
@@ -95,7 +101,7 @@ public class SlashArtsRegistry {
     );
     public static final RegistryObject<ExtendedSlashArts> LIGHTNING_CHAIN_3_LAMBDA = registerExtendedSA(
             "lightning_chain_3_lambda",
-            new LightningChainSlashArts()
+            () -> new LightningChainSlashArts()
                     .setChainCount(8)
                     .setDelay(5)
                     .setMaxHops(14)
@@ -107,29 +113,29 @@ public class SlashArtsRegistry {
     );
 
     // 苍穹十二连
-    public static final RegistryObject<ExtendedSlashArts> HEAVEN_TWELVE_HIT = registerExtendedSA("heaven_twelve_hit", new HeavenTwelveHitSlashArts());
-    public static final RegistryObject<ExtendedSlashArts> HEAVEN_TWELVE_HIT_LAMBDA = registerExtendedSA("heaven_twelve_hit_lambda", new HeavenTwelveHitSlashArts().setLightningNumber(18).setLightningAttack(1.3f).setAttack(0.5f));
+    public static final RegistryObject<ExtendedSlashArts> HEAVEN_TWELVE_HIT = registerExtendedSA("heaven_twelve_hit", HeavenTwelveHitSlashArts::new);
+    public static final RegistryObject<ExtendedSlashArts> HEAVEN_TWELVE_HIT_LAMBDA = registerExtendedSA("heaven_twelve_hit_lambda", () -> new HeavenTwelveHitSlashArts().setLightningNumber(18).setLightningAttack(1.3f).setAttack(0.5f));
 
     // 云轮
-    public static final RegistryObject<ExtendedSlashArts> CLOUD_WHEEL = registerExtendedSA("cloud_wheel", new CloudWheelSlashArts().setLightningNumber(0));
+    public static final RegistryObject<ExtendedSlashArts> CLOUD_WHEEL = registerExtendedSA("cloud_wheel", () -> new CloudWheelSlashArts().setLightningNumber(0));
     // 云轮风暴
-    public static final RegistryObject<ExtendedSlashArts> CLOUD_WHEEL_STORM = registerExtendedSA("cloud_wheel_storm", new CloudWheelSlashArts().setLightningNumber(7).setAttackNumber(10));
+    public static final RegistryObject<ExtendedSlashArts> CLOUD_WHEEL_STORM = registerExtendedSA("cloud_wheel_storm", () -> new CloudWheelSlashArts().setLightningNumber(7).setAttackNumber(10));
 
     //星旋
-    public static final RegistryObject<ExtendedSlashArts> STELLAR_ROTATION = registerExtendedSA("stellar_rotation", new StellarRotationSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> STELLAR_ROTATION = registerExtendedSA("stellar_rotation", StellarRotationSlashArts::new);
 
     // 急行幻影剑
-    public static final RegistryObject<ExtendedSlashArts> RAPID_PHANTOM_SWORDS = registerExtendedSA("rapid_phantom_swords", new RapidPhantomSwordsSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> RAPID_PHANTOM_SWORDS = registerExtendedSA("rapid_phantom_swords", RapidPhantomSwordsSlashArts::new);
 
     // 穷观阵
-    public static final RegistryObject<ExtendedSlashArts> MATRIX = registerExtendedSA("matrix", new MatrixSlashArts());
-    public static final RegistryObject<ExtendedSlashArts> MATRIX_LAMBDA = registerExtendedSA("matrix_lambda", new MatrixSlashArts().setAttackInterval(5));
+    public static final RegistryObject<ExtendedSlashArts> MATRIX = registerExtendedSA("matrix", MatrixSlashArts::new);
+    public static final RegistryObject<ExtendedSlashArts> MATRIX_LAMBDA = registerExtendedSA("matrix_lambda", () -> new MatrixSlashArts().setAttackInterval(5));
 
     // 断魄
-    public static final RegistryObject<ExtendedSlashArts> SOUL_SEVER = registerExtendedSA("soul_sever", new SoulSeverSlashArts());
+    public static final RegistryObject<ExtendedSlashArts> SOUL_SEVER = registerExtendedSA("soul_sever", SoulSeverSlashArts::new);
     public static final RegistryObject<ExtendedSlashArts> SOUL_SEVER_LAMBDA = registerExtendedSA(
             "soul_sever_lambda",
-            new SoulSeverSlashArts()
+            () -> new SoulSeverSlashArts()
                     .setSlashAttack(4.3225f)
                     .setSlashSize(4.0f)
                     .setGiantJudgementCutAttack(1.995f)
@@ -138,34 +144,34 @@ public class SlashArtsRegistry {
     );
 
     // 幻影爆破
-    public static final RegistryObject<ExtendedSlashArts> PHANTOM_EXPLOSION = registerExtendedSA("phantom_explosion", new PhantomExplosionSlashArts());
-    public static final RegistryObject<ExtendedSlashArts> PHANTOM_EXPLOSION_LAMBDA = registerExtendedSA("phantom_explosion_lambda", new PhantomExplosionSlashArts().setGroupCount(5));
+    public static final RegistryObject<ExtendedSlashArts> PHANTOM_EXPLOSION = registerExtendedSA("phantom_explosion", PhantomExplosionSlashArts::new);
+    public static final RegistryObject<ExtendedSlashArts> PHANTOM_EXPLOSION_LAMBDA = registerExtendedSA("phantom_explosion_lambda", () -> new PhantomExplosionSlashArts().setGroupCount(5));
 
     // 无限剑制
-    public static final RegistryObject<ExtendedSlashArts> UNLIMITED_BLADE_WORKS = registerExtendedSA("unlimited_blade_works", new UnlimitedBladeWorksSlashArts());
-    public static final RegistryObject<ExtendedSlashArts> UNLIMITED_BLADE_WORKS_LAMBDA = registerExtendedSA("unlimited_blade_works_lambda", new UnlimitedBladeWorksSlashArts().setAttack(0.06f));
+    public static final RegistryObject<ExtendedSlashArts> UNLIMITED_BLADE_WORKS = registerExtendedSA("unlimited_blade_works", UnlimitedBladeWorksSlashArts::new);
+    public static final RegistryObject<ExtendedSlashArts> UNLIMITED_BLADE_WORKS_LAMBDA = registerExtendedSA("unlimited_blade_works_lambda", () -> new UnlimitedBladeWorksSlashArts().setAttack(0.06f));
 
     // 剑刃风暴
-    public static final RegistryObject<ExtendedSlashArts> BLADE_STORM = registerExtendedSA("blade_storm", new BladeStormSlashArts());
-    public static final RegistryObject<ExtendedSlashArts> BLADE_STORM_LAMBDA = registerExtendedSA("blade_storm_lambda", new BladeStormSlashArts().setTotalSwords(256));
+    public static final RegistryObject<ExtendedSlashArts> BLADE_STORM = registerExtendedSA("blade_storm", BladeStormSlashArts::new);
+    public static final RegistryObject<ExtendedSlashArts> BLADE_STORM_LAMBDA = registerExtendedSA("blade_storm_lambda", () -> new BladeStormSlashArts().setTotalSwords(256));
 
     // 斩铁式·极
-    public static final RegistryObject<ExtendedSlashArts> ZANTETSUDEN_MAX = registerExtendedSA("zantetsuden_max", new ZantetsudenMaxSlashArts());
-    public static final RegistryObject<ExtendedSlashArts> ZANTETSUDEN_MAX_LAMBDA = registerExtendedSA("zantetsuden_max_lambda", new ZantetsudenMaxSlashArts().setAttackNumber(40));
+    public static final RegistryObject<ExtendedSlashArts> ZANTETSUDEN_MAX = registerExtendedSA("zantetsuden_max", ZantetsudenMaxSlashArts::new);
+    public static final RegistryObject<ExtendedSlashArts> ZANTETSUDEN_MAX_LAMBDA = registerExtendedSA("zantetsuden_max_lambda", () -> new ZantetsudenMaxSlashArts().setAttackNumber(40));
 
     // 斩铁式·行
-    public static final RegistryObject<ExtendedSlashArts> ZANTETSUDEN_ROW = registerExtendedSA("zantetsuden_row", new ZantetsudenRowSlashArts());
-    public static final RegistryObject<ExtendedSlashArts> ZANTETSUDEN_ROW_LAMBDA = registerExtendedSA("zantetsuden_row_lambda", new ZantetsudenRowSlashArts().setDriveNumber(40));
+    public static final RegistryObject<ExtendedSlashArts> ZANTETSUDEN_ROW = registerExtendedSA("zantetsuden_row", ZantetsudenRowSlashArts::new);
+    public static final RegistryObject<ExtendedSlashArts> ZANTETSUDEN_ROW_LAMBDA = registerExtendedSA("zantetsuden_row_lambda", () -> new ZantetsudenRowSlashArts().setDriveNumber(40));
 
     // 业火
-    public static final RegistryObject<ExtendedSlashArts> INFERNO = registerExtendedSA("inferno", new InfernoSlashArts());
-    public static final RegistryObject<ExtendedSlashArts> INFERNO_LAMBDA = registerExtendedSA("inferno_lambda", new InfernoSlashArts().setSoulBurnLevel(6));
+    public static final RegistryObject<ExtendedSlashArts> INFERNO = registerExtendedSA("inferno", InfernoSlashArts::new);
+    public static final RegistryObject<ExtendedSlashArts> INFERNO_LAMBDA = registerExtendedSA("inferno_lambda", () -> new InfernoSlashArts().setSoulBurnLevel(6));
 
     // 光棱（红警2 光棱坦克：延迟脉冲 + 头顶发射/自动索敌 + 锁定散射）
     // scatterRange：相对基准散射盒，每级 +33%（1 / 1.33 / 1.66）
     public static final RegistryObject<ExtendedSlashArts> LASER_1 = registerExtendedSA(
             "laser_1",
-            new LaserBeamSlashArts()
+            () -> new LaserBeamSlashArts()
                     .setBeamCount(1)
                     .setScatterCount(5)
                     .setScatterRange(1.0f)
@@ -174,7 +180,7 @@ public class SlashArtsRegistry {
     );
     public static final RegistryObject<ExtendedSlashArts> LASER_2 = registerExtendedSA(
             "laser_2",
-            new LaserBeamSlashArts()
+            () -> new LaserBeamSlashArts()
                     .setBeamCount(4)
                     .setDelay(5)
                     .setRange(48f)
@@ -186,7 +192,7 @@ public class SlashArtsRegistry {
     );
     public static final RegistryObject<ExtendedSlashArts> LASER_3 = registerExtendedSA(
             "laser_3",
-            new LaserBeamSlashArts()
+            () -> new LaserBeamSlashArts()
                     .setBeamCount(5)
                     .setDelay(5)
                     .setRange(72f)
@@ -198,7 +204,7 @@ public class SlashArtsRegistry {
     );
     public static final RegistryObject<ExtendedSlashArts> LASER_3_LAMBDA = registerExtendedSA(
             "laser_3_lambda",
-            new LaserBeamSlashArts()
+            () -> new LaserBeamSlashArts()
                     .setBeamCount(6)
                     .setDelay(5)
                     .setRange(72f)
@@ -213,21 +219,21 @@ public class SlashArtsRegistry {
     // 长空落日
     public static final RegistryObject<ExtendedSlashArts> LONG_SKY_SUNSET = registerExtendedSA(
             "long_sky_sunset",
-            new LongSkySunsetSlashArts()
+            LongSkySunsetSlashArts::new
     );
     public static final RegistryObject<ExtendedSlashArts> LONG_SKY_SUNSET_LAMBDA = registerExtendedSA(
             "long_sky_sunset_lambda",
-            new LongSkySunsetSlashArts().setSwordCount(16)
+            () -> new LongSkySunsetSlashArts().setSwordCount(16)
     );
 
     // 青界
     public static final RegistryObject<ExtendedSlashArts> JADE_DOMAIN = registerExtendedSA(
             "jade_domain",
-            new JadeDomainSlashArts()
+            JadeDomainSlashArts::new
     );
     public static final RegistryObject<ExtendedSlashArts> JADE_DOMAIN_LAMBDA = registerExtendedSA(
             "jade_domain_lambda",
-            new JadeDomainSlashArts()
+            () -> new JadeDomainSlashArts()
                     .setJudgementCutAttack(0.1197f)
                     .setPhantomSwordAttack(0.00798f)
                     .setMinPhantomSwordCount(9)
@@ -238,11 +244,11 @@ public class SlashArtsRegistry {
     // 裂岚
     public static final RegistryObject<ExtendedSlashArts> RIFT_GALE = registerExtendedSA(
             "rift_gale",
-            new RiftGaleSlashArts()
+            RiftGaleSlashArts::new
     );
     public static final RegistryObject<ExtendedSlashArts> RIFT_GALE_LAMBDA = registerExtendedSA(
             "rift_gale_lambda",
-            new RiftGaleSlashArts()
+            () -> new RiftGaleSlashArts()
                     .setDriveCount(30)
                     .setDriveDuration(30)
                     .setDriveAttack(0.133f)
@@ -254,11 +260,11 @@ public class SlashArtsRegistry {
     // 掠影
     public static final RegistryObject<ExtendedSlashArts> FLEETING_SHADOW = registerExtendedSA(
             "fleeting_shadow",
-            new FleetingShadowSlashArts()
+            FleetingShadowSlashArts::new
     );
     public static final RegistryObject<ExtendedSlashArts> FLEETING_SHADOW_LAMBDA = registerExtendedSA(
             "fleeting_shadow_lambda",
-            new FleetingShadowSlashArts()
+            () -> new FleetingShadowSlashArts()
                     .setJumpCount(26)
                     .setJumpInterval(2)
                     .setSlashTicksPerJump(1)
@@ -270,18 +276,31 @@ public class SlashArtsRegistry {
     /**
      * 注册扩展的 SlashArts，自动关联 ComboState
      */
-    private static RegistryObject<ExtendedSlashArts> registerExtendedSA(String name, ExtendedSlashArts supplier) {
-
-        RegistryObject<ExtendedSlashArts> slashArtsRegistryObject = SLASH_ARTS.register(
-                name,
-                () -> supplier
-        );
+    private static RegistryObject<ExtendedSlashArts> registerExtendedSA(String name, Supplier<ExtendedSlashArts> factory) {
+        Supplier<ExtendedSlashArts> slashArtsSupplier = memoize(factory);
+        RegistryObject<ExtendedSlashArts> slashArtsRegistryObject = SLASH_ARTS.register(name, slashArtsSupplier);
 
         RecastingComboStateRegistry.COMBO_STATE.register(
                 name,
-                supplier::createComboState
+                () -> slashArtsSupplier.get().createComboState()
         );
 
         return slashArtsRegistryObject;
+    }
+
+    private static <T> Supplier<T> memoize(Supplier<T> factory) {
+        AtomicReference<T> reference = new AtomicReference<>();
+        return () -> {
+            T cached = reference.get();
+            if (cached != null) {
+                return cached;
+            }
+
+            T created = factory.get();
+            if (reference.compareAndSet(null, created)) {
+                return created;
+            }
+            return reference.get();
+        };
     }
 }

@@ -9,6 +9,8 @@ import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 /**
  * true_power_dmc5_sfx 软依赖：不引入编译依赖，运行时探测 ComboSoundManager，
@@ -16,13 +18,9 @@ import java.util.Collection;
  */
 public final class Dmc5SfxCompat {
 
-    private static final boolean LOADED = ModList.get().isLoaded("true_power_dmc5_sfx");
-
-    @Nullable
-    private static final Object COMBO_SOUND_MANAGER = resolveInstance();
-
-    @Nullable
-    private static final Method GET_SOUNDS = resolveGetSounds();
+    private static final Supplier<Boolean> LOADED = memoize(() -> ModList.get().isLoaded("true_power_dmc5_sfx"));
+    private static final Supplier<Object> COMBO_SOUND_MANAGER = memoize(Dmc5SfxCompat::resolveInstance);
+    private static final Supplier<Method> GET_SOUNDS = memoize(Dmc5SfxCompat::resolveGetSounds);
 
     private Dmc5SfxCompat() {
     }
@@ -31,7 +29,9 @@ public final class Dmc5SfxCompat {
      * 当前主手刀连段在 DMC5 音表中有条目时返回 true，应对齐对方对 EntitySlashEffect 的 setSilent 意图。
      */
     public static boolean shouldMuteSlashEffect(LivingEntity player) {
-        if (!LOADED || COMBO_SOUND_MANAGER == null || GET_SOUNDS == null || player == null) {
+        Object comboSoundManager = COMBO_SOUND_MANAGER.get();
+        Method getSounds = GET_SOUNDS.get();
+        if (!LOADED.get() || comboSoundManager == null || getSounds == null || player == null) {
             return false;
         }
 
@@ -42,7 +42,7 @@ public final class Dmc5SfxCompat {
                         return false;
                     }
                     try {
-                        Object sounds = GET_SOUNDS.invoke(COMBO_SOUND_MANAGER, comboId);
+                        Object sounds = getSounds.invoke(comboSoundManager, comboId);
                         return sounds instanceof Collection<?> collection && !collection.isEmpty();
                     } catch (Throwable ignored) {
                         return false;
@@ -53,7 +53,7 @@ public final class Dmc5SfxCompat {
 
     @Nullable
     private static Object resolveInstance() {
-        if (!LOADED) {
+        if (!LOADED.get()) {
             return null;
         }
         try {
@@ -71,13 +71,34 @@ public final class Dmc5SfxCompat {
 
     @Nullable
     private static Method resolveGetSounds() {
-        if (COMBO_SOUND_MANAGER == null) {
+        Object comboSoundManager = COMBO_SOUND_MANAGER.get();
+        if (comboSoundManager == null) {
             return null;
         }
         try {
-            return COMBO_SOUND_MANAGER.getClass().getMethod("getSounds", ResourceLocation.class);
+            return comboSoundManager.getClass().getMethod("getSounds", ResourceLocation.class);
         } catch (Throwable ignored) {
             return null;
         }
+    }
+
+    private static <T> Supplier<T> memoize(Supplier<T> factory) {
+        AtomicReference<LazyValue<T>> reference = new AtomicReference<>();
+        return () -> {
+            LazyValue<T> cached = reference.get();
+            if (cached != null) {
+                return cached.value();
+            }
+
+            T created = factory.get();
+            LazyValue<T> lazyValue = new LazyValue<>(created);
+            if (reference.compareAndSet(null, lazyValue)) {
+                return created;
+            }
+            return reference.get().value();
+        };
+    }
+
+    private record LazyValue<T>(T value) {
     }
 }

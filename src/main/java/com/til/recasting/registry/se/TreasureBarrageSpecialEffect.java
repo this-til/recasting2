@@ -26,7 +26,7 @@ public class TreasureBarrageSpecialEffect extends ExtendedSpecialEffect {
     private int cooldownTicks = 60;
 
     @SubscribeEvent
-    public void onEvent(SlashBladeEvent.ChargeActionEvent event) {
+    public void onEvent(SlashBladeEvent.PerformSlashArtEvent event) {
         if (!hasSpecialEffect(event.getSlashBladeState())) {
             return;
         }

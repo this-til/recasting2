@@ -248,8 +248,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
 
     //implementation fg.deobf("mods.flammpfeil.slashblade:SlashBlade_Resharped:${slash_blade_version}")
-    implementation fg.deobf("curse.maven:SlashBlade_Resharped-1022428:7363505")
-    runModLibraries fg.deobf("curse.maven:SlashBlade_Resharped-1022428:7363505")
+    implementation fg.deobf("curse.maven:SlashBlade_Resharped-1022428:8090912")
+    runModLibraries fg.deobf("curse.maven:SlashBlade_Resharped-1022428:8090912")
     //拔刀剑物品栏/图标渲染预热优化，仅开发运行时注入
     runModLibraries fg.deobf("curse.maven:slashblade-model-warmup-1468875:7663355")
 
@@ -268,6 +268,17 @@ dependencies {
     //JEI API 参与编译，完整 Mod 仅在开发环境运行时注入
     compileOnly fg.deobf("curse.maven:jei-238222:7391695")
     runModLibraries fg.deobf("curse.maven:jei-238222:7391695")
+
+    // srelic 兼容验证（仅开发运行时）
+    runModLibraries fg.deobf("curse.maven:slashblade-gamerelic-1143914:7701562")
+    runModLibraries fg.deobf("curse.maven:legendreliclib-1307366:8456355")
+    runModLibraries fg.deobf("curse.maven:patchouli-306770:6164575")
+
+    // true_power_dmc5_sfx 兼容验证（仅开发运行时）
+    runModLibraries fg.deobf("curse.maven:true-power-dmc5-sfx-1609911:8457290")
+    runModLibraries fg.deobf("curse.maven:true-power-1287990:8456203")
+    runModLibraries fg.deobf("curse.maven:mrqx-s-slashblade-core-1235855:8018780")
+    runModLibraries fg.deobf("curse.maven:playeranimator-658587:4587214")
 
     //无锋道
     //implementation fg.deobf("curse.maven:rough_blade-1218145:7411635")
@@ -306,6 +317,11 @@ tasks.register('syncRunMods', Copy) {
         } finally {
             jarFile.close()
         }
+    }
+
+    // SecureJar 用文件名推导自动模块名；true-power 会变成 true.power（true 非法）
+    rename { String fileName ->
+        fileName.replace('true-power', 'truepower')
     }
 }
 
