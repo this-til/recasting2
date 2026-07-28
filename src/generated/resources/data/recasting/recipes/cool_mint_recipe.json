@@ -9,20 +9,19 @@
       "request": {
         "enchantments": [
           {
-            "id": "minecraft:sharpness",
-            "lvl": 5
+            "id": "minecraft:feather_falling",
+            "lvl": 4
           },
           {
-            "id": "minecraft:looting",
-            "lvl": 2
-          },
-          {
-            "id": "minecraft:unbreaking",
+            "id": "minecraft:depth_strider",
             "lvl": 3
           },
           {
-            "id": "minecraft:sweeping",
-            "lvl": 2
+            "id": "minecraft:soul_speed",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:aqua_affinity"
           }
         ],
         "kill": 1000,

@@ -9,7 +9,18 @@
       "request": {
         "enchantments": [
           {
-            "id": "minecraft:sharpness",
+            "id": "minecraft:power",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:punch",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:infinity"
+          },
+          {
+            "id": "minecraft:piercing",
             "lvl": 3
           }
         ],

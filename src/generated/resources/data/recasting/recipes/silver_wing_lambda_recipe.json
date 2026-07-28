@@ -7,6 +7,16 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:feather_falling",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:depth_strider",
+            "lvl": 3
+          }
+        ],
         "kill": 2000,
         "name": "recasting:slashblade/silver_wing",
         "refine": 400

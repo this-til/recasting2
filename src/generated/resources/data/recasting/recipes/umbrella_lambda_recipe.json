@@ -7,6 +7,16 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:sharpness",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:knockback",
+            "lvl": 2
+          }
+        ],
         "name": "recasting:slashblade/umbrella"
       }
     },

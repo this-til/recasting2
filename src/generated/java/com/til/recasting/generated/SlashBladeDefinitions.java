@@ -513,41 +513,6 @@ public final class SlashBladeDefinitions {
                 .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.15f))
                 .build();
 
-        // 彩翼 t2
-        register(bootstrap, RecastingSlashBladeKeys.COLOR_WING)
-                .renderDefinition(
-                        RenderDefinition.Builder.newInstance()
-                                .modelName(R.Slashblade.colorWing$obj)
-                                .textureName(R.Slashblade.colorWing$png)
-                )
-                .propertiesDefinition(
-                        PropertiesDefinition.Builder.newInstance()
-                                .baseAttackModifier(8f)
-                                .maxDamage(14 * 40)
-                                .slashArtsType(SlashArtsRegistry.HEAVEN_TWELVE_HIT.getId())
-                                .defaultSwordType(List.of(SwordType.BEWITCHED))
-                )
-                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-                .addSpecialEffects(SpecialEffectsRegistry.COLOR_DYE)
-                .build();
-
-        // 彩翼 Lambda t2
-        register(bootstrap, RecastingSlashBladeKeys.COLOR_WING_LAMBDA)
-                .renderDefinition(
-                        RenderDefinition.Builder.newInstance()
-                                .modelName(R.Slashblade.colorWing$obj)
-                                .textureName(R.Slashblade.colorWing$png)
-                )
-                .propertiesDefinition(
-                        PropertiesDefinition.Builder.newInstance()
-                                .baseAttackModifier(8f)
-                                .maxDamage(24 * 40)
-                                .slashArtsType(SlashArtsRegistry.HEAVEN_TWELVE_HIT_LAMBDA.getId())
-                                .defaultSwordType(List.of(SwordType.BEWITCHED))
-                )
-                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-                .addSpecialEffects(SpecialEffectsRegistry.COLOR_DYE)
-                .build();
 
         // t3 长空落日
         register(bootstrap, RecastingSlashBladeKeys.LONG_SKY_SUNSET)
@@ -641,6 +606,42 @@ public final class SlashBladeDefinitions {
                                 .defaultSwordType(List.of(SwordType.BEWITCHED))
                 )
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+                .build();
+
+        // 彩翼
+        register(bootstrap, RecastingSlashBladeKeys.COLOR_WING)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.colorWing$obj)
+                                .textureName(R.Slashblade.colorWing$png)
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(8f)
+                                .maxDamage(14 * 40)
+                                .slashArtsType(SlashArtsRegistry.HEAVEN_TWELVE_HIT.getId())
+                                .defaultSwordType(List.of(SwordType.BEWITCHED))
+                )
+                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+                .addSpecialEffects(SpecialEffectsRegistry.COLOR_DYE)
+                .build();
+
+        // 彩翼 Lambda
+        register(bootstrap, RecastingSlashBladeKeys.COLOR_WING_LAMBDA)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.colorWing$obj)
+                                .textureName(R.Slashblade.colorWing$png)
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(8f)
+                                .maxDamage(24 * 40)
+                                .slashArtsType(SlashArtsRegistry.HEAVEN_TWELVE_HIT_LAMBDA.getId())
+                                .defaultSwordType(List.of(SwordType.BEWITCHED))
+                )
+                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+                .addSpecialEffects(SpecialEffectsRegistry.COLOR_DYE)
                 .build();
 
         // 龙魂

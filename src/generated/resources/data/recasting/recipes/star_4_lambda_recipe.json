@@ -7,6 +7,34 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:projectile_protection",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:thorns",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:power",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:punch",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:infinity"
+          },
+          {
+            "id": "minecraft:multishot"
+          },
+          {
+            "id": "minecraft:quick_charge",
+            "lvl": 3
+          }
+        ],
         "kill": 12000,
         "name": "recasting:slashblade/star/star_4",
         "refine": 1600

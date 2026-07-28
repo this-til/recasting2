@@ -56,6 +56,15 @@ public class RecastingBuffTypes {
     );
 
     /**
+     * 穷观阵
+     * - 不衰减；最大 1 层；记录在释放者
+     * - 自定义数据存放当前 MatrixEntity 的 UUID
+     */
+    public static final RegistryObject<BuffType> MATRIX = BUFF_TYPES.register("matrix",
+            () -> new BuffType(0, 1)
+    );
+
+    /**
      * 灵魂燃烧
      * - 每秒造成当前6%生命值的火属性伤害
      */

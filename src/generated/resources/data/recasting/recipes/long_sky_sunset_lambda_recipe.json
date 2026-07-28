@@ -7,6 +7,19 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:fire_protection",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:fire_aspect",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:flame"
+          }
+        ],
         "kill": 3000,
         "name": "recasting:slashblade/long_sky_sunset",
         "refine": 400

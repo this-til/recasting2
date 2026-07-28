@@ -1,6 +1,6 @@
 {
   "type": "slashblade:shaped_blade",
-  "blade": "recasting:slashblade/wind_cloud_lambda",
+  "blade": "recasting:slashblade/azure_vista",
   "category": "equipment",
   "key": {
     "B": {
@@ -21,46 +21,30 @@
           },
           {
             "id": "minecraft:piercing",
-            "lvl": 4
-          },
-          {
-            "id": "minecraft:looting",
             "lvl": 3
-          },
-          {
-            "id": "minecraft:bane_of_arthropods",
-            "lvl": 2
           }
         ],
-        "kill": 2500,
-        "name": "recasting:slashblade/wind_cloud",
+        "kill": 5000,
+        "name": "recasting:slashblade/wind_cloud_lambda",
         "refine": 600
       }
     },
     "C": {
-      "item": "recasting:gold_medium_soul_cube"
+      "item": "recasting:diamond_medium_soul_cube"
     },
-    "S": {
+    "D": {
       "type": "recasting:se_crystal",
       "item": "recasting:se_crystal",
       "request": {
         "level": 1,
-        "special_effect_type": "recasting:storm"
-      }
-    },
-    "V": {
-      "type": "recasting:se_crystal",
-      "item": "recasting:se_crystal",
-      "request": {
-        "level": 1,
-        "special_effect_type": "recasting:storm_variant"
+        "special_effect_type": "recasting:drive_release"
       }
     }
   },
   "pattern": [
-    "CSC",
-    "VBV",
-    "CSC"
+    " DC",
+    "CBC",
+    "CD "
   ],
   "result": {
     "item": "slashblade:slashblade"

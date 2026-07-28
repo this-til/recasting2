@@ -7,6 +7,16 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:sharpness",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:knockback",
+            "lvl": 2
+          }
+        ],
         "kill": 500,
         "name": "recasting:slashblade/black",
         "refine": 100

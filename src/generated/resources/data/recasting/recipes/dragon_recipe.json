@@ -7,6 +7,23 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:fire_protection",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:fire_aspect",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:flame"
+          },
+          {
+            "id": "minecraft:blast_protection",
+            "lvl": 4
+          }
+        ],
         "kill": 1000,
         "name": "recasting:slashblade/dragon_scale_lambda",
         "refine": 300

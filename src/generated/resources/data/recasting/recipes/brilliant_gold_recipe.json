@@ -7,6 +7,23 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:efficiency",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:silk_touch"
+          },
+          {
+            "id": "minecraft:fortune",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:luck_of_the_sea",
+            "lvl": 2
+          }
+        ],
         "kill": 4000,
         "name": "recasting:slashblade/shine_gold_lambda",
         "proud_soul": 200000

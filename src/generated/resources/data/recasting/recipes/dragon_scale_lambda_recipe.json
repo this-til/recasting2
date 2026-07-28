@@ -9,8 +9,15 @@
       "request": {
         "enchantments": [
           {
-            "id": "minecraft:smite",
-            "lvl": 5
+            "id": "minecraft:fire_protection",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:fire_aspect",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:flame"
           }
         ],
         "kill": 500,

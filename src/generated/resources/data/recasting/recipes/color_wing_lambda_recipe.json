@@ -7,6 +7,37 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:feather_falling",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:soul_speed",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:swift_sneak",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:frost_walker",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:mending"
+          },
+          {
+            "id": "minecraft:channeling"
+          },
+          {
+            "id": "minecraft:multishot"
+          },
+          {
+            "id": "minecraft:quick_charge",
+            "lvl": 3
+          }
+        ],
         "kill": 10000,
         "name": "recasting:slashblade/color_wing",
         "refine": 1200

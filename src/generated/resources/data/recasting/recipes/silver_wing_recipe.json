@@ -7,6 +7,12 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:feather_falling",
+            "lvl": 4
+          }
+        ],
         "kill": 1000,
         "name": "recasting:slashblade/black",
         "refine": 200

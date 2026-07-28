@@ -1,6 +1,6 @@
 {
   "type": "slashblade:shaped_blade",
-  "blade": "recasting:slashblade/laser/laser_2",
+  "blade": "recasting:slashblade/onikiri",
   "category": "equipment",
   "key": {
     "B": {
@@ -9,28 +9,36 @@
       "request": {
         "enchantments": [
           {
-            "id": "minecraft:protection",
-            "lvl": 4
+            "id": "minecraft:sharpness",
+            "lvl": 5
           },
           {
-            "id": "minecraft:thorns",
+            "id": "minecraft:knockback",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:sweeping",
             "lvl": 3
+          },
+          {
+            "id": "minecraft:blast_protection",
+            "lvl": 2
           }
         ],
-        "kill": 3000,
-        "name": "recasting:slashblade/laser/laser_1",
-        "refine": 400
+        "kill": 5000,
+        "name": "recasting:slashblade/umbrella_lambda",
+        "refine": 600
       }
     },
     "C": {
-      "item": "recasting:gold_medium_soul_cube"
+      "item": "recasting:diamond_medium_soul_cube"
     },
     "S": {
       "type": "recasting:se_crystal",
       "item": "recasting:se_crystal",
       "request": {
         "level": 1,
-        "special_effect_type": "recasting:split"
+        "special_effect_type": "recasting:shock"
       }
     }
   },

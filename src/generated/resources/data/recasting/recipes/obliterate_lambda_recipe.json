@@ -7,6 +7,19 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:fire_aspect",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:flame"
+          },
+          {
+            "id": "minecraft:fire_protection",
+            "lvl": 4
+          }
+        ],
         "kill": 2000,
         "name": "recasting:slashblade/obliterate",
         "proud_soul": 100000

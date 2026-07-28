@@ -9,8 +9,12 @@
       "request": {
         "enchantments": [
           {
-            "id": "minecraft:sharpness",
-            "lvl": 5
+            "id": "minecraft:feather_falling",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:depth_strider",
+            "lvl": 3
           }
         ],
         "kill": 750,

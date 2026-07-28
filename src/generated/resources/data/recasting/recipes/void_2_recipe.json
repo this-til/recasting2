@@ -7,6 +7,16 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:protection",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:thorns",
+            "lvl": 3
+          }
+        ],
         "kill": 3000,
         "name": "recasting:slashblade/void/void_1",
         "refine": 250

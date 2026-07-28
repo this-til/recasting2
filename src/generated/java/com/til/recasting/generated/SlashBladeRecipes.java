@@ -100,7 +100,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 闪茶配方：从阔刃（铁）升级
-         * 要求：杀敌1000、锻造500
+         * 要求：杀敌1000、锻造500、海之眷顾3附魔、饵钓2附魔
          * I=金黄庸魂立方体, B=阔刃（铁）
          */
         
@@ -114,6 +114,10 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.BROADSWORD_IRON.location())
                                             .killCount(1000)
                                             .refineCount(500)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FISHING_LUCK), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FISHING_SPEED), 2))
                                             .build()))
                             .define('I', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
                             .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
@@ -121,7 +125,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 闪茶 Lambda 配方：闪茶 → ^闪茶
-         * 要求：杀敌2000、锻造1000
+         * 要求：杀敌2000、锻造1000、海之眷顾3附魔、饵钓3附魔、精准采集1附魔
          * I=金黄庸魂立方体, B=闪茶
          */
         
@@ -135,6 +139,12 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.SHINE_TEA.location())
                                             .killCount(2000)
                                             .refineCount(1000)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FISHING_LUCK), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FISHING_SPEED), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SILK_TOUCH), 1))
                                             .build()))
                             .define('I', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
                             .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
@@ -142,7 +152,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 灿茶配方：^闪茶 → 灿茶（链：闪 → ^闪 → 灿 → ^灿）
-         * 要求：杀敌4000、锻造2000
+         * 要求：杀敌4000、锻造2000、海之眷顾3附魔、饵钓3附魔、精准采集1附魔、效率5附魔
          * I=金黄庸魂立方体, B=闪茶 Lambda
          */
         
@@ -156,6 +166,14 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.SHINE_TEA_LAMBDA.location())
                                             .killCount(4000)
                                             .refineCount(2000)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FISHING_LUCK), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FISHING_SPEED), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SILK_TOUCH), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLOCK_EFFICIENCY), 5))
                                             .build()))
                             .define('I', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
                             .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
@@ -163,7 +181,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 灿茶 Lambda 配方：灿茶 → ^灿茶
-         * 要求：杀敌8000、锻造4000
+         * 要求：杀敌8000、锻造4000、海之眷顾3附魔、饵钓3附魔、精准采集1附魔、效率5附魔、时运3附魔、忠诚3附魔、激流1附魔、经验修补1附魔
          * I=金黄庸魂立方体, B=灿茶
          */
         
@@ -177,14 +195,94 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.BRILLIANT_TEA.location())
                                             .killCount(8000)
                                             .refineCount(4000)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FISHING_LUCK), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FISHING_SPEED), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SILK_TOUCH), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLOCK_EFFICIENCY), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLOCK_FORTUNE), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.LOYALTY), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.RIPTIDE), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MENDING), 1))
                                             .build()))
                             .define('I', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
                             .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
                             .save(consumer, Recasting.prefix("brilliant_tea_lambda_recipe"));
+
+        /**
+         * 荆楚配方（t2）：从灿茶 Lambda 升级
+         * 要求：杀敌5000、锻造600、荆棘3附魔、保护4附魔、时运3附魔、精准采集1附魔
+         * 材料：钻石庸魂立方体4个
+         * SE结晶：旋风 2个
+         * C=钻石庸魂立方体, W=旋风 SE结晶, B=基础刀（灿茶 Lambda，满足要求）
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BRIARLAND.location())
+                            .pattern(" WC")
+                            .pattern("CBC")
+                            .pattern("CW ")
+                            .define('B',
+                                    SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                            .name(RecastingSlashBladeKeys.BRILLIANT_TEA_LAMBDA.location())
+                                            .killCount(5000)
+                                            .refineCount(600)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.THORNS), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.ALL_DAMAGE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLOCK_FORTUNE), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SILK_TOUCH), 1))
+                                            .build()))
+                            .define('C', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                            .define('W', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.WHIRLWIND.getId(), 1))
+                            .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                            .save(consumer, Recasting.prefix("briarland_recipe"));
+
+        /**
+         * 荆楚 Lambda 配方（t2）：从荆楚升级
+         * 要求：杀敌10000、锻造1200、荆棘3附魔、保护4附魔、时运3附魔、精准采集1附魔、效率5附魔、耐久3附魔
+         * 材料：赤红庸魂立方体4个
+         * SE结晶：回旋 2个
+         * C=赤红庸魂立方体, S=回旋 SE结晶, B=基础刀（荆楚，满足要求）
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BRIARLAND_LAMBDA.location())
+                            .pattern(" SC")
+                            .pattern("CBC")
+                            .pattern("CS ")
+                            .define('B',
+                                    SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                            .name(RecastingSlashBladeKeys.BRIARLAND.location())
+                                            .killCount(10000)
+                                            .refineCount(1200)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.THORNS), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.ALL_DAMAGE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLOCK_FORTUNE), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SILK_TOUCH), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLOCK_EFFICIENCY), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING), 3))
+                                            .build()))
+                            .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                            .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SPIRAL.getId(), 1))
+                            .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                            .save(consumer, Recasting.prefix("briarland_lambda_recipe"));
     
         /**
          * 闪金配方：从青锋（铁）升级
-         * 要求：杀敌1000、荣耀50000
+         * 要求：杀敌1000、荣耀50000、效率4附魔、精准采集1附魔
          * I=金黄庸魂立方体, B=青锋（铁）
          */
         
@@ -198,6 +296,10 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.GREEN_BLADE_IRON.location())
                                             .killCount(1000)
                                             .proudSoul(50000)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLOCK_EFFICIENCY), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SILK_TOUCH), 1))
                                             .build()))
                             .define('I', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
                             .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
@@ -205,7 +307,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 闪金 Lambda 配方：闪金 → ^闪金
-         * 要求：杀敌2000、荣耀100000
+         * 要求：杀敌2000、荣耀100000、效率5附魔、精准采集1附魔、时运1附魔
          * I=金黄庸魂立方体, B=闪金
          */
         
@@ -219,6 +321,12 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.SHINE_GOLD.location())
                                             .killCount(2000)
                                             .proudSoul(100000)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLOCK_EFFICIENCY), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SILK_TOUCH), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLOCK_FORTUNE), 1))
                                             .build()))
                             .define('I', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
                             .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
@@ -226,7 +334,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 灿金配方：^闪金 → 灿金（链：闪 → ^闪 → 灿 → ^灿）
-         * 要求：杀敌4000、荣耀200000
+         * 要求：杀敌4000、荣耀200000、效率5附魔、精准采集1附魔、时运3附魔、海之眷顾2附魔
          * I=金黄庸魂立方体, B=闪金 Lambda
          */
         
@@ -240,6 +348,14 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.SHINE_GOLD_LAMBDA.location())
                                             .killCount(4000)
                                             .proudSoul(200000)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLOCK_EFFICIENCY), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SILK_TOUCH), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLOCK_FORTUNE), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FISHING_LUCK), 2))
                                             .build()))
                             .define('I', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
                             .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
@@ -247,7 +363,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 灿金 Lambda 配方：灿金 → ^灿金
-         * 要求：杀敌8000、荣耀400000
+         * 要求：杀敌8000、荣耀400000、效率5附魔、精准采集1附魔、时运3附魔、海之眷顾3附魔、饵钓3附魔、忠诚3附魔、激流1附魔
          * I=金黄庸魂立方体, B=灿金
          */
         
@@ -261,6 +377,20 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.BRILLIANT_GOLD.location())
                                             .killCount(8000)
                                             .proudSoul(400000)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLOCK_EFFICIENCY), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SILK_TOUCH), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLOCK_FORTUNE), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FISHING_LUCK), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FISHING_SPEED), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.LOYALTY), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.RIPTIDE), 1))
                                             .build()))
                             .define('I', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
                             .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
@@ -341,7 +471,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 八卦剑大配方：从八卦剑升级
-         * 要求：杀敌2000、锻造100、力量3附魔、锋利3附魔
+         * 要求：杀敌2000、锻造100、力量3附魔、锋利2附魔
          * 材料：诗烬火2个、混沌火2个
          * P=诗烬火, C=混沌火, B=基础刀（八卦剑，满足要求）
          */
@@ -359,7 +489,7 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE), 3))
                                             .addEnchantment(new EnchantmentDefinition(
-                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 3))
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 2))
                                             .build()))
                             .define('P', RecastingItems.POETRY_ASH_FLAME.get())
                             .define('C', RecastingItems.CHAOS_FLAME.get())
@@ -368,7 +498,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 八卦剑大 Lambda 配方：从八卦剑大升级
-         * 要求：杀敌5000、锻造300、力量5附魔、锋利5附魔
+         * 要求：杀敌5000、锻造300、力量5附魔、锋利2附魔
          * 材料：古铜色的庸魂立方体6个
          * SE结晶：冲击l1 2个
          * C=古铜色的庸魂立方体, B=基础刀（八卦剑大，满足要求）, I=冲击l1 SE结晶
@@ -387,7 +517,7 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE), 5))
                                             .addEnchantment(new EnchantmentDefinition(
-                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 2))
                                             .build()))
                             .define('C', RecastingItems.COPPER_MEDIUM_SOUL_CUBE.get())
                             .define('I', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.IMPACT.getId(), 1))
@@ -425,7 +555,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 太极 Lambda 配方：从太极升级
-         * 要求：杀敌16000、锻造1200、力量5附魔、锋利5附魔
+         * 要求：杀敌16000、锻造1200、力量5附魔、锋利5附魔、抢夺3附魔、耐久3附魔、经验修补1附魔
          * 材料：漆黑的庸魂立方体6个
          * SE结晶：冲击l1 2个
          * C=漆黑的庸魂立方体, B=基础刀（太极，满足要求）, I=冲击l1 SE结晶
@@ -445,6 +575,12 @@ public class SlashBladeRecipes extends RecipeProvider {
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE), 5))
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MOB_LOOTING), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MENDING), 1))
                                             .build()))
                             .define('C', RecastingItems.NETHERITE_MEDIUM_SOUL_CUBE.get())
                             .define('I', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.IMPACT.getId(), 1))
@@ -475,7 +611,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 伞配方：从黑刃升级
-         * 要求：杀敌500、锻造100
+         * 要求：杀敌500、锻造100、锋利3附魔、击退2附魔
          * 材料：漆黑的庸魂立方体2个
          * SE结晶：斩断l1 2个
          * C=漆黑的庸魂立方体, B=基础刀（黑刃，满足要求）, S=斩断l1 SE结晶
@@ -491,6 +627,10 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.BLACK.location())
                                             .killCount(500)
                                             .refineCount(100)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.KNOCKBACK), 2))
                                             .build()))
                             .define('C', RecastingItems.NETHERITE_MEDIUM_SOUL_CUBE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SEVER_BREAK.getId(), 1))
@@ -499,6 +639,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 伞 Lambda 配方：从伞升级
+         * 要求：锋利5附魔、击退2附魔
          * 材料：漆黑的庸魂立方体4个
          * SE结晶：风暴l1 2个、风暴变体l1 2个
          * C=漆黑的庸魂立方体, B=基础刀（伞，满足要求）, S=风暴l1 SE结晶, V=风暴变体l1 SE结晶
@@ -512,16 +653,82 @@ public class SlashBladeRecipes extends RecipeProvider {
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
                                             .name(RecastingSlashBladeKeys.UMBRELLA.location())
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.KNOCKBACK), 2))
                                             .build()))
                             .define('C', RecastingItems.NETHERITE_MEDIUM_SOUL_CUBE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM.getId(), 1))
                             .define('V', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM_VARIANT.getId(), 1))
                             .unlockedBy("has_netherite_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.NETHERITE_MEDIUM_SOUL_CUBE.get()))
                             .save(consumer, Recasting.prefix("umbrella_lambda_recipe"));
+
+        /**
+         * 鬼切配方（t2）：从伞 Lambda 升级
+         * 要求：杀敌5000、锻造600、锋利5附魔、击退2附魔、横扫之刃3附魔、爆炸保护2附魔
+         * 材料：钻石庸魂立方体4个
+         * SE结晶：震荡 2个
+         * C=钻石庸魂立方体, S=震荡 SE结晶, B=基础刀（伞 Lambda，满足要求）
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.ONIKIRI.location())
+                            .pattern(" SC")
+                            .pattern("CBC")
+                            .pattern("CS ")
+                            .define('B',
+                                    SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                            .name(RecastingSlashBladeKeys.UMBRELLA_LAMBDA.location())
+                                            .killCount(5000)
+                                            .refineCount(600)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.KNOCKBACK), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SWEEPING_EDGE), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLAST_PROTECTION), 2))
+                                            .build()))
+                            .define('C', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                            .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SHOCK.getId(), 1))
+                            .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                            .save(consumer, Recasting.prefix("onikiri_recipe"));
+
+        /**
+         * 鬼切 Lambda 配方（t2）：从鬼切升级
+         * 要求：杀敌10000、锻造1200、锋利5附魔、击退2附魔、横扫之刃3附魔、爆炸保护4附魔、力量5附魔
+         * 材料：赤红庸魂立方体4个
+         * SE结晶：过载 2个
+         * C=赤红庸魂立方体, O=过载 SE结晶, B=基础刀（鬼切，满足要求）
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.ONIKIRI_LAMBDA.location())
+                            .pattern(" OC")
+                            .pattern("CBC")
+                            .pattern("CO ")
+                            .define('B',
+                                    SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                            .name(RecastingSlashBladeKeys.ONIKIRI.location())
+                                            .killCount(10000)
+                                            .refineCount(1200)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.KNOCKBACK), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SWEEPING_EDGE), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLAST_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE), 5))
+                                            .build()))
+                            .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                            .define('O', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.OVERLOAD.getId(), 1))
+                            .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                            .save(consumer, Recasting.prefix("onikiri_lambda_recipe"));
     
         /**
          * 青云配方：从碎白升级
-         * 要求：杀敌500、锻造20、锋利3附魔
+         * 要求：杀敌500、锻造20、摔落保护4附魔
          * 材料：翠绿的庸魂立方体2个
          * SE结晶：协同l1、十字斩l1
          * E=翠绿的庸魂立方体, B=基础刀（碎白，满足要求）, C=协同l1 SE结晶
@@ -538,7 +745,7 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .killCount(500)
                                             .refineCount(20)
                                             .addEnchantment(new EnchantmentDefinition(
-                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 3))
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FALL_PROTECTION), 4))
                                             .build()))
                             .define('E', RecastingItems.EMERALD_MEDIUM_SOUL_CUBE.get())
                             .define('C', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.COOPERATE_WITH.getId(), 1))
@@ -547,7 +754,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 青云 Lambda 配方：从青云升级
-         * 要求：杀敌750、锻造125、锋利5附魔
+         * 要求：杀敌750、锻造125、摔落保护4附魔、深海探索者3附魔
          * 材料：翠绿的庸魂立方体6个
          * SE结晶：十字斩l1 2个
          * E=翠绿的庸魂立方体, B=基础刀（青云，满足要求）, X=十字斩l1 SE结晶
@@ -564,7 +771,9 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .killCount(750)
                                             .refineCount(125)
                                             .addEnchantment(new EnchantmentDefinition(
-                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FALL_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.DEPTH_STRIDER), 3))
                                             .build()))
                             .define('E', RecastingItems.EMERALD_MEDIUM_SOUL_CUBE.get())
                             .define('X', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.CROSS_CHOP.getId(), 1))
@@ -573,7 +782,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 冰薄荷配方：从青云 Lambda 升级
-         * 要求：杀敌1000、锻造300、锋利5附魔、抢夺2附魔、耐久3附魔、横扫2附魔
+         * 要求：杀敌1000、锻造300、摔落保护4附魔、深海探索者3附魔、灵魂疾行3附魔、水下速掘1附魔
          * 材料：天蓝色的庸魂立方体4个
          * SE结晶：生长l2、回溯l2
          * D=天蓝色的庸魂立方体, B=基础刀（青云 Lambda，满足要求）, G=生长l2 SE结晶, R=回溯l2 SE结晶
@@ -590,13 +799,13 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .killCount(1000)
                                             .refineCount(300)
                                             .addEnchantment(new EnchantmentDefinition(
-                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FALL_PROTECTION), 4))
                                             .addEnchantment(new EnchantmentDefinition(
-                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MOB_LOOTING), 2))
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.DEPTH_STRIDER), 3))
                                             .addEnchantment(new EnchantmentDefinition(
-                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING), 3))
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SOUL_SPEED), 3))
                                             .addEnchantment(new EnchantmentDefinition(
-                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SWEEPING_EDGE), 2))
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.AQUA_AFFINITY), 1))
                                             .build()))
                             .define('D', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
                             .define('G', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.GROWTH.getId(), 1))
@@ -606,7 +815,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 冰薄荷 Lambda 配方：从冰薄荷升级
-         * 要求：杀敌200、锻造500
+         * 要求：杀敌200、锻造500、摔落保护4附魔、深海探索者3附魔、灵魂疾行3附魔、水下速掘1附魔、迅捷潜行3附魔、耐久3附魔、经验修补1附魔、引雷1附魔
          * 材料：天蓝色的庸魂立方体4个
          * SE结晶：剑气释放l2 2个
          * D=天蓝色的庸魂立方体, B=基础刀（冰薄荷，满足要求）, C=剑气释放l2 SE结晶
@@ -622,6 +831,22 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.COOL_MINT.location())
                                             .killCount(200)
                                             .refineCount(500)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FALL_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.DEPTH_STRIDER), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SOUL_SPEED), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.AQUA_AFFINITY), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SWIFT_SNEAK), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MENDING), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.CHANNELING), 1))
                                             .build()))
                             .define('D', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
                             .define('C', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.DRIVE_RELEASE.getId(), 1))
@@ -630,6 +855,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 惊鸿配方：从冰薄荷 Lambda 升级。
+         * 要求：杀敌1000、锻造1000、摔落保护4附魔、深海探索者3附魔、灵魂疾行3附魔
          */
     
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.STARTLED_SWAN.location())
@@ -641,6 +867,12 @@ public class SlashBladeRecipes extends RecipeProvider {
                                 .name(RecastingSlashBladeKeys.COOL_MINT_LAMBDA.location())
                                 .killCount(1000)
                                 .refineCount(1000)
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FALL_PROTECTION), 4))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.DEPTH_STRIDER), 3))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SOUL_SPEED), 3))
                                 .build()))
                 .define('P', Items.ENDER_PEARL)
                 .define('E', Items.CHORUS_FRUIT)
@@ -650,6 +882,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 惊鸿 Lambda 配方：从惊鸿升级。
+         * 要求：杀敌2000、锻造2000、摔落保护4附魔、深海探索者3附魔、灵魂疾行3附魔、迅捷潜行3附魔、耐久3附魔、经验修补1附魔、多重射击1附魔
          */
     
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.STARTLED_SWAN_LAMBDA.location())
@@ -661,6 +894,20 @@ public class SlashBladeRecipes extends RecipeProvider {
                                 .name(RecastingSlashBladeKeys.STARTLED_SWAN.location())
                                 .killCount(2000)
                                 .refineCount(2000)
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FALL_PROTECTION), 4))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.DEPTH_STRIDER), 3))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SOUL_SPEED), 3))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SWIFT_SNEAK), 3))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING), 3))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MENDING), 1))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MULTISHOT), 1))
                                 .build()))
                 .define('I', Items.ENDER_EYE)
                 .define('E', Items.POPPED_CHORUS_FRUIT)
@@ -670,7 +917,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 龙鳞配方：从八卦剑升级
-         * 要求：杀敌300、锻造50、力量3附魔、耐久2附魔
+         * 要求：杀敌300、锻造50、火焰保护4附魔、火焰附加1附魔
          * SE结晶：分裂l1 2个
          * B=基础刀（八卦剑，满足要求）, I=分裂l1 SE结晶
          */
@@ -686,9 +933,9 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .killCount(300)
                                             .refineCount(50)
                                             .addEnchantment(new EnchantmentDefinition(
-                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE), 3))
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_PROTECTION), 4))
                                             .addEnchantment(new EnchantmentDefinition(
-                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING), 2))
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_ASPECT), 1))
                                             .build()))
                             .define('I', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SPLIT.getId(), 1))
                             .unlockedBy("has_split_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
@@ -696,7 +943,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 龙鳞 Lambda 配方：从龙鳞升级
-         * 要求：杀敌500、锻造200、力量5附魔
+         * 要求：杀敌500、锻造200、火焰保护4附魔、火焰附加2附魔、火矢1附魔
          * 材料：古铜色的庸魂立方体6个
          * SE结晶：冲击l1 2个
          * C=古铜色的庸魂立方体, B=基础刀（龙鳞，满足要求）, I=冲击l1 SE结晶
@@ -714,7 +961,11 @@ public class SlashBladeRecipes extends RecipeProvider {
 
                                             .refineCount(200)
                                             .addEnchantment(new EnchantmentDefinition(
-                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE), 5))
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_ASPECT), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FLAMING_ARROWS), 1))
                                             .build()))
                             .define('C', RecastingItems.COPPER_MEDIUM_SOUL_CUBE.get())
                             .define('I', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.IMPACT.getId(), 1))
@@ -723,7 +974,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 龙配方：从龙鳞 Lambda 升级
-         * 要求：杀敌1000、锻造300
+         * 要求：杀敌1000、锻造300、火焰保护4附魔、火焰附加2附魔、火矢1附魔、爆炸保护4附魔
          * 材料：银白色的庸魂立方体4个
          * SE结晶：破片l2 4个
          * C=银白色的庸魂立方体, B=基础刀（龙鳞 Lambda，满足要求）, F=破片l2 SE结晶
@@ -739,6 +990,14 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.DRAGON_SCALE_LAMBDA.location())
                                             .killCount(1000)
                                             .refineCount(300)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_ASPECT), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FLAMING_ARROWS), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLAST_PROTECTION), 4))
                                             .build()))
                             .define('C', RecastingItems.IRON_MEDIUM_SOUL_CUBE.get())
                             .define('F', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.FRAGMENT.getId(), 1))
@@ -747,7 +1006,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 龙 Lambda 配方：从龙升级
-         * 要求：杀敌2000、锻造500
+         * 要求：杀敌2000、锻造500、火焰保护4附魔、火焰附加2附魔、火矢1附魔、爆炸保护4附魔、力量5附魔、击退2附魔
          * 材料：金黄色的庸魂立方体4个
          * SE结晶：螺旋l2 4个
          * C=金黄色的庸魂立方体, B=基础刀（龙，满足要求）, S=螺旋l2 SE结晶
@@ -763,6 +1022,18 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.DRAGON.location())
                                             .killCount(2000)
                                             .refineCount(500)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_ASPECT), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FLAMING_ARROWS), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLAST_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.KNOCKBACK), 2))
                                             .build()))
                             .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SPIRAL.getId(), 1))
@@ -771,7 +1042,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 风云配方：从龙鳞 Lambda 升级
-         * 要求：杀敌1500、锻造400、锋利3附魔
+         * 要求：杀敌1500、锻造400、力量5附魔、冲击2附魔、无限1附魔、穿透3附魔
          * 材料：金黄色的庸魂立方体4个
          * SE结晶：旋风l1 4个
          * C=金黄色的庸魂立方体, B=基础刀（龙鳞 Lambda，满足要求）, W=旋风l1 SE结晶
@@ -788,7 +1059,13 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .killCount(1500)
                                             .refineCount(400)
                                             .addEnchantment(new EnchantmentDefinition(
-                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 3))
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.POWER_ARROWS), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PUNCH_ARROWS), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.INFINITY_ARROWS), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PIERCING), 3))
                                             .build()))
                             .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
                             .define('W', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.WHIRLWIND.getId(), 1))
@@ -797,7 +1074,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 风云 Lambda 配方：从风云升级
-         * 要求：杀敌2500、锻造600
+         * 要求：杀敌2500、锻造600、力量5附魔、冲击2附魔、无限1附魔、穿透4附魔、抢夺3附魔、节肢杀手2附魔
          * 材料：金黄色的庸魂立方体4个
          * SE结晶：风暴l1 2个、风暴变体l1 2个
          * C=金黄色的庸魂立方体, B=基础刀（风云，满足要求）, S=风暴l1 SE结晶, V=风暴变体l1 SE结晶
@@ -813,20 +1090,96 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.WIND_CLOUD.location())
                                             .killCount(2500)
                                             .refineCount(600)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.POWER_ARROWS), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PUNCH_ARROWS), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.INFINITY_ARROWS), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PIERCING), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MOB_LOOTING), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BANE_OF_ARTHROPODS), 2))
                                             .build()))
                             .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM.getId(), 1))
                             .define('V', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM_VARIANT.getId(), 1))
                             .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
                             .save(consumer, Recasting.prefix("wind_cloud_lambda_recipe"));
+
+        /**
+         * 苍景配方（t2）：从风云 Lambda 升级
+         * 要求：杀敌5000、锻造600、力量5附魔、冲击2附魔、无限1附魔、穿透3附魔
+         * 材料：钻石庸魂立方体4个
+         * SE结晶：剑气释放 2个
+         * C=钻石庸魂立方体, D=剑气释放 SE结晶, B=基础刀（风云 Lambda，满足要求）
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.AZURE_VISTA.location())
+                            .pattern(" DC")
+                            .pattern("CBC")
+                            .pattern("CD ")
+                            .define('B',
+                                    SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                            .name(RecastingSlashBladeKeys.WIND_CLOUD_LAMBDA.location())
+                                            .killCount(5000)
+                                            .refineCount(600)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.POWER_ARROWS), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PUNCH_ARROWS), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.INFINITY_ARROWS), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PIERCING), 3))
+                                            .build()))
+                            .define('C', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                            .define('D', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.DRIVE_RELEASE.getId(), 1))
+                            .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                            .save(consumer, Recasting.prefix("azure_vista_recipe"));
+
+        /**
+         * 苍景 Lambda 配方（t2）：从苍景升级
+         * 要求：杀敌10000、锻造1200、力量5附魔、冲击2附魔、无限1附魔、穿透4附魔、抢夺3附魔、节肢杀手2附魔、穿刺1附魔
+         * 材料：赤红庸魂立方体4个
+         * SE结晶：生长 2个
+         * C=赤红庸魂立方体, G=生长 SE结晶, B=基础刀（苍景，满足要求）
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.AZURE_VISTA_LAMBDA.location())
+                            .pattern(" GC")
+                            .pattern("CBC")
+                            .pattern("CG ")
+                            .define('B',
+                                    SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                            .name(RecastingSlashBladeKeys.AZURE_VISTA.location())
+                                            .killCount(10000)
+                                            .refineCount(1200)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.POWER_ARROWS), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PUNCH_ARROWS), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.INFINITY_ARROWS), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PIERCING), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MOB_LOOTING), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BANE_OF_ARTHROPODS), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.IMPALING), 1))
+                                            .build()))
+                            .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                            .define('G', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.GROWTH.getId(), 1))
+                            .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                            .save(consumer, Recasting.prefix("azure_vista_lambda_recipe"));
     
         /**
          * 法棍配方：基础配方，无前置刀
          * 材料：面包3个 + 耀魂1个
          * B=面包, P=耀魂
          */
-        
-    
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.DHARMA_STICK.location())
                             .pattern("  B")
                             .pattern(" B ")
@@ -891,7 +1244,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * VOID_1 配方：从黑刃升级
-         * 要求：杀敌3000、锻造500、耐久3附魔、力量5附魔、锋利5附魔、截肢杀手2附魔
+         * 要求：杀敌3000、锻造500、保护4附魔、荆棘1附魔
          * SE结晶：震荡l3 2个
          * 材料：银白色庸魂立方体4个
          * C=银白色庸魂立方体, S=震荡l3 SE结晶, B=基础刀（黑刃，满足要求）
@@ -908,13 +1261,9 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .killCount(1500)
                                             .refineCount(100)
                                             .addEnchantment(new EnchantmentDefinition(
-                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING), 3))
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.ALL_DAMAGE_PROTECTION), 4))
                                             .addEnchantment(new EnchantmentDefinition(
-                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE), 5))
-                                            .addEnchantment(new EnchantmentDefinition(
-                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
-                                            .addEnchantment(new EnchantmentDefinition(
-                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BANE_OF_ARTHROPODS), 2))
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.THORNS), 1))
                                             .build()))
                             .define('C', RecastingItems.IRON_MEDIUM_SOUL_CUBE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SHOCK.getId(), 1))
@@ -923,7 +1272,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * VOID_2 配方：从 VOID_1 升级
-         * 要求：杀敌3000、锻造250
+         * 要求：杀敌3000、锻造250、保护4附魔、荆棘3附魔
          * SE结晶：生长l3 2个
          * 材料：漆黑庸魂立方体4个
          * C=漆黑庸魂立方体, G=生长l3 SE结晶, B=基础刀（VOID_1，满足要求）
@@ -939,6 +1288,10 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.VOID_1.location())
                                             .killCount(3000)
                                             .refineCount(250)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.ALL_DAMAGE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.THORNS), 3))
                                             .build()))
                             .define('C', RecastingItems.NETHERITE_MEDIUM_SOUL_CUBE.get())
                             .define('G', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.GROWTH.getId(), 1))
@@ -947,7 +1300,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * VOID_3 配方：从 VOID_2 升级
-         * 要求：杀敌5000、锻造500
+         * 要求：杀敌5000、锻造500、保护4附魔、荆棘3附魔、爆炸保护4附魔
          * SE结晶：吸血转化l3 2个
          * 材料：赤红庸魂立方体4个
          * C=赤红庸魂立方体, L=吸血转化l3 SE结晶, B=基础刀（VOID_2，满足要求）
@@ -963,6 +1316,12 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.VOID_2.location())
                                             .killCount(5000)
                                             .refineCount(500)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.ALL_DAMAGE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.THORNS), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLAST_PROTECTION), 4))
                                             .build()))
                             .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
                             .define('L', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.LIFE_STEAL.getId(), 1))
@@ -971,7 +1330,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * OBLITERATE 配方：从黑刃升级
-         * 要求：杀敌1000、荣耀50000、火焰附加2附魔
+         * 要求：杀敌1000、荣耀50000、火焰附加2附魔、火矢1附魔、火焰保护2附魔
          * SE结晶：回溯l1 2个
          * 材料：赤红庸魂立方体4个
          * C=赤红庸魂立方体, R=回溯l1 SE结晶, B=基础刀（黑刃，满足要求）
@@ -989,6 +1348,10 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .proudSoul(50000)
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_ASPECT), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FLAMING_ARROWS), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_PROTECTION), 2))
                                             .build()))
                             .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
                             .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 1))
@@ -997,7 +1360,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * OBLITERATE Lambda 配方：从 OBLITERATE 升级
-         * 要求：杀敌2000、荣耀100000
+         * 要求：杀敌2000、荣耀100000、火焰附加2附魔、火矢1附魔、火焰保护4附魔
          * SE结晶：回溯l2 2个
          * 材料：赤红庸魂立方体4个
          * C=赤红庸魂立方体, R=回溯l2 SE结晶, B=基础刀（OBLITERATE，满足要求）
@@ -1013,6 +1376,12 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.OBLITERATE.location())
                                             .killCount(2000)
                                             .proudSoul(100000)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_ASPECT), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FLAMING_ARROWS), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_PROTECTION), 4))
                                             .build()))
                             .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
                             .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 1))
@@ -1021,7 +1390,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * SOULBLADE 配方：从 OBLITERATE Lambda 升级
-         * 要求：杀敌4000、荣耀200000
+         * 要求：杀敌4000、荣耀200000、火焰附加2附魔、火矢1附魔、火焰保护4附魔、荆棘3附魔、引雷1附魔
          * SE结晶：回溯l3 2个
          * 材料：赤红庸魂立方体4个
          * C=赤红庸魂立方体, R=回溯l3 SE结晶, B=基础刀（OBLITERATE Lambda，满足要求）
@@ -1037,6 +1406,16 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.OBLITERATE_LAMBDA.location())
                                             .killCount(4000)
                                             .proudSoul(200000)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_ASPECT), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FLAMING_ARROWS), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.THORNS), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.CHANNELING), 1))
                                             .build()))
                             .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
                             .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 1))
@@ -1045,7 +1424,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * STAR_1 配方：从黑刃升级
-         * 要求：杀敌1000、锻造200
+         * 要求：杀敌1000、锻造200、弹射物保护4附魔
          * 材料：银白色的庸魂立方体4个
          * SE结晶：撕裂l2 4个
          * C=银白色的庸魂立方体, B=基础刀（黑刃，满足要求）, T=撕裂l2 SE结晶
@@ -1061,6 +1440,8 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.BLACK.location())
                                             .killCount(1000)
                                             .refineCount(200)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PROJECTILE_PROTECTION), 4))
                                             .build()))
                             .define('C', RecastingItems.IRON_MEDIUM_SOUL_CUBE.get())
                             .define('T', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.TEAR.getId(), 1))
@@ -1069,7 +1450,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * STAR_2 配方：从 STAR_1 升级
-         * 要求：杀敌2000、锻造400
+         * 要求：杀敌2000、锻造400、弹射物保护4附魔、荆棘2附魔
          * SE结晶：旋风l2 4个
          * W=旋风l2 SE结晶, B=基础刀（STAR_1，满足要求）
          */
@@ -1085,6 +1466,10 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.STAR_1.location())
                                             .killCount(2000)
                                             .refineCount(400)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PROJECTILE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.THORNS), 2))
                                             .build()))
                             .define('W', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.WHIRLWIND.getId(), 1))
                             .unlockedBy("has_whirlwind_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
@@ -1092,7 +1477,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * STAR_3 配方：从 STAR_2 升级
-         * 要求：杀敌4000、锻造600
+         * 要求：杀敌4000、锻造600、弹射物保护4附魔、荆棘3附魔
          * SE结晶：断却l1 4个
          * A=断却l1 SE结晶, B=基础刀（STAR_2，满足要求）
          */
@@ -1107,6 +1492,10 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.STAR_2.location())
                                             .killCount(4000)
                                             .refineCount(600)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PROJECTILE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.THORNS), 3))
                                             .build()))
                             .define('A', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SEVER_BREAK.getId(), 1))
                             .unlockedBy("has_sever_break_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
@@ -1114,7 +1503,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * STAR_4 配方：从 STAR_3 升级
-         * 要求：杀敌6000、锻造800
+         * 要求：杀敌6000、锻造800、弹射物保护4附魔、荆棘3附魔、力量4附魔
          * SE结晶：断灭l1 2个
          * S=断灭l1 SE结晶, B=基础刀（STAR_3，满足要求）
          */
@@ -1129,6 +1518,12 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.STAR_3.location())
                                             .killCount(6000)
                                             .refineCount(800)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PROJECTILE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.THORNS), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.POWER_ARROWS), 4))
                                             .build()))
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.ANNIHILATION.getId(), 1))
                             .unlockedBy("has_annihilation_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
@@ -1136,7 +1531,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * STAR_4_LAMBDA 配方：从 STAR_4 升级
-         * 要求：杀敌12000、锻造1600
+         * 要求：杀敌12000、锻造1600、弹射物保护4附魔、荆棘3附魔、力量5附魔、冲击2附魔、无限1附魔、多重射击1附魔、快速装填3附魔
          * SE结晶：风暴l3 2个、风暴变体l3 2个
          * S=风暴l3 SE结晶, V=风暴变体l3 SE结晶, B=基础刀（STAR_4，满足要求）
          */
@@ -1151,6 +1546,20 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.STAR_4.location())
                                             .killCount(12000)
                                             .refineCount(1600)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PROJECTILE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.THORNS), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.POWER_ARROWS), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PUNCH_ARROWS), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.INFINITY_ARROWS), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MULTISHOT), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.QUICK_CHARGE), 3))
                                             .build()))
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM.getId(), 1))
                             .define('V', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM_VARIANT.getId(), 1))
@@ -1159,7 +1568,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * LASER_1 配方（t3）：从黑刃升级
-         * 要求：杀敌1500、锻造200
+         * 要求：杀敌1500、锻造200、保护4附魔、荆棘1附魔
          * 材料：银白色庸魂立方体4个
          * SE结晶：破片 2个
          * C=银白色庸魂立方体, F=破片 SE结晶, B=基础刀（黑刃，满足要求）
@@ -1175,6 +1584,10 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.BLACK.location())
                                             .killCount(1500)
                                             .refineCount(200)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.ALL_DAMAGE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.THORNS), 1))
                                             .build()))
                             .define('C', RecastingItems.IRON_MEDIUM_SOUL_CUBE.get())
                             .define('F', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.FRAGMENT.getId(), 1))
@@ -1183,7 +1596,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * LASER_2 配方（t3）：从 LASER_1 升级
-         * 要求：杀敌3000、锻造400
+         * 要求：杀敌3000、锻造400、保护4附魔、荆棘3附魔
          * 材料：金黄庸魂立方体4个
          * SE结晶：分裂 2个
          * C=金黄庸魂立方体, S=分裂 SE结晶, B=基础刀（LASER_1，满足要求）
@@ -1199,6 +1612,10 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.LASER_1.location())
                                             .killCount(3000)
                                             .refineCount(400)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.ALL_DAMAGE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.THORNS), 3))
                                             .build()))
                             .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SPLIT.getId(), 1))
@@ -1207,7 +1624,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * LASER_3 配方（t2）：从 LASER_2 升级
-         * 要求：杀敌5000、锻造600
+         * 要求：杀敌5000、锻造600、保护4附魔、荆棘3附魔、弹射物保护4附魔
          * 材料：钻石庸魂立方体4个
          * SE结晶：冲击 2个
          * C=钻石庸魂立方体, I=冲击 SE结晶, B=基础刀（LASER_2，满足要求）
@@ -1223,6 +1640,12 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.LASER_2.location())
                                             .killCount(5000)
                                             .refineCount(600)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.ALL_DAMAGE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.THORNS), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PROJECTILE_PROTECTION), 4))
                                             .build()))
                             .define('C', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
                             .define('I', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.IMPACT.getId(), 1))
@@ -1231,7 +1654,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * LASER_3_LAMBDA 配方（t2）：从 LASER_3 升级
-         * 要求：杀敌10000、锻造1200
+         * 要求：杀敌10000、锻造1200、保护4附魔、荆棘3附魔、弹射物保护4附魔、水下呼吸3附魔、水下速掘1附魔、耐久3附魔
          * SE结晶：分裂 2个、冲击 2个
          * S=分裂 SE结晶, I=冲击 SE结晶, B=基础刀（LASER_3，满足要求）
          */
@@ -1246,6 +1669,18 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.LASER_3.location())
                                             .killCount(10000)
                                             .refineCount(1200)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.ALL_DAMAGE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.THORNS), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PROJECTILE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.RESPIRATION), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.AQUA_AFFINITY), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING), 3))
                                             .build()))
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SPLIT.getId(), 1))
                             .define('I', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.IMPACT.getId(), 1))
@@ -1406,7 +1841,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 云翼配方（t3）：从黑刃升级
-         * 要求：杀敌1000、锻造200
+         * 要求：杀敌1000、锻造200、摔落保护4附魔
          * 材料：银白色庸魂立方体4个
          * SE结晶：分裂 2个
          * C=银白色庸魂立方体, S=分裂 SE结晶, B=基础刀（黑刃，满足要求）
@@ -1422,6 +1857,8 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.BLACK.location())
                                             .killCount(1000)
                                             .refineCount(200)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FALL_PROTECTION), 4))
                                             .build()))
                             .define('C', RecastingItems.IRON_MEDIUM_SOUL_CUBE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SPLIT.getId(), 1))
@@ -1430,7 +1867,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 云翼 Lambda 配方（t3）：从云翼升级
-         * 要求：杀敌2000、锻造400
+         * 要求：杀敌2000、锻造400、摔落保护4附魔、深海探索者3附魔
          * 材料：金黄色庸魂立方体4个
          * SE结晶：风暴 2个、风暴变体 2个
          * C=金黄色庸魂立方体, S=风暴 SE结晶, V=风暴变体 SE结晶, B=基础刀（云翼，满足要求）
@@ -1446,6 +1883,10 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.SILVER_WING.location())
                                             .killCount(2000)
                                             .refineCount(400)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FALL_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.DEPTH_STRIDER), 3))
                                             .build()))
 
                             .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
@@ -1456,7 +1897,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 彩翼配方（t2）：从云翼升级
-         * 要求：杀敌5000、锻造600
+         * 要求：杀敌5000、锻造600、摔落保护4附魔、灵魂疾行3附魔、迅捷潜行3附魔、冰霜行者1附魔
          * 材料：钻石庸魂立方体4个
          * 染料：红色、黄色、黄绿色、蓝色各1个
          * C=钻石庸魂立方体, X=基础刀（云翼，满足要求）, R=红色染料, Y=黄色染料, L=黄绿色染料, B=蓝色染料
@@ -1472,6 +1913,14 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.SILVER_WING.location())
                                             .killCount(5000)
                                             .refineCount(600)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FALL_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SOUL_SPEED), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SWIFT_SNEAK), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FROST_WALKER), 1))
                                             .build()))
                             .define('C', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
                             .define('R', Items.RED_DYE)
@@ -1483,7 +1932,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 彩翼 Lambda 配方（t2）：从彩翼升级
-         * 要求：杀敌10000、锻造1200
+         * 要求：杀敌10000、锻造1200、摔落保护4附魔、灵魂疾行3附魔、迅捷潜行3附魔、冰霜行者2附魔、经验修补1附魔、引雷1附魔、多重射击1附魔、快速装填3附魔
          * 材料：赤红庸魂立方体4个、荧光墨囊4个
          * SE结晶：雷暴 2个
          * C=赤红庸魂立方体, G=荧光墨囊, T=雷暴 SE结晶, B=基础刀（彩翼，满足要求）
@@ -1499,6 +1948,22 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.COLOR_WING.location())
                                             .killCount(10000)
                                             .refineCount(1200)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FALL_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SOUL_SPEED), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SWIFT_SNEAK), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FROST_WALKER), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MENDING), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.CHANNELING), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MULTISHOT), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.QUICK_CHARGE), 3))
                                             .build()))
                             .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
                             .define('G', Items.GLOW_INK_SAC)
@@ -1508,7 +1973,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 长空落日配方（t3）：从黑刃升级
-         * 要求：杀敌1500、锻造200
+         * 要求：杀敌1500、锻造200、火焰保护4附魔、火焰附加1附魔
          * 材料：赤红庸魂立方体4个
          * SE结晶：分裂 4个
          * C=赤红庸魂立方体, S=分裂 SE结晶, B=基础刀（黑刃，满足要求）
@@ -1524,6 +1989,10 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.BLACK.location())
                                             .killCount(1500)
                                             .refineCount(200)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_ASPECT), 1))
                                             .build()))
                             .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SPLIT.getId(), 1))
@@ -1532,7 +2001,7 @@ public class SlashBladeRecipes extends RecipeProvider {
     
         /**
          * 长空落日 Lambda 配方（t3）：从长空落日升级
-         * 要求：杀敌3000、锻造400
+         * 要求：杀敌3000、锻造400、火焰保护4附魔、火焰附加2附魔、火矢1附魔
          * 材料：赤红庸魂立方体4个
          * SE结晶：破片 4个
          * C=赤红庸魂立方体, F=破片 SE结晶, B=基础刀（长空落日，满足要求）
@@ -1548,6 +2017,12 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .name(RecastingSlashBladeKeys.LONG_SKY_SUNSET.location())
                                             .killCount(3000)
                                             .refineCount(400)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_ASPECT), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FLAMING_ARROWS), 1))
                                             .build()))
                             .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
                             .define('F', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.FRAGMENT.getId(), 1))

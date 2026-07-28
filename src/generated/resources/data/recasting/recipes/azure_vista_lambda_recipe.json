@@ -1,6 +1,6 @@
 {
   "type": "slashblade:shaped_blade",
-  "blade": "recasting:slashblade/wind_cloud_lambda",
+  "blade": "recasting:slashblade/azure_vista_lambda",
   "category": "equipment",
   "key": {
     "B": {
@@ -30,37 +30,32 @@
           {
             "id": "minecraft:bane_of_arthropods",
             "lvl": 2
+          },
+          {
+            "id": "minecraft:impaling"
           }
         ],
-        "kill": 2500,
-        "name": "recasting:slashblade/wind_cloud",
-        "refine": 600
+        "kill": 10000,
+        "name": "recasting:slashblade/azure_vista",
+        "refine": 1200
       }
     },
     "C": {
-      "item": "recasting:gold_medium_soul_cube"
+      "item": "recasting:redstone_medium_soul_cube"
     },
-    "S": {
+    "G": {
       "type": "recasting:se_crystal",
       "item": "recasting:se_crystal",
       "request": {
         "level": 1,
-        "special_effect_type": "recasting:storm"
-      }
-    },
-    "V": {
-      "type": "recasting:se_crystal",
-      "item": "recasting:se_crystal",
-      "request": {
-        "level": 1,
-        "special_effect_type": "recasting:storm_variant"
+        "special_effect_type": "recasting:growth"
       }
     }
   },
   "pattern": [
-    "CSC",
-    "VBV",
-    "CSC"
+    " GC",
+    "CBC",
+    "CG "
   ],
   "result": {
     "item": "slashblade:slashblade"

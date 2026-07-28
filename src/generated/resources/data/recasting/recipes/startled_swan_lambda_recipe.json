@@ -7,6 +7,34 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:feather_falling",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:depth_strider",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:soul_speed",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:swift_sneak",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:unbreaking",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:mending"
+          },
+          {
+            "id": "minecraft:multishot"
+          }
+        ],
         "kill": 2000,
         "name": "recasting:slashblade/startled_swan",
         "refine": 2000

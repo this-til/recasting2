@@ -7,6 +7,15 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:protection",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:thorns"
+          }
+        ],
         "kill": 1500,
         "name": "recasting:slashblade/black",
         "refine": 200

@@ -15,6 +15,16 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:projectile_protection",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:thorns",
+            "lvl": 3
+          }
+        ],
         "kill": 4000,
         "name": "recasting:slashblade/star/star_2",
         "refine": 600

@@ -11,6 +11,13 @@
           {
             "id": "minecraft:fire_aspect",
             "lvl": 2
+          },
+          {
+            "id": "minecraft:flame"
+          },
+          {
+            "id": "minecraft:fire_protection",
+            "lvl": 2
           }
         ],
         "kill": 1000,

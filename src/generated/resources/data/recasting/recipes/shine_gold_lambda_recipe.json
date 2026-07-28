@@ -7,6 +7,18 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:efficiency",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:silk_touch"
+          },
+          {
+            "id": "minecraft:fortune"
+          }
+        ],
         "kill": 2000,
         "name": "recasting:slashblade/shine_gold",
         "proud_soul": 100000

@@ -7,6 +7,37 @@
       "type": "slashblade:blade",
       "item": "slashblade:slashblade",
       "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:luck_of_the_sea",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:lure",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:silk_touch"
+          },
+          {
+            "id": "minecraft:efficiency",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:fortune",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:loyalty",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:riptide"
+          },
+          {
+            "id": "minecraft:mending"
+          }
+        ],
         "kill": 8000,
         "name": "recasting:slashblade/brilliant_tea",
         "refine": 4000
