@@ -1686,6 +1686,123 @@ public class SlashBladeRecipes extends RecipeProvider {
                             .define('I', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.IMPACT.getId(), 1))
                             .unlockedBy("has_split_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
                             .save(consumer, Recasting.prefix("laser_3_lambda_recipe"));
+
+        /**
+         * 磁暴配方（t3）：从黑刃升级
+         * 要求：杀敌1500、锻造200、引雷1附魔、穿刺3附魔
+         * 材料：银白色庸魂立方体4个
+         * SE结晶：雷霆万钧 2个
+         * C=银白色庸魂立方体, T=雷霆万钧 SE结晶, B=基础刀（黑刃，满足要求）
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.MAGNETIC_STORM.location())
+                            .pattern(" TC")
+                            .pattern("CBC")
+                            .pattern("CT ")
+                            .define('B',
+                                    SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                            .name(RecastingSlashBladeKeys.BLACK.location())
+                                            .killCount(1500)
+                                            .refineCount(200)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.CHANNELING), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.IMPALING), 3))
+                                            .build()))
+                            .define('C', RecastingItems.IRON_MEDIUM_SOUL_CUBE.get())
+                            .define('T', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.THUNDER_STRIKE.getId(), 1))
+                            .unlockedBy("has_iron_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.IRON_MEDIUM_SOUL_CUBE.get()))
+                            .save(consumer, Recasting.prefix("magnetic_storm_recipe"));
+
+        /**
+         * 磁暴 Lambda 配方（t3）：从磁暴升级
+         * 要求：杀敌3000、锻造400、引雷1附魔、穿刺5附魔
+         * 材料：金黄庸魂立方体4个
+         * SE结晶：电离 2个
+         * C=金黄庸魂立方体, I=电离 SE结晶, B=基础刀（磁暴，满足要求）
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.MAGNETIC_STORM_LAMBDA.location())
+                            .pattern(" IC")
+                            .pattern("CBC")
+                            .pattern("CI ")
+                            .define('B',
+                                    SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                            .name(RecastingSlashBladeKeys.MAGNETIC_STORM.location())
+                                            .killCount(3000)
+                                            .refineCount(400)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.CHANNELING), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.IMPALING), 5))
+                                            .build()))
+                            .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
+                            .define('I', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.IONIZATION.getId(), 1))
+                            .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
+                            .save(consumer, Recasting.prefix("magnetic_storm_lambda_recipe"));
+
+        /**
+         * 磁暴[超限] 配方（t2）：从磁暴 Lambda 升级
+         * 要求：杀敌5000、锻造600、引雷1附魔、穿刺5附魔、忠诚3附魔、力量2附魔
+         * 材料：钻石庸魂立方体4个
+         * SE结晶：雷暴 2个
+         * C=钻石庸魂立方体, T=雷暴 SE结晶, B=基础刀（磁暴 Lambda，满足要求）
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.MAGNETIC_STORM_LIMITS.location())
+                            .pattern(" TC")
+                            .pattern("CBC")
+                            .pattern("CT ")
+                            .define('B',
+                                    SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                            .name(RecastingSlashBladeKeys.MAGNETIC_STORM_LAMBDA.location())
+                                            .killCount(5000)
+                                            .refineCount(600)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.CHANNELING), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.IMPALING), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.LOYALTY), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.POWER_ARROWS), 2))
+                                            .build()))
+                            .define('C', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                            .define('T', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.THUNDERSTORM.getId(), 1))
+                            .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                            .save(consumer, Recasting.prefix("magnetic_storm_limits_recipe"));
+
+        /**
+         * 磁暴[超限] Lambda 配方（t2）：从磁暴[超限] 升级
+         * 要求：杀敌10000、锻造1200、引雷1附魔、穿刺5附魔、忠诚3附魔、力量2附魔、耐久3附魔、经验修补1附魔、水下呼吸3附魔
+         * SE结晶：雷云 2个、雷暴 2个
+         * C=雷云 SE结晶, T=雷暴 SE结晶, B=基础刀（磁暴[超限]，满足要求）
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.MAGNETIC_STORM_LIMITS_LAMBDA.location())
+                            .pattern(" T ")
+                            .pattern("CBC")
+                            .pattern(" T ")
+                            .define('B',
+                                    SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                            .name(RecastingSlashBladeKeys.MAGNETIC_STORM_LIMITS.location())
+                                            .killCount(10000)
+                                            .refineCount(1200)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.CHANNELING), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.IMPALING), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.LOYALTY), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.POWER_ARROWS), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MENDING), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.RESPIRATION), 3))
+                                            .build()))
+                            .define('C', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.THUNDER_CLOUD.getId(), 1))
+                            .define('T', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.THUNDERSTORM.getId(), 1))
+                            .unlockedBy("has_thunder_cloud_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
+                            .save(consumer, Recasting.prefix("magnetic_storm_limits_lambda_recipe"));
     
         /**
          * FLUORESCENCE_1 配方：从青锋（木）升级

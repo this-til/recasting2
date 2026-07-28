@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-27T03:04:45.5859893	Recasting SlashBlade Definition Registry
+// 1.20.1	2026-07-28T09:05:49.7310286	Recasting SlashBlade Definition Registry
 54425988bdb3a6427dded3c85502e41a5a724eb4 data/recasting/slashblade/named_blades/slashblade/art_knife.json
 c15f9dc4e50a49b16aadc1ee87274e4d41624c15 data/recasting/slashblade/named_blades/slashblade/azure_vista.json
 9d010fc90602db48f564ad56939057fc01fac3a0 data/recasting/slashblade/named_blades/slashblade/azure_vista_lambda.json
@@ -44,6 +44,10 @@ aecffff7eda7371abfe6c32de6c1f2d424ccbcd8 data/recasting/slashblade/named_blades/
 d9c5e9c34f211c2037856116337304d285441090 data/recasting/slashblade/named_blades/slashblade/laser/laser_3_lambda.json
 c2481a0f6c5d538e534ce9b69f229b3f68b446ac data/recasting/slashblade/named_blades/slashblade/long_sky_sunset.json
 eefaa0f081dd0198d07d581282297690834773b9 data/recasting/slashblade/named_blades/slashblade/long_sky_sunset_lambda.json
+27fd45704f715c33b23e5163e022f159dc6f3608 data/recasting/slashblade/named_blades/slashblade/magnetic_storm.json
+16e03d786fb8f0869f8b3e27b65f91cc64ae4294 data/recasting/slashblade/named_blades/slashblade/magnetic_storm_lambda.json
+f8b25c71d90424306091b71864714dcfad2c8641 data/recasting/slashblade/named_blades/slashblade/magnetic_storm_limits.json
+e5842b3be1b24bc22f165e086e37fe404ca9a3f6 data/recasting/slashblade/named_blades/slashblade/magnetic_storm_limits_lambda.json
 8a097de6893601ddcbccb982d0be70f5035a5bd8 data/recasting/slashblade/named_blades/slashblade/obliterate.json
 5c338e5248ece7be90e19c147c6666a13f7db444 data/recasting/slashblade/named_blades/slashblade/obliterate_lambda.json
 7bc66231d426dabe322ba876d771ceabe732f401 data/recasting/slashblade/named_blades/slashblade/onikiri.json

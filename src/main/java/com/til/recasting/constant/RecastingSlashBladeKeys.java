@@ -90,6 +90,10 @@ public final class RecastingSlashBladeKeys {
     public static final ResourceKey<SlashBladeDefinition> LASER_2 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Laser.laser2);
     public static final ResourceKey<SlashBladeDefinition> LASER_3 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Laser.laser3);
     public static final ResourceKey<SlashBladeDefinition> LASER_3_LAMBDA = lambdaOf(LASER_3);
+    public static final ResourceKey<SlashBladeDefinition> MAGNETIC_STORM = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.magneticStorm);
+    public static final ResourceKey<SlashBladeDefinition> MAGNETIC_STORM_LAMBDA = lambdaOf(MAGNETIC_STORM);
+    public static final ResourceKey<SlashBladeDefinition> MAGNETIC_STORM_LIMITS = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.magneticStormLimits);
+    public static final ResourceKey<SlashBladeDefinition> MAGNETIC_STORM_LIMITS_LAMBDA = lambdaOf(MAGNETIC_STORM_LIMITS);
     public static final ResourceKey<SlashBladeDefinition> STAR_1 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Star.star1);
     public static final ResourceKey<SlashBladeDefinition> STAR_2 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Star.star2);
     public static final ResourceKey<SlashBladeDefinition> STAR_3 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Star.star3);

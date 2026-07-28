@@ -1,0 +1,32 @@
+{
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness",
+      "lvl": 3
+    }
+  ],
+  "name": "recasting:slashblade/magnetic_storm_limits_lambda",
+  "properties": {
+    "attack_base": 9.0,
+    "max_damage": 960,
+    "slash_art": "recasting:lightning_chain_3_lambda",
+    "special_effects": [
+      "recasting:static_afterglow_lambda"
+    ],
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "properties_extension": {
+    "attack_distance": 1.2,
+    "extended_special_levels": {
+      "recasting:static_afterglow_lambda": 1
+    }
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/magnetic_storm_limits.obj",
+    "summon_sword_color": -11675137,
+    "texture": "recasting:slashblade/magnetic_storm.png"
+  }
+}

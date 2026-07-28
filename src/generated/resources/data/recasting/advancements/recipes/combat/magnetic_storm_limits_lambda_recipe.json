@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "recasting:magnetic_storm_limits_lambda_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_thunder_cloud_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "recasting:se_crystal"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_thunder_cloud_crystal",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "recasting:magnetic_storm_limits_lambda_recipe"
+    ]
+  },
+  "sends_telemetry_event": false
+}

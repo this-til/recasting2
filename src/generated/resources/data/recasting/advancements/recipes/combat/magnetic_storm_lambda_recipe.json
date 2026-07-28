@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_gold_medium_soul_cube": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "recasting:gold_medium_soul_cube"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "recasting:magnetic_storm_lambda_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_gold_medium_soul_cube",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "recasting:magnetic_storm_lambda_recipe"
+    ]
+  },
+  "sends_telemetry_event": false
+}

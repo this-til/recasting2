@@ -118,6 +118,10 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashBladeKey(RecastingSlashBladeKeys.LASER_2), "激光剑[脉冲]", "Laser Blade II");
         translation(slashBladeKey(RecastingSlashBladeKeys.LASER_3), "激光剑[阻断]", "Laser Blade III");
         translation(slashBladeKey(RecastingSlashBladeKeys.LASER_3_LAMBDA), "^激光剑[阻断]", "Laser Blade III Lambda");
+        translation(slashBladeKey(RecastingSlashBladeKeys.MAGNETIC_STORM), "磁暴", "Magnetic Storm");
+        translation(slashBladeKey(RecastingSlashBladeKeys.MAGNETIC_STORM_LAMBDA), "^磁暴", "Magnetic Storm Lambda");
+        translation(slashBladeKey(RecastingSlashBladeKeys.MAGNETIC_STORM_LIMITS), "磁暴[超限]", "Magnetic Storm [Overlimit]");
+        translation(slashBladeKey(RecastingSlashBladeKeys.MAGNETIC_STORM_LIMITS_LAMBDA), "^磁暴[超限]", "Magnetic Storm [Overlimit] Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.TIL), "til的刀", "TIL");
         translation(slashBladeKey(RecastingSlashBladeKeys.TIL_LAMBDA), "^til的刀", "TIL Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.HTOD), "HTOD的刀", "HTOD");
@@ -413,11 +417,11 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(specialEffectDescKey(SpecialEffectsRegistry.COLOR_DYE), "挥刀时更改刀刃颜色为随机的。", "Changes blade color to random when slashing.");
         translation(specialEffectKey(SpecialEffectsRegistry.GOLDEN_HALBERD), "金戈", "Golden Halberd");
         translation(specialEffectDescKey(SpecialEffectsRegistry.GOLDEN_HALBERD), "斩击命中叠加层数，满层对周围造成额外伤害。", "Slash hits stack layers; at max, detonates bonus damage nearby.");
-        translation(specialEffectKey(SpecialEffectsRegistry.GOLDEN_HALBERD_LAMBDA), "金戈.λ", "Golden Halberd.λ");
+        translation(specialEffectKey(SpecialEffectsRegistry.GOLDEN_HALBERD_LAMBDA), "^金戈", "Golden Halberd Lambda");
         translation(specialEffectDescKey(SpecialEffectsRegistry.GOLDEN_HALBERD_LAMBDA), "斩击命中叠加层数，满层对周围造成额外伤害。", "Slash hits stack layers; at max, detonates bonus damage nearby.");
         translation(specialEffectKey(SpecialEffectsRegistry.TEA_AROMA), "茶韵", "Tea Aroma");
         translation(specialEffectDescKey(SpecialEffectsRegistry.TEA_AROMA), "命中储存部分伤害延迟释放，裂隙斩开后缓慢愈合；连续命中累加并刷新倒计时；剑气命中额外叠加层级。", "Hits store delayed damage released as a tearing rift that slowly seals; consecutive hits accumulate and reset the timer; drive hits add bonus stacks.");
-        translation(specialEffectKey(SpecialEffectsRegistry.TEA_AROMA_LAMBDA), "茶韵.λ", "Tea Aroma.λ");
+        translation(specialEffectKey(SpecialEffectsRegistry.TEA_AROMA_LAMBDA), "^茶韵", "Tea Aroma Lambda");
         translation(specialEffectDescKey(SpecialEffectsRegistry.TEA_AROMA_LAMBDA), "命中储存部分伤害延迟释放，裂隙斩开后缓慢愈合；连续命中累加并刷新倒计时；剑气命中额外叠加层级。", "Hits store delayed damage released as a tearing rift that slowly seals; consecutive hits accumulate and reset the timer; drive hits add bonus stacks.");
         translation(specialEffectKey(SpecialEffectsRegistry.PHOTON_SCAR), "光子灼痕", "Photon Scar");
         translation(specialEffectDescKey(SpecialEffectsRegistry.PHOTON_SCAR), "激光叠加灼烧，造成持续火焰伤害并提供全伤害增伤。灼烧状态下攻击叠加灼痕，满层释放短光束并清零。", "Laser stacks burn for fire DoT and all-damage amp. While burning, attacks stack scar; at max, fires a short beam and clears.");

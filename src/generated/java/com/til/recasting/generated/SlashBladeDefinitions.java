@@ -1320,6 +1320,86 @@ public final class SlashBladeDefinitions {
 
         // endregion
 
+        // region ========== Magnetic Storm SlashBlades ==========
+
+        // t3 磁暴
+        register(bootstrap, RecastingSlashBladeKeys.MAGNETIC_STORM)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.magneticStorm$obj)
+                                .textureName(R.Slashblade.magneticStorm$png)
+                                .effectColor(new Color(0x4DD9FF).getRGB())
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(6f)
+                                .maxDamage(10 * 40)
+                                .slashArtsType(SlashArtsRegistry.LIGHTNING_CHAIN_1.getId())
+                                .defaultSwordType(List.of(SwordType.BEWITCHED))
+                )
+                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+                .build();
+
+        // t3 磁暴 Lambda
+        register(bootstrap, RecastingSlashBladeKeys.MAGNETIC_STORM_LAMBDA)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.magneticStorm$obj)
+                                .textureName(R.Slashblade.magneticStorm$png)
+                                .effectColor(new Color(0x4DD9FF).getRGB())
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(7f)
+                                .maxDamage(15 * 40)
+                                .slashArtsType(SlashArtsRegistry.LIGHTNING_CHAIN_2.getId())
+                                .defaultSwordType(List.of(SwordType.BEWITCHED))
+                )
+                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 2))
+                .build();
+
+        // t2 磁暴[超限]
+        register(bootstrap, RecastingSlashBladeKeys.MAGNETIC_STORM_LIMITS)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.magneticStormLimits$obj)
+                                .textureName(R.Slashblade.magneticStorm$png)
+                                .effectColor(new Color(0x4DD9FF).getRGB())
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(8f)
+                                .maxDamage(20 * 40)
+                                .slashArtsType(SlashArtsRegistry.LIGHTNING_CHAIN_3.getId())
+                                .defaultSwordType(List.of(SwordType.BEWITCHED))
+                )
+                .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.2f))
+                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 3))
+                .addSpecialEffects(SpecialEffectsRegistry.STATIC_AFTERGLOW, 1)
+                .build();
+
+        // t2 磁暴[超限] Lambda
+        register(bootstrap, RecastingSlashBladeKeys.MAGNETIC_STORM_LIMITS_LAMBDA)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.magneticStormLimits$obj)
+                                .textureName(R.Slashblade.magneticStorm$png)
+                                .effectColor(new Color(0x4DD9FF).getRGB())
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(9f)
+                                .maxDamage(24 * 40)
+                                .slashArtsType(SlashArtsRegistry.LIGHTNING_CHAIN_3_LAMBDA.getId())
+                                .defaultSwordType(List.of(SwordType.BEWITCHED))
+                )
+                .propertiesDefinitionExtension(new PropertiesDefinitionExtension(1.2f))
+                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 3))
+                .addSpecialEffects(SpecialEffectsRegistry.STATIC_AFTERGLOW_LAMBDA, 1)
+                .build();
+
+        // endregion
+
         //region ========== Star SlashBlades ==========
 
         // t3
