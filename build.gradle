@@ -20,8 +20,12 @@ apply plugin: 'org.spongepowered.mixin'
 group = mod_group_id
 version = mod_version
 
+def modVersionBase = mod_version.replaceFirst(/-SNAPSHOT$/, '')
+def snapshotSuffix = mod_version.endsWith('-SNAPSHOT') ? '-SNAPSHOT' : ''
+
 base {
-    archivesName = mod_id
+    // 输出：recasting2-1.20.1-{version}[-SNAPSHOT].jar
+    archivesName = "recasting2-${minecraft_version}"
 }
 
 java {
@@ -368,7 +372,8 @@ tasks.register('compressed512Jar') {
     dependsOn 'reobfJar'
 
     def sourceJarProvider = tasks.named('jar', Jar).flatMap { it.archiveFile }
-    def outputJarProvider = layout.buildDirectory.file("libs/${base.archivesName.get()}-${project.version}-compressed-512.jar")
+    // 输出：recasting2-1.20.1-{version}-compressed-512[-SNAPSHOT].jar
+    def outputJarProvider = layout.buildDirectory.file("libs/${base.archivesName.get()}-${modVersionBase}-compressed-512${snapshotSuffix}.jar")
 
     inputs.file(sourceJarProvider)
     outputs.file(outputJarProvider)
