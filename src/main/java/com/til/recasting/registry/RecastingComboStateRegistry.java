@@ -1,26 +1,8 @@
 package com.til.recasting.registry;
 
 import com.til.recasting.Recasting;
-import mods.flammpfeil.slashblade.SlashBlade;
-import mods.flammpfeil.slashblade.ability.StunManager;
-import mods.flammpfeil.slashblade.event.client.UserPoseOverrider;
-import mods.flammpfeil.slashblade.event.handler.FallHandler;
-import mods.flammpfeil.slashblade.init.DefaultResources;
-import mods.flammpfeil.slashblade.registry.ComboStateRegistry;
 import mods.flammpfeil.slashblade.registry.combo.ComboState;
-import mods.flammpfeil.slashblade.slasharts.JudgementCut;
-import mods.flammpfeil.slashblade.slasharts.SlashArts;
-import mods.flammpfeil.slashblade.util.AdvancementHelper;
-import mods.flammpfeil.slashblade.util.AttackManager;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.RegistryBuilder;
-import net.minecraftforge.registries.RegistryObject;
-
-import java.util.Locale;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * Recasting Combo State 注册表
@@ -51,19 +33,10 @@ import java.util.function.Supplier;
 public class RecastingComboStateRegistry {
 
     /**
-     * 创建 DeferredRegister，用于注册 Combo States
+     * 向 SlashBlade 的 ComboState 注册表追加本模组条目
      */
     public static final DeferredRegister<ComboState> COMBO_STATE = DeferredRegister.create(
             ComboState.REGISTRY_KEY,
             Recasting.MODID
     );
-
-    /**
-     * 创建注册表实例
-     */
-    public static final Supplier<IForgeRegistry<ComboState>> REGISTRY = COMBO_STATE.makeRegistry(RegistryBuilder::new);
-
-
-
 }
-

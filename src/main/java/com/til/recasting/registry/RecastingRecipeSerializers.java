@@ -19,7 +19,7 @@ public class RecastingRecipeSerializers {
     /**
      * 配方序列化器的 DeferredRegister
      */
-    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = 
+    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS =
             DeferredRegister.create(Registries.RECIPE_SERIALIZER, Recasting.MODID);
 
     /**
@@ -42,7 +42,7 @@ public class RecastingRecipeSerializers {
 
     /**
      * 初始化注册
-     * 
+     *
      * @param modEventBus 模组事件总线
      */
     public static void register(IEventBus modEventBus) {
