@@ -437,9 +437,9 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(specialEffectDescKey(SpecialEffectsRegistry.ENLARGE), "挥刀时大幅增加攻击范围。移植此 SE 到其他刀上会发生不好的事。", "Greatly increases attack range when slashing. Transplanting this SE onto other blades will lead to misfortune.");
         translation(specialEffectKey(SpecialEffectsRegistry.STATIC_AFTERGLOW), "静电余韵", "Static Afterglow");
 
-        translation(specialEffectDescKey(SpecialEffectsRegistry.STATIC_AFTERGLOW), "释放 SA 后的一段时间内，造成伤害时附带雷电附加伤害；造成雷电伤害时有概率触发闪电链。", "For a period after releasing SA, dealing damage adds bonus lightning damage; dealing lightning damage may trigger a lightning chain.");
+        translation(specialEffectDescKey(SpecialEffectsRegistry.STATIC_AFTERGLOW), "造成伤害时附带雷电附加伤害；造成雷电伤害时有概率触发闪电链，传导无限制。", "Dealing damage adds bonus lightning damage; dealing lightning damage may trigger an unrestricted lightning chain.");
         translation(specialEffectKey(SpecialEffectsRegistry.STATIC_AFTERGLOW_LAMBDA), "^静电余韵", "^Static Afterglow");
-        translation(specialEffectDescKey(SpecialEffectsRegistry.STATIC_AFTERGLOW_LAMBDA), "释放 SA 后的一段时间内，造成伤害时附带更强的雷电附加伤害；造成雷电伤害时有更高概率触发闪电链。", "For a longer period after releasing SA, dealing damage adds stronger bonus lightning damage; dealing lightning damage has a higher chance to trigger a lightning chain.");
+        translation(specialEffectDescKey(SpecialEffectsRegistry.STATIC_AFTERGLOW_LAMBDA), "造成伤害时附带更强的雷电附加伤害；造成雷电伤害时有更高概率触发闪电链，传导无限制。", "Dealing damage adds stronger bonus lightning damage; dealing lightning damage has a higher chance to trigger an unrestricted lightning chain.");
         translation(specialEffectKey(SpecialEffectsRegistry.TREASURE_BARRAGE), "宝具连发", "Treasure Barrage");
         translation(specialEffectDescKey(SpecialEffectsRegistry.TREASURE_BARRAGE), "释放 SA 后再次触发一次，短时间内不会重复发动。", "Recasts SA once after release, with a short internal cooldown.");
         translation(specialEffectKey(SpecialEffectsRegistry.TREASURE_BARRAGE_LAMBDA), "^宝具连发", "^Treasure Barrage");
