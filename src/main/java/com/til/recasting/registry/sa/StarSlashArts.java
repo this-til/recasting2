@@ -29,7 +29,7 @@ public class StarSlashArts extends ExtendedSlashArts {
 
     int attackNumber = 6;
     float attack = 0.25f;
-    float judgementCutAttack = 0.5f;
+    float judgementCutAttack = 0.12f;
     float range = 12;
     float zoneNumber = 0;
     int zonerRange = 12;
@@ -136,6 +136,11 @@ public class StarSlashArts extends ExtendedSlashArts {
                                     net.minecraft.sounds.SoundSource.PLAYERS, 0.2F, 1.45F);
                         }
                     }
+
+                    @Override
+                    public void onAttackTime() {
+                    }
+
                 };
 
                 starJC.setPos(zonePos.x, zonePos.y, zonePos.z);

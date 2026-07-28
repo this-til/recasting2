@@ -30,6 +30,11 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
     protected static final EntityDataAccessor<Boolean> REPEATED_ATTACK = SynchedEntityData.defineId(ContinuousDamageEntity.class, EntityDataSerializers.BOOLEAN);
 
     /***
+     * 是否只触发一次攻击判定
+     */
+    protected static final EntityDataAccessor<Boolean> SINGLE_ATTACK = SynchedEntityData.defineId(ContinuousDamageEntity.class, EntityDataSerializers.BOOLEAN);
+
+    /***
      * 参数单位范围，索敌范围为 SIZE * PARAMETER_RANGE
      */
     protected static final EntityDataAccessor<Float> PARAMETER_RANGE = SynchedEntityData.defineId(ContinuousDamageEntity.class, EntityDataSerializers.FLOAT);
@@ -39,6 +44,9 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
      */
     @Nullable
     protected List<Entity> alreadyHits;
+
+    /** 单次攻击模式下是否已触发过 onAttackTime */
+    protected boolean singleAttackTriggered;
 
     public final CallbackPoint<IAttackAction> attackActionCallbackPoint = new CallbackPoint<>();
     public final CallbackPoint<IAttackEnd> attackEndCallbackPoint = new CallbackPoint<>();
@@ -56,6 +64,7 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
         super.defineSynchedData();
         getEntityData().define(ATTACK_INTERVAL, 2);
         getEntityData().define(REPEATED_ATTACK, false);
+        getEntityData().define(SINGLE_ATTACK, false);
         getEntityData().define(PARAMETER_RANGE, 1.0f);
     }
 
@@ -65,6 +74,12 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
         super.tick();
         if (!level().isClientSide()) {
             if (tickCount % getAttackInterval() == 0) {
+                if (isSingleAttack()) {
+                    if (singleAttackTriggered) {
+                        return;
+                    }
+                    singleAttackTriggered = true;
+                }
                 onAttackTime();
             }
         }
@@ -131,6 +146,14 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
 
     public void setRepeatedAttack(boolean repeatedAttack) {
         this.entityData.set(REPEATED_ATTACK, repeatedAttack);
+    }
+
+    public boolean isSingleAttack() {
+        return this.entityData.get(SINGLE_ATTACK);
+    }
+
+    public void setSingleAttack(boolean singleAttack) {
+        this.entityData.set(SINGLE_ATTACK, singleAttack);
     }
 
     public float getParameterRange() {
