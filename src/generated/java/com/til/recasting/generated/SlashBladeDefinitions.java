@@ -567,6 +567,42 @@ public final class SlashBladeDefinitions {
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
                 .build();
 
+        // 苍景
+        register(bootstrap, RecastingSlashBladeKeys.AZURE_VISTA)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.azureVista$obj)
+                                .textureName(R.Slashblade.azureVista$png)
+                                .effectColor(new Color(0x4C8A8D).getRGB())
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(6f)
+                                .maxDamage(24 * 40)
+                                .slashArtsType(SlashArtsRegistry.PHANTOM_EXPLOSION.getId())
+                                .defaultSwordType(List.of(SwordType.BEWITCHED))
+                )
+                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+                .build();
+
+        // 苍景 Lambda
+        register(bootstrap, RecastingSlashBladeKeys.AZURE_VISTA_LAMBDA)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.azureVista$obj)
+                                .textureName(R.Slashblade.azureVista$png)
+                                .effectColor(new Color(0x4C8A8D).getRGB())
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(7f)
+                                .maxDamage(36 * 40)
+                                .slashArtsType(SlashArtsRegistry.PHANTOM_EXPLOSION_LAMBDA.getId())
+                                .defaultSwordType(List.of(SwordType.BEWITCHED))
+                )
+                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+                .build();
+
 
         //endregion
 
@@ -751,7 +787,7 @@ public final class SlashBladeDefinitions {
                                 .baseAttackModifier(6f)
                                 .maxDamage(24 * 40)
                                 .defaultSwordType(List.of(SwordType.BEWITCHED))
-                                .slashArtsType(SlashArtsRegistry.PHANTOM_EXPLOSION.getId())
+                                .slashArtsType(SlashArtsRegistry.JADE_DOMAIN.getId())
                 )
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
                 .build();
@@ -768,7 +804,7 @@ public final class SlashBladeDefinitions {
                                 .baseAttackModifier(6f)
                                 .maxDamage(32 * 40)
                                 .defaultSwordType(List.of(SwordType.BEWITCHED))
-                                .slashArtsType(SlashArtsRegistry.PHANTOM_EXPLOSION_LAMBDA.getId())
+                                .slashArtsType(SlashArtsRegistry.JADE_DOMAIN_LAMBDA.getId())
                 )
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
                 .build();
@@ -953,42 +989,6 @@ public final class SlashBladeDefinitions {
                                 .baseAttackModifier(7f)
                                 .maxDamage(36 * 40)
                                 .slashArtsType(SlashArtsRegistry.SOUL_SEVER_LAMBDA.getId())
-                                .defaultSwordType(List.of(SwordType.BEWITCHED))
-                )
-                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-                .build();
-
-        // 苍景
-        register(bootstrap, RecastingSlashBladeKeys.AZURE_VISTA)
-                .renderDefinition(
-                        RenderDefinition.Builder.newInstance()
-                                .modelName(R.Slashblade.azureVista$obj)
-                                .textureName(R.Slashblade.azureVista$png)
-                                .effectColor(new Color(0x4C8A8D).getRGB())
-                )
-                .propertiesDefinition(
-                        PropertiesDefinition.Builder.newInstance()
-                                .baseAttackModifier(6f)
-                                .maxDamage(24 * 40)
-                                .slashArtsType(SlashArtsRegistry.JADE_DOMAIN.getId())
-                                .defaultSwordType(List.of(SwordType.BEWITCHED))
-                )
-                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-                .build();
-
-        // 苍景 Lambda
-        register(bootstrap, RecastingSlashBladeKeys.AZURE_VISTA_LAMBDA)
-                .renderDefinition(
-                        RenderDefinition.Builder.newInstance()
-                                .modelName(R.Slashblade.azureVista$obj)
-                                .textureName(R.Slashblade.azureVista$png)
-                                .effectColor(new Color(0x4C8A8D).getRGB())
-                )
-                .propertiesDefinition(
-                        PropertiesDefinition.Builder.newInstance()
-                                .baseAttackModifier(7f)
-                                .maxDamage(36 * 40)
-                                .slashArtsType(SlashArtsRegistry.JADE_DOMAIN_LAMBDA.getId())
                                 .defaultSwordType(List.of(SwordType.BEWITCHED))
                 )
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))

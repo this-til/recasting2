@@ -24,13 +24,13 @@
             "lvl": 3
           }
         ],
-        "kill": 5000,
-        "name": "recasting:slashblade/wind_cloud_lambda",
-        "refine": 600
+        "kill": 1500,
+        "name": "recasting:slashblade/dragon_scale_lambda",
+        "refine": 300
       }
     },
     "C": {
-      "item": "recasting:diamond_medium_soul_cube"
+      "item": "recasting:emerald_medium_soul_cube"
     },
     "D": {
       "type": "recasting:se_crystal",

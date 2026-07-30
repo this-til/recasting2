@@ -1041,11 +1041,11 @@ public class SlashBladeRecipes extends RecipeProvider {
                             .save(consumer, Recasting.prefix("dragon_lambda_recipe"));
     
         /**
-         * 风云配方：从龙鳞 Lambda 升级
+         * 风云配方：从苍景 Lambda 升级
          * 要求：杀敌1500、锻造400、力量5附魔、冲击2附魔、无限1附魔、穿透3附魔
          * 材料：金黄色的庸魂立方体4个
          * SE结晶：旋风l1 4个
-         * C=金黄色的庸魂立方体, B=基础刀（龙鳞 Lambda，满足要求）, W=旋风l1 SE结晶
+         * C=金黄色的庸魂立方体, B=基础刀（苍景 Lambda，满足要求）, W=旋风l1 SE结晶
          */
         
     
@@ -1055,7 +1055,7 @@ public class SlashBladeRecipes extends RecipeProvider {
                             .pattern("CWC")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(RecastingSlashBladeKeys.DRAGON_SCALE_LAMBDA.location())
+                                            .name(RecastingSlashBladeKeys.AZURE_VISTA_LAMBDA.location())
                                             .killCount(1500)
                                             .refineCount(400)
                                             .addEnchantment(new EnchantmentDefinition(
@@ -1110,11 +1110,11 @@ public class SlashBladeRecipes extends RecipeProvider {
                             .save(consumer, Recasting.prefix("wind_cloud_lambda_recipe"));
 
         /**
-         * 苍景配方（t2）：从风云 Lambda 升级
-         * 要求：杀敌5000、锻造600、力量5附魔、冲击2附魔、无限1附魔、穿透3附魔
-         * 材料：钻石庸魂立方体4个
+         * 苍景配方（t3）：从龙鳞 Lambda 升级
+         * 要求：杀敌1500、锻造300、力量5附魔、冲击2附魔、无限1附魔、穿透3附魔
+         * 材料：翠绿的庸魂立方体4个
          * SE结晶：剑气释放 2个
-         * C=钻石庸魂立方体, D=剑气释放 SE结晶, B=基础刀（风云 Lambda，满足要求）
+         * C=翠绿的庸魂立方体, D=剑气释放 SE结晶, B=基础刀（龙鳞 Lambda，满足要求）
          */
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.AZURE_VISTA.location())
                             .pattern(" DC")
@@ -1122,9 +1122,9 @@ public class SlashBladeRecipes extends RecipeProvider {
                             .pattern("CD ")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(RecastingSlashBladeKeys.WIND_CLOUD_LAMBDA.location())
-                                            .killCount(5000)
-                                            .refineCount(600)
+                                            .name(RecastingSlashBladeKeys.DRAGON_SCALE_LAMBDA.location())
+                                            .killCount(1500)
+                                            .refineCount(300)
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.POWER_ARROWS), 5))
                                             .addEnchantment(new EnchantmentDefinition(
@@ -1134,17 +1134,17 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PIERCING), 3))
                                             .build()))
-                            .define('C', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.EMERALD_MEDIUM_SOUL_CUBE.get())
                             .define('D', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.DRIVE_RELEASE.getId(), 1))
-                            .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_emerald_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.EMERALD_MEDIUM_SOUL_CUBE.get()))
                             .save(consumer, Recasting.prefix("azure_vista_recipe"));
 
         /**
-         * 苍景 Lambda 配方（t2）：从苍景升级
-         * 要求：杀敌10000、锻造1200、力量5附魔、冲击2附魔、无限1附魔、穿透4附魔、抢夺3附魔、节肢杀手2附魔、穿刺1附魔
-         * 材料：赤红庸魂立方体4个
+         * 苍景 Lambda 配方（t3）：从苍景升级
+         * 要求：杀敌3000、锻造600、力量5附魔、冲击2附魔、无限1附魔、穿透4附魔、抢夺3附魔、节肢杀手2附魔、穿刺1附魔
+         * 材料：钻石庸魂立方体4个
          * SE结晶：生长 2个
-         * C=赤红庸魂立方体, G=生长 SE结晶, B=基础刀（苍景，满足要求）
+         * C=钻石庸魂立方体, G=生长 SE结晶, B=基础刀（苍景，满足要求）
          */
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.AZURE_VISTA_LAMBDA.location())
                             .pattern(" GC")
@@ -1153,8 +1153,8 @@ public class SlashBladeRecipes extends RecipeProvider {
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
                                             .name(RecastingSlashBladeKeys.AZURE_VISTA.location())
-                                            .killCount(10000)
-                                            .refineCount(1200)
+                                            .killCount(3000)
+                                            .refineCount(600)
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.POWER_ARROWS), 5))
                                             .addEnchantment(new EnchantmentDefinition(
@@ -1170,9 +1170,9 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.IMPALING), 1))
                                             .build()))
-                            .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
                             .define('G', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.GROWTH.getId(), 1))
-                            .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
                             .save(consumer, Recasting.prefix("azure_vista_lambda_recipe"));
     
         /**

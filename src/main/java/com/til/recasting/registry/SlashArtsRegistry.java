@@ -145,7 +145,7 @@ public class SlashArtsRegistry {
 
     // 幻影爆破
     public static final RegistryObject<ExtendedSlashArts> PHANTOM_EXPLOSION = registerExtendedSA("phantom_explosion", PhantomExplosionSlashArts::new);
-    public static final RegistryObject<ExtendedSlashArts> PHANTOM_EXPLOSION_LAMBDA = registerExtendedSA("phantom_explosion_lambda", () -> new PhantomExplosionSlashArts().setGroupCount(5));
+    public static final RegistryObject<ExtendedSlashArts> PHANTOM_EXPLOSION_LAMBDA = registerExtendedSA("phantom_explosion_lambda", () -> new PhantomExplosionSlashArts().setGroupCount(3));
 
     // 无限剑制
     public static final RegistryObject<ExtendedSlashArts> UNLIMITED_BLADE_WORKS = registerExtendedSA("unlimited_blade_works", UnlimitedBladeWorksSlashArts::new);
@@ -226,7 +226,7 @@ public class SlashArtsRegistry {
             () -> new LongSkySunsetSlashArts().setSwordCount(16)
     );
 
-    // 青界
+    // 云界
     public static final RegistryObject<ExtendedSlashArts> JADE_DOMAIN = registerExtendedSA(
             "jade_domain",
             JadeDomainSlashArts::new

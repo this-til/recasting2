@@ -31,11 +31,11 @@ import java.util.List;
 public class PhantomExplosionSlashArts extends ExtendedSlashArts {
 
     float attack = 0.02f;
-    int minCount = 12;
-    int maxCount = 24;
+    int minCount = 7;
+    int maxCount = 14;
     float minTiltAngle = 0f;
     float maxTiltAngle = 30f;
-    int groupCount = 3;
+    int groupCount = 2;
     int groupInterval = 5;
 
     @Override

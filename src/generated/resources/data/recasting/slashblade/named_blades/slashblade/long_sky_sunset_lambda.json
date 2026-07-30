@@ -19,7 +19,7 @@
   },
   "properties_extension": {
     "extended_special_levels": {
-      "recasting:long_sky_sunset": 5
+      "recasting:long_sky_sunset": 1
     }
   },
   "render": {

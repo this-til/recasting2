@@ -34,7 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
 /**
- * 青界 Slash Arts
+ * 云界 Slash Arts
  * 释放时连续触发刃解，并在持续时间内每秒随机选择范围目标再次触发刃解。
  */
 @Setter

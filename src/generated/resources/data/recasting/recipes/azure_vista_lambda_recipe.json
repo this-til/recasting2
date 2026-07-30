@@ -35,13 +35,13 @@
             "id": "minecraft:impaling"
           }
         ],
-        "kill": 10000,
+        "kill": 3000,
         "name": "recasting:slashblade/azure_vista",
-        "refine": 1200
+        "refine": 600
       }
     },
     "C": {
-      "item": "recasting:redstone_medium_soul_cube"
+      "item": "recasting:diamond_medium_soul_cube"
     },
     "G": {
       "type": "recasting:se_crystal",

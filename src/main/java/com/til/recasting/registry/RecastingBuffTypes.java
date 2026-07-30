@@ -201,7 +201,7 @@ public class RecastingBuffTypes {
     );
 
     /**
-     * 青界领域
+     * 云界领域
      * - 每 20 tick 衰减 1 层；层数表示领域剩余秒数
      */
     public static final RegistryObject<BuffType> JADE_DOMAIN = BUFF_TYPES.register("jade_domain",

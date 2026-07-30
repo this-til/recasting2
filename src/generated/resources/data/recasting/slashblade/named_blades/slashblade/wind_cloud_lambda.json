@@ -8,7 +8,7 @@
   "properties": {
     "attack_base": 6.0,
     "max_damage": 1280,
-    "slash_art": "recasting:phantom_explosion_lambda",
+    "slash_art": "recasting:jade_domain_lambda",
     "sword_type": [
       "bewitched"
     ]
