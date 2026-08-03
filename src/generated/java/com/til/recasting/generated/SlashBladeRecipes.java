@@ -1421,7 +1421,45 @@ public class SlashBladeRecipes extends RecipeProvider {
                             .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 1))
                             .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
                             .save(consumer, Recasting.prefix("soulblade_recipe"));
-    
+
+        /**
+         * SOULBLADE Lambda 配方：从 SOULBLADE 升级
+         * 要求：杀敌8000、荣耀400000、火焰附加2附魔、火矢1附魔、火焰保护4附魔、荆棘3附魔、引雷1附魔、锋利5附魔、耐久3附魔
+         * SE结晶：回溯l1 2个
+         * 材料：赤红庸魂立方体6个
+         * C=赤红庸魂立方体, R=回溯l1 SE结晶, B=基础刀（SOULBLADE，满足要求）
+         */
+
+
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.SOULBLADE_LAMBDA.location())
+                            .pattern("CRC")
+                            .pattern("CBC")
+                            .pattern("CRC")
+                            .define('B',
+                                    SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                            .name(RecastingSlashBladeKeys.SOULBLADE.location())
+                                            .killCount(8000)
+                                            .proudSoul(400000)
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_ASPECT), 2))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FLAMING_ARROWS), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_PROTECTION), 4))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.THORNS), 3))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.CHANNELING), 1))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                            .addEnchantment(new EnchantmentDefinition(
+                                                    ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING), 3))
+                                            .build()))
+                            .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                            .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 1))
+                            .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                            .save(consumer, Recasting.prefix("soulblade_lambda_recipe"));
+
         /**
          * STAR_1 配方：从黑刃升级
          * 要求：杀敌1000、锻造200、弹射物保护4附魔

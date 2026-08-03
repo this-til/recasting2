@@ -736,6 +736,24 @@ public final class SlashBladeDefinitions {
                 .addSpecialEffects(SpecialEffectsRegistry.FLAME_FOAM)
                 .build();
 
+        register(bootstrap, RecastingSlashBladeKeys.SOULBLADE_LAMBDA)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.soulblade$obj)
+                                .textureName(R.Slashblade.soulblade$png)
+                                .effectColor(new Color(150, 100, 200).getRGB())
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(6f)
+                                .maxDamage(24 * 40)
+                                .defaultSwordType(List.of(SwordType.BEWITCHED))
+                                .slashArtsType(SlashArtsRegistry.INFERNO_LAMBDA.getId())
+                )
+                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+                .addSpecialEffects(SpecialEffectsRegistry.FLAME_FOAM_LAMBDA)
+                .build();
+
         // 太极
         register(bootstrap, RecastingSlashBladeKeys.SUPREME_POLE)
                 .renderDefinition(

@@ -199,6 +199,7 @@ public final class RecipeIdCatalog {
                 Recasting.prefix("silver_wing_lambda_recipe"),
                 Recasting.prefix("silver_wing_recipe"),
                 Recasting.prefix("sin_flame_recipe"),
+                Recasting.prefix("soulblade_lambda_recipe"),
                 Recasting.prefix("soulblade_recipe"),
                 Recasting.prefix("spiral_se_crystal_recipe"),
                 Recasting.prefix("spiral_upgrade_recipes_0"),

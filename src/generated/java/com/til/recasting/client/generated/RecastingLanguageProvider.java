@@ -86,6 +86,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashBladeKey(RecastingSlashBladeKeys.GREEN_BLADE_IRON), "青锋（铁）", "Green Blade (Iron)");
         translation(slashBladeKey(RecastingSlashBladeKeys.GREEN_BLADE_WOOD), "青锋（木）", "Green Blade (Wood)");
         translation(slashBladeKey(RecastingSlashBladeKeys.SOULBLADE), "魂刃", "Soulblade");
+        translation(slashBladeKey(RecastingSlashBladeKeys.SOULBLADE_LAMBDA), "^魂刃", "Soulblade Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.SUPREME_POLE), "太极", "Taiji");
         translation(slashBladeKey(RecastingSlashBladeKeys.SUPREME_POLE_LAMBDA), "^太极", "Taiji Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.WIND_CLOUD), "风云", "Wind Cloud");
@@ -412,7 +413,9 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(specialEffectKey(SpecialEffectsRegistry.RESOLVE_LAMBDA), "^解算", "Resolve Lambda");
         translation(specialEffectDescKey(SpecialEffectsRegistry.RESOLVE_LAMBDA), "攻击带有演算层数的目标时消耗一层演算，造成更高的附加伤害。", "When attacking a target with calculus stacks, consumes one stack, deals greater bonus damage.");
         translation(specialEffectKey(SpecialEffectsRegistry.FLAME_FOAM), "燃沫", "Flame Foam");
-        translation(specialEffectDescKey(SpecialEffectsRegistry.FLAME_FOAM), "攻击带有灵魂燃烧的目标时，额外造成基于其当前生命值的伤害，并有概率叠加灵魂燃烧。", "When attacking a target with soul burn, deals extra damage based on their current health, with a chance to add soul burn.");
+        translation(specialEffectDescKey(SpecialEffectsRegistry.FLAME_FOAM), "攻击带有灵魂燃烧的目标时，直接削减其当前生命值，并有概率叠加灵魂燃烧。", "When attacking a target with soul burn, directly reduces their current health, with a chance to add soul burn.");
+        translation(specialEffectKey(SpecialEffectsRegistry.FLAME_FOAM_LAMBDA), "^燃沫", "Flame Foam Lambda");
+        translation(specialEffectDescKey(SpecialEffectsRegistry.FLAME_FOAM_LAMBDA), "攻击带有灵魂燃烧的目标时，直接削减更多当前生命值，并有更高概率叠加灵魂燃烧。", "When attacking a target with soul burn, directly reduces more of their current health, with a higher chance to add soul burn.");
         translation(specialEffectKey(SpecialEffectsRegistry.COLOR_DYE), "染色", "Color Dye");
         translation(specialEffectDescKey(SpecialEffectsRegistry.COLOR_DYE), "挥刀时更改刀刃颜色为随机的。", "Changes blade color to random when slashing.");
         translation(specialEffectKey(SpecialEffectsRegistry.GOLDEN_HALBERD), "金戈", "Golden Halberd");

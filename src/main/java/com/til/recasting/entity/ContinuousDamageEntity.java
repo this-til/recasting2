@@ -105,7 +105,7 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
                         getSize() * getParameterRange(),
                         new ArrayList<>(attackTypeModelList),
                         alreadyHits,
-                        null
+                        e -> attackActionCallbackPoint.call(r -> r.attack(e))
                 )
                 .stream()
                 .peek(
@@ -113,10 +113,8 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
                             if (!isRepeatedAttack()) {
                                 alreadyHits.add(e);
                             }
-                            attackActionCallbackPoint.call(r -> r.attack(e));
                         }
                 )
-
                 .toList();
 
         if (!list.isEmpty()) {
@@ -165,7 +163,7 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
     }
 
     /***
-     * 攻击到实体时
+     * 命中实体、造成伤害之前
      */
     public interface IAttackAction {
         void attack(LivingEntity hitEntity);

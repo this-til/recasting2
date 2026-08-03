@@ -4,6 +4,7 @@ package com.til.recasting.registry.se;
 import com.til.recasting.constant.RecastingSlashBladeKeys;
 import com.til.recasting.event.DoSlashExtendEvent;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
+import net.minecraft.Util;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -22,7 +23,8 @@ public class EnlargeSpecialEffect extends ExtendedSpecialEffect {
         }
 
         ISlashBladeState state = event.getSlashBladeState();
-        String allowedKey = RecastingSlashBladeKeys.DHARMA_STICK_LAMBDA.location().toLanguageKey("item");
+        // 与刀 state / 语言条目一致：makeDescriptionId 会把 path 中的 / 换成 .
+        String allowedKey = Util.makeDescriptionId("item", RecastingSlashBladeKeys.DHARMA_STICK_LAMBDA.location());
         if (!allowedKey.equals(state.getTranslationKey())) {
             if (event.getUser().level().isClientSide()) {
                 return;

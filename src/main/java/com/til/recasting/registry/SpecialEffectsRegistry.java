@@ -91,8 +91,13 @@ public class SpecialEffectsRegistry {
     // 解算 - SE攻击带有演算buff的目标时消耗一层演算，造附加伤害
     public static final RegistryObject<SpecialEffect> RESOLVE = registerExtendedSE("resolve", () -> new ResolveSpecialEffect().setMaxLevel(1).setSpecial(true));
     public static final RegistryObject<SpecialEffect> RESOLVE_LAMBDA = registerExtendedSE("resolve_lambda", () -> new ResolveSpecialEffect().setDamageRatio(1.5f).setMaxLevel(1).setSpecial(true));
-    // 燃沫 - 攻击处于灵魂燃烧的目标时，使其额外受到当前生命比值的额外伤害，并有概率增加一层灵魂燃烧
+    // 燃沫 - 攻击处于灵魂燃烧的目标时，直接削减其当前生命百分比血量，并有概率增加一层灵魂燃烧
     public static final RegistryObject<SpecialEffect> FLAME_FOAM = registerExtendedSE("flame_foam", () -> new FlameFoamSpecialEffect().setMaxLevel(1).setSpecial(true));
+    public static final RegistryObject<SpecialEffect> FLAME_FOAM_LAMBDA = registerExtendedSE("flame_foam_lambda", () -> new FlameFoamSpecialEffect()
+            .setHealthDamageRatio(0.015f)
+            .setAddSoulBurnProbability(0.2f)
+            .setMaxLevel(1)
+            .setSpecial(true));
 
     // 金戈 - 斩击命中叠加层数，满层引爆小范围额外伤害
     public static final RegistryObject<SpecialEffect> GOLDEN_HALBERD = registerExtendedSE("golden_halberd", () -> new GoldenHalberdSpecialEffect().setMaxStacks(12).setBurstRatio(1.5f).setStacksPerHit(1).setMaxLevel(1).setSpecial(true));

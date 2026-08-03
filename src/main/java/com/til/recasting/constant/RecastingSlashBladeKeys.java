@@ -54,6 +54,7 @@ public final class RecastingSlashBladeKeys {
     public static final ResourceKey<SlashBladeDefinition> DRAGON = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.dragon);
     public static final ResourceKey<SlashBladeDefinition> DRAGON_LAMBDA = lambdaOf(DRAGON);
     public static final ResourceKey<SlashBladeDefinition> SOULBLADE = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.soulblade);
+    public static final ResourceKey<SlashBladeDefinition> SOULBLADE_LAMBDA = lambdaOf(SOULBLADE);
     public static final ResourceKey<SlashBladeDefinition> SUPREME_POLE = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.supremePole);
     public static final ResourceKey<SlashBladeDefinition> SUPREME_POLE_LAMBDA = lambdaOf(SUPREME_POLE);
     public static final ResourceKey<SlashBladeDefinition> WIND_CLOUD = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.windCloud);
