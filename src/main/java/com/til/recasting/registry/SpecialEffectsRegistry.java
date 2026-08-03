@@ -142,7 +142,7 @@ public class SpecialEffectsRegistry {
             "tu_wu_blood_curse",
             () -> new TuWuBloodCurseSpecialEffect().setMaxLevel(1).setSpecial(true)
     );
-    // 人皇领域 - 背包驱散负面、回血、血咒效果、秒杀免疫
+    // 人皇领域 - 背包驱散负面、回血、血咒效果、秒杀免疫、耀魂修刀
     public static final RegistryObject<SpecialEffect> HUMAN_EMPEROR_DOMAIN = registerExtendedSE(
             "human_emperor_domain",
             () -> new HumanEmperorDomainSpecialEffect().setMaxLevel(1).setSpecial(true)

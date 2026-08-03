@@ -83,8 +83,16 @@ public class DefaultParticle extends Particle {
     @Nullable
     protected ResourceLocation textureName;
 
-    /** 按贴图缓存的批绘通道，同贴图粒子共用一个 {@link ParticleRenderType}。 */
+    /**
+     * 是否使用加法混合。亮色发光应为 true；暗色/黑色必须为 false，否则几乎不可见。
+     */
+    protected boolean additiveBlend = true;
+
+    /** 按贴图缓存的加法批绘通道，同贴图粒子共用一个 {@link ParticleRenderType}。 */
     public static final Map<ResourceLocation, ParticleRenderType> map = new HashMap<>();
+
+    /** 按贴图缓存的半透明批绘通道（SRC_ALPHA, ONE_MINUS_SRC_ALPHA）。 */
+    public static final Map<ResourceLocation, ParticleRenderType> translucentMap = new HashMap<>();
 
     public DefaultParticle(ClientLevel level, double x, double y, double z) {
         super(level, x, y, z);
@@ -167,6 +175,11 @@ public class DefaultParticle extends Particle {
 
     public DefaultParticle setTextureName(@Nullable ResourceLocation textureName) {
         this.textureName = textureName;
+        return this;
+    }
+
+    public DefaultParticle setAdditiveBlend(boolean additiveBlend) {
+        this.additiveBlend = additiveBlend;
         return this;
     }
 
@@ -292,15 +305,17 @@ public class DefaultParticle extends Particle {
     @Override
     public @NotNull ParticleRenderType getRenderType() {
         if (textureName == null) {
-            return NULL_TEXTURE;
+            return additiveBlend ? NULL_TEXTURE : NULL_TEXTURE_TRANSLUCENT;
         }
-        ParticleRenderType cached = map.get(textureName);
+        Map<ResourceLocation, ParticleRenderType> cache = additiveBlend ? map : translucentMap;
+        ParticleRenderType cached = cache.get(textureName);
         if (cached != null) {
             return cached;
         }
         ResourceLocation texture = textureName;
-        ParticleRenderType type = createBatchType("recasting:default_particle:" + texture, texture);
-        map.put(texture, type);
+        String prefix = additiveBlend ? "recasting:default_particle:" : "recasting:default_particle_alpha:";
+        ParticleRenderType type = createBatchType(prefix + texture, texture, additiveBlend);
+        cache.put(texture, type);
         return type;
     }
 
@@ -308,16 +323,26 @@ public class DefaultParticle extends Particle {
      * 无贴图时的独立批绘通道（显式绑粒子图集）。
      */
     public static final ParticleRenderType NULL_TEXTURE =
-            createBatchType("recasting:default_particle:null", TextureAtlas.LOCATION_PARTICLES);
+            createBatchType("recasting:default_particle:null", TextureAtlas.LOCATION_PARTICLES, true);
 
-    private static ParticleRenderType createBatchType(String name, ResourceLocation texture) {
+    public static final ParticleRenderType NULL_TEXTURE_TRANSLUCENT =
+            createBatchType("recasting:default_particle_alpha:null", TextureAtlas.LOCATION_PARTICLES, false);
+
+    private static ParticleRenderType createBatchType(String name, ResourceLocation texture, boolean additive) {
         return new ParticleRenderType() {
             @Override
             public void begin(BufferBuilder engineBuffer, TextureManager textureManager) {
                 restoreParticlePipelineAfterCustom();
                 RenderSystem.depthMask(false);
                 RenderSystem.enableBlend();
-                RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+                if (additive) {
+                    RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+                } else {
+                    RenderSystem.blendFunc(
+                            GlStateManager.SourceFactor.SRC_ALPHA,
+                            GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
+                    );
+                }
                 RenderSystem.setShader(GameRenderer::getParticleShader);
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                 RenderSystem.setShaderTexture(0, texture);

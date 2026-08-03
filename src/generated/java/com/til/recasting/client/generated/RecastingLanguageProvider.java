@@ -457,7 +457,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(specialEffectKey(SpecialEffectsRegistry.TU_WU_BLOOD_CURSE), "屠巫血咒", "Tu Wu Blood Curse");
         translation(specialEffectDescKey(SpecialEffectsRegistry.TU_WU_BLOOD_CURSE), "手持时提升全部伤害；受到致命伤害时消耗耀魂抵挡，短时内过量消耗后仍可免疫致命但不继续扣费。", "While held, amplifies all damage; lethal hits consume proud souls to absorb damage, and after heavy short-window spending still blocks lethality without further cost.");
         translation(specialEffectKey(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN), "人皇领域", "Human Emperor Domain");
-        translation(specialEffectDescKey(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN), "置于背包即可驱散负面并持续回血，持有血咒的增伤与致命抵挡；刀上仍有耀魂时可抵御常见秒杀。", "While in inventory, dispels harmful effects and continually heals, inherits blood-curse amp and lethal absorb; resists common instant kills while the blade still holds proud souls.");
+        translation(specialEffectDescKey(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN), "置于背包即可驱散负面并持续回血，持有血咒的增伤与致命抵挡；刀上仍有耀魂时可抵御常见秒杀，并消耗耀魂修复背包中受损的拔刀剑。", "While in inventory, dispels harmful effects and continually heals, inherits blood-curse amp and lethal absorb; resists common instant kills while the blade still holds proud souls, and spends proud souls to repair damaged slash blades in the inventory.");
     }
 
     private void translation(String key, String zhCnText, String enUsText) {

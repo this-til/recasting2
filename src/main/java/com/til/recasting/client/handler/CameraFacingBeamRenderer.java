@@ -15,15 +15,39 @@ public final class CameraFacingBeamRenderer {
     private static final double MIN_LENGTH_SQUARED = 1.0E-8;
     private static final BufferBuilder BUFFER = new BufferBuilder(256 * 1024);
 
+    /**
+     * 线段混合模式。
+     * <p>
+     * {@link #ADDITIVE} 适合亮色发光；暗色在加法混合下几乎不可见，应改用 {@link #TRANSLUCENT}。
+     */
+    public enum BlendMode {
+        /** SRC_ALPHA, ONE — 越亮越显，黑色无贡献 */
+        ADDITIVE,
+        /** SRC_ALPHA, ONE_MINUS_SRC_ALPHA — 可正确显示黑色/暗色 */
+        TRANSLUCENT
+    }
+
     private CameraFacingBeamRenderer() {
     }
 
+    /** 默认加法混合，兼容既有亮色光束调用 */
     public static void begin() {
+        begin(BlendMode.ADDITIVE);
+    }
+
+    public static void begin(BlendMode blendMode) {
         flushIfBuilding();
         RenderSystem.enableDepthTest();
         RenderSystem.depthMask(true);
         RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+        if (blendMode == BlendMode.TRANSLUCENT) {
+            RenderSystem.blendFunc(
+                    GlStateManager.SourceFactor.SRC_ALPHA,
+                    GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
+            );
+        } else {
+            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+        }
         RenderSystem.setShader(GameRenderer::getRendertypeLightningShader);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         BUFFER.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);

@@ -22,7 +22,8 @@
     "SlashBladeItemsMixin$ProudsoulCrystal",
     "SlashBladeItemsMixin$ProudsoulSphere",
     "SummonedSwordArtsMixin",
-    "LivingEntitySetHealthMixin"
+    "LivingEntitySetHealthMixin",
+    "RefineHandlerMixin"
   ],
   "client": [
     "ItemSlashBladeMixin",

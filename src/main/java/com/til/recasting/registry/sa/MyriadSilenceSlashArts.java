@@ -37,11 +37,11 @@ import java.util.List;
 @Accessors(chain = true)
 public class MyriadSilenceSlashArts extends ExtendedSlashArts {
 
-    private static final String TIMER = "myriad_silence";
-    private static final int DECREE_SECONDS = 30;
-    private static final float VOID_RATIO = 0.34f;
-    private static final float LOOK_AREA_RANGE = 16f;
-    private static final int TALISMAN_COLOR = 0xA5527B;
+    private String timer = "myriad_silence";
+    private int decreeSeconds = 30;
+    private float voidRatio = 0.34f;
+    private float lookAreaRange = 16f;
+    private int talismanColor = 0xA5527B;
 
     @Override
     public void trigger(
@@ -57,14 +57,14 @@ public class MyriadSilenceSlashArts extends ExtendedSlashArts {
 
         BuffType decreeType = RecastingBuffTypes.CURSE_DECREE.get();
         livingEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
-            data.setLevel(decreeType, DECREE_SECONDS, livingEntity.level());
+            data.setLevel(decreeType, decreeSeconds, livingEntity.level());
             BuffSourceHelper.recordSourceEntity(data, decreeType, livingEntity, livingEntity);
         });
 
         livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
-            timeRun.removeNamedTimerCell(TIMER);
+            timeRun.removeNamedTimerCell(timer);
             timeRun.addNamedTimerCell(
-                    TIMER,
+                    timer,
                     new ITimeRun.TimerCell(
                             () -> tickCurse(livingEntity, slashBladeState, timeRun),
                             1,
@@ -76,7 +76,7 @@ public class MyriadSilenceSlashArts extends ExtendedSlashArts {
 
     private void tickCurse(LivingEntity user, ISlashBladeState state, ITimeRun timeRun) {
         if (!user.isAlive() || user.level().isClientSide()) {
-            timeRun.removeNamedTimerCell(TIMER);
+            timeRun.removeNamedTimerCell(timer);
             return;
         }
 
@@ -85,7 +85,7 @@ public class MyriadSilenceSlashArts extends ExtendedSlashArts {
                 .map(data -> data.getLevel(decreeType, user.level()))
                 .orElse(0);
         if (decree <= 0) {
-            timeRun.removeNamedTimerCell(TIMER);
+            timeRun.removeNamedTimerCell(timer);
             return;
         }
 
@@ -114,7 +114,7 @@ public class MyriadSilenceSlashArts extends ExtendedSlashArts {
         AttackHelper.attack(
                 user,
                 target,
-                new DamageStructure(VOID_RATIO, 0f),
+                new DamageStructure(voidRatio, 0f),
                 List.of(
                         RecastingAttackTypes.MYRIAD_SILENCE_ATTACK.get(),
                         RecastingAttackTypes.NO_RECURSION_ATTACK.get()
@@ -139,7 +139,7 @@ public class MyriadSilenceSlashArts extends ExtendedSlashArts {
                 user.level(),
                 user,
                 center,
-                LOOK_AREA_RANGE
+                lookAreaRange
         );
         if (targets.isEmpty()) {
             return null;
@@ -151,9 +151,9 @@ public class MyriadSilenceSlashArts extends ExtendedSlashArts {
         if (!(target.level() instanceof ServerLevel serverLevel)) {
             return;
         }
-        float r = ((TALISMAN_COLOR >> 16) & 0xFF) / 255f;
-        float g = ((TALISMAN_COLOR >> 8) & 0xFF) / 255f;
-        float b = (TALISMAN_COLOR & 0xFF) / 255f;
+        float r = ((talismanColor >> 16) & 0xFF) / 255f;
+        float g = ((talismanColor >> 8) & 0xFF) / 255f;
+        float b = (talismanColor & 0xFF) / 255f;
         DustParticleOptions dust = new DustParticleOptions(new Vector3f(r, g, b), 1.25f);
         Vec3 pos = target.getBoundingBox().getCenter();
         ParticleHelper.sendParticlesLongRange(serverLevel, dust, pos.x, pos.y, pos.z, 18, 0.35, 0.5, 0.35, 0.02);
