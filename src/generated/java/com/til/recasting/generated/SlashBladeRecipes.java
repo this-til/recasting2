@@ -2183,6 +2183,44 @@ public class SlashBladeRecipes extends RecipeProvider {
                             .define('F', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.FRAGMENT.getId(), 1))
                             .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
                             .save(consumer, Recasting.prefix("long_sky_sunset_lambda_recipe"));
+
+        /**
+         * 屠巫 Lambda：从屠巫升级。
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.TU_WU_LAMBDA.location())
+                .pattern(" C ")
+                .pattern("CBC")
+                .pattern(" C ")
+                .define('B',
+                        SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                .name(RecastingSlashBladeKeys.TU_WU.location())
+                                .killCount(10000)
+                                .refineCount(1200)
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                .build()))
+                .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                .save(consumer, Recasting.prefix("tu_wu_lambda_recipe"));
+
+        /**
+         * 轩辕·解放 Lambda：从轩辕·解放升级。
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED_LAMBDA.location())
+                .pattern(" C ")
+                .pattern("CBC")
+                .pattern(" C ")
+                .define('B',
+                        SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                .name(RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED.location())
+                                .killCount(10000)
+                                .refineCount(1200)
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                .build()))
+                .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                .save(consumer, Recasting.prefix("xuan_yuan_liberated_lambda_recipe"));
     
     }
 

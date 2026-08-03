@@ -78,7 +78,9 @@ public final class RecastingSlashBladeKeys {
     public static final ResourceKey<SlashBladeDefinition> XING_KONG = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Special.xingKong);
     public static final ResourceKey<SlashBladeDefinition> XING_KONG_LAMBDA = lambdaOf(XING_KONG);
     public static final ResourceKey<SlashBladeDefinition> TU_WU = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Special.tuWu);
+    public static final ResourceKey<SlashBladeDefinition> TU_WU_LAMBDA = lambdaOf(TU_WU);
     public static final ResourceKey<SlashBladeDefinition> XUAN_YUAN_LIBERATED = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Special.xuanYuanLiberated);
+    public static final ResourceKey<SlashBladeDefinition> XUAN_YUAN_LIBERATED_LAMBDA = lambdaOf(XUAN_YUAN_LIBERATED);
     public static final ResourceKey<SlashBladeDefinition> FLUORESCENCE_1 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Fluorescence.fluorescence1);
     public static final ResourceKey<SlashBladeDefinition> FLUORESCENCE_2 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Fluorescence.fluorescence2);
     public static final ResourceKey<SlashBladeDefinition> FLUORESCENCE_3 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Fluorescence.fluorescence3);

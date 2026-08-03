@@ -1,30 +1,21 @@
 package com.til.recasting.registry.se;
 
-import com.til.recasting.event.AttackAmplifierEvent;
-import com.til.recasting.handler.InventorySlashBladeSeHelper;
-import com.til.recasting.registry.SpecialEffectsRegistry;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
  * 屠巫血咒
- * 手持时全伤害提升；致命抵挡由 ProudSoulLethalAbsorbHelper 处理。
+ * 手持时参与阶梯增伤与致命抵挡；优先级由 {@link com.til.recasting.handler.EmperorLineSeHelper} 结算。
  */
+@Getter
 @Setter
 @Accessors(chain = true)
-public class TuWuBloodCurseSpecialEffect extends ExtendedSpecialEffect {
+public class TuWuBloodCurseSpecialEffect extends ExtendedSpecialEffect implements EmperorLineStats {
 
-    float damageAmplifier = 0.3f;
-
-    @SubscribeEvent
-    public void onAttackAmplifier(AttackAmplifierEvent event) {
-        if (!InventorySlashBladeSeHelper.isHoldingSpecialEffect(event.getAttacker(), SpecialEffectsRegistry.TU_WU_BLOOD_CURSE)) {
-            return;
-        }
-        if (event.getAttacker().level().isClientSide()) {
-            return;
-        }
-        event.addModifiedRatioAmplifier(damageAmplifier);
-    }
+    int lineGrade = 0;
+    float damageAmplifier = 0.33f;
+    int proudPerDamage = 200;
+    int maxProudPerHit = 5000;
+    int protectThreshold = 5000;
 }

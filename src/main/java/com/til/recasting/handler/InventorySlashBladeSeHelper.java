@@ -32,10 +32,13 @@ public final class InventorySlashBladeSeHelper {
     }
 
     public static boolean hasSpecialEffect(ItemStack blade, RegistryObject<? extends SpecialEffect> effect) {
-        if (blade == null || blade.isEmpty() || !(blade.getItem() instanceof ItemSlashBlade)) {
+        return hasSpecialEffect(blade, effect.getId());
+    }
+
+    public static boolean hasSpecialEffect(ItemStack blade, ResourceLocation effectId) {
+        if (blade == null || blade.isEmpty() || !(blade.getItem() instanceof ItemSlashBlade) || effectId == null) {
             return false;
         }
-        ResourceLocation effectId = effect.getId();
         ISlashBladeState state = blade.getCapability(ItemSlashBlade.BLADESTATE).orElse(null);
         return state != null && state.hasSpecialEffect(effectId);
     }
@@ -46,9 +49,17 @@ public final class InventorySlashBladeSeHelper {
 
     @Nullable
     public static BladeSeHit findFirstInInventory(LivingEntity entity, RegistryObject<? extends SpecialEffect> effect) {
+        return findFirstInInventory(entity, effect.getId());
+    }
+
+    @Nullable
+    public static BladeSeHit findFirstInInventory(LivingEntity entity, ResourceLocation effectId) {
+        if (effectId == null) {
+            return null;
+        }
         if (!(entity instanceof Player player)) {
             ItemStack main = entity.getMainHandItem();
-            if (hasSpecialEffect(main, effect)) {
+            if (hasSpecialEffect(main, effectId)) {
                 ISlashBladeState state = main.getCapability(ItemSlashBlade.BLADESTATE).orElse(null);
                 if (state != null) {
                     return new BladeSeHit(main, state, -1);
@@ -57,10 +68,9 @@ public final class InventorySlashBladeSeHelper {
             return null;
         }
 
-        ResourceLocation effectId = effect.getId();
         Integer cachedSlot = getCachedSlot(player.getUUID(), effectId);
         if (cachedSlot != null) {
-            BladeSeHit cachedHit = resolveSlot(player, cachedSlot, effect);
+            BladeSeHit cachedHit = resolveSlot(player, cachedSlot, effectId);
             if (cachedHit != null) {
                 return cachedHit;
             }
@@ -69,7 +79,7 @@ public final class InventorySlashBladeSeHelper {
 
         int size = player.getInventory().getContainerSize();
         for (int i = 0; i < size; i++) {
-            BladeSeHit hit = resolveSlot(player, i, effect);
+            BladeSeHit hit = resolveSlot(player, i, effectId);
             if (hit != null) {
                 putCachedSlot(player.getUUID(), effectId, i);
                 return hit;
@@ -81,12 +91,12 @@ public final class InventorySlashBladeSeHelper {
     }
 
     @Nullable
-    private static BladeSeHit resolveSlot(Player player, int slot, RegistryObject<? extends SpecialEffect> effect) {
+    private static BladeSeHit resolveSlot(Player player, int slot, ResourceLocation effectId) {
         if (slot < 0 || slot >= player.getInventory().getContainerSize()) {
             return null;
         }
         ItemStack stack = player.getInventory().getItem(slot);
-        if (!hasSpecialEffect(stack, effect)) {
+        if (!hasSpecialEffect(stack, effectId)) {
             return null;
         }
         ISlashBladeState state = stack.getCapability(ItemSlashBlade.BLADESTATE).orElse(null);
@@ -132,11 +142,20 @@ public final class InventorySlashBladeSeHelper {
         return findFirstInInventory(entity, effect) != null;
     }
 
+    public static boolean hasInInventory(LivingEntity entity, ResourceLocation effectId) {
+        return findFirstInInventory(entity, effectId) != null;
+    }
+
     /**
      * 背包存在指定 SE，且该刀当前耀魂 &gt; 0。
      */
     public static boolean hasInInventoryWithProudSoul(LivingEntity entity, RegistryObject<? extends SpecialEffect> effect) {
         BladeSeHit hit = findFirstInInventory(entity, effect);
+        return hit != null && hit.state().getProudSoulCount() > 0;
+    }
+
+    public static boolean hasInInventoryWithProudSoul(LivingEntity entity, ResourceLocation effectId) {
+        BladeSeHit hit = findFirstInInventory(entity, effectId);
         return hit != null && hit.state().getProudSoulCount() > 0;
     }
 

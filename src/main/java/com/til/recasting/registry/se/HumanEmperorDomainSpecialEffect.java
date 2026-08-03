@@ -1,10 +1,9 @@
 package com.til.recasting.registry.se;
 
-import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.handler.AbsoluteHealthChangeGuard;
 import com.til.recasting.handler.BuffSuppressHandler;
-import com.til.recasting.handler.InventorySlashBladeSeHelper;
-import com.til.recasting.registry.SpecialEffectsRegistry;
+import com.til.recasting.handler.EmperorLineSeHelper;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -19,31 +18,22 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
  * 人皇领域
- * 背包触发：驱散负面、每 tick 回血、持有血咒增伤效果；耀魂充足时秒杀兜底；
- * 消耗耀魂修复背包中任意受损拔刀剑。
- * 致命耀魂抵挡由 ProudSoulLethalAbsorbHelper 处理。
+ * 背包触发：驱散负面、每 tick 回血、秒杀兜底、耀魂修刀。
+ * 增伤与致命抵挡由 {@link EmperorLineSeHelper} / ProudSoulLethalAbsorbHelper 按最高阶结算。
  */
+@Getter
 @Setter
 @Accessors(chain = true)
-public class HumanEmperorDomainSpecialEffect extends ExtendedSpecialEffect {
+public class HumanEmperorDomainSpecialEffect extends ExtendedSpecialEffect implements EmperorLineStats {
 
-    float damageAmplifier = 0.3f;
-    float healPerTick = 0.5f;
-    /** 修复 1 点耐久所需耀魂 */
-    int repairProudCost = 300;
-    /** 每次修复的耐久量（降低 damage） */
+    int lineGrade = 2;
+    float damageAmplifier = 0.4752f;
+    int proudPerDamage = 90;
+    int maxProudPerHit = 3667;
+    int protectThreshold = 3667;
+    float healPerTick = 0.3f;
+    int repairProudCost = 135;
     int repairAmount = 1;
-
-    @SubscribeEvent
-    public void onAttackAmplifier(AttackAmplifierEvent event) {
-        if (event.getAttacker().level().isClientSide()) {
-            return;
-        }
-        if (!InventorySlashBladeSeHelper.hasInInventory(event.getAttacker(), SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN)) {
-            return;
-        }
-        event.addModifiedRatioAmplifier(damageAmplifier);
-    }
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -54,17 +44,17 @@ public class HumanEmperorDomainSpecialEffect extends ExtendedSpecialEffect {
         if (player.level().isClientSide()) {
             return;
         }
-        InventorySlashBladeSeHelper.BladeSeHit seHit = InventorySlashBladeSeHelper.findFirstInInventory(
-                player,
-                SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN
-        );
-        if (seHit == null) {
+        if (!EmperorLineSeHelper.isActiveEmperorEffect(player, this)) {
+            return;
+        }
+        EmperorLineSeHelper.ActiveLine active = EmperorLineSeHelper.resolveHighestEmperor(player);
+        if (active == null) {
             return;
         }
 
         BuffSuppressHandler.dispelHarmful(player);
         player.heal(healPerTick);
-        tryRepairInventoryBlade(player, seHit.state());
+        tryRepairInventoryBlade(player, active.state(), repairProudCost);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
@@ -76,18 +66,22 @@ public class HumanEmperorDomainSpecialEffect extends ExtendedSpecialEffect {
         if (AbsoluteHealthChangeGuard.isGuarded()) {
             return;
         }
-        if (!InventorySlashBladeSeHelper.hasInInventoryWithProudSoul(entity, SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN)) {
+        if (!EmperorLineSeHelper.isActiveEmperorEffect(entity, this)) {
+            return;
+        }
+        EmperorLineSeHelper.ActiveLine active = EmperorLineSeHelper.resolveHighestEmperor(entity);
+        if (active == null || active.state().getProudSoulCount() <= 0) {
             return;
         }
         event.setCanceled(true);
         AbsoluteHealthChangeGuard.run(() -> entity.setHealth(1f));
     }
 
-    private void tryRepairInventoryBlade(Player player, ISlashBladeState seBladeState) {
-        if (repairProudCost <= 0 || repairAmount <= 0) {
+    private void tryRepairInventoryBlade(Player player, ISlashBladeState seBladeState, int cost) {
+        if (cost <= 0 || repairAmount <= 0) {
             return;
         }
-        if (seBladeState.getProudSoulCount() < repairProudCost) {
+        if (seBladeState.getProudSoulCount() < cost) {
             return;
         }
 
@@ -108,7 +102,7 @@ public class HumanEmperorDomainSpecialEffect extends ExtendedSpecialEffect {
 
             int restored = Math.min(repairAmount, damage);
             state.setDamage(damage - restored);
-            seBladeState.setProudSoulCount(seBladeState.getProudSoulCount() - repairProudCost);
+            seBladeState.setProudSoulCount(seBladeState.getProudSoulCount() - cost);
             return;
         }
     }

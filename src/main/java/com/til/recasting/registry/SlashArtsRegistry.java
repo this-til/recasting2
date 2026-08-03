@@ -278,11 +278,30 @@ public class SlashArtsRegistry {
             "myriad_silence",
             MyriadSilenceSlashArts::new
     );
+    public static final RegistryObject<ExtendedSlashArts> MYRIAD_SILENCE_LAMBDA = registerExtendedSA(
+            "myriad_silence_lambda",
+            () -> new MyriadSilenceSlashArts()
+                    .setDecreeSeconds(39)
+                    .setVoidRatio(0.442f)
+                    .setLookAreaRange(20.8f)
+    );
 
     // 万象归元
     public static final RegistryObject<ExtendedSlashArts> PHENOMENAL_RETURN = registerExtendedSA(
             "phenomenal_return",
             PhenomenalReturnSlashArts::new
+    );
+    public static final RegistryObject<ExtendedSlashArts> PHENOMENAL_RETURN_LAMBDA = registerExtendedSA(
+            "phenomenal_return_lambda",
+            () -> new PhenomenalReturnSlashArts()
+                    .setDurationTicks(104)
+                    .setCenterRange(41.6f)
+                    .setDispelRange(166.4f)
+                    .setAttackRatio(0.104f)
+                    .setSuppressSeconds(12)
+                    .setLifeTicksMin(13)
+                    .setLifeTicksMax(26)
+                    .setTargetedChance(0.52f)
     );
 
     /**

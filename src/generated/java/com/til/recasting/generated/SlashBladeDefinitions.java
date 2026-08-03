@@ -1136,6 +1136,25 @@ public final class SlashBladeDefinitions {
                 .addSpecialEffects(SpecialEffectsRegistry.TU_WU_BLOOD_CURSE, 1)
                 .build();
 
+        // 屠巫 Lambda
+        register(bootstrap, RecastingSlashBladeKeys.TU_WU_LAMBDA)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.Special.tuWu$obj)
+                                .textureName(R.Slashblade.Special.tuWu$png)
+                                .effectColor(new Color(0xA5527B).getRGB())
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(13f)
+                                .maxDamage(2496)
+                                .defaultSwordType(List.of(SwordType.BEWITCHED))
+                                .slashArtsType(SlashArtsRegistry.MYRIAD_SILENCE_LAMBDA.getId())
+                )
+                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+                .addSpecialEffects(SpecialEffectsRegistry.TU_WU_BLOOD_CURSE_LAMBDA, 1)
+                .build();
+
         // 轩辕·解放
         register(bootstrap, RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED)
                 .renderDefinition(
@@ -1153,6 +1172,25 @@ public final class SlashBladeDefinitions {
                 )
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
                 .addSpecialEffects(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN, 1)
+                .build();
+
+        // 轩辕·解放 Lambda
+        register(bootstrap, RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED_LAMBDA)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.Special.xuanYuanLiberated$obj)
+                                .textureName(R.Slashblade.Special.xuanYuanLiberated$png)
+                                .effectColor(new Color(0xD1B45A).getRGB())
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(13f)
+                                .maxDamage(2496)
+                                .defaultSwordType(List.of(SwordType.BEWITCHED))
+                                .slashArtsType(SlashArtsRegistry.PHENOMENAL_RETURN_LAMBDA.getId())
+                )
+                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+                .addSpecialEffects(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN_LAMBDA, 1)
                 .build();
 
         //endregion

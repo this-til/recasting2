@@ -137,15 +137,57 @@ public class SpecialEffectsRegistry {
             .setMaxLevel(1)
             .setSpecial(true));
 
-    // 屠巫血咒 - 手持致命抵挡与全伤害提升
+    // 屠巫血咒 - 手持；阶梯 grade0→3：轩辕λ > 轩辕 > 屠巫λ > 屠巫
+    // 增伤基础 0.33，每级 ×1.2；proudPerDamage 基础 200 每级 ×0.67
+    // maxProudPerHit / protectThreshold：5000→3000 线性，下限 3000
     public static final RegistryObject<SpecialEffect> TU_WU_BLOOD_CURSE = registerExtendedSE(
             "tu_wu_blood_curse",
-            () -> new TuWuBloodCurseSpecialEffect().setMaxLevel(1).setSpecial(true)
+            () -> new TuWuBloodCurseSpecialEffect()
+                    .setLineGrade(0)
+                    .setDamageAmplifier(0.33f)
+                    .setProudPerDamage(200)
+                    .setMaxProudPerHit(5000)
+                    .setProtectThreshold(5000)
+                    .setMaxLevel(1)
+                    .setSpecial(true)
     );
-    // 人皇领域 - 背包驱散负面、回血、血咒效果、秒杀免疫、耀魂修刀
+    public static final RegistryObject<SpecialEffect> TU_WU_BLOOD_CURSE_LAMBDA = registerExtendedSE(
+            "tu_wu_blood_curse_lambda",
+            () -> new TuWuBloodCurseSpecialEffect()
+                    .setLineGrade(1)
+                    .setDamageAmplifier(0.396f)
+                    .setProudPerDamage(134)
+                    .setMaxProudPerHit(4333)
+                    .setProtectThreshold(4333)
+                    .setMaxLevel(1)
+                    .setSpecial(true)
+    );
+    // 人皇领域 - 背包；最高阶时独占增伤/抵挡，并提供回血与修刀
     public static final RegistryObject<SpecialEffect> HUMAN_EMPEROR_DOMAIN = registerExtendedSE(
             "human_emperor_domain",
-            () -> new HumanEmperorDomainSpecialEffect().setMaxLevel(1).setSpecial(true)
+            () -> new HumanEmperorDomainSpecialEffect()
+                    .setLineGrade(2)
+                    .setDamageAmplifier(0.4752f)
+                    .setProudPerDamage(90)
+                    .setMaxProudPerHit(3667)
+                    .setProtectThreshold(3667)
+                    .setHealPerTick(0.3f)
+                    .setRepairProudCost(135)
+                    .setMaxLevel(1)
+                    .setSpecial(true)
+    );
+    public static final RegistryObject<SpecialEffect> HUMAN_EMPEROR_DOMAIN_LAMBDA = registerExtendedSE(
+            "human_emperor_domain_lambda",
+            () -> new HumanEmperorDomainSpecialEffect()
+                    .setLineGrade(3)
+                    .setDamageAmplifier(0.57024f)
+                    .setProudPerDamage(60)
+                    .setMaxProudPerHit(3000)
+                    .setProtectThreshold(3000)
+                    .setHealPerTick(0.5f)
+                    .setRepairProudCost(90)
+                    .setMaxLevel(1)
+                    .setSpecial(true)
     );
 
     public static RegistryObject<SpecialEffect> registerExtendedSE(String name, Supplier<SpecialEffect> factory) {

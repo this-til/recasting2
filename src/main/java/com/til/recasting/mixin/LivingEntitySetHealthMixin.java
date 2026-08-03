@@ -1,8 +1,7 @@
 package com.til.recasting.mixin;
 
 import com.til.recasting.handler.AbsoluteHealthChangeGuard;
-import com.til.recasting.handler.InventorySlashBladeSeHelper;
-import com.til.recasting.registry.SpecialEffectsRegistry;
+import com.til.recasting.handler.EmperorLineSeHelper;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,7 +25,8 @@ public abstract class LivingEntitySetHealthMixin {
         if (self.level().isClientSide()) {
             return health;
         }
-        if (!InventorySlashBladeSeHelper.hasInInventoryWithProudSoul(self, SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN)) {
+        EmperorLineSeHelper.ActiveLine active = EmperorLineSeHelper.resolveHighestEmperor(self);
+        if (active == null || active.state().getProudSoulCount() <= 0) {
             return health;
         }
         return 1f;

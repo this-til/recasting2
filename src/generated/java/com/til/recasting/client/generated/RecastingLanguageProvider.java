@@ -83,6 +83,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashBladeKey(RecastingSlashBladeKeys.UMBRELLA_LAMBDA), "^伞", "Umbrella Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.XUAN_YUAN), "轩辕剑", "Xuan Yuan");
         translation(slashBladeKey(RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED), "轩辕·解放", "Xuan Yuan Liberated");
+        translation(slashBladeKey(RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED_LAMBDA), "^轩辕·解放", "Xuan Yuan Liberated Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.BROADSWORD_IRON), "阔刃（铁）", "Broadsword (Iron)");
         translation(slashBladeKey(RecastingSlashBladeKeys.BROADSWORD_WOOD), "阔刃（木）", "Broadsword (Wood)");
         translation(slashBladeKey(RecastingSlashBladeKeys.BROKEN_WHITE), "碎白", "Broken White");
@@ -131,6 +132,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashBladeKey(RecastingSlashBladeKeys.HTOD), "HTOD的刀", "HTOD");
         translation(slashBladeKey(RecastingSlashBladeKeys.HTOD_LAMBDA), "^HTOD的刀", "HTOD Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.TU_WU), "屠巫", "Tu Wu");
+        translation(slashBladeKey(RecastingSlashBladeKeys.TU_WU_LAMBDA), "^屠巫", "Tu Wu Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.XING_KONG), "星空的刀", "Xing Kong");
         translation(slashBladeKey(RecastingSlashBladeKeys.XING_KONG_LAMBDA), "^星空的刀", "Xing Kong Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.STAR_1), "星流利刃I", "Star Blade I");
@@ -349,8 +351,12 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtDescKey(SlashArtsRegistry.FLEETING_SHADOW_LAMBDA), "以更远距离连续掠向敌人，位移节奏更快并在每次停顿时发动成对斩击。", "Flashes farther between enemies at a faster rhythm, releasing paired slashes at each pause.");
         translation(slashArtKey(SlashArtsRegistry.MYRIAD_SILENCE), "万灵寂灭", "Myriad Silence");
         translation(slashArtDescKey(SlashArtsRegistry.MYRIAD_SILENCE), "获得咒令：持续自损生命，并向视角目标周围敌人发射黑色虚空闪电，叠加寂灭削弱护甲。", "Gains Curse Decree: continually sacrifices health to fire black void lightning at foes near the aim point, stacking Spirit Silence to weaken armor.");
+        translation(slashArtKey(SlashArtsRegistry.MYRIAD_SILENCE_LAMBDA), "^万灵寂灭", "Myriad Silence Lambda");
+        translation(slashArtDescKey(SlashArtsRegistry.MYRIAD_SILENCE_LAMBDA), "获得更长咒令：持续自损生命，并向更大范围发射黑色虚空闪电，叠加寂灭削弱护甲。", "Gains a longer Curse Decree: continually sacrifices health to fire stronger black void lightning over a wider area, stacking Spirit Silence to weaken armor.");
         translation(slashArtKey(SlashArtsRegistry.PHENOMENAL_RETURN), "万象归元", "Phenomenal Return");
         translation(slashArtDescKey(SlashArtsRegistry.PHENOMENAL_RETURN), "以视角目标为中心降下绝对伤害次元斩雨，并驱散、压制周围实体的增益效果。", "Rains absolute-damage judgement cuts around the look target while dispelling and suppressing beneficial effects on nearby entities.");
+        translation(slashArtKey(SlashArtsRegistry.PHENOMENAL_RETURN_LAMBDA), "^万象归元", "Phenomenal Return Lambda");
+        translation(slashArtDescKey(SlashArtsRegistry.PHENOMENAL_RETURN_LAMBDA), "以视角目标为中心降下更久、更广的绝对伤害次元斩雨，并驱散、压制周围实体的增益效果。", "Rains longer and wider absolute-damage judgement cuts around the look target while dispelling and suppressing beneficial effects on nearby entities.");
         translation(specialEffectKey(SpecialEffectsRegistry.COOPERATE_WITH), "协同攻击", "Cooperate With");
         translation(specialEffectDescKey(SpecialEffectsRegistry.COOPERATE_WITH), "挥刀时概率额外挥刀。", "Has a chance to perform an additional slash when slashing.");
         translation(specialEffectKey(SpecialEffectsRegistry.CROSS_CHOP), "十字斩", "Cross Chop");
@@ -456,8 +462,12 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(specialEffectDescKey(SpecialEffectsRegistry.TREASURE_BARRAGE_LAMBDA), "释放 SA 后再次触发一次，冷却更短。", "Recasts SA once after release, with a shorter internal cooldown.");
         translation(specialEffectKey(SpecialEffectsRegistry.TU_WU_BLOOD_CURSE), "屠巫血咒", "Tu Wu Blood Curse");
         translation(specialEffectDescKey(SpecialEffectsRegistry.TU_WU_BLOOD_CURSE), "手持时提升全部伤害；受到致命伤害时消耗耀魂抵挡，短时内过量消耗后仍可免疫致命但不继续扣费。", "While held, amplifies all damage; lethal hits consume proud souls to absorb damage, and after heavy short-window spending still blocks lethality without further cost.");
+        translation(specialEffectKey(SpecialEffectsRegistry.TU_WU_BLOOD_CURSE_LAMBDA), "^屠巫血咒", "Tu Wu Blood Curse Lambda");
+        translation(specialEffectDescKey(SpecialEffectsRegistry.TU_WU_BLOOD_CURSE_LAMBDA), "手持时更大幅度提升全部伤害；受到致命伤害时以更高效率消耗耀魂抵挡，短时内过量消耗后仍可免疫致命但不继续扣费。", "While held, amplifies all damage more strongly; lethal hits consume proud souls more efficiently to absorb damage, and after heavy short-window spending still blocks lethality without further cost.");
         translation(specialEffectKey(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN), "人皇领域", "Human Emperor Domain");
         translation(specialEffectDescKey(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN), "置于背包即可驱散负面并持续回血，持有血咒的增伤与致命抵挡；刀上仍有耀魂时可抵御常见秒杀，并消耗耀魂修复背包中受损的拔刀剑。", "While in inventory, dispels harmful effects and continually heals, inherits blood-curse amp and lethal absorb; resists common instant kills while the blade still holds proud souls, and spends proud souls to repair damaged slash blades in the inventory.");
+        translation(specialEffectKey(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN_LAMBDA), "^人皇领域", "Human Emperor Domain Lambda");
+        translation(specialEffectDescKey(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN_LAMBDA), "置于背包即可驱散负面并更快回血，持有更强血咒增伤与更高效致命抵挡；刀上仍有耀魂时可抵御常见秒杀，并以更低耀魂消耗修复背包中受损的拔刀剑。", "While in inventory, dispels harmful effects and heals faster, inherits stronger blood-curse amp and more efficient lethal absorb; resists common instant kills while the blade still holds proud souls, and repairs damaged slash blades in the inventory at a lower proud-soul cost.");
     }
 
     private void translation(String key, String zhCnText, String enUsText) {
