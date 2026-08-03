@@ -1,0 +1,64 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/soulblade_lambda",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:fire_aspect",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:flame"
+          },
+          {
+            "id": "minecraft:fire_protection",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:thorns",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:channeling"
+          },
+          {
+            "id": "minecraft:sharpness",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:unbreaking",
+            "lvl": 3
+          }
+        ],
+        "kill": 8000,
+        "name": "recasting:slashblade/soulblade",
+        "proud_soul": 400000
+      }
+    },
+    "C": {
+      "item": "recasting:redstone_medium_soul_cube"
+    },
+    "R": {
+      "type": "recasting:se_crystal",
+      "item": "recasting:se_crystal",
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:regression"
+      }
+    }
+  },
+  "pattern": [
+    "CRC",
+    "CBC",
+    "CRC"
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

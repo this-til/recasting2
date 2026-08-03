@@ -48,6 +48,9 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(buffKey(RecastingBuffTypes.TEA_AROMA), "茶韵", "Tea Aroma");
         translation(buffKey(RecastingBuffTypes.JADE_DOMAIN), "青界", "Jade Domain");
         translation(buffKey(RecastingBuffTypes.JADE_FIRE), "翠火", "Jade Fire");
+        translation(buffKey(RecastingBuffTypes.CURSE_DECREE), "咒令", "Curse Decree");
+        translation(buffKey(RecastingBuffTypes.SPIRIT_SILENCE), "寂灭", "Spirit Silence");
+        translation(buffKey(RecastingBuffTypes.BUFF_SUPPRESS), "增益压制", "Buff Suppress");
         translation(slashBladeKey(RecastingSlashBladeKeys.VOID_1), "洞虚利刃", "Void Blade I");
         translation(slashBladeKey(RecastingSlashBladeKeys.VOID_2), "洞虚利刃[漆黑]", "Void Blade II");
         translation(slashBladeKey(RecastingSlashBladeKeys.VOID_3), "洞虚利刃[猩红]", "Void Blade III");
@@ -344,6 +347,10 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtKey(SlashArtsRegistry.FLEETING_SHADOW_LAMBDA), "^掠影", "Fleeting Shadow Lambda");
         translation(slashArtDescKey(SlashArtsRegistry.FLEETING_SHADOW), "连续掠向周围敌人身侧，每次位移后发动短促乱舞并恢复生命。", "Repeatedly flashes beside nearby foes, performing a brief dance of slashes and restoring health after each movement.");
         translation(slashArtDescKey(SlashArtsRegistry.FLEETING_SHADOW_LAMBDA), "以更远距离连续掠向敌人，位移节奏更快并在每次停顿时发动成对斩击。", "Flashes farther between enemies at a faster rhythm, releasing paired slashes at each pause.");
+        translation(slashArtKey(SlashArtsRegistry.MYRIAD_SILENCE), "万灵寂灭", "Myriad Silence");
+        translation(slashArtDescKey(SlashArtsRegistry.MYRIAD_SILENCE), "获得咒令：持续自损生命，并向视角目标周围敌人发射黑色虚空闪电，叠加寂灭削弱护甲。", "Gains Curse Decree: continually sacrifices health to fire black void lightning at foes near the aim point, stacking Spirit Silence to weaken armor.");
+        translation(slashArtKey(SlashArtsRegistry.PHENOMENAL_RETURN), "万象归元", "Phenomenal Return");
+        translation(slashArtDescKey(SlashArtsRegistry.PHENOMENAL_RETURN), "以视角目标为中心降下绝对伤害次元斩雨，并驱散、压制周围实体的增益效果。", "Rains absolute-damage judgement cuts around the look target while dispelling and suppressing beneficial effects on nearby entities.");
         translation(specialEffectKey(SpecialEffectsRegistry.COOPERATE_WITH), "协同攻击", "Cooperate With");
         translation(specialEffectDescKey(SpecialEffectsRegistry.COOPERATE_WITH), "挥刀时概率额外挥刀。", "Has a chance to perform an additional slash when slashing.");
         translation(specialEffectKey(SpecialEffectsRegistry.CROSS_CHOP), "十字斩", "Cross Chop");
@@ -447,6 +454,10 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(specialEffectDescKey(SpecialEffectsRegistry.TREASURE_BARRAGE), "释放 SA 后再次触发一次，短时间内不会重复发动。", "Recasts SA once after release, with a short internal cooldown.");
         translation(specialEffectKey(SpecialEffectsRegistry.TREASURE_BARRAGE_LAMBDA), "^宝具连发", "^Treasure Barrage");
         translation(specialEffectDescKey(SpecialEffectsRegistry.TREASURE_BARRAGE_LAMBDA), "释放 SA 后再次触发一次，冷却更短。", "Recasts SA once after release, with a shorter internal cooldown.");
+        translation(specialEffectKey(SpecialEffectsRegistry.TU_WU_BLOOD_CURSE), "屠巫血咒", "Tu Wu Blood Curse");
+        translation(specialEffectDescKey(SpecialEffectsRegistry.TU_WU_BLOOD_CURSE), "手持时提升全部伤害；受到致命伤害时消耗耀魂抵挡，短时内过量消耗后仍可免疫致命但不继续扣费。", "While held, amplifies all damage; lethal hits consume proud souls to absorb damage, and after heavy short-window spending still blocks lethality without further cost.");
+        translation(specialEffectKey(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN), "人皇领域", "Human Emperor Domain");
+        translation(specialEffectDescKey(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN), "置于背包即可驱散负面并持续回血，持有血咒的增伤与致命抵挡；刀上仍有耀魂时可抵御常见秒杀。", "While in inventory, dispels harmful effects and continually heals, inherits blood-curse amp and lethal absorb; resists common instant kills while the blade still holds proud souls.");
     }
 
     private void translation(String key, String zhCnText, String enUsText) {

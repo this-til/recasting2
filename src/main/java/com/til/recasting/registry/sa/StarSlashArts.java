@@ -96,7 +96,7 @@ public class StarSlashArts extends ExtendedSlashArts {
                 Vec3 randomOffset = PosHelper.getRandomVectorInCircle(livingEntity.getRandom(), zonerRange);
                 Vec3 zonePos = livingEntity.position().add(randomOffset);
 
-                // 创建持续存在的次元斩
+                // 创建持续存在的次元斩（仅攻击一次；阵地召唤剑由 tick 负责）
                 JudgementCutEntity starJC = new JudgementCutEntity(
                         RecastingEntities.JUDGEMENT_CUT.get(),
                         worldIn,
@@ -137,15 +137,12 @@ public class StarSlashArts extends ExtendedSlashArts {
                         }
                     }
 
-                    @Override
-                    public void onAttackTime() {
-                    }
-
                 };
 
                 starJC.setPos(zonePos.x, zonePos.y, zonePos.z);
                 starJC.setColor(slashBladeState.getColorCode());
                 starJC.setMaxLifeTime(zoneTime);
+                starJC.setSingleAttack(true);
 
                 worldIn.addFreshEntity(starJC);
             }

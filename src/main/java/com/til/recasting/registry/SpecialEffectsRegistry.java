@@ -137,6 +137,17 @@ public class SpecialEffectsRegistry {
             .setMaxLevel(1)
             .setSpecial(true));
 
+    // 屠巫血咒 - 手持致命抵挡与全伤害提升
+    public static final RegistryObject<SpecialEffect> TU_WU_BLOOD_CURSE = registerExtendedSE(
+            "tu_wu_blood_curse",
+            () -> new TuWuBloodCurseSpecialEffect().setMaxLevel(1).setSpecial(true)
+    );
+    // 人皇领域 - 背包驱散负面、回血、血咒效果、秒杀免疫
+    public static final RegistryObject<SpecialEffect> HUMAN_EMPEROR_DOMAIN = registerExtendedSE(
+            "human_emperor_domain",
+            () -> new HumanEmperorDomainSpecialEffect().setMaxLevel(1).setSpecial(true)
+    );
+
     public static RegistryObject<SpecialEffect> registerExtendedSE(String name, Supplier<SpecialEffect> factory) {
         return SPECIAL_EFFECT.register(name, factory);
     }

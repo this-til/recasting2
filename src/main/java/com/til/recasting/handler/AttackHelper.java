@@ -4,6 +4,7 @@ import com.til.recasting.entity.LightningEntity;
 import com.til.recasting.entity.SlashEffectEntity;
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.event.DoSlashExtendEvent;
+import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.DamageStructure;
@@ -97,11 +98,15 @@ public class AttackHelper {
                 return;
             }
 
-
             List<AttackAmplifierEvent.DamageSourceInfo> list = attackAmplifierEvent.getDamageSourceInfoList();
-            if (list.isEmpty()) {
+            boolean isAbsolute = attackTypeList.contains(RecastingAttackTypes.ABSOLUTE_ATTACK.get());
+            if (list.isEmpty() && !isAbsolute) {
                 return;
             }
+
+            float healthBefore = target instanceof LivingEntity livingBefore
+                    ? livingBefore.getHealth()
+                    : 0f;
 
             double finalDamage = damage;
             Optional<Boolean> any = list.stream()
@@ -119,7 +124,20 @@ public class AttackHelper {
                     .toList()
                     .stream().filter(b -> b).findAny();
 
-            if (any.isPresent()) {
+            // 绝对伤害：普通 hurt 后生命未减少时 setHealth 补伤，不另开取消正常结算的分支
+            boolean absoluteApplied = false;
+            if (isAbsolute
+                    && target instanceof LivingEntity livingTarget
+                    && livingTarget.getHealth() >= healthBefore) {
+                float applied = (float) damage;
+                AbsoluteHealthChangeGuard.run(() -> {
+                    float next = Math.max(0f, livingTarget.getHealth() - applied);
+                    livingTarget.setHealth(next);
+                });
+                absoluteApplied = true;
+            }
+
+            if (any.isPresent() || absoluteApplied) {
                 mods.flammpfeil.slashblade.util.AttackHelper.applyKnockback(attacker, target, knockback);
                 mods.flammpfeil.slashblade.util.AttackHelper.restoreTargetMotionIfNeeded(target, originalMotion);
                 mods.flammpfeil.slashblade.util.AttackHelper.playAttackEffects(attacker, target, isCritical);

@@ -8,9 +8,18 @@
   "properties": {
     "attack_base": 10.0,
     "max_damage": 1920,
+    "slash_art": "recasting:phenomenal_return",
+    "special_effects": [
+      "recasting:human_emperor_domain"
+    ],
     "sword_type": [
       "bewitched"
     ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:human_emperor_domain": 1
+    }
   },
   "render": {
     "carry_type": "default",

@@ -241,4 +241,30 @@ public class RecastingBuffTypes {
             () -> new BuffType(1, 0)
     );
 
+    /**
+     * 咒令
+     * - 每 20 tick 衰减 1 层；层数表示剩余秒数
+     */
+    public static final RegistryObject<BuffType> CURSE_DECREE = BUFF_TYPES.register("curse_decree",
+            () -> new BuffType(20, 0)
+    );
+
+    /**
+     * 寂灭
+     * - 不随时间自动衰减（由 SpiritSilenceBuffHandler 每秒减层）；最大 66 层
+     * - 每层使目标护甲 ×(1 - 0.01)
+     */
+    public static final RegistryObject<BuffType> SPIRIT_SILENCE = BUFF_TYPES.register("spirit_silence",
+            () -> new BuffType(0, 66)
+    );
+
+    /**
+     * 增益压制
+     * - 每 20 tick 衰减 1 层；层数表示剩余秒数
+     * - 持有期间反复驱散增益效果
+     */
+    public static final RegistryObject<BuffType> BUFF_SUPPRESS = BUFF_TYPES.register("buff_suppress",
+            () -> new BuffType(20, 0)
+    );
+
 }

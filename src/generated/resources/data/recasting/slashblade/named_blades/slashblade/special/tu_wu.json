@@ -8,9 +8,18 @@
   "properties": {
     "attack_base": 10.0,
     "max_damage": 1920,
+    "slash_art": "recasting:myriad_silence",
+    "special_effects": [
+      "recasting:tu_wu_blood_curse"
+    ],
     "sword_type": [
       "bewitched"
     ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:tu_wu_blood_curse": 1
+    }
   },
   "render": {
     "carry_type": "default",

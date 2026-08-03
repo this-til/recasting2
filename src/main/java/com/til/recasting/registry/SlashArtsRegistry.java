@@ -273,6 +273,18 @@ public class SlashArtsRegistry {
                     .setSlashHit(0.1206f)
     );
 
+    // 万灵寂灭
+    public static final RegistryObject<ExtendedSlashArts> MYRIAD_SILENCE = registerExtendedSA(
+            "myriad_silence",
+            MyriadSilenceSlashArts::new
+    );
+
+    // 万象归元
+    public static final RegistryObject<ExtendedSlashArts> PHENOMENAL_RETURN = registerExtendedSA(
+            "phenomenal_return",
+            PhenomenalReturnSlashArts::new
+    );
+
     /**
      * 注册扩展的 SlashArts，自动关联 ComboState
      */

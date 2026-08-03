@@ -21,7 +21,8 @@
     "SlashBladeShapedRecipeMixin",
     "SlashBladeItemsMixin$ProudsoulCrystal",
     "SlashBladeItemsMixin$ProudsoulSphere",
-    "SummonedSwordArtsMixin"
+    "SummonedSwordArtsMixin",
+    "LivingEntitySetHealthMixin"
   ],
   "client": [
     "ItemSlashBladeMixin",

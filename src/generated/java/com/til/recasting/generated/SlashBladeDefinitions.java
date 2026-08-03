@@ -551,21 +551,21 @@ public final class SlashBladeDefinitions {
                 .build();
 
         // 轩辕剑
-        register(bootstrap, RecastingSlashBladeKeys.XUAN_YUAN)
-                .renderDefinition(
-                        RenderDefinition.Builder.newInstance()
-                                .modelName(R.Slashblade.xuanYuan$obj)
-                                .textureName(R.Slashblade.xuanYuan$png)
-                                .effectColor(new Color(255, 255, 0).getRGB())
-                )
-                .propertiesDefinition(
-                        PropertiesDefinition.Builder.newInstance()
-                                .baseAttackModifier(6f)
-                                .maxDamage(10 * 40)
-                                .defaultSwordType(List.of(SwordType.BEWITCHED))
-                )
-                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-                .build();
+        //register(bootstrap, RecastingSlashBladeKeys.XUAN_YUAN)
+        //        .renderDefinition(
+        //                RenderDefinition.Builder.newInstance()
+        //                        .modelName(R.Slashblade.xuanYuan$obj)
+        //                        .textureName(R.Slashblade.xuanYuan$png)
+        //                        .effectColor(new Color(255, 255, 0).getRGB())
+        //        )
+        //        .propertiesDefinition(
+        //                PropertiesDefinition.Builder.newInstance()
+        //                        .baseAttackModifier(6f)
+        //                        .maxDamage(10 * 40)
+        //                        .defaultSwordType(List.of(SwordType.BEWITCHED))
+        //        )
+        //        .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+        //        .build();
 
         // 苍景
         register(bootstrap, RecastingSlashBladeKeys.AZURE_VISTA)
@@ -1117,7 +1117,7 @@ public final class SlashBladeDefinitions {
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
                 .build();
 
-        // 涂巫
+        // 屠巫
         register(bootstrap, RecastingSlashBladeKeys.TU_WU)
                 .renderDefinition(
                         RenderDefinition.Builder.newInstance()
@@ -1130,8 +1130,10 @@ public final class SlashBladeDefinitions {
                                 .baseAttackModifier(10f)
                                 .maxDamage(48 * 40)
                                 .defaultSwordType(List.of(SwordType.BEWITCHED))
+                                .slashArtsType(SlashArtsRegistry.MYRIAD_SILENCE.getId())
                 )
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+                .addSpecialEffects(SpecialEffectsRegistry.TU_WU_BLOOD_CURSE, 1)
                 .build();
 
         // 轩辕·解放
@@ -1147,8 +1149,10 @@ public final class SlashBladeDefinitions {
                                 .baseAttackModifier(10f)
                                 .maxDamage(48 * 40)
                                 .defaultSwordType(List.of(SwordType.BEWITCHED))
+                                .slashArtsType(SlashArtsRegistry.PHENOMENAL_RETURN.getId())
                 )
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+                .addSpecialEffects(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN, 1)
                 .build();
 
         //endregion

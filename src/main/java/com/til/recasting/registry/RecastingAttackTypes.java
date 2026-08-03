@@ -272,4 +272,22 @@ public class RecastingAttackTypes {
             })
     );
 
+    /**
+     * 万灵寂灭闪电（虚空伤害）
+     */
+    public static final RegistryObject<AttackType> MYRIAD_SILENCE_ATTACK = ATTACK_TYPES.register("myriad_silence",
+            () -> new AttackType((attacker, target) -> {
+                DamageSourcesAccessor accessor = (DamageSourcesAccessor) attacker.damageSources();
+                DamageSource damageSource = accessor.callSource(DamageTypes.FELL_OUT_OF_WORLD, target, attacker);
+                return new AttackAmplifierEvent.DamageSourceInfo(damageSource, new DamageStructure(1.0f, 0.0f));
+            })
+    );
+
+    /**
+     * 绝对伤害标记：不产生独立 DamageSource；AttackHelper 在 hurt 后生命未减少时 setHealth 补伤
+     */
+    public static final RegistryObject<AttackType> ABSOLUTE_ATTACK = ATTACK_TYPES.register("absolute",
+            () -> new AttackType((attacker, target) -> null)
+    );
+
 }

@@ -18,8 +18,8 @@ import static com.til.recasting.Recasting.MODID;
 /**
  * 铁砧材料与特殊 SE：
  * <ul>
- *   <li>左侧拔刀剑 + 右侧渊寂火 → 去除特殊 SE（保留刀）</li>
- *   <li>左侧拔刀剑 + 右侧聚散变体 → 提取特殊 SE 结晶（刀损毁）</li>
+ *   <li>左侧拔刀剑 + 右侧渊寂火 → 去除首个特殊 SE（保留刀）</li>
+ *   <li>左侧拔刀剑 + 右侧聚散变体 → 提取首个特殊 SE 结晶（刀损毁）</li>
  * </ul>
  */
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -28,7 +28,7 @@ public class AnvilSpecialEffectExtractionHandler {
     private static final int SPECIAL_SE_CRYSTAL_LEVEL = 1;
 
     /**
-     * 铁砧预览：刀配渊寂火用于去除，刀配聚散变体用于提取。
+     * 铁砧预览：刀配渊寂火用于去除，刀配聚散变体用于提取；多特殊 SE 时均取第一个。
      */
     @SubscribeEvent
     public static void onAnvilUpdate(AnvilUpdateEvent event) {
@@ -36,7 +36,7 @@ public class AnvilSpecialEffectExtractionHandler {
         ItemStack rightItem = event.getRight();
         String inputName = event.getName();
 
-        // 刀 + 火 → 去除特殊 SE
+        // 刀 + 火 → 去除首个特殊 SE
         if (leftItem.getItem() instanceof ItemSlashBlade && rightItem.is(RecastingItems.ABYSS_FLAME.get())) {
             Optional<BladeSpecialEffectHelper.EffectEntry> specialSE =
                     BladeSpecialEffectHelper.findFirstSpecialEffect(leftItem);
@@ -44,14 +44,14 @@ public class AnvilSpecialEffectExtractionHandler {
                 return;
             }
 
+            BladeSpecialEffectHelper.EffectEntry entry = specialSE.get();
             ItemStack output = leftItem.copy();
             output.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState ->
                     output.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION)
-                            .ifPresent(properties -> BladeSpecialEffectHelper.removeSpecialEffectsExcept(
-                                    bladeState,
-                                    properties,
-                                    null
-                            ))
+                            .ifPresent(properties -> {
+                                bladeState.removeSpecialEffect(entry.id());
+                                properties.setExtendedSpecialLevels(entry.id(), 0);
+                            })
             );
             if (inputName != null && !inputName.isEmpty()) {
                 output.setHoverName(Component.literal(inputName));
@@ -62,7 +62,7 @@ public class AnvilSpecialEffectExtractionHandler {
             return;
         }
 
-        // 刀 + 聚散变体 → 提取特殊 SE 结晶
+        // 刀 + 聚散变体 → 提取首个特殊 SE 结晶
         if (leftItem.getItem() instanceof ItemSlashBlade && rightItem.is(RecastingItems.GATHERING_PARTING_VARIANT.get())) {
             Optional<BladeSpecialEffectHelper.EffectEntry> specialSE =
                     BladeSpecialEffectHelper.findFirstSpecialEffect(leftItem);

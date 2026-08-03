@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-30T00:45:04.8984928	Recasting SlashBlade Recipes
+// 1.20.1	2026-08-03T21:12:20.0901366	Recasting SlashBlade Recipes
 a74627e490b2ab2d41e968543fdb44be214ba575 data/recasting/advancements/recipes/combat/art_knife_recipe.json
 5b776b6b4b893a97c920025c199a758aed3f4e1b data/recasting/advancements/recipes/combat/azure_vista_lambda_recipe.json
 28b6a154a874fbaad038a27535bf0a28f6401d5c data/recasting/advancements/recipes/combat/azure_vista_recipe.json
@@ -59,6 +59,7 @@ e28f787a22e4f3dea9387e1ba75dd2c34fb89b4b data/recasting/advancements/recipes/com
 3e415cb5fe0b63d8203d6cec89ed0cf9393dbb60 data/recasting/advancements/recipes/combat/shine_tea_recipe.json
 c2e0b6d274891dea5bd88b6ded718984f1c16b0f data/recasting/advancements/recipes/combat/silver_wing_lambda_recipe.json
 da0b0a6f3ec83e02dd8e7517ec579167b64825b6 data/recasting/advancements/recipes/combat/silver_wing_recipe.json
+e167510c2e76514c9a9bfda376a09fc7ef4f0dcb data/recasting/advancements/recipes/combat/soulblade_lambda_recipe.json
 7ff465a5e1ad22dacc6883d406c1290df76333a1 data/recasting/advancements/recipes/combat/soulblade_recipe.json
 02e70b06b13fac18a69293af6c8f7859c7bf382a data/recasting/advancements/recipes/combat/startled_swan_lambda_recipe.json
 dcd740232603b76eaa0279297cdcd670cc89f661 data/recasting/advancements/recipes/combat/startled_swan_recipe.json
@@ -136,6 +137,7 @@ c0054be6dab9757ed126beb25019ee45616d2ca9 data/recasting/recipes/onikiri_recipe.j
 a87f0cd8624024466c8a0056a830a1869c2fffe3 data/recasting/recipes/shine_tea_recipe.json
 c5c6491e6a8329e8c723392d5775843d20b14f13 data/recasting/recipes/silver_wing_lambda_recipe.json
 a88a022007baff87f75936ce919e6794eabaf922 data/recasting/recipes/silver_wing_recipe.json
+44c59f1e306beeb48c6790bfa8d70888743e97ee data/recasting/recipes/soulblade_lambda_recipe.json
 4f9c9a639a3e07e7015b13e2b2c80dc222d95206 data/recasting/recipes/soulblade_recipe.json
 0cb8466387d91694dc214415182cd2995470e865 data/recasting/recipes/startled_swan_lambda_recipe.json
 effd6b2e791caaff7b3d99fda5bdf5f8e18aa471 data/recasting/recipes/startled_swan_recipe.json

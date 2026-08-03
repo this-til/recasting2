@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-30T00:07:11.1044444	Recasting SlashBlade Definition Registry
+// 1.20.1	2026-08-03T21:12:20.0766114	Recasting SlashBlade Definition Registry
 54425988bdb3a6427dded3c85502e41a5a724eb4 data/recasting/slashblade/named_blades/slashblade/art_knife.json
 27cc0a4d8612701f8f9f634d314d012ae698e421 data/recasting/slashblade/named_blades/slashblade/azure_vista.json
 0ee980c23e6abdef3038b42c7df4618d9da50b48 data/recasting/slashblade/named_blades/slashblade/azure_vista_lambda.json
@@ -60,14 +60,15 @@ fb46318b01605e2757b3062973d5eda11273ddca data/recasting/slashblade/named_blades/
 54b333ba0fd84d14f5d931571d24b180836991c5 data/recasting/slashblade/named_blades/slashblade/silver_wing.json
 fd10e070b65cb8d0fa4e5f6fa89045f416e8e3dc data/recasting/slashblade/named_blades/slashblade/silver_wing_lambda.json
 ac45c9155e506b629b37453e2195ab71dc16752d data/recasting/slashblade/named_blades/slashblade/soulblade.json
+63faeb10cdfcc7c12d82b490247d75298ada0e6b data/recasting/slashblade/named_blades/slashblade/soulblade_lambda.json
 46f9417f33cf14e2d115728e9b28590c06ed0e24 data/recasting/slashblade/named_blades/slashblade/special/htod.json
 352fa8e7b73bf07a6517e77399db336ce725c66a data/recasting/slashblade/named_blades/slashblade/special/htod_lambda.json
 d6c68b6d23e701cc36ee82c1f164e7a656a0bb59 data/recasting/slashblade/named_blades/slashblade/special/til.json
 22779b1b03f5331913e5fc15118cb5c170537b5f data/recasting/slashblade/named_blades/slashblade/special/til_lambda.json
-744e6702f762c7bf2529912fc4a723020620e1b0 data/recasting/slashblade/named_blades/slashblade/special/tu_wu.json
+2c8798d9176b2a92a2aadf6c248d0c02b4203e06 data/recasting/slashblade/named_blades/slashblade/special/tu_wu.json
 add391b8668c1acc7704ea09ff131f823e6500e0 data/recasting/slashblade/named_blades/slashblade/special/xing_kong.json
 8d170a582f046380db41faceb991fd86aaafa20c data/recasting/slashblade/named_blades/slashblade/special/xing_kong_lambda.json
-6819fec3ff5a431d2f12256b6930fc2557448212 data/recasting/slashblade/named_blades/slashblade/special/xuan_yuan_liberated.json
+d20d2b64c3b3a02b29973c60b201081703bfc8b4 data/recasting/slashblade/named_blades/slashblade/special/xuan_yuan_liberated.json
 4af131bef6969890e6f4f8c21099b5345f0c5269 data/recasting/slashblade/named_blades/slashblade/startled_swan.json
 2873ac2dda9b6a6a28be35ed4dcf375e5e9e8e9f data/recasting/slashblade/named_blades/slashblade/startled_swan_lambda.json
 eb1f9f2363de610c02272b8193a6260350e5bc8e data/recasting/slashblade/named_blades/slashblade/star/star_1.json
@@ -84,4 +85,3 @@ e807d9ba01e581697da6e4834587b536ca12507e data/recasting/slashblade/named_blades/
 4bbbd15d5bc93fd70cb7e2751186fe2fb8984fb1 data/recasting/slashblade/named_blades/slashblade/void/void_3.json
 a0d67541c88a7c801b028f44adac951115611169 data/recasting/slashblade/named_blades/slashblade/wind_cloud.json
 b90118a635bc72fcf847a97870d691f3f84f5c21 data/recasting/slashblade/named_blades/slashblade/wind_cloud_lambda.json
-b27e5430423d900eecb207740d33666375a12e29 data/recasting/slashblade/named_blades/slashblade/xuan_yuan.json

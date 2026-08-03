@@ -80,6 +80,12 @@ public class AnvilSpecialEffectEngravingHandler {
             AtomicInteger currentLevel = new AtomicInteger(0);
             leftItem.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> currentLevel.set(extension.getExtendedSpecialLevels(seLocation)));
 
+            boolean isCreativeMode = false;
+            Player player = event.getPlayer();
+            if (player != null) {
+                isCreativeMode = player.getAbilities().instabuild;
+            }
+
             // 条件判断
             if (crystalLevel == 0) {
                 // 抹去特效时，必须拥有该特效
@@ -90,13 +96,6 @@ public class AnvilSpecialEffectEngravingHandler {
                 // 提升等级时，结晶等级必须大于当前等级
                 if (crystalLevel <= currentLevel.get()) {
                     return; // 结晶等级不高于当前等级，无法提升
-                }
-
-                // 检查玩家是否在创造模式（排除创造模式的限制）
-                boolean isCreativeMode = false;
-                Player player = event.getPlayer();
-                if (player != null) {
-                    isCreativeMode = player.getAbilities().instabuild;
                 }
 
                 // 检查SE数量限制（创造模式跳过限制）
@@ -112,9 +111,13 @@ public class AnvilSpecialEffectEngravingHandler {
             ItemStack output = leftItem.copy();
 
             if (crystalLevel > 0) {
+                boolean switchSpecialSe = extendedSE.isSpecial()
+                        && !isCreativeMode
+                        && !Config.isUnlimitedSeEngraving();
                 output.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState ->
                         output.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> {
-                            if (extendedSE.isSpecial() && !Config.isUnlimitedSeEngraving()) {
+                            // 生存：特殊 SE 切换；创造：允许多铭刻
+                            if (switchSpecialSe) {
                                 BladeSpecialEffectHelper.removeSpecialEffectsExcept(
                                         bladeState,
                                         extension,
