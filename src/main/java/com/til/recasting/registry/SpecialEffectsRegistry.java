@@ -137,6 +137,24 @@ public class SpecialEffectsRegistry {
             .setMaxLevel(1)
             .setSpecial(true));
 
+    // 指令映射 - 触发幻影剑剑技后按间隔额外发动；普通额外 2 次，λ 额外 3 次
+    public static final RegistryObject<SpecialEffect> COMMAND_MAPPING = registerExtendedSE(
+            "command_mapping",
+            () -> new CommandMappingSpecialEffect()
+                    .setExtraTriggers(2)
+                    .setDelayTicks(20)
+                    .setMaxLevel(1)
+                    .setSpecial(true)
+    );
+    public static final RegistryObject<SpecialEffect> COMMAND_MAPPING_LAMBDA = registerExtendedSE(
+            "command_mapping_lambda",
+            () -> new CommandMappingSpecialEffect()
+                    .setExtraTriggers(3)
+                    .setDelayTicks(20)
+                    .setMaxLevel(1)
+                    .setSpecial(true)
+    );
+
     // 屠巫血咒 - 手持；阶梯 grade0→3：轩辕λ > 轩辕 > 屠巫λ > 屠巫
     // 增伤基础 0.33，每级 ×1.2；proudPerDamage 基础 200 每级 ×0.67
     // maxProudPerHit / protectThreshold：5000→3000 线性，下限 3000

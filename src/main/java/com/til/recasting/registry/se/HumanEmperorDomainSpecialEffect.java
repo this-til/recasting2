@@ -13,12 +13,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
  * 人皇领域
- * 背包触发：驱散负面、每 tick 回血、秒杀兜底、耀魂修刀。
+ * 背包触发：驱散负面、每 tick 回血、免疫击退、屏蔽着火屏幕叠层、秒杀兜底、耀魂修刀。
  * 增伤与致命抵挡由 {@link EmperorLineSeHelper} / ProudSoulLethalAbsorbHelper 按最高阶结算。
  */
 @Getter
@@ -55,6 +56,18 @@ public class HumanEmperorDomainSpecialEffect extends ExtendedSpecialEffect imple
         BuffSuppressHandler.dispelHarmful(player);
         player.heal(healPerTick);
         tryRepairInventoryBlade(player, active.state(), repairProudCost);
+    }
+
+    @SubscribeEvent
+    public void onLivingKnockBack(LivingKnockBackEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (entity.level().isClientSide()) {
+            return;
+        }
+        if (!EmperorLineSeHelper.isActiveEmperorEffect(entity, this)) {
+            return;
+        }
+        event.setCanceled(true);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
