@@ -75,6 +75,7 @@ public final class ProudSoulBagStorage {
             entry.putLong(ENTRY_COUNT_KEY, existing + amount);
         } else {
             CompoundTag entry = new CompoundTag();
+            // 完整序列化模板（含 Enchantments / ForgeCaps），避免附魔等标签丢失
             entry.put(ENTRY_ITEM_KEY, template.save(new CompoundTag()));
             entry.putLong(ENTRY_COUNT_KEY, amount);
             list.add(entry);

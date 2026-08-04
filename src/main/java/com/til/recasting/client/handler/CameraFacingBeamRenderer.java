@@ -6,7 +6,9 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import com.til.recasting.client.RecastingShaderHandler;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 
@@ -15,13 +17,15 @@ public final class CameraFacingBeamRenderer {
     private static final double MIN_LENGTH_SQUARED = 1.0E-8;
     private static final BufferBuilder BUFFER = new BufferBuilder(256 * 1024);
 
+    private static BlendMode currentMode = BlendMode.ADDITIVE;
+
     /**
      * 线段混合模式。
      * <p>
      * {@link #ADDITIVE} 适合亮色发光；暗色在加法混合下几乎不可见，应改用 {@link #TRANSLUCENT}。
      */
     public enum BlendMode {
-        /** SRC_ALPHA, ONE — 越亮越显，黑色无贡献 */
+        /** ONE/ONE + HDR 晕 — 越亮越显，黑色无贡献 */
         ADDITIVE,
         /** SRC_ALPHA, ONE_MINUS_SRC_ALPHA — 可正确显示黑色/暗色 */
         TRANSLUCENT
@@ -37,6 +41,7 @@ public final class CameraFacingBeamRenderer {
 
     public static void begin(BlendMode blendMode) {
         flushIfBuilding();
+        currentMode = blendMode;
         RenderSystem.enableDepthTest();
         RenderSystem.depthMask(true);
         RenderSystem.enableBlend();
@@ -45,12 +50,28 @@ public final class CameraFacingBeamRenderer {
                     GlStateManager.SourceFactor.SRC_ALPHA,
                     GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
             );
+            RenderSystem.setShader(GameRenderer::getRendertypeLightningShader);
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+            BUFFER.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         } else {
-            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+            ShaderInstance bloom = RecastingShaderHandler.getBeamBloom();
+            if (bloom != null) {
+                RenderSystem.blendFuncSeparate(
+                        GlStateManager.SourceFactor.ONE,
+                        GlStateManager.DestFactor.ONE,
+                        GlStateManager.SourceFactor.ONE,
+                        GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
+                );
+                RenderSystem.setShader(() -> bloom);
+                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+                BUFFER.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
+            } else {
+                RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+                RenderSystem.setShader(GameRenderer::getRendertypeLightningShader);
+                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+                BUFFER.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+            }
         }
-        RenderSystem.setShader(GameRenderer::getRendertypeLightningShader);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        BUFFER.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
     }
 
     public static void end() {
@@ -104,10 +125,11 @@ public final class CameraFacingBeamRenderer {
         }
         side = side.normalize().scale(halfWidth);
 
-        putVertex(matrix, camera, start.subtract(side), red, green, blue, alpha);
-        putVertex(matrix, camera, start.add(side), red, green, blue, alpha);
-        putVertex(matrix, camera, end.add(side), red, green, blue, alpha);
-        putVertex(matrix, camera, end.subtract(side), red, green, blue, alpha);
+        boolean withUv = currentMode == BlendMode.ADDITIVE && RecastingShaderHandler.getBeamBloom() != null;
+        putVertex(matrix, camera, start.subtract(side), red, green, blue, alpha, 0.0f, -1.0f, withUv);
+        putVertex(matrix, camera, start.add(side), red, green, blue, alpha, 0.0f, 1.0f, withUv);
+        putVertex(matrix, camera, end.add(side), red, green, blue, alpha, 1.0f, 1.0f, withUv);
+        putVertex(matrix, camera, end.subtract(side), red, green, blue, alpha, 1.0f, -1.0f, withUv);
     }
 
     private static void flushIfBuilding() {
@@ -123,15 +145,20 @@ public final class CameraFacingBeamRenderer {
             float red,
             float green,
             float blue,
-            float alpha
+            float alpha,
+            float u,
+            float v,
+            boolean withUv
     ) {
-        BUFFER.vertex(
-                        matrix,
-                        (float) (position.x - camera.x),
-                        (float) (position.y - camera.y),
-                        (float) (position.z - camera.z)
-                )
-                .color(red, green, blue, alpha)
-                .endVertex();
+        var builder = BUFFER.vertex(
+                matrix,
+                (float) (position.x - camera.x),
+                (float) (position.y - camera.y),
+                (float) (position.z - camera.z)
+        ).color(red, green, blue, alpha);
+        if (withUv) {
+            builder.uv(u, v);
+        }
+        builder.endVertex();
     }
 }

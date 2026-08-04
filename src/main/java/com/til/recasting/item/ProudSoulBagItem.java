@@ -43,7 +43,7 @@ public class ProudSoulBagItem extends Item {
                             (containerId, inventory, p) -> new ProudSoulBagMenu(containerId, inventory, hand),
                             bag.getHoverName()
                     ),
-                    buf -> buf.writeEnum(hand)
+                    buf -> ProudSoulBagMenu.writeOpenData(buf, hand, bag)
             );
         }
         return InteractionResultHolder.sidedSuccess(bag, level.isClientSide());

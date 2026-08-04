@@ -1,6 +1,7 @@
 package com.til.recasting.handler;
 
 import com.til.recasting.Recasting;
+import com.til.recasting.inventory.ProudSoulBagMenu;
 import com.til.recasting.item.ProudSoulBagStorage;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -33,6 +34,9 @@ public class ProudSoulBagCollectHandler {
         }
         int before = stack.getCount();
         ProudSoulBagStorage.insert(bag, stack);
+        if (stack.getCount() != before && player.containerMenu instanceof ProudSoulBagMenu menu) {
+            menu.syncContentsToClient(player);
+        }
         if (stack.isEmpty()) {
             event.setCanceled(true);
             itemEntity.discard();

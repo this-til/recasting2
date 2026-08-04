@@ -4,11 +4,13 @@ import com.til.recasting.inventory.ProudSoulBagMenu;
 import com.til.recasting.item.ProudSoulBagStorage;
 import com.til.recasting.network.NetworkManager;
 import com.til.recasting.network.ProudSoulBagActionMessage;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * 耀魂背包界面：搜索、分页、AE2 风格虚拟格交互。
@@ -27,51 +30,65 @@ import java.util.Locale;
 @OnlyIn(Dist.CLIENT)
 public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu> {
 
+    /**
+     * 与双层箱子 GUI 同尺寸（176×222）。
+     * 虚拟格使用箱子前 5 行（y=18 起）；第 6 行用面板色盖住。
+     */
+    private static final ResourceLocation BACKGROUND =
+            ResourceLocation.fromNamespaceAndPath("minecraft", "textures/gui/container/generic_54.png");
+
+    /** 原版双层箱子面板灰，用于遮罩多余格子 */
+    private static final int PANEL_COLOR = 0xFFC6C6C6;
+
     private static final int GRID_LEFT = 8;
-    private static final int GRID_TOP = 36;
+    private static final int GRID_TOP = 18;
     private static final int SLOT_SIZE = 18;
 
     private EditBox searchBox;
     private int page;
     private SortMode sortMode = SortMode.NAME;
-    private List<IndexedEntry> frozenView = List.of();
+    /** 按住 Shift 时冻结展示顺序（仅模板身份），数量仍从最新同步数据解析。 */
+    private List<ItemStack> frozenOrderKeys = List.of();
     private boolean wasShiftDown;
 
     public ProudSoulBagScreen(ProudSoulBagMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
         this.imageWidth = 176;
         this.imageHeight = 222;
-        this.inventoryLabelY = this.imageHeight - 94;
+        this.titleLabelY = 6;
+        this.inventoryLabelY = 126;
     }
 
     @Override
     protected void init() {
         super.init();
-        this.searchBox = new EditBox(this.font, this.leftPos + 8, this.topPos + 18, 100, 12, Component.literal("Search"));
+        // 搜索框放在标题行右侧，避免压住第一行格子
+        this.searchBox = new EditBox(this.font, this.leftPos + 70, this.topPos + 5, 60, 12, Component.literal("Search"));
         this.searchBox.setMaxLength(64);
         this.searchBox.setBordered(true);
         this.searchBox.setValue("");
         this.addWidget(this.searchBox);
 
         this.addRenderableWidget(Button.builder(Component.literal("<"), b -> changePage(-1))
-                .bounds(this.leftPos + 112, this.topPos + 16, 18, 16)
-                .build());
-        this.addRenderableWidget(Button.builder(Component.literal(">"), b -> changePage(1))
-                .bounds(this.leftPos + 152, this.topPos + 16, 18, 16)
+                .bounds(this.leftPos + 132, this.topPos + 4, 12, 12)
                 .build());
         this.addRenderableWidget(Button.builder(Component.literal("S"), b -> cycleSort())
-                .bounds(this.leftPos + 132, this.topPos + 16, 18, 16)
+                .bounds(this.leftPos + 146, this.topPos + 4, 12, 12)
+                .build());
+        this.addRenderableWidget(Button.builder(Component.literal(">"), b -> changePage(1))
+                .bounds(this.leftPos + 160, this.topPos + 4, 12, 12)
                 .build());
     }
 
     private void cycleSort() {
         this.sortMode = this.sortMode == SortMode.NAME ? SortMode.AMOUNT : SortMode.NAME;
         this.page = 0;
+        this.frozenOrderKeys = List.of();
         this.wasShiftDown = false;
     }
 
     private void changePage(int delta) {
-        int maxPage = Math.max(0, (filteredEntries().size() - 1) / ProudSoulBagMenu.PAGE_SIZE);
+        int maxPage = Math.max(0, (viewEntries().size() - 1) / ProudSoulBagMenu.PAGE_SIZE);
         this.page = Math.max(0, Math.min(maxPage, this.page + delta));
     }
 
@@ -83,42 +100,22 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
         }
         boolean shift = hasShiftDown();
         if (shift && !wasShiftDown) {
-            frozenView = filteredEntries();
+            // 只锁定顺序，不锁数量；避免连续 Shift 操作要等松手才看到变化
+            this.frozenOrderKeys = filteredEntries().stream()
+                    .map(entry -> entry.entry().template().copyWithCount(1))
+                    .toList();
         }
         if (!shift) {
-            frozenView = List.of();
+            this.frozenOrderKeys = List.of();
         }
         wasShiftDown = shift;
     }
 
     @Override
     protected void renderBg(@NotNull GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        int x = this.leftPos;
-        int y = this.topPos;
-        graphics.fill(x, y, x + imageWidth, y + imageHeight, 0xFFC6C6C6);
-        graphics.fill(x + 4, y + 4, x + imageWidth - 4, y + 132, 0xFF8B8B8B);
-
-        for (int row = 0; row < ProudSoulBagMenu.GRID_ROWS; row++) {
-            for (int col = 0; col < ProudSoulBagMenu.GRID_COLUMNS; col++) {
-                int sx = x + GRID_LEFT + col * SLOT_SIZE;
-                int sy = y + GRID_TOP + row * SLOT_SIZE;
-                graphics.fill(sx, sy, sx + 16, sy + 16, 0xFF373737);
-            }
-        }
-
-        // 玩家物品栏背景槽
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 9; col++) {
-                int sx = x + 8 + col * 18;
-                int sy = y + 140 + row * 18;
-                graphics.fill(sx - 1, sy - 1, sx + 17, sy + 17, 0xFF8B8B8B);
-            }
-        }
-        for (int col = 0; col < 9; col++) {
-            int sx = x + 8 + col * 18;
-            int sy = y + 198;
-            graphics.fill(sx - 1, sy - 1, sx + 17, sy + 17, 0xFF8B8B8B);
-        }
+        graphics.blit(BACKGROUND, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+        // 盖住第 6 行箱子格（y=108），本界面只用前 5 行虚拟格
+        graphics.fill(this.leftPos + 7, this.topPos + 107, this.leftPos + 169, this.topPos + 125, PANEL_COLOR);
     }
 
     @Override
@@ -129,6 +126,9 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
         List<IndexedEntry> pageEntries = currentPageEntries();
         for (int i = 0; i < pageEntries.size(); i++) {
             IndexedEntry entry = pageEntries.get(i);
+            if (entry.entry().count() <= 0 || entry.storageIndex() < 0) {
+                continue;
+            }
             int col = i % ProudSoulBagMenu.GRID_COLUMNS;
             int row = i / ProudSoulBagMenu.GRID_COLUMNS;
             int sx = this.leftPos + GRID_LEFT + col * SLOT_SIZE;
@@ -143,17 +143,24 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
         }
 
         int maxPage = Math.max(0, (viewEntries().size() - 1) / ProudSoulBagMenu.PAGE_SIZE);
-        graphics.drawString(this.font, (page + 1) + "/" + (maxPage + 1), this.leftPos + 112, this.topPos + 6, 0x404040, false);
+        graphics.drawString(
+                this.font,
+                (page + 1) + "/" + (maxPage + 1),
+                this.leftPos + 48,
+                this.topPos + 6,
+                0x404040,
+                false
+        );
 
         int hovered = hoveredVirtualIndex(mouseX, mouseY);
         if (hovered >= 0 && hovered < pageEntries.size()) {
             IndexedEntry entry = pageEntries.get(hovered);
-            ItemStack tip = entry.entry().template().copy();
-            tip.setCount(1);
-            List<Component> lines = new ArrayList<>();
-            lines.add(tip.getHoverName());
-            lines.add(Component.literal(String.valueOf(entry.entry().count())));
-            graphics.renderComponentTooltip(this.font, lines, mouseX, mouseY);
+            if (entry.storageIndex() >= 0 && entry.entry().count() > 0) {
+                ItemStack tip = entry.entry().template().copyWithCount(1);
+                List<Component> lines = new ArrayList<>(getTooltipFromItem(this.minecraft, tip));
+                lines.add(Component.literal(String.valueOf(entry.entry().count())).withStyle(ChatFormatting.DARK_GRAY));
+                graphics.renderTooltip(this.font, lines, Optional.empty(), mouseX, mouseY);
+            }
         }
 
         this.renderTooltip(graphics, mouseX, mouseY);
@@ -185,6 +192,9 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
             }
             if (local < pageEntries.size()) {
                 int storageIndex = pageEntries.get(local).storageIndex();
+                if (storageIndex < 0 || pageEntries.get(local).entry().count() <= 0) {
+                    return true;
+                }
                 if (hasShiftDown() && button == 0) {
                     sendAction(ProudSoulBagMenu.Action.SHIFT_CLICK, storageIndex);
                 } else if (button == 0) {
@@ -205,6 +215,9 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
             List<IndexedEntry> pageEntries = currentPageEntries();
             if (local < pageEntries.size()) {
                 int storageIndex = pageEntries.get(local).storageIndex();
+                if (storageIndex < 0 || pageEntries.get(local).entry().count() <= 0) {
+                    return true;
+                }
                 if (delta > 0) {
                     sendAction(ProudSoulBagMenu.Action.ROLL_EXTRACT_ONE, storageIndex);
                 } else {
@@ -272,10 +285,61 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
     }
 
     private List<IndexedEntry> viewEntries() {
-        if (hasShiftDown() && !frozenView.isEmpty()) {
-            return frozenView;
+        if (hasShiftDown() && !frozenOrderKeys.isEmpty()) {
+            return resolveFrozenView();
         }
         return filteredEntries();
+    }
+
+    /**
+     * 保持 Shift 按下瞬间的相对顺序，数量与 storageIndex 用最新同步数据刷新；
+     * 已取空的类型直接移除（不留空气位），新出现的类型追加到末尾。
+     */
+    private List<IndexedEntry> resolveFrozenView() {
+        List<ProudSoulBagStorage.StoredEntry> raw = this.menu.getDisplayEntries();
+        String query = this.searchBox == null ? "" : this.searchBox.getValue().trim().toLowerCase(Locale.ROOT);
+        List<IndexedEntry> result = new ArrayList<>(frozenOrderKeys.size());
+        List<ItemStack> nextKeys = new ArrayList<>(frozenOrderKeys.size());
+
+        for (ItemStack key : frozenOrderKeys) {
+            IndexedEntry matched = null;
+            for (int i = 0; i < raw.size(); i++) {
+                ProudSoulBagStorage.StoredEntry entry = raw.get(i);
+                if (entry.count() <= 0 || !ItemStack.isSameItemSameTags(entry.template(), key)) {
+                    continue;
+                }
+                matched = new IndexedEntry(i, entry);
+                break;
+            }
+            // 已取空或不匹配搜索：直接丢掉，禁止留下 air 占位
+            if (matched == null || !matchesSearch(matched.entry().template(), query)) {
+                continue;
+            }
+            result.add(matched);
+            nextKeys.add(matched.entry().template().copyWithCount(1));
+        }
+
+        for (int i = 0; i < raw.size(); i++) {
+            ProudSoulBagStorage.StoredEntry entry = raw.get(i);
+            if (entry.count() <= 0) {
+                continue;
+            }
+            boolean already = false;
+            for (ItemStack key : nextKeys) {
+                if (ItemStack.isSameItemSameTags(entry.template(), key)) {
+                    already = true;
+                    break;
+                }
+            }
+            if (already || !matchesSearch(entry.template(), query)) {
+                continue;
+            }
+            result.add(new IndexedEntry(i, entry));
+            nextKeys.add(entry.template().copyWithCount(1));
+        }
+
+        this.frozenOrderKeys = List.copyOf(nextKeys);
+        return result;
     }
 
     private List<IndexedEntry> currentPageEntries() {
@@ -289,16 +353,13 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
     }
 
     private List<IndexedEntry> filteredEntries() {
-        List<ProudSoulBagStorage.StoredEntry> raw = ProudSoulBagStorage.list(this.menu.getBagStack());
+        List<ProudSoulBagStorage.StoredEntry> raw = this.menu.getDisplayEntries();
         String query = this.searchBox == null ? "" : this.searchBox.getValue().trim().toLowerCase(Locale.ROOT);
         List<IndexedEntry> result = new ArrayList<>();
         for (int i = 0; i < raw.size(); i++) {
             ProudSoulBagStorage.StoredEntry entry = raw.get(i);
-            if (!query.isEmpty()) {
-                String name = entry.template().getHoverName().getString().toLowerCase(Locale.ROOT);
-                if (!name.contains(query)) {
-                    continue;
-                }
+            if (!matchesSearch(entry.template(), query)) {
+                continue;
             }
             result.add(new IndexedEntry(i, entry));
         }
@@ -308,6 +369,28 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
             result.sort(Comparator.comparingLong((IndexedEntry e) -> e.entry().count()).reversed());
         }
         return result;
+    }
+
+    /**
+     * 搜索匹配物品名与完整 tooltip（含 {@code appendHoverText} / 附魔等）。
+     */
+    private boolean matchesSearch(ItemStack stack, String query) {
+        if (query.isEmpty() || stack.isEmpty()) {
+            return true;
+        }
+        if (stack.getHoverName().getString().toLowerCase(Locale.ROOT).contains(query)) {
+            return true;
+        }
+        if (this.minecraft == null) {
+            return false;
+        }
+        ItemStack tipStack = stack.copyWithCount(1);
+        for (Component line : getTooltipFromItem(this.minecraft, tipStack)) {
+            if (line.getString().toLowerCase(Locale.ROOT).contains(query)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static String formatCount(long count) {

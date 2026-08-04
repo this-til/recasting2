@@ -50,6 +50,13 @@ public class NetworkManager {
                 ProudSoulBagActionMessage::decode,
                 ProudSoulBagActionMessage::handle
         );
+        INSTANCE.registerMessage(
+                id++,
+                ProudSoulBagSyncMessage.class,
+                ProudSoulBagSyncMessage::encode,
+                ProudSoulBagSyncMessage::decode,
+                ProudSoulBagSyncMessage::handle
+        );
     }
 }
 

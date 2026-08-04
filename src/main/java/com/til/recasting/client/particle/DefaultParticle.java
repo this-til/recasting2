@@ -13,7 +13,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
+import com.til.recasting.client.RecastingShaderHandler;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
@@ -336,14 +338,26 @@ public class DefaultParticle extends Particle {
                 RenderSystem.depthMask(false);
                 RenderSystem.enableBlend();
                 if (additive) {
-                    RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+                    ShaderInstance bloom = RecastingShaderHandler.getParticleBloom();
+                    if (bloom != null) {
+                        RenderSystem.blendFuncSeparate(
+                                GlStateManager.SourceFactor.ONE,
+                                GlStateManager.DestFactor.ONE,
+                                GlStateManager.SourceFactor.ONE,
+                                GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
+                        );
+                        RenderSystem.setShader(() -> bloom);
+                    } else {
+                        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+                        RenderSystem.setShader(GameRenderer::getParticleShader);
+                    }
                 } else {
                     RenderSystem.blendFunc(
                             GlStateManager.SourceFactor.SRC_ALPHA,
                             GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
                     );
+                    RenderSystem.setShader(GameRenderer::getParticleShader);
                 }
-                RenderSystem.setShader(GameRenderer::getParticleShader);
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                 RenderSystem.setShaderTexture(0, texture);
                 textureManager.getTexture(texture).setFilter(true, false);

@@ -33,6 +33,7 @@ public class ClientSetup {
     public static void initRegistries(IEventBus modEventBus) {
         EntityRenderExtensionRegistry.ENTITY_RENDER_EXTENSIONS.register(modEventBus);
         BuffLevelRendererRegistry.BUFF_LEVEL_RENDER_CONFIGS.register(modEventBus);
+        RecastingShaderHandler.register(modEventBus);
     }
 
     /**

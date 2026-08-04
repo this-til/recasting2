@@ -2,6 +2,7 @@ package com.til.recasting.handler;
 
 import com.til.recasting.Config;
 import com.til.recasting.Recasting;
+import com.til.recasting.inventory.ProudSoulBagMenu;
 import com.til.recasting.registry.requir.SlashBladeItems;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.util.RandomSource;
@@ -57,8 +58,9 @@ public class ProudSoulDropHandler {
     }
 
     private static void giveProudSoul(Player player, ItemStack stack) {
-        if (ProudSoulBagHelper.tryInsertIntoAnyBag(player, stack) && stack.isEmpty()) {
-            return;
+        boolean inserted = ProudSoulBagHelper.tryInsertIntoAnyBag(player, stack);
+        if (inserted && player.containerMenu instanceof ProudSoulBagMenu menu) {
+            menu.syncContentsToClient(player);
         }
         if (!stack.isEmpty()) {
             ItemHandlerHelper.giveItemToPlayer(player, stack);

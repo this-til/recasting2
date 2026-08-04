@@ -2,8 +2,11 @@ package com.til.recasting.inventory;
 
 import com.til.recasting.item.ProudSoulBagItem;
 import com.til.recasting.item.ProudSoulBagStorage;
+import com.til.recasting.network.NetworkManager;
+import com.til.recasting.network.ProudSoulBagSyncMessage;
 import com.til.recasting.registry.RecastingMenus;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -11,7 +14,13 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 耀魂背包菜单：仅含玩家背包槽；虚拟存储格由网络包驱动。
@@ -26,8 +35,26 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
     private final Inventory playerInventory;
     private final int bagInventoryIndex;
 
+    /**
+     * 客户端显示用缓存；由 {@link ProudSoulBagSyncMessage} 更新，避免依赖物品栏 NBT 延迟同步。
+     */
+    private List<ProudSoulBagStorage.StoredEntry> clientEntries = Collections.emptyList();
+    private boolean clientEntriesReady;
+
     public ProudSoulBagMenu(int containerId, Inventory playerInventory, FriendlyByteBuf buf) {
         this(containerId, playerInventory, buf.readEnum(InteractionHand.class));
+        int size = buf.readVarInt();
+        List<ProudSoulBagStorage.StoredEntry> initial = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            ItemStack template = buf.readItem();
+            if (!template.isEmpty()) {
+                template.setCount(1);
+            }
+            long count = buf.readVarLong();
+            initial.add(new ProudSoulBagStorage.StoredEntry(template, count));
+        }
+        this.clientEntries = List.copyOf(initial);
+        this.clientEntriesReady = true;
     }
 
     public ProudSoulBagMenu(int containerId, Inventory playerInventory, InteractionHand hand) {
@@ -38,16 +65,16 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
                 ? playerInventory.selected
                 : Inventory.SLOT_OFFHAND;
 
-        // 主物品栏 27 格
+        // 主物品栏 27 格（对齐 generic_54 六行箱子布局：103 + (6-4)*18 = 139）
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 140 + row * 18));
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 139 + row * 18));
             }
         }
-        // 快捷栏
+        // 快捷栏（161 + 36 = 197）
         for (int col = 0; col < 9; col++) {
             int index = col;
-            this.addSlot(new Slot(playerInventory, index, 8 + col * 18, 198) {
+            this.addSlot(new Slot(playerInventory, index, 8 + col * 18, 197) {
                 @Override
                 public boolean mayPickup(@NotNull Player player) {
                     if (hand == InteractionHand.MAIN_HAND && index == playerInventory.selected) {
@@ -65,6 +92,48 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
 
     public @NotNull ItemStack getBagStack() {
         return playerInventory.getItem(bagInventoryIndex);
+    }
+
+    public void setClientEntries(List<ProudSoulBagStorage.StoredEntry> entries) {
+        this.clientEntries = List.copyOf(entries);
+        this.clientEntriesReady = true;
+    }
+
+    /**
+     * 界面展示用条目：优先已同步缓存，否则回读本地背包 NBT。
+     */
+    public @NotNull List<ProudSoulBagStorage.StoredEntry> getDisplayEntries() {
+        if (clientEntriesReady) {
+            return clientEntries;
+        }
+        return ProudSoulBagStorage.list(getBagStack());
+    }
+
+    public void syncContentsToClient(@Nullable Player player) {
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            return;
+        }
+        // 复制回写，迫使物品栏槽检测到 NBT 变更并参与 vanilla 同步
+        ItemStack bag = getBagStack();
+        if (!bag.isEmpty()) {
+            playerInventory.setItem(bagInventoryIndex, bag.copy());
+        }
+        List<ProudSoulBagStorage.StoredEntry> entries = ProudSoulBagStorage.list(getBagStack());
+        NetworkManager.INSTANCE.send(
+                PacketDistributor.PLAYER.with(() -> serverPlayer),
+                new ProudSoulBagSyncMessage(entries)
+        );
+        broadcastChanges();
+    }
+
+    public static void writeOpenData(FriendlyByteBuf buf, InteractionHand hand, ItemStack bag) {
+        buf.writeEnum(hand);
+        List<ProudSoulBagStorage.StoredEntry> entries = ProudSoulBagStorage.list(bag);
+        buf.writeVarInt(entries.size());
+        for (ProudSoulBagStorage.StoredEntry entry : entries) {
+            buf.writeItem(entry.template());
+            buf.writeVarLong(entry.count());
+        }
     }
 
     @Override
@@ -93,6 +162,7 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
             return ItemStack.EMPTY;
         }
         slot.setChanged();
+        syncContentsToClient(player);
         return copy;
     }
 
@@ -207,7 +277,7 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
             default -> {
             }
         }
-        broadcastChanges();
+        syncContentsToClient(player);
     }
 
     public enum Action {
