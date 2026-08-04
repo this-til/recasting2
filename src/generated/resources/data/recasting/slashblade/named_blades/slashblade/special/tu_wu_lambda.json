@@ -1,0 +1,30 @@
+{
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/special/tu_wu_lambda",
+  "properties": {
+    "attack_base": 13.0,
+    "max_damage": 2496,
+    "slash_art": "recasting:myriad_silence_lambda",
+    "special_effects": [
+      "recasting:tu_wu_blood_curse_lambda"
+    ],
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:tu_wu_blood_curse_lambda": 1
+    }
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/special/tu_wu.obj",
+    "summon_sword_color": -5942661,
+    "texture": "recasting:slashblade/special/tu_wu.png"
+  }
+}

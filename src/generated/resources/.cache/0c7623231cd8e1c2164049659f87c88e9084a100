@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-03T21:12:20.0901366	Recasting SlashBlade Recipes
+// 1.20.1	2026-08-05T03:34:19.8844341	Recasting SlashBlade Recipes
 a74627e490b2ab2d41e968543fdb44be214ba575 data/recasting/advancements/recipes/combat/art_knife_recipe.json
 5b776b6b4b893a97c920025c199a758aed3f4e1b data/recasting/advancements/recipes/combat/azure_vista_lambda_recipe.json
 28b6a154a874fbaad038a27535bf0a28f6401d5c data/recasting/advancements/recipes/combat/azure_vista_recipe.json
@@ -70,6 +70,7 @@ a5a8fe9d19aab364bce0408e737482f22e9727ea data/recasting/advancements/recipes/com
 4de19ff5f3692146c4e0a1346508b688994e5629 data/recasting/advancements/recipes/combat/star_4_recipe.json
 4c887209fee3fcf1271ae1ed7aeaaf1dc3e57efb data/recasting/advancements/recipes/combat/supreme_pole_lambda_recipe.json
 3080ed60d9a20fc599c7bd3409977cdbdece2b8f data/recasting/advancements/recipes/combat/supreme_pole_recipe.json
+ab70b58e9cc456839e375ed42520eaf9709e72de data/recasting/advancements/recipes/combat/tu_wu_lambda_recipe.json
 d87a36db11cfbc9e152d6055e67f5392fe07ca5f data/recasting/advancements/recipes/combat/umbrella_lambda_recipe.json
 fec2478126811ebb0030a3bd816f9c9aba7c391e data/recasting/advancements/recipes/combat/umbrella_recipe.json
 5bed752a19b10f24b566d0bb43d67b335808630e data/recasting/advancements/recipes/combat/void_1_recipe.json
@@ -77,6 +78,7 @@ d1085fe3a90c013dfceb45f1fb829366760e35d2 data/recasting/advancements/recipes/com
 564b1fddc53d2a7a06ab714727beb99dd2beca5b data/recasting/advancements/recipes/combat/void_3_recipe.json
 b6616310bd0008d19693a2c539b5b751db570246 data/recasting/advancements/recipes/combat/wind_cloud_lambda_recipe.json
 a2a8ee2d7da7c006b34d2281af1b3b4e6816df31 data/recasting/advancements/recipes/combat/wind_cloud_recipe.json
+01c5d0f7ea7dccb264eced1820c1b4e17af980fe data/recasting/advancements/recipes/combat/xuan_yuan_liberated_lambda_recipe.json
 f7ba829c5ebe5581ac982bf60f7ba50bb51f188e data/recasting/recipes/art_knife_recipe.json
 13cd168a71a9e8ea2d920e250c104b52bb9d0cfe data/recasting/recipes/azure_vista_lambda_recipe.json
 22758476d88e9e4d7e138afc02b08dcfd0e24f5a data/recasting/recipes/azure_vista_recipe.json
@@ -148,6 +150,7 @@ b11bf8af7a1044562559c50992aa21b71165e45a data/recasting/recipes/star_3_recipe.js
 e880d2ea46435f10354e88a9522d7239f7ec0d4e data/recasting/recipes/star_4_recipe.json
 a05660ed3282f5be32930fe57e3e5f870d37350a data/recasting/recipes/supreme_pole_lambda_recipe.json
 65db89cbc3539c213961447c8211a8e2484a9f3a data/recasting/recipes/supreme_pole_recipe.json
+65e03621c7ae1c37ef0fb4a169fc155fa85904aa data/recasting/recipes/tu_wu_lambda_recipe.json
 f64a90b3fb233465b8bb7c3c304a04c0833a7151 data/recasting/recipes/umbrella_lambda_recipe.json
 41de649779c2a4236cd057ed7715c22cc9bb2e82 data/recasting/recipes/umbrella_recipe.json
 84da10ee5ecf51cbfe19ace08c0dfa38c4720719 data/recasting/recipes/void_1_recipe.json
@@ -155,3 +158,4 @@ f64a90b3fb233465b8bb7c3c304a04c0833a7151 data/recasting/recipes/umbrella_lambda_
 6eb579a0073fee2104bd7f916899f256cf2442f2 data/recasting/recipes/void_3_recipe.json
 da9536d6543eabf3fd145361448f992dec2c4dae data/recasting/recipes/wind_cloud_lambda_recipe.json
 bcce5c64e2f6cc156758166f593c2cc87dd81a3c data/recasting/recipes/wind_cloud_recipe.json
+8565d3e8b3c9fd7bd91d1b9d25243e039d47ae77 data/recasting/recipes/xuan_yuan_liberated_lambda_recipe.json

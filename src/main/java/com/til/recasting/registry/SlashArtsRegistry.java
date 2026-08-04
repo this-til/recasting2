@@ -304,6 +304,12 @@ public class SlashArtsRegistry {
                     .setTargetedChance(0.52f)
     );
 
+    // 回到未来计划 · 时之彼端
+    public static final RegistryObject<ExtendedSlashArts> TIME_BEYOND = registerExtendedSA(
+            "time_beyond",
+            TimeBeyondSlashArts::new
+    );
+
     /**
      * 注册扩展的 SlashArts，自动关联 ComboState
      */

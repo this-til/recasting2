@@ -359,6 +359,8 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtDescKey(SlashArtsRegistry.PHENOMENAL_RETURN), "以视角目标为中心降下绝对伤害次元斩雨，并驱散、压制周围实体的增益效果。", "Rains absolute-damage judgement cuts around the look target while dispelling and suppressing beneficial effects on nearby entities.");
         translation(slashArtKey(SlashArtsRegistry.PHENOMENAL_RETURN_LAMBDA), "^万象归元", "Phenomenal Return Lambda");
         translation(slashArtDescKey(SlashArtsRegistry.PHENOMENAL_RETURN_LAMBDA), "以视角目标为中心降下更久、更广的绝对伤害次元斩雨，并驱散、压制周围实体的增益效果。", "Rains longer and wider absolute-damage judgement cuts around the look target while dispelling and suppressing beneficial effects on nearby entities.");
+        translation(slashArtKey(SlashArtsRegistry.TIME_BEYOND), "[回到未来计划]时之彼端", "[Back to the Future Plan] Time Beyond");
+        translation(slashArtDescKey(SlashArtsRegistry.TIME_BEYOND), "蓄力时加快日夜与周围时间流速，松手释放十字斩；蓄力越久威力越高。", "While charging, accelerates day-night cycle and nearby time flow, then releases a cross slash on release; longer charge yields greater power.");
         translation(specialEffectKey(SpecialEffectsRegistry.COOPERATE_WITH), "协同攻击", "Cooperate With");
         translation(specialEffectDescKey(SpecialEffectsRegistry.COOPERATE_WITH), "挥刀时概率额外挥刀。", "Has a chance to perform an additional slash when slashing.");
         translation(specialEffectKey(SpecialEffectsRegistry.CROSS_CHOP), "十字斩", "Cross Chop");

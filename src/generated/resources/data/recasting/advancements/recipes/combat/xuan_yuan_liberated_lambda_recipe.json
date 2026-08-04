@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_redstone_medium_soul_cube": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "recasting:redstone_medium_soul_cube"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "recasting:xuan_yuan_liberated_lambda_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_redstone_medium_soul_cube",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "recasting:xuan_yuan_liberated_lambda_recipe"
+    ]
+  },
+  "sends_telemetry_event": false
+}

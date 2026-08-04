@@ -1,0 +1,30 @@
+{
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/special/xuan_yuan_liberated_lambda",
+  "properties": {
+    "attack_base": 13.0,
+    "max_damage": 2496,
+    "slash_art": "recasting:phenomenal_return_lambda",
+    "special_effects": [
+      "recasting:human_emperor_domain_lambda"
+    ],
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:human_emperor_domain_lambda": 1
+    }
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/special/xuan_yuan_liberated.obj",
+    "summon_sword_color": -3034022,
+    "texture": "recasting:slashblade/special/xuan_yuan_liberated.png"
+  }
+}

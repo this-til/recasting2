@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-28T07:49:39.3250759	Recasting Recipes
+// 1.20.1	2026-08-05T03:34:19.890349	Recasting Recipes
 041dd3f2d844488d579bc293e845d4b841541812 data/recasting/advancements/recipes/misc/abyss_depth_core_recipe.json
 c13a4fada5d66813ef6e539e71ffa7b98abbeac6 data/recasting/advancements/recipes/misc/abyss_flame_recipe.json
 e870dd79c207b3289d51b5fed220b81b2252c53e data/recasting/advancements/recipes/misc/blazing_flame_core_recipe.json
@@ -33,6 +33,7 @@ df5a796a634b5fba6754bed08dae456ab7ff4f98 data/recasting/advancements/recipes/mis
 f50116bca78b9b0de95f4e466a5592decd8b80d1 data/recasting/advancements/recipes/misc/other_shore_flame_recipe.json
 0866b036be4bbd0a531911334885c1dfec312f45 data/recasting/advancements/recipes/misc/ouroboros_flame_recipe.json
 0082d693456344dba8216d7b0a7707a53cfaa8c3 data/recasting/advancements/recipes/misc/poetry_ash_flame_recipe.json
+896e3637ccc2a4faa99dd87d6a87c657b9e4d2e7 data/recasting/advancements/recipes/misc/proud_soul_bag_recipe.json
 ce3080ebdc3b0a822c8c07240d766e89f73b36a9 data/recasting/advancements/recipes/misc/redstone_medium_soul_cube_recipe.json
 e88e3b193015bca5199e161f728f2adcff8d28b1 data/recasting/advancements/recipes/misc/refraction_phase_transition_recipe.json
 33dff4cf4bed7da970327474ba68cf73943bac5f data/recasting/advancements/recipes/misc/royal_flame_recipe.json
@@ -79,6 +80,7 @@ d04b060f4e89cfcccb8472b695da633ea5b863f4 data/recasting/recipes/obsession_flame_
 ca5e2b35bb84bc136cc0a0cd0c0f4502602a0863 data/recasting/recipes/other_shore_flame_recipe.json
 2b70a40c294d1134f081045eae791046919bdd24 data/recasting/recipes/ouroboros_flame_recipe.json
 596f520a9052c139bf214a0422922886feb93164 data/recasting/recipes/poetry_ash_flame_recipe.json
+3f3e551b57c3b6ae1ce02dfbdbf294d3597e9e3d data/recasting/recipes/proud_soul_bag_recipe.json
 fb1ad80015a91e783cc3d9715de0b6c5d2c10987 data/recasting/recipes/redstone_medium_soul_cube_recipe.json
 61629d11410aef7e5827c8a9f6dd3d39e9e774b6 data/recasting/recipes/refraction_phase_transition_recipe.json
 914c5b208afb3af83b7d3f23322bff36d10cbd57 data/recasting/recipes/royal_flame_recipe.json

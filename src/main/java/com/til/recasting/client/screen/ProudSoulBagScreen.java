@@ -13,6 +13,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -156,8 +158,7 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
         if (hovered >= 0 && hovered < pageEntries.size()) {
             IndexedEntry entry = pageEntries.get(hovered);
             if (entry.storageIndex() >= 0 && entry.entry().count() > 0) {
-                ItemStack tip = entry.entry().template().copyWithCount(1);
-                List<Component> lines = new ArrayList<>(getTooltipFromItem(this.minecraft, tip));
+                List<Component> lines = collectAppendHoverHints(entry.entry().template());
                 lines.add(Component.literal(String.valueOf(entry.entry().count())).withStyle(ChatFormatting.DARK_GRAY));
                 graphics.renderTooltip(this.font, lines, Optional.empty(), mouseX, mouseY);
             }
@@ -372,25 +373,37 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
     }
 
     /**
-     * 搜索匹配物品名与完整 tooltip（含 {@code appendHoverText} / 附魔等）。
+     * 搜索匹配物品名与 {@link net.minecraft.world.item.Item#appendHoverText} 追加内容。
      */
     private boolean matchesSearch(ItemStack stack, String query) {
         if (query.isEmpty() || stack.isEmpty()) {
             return true;
         }
-        if (stack.getHoverName().getString().toLowerCase(Locale.ROOT).contains(query)) {
-            return true;
-        }
-        if (this.minecraft == null) {
-            return false;
-        }
-        ItemStack tipStack = stack.copyWithCount(1);
-        for (Component line : getTooltipFromItem(this.minecraft, tipStack)) {
+        for (Component line : collectAppendHoverHints(stack)) {
             if (line.getString().toLowerCase(Locale.ROOT).contains(query)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * 名称 + 附魔名 + {@code Item.appendHoverText}，不走 {@code getTooltipFromItem}。
+     */
+    private List<Component> collectAppendHoverHints(ItemStack stack) {
+        ItemStack tip = stack.copyWithCount(1);
+        List<Component> lines = new ArrayList<>();
+        lines.add(tip.getHoverName());
+        if (tip.isEnchanted()) {
+            ItemStack.appendEnchantmentNames(lines, tip.getEnchantmentTags());
+        }
+        TooltipFlag flag =
+                this.minecraft != null && this.minecraft.options.advancedItemTooltips
+                        ? TooltipFlag.Default.ADVANCED
+                        : TooltipFlag.Default.NORMAL;
+        Level level = this.minecraft != null ? this.minecraft.level : null;
+        tip.getItem().appendHoverText(tip, level, lines, flag);
+        return lines;
     }
 
     private static String formatCount(long count) {
