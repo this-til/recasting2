@@ -1,5 +1,6 @@
 package com.til.recasting.handler;
 
+import com.til.recasting.Config;
 import com.til.recasting.Recasting;
 import com.til.recasting.registry.SlashArtsRegistry;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -19,7 +20,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 时之彼端：蓄力期间推进日夜并加速周围实体 tick，同时按真实 gameTime 记录蓄力进度。
+ * 时之彼端：蓄力期间推进日夜，并按配置可选加速周围实体 tick；同时按真实 gameTime 记录蓄力进度。
  */
 @Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class TimeBeyondChargeHandler {
@@ -59,6 +60,10 @@ public final class TimeBeyondChargeHandler {
         }
 
         level.setDayTime(level.getDayTime() + EXTRA_TICKS);
+
+        if (!Config.isTimeBeyondEntityTickAccel()) {
+            return;
+        }
 
         AABB area = user.getBoundingBox().inflate(ACCEL_RANGE);
         List<Entity> entities = level.getEntities(null, area);

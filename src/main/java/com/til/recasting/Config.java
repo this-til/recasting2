@@ -98,10 +98,21 @@ public class Config {
             .comment("是否解除铁砧 SE 铭刻数量限制。开启后，普通 SE 与特殊 SE 都不再受数量上限约束")
             .define("unlimitedSeEngraving", false);
 
+    public static final ForgeConfigSpec.BooleanValue TIME_BEYOND_ENTITY_TICK_ACCEL = BUILDER
+            .comment(
+                    "[EXPERIMENTAL] 时之彼端蓄力时，是否对玩家与周围实体每游戏刻额外 tick 15 次（合计约 16 倍）。",
+                    "默认关闭。开启可能导致 AI/物理/其它模组副作用，仅建议调试或明确了解风险后使用。"
+            )
+            .define("timeBeyondEntityTickAccel", false);
+
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
     public static boolean isUnlimitedSeEngraving() {
         return UNLIMITED_SE_ENGRAVING.get();
+    }
+
+    public static boolean isTimeBeyondEntityTickAccel() {
+        return TIME_BEYOND_ENTITY_TICK_ACCEL.get();
     }
 
     public static int getNormalSeEngravingLimit() {
