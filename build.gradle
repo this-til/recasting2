@@ -268,8 +268,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
 
     //implementation fg.deobf("mods.flammpfeil.slashblade:SlashBlade_Resharped:${slash_blade_version}")
+    // 已在 implementation：勿再 runModLibraries，否则 classpath + run/mods 双加载会触发 JPMS 包导出冲突
     implementation fg.deobf("curse.maven:SlashBlade_Resharped-1022428:8090912")
-    runModLibraries fg.deobf("curse.maven:SlashBlade_Resharped-1022428:8090912")
     //拔刀剑物品栏/图标渲染预热优化，仅开发运行时注入
     runModLibraries fg.deobf("curse.maven:slashblade-model-warmup-1468875:7663355")
 
@@ -278,9 +278,8 @@ dependencies {
     runModLibraries fg.deobf("curse.maven:ibe-editor-256822:4994072")
     //伤害数值显示
     runModLibraries fg.deobf("curse.maven:damage-number-998849:5538112")
-    //curios
+    //curios：同 SlashBlade，仅 implementation，避免双加载
     implementation fg.deobf("curse.maven:curios-309927:5680164")
-    runModLibraries fg.deobf("curse.maven:curios-309927:5680164")
     //假人前置
     runModLibraries fg.deobf("curse.maven:selene-499980:5942980")
     //训练假人
@@ -358,13 +357,17 @@ tasks.register('syncRunMods', Copy) {
         fileName.replace('true-power', 'truepower')
     }
 
-    // 关闭兼容开关时清理上次注入到 run/mods 的残留 jar，避免仍被 Forge 加载
+    // 清理不应出现在 run/mods 的残留 jar（implementation 依赖 / 关闭的兼容开关）
     doFirst {
         def modsDir = layout.projectDirectory.dir('run/mods').asFile
         if (!modsDir.isDirectory()) {
             return
         }
-        def removeNameMatchers = []
+        // implementation 已进 classpath，run/mods 再放一份会 JPMS 双导出冲突
+        def removeNameMatchers = [
+                { String n -> n.startsWith('slashblade_resharped') || n.startsWith('slashblade-resharped') },
+                { String n -> n.startsWith('curios-') },
+        ]
         if (!runCompatSrelic) {
             removeNameMatchers.addAll([
                     { String n -> n.startsWith('slashblade-gamerelic') || n.startsWith('srelic') },
@@ -379,16 +382,13 @@ tasks.register('syncRunMods', Copy) {
                     { String n -> n.startsWith('playeranimator') || n.startsWith('player_animator') },
             ])
         }
-        if (removeNameMatchers.isEmpty()) {
-            return
-        }
         modsDir.listFiles()?.each { File file ->
             if (!file.name.toLowerCase(Locale.ROOT).endsWith('.jar')) {
                 return
             }
             def lowerName = file.name.toLowerCase(Locale.ROOT)
             if (removeNameMatchers.any { it.call(lowerName) }) {
-                logger.lifecycle("Removing disabled compat mod: ${file.name}")
+                logger.lifecycle("Removing duplicate/disabled run mod: ${file.name}")
                 file.delete()
             }
         }
