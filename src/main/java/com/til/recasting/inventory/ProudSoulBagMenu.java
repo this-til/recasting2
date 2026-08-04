@@ -46,10 +46,7 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
         int size = buf.readVarInt();
         List<ProudSoulBagStorage.StoredEntry> initial = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            ItemStack template = buf.readItem();
-            if (!template.isEmpty()) {
-                template.setCount(1);
-            }
+            ItemStack template = ProudSoulBagStorage.readTemplate(buf);
             long count = buf.readVarLong();
             initial.add(new ProudSoulBagStorage.StoredEntry(template, count));
         }
@@ -131,7 +128,7 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
         List<ProudSoulBagStorage.StoredEntry> entries = ProudSoulBagStorage.list(bag);
         buf.writeVarInt(entries.size());
         for (ProudSoulBagStorage.StoredEntry entry : entries) {
-            buf.writeItem(entry.template());
+            ProudSoulBagStorage.writeTemplate(buf, entry.template());
             buf.writeVarLong(entry.count());
         }
     }

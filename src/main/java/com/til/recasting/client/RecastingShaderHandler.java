@@ -14,17 +14,16 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
- * 模组核心着色器注册与访问（HDR 伪泛光等）。
+ * 模组核心着色器注册与访问。
+ * <p>
+ * BladeRift 式 SDF HDR 裂隙着色器对齐 FantasyDesire {@code fd_blade_rift}。
  */
 @Log4j2
 @OnlyIn(Dist.CLIENT)
 public final class RecastingShaderHandler {
 
     @Nullable
-    private static ShaderInstance particleBloom;
-
-    @Nullable
-    private static ShaderInstance beamBloom;
+    private static ShaderInstance bladeRift;
 
     private RecastingShaderHandler() {
     }
@@ -34,13 +33,8 @@ public final class RecastingShaderHandler {
     }
 
     @Nullable
-    public static ShaderInstance getParticleBloom() {
-        return particleBloom;
-    }
-
-    @Nullable
-    public static ShaderInstance getBeamBloom() {
-        return beamBloom;
+    public static ShaderInstance getBladeRift() {
+        return bladeRift;
     }
 
     @SubscribeEvent
@@ -48,25 +42,13 @@ public final class RecastingShaderHandler {
         try {
             ShaderInstance shader = new ShaderInstance(
                     event.getResourceProvider(),
-                    Recasting.prefix("particle_bloom"),
-                    DefaultVertexFormat.PARTICLE
-            );
-            event.registerShader(shader, loaded -> particleBloom = loaded);
-        } catch (IOException e) {
-            log.error("Failed to register particle_bloom shader", e);
-            particleBloom = null;
-        }
-
-        try {
-            ShaderInstance shader = new ShaderInstance(
-                    event.getResourceProvider(),
-                    Recasting.prefix("beam_bloom"),
+                    Recasting.prefix("blade_rift"),
                     DefaultVertexFormat.POSITION_COLOR_TEX
             );
-            event.registerShader(shader, loaded -> beamBloom = loaded);
+            event.registerShader(shader, loaded -> bladeRift = loaded);
         } catch (IOException e) {
-            log.error("Failed to register beam_bloom shader", e);
-            beamBloom = null;
+            log.error("Failed to register blade_rift shader", e);
+            bladeRift = null;
         }
     }
 }

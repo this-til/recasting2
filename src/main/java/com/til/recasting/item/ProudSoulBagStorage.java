@@ -4,6 +4,7 @@ import com.til.recasting.registry.RecastingTags;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -180,5 +181,24 @@ public final class ProudSoulBagStorage {
     }
 
     public record StoredEntry(@NotNull ItemStack template, long count) {
+    }
+
+    /**
+     * 网络序列化模板：使用 {@link ItemStack#save} / {@link ItemStack#of}，保留 ForgeCaps（如 SE 结晶）。
+     */
+    public static void writeTemplate(FriendlyByteBuf buf, @NotNull ItemStack template) {
+        buf.writeNbt(template.save(new CompoundTag()));
+    }
+
+    public static @NotNull ItemStack readTemplate(FriendlyByteBuf buf) {
+        CompoundTag tag = buf.readNbt();
+        if (tag == null) {
+            return ItemStack.EMPTY;
+        }
+        ItemStack stack = ItemStack.of(tag);
+        if (!stack.isEmpty()) {
+            stack.setCount(1);
+        }
+        return stack;
     }
 }
