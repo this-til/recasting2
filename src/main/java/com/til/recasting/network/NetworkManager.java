@@ -43,6 +43,13 @@ public class NetworkManager {
                 LightningChainMessage::decode,
                 LightningChainMessage::handle
         );
+        INSTANCE.registerMessage(
+                id++,
+                ProudSoulBagActionMessage.class,
+                ProudSoulBagActionMessage::encode,
+                ProudSoulBagActionMessage::decode,
+                ProudSoulBagActionMessage::handle
+        );
     }
 }
 

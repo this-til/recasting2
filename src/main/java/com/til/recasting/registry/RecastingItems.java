@@ -6,6 +6,7 @@ import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.capability.ISpecialEffectCrystalData;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.SpecialEffectTooltipHelper;
+import com.til.recasting.item.ProudSoulBagItem;
 import com.til.recasting.item.ProudSoulItem;
 import com.til.recasting.registry.se.ExtendedSpecialEffect;
 import com.til.recasting.util.Gradient;
@@ -37,6 +38,12 @@ import java.util.stream.IntStream;
  */
 public class RecastingItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Recasting.MODID);
+
+    // 耀魂背包：存储 proud_souls 标签物品
+    public static final RegistryObject<Item> PROUD_SOUL_BAG = ITEMS.register(
+            "proud_soul_bag",
+            () -> new ProudSoulBagItem(new Item.Properties().stacksTo(1))
+    );
 
     // 执念火：躁动不定的橘红色，焰心处有苍白闪烁
     public static final RegistryObject<Item> OBSESSION_FLAME = ITEMS.register("obsession_flame", () -> new ProudSoulItem(new Item.Properties(), createObsessionFlameGradient(), 15.0f));
@@ -850,6 +857,8 @@ public class RecastingItems {
         }
 
         // 将所有 RecastingItems 中的物品添加到该物品组
+        event.accept(PROUD_SOUL_BAG);
+
         RecastingItems.getAllFlame().stream()
                 .map(RegistryObject::get)
                 .forEach(event::accept);

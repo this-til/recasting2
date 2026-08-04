@@ -23,6 +23,20 @@ public class RecastingRecipes extends RecipeProvider {
     @Override
     protected void buildRecipes(@NotNull Consumer<FinishedRecipe> consumer) {
         /**
+         * 耀魂背包：皮革环绕，中心耀魂宝珠，下方箱子
+         * L=皮革, S=proudsoul_sphere, C=箱子
+         */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RecastingItems.PROUD_SOUL_BAG.get())
+                .pattern("LSL")
+                .pattern("LCL")
+                .pattern("LLL")
+                .define('L', Items.LEATHER)
+                .define('S', SlashBladeItems.PROUDSOUL_SPHERE.get())
+                .define('C', Items.CHEST)
+                .unlockedBy("has_proudsoul_sphere", RecipeProviderMixin.invokeHas(SlashBladeItems.PROUDSOUL_SPHERE.get()))
+                .save(consumer, Recasting.prefix("proud_soul_bag_recipe"));
+
+        /**
          * 执念火配方：PROUDSOUL在中间，红石2个、烈焰粉2个、金粒4个
          * 橘红色，焰心处有苍白闪烁
          * G=金粒, B=烈焰粉, R=红石, P=PROUDSOUL

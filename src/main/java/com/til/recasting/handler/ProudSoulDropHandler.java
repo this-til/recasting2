@@ -41,18 +41,27 @@ public class ProudSoulDropHandler {
         RandomSource random = event.getEntity().getRandom();
 
         if (random.nextDouble() < Config.PROUD_SOUL_TINY_DROP_CHANCE.get()) {
-            ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(SlashBladeItems.PROUDSOUL_TINY.get()));
+            giveProudSoul(player, new ItemStack(SlashBladeItems.PROUDSOUL_TINY.get()));
         }
 
         if (random.nextDouble() < Config.PROUD_SOUL_DROP_CHANCE.get()) {
-            ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(SlashBladeItems.PROUDSOUL.get()));
+            giveProudSoul(player, new ItemStack(SlashBladeItems.PROUDSOUL.get()));
         }
 
         if (random.nextDouble() < Config.PROUD_SOUL_ENCHANTED_TINY_DROP_CHANCE.get()) {
             ItemStack enchantedTiny = createEnchantedTinyProudSoul(random);
             if (!enchantedTiny.isEmpty()) {
-                ItemHandlerHelper.giveItemToPlayer(player, enchantedTiny);
+                giveProudSoul(player, enchantedTiny);
             }
+        }
+    }
+
+    private static void giveProudSoul(Player player, ItemStack stack) {
+        if (ProudSoulBagHelper.tryInsertIntoAnyBag(player, stack) && stack.isEmpty()) {
+            return;
+        }
+        if (!stack.isEmpty()) {
+            ItemHandlerHelper.giveItemToPlayer(player, stack);
         }
     }
 

@@ -141,6 +141,8 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashBladeKey(RecastingSlashBladeKeys.STAR_4), "星流利刃VI", "Star Blade IV");
         translation(slashBladeKey(RecastingSlashBladeKeys.STAR_4_LAMBDA), "^星流利刃VI", "Star Blade IV Lambda");
         translation(itemKey(RecastingItems.OBSESSION_FLAME), "执念火", "Obsession Flame");
+        translation(itemKey(RecastingItems.PROUD_SOUL_BAG), "耀魂背包", "Proud Soul Bag");
+        translation(itemDescKey(RecastingItems.PROUD_SOUL_BAG), "自动收集并无限存储耀魂类物品，右键打开终端式界面。", "Automatically collects and stores proud-soul items without limits; right-click to open a terminal-like interface.");
         translation(itemKey(RecastingItems.MEMORY_FLAME), "记忆火", "Memory Flame");
         translation(itemKey(RecastingItems.SIN_FLAME), "罪孽火", "Sin Flame");
         translation(itemKey(RecastingItems.HOLY_FLAME), "圣愿火", "Holy Flame");

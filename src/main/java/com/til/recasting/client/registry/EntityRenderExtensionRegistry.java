@@ -139,11 +139,11 @@ public class EntityRenderExtensionRegistry {
 
     /**
      * 翠火渲染扩展
-     * 为拥有翠火buff的实体渲染绿色火焰效果
+     * 为拥有翠火buff的实体渲染苍白色火焰效果
      */
     public static final RegistryObject<EntityRenderExtension> JADE_FIRE = ENTITY_RENDER_EXTENSIONS.register(
             "jade_fire",
-            () -> new BuffFireRenderExtension(RecastingBuffTypes.JADE_FIRE, new Color(72, 220, 120))
+            () -> new BuffFireRenderExtension(RecastingBuffTypes.JADE_FIRE, new Color(235, 240, 248))
     );
 
     /**

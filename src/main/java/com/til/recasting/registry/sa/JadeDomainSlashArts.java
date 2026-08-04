@@ -22,6 +22,7 @@ import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -44,6 +45,7 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
     private final String domainTimer = "jade_domain";
     private final String domainVisualTimer = "jade_domain_visual";
     private final int defaultColor = 0x4C8A8D;
+    private final int domainVisualColor = 0xEBF0F8;
 
     private final int domainDuration = 20 * 30;
     private final int domainTickInterval = 20;
@@ -53,10 +55,14 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
     private final int initialBladeReleaseDelay = 2;
     private final int jadeFireStacksPerRelease = 10;
     private final float domainRange = 32.0f;
-    private final float domainEmitterParticleSize = 1.5f;
-    private final int domainEmitterParticleCount = 4;
+    private final int ringSegments = 36;
+    private final int waistSegments = 18;
+    private final int highlightNodes = 6;
+    private final int ringVisualInterval = 2;
+    private final float ringDustSize = 1.4f;
+    private final float waistDustSize = 1.0f;
+    private final float highlightDustSize = 2.4f;
     private final double domainEmitterAngularSpeed = Math.PI / 40.0;
-    private final double domainEmitterPhaseOffset = Math.PI;
 
     private float judgementCutAttack = 0.09f;
     private final float judgementCutSize = 1.5f;
@@ -84,7 +90,8 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
             buffData.setLevel(domainBuffType, domainStacks, livingEntity.level());
             BuffSourceHelper.recordSourceEntity(buffData, domainBuffType, livingEntity, livingEntity);
         });
-        renderDomainEmitters(livingEntity, 0.0);
+        renderHighlightNodes(livingEntity, 0.0);
+        renderBoundaryRing(livingEntity, 0.0);
 
         Vec3 initialAttackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
         List<LivingEntity> initialTargets = new ArrayList<>(EntityHelper.getTargettableLivingEntityWithinAABB(
@@ -142,34 +149,95 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
         );
     }
 
-    private void renderDomainEmitters(LivingEntity caster, double baseAngle) {
+    private DustParticleOptions createPaleDust(float size) {
+        float red = ((domainVisualColor >> 16) & 0xFF) / 255.0f;
+        float green = ((domainVisualColor >> 8) & 0xFF) / 255.0f;
+        float blue = (domainVisualColor & 0xFF) / 255.0f;
+        return new DustParticleOptions(new Vector3f(red, green, blue), size);
+    }
+
+    private void spawnRingParticle(
+            ServerLevel serverLevel,
+            DustParticleOptions particle,
+            LivingEntity caster,
+            double angle,
+            double y,
+            int count,
+            double xOffset,
+            double yOffset,
+            double zOffset,
+            double speed
+    ) {
+        double x = caster.getX() + Math.cos(angle) * domainRange;
+        double z = caster.getZ() + Math.sin(angle) * domainRange;
+        ParticleHelper.sendParticlesLongRange(
+                serverLevel,
+                particle,
+                x,
+                y,
+                z,
+                count,
+                xOffset,
+                yOffset,
+                zOffset,
+                speed
+        );
+    }
+
+    private void renderBoundaryRing(LivingEntity caster, double baseAngle) {
         if (!(caster.level() instanceof ServerLevel serverLevel)) {
             return;
         }
 
-        float red = ((defaultColor >> 16) & 0xFF) / 255.0f;
-        float green = ((defaultColor >> 8) & 0xFF) / 255.0f;
-        float blue = (defaultColor & 0xFF) / 255.0f;
-        DustParticleOptions particle = new DustParticleOptions(
-                new Vector3f(red, green, blue),
-                domainEmitterParticleSize
-        );
-        double y = caster.getY() + 0.25;
+        DustParticleOptions ringDust = createPaleDust(ringDustSize);
+        double footY = caster.getY() + 0.2;
+        for (int i = 0; i < ringSegments; i++) {
+            double angle = baseAngle + (Math.PI * 2.0) * i / ringSegments;
+            spawnRingParticle(serverLevel, ringDust, caster, angle, footY, 1, 0.0, 0.0, 0.0, 0.0);
+        }
 
-        for (int i = 0; i < 2; i++) {
-            double angle = baseAngle + domainEmitterPhaseOffset * i;
+        DustParticleOptions waistDust = createPaleDust(waistDustSize);
+        double waistY = caster.getY() + 1.1;
+        double halfStep = Math.PI / waistSegments;
+        for (int i = 0; i < waistSegments; i++) {
+            double angle = baseAngle + halfStep + (Math.PI * 2.0) * i / waistSegments;
+            spawnRingParticle(serverLevel, waistDust, caster, angle, waistY, 1, 0.0, 0.0, 0.0, 0.0);
+        }
+    }
+
+    private void renderHighlightNodes(LivingEntity caster, double baseAngle) {
+        if (!(caster.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        DustParticleOptions highlightDust = createPaleDust(highlightDustSize);
+        for (int i = 0; i < highlightNodes; i++) {
+            double angle = baseAngle + (Math.PI * 2.0) * i / highlightNodes;
             double x = caster.getX() + Math.cos(angle) * domainRange;
             double z = caster.getZ() + Math.sin(angle) * domainRange;
+            double y = caster.getY() + 0.2;
             ParticleHelper.sendParticlesLongRange(
                     serverLevel,
-                    particle,
+                    highlightDust,
                     x,
                     y,
                     z,
-                    domainEmitterParticleCount,
-                    0.15,
-                    0.1,
-                    0.15,
+                    2,
+                    0.05,
+                    0.35,
+                    0.05,
+                    0.0
+            );
+            ParticleHelper.sendParticlesLongRange(
+                    serverLevel,
+                    ParticleTypes.END_ROD,
+                    x,
+                    y + 0.4,
+                    z,
+                    1,
+                    0.02,
+                    0.5,
+                    0.02,
                     0.01
             );
         }
@@ -359,6 +427,7 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
 
         private final LivingEntity caster;
         private double angle;
+        private int tickCounter;
 
         private DomainVisualTick(LivingEntity caster) {
             this.caster = caster;
@@ -379,7 +448,11 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
                 return;
             }
 
-            renderDomainEmitters(caster, angle);
+            renderHighlightNodes(caster, angle);
+            if ((tickCounter % ringVisualInterval) == 0) {
+                renderBoundaryRing(caster, angle);
+            }
+            tickCounter++;
             angle += domainEmitterAngularSpeed;
         }
     }

@@ -70,6 +70,8 @@
   "item.recasting.mirror_flame.desc": "Highly reflective mirror-like color like mercury, perfectly reflecting the appearance of the flame it 'imitates'.",
   "item.recasting.netherite_medium_soul_cube": "Pitch Black Medium Soul Cube",
   "item.recasting.obsession_flame": "Obsession Flame",
+  "item.recasting.proud_soul_bag": "Proud Soul Bag",
+  "item.recasting.proud_soul_bag.desc": "Automatically collects and stores proud-soul items without limits; right-click to open a terminal-like interface.",
   "item.recasting.obsession_flame.desc": "Restless orange-red, with pale flashes at the core.",
   "item.recasting.other_shore_flame": "Other Shore Flame",
   "item.recasting.other_shore_flame.desc": "Cold bluish-white, flickering like a candle, without warmth.",

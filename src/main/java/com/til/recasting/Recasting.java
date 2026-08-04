@@ -74,6 +74,9 @@ public class Recasting {
         // 注册物品
         RecastingItems.ITEMS.register(modEventBus);
 
+        // 注册容器菜单
+        RecastingMenus.MENUS.register(modEventBus);
+
         modEventBus.addListener(EventPriority.HIGH, RecastingItems::onBuildCreativeModeTabContents);
     }
 

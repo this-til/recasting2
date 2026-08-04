@@ -106,7 +106,7 @@ public class MyriadSilenceSlashArts extends ExtendedSlashArts {
 
         Level level = user.level();
         if (level instanceof ServerLevel serverLevel) {
-            Vec3 from = user.getEyePosition();
+            Vec3 from = PosHelper.getAboveHead(user, 0.5);
             Vec3 to = target.getBoundingBox().getCenter();
             LightningChainEffectHelper.sync(serverLevel, from, to, 0x000000);
         }

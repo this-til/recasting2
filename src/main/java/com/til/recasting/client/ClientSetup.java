@@ -8,7 +8,10 @@ import com.til.recasting.client.particle.StarBlinkParticleProvider;
 import com.til.recasting.client.particle.TeaAromaParticleProvider;
 import com.til.recasting.client.registry.BuffLevelRendererRegistry;
 import com.til.recasting.client.registry.EntityRenderExtensionRegistry;
+import com.til.recasting.client.screen.ProudSoulBagScreen;
+import com.til.recasting.registry.RecastingMenus;
 import com.til.recasting.registry.RecastingParticleTypes;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -37,7 +40,7 @@ public class ClientSetup {
      */
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
-        // 客户端初始化逻辑
+        event.enqueueWork(() -> MenuScreens.register(RecastingMenus.PROUD_SOUL_BAG.get(), ProudSoulBagScreen::new));
     }
 
     /**
