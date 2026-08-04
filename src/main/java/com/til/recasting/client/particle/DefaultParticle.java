@@ -44,6 +44,9 @@ import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 public class DefaultParticle extends Particle {
 
+    /** 加法粒子顶点色曝光倍率（SRC_ALPHA/ONE 下提亮普通命中闪等）。 */
+    private static final float ADDITIVE_EXPOSURE = 1.55f;
+
     /** 本模组粒子批绘专用 Buffer，与引擎 Tesselator / 共享 BufferSource 隔离。 */
     private static final BufferBuilder BATCH_BUFFER = new BufferBuilder(512 * 1024);
 
@@ -280,24 +283,28 @@ public class DefaultParticle extends Particle {
         }
 
         int combined = 15 << 20 | 15 << 4;
+        float exposure = additiveBlend ? ADDITIVE_EXPOSURE : 1.0f;
+        float r = this.rCol * exposure;
+        float g = this.gCol * exposure;
+        float b = this.bCol * exposure;
         buffer.vertex(vertices[0].x(), vertices[0].y(), vertices[0].z())
                 .uv(0, 0)
-                .color(this.rCol, this.gCol, this.bCol, this.alpha)
+                .color(r, g, b, this.alpha)
                 .uv2(combined)
                 .endVertex();
         buffer.vertex(vertices[1].x(), vertices[1].y(), vertices[1].z())
                 .uv(0, 1)
-                .color(this.rCol, this.gCol, this.bCol, this.alpha)
+                .color(r, g, b, this.alpha)
                 .uv2(combined)
                 .endVertex();
         buffer.vertex(vertices[2].x(), vertices[2].y(), vertices[2].z())
                 .uv(1, 1)
-                .color(this.rCol, this.gCol, this.bCol, this.alpha)
+                .color(r, g, b, this.alpha)
                 .uv2(combined)
                 .endVertex();
         buffer.vertex(vertices[3].x(), vertices[3].y(), vertices[3].z())
                 .uv(1, 0)
-                .color(this.rCol, this.gCol, this.bCol, this.alpha)
+                .color(r, g, b, this.alpha)
                 .uv2(combined)
                 .endVertex();
     }

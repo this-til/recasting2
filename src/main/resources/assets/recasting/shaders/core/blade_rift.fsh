@@ -11,8 +11,8 @@ out vec4 fragColor;
 
 // BladeRift 的固定视觉调参；按设计不暴露到 ParticleOption。
 const float DISTORTION=0.095;
-const float EXPOSURE=1.35;
-const float EMISSIVE_STRENGTH=0.82;
+const float EXPOSURE=1.05;
+const float EMISSIVE_STRENGTH=0.42;
 const float SPLIT_STRENGTH=1.0;
 
 float hash21(vec2 p){vec3 q=fract(vec3(p.xyx)*0.1031);q+=dot(q,q.yzx+33.33);return fract((q.x+q.y)*q.z);}
@@ -40,21 +40,21 @@ void main(){
  // Minecraft's particle target has no post-process bloom.  Emit an HDR near halo
  // plus a broad low-frequency halo; the Java render type accumulates these with
  // ONE/ONE blending to reproduce the preview's apparent self-illumination.
- vec3 col=EnergyColor*(farGlow*1.35+nearGlow*2.15);
+ vec3 col=EnergyColor*(farGlow*0.75+nearGlow*1.15);
  float vein=exp(-abs(sin(p.x*24.0+FlowTime*34.0+flow*8.0))*8.0)*body;
- col+=bodyGradient*body*(1.10+0.45*flow)+bodyGradient*vein*1.35;
+ col+=bodyGradient*body*(1.00+0.30*flow)+bodyGradient*vein*0.85;
  float coreAA=max(fwidth(coreD)*1.4,0.0012);
  float core=(1.0-smoothstep(-coreAA,coreAA,coreD))*reveal*active;
- float spawnBoost=0.80*exp(-Progress*30.0);
- col+=CoreColor*core*(1.65+spawnBoost);
+ float spawnBoost=0.45*exp(-Progress*30.0);
+ col+=CoreColor*core*(1.25+spawnBoost);
  // EXPOSURE remains the original fixed artistic control, but is applied linearly
  // so values above 1 survive into the additive target instead of being tone-mapped
  // back below 1 and losing the bloom-like intensity.
  col=max(col,vec3(0.0))*EXPOSURE;
- vec3 coreSurface=CoreColor*EXPOSURE*(1.35+spawnBoost);
+ vec3 coreSurface=CoreColor*EXPOSURE*(1.10+spawnBoost);
  col=mix(col,coreSurface,clamp(core,0.0,1.0));
- float coverage=max(body,max(nearGlow*0.72,farGlow*0.42));
- float alpha=clamp(coverage+core*0.18,0.0,1.0)*vertexColor.a;
+ float coverage=max(body,max(nearGlow*0.55,farGlow*0.28));
+ float alpha=clamp(coverage+core*0.14,0.0,1.0)*vertexColor.a;
  if(alpha<0.002||dot(col,col)<0.000004)discard;
  fragColor=vec4(col*vertexColor.rgb*vertexColor.a,alpha);
 }

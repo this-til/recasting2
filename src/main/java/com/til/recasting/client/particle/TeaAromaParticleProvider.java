@@ -1,12 +1,10 @@
 package com.til.recasting.client.particle;
 
-import com.til.recasting.constant.R;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -17,19 +15,16 @@ import java.awt.*;
 import java.util.Random;
 
 /**
- * 茶韵延迟释放：裂隙斩特效（快速撕裂、指数收束愈合）。
+ * 茶韵延迟释放：BladeRift 式 SDF 裂隙斩。
  * 一道大裂隙为主，若干小裂隙交叉；大裂隙寿命 = 小裂隙 × 1.5。
  * 颜色通过 {@code sendParticles(..., count=0, r, g, b, 1.0)} 的速度通道传入（0~1）。
  */
 @OnlyIn(Dist.CLIENT)
 public class TeaAromaParticleProvider implements ParticleProvider<SimpleParticleType> {
 
-    public static final ResourceLocation SLASH_TEXTURE = R.Particle.Other.divergence$png;
-
     private static final int SMALL_RIFT_COUNT = 4;
     private static final int SMALL_RIFT_LIFE = 16;
     private static final float LARGE_LIFE_SCALE = 1.5f;
-    private static final float OPEN_RATIO = 0.16f;
 
     private final Random random = new Random();
 
@@ -56,10 +51,8 @@ public class TeaAromaParticleProvider implements ParticleProvider<SimpleParticle
                 8.4f + random.nextFloat() * 1.6f,
                 0.44f + random.nextFloat() * 0.16f,
                 largeLife,
-                OPEN_RATIO,
                 baseAngle + (random.nextFloat() - 0.5f) * 0.2f,
-                withAlpha(bright, 240),
-                SLASH_TEXTURE
+                withAlpha(bright, 240)
         );
     }
 
@@ -84,10 +77,8 @@ public class TeaAromaParticleProvider implements ParticleProvider<SimpleParticle
                     length,
                     width,
                     life,
-                    OPEN_RATIO,
                     roll,
-                    withAlpha(slashColor, 220),
-                    SLASH_TEXTURE
+                    withAlpha(slashColor, 220)
             ));
         }
     }
