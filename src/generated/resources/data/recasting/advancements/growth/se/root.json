@@ -16,7 +16,7 @@
     "icon": {
       "item": "recasting:se_crystal"
     },
-    "show_toast": true,
+    "show_toast": false,
     "title": {
       "translate": "advancements.recasting.growth.se.root.title"
     }

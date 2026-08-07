@@ -22,7 +22,8 @@ public final class GrowthAdvancementGraph {
             ResourceKey<SlashBladeDefinition> blade,
             @Nullable ResourceKey<SlashBladeDefinition> parent,
             @Nullable ResourceLocation recipeId,
-            boolean lambda
+            boolean lambda,
+            boolean menu
     ) {
     }
 
@@ -37,8 +38,21 @@ public final class GrowthAdvancementGraph {
                                    @Nullable ResourceKey<SlashBladeDefinition> parent,
                                    @Nullable String recipePath,
                                    boolean lambda) {
+        return blade(blade, parent, recipePath, lambda, false);
+    }
+
+    private static BladeNode menuBlade(ResourceKey<SlashBladeDefinition> blade,
+                                       @Nullable String recipePath) {
+        return blade(blade, null, recipePath, false, true);
+    }
+
+    private static BladeNode blade(ResourceKey<SlashBladeDefinition> blade,
+                                   @Nullable ResourceKey<SlashBladeDefinition> parent,
+                                   @Nullable String recipePath,
+                                   boolean lambda,
+                                   boolean menu) {
         ResourceLocation recipeId = recipePath == null ? null : Recasting.prefix(recipePath);
-        return new BladeNode(blade, parent, recipeId, lambda);
+        return new BladeNode(blade, parent, recipeId, lambda, menu);
     }
 
     private static SeNode se(ResourceLocation effectId, @Nullable ResourceLocation parentEffectId, String recipePath) {
@@ -48,9 +62,9 @@ public final class GrowthAdvancementGraph {
     public static final List<BladeNode> BLADES = List.of(
             blade(RecastingSlashBladeKeys.BROADSWORD_WOOD, null, "broadsword_wood_recipe", false),
             blade(RecastingSlashBladeKeys.GREEN_BLADE_WOOD, null, "green_blade_wood_recipe", false),
-            blade(RecastingSlashBladeKeys.DHARMA_STICK, null, "dharma_stick_recipe", false),
-            blade(RecastingSlashBladeKeys.HOE, null, "hoe_recipe", false),
-            blade(RecastingSlashBladeKeys.PHYSICS_SWORD, null, "physics_sword_recipe", false),
+            menuBlade(RecastingSlashBladeKeys.DHARMA_STICK, "dharma_stick_recipe"),
+            menuBlade(RecastingSlashBladeKeys.HOE, "hoe_recipe"),
+            menuBlade(RecastingSlashBladeKeys.PHYSICS_SWORD, "physics_sword_recipe"),
 
             blade(RecastingSlashBladeKeys.BROADSWORD_IRON, RecastingSlashBladeKeys.BROADSWORD_WOOD, "broadsword_iron_recipe", false),
             blade(RecastingSlashBladeKeys.GREEN_BLADE_IRON, RecastingSlashBladeKeys.GREEN_BLADE_WOOD, "green_blade_iron_recipe", false),

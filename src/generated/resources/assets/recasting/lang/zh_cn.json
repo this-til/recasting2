@@ -1,9 +1,8 @@
 {
-  "advancements.recasting.growth.blade.easter.description": "隐藏的彩蛋刀。",
   "advancements.recasting.growth.blade.from.description": "由「%s」成长而来。",
+  "advancements.recasting.growth.blade.menu.description": "趣味菜单刀。",
+  "advancements.recasting.growth.blade.pending.description": "尚无合成配方。",
   "advancements.recasting.growth.blade.start.description": "成长路线起点。",
-  "advancements.recasting.growth.blades.root.description": "沿配方链锻造更强的命名刀。",
-  "advancements.recasting.growth.blades.root.title": "刀之成长",
   "advancements.recasting.growth.fluorescence.description": "由「%s」成长而来。完成任意一把荧光刀即可。",
   "advancements.recasting.growth.fluorescence.title": "荧光系列",
   "advancements.recasting.growth.root.description": "探索命名刀的成长路线。",

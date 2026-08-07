@@ -1,5 +1,4 @@
-// 1.20.1	2026-08-07T17:07:35.1938079	Advancements
-efdeaeab0157118325728c6c22d39bfdf2b6ce2b data/recasting/advancements/growth/blades/root.json
+// 1.20.1	2026-08-07T19:58:33.675701	Advancements
 1712a697927bd33f2ac61bd946afa4eb235d72d6 data/recasting/advancements/growth/blades/slashblade/art_knife.json
 84a907fb18a21655c41f203ef6e301210710e6f5 data/recasting/advancements/growth/blades/slashblade/azure_vista.json
 1563f8fe50126bf4ea4b687614ac67e2859928f2 data/recasting/advancements/growth/blades/slashblade/azure_vista_lambda.json
@@ -16,13 +15,13 @@ e2cf9c9842ba2d8308d08d8d419483f5ba816acd data/recasting/advancements/growth/blad
 e4689aca7dfda4c16d69283cdf975f2c38ecef4b data/recasting/advancements/growth/blades/slashblade/brilliant_tea.json
 bf905a4034a49f2d78936bbee3124f555705fa18 data/recasting/advancements/growth/blades/slashblade/brilliant_tea_lambda.json
 130d90c010a985ab54fb33dcf67e11a81f1359c6 data/recasting/advancements/growth/blades/slashblade/broadsword_iron.json
-2791eb481f2ea754dc63ed486b0942fc2004fd1d data/recasting/advancements/growth/blades/slashblade/broadsword_wood.json
+5b5a58077f8f8062c2315017b14757bae6a25beb data/recasting/advancements/growth/blades/slashblade/broadsword_wood.json
 8b39bfc5abed5cc023987461f4ad2cd868ecc2f5 data/recasting/advancements/growth/blades/slashblade/broken_white.json
 db9bf5ceee7616740ef68d51d46f48300c591fa8 data/recasting/advancements/growth/blades/slashblade/color_wing.json
 1727b2ae7f4217dc7f056d3c0853a964f14a563b data/recasting/advancements/growth/blades/slashblade/color_wing_lambda.json
 8ccd866a9e33a7c03d4d17f042f0aef62fea24e3 data/recasting/advancements/growth/blades/slashblade/cool_mint.json
 da61d277075815a88390ef3a80821d4ca0ca09b6 data/recasting/advancements/growth/blades/slashblade/cool_mint_lambda.json
-38f99eb8adce30d1f41fef14063df5898d20dedf data/recasting/advancements/growth/blades/slashblade/dharma_stick.json
+dc99731bcd75da58e22fe5d01d8b8a4871a0fd91 data/recasting/advancements/growth/blades/slashblade/dharma_stick.json
 947858b96b097b4c617ea29fcd06d91844476592 data/recasting/advancements/growth/blades/slashblade/dharma_stick_lambda.json
 9baa33f679d1cda9badd52db829081a0d7b3a5fa data/recasting/advancements/growth/blades/slashblade/dragon.json
 206c2898da5402a31a0180286d65d3f0100a7ff5 data/recasting/advancements/growth/blades/slashblade/dragon_lambda.json
@@ -30,8 +29,8 @@ da61d277075815a88390ef3a80821d4ca0ca09b6 data/recasting/advancements/growth/blad
 908f7909b80ae9fff9bc147489c5a19e6c8220b3 data/recasting/advancements/growth/blades/slashblade/dragon_scale_lambda.json
 f1d4bf6139ddd3d42c8ce25367bba4e9ceebdcf4 data/recasting/advancements/growth/blades/slashblade/fluorescence.json
 0d6397a8ba1aeb4e53766db44896db2908a58126 data/recasting/advancements/growth/blades/slashblade/green_blade_iron.json
-29e1648d20548692b8c61b95118878b549261d48 data/recasting/advancements/growth/blades/slashblade/green_blade_wood.json
-263710e76a2dcc323a94cfa41c24da7155c187b0 data/recasting/advancements/growth/blades/slashblade/hoe.json
+20c01cc00cf135e16e1228beb946c32c0fa369a7 data/recasting/advancements/growth/blades/slashblade/green_blade_wood.json
+58f40b63af64567c32124c8467032079f8de2f46 data/recasting/advancements/growth/blades/slashblade/hoe.json
 5fb3eeb8fe9c0884fd34f514b579eaf5147f4a47 data/recasting/advancements/growth/blades/slashblade/laser/laser_1.json
 c587560b65dd4902b7e1173face28536fbb0c1d4 data/recasting/advancements/growth/blades/slashblade/laser/laser_2.json
 f3fd8380fc915d940b3109f9e77dcd35b41cf027 data/recasting/advancements/growth/blades/slashblade/laser/laser_3.json
@@ -46,7 +45,7 @@ fee4ce3bf5f024acfa2b405135b925005fd6c932 data/recasting/advancements/growth/blad
 c6a0995d9c81ccaf4b06e229a15cd09652c25177 data/recasting/advancements/growth/blades/slashblade/obliterate_lambda.json
 134baef2784fc30e189579a564e949dd2c4ff057 data/recasting/advancements/growth/blades/slashblade/onikiri.json
 695da10421d32b02662e38c0b9c36d72b50db476 data/recasting/advancements/growth/blades/slashblade/onikiri_lambda.json
-4f0f48cdd70f925716c9620eeaf2ca510cfcf75c data/recasting/advancements/growth/blades/slashblade/physics_sword.json
+4ed0a36656d22b6205513d49cf9311b8e7be6700 data/recasting/advancements/growth/blades/slashblade/physics_sword.json
 1992adc005b56d21f953c266db10a3ed5228226f data/recasting/advancements/growth/blades/slashblade/shine_gold.json
 e1e1345d7cb5cc9b3a68dd300ee84d775d1fce3c data/recasting/advancements/growth/blades/slashblade/shine_gold_lambda.json
 6dad2e7bccc3c73d988368b40b937e7dc2f6a4e5 data/recasting/advancements/growth/blades/slashblade/shine_tea.json
@@ -55,9 +54,9 @@ e1e1345d7cb5cc9b3a68dd300ee84d775d1fce3c data/recasting/advancements/growth/blad
 c11622ee483cda5910e3baaeec0b7e21cb95ede7 data/recasting/advancements/growth/blades/slashblade/silver_wing_lambda.json
 c5b94fec179102941c90c265f45db5327995e87c data/recasting/advancements/growth/blades/slashblade/soulblade.json
 f7b15f292bd9d05ff7ae19ab15d9ca23efad7c5d data/recasting/advancements/growth/blades/slashblade/soulblade_lambda.json
-3e41af510fbbf6ee24be35470bb81d94361585c7 data/recasting/advancements/growth/blades/slashblade/special/tu_wu.json
+49fecda64207040ac29c9e8e3fb92c1fc3c7e15e data/recasting/advancements/growth/blades/slashblade/special/tu_wu.json
 acca3a9fa34f6200b060b512a2d5ee585e07cc58 data/recasting/advancements/growth/blades/slashblade/special/tu_wu_lambda.json
-fffb2c5d1fd56394faecaac0062677b2992758fc data/recasting/advancements/growth/blades/slashblade/special/xuan_yuan_liberated.json
+a2289baf121ed880069acae446d655ec01319af7 data/recasting/advancements/growth/blades/slashblade/special/xuan_yuan_liberated.json
 7a47c285c14c8f352226d4371db1e0237e5253e2 data/recasting/advancements/growth/blades/slashblade/special/xuan_yuan_liberated_lambda.json
 8fd645bec04d2969a933917db16057fcb40ccd8a data/recasting/advancements/growth/blades/slashblade/startled_swan.json
 a05b2fbff5e81deac284d6b7cfe3c6d8cc847cca data/recasting/advancements/growth/blades/slashblade/startled_swan_lambda.json
@@ -75,7 +74,7 @@ ce497042a86915f3f16dbf37c6c77aa922400d55 data/recasting/advancements/growth/blad
 7a681e7dc1de2f8ddde286e688358ecb95cd0e44 data/recasting/advancements/growth/blades/slashblade/void/void_3.json
 86c0363efca5804c387a8a775a40147c43a2da4f data/recasting/advancements/growth/blades/slashblade/wind_cloud.json
 e439ebfee26d8633199cc196ae8ee45edefb0e13 data/recasting/advancements/growth/blades/slashblade/wind_cloud_lambda.json
-30d6f5cb37fb69bd0157821b378cc438492217b4 data/recasting/advancements/growth/root.json
+e06f68c440c3d9c4533cc2c85f75f9c9538954e1 data/recasting/advancements/growth/root.json
 ff437757c735ce611b263bf41aa8d75151d471c2 data/recasting/advancements/growth/se/annihilation.json
 55bb5b91fa51b66c4ae5607b83516bba02f88e74 data/recasting/advancements/growth/se/cooperate_with.json
 5253ad234341486aa8523544c914448cd047646b data/recasting/advancements/growth/se/cross_chop.json
@@ -91,7 +90,7 @@ ca1d66d22dbfaa0d2f0b57d83de1effcbd3cc78d data/recasting/advancements/growth/se/j
 fc476b2b2c8a2b67892d7c58c327ab548e002382 data/recasting/advancements/growth/se/overload.json
 92258b93f721a3bff1c1eb1c3ab1a424d8c49293 data/recasting/advancements/growth/se/regression.json
 42ee0ac8b1ca72e0a465b16b901c5350dcb8049f data/recasting/advancements/growth/se/resist.json
-6e42ea97d32ac9f1911eca81bb6301890bd964d7 data/recasting/advancements/growth/se/root.json
+4dcdb16af122663055a98ee9c3377a6602228c32 data/recasting/advancements/growth/se/root.json
 aab669dd69ebbaaed4e582b03f00bdf5bc6a1e41 data/recasting/advancements/growth/se/sever_break.json
 0a12f35cf35b87ca13c7543f3742c37a27d173e2 data/recasting/advancements/growth/se/sharp_blade.json
 d9c5a8685dc7bf78defaad9ee40d82c3dc19294c data/recasting/advancements/growth/se/shock.json

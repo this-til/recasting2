@@ -1,5 +1,5 @@
 {
-  "parent": "recasting:growth/blades/root",
+  "parent": "recasting:growth/root",
   "criteria": {
     "crafted": {
       "conditions": {

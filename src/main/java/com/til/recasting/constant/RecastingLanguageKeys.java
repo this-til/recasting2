@@ -29,13 +29,12 @@ public final class RecastingLanguageKeys {
 
     public static final String ADVANCEMENT_GROWTH_ROOT_TITLE = "advancements.recasting.growth.root.title";
     public static final String ADVANCEMENT_GROWTH_ROOT_DESC = "advancements.recasting.growth.root.description";
-    public static final String ADVANCEMENT_GROWTH_BLADES_ROOT_TITLE = "advancements.recasting.growth.blades.root.title";
-    public static final String ADVANCEMENT_GROWTH_BLADES_ROOT_DESC = "advancements.recasting.growth.blades.root.description";
     public static final String ADVANCEMENT_GROWTH_SE_ROOT_TITLE = "advancements.recasting.growth.se.root.title";
     public static final String ADVANCEMENT_GROWTH_SE_ROOT_DESC = "advancements.recasting.growth.se.root.description";
     public static final String ADVANCEMENT_GROWTH_BLADE_START_DESC = "advancements.recasting.growth.blade.start.description";
     public static final String ADVANCEMENT_GROWTH_BLADE_FROM_DESC = "advancements.recasting.growth.blade.from.description";
-    public static final String ADVANCEMENT_GROWTH_BLADE_EASTER_DESC = "advancements.recasting.growth.blade.easter.description";
+    public static final String ADVANCEMENT_GROWTH_BLADE_MENU_DESC = "advancements.recasting.growth.blade.menu.description";
+    public static final String ADVANCEMENT_GROWTH_BLADE_PENDING_DESC = "advancements.recasting.growth.blade.pending.description";
     public static final String ADVANCEMENT_GROWTH_SE_START_DESC = "advancements.recasting.growth.se.start.description";
     public static final String ADVANCEMENT_GROWTH_SE_FROM_DESC = "advancements.recasting.growth.se.from.description";
     public static final String ADVANCEMENT_GROWTH_FLUORESCENCE_TITLE = "advancements.recasting.growth.fluorescence.title";

@@ -16,6 +16,7 @@ import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.PlayerTrigger;
@@ -72,25 +73,14 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_ROOT_DESC),
                             BACKGROUND,
                             FrameType.TASK,
-                            true,
+                            false,
                             false,
                             false)
+                    .rewards(new AdvancementRewards.Builder()
+                            .addLootTable(Recasting.prefix("advancements/growth_root"))
+                            .build())
                     .addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
                     .save(writer, Recasting.prefix("growth/root").toString());
-
-            Advancement bladesRoot = Advancement.Builder.advancement()
-                    .parent(root)
-                    .display(
-                            new ItemStack(SlashBladeItems.SLASHBLADE_WOOD.get()),
-                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADES_ROOT_TITLE),
-                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADES_ROOT_DESC),
-                            null,
-                            FrameType.TASK,
-                            false,
-                            false,
-                            false)
-                    .addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
-                    .save(writer, Recasting.prefix("growth/blades/root").toString());
 
             // SE 独立成就栏（带 background 的根节点）
             Advancement seRoot = Advancement.Builder.advancement()
@@ -100,7 +90,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_ROOT_DESC),
                             BACKGROUND,
                             FrameType.TASK,
-                            true,
+                            false,
                             false,
                             false)
                     .addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
@@ -108,7 +98,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
 
             for (GrowthAdvancementGraph.BladeNode node : GrowthAdvancementGraph.BLADES) {
                 Advancement parent = node.parent() == null
-                        ? bladesRoot
+                        ? root
                         : bladeAdvancements.get(node.parent());
                 if (parent == null) {
                     throw new IllegalStateException("Missing parent advancement for blade " + node.blade().location()
@@ -322,8 +312,11 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                         RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_FROM_DESC,
                         Component.translatable(BladeTranslationHelper.itemDescriptionId(node.parent().location())));
             }
+            if (node.menu()) {
+                return Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_MENU_DESC);
+            }
             if (node.recipeId() == null) {
-                return Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_EASTER_DESC);
+                return Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_PENDING_DESC);
             }
             return Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_START_DESC);
         }

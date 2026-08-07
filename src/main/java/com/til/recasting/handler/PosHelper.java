@@ -16,6 +16,9 @@ import javax.annotation.Nullable;
 
 public class PosHelper {
 
+    private static final double VIEW_CONE_HALF_ANGLE_RAD = Math.toRadians(15.0);
+    private static final double VIEW_CONE_COS = Math.cos(VIEW_CONE_HALF_ANGLE_RAD);
+
     /**
      * 光线物理碰撞结果：落点、命中实体（若有）、是否撞到方块
      */
@@ -23,8 +26,8 @@ public class PosHelper {
     }
 
     /**
-     * 获取攻击目标位置
-     * 优先返回锁定目标的位置，如果没有锁定目标则使用视线追踪
+     * 获取攻击目标位置。
+     * 优先锁定目标；否则取半角 15° 视锥内沿途最近可攻击活体；锥内无实体则取视线中心远端（方块截断或 maxDistance）。
      *
      * @param livingEntity    发起攻击的实体
      * @param slashBladeState 刀剑状态
@@ -34,33 +37,33 @@ public class PosHelper {
     public static Vec3 getAttackTargetPosition(LivingEntity livingEntity, ISlashBladeState slashBladeState, double maxDistance) {
         Level worldIn = livingEntity.level();
 
-        // 尝试获取锁定的目标
-        var target = slashBladeState.getTargetEntity(worldIn);
+        Entity target = slashBladeState.getTargetEntity(worldIn);
         if (target != null && target.isAlive() && !target.isRemoved()) {
-            return new Vec3(
-                    target.getX(),
-                    target.getY() + target.getEyeHeight() * 0.5,
-                    target.getZ()
-            );
-        } else {
-            // 如果没有锁定目标，使用视线追踪
-            Vec3 start = livingEntity.getEyePosition(1.0f);
-            Vec3 end = start.add(livingEntity.getLookAngle().scale(maxDistance));
-            HitResult result = worldIn.clip(
-                    new ClipContext(
-                            start,
-                            end,
-                            ClipContext.Block.COLLIDER,
-                            ClipContext.Fluid.NONE,
-                            livingEntity
-                    )
-            );
-            return result.getLocation();
+            return aimPointOnEntity(target);
         }
+
+        Vec3 eye = livingEntity.getEyePosition(1.0f);
+        Vec3 look = livingEntity.getLookAngle();
+        LivingEntity nearest = findNearestInViewCone(worldIn, livingEntity, eye, look, maxDistance);
+        if (nearest != null) {
+            return aimPointOnEntity(nearest);
+        }
+
+        Vec3 farEnd = eye.add(look.scale(maxDistance));
+        HitResult result = worldIn.clip(
+                new ClipContext(
+                        eye,
+                        farEnd,
+                        ClipContext.Block.COLLIDER,
+                        ClipContext.Fluid.NONE,
+                        livingEntity
+                )
+        );
+        return result.getLocation();
     }
 
     /**
-     * 获取攻击目标位置（使用默认距离40）
+     * 获取攻击目标位置（默认距离 64）
      *
      * @param livingEntity    发起攻击的实体
      * @param slashBladeState 刀剑状态
@@ -68,6 +71,53 @@ public class PosHelper {
      */
     public static Vec3 getAttackTargetPosition(LivingEntity livingEntity, ISlashBladeState slashBladeState) {
         return getAttackTargetPosition(livingEntity, slashBladeState, 64.0);
+    }
+
+    private static Vec3 aimPointOnEntity(Entity entity) {
+        return new Vec3(
+                entity.getX(),
+                entity.getY() + entity.getEyeHeight() * 0.5,
+                entity.getZ()
+        );
+    }
+
+    /**
+     * 在视锥内选取距眼点最近的可攻击活体。
+     */
+    @Nullable
+    private static LivingEntity findNearestInViewCone(
+            Level level,
+            LivingEntity user,
+            Vec3 eye,
+            Vec3 look,
+            double maxDistance
+    ) {
+        double pad = maxDistance * Math.tan(VIEW_CONE_HALF_ANGLE_RAD);
+        AABB box = new AABB(eye, eye.add(look.scale(maxDistance))).inflate(pad);
+        double maxDistanceSq = maxDistance * maxDistance;
+
+        LivingEntity best = null;
+        double bestDistSq = Double.MAX_VALUE;
+        for (LivingEntity candidate : level.getEntitiesOfClass(LivingEntity.class, box, LivingEntity::isAlive)) {
+            if (!EntityPredicateHelper.canTarget(user, candidate)) {
+                continue;
+            }
+            Vec3 center = candidate.getBoundingBox().getCenter();
+            Vec3 to = center.subtract(eye);
+            double distSq = to.lengthSqr();
+            if (distSq > maxDistanceSq || distSq < 1.0E-8) {
+                continue;
+            }
+            double cosAngle = to.dot(look) / Math.sqrt(distSq);
+            if (cosAngle < VIEW_CONE_COS) {
+                continue;
+            }
+            if (distSq < bestDistSq) {
+                bestDistSq = distSq;
+                best = candidate;
+            }
+        }
+        return best;
     }
 
     /**

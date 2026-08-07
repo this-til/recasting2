@@ -1,9 +1,8 @@
 {
-  "advancements.recasting.growth.blade.easter.description": "A hidden easter egg blade.",
   "advancements.recasting.growth.blade.from.description": "Grows from %s.",
+  "advancements.recasting.growth.blade.menu.description": "A gag menu blade.",
+  "advancements.recasting.growth.blade.pending.description": "Crafting recipe not yet available.",
   "advancements.recasting.growth.blade.start.description": "Starting point of a growth path.",
-  "advancements.recasting.growth.blades.root.description": "Forge stronger named blades along the recipe chains.",
-  "advancements.recasting.growth.blades.root.title": "Blade Growth",
   "advancements.recasting.growth.fluorescence.description": "Grows from %s. Complete any fluorescence blade.",
   "advancements.recasting.growth.fluorescence.title": "Fluorescence Series",
   "advancements.recasting.growth.root.description": "Explore named blade growth paths.",
