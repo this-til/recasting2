@@ -7,8 +7,10 @@ import com.til.recasting.advancement.BladeTranslationHelper;
 import com.til.recasting.advancement.NamedSlashBladeItemPredicate;
 import com.til.recasting.advancement.SeCrystalItemPredicate;
 import com.til.recasting.constant.RecastingLanguageKeys;
+import com.til.recasting.constant.RecastingSlashBladeKeys;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingItems;
+import com.til.recasting.registry.SpecialEffectsRegistry;
 import com.til.recasting.registry.requir.SlashBladeItems;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
@@ -31,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.BufferedReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +67,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
 
             Advancement root = Advancement.Builder.advancement()
                     .display(
-                            new ItemStack(SlashBladeItems.SLASHBLADE.get()),
+                            bladeIcon(registries, RecastingSlashBladeKeys.COOL_MINT),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_ROOT_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_ROOT_DESC),
                             BACKGROUND,
@@ -89,15 +92,15 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                     .addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
                     .save(writer, Recasting.prefix("growth/blades/root").toString());
 
+            // SE 独立成就栏（带 background 的根节点）
             Advancement seRoot = Advancement.Builder.advancement()
-                    .parent(root)
                     .display(
-                            new ItemStack(RecastingItems.SE_CRYSTAL.get()),
+                            seCrystalIcon(SpecialEffectsRegistry.SHARP_BLADE.getId()),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_ROOT_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_ROOT_DESC),
-                            null,
+                            BACKGROUND,
                             FrameType.TASK,
-                            false,
+                            true,
                             false,
                             false)
                     .addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
@@ -141,6 +144,8 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                 bladeAdvancements.put(node.blade(), advancement);
             }
 
+            saveFluorescenceSeries(registries, writer, bladeAdvancements);
+
             for (GrowthAdvancementGraph.SeNode node : GrowthAdvancementGraph.SPECIAL_EFFECTS) {
                 Advancement parent = node.parentEffectId() == null
                         ? seRoot
@@ -175,6 +180,57 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                         Recasting.prefix("growth/se/" + node.effectId().getPath()).toString());
                 seAdvancements.put(node.effectId(), advancement);
             }
+        }
+
+        private void saveFluorescenceSeries(
+                HolderLookup.Provider registries,
+                Consumer<Advancement> writer,
+                Map<ResourceKey<SlashBladeDefinition>, Advancement> bladeAdvancements
+        ) {
+            Advancement parent = bladeAdvancements.get(RecastingSlashBladeKeys.GREEN_BLADE_WOOD);
+            if (parent == null) {
+                throw new IllegalStateException("Missing green_blade_wood for fluorescence series");
+            }
+
+            GrowthAdvancementGraph.BladeNode iconNode = GrowthAdvancementGraph.FLUORESCENCE_SERIES.get(0);
+            Advancement.Builder builder = Advancement.Builder.advancement()
+                    .parent(parent)
+                    .display(
+                            bladeIcon(registries, iconNode.blade()),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_FLUORESCENCE_TITLE),
+                            Component.translatable(
+                                    RecastingLanguageKeys.ADVANCEMENT_GROWTH_FLUORESCENCE_DESC,
+                                    Component.translatable(
+                                            BladeTranslationHelper.itemDescriptionId(
+                                                    RecastingSlashBladeKeys.GREEN_BLADE_WOOD.location()))),
+                            null,
+                            FrameType.TASK,
+                            true,
+                            false,
+                            false);
+
+            ArrayList<String> anyBlade = new ArrayList<>();
+            for (GrowthAdvancementGraph.BladeNode node : GrowthAdvancementGraph.FLUORESCENCE_SERIES) {
+                String path = node.blade().location().getPath().replace('/', '_');
+                String obtainedId = "obtained_" + path;
+                builder.addCriterion(
+                        obtainedId,
+                        InventoryChangeTrigger.TriggerInstance.hasItems(
+                                NamedSlashBladeItemPredicate.of(node.blade().location())));
+                anyBlade.add(obtainedId);
+                if (node.recipeId() != null) {
+                    String craftedId = "crafted_" + path;
+                    builder.addCriterion(
+                            craftedId,
+                            RecipeCraftedTrigger.TriggerInstance.craftedItem(node.recipeId()));
+                    anyBlade.add(craftedId);
+                }
+            }
+
+            // 同组内 OR：任意一把荧光刀（合成或获得）即可
+            builder.requirements(new String[][]{anyBlade.toArray(String[]::new)});
+
+            builder.save(writer, Recasting.prefix("growth/blades/slashblade/fluorescence").toString());
         }
 
         private ItemStack bladeIcon(HolderLookup.Provider registries, ResourceKey<SlashBladeDefinition> blade) {

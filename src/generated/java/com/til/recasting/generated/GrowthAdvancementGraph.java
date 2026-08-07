@@ -132,6 +132,17 @@ public final class GrowthAdvancementGraph {
             blade(RecastingSlashBladeKeys.LONG_SKY_SUNSET, RecastingSlashBladeKeys.BLACK, "long_sky_sunset_recipe", false),
             blade(RecastingSlashBladeKeys.LONG_SKY_SUNSET_LAMBDA, RecastingSlashBladeKeys.LONG_SKY_SUNSET, "long_sky_sunset_lambda_recipe", true),
 
+            // 无本模组合成配方，仅作为 Lambda 前置
+            blade(RecastingSlashBladeKeys.TU_WU, null, null, false),
+            blade(RecastingSlashBladeKeys.TU_WU_LAMBDA, RecastingSlashBladeKeys.TU_WU, "tu_wu_lambda_recipe", true),
+            blade(RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED, null, null, false),
+            blade(RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED_LAMBDA, RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED, "xuan_yuan_liberated_lambda_recipe", true)
+    );
+
+    /**
+     * 荧光系列：成就树合并为一节点，任一刀即可解锁。
+     */
+    public static final List<BladeNode> FLUORESCENCE_SERIES = List.of(
             blade(RecastingSlashBladeKeys.FLUORESCENCE_1, RecastingSlashBladeKeys.GREEN_BLADE_WOOD, "fluorescence_1_recipe", false),
             blade(RecastingSlashBladeKeys.FLUORESCENCE_2, RecastingSlashBladeKeys.GREEN_BLADE_WOOD, "fluorescence_2_recipe", false),
             blade(RecastingSlashBladeKeys.FLUORESCENCE_3, RecastingSlashBladeKeys.GREEN_BLADE_WOOD, "fluorescence_3_recipe", false),
@@ -139,13 +150,7 @@ public final class GrowthAdvancementGraph {
             blade(RecastingSlashBladeKeys.FLUORESCENCE_5, RecastingSlashBladeKeys.GREEN_BLADE_WOOD, "fluorescence_5_recipe", false),
             blade(RecastingSlashBladeKeys.FLUORESCENCE_6, RecastingSlashBladeKeys.GREEN_BLADE_WOOD, "fluorescence_6_recipe", false),
             blade(RecastingSlashBladeKeys.FLUORESCENCE_7, RecastingSlashBladeKeys.GREEN_BLADE_WOOD, "fluorescence_7_recipe", false),
-            blade(RecastingSlashBladeKeys.FLUORESCENCE_8, RecastingSlashBladeKeys.GREEN_BLADE_WOOD, "fluorescence_8_recipe", false),
-
-            // 无本模组合成配方，仅作为 Lambda 前置
-            blade(RecastingSlashBladeKeys.TU_WU, null, null, false),
-            blade(RecastingSlashBladeKeys.TU_WU_LAMBDA, RecastingSlashBladeKeys.TU_WU, "tu_wu_lambda_recipe", true),
-            blade(RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED, null, null, false),
-            blade(RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED_LAMBDA, RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED, "xuan_yuan_liberated_lambda_recipe", true)
+            blade(RecastingSlashBladeKeys.FLUORESCENCE_8, RecastingSlashBladeKeys.GREEN_BLADE_WOOD, "fluorescence_8_recipe", false)
     );
 
     public static final List<SeNode> SPECIAL_EFFECTS = List.of(

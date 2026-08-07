@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-07T16:40:33.7302385	Advancements
+// 1.20.1	2026-08-07T17:04:24.2946162	Advancements
 efdeaeab0157118325728c6c22d39bfdf2b6ce2b data/recasting/advancements/growth/blades/root.json
 1712a697927bd33f2ac61bd946afa4eb235d72d6 data/recasting/advancements/growth/blades/slashblade/art_knife.json
 84a907fb18a21655c41f203ef6e301210710e6f5 data/recasting/advancements/growth/blades/slashblade/azure_vista.json
@@ -28,14 +28,7 @@ da61d277075815a88390ef3a80821d4ca0ca09b6 data/recasting/advancements/growth/blad
 206c2898da5402a31a0180286d65d3f0100a7ff5 data/recasting/advancements/growth/blades/slashblade/dragon_lambda.json
 127ef545e1ffbb1b33e23a346d6786e82421dcc9 data/recasting/advancements/growth/blades/slashblade/dragon_scale.json
 908f7909b80ae9fff9bc147489c5a19e6c8220b3 data/recasting/advancements/growth/blades/slashblade/dragon_scale_lambda.json
-afe77a7dc6da85bb3a6a4df52268a58bfd6978ac data/recasting/advancements/growth/blades/slashblade/fluorescence/fluorescence_1.json
-8a1a02350e6f8c6af2e29bdc2b28d6f7bd83cdbb data/recasting/advancements/growth/blades/slashblade/fluorescence/fluorescence_2.json
-8f8617d0d5f8bd2fec0a9d62653062b97b242fc2 data/recasting/advancements/growth/blades/slashblade/fluorescence/fluorescence_3.json
-b7e1633dadd80da011b88093babb02c6e1303033 data/recasting/advancements/growth/blades/slashblade/fluorescence/fluorescence_4.json
-834054ca8001573048ee1b7be908f4a0a328c1da data/recasting/advancements/growth/blades/slashblade/fluorescence/fluorescence_5.json
-259183592979f8da5254f73def2f3ffe24671b5a data/recasting/advancements/growth/blades/slashblade/fluorescence/fluorescence_6.json
-179ec1656923e7c525e1b6bbad022054db3e9cb3 data/recasting/advancements/growth/blades/slashblade/fluorescence/fluorescence_7.json
-f934fa26e8ccc4b0b912f6d5c9251f209370ca1d data/recasting/advancements/growth/blades/slashblade/fluorescence/fluorescence_8.json
+f1d4bf6139ddd3d42c8ce25367bba4e9ceebdcf4 data/recasting/advancements/growth/blades/slashblade/fluorescence.json
 0d6397a8ba1aeb4e53766db44896db2908a58126 data/recasting/advancements/growth/blades/slashblade/green_blade_iron.json
 29e1648d20548692b8c61b95118878b549261d48 data/recasting/advancements/growth/blades/slashblade/green_blade_wood.json
 263710e76a2dcc323a94cfa41c24da7155c187b0 data/recasting/advancements/growth/blades/slashblade/hoe.json
@@ -82,7 +75,7 @@ ce497042a86915f3f16dbf37c6c77aa922400d55 data/recasting/advancements/growth/blad
 7a681e7dc1de2f8ddde286e688358ecb95cd0e44 data/recasting/advancements/growth/blades/slashblade/void/void_3.json
 86c0363efca5804c387a8a775a40147c43a2da4f data/recasting/advancements/growth/blades/slashblade/wind_cloud.json
 e439ebfee26d8633199cc196ae8ee45edefb0e13 data/recasting/advancements/growth/blades/slashblade/wind_cloud_lambda.json
-afb588b077f5a7f3381f5f927509c5f5c18b6f00 data/recasting/advancements/growth/root.json
+30d6f5cb37fb69bd0157821b378cc438492217b4 data/recasting/advancements/growth/root.json
 ff437757c735ce611b263bf41aa8d75151d471c2 data/recasting/advancements/growth/se/annihilation.json
 55bb5b91fa51b66c4ae5607b83516bba02f88e74 data/recasting/advancements/growth/se/cooperate_with.json
 5253ad234341486aa8523544c914448cd047646b data/recasting/advancements/growth/se/cross_chop.json
@@ -98,7 +91,7 @@ ca1d66d22dbfaa0d2f0b57d83de1effcbd3cc78d data/recasting/advancements/growth/se/j
 fc476b2b2c8a2b67892d7c58c327ab548e002382 data/recasting/advancements/growth/se/overload.json
 92258b93f721a3bff1c1eb1c3ab1a424d8c49293 data/recasting/advancements/growth/se/regression.json
 42ee0ac8b1ca72e0a465b16b901c5350dcb8049f data/recasting/advancements/growth/se/resist.json
-cc4380b3ca1c77ea088fe62d6963743bf1d6eb93 data/recasting/advancements/growth/se/root.json
+6e42ea97d32ac9f1911eca81bb6301890bd964d7 data/recasting/advancements/growth/se/root.json
 aab669dd69ebbaaed4e582b03f00bdf5bc6a1e41 data/recasting/advancements/growth/se/sever_break.json
 0a12f35cf35b87ca13c7543f3742c37a27d173e2 data/recasting/advancements/growth/se/sharp_blade.json
 d9c5a8685dc7bf78defaad9ee40d82c3dc19294c data/recasting/advancements/growth/se/shock.json

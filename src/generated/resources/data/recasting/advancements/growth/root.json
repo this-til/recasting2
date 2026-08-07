@@ -14,7 +14,8 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "slashblade:slashblade"
+      "item": "slashblade:slashblade",
+      "nbt": "{bladeState:{AttackAmplifier:0.0f,ComboRoot:\"slashblade:standby\",Damage:0,ModelName:\"recasting:slashblade/cool_mint.obj\",RepairCounter:0,SpecialAttackType:\"slashblade:judgement_cut\",StandbyRenderType:0b,SummonedSwordColor:-3673141,SummonedSwordColorInverse:0b,TargetEntity:0,TextureName:\"recasting:slashblade/cool_mint.png\",_onClick:0b,adjustXYZ:[0.0d,0.0d,0.0d],baseAttackModifier:4.0f,currentCombo:\"slashblade:none\",fallDecreaseRate:0.0f,isBroken:0b,isDefaultBewitched:0b,isSealed:0b,killCount:0,lastActionTime:0L,maxDamage:40,proudSoul:0,translationKey:\"item.recasting.slashblade.cool_mint\"}}"
     },
     "show_toast": true,
     "title": {

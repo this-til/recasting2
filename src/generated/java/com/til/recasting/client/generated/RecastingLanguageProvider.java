@@ -34,7 +34,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
     protected void addTranslations() {
         translation(RecastingLanguageKeys.OTHER_TEST, "总该说些什么...", "I should say something...");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_ROOT_TITLE, "重铸之路", "Path of Recasting");
-        translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_ROOT_DESC, "探索刀剑与特殊效果的成长路线。", "Explore growth paths for blades and special effects.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_ROOT_DESC, "探索命名刀的成长路线。", "Explore named blade growth paths.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADES_ROOT_TITLE, "刀之成长", "Blade Growth");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADES_ROOT_DESC, "沿配方链锻造更强的命名刀。", "Forge stronger named blades along the recipe chains.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_ROOT_TITLE, "结晶之路", "Crystal Path");
@@ -43,6 +43,8 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_FROM_DESC, "由「%s」成长而来。", "Grows from %s.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_START_DESC, "基础特殊效果结晶。", "Base special effect crystal.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_FROM_DESC, "由「%s」解锁。", "Unlocked from %s.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_FLUORESCENCE_TITLE, "荧光系列", "Fluorescence Series");
+        translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_FLUORESCENCE_DESC, "由「%s」成长而来。完成任意一把荧光刀即可。", "Grows from %s. Complete any fluorescence blade.");
         translation(buffKey(RecastingBuffTypes.SOUL_BURN), "灵魂燃烧", "Soul Burn");
         translation(buffKey(RecastingBuffTypes.FRAGMENT), "破片", "Fragment");
         translation(buffKey(RecastingBuffTypes.IONIZATION), "电离", "Ionization");
