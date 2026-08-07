@@ -120,7 +120,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                         .display(
                                 bladeIcon(registries, node.blade()),
                                 Component.translatable(BladeTranslationHelper.itemDescriptionId(node.blade().location())),
-                                bladeDescription(node.parent()),
+                                bladeDescription(node),
                                 null,
                                 node.lambda() ? FrameType.GOAL : FrameType.TASK,
                                 true,
@@ -316,13 +316,16 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
             return stack;
         }
 
-        private static Component bladeDescription(@Nullable ResourceKey<SlashBladeDefinition> parent) {
-            if (parent == null) {
-                return Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_START_DESC);
+        private static Component bladeDescription(GrowthAdvancementGraph.BladeNode node) {
+            if (node.parent() != null) {
+                return Component.translatable(
+                        RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_FROM_DESC,
+                        Component.translatable(BladeTranslationHelper.itemDescriptionId(node.parent().location())));
             }
-            return Component.translatable(
-                    RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_FROM_DESC,
-                    Component.translatable(BladeTranslationHelper.itemDescriptionId(parent.location())));
+            if (node.recipeId() == null) {
+                return Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_EASTER_DESC);
+            }
+            return Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_START_DESC);
         }
 
         private static Component seDescription(@Nullable ResourceLocation parentEffectId) {

@@ -41,6 +41,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_ROOT_DESC, "沿效果链解锁特殊效果结晶。", "Unlock special effect crystals along their effect chains.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_START_DESC, "成长路线起点。", "Starting point of a growth path.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_FROM_DESC, "由「%s」成长而来。", "Grows from %s.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_EASTER_DESC, "隐藏的彩蛋刀。", "A hidden easter egg blade.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_START_DESC, "基础特殊效果结晶。", "Base special effect crystal.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_FROM_DESC, "由「%s」解锁。", "Unlocked from %s.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_FLUORESCENCE_TITLE, "荧光系列", "Fluorescence Series");

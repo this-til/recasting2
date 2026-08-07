@@ -35,6 +35,7 @@ public final class RecastingLanguageKeys {
     public static final String ADVANCEMENT_GROWTH_SE_ROOT_DESC = "advancements.recasting.growth.se.root.description";
     public static final String ADVANCEMENT_GROWTH_BLADE_START_DESC = "advancements.recasting.growth.blade.start.description";
     public static final String ADVANCEMENT_GROWTH_BLADE_FROM_DESC = "advancements.recasting.growth.blade.from.description";
+    public static final String ADVANCEMENT_GROWTH_BLADE_EASTER_DESC = "advancements.recasting.growth.blade.easter.description";
     public static final String ADVANCEMENT_GROWTH_SE_START_DESC = "advancements.recasting.growth.se.start.description";
     public static final String ADVANCEMENT_GROWTH_SE_FROM_DESC = "advancements.recasting.growth.se.from.description";
     public static final String ADVANCEMENT_GROWTH_FLUORESCENCE_TITLE = "advancements.recasting.growth.fluorescence.title";
