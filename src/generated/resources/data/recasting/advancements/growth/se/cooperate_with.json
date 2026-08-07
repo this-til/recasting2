@@ -1,0 +1,50 @@
+{
+  "parent": "recasting:growth/se/sharp_blade",
+  "criteria": {
+    "crafted": {
+      "conditions": {
+        "recipe_id": "recasting:cooperate_with_se_crystal_recipe"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "type": "recasting:se_crystal",
+            "effect": "recasting:cooperate_with",
+            "level": 1
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.growth.se.from.description",
+      "with": [
+        {
+          "translate": "se.recasting.sharp_blade"
+        }
+      ]
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "recasting:se_crystal"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "se.recasting.cooperate_with"
+    }
+  },
+  "requirements": [
+    [
+      "obtained",
+      "crafted"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

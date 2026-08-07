@@ -59,6 +59,11 @@ public class DataGenerator {
                 namedProvider("Recasting Special Effect Recipes", new SpecialEffectRecipes(packOutput))
         );
 
+        dataGenerator.addProvider(
+                event.includeServer(),
+                new RecastingAdvancementProvider(packOutput, lookupProvider)
+        );
+
         BlockTagsProvider blockTags = new BlockTagsProvider(packOutput, lookupProvider, Recasting.MODID, existingFileHelper) {
             @Override
             protected void addTags(@NotNull HolderLookup.Provider provider) {

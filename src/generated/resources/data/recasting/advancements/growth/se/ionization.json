@@ -1,0 +1,50 @@
+{
+  "parent": "recasting:growth/se/thunder_strike",
+  "criteria": {
+    "crafted": {
+      "conditions": {
+        "recipe_id": "recasting:ionization_se_crystal_recipe"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "type": "recasting:se_crystal",
+            "effect": "recasting:ionization",
+            "level": 1
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.growth.se.from.description",
+      "with": [
+        {
+          "translate": "se.recasting.thunder_strike"
+        }
+      ]
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "recasting:se_crystal"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "se.recasting.ionization"
+    }
+  },
+  "requirements": [
+    [
+      "obtained",
+      "crafted"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,30 @@
+{
+  "parent": "recasting:growth/root",
+  "criteria": {
+    "tick": {
+      "conditions": {},
+      "trigger": "minecraft:tick"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.growth.se.root.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "recasting:se_crystal"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.recasting.growth.se.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "tick"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

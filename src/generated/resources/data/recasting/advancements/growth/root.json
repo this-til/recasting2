@@ -1,0 +1,30 @@
+{
+  "criteria": {
+    "tick": {
+      "conditions": {},
+      "trigger": "minecraft:tick"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "description": {
+      "translate": "advancements.recasting.growth.root.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "slashblade:slashblade"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.recasting.growth.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "tick"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

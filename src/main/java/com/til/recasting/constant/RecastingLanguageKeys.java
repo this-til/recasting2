@@ -27,6 +27,17 @@ public final class RecastingLanguageKeys {
     public static final String TOOLTIP_SPECIAL_SE_BADGE = "recasting.tooltip.special_se.badge";
     public static final String TOOLTIP_ABYSS_FLAME_EXTRACT = "recasting.tooltip.abyss_flame.extract";
 
+    public static final String ADVANCEMENT_GROWTH_ROOT_TITLE = "advancements.recasting.growth.root.title";
+    public static final String ADVANCEMENT_GROWTH_ROOT_DESC = "advancements.recasting.growth.root.description";
+    public static final String ADVANCEMENT_GROWTH_BLADES_ROOT_TITLE = "advancements.recasting.growth.blades.root.title";
+    public static final String ADVANCEMENT_GROWTH_BLADES_ROOT_DESC = "advancements.recasting.growth.blades.root.description";
+    public static final String ADVANCEMENT_GROWTH_SE_ROOT_TITLE = "advancements.recasting.growth.se.root.title";
+    public static final String ADVANCEMENT_GROWTH_SE_ROOT_DESC = "advancements.recasting.growth.se.root.description";
+    public static final String ADVANCEMENT_GROWTH_BLADE_START_DESC = "advancements.recasting.growth.blade.start.description";
+    public static final String ADVANCEMENT_GROWTH_BLADE_FROM_DESC = "advancements.recasting.growth.blade.from.description";
+    public static final String ADVANCEMENT_GROWTH_SE_START_DESC = "advancements.recasting.growth.se.start.description";
+    public static final String ADVANCEMENT_GROWTH_SE_FROM_DESC = "advancements.recasting.growth.se.from.description";
+
     private RecastingLanguageKeys() {
     }
 }

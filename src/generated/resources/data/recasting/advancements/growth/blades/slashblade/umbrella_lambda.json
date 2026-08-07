@@ -1,0 +1,50 @@
+{
+  "parent": "recasting:growth/blades/slashblade/umbrella",
+  "criteria": {
+    "crafted": {
+      "conditions": {
+        "recipe_id": "recasting:umbrella_lambda_recipe"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "type": "recasting:named_slashblade",
+            "blade": "recasting:slashblade/umbrella_lambda"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.growth.blade.from.description",
+      "with": [
+        {
+          "translate": "item.recasting.slashblade.umbrella"
+        }
+      ]
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "slashblade:slashblade",
+      "nbt": "{bladeState:{AttackAmplifier:0.0f,ComboRoot:\"slashblade:standby\",Damage:0,ModelName:\"recasting:slashblade/umbrella_lambda.obj\",RepairCounter:0,SpecialAttackType:\"slashblade:judgement_cut\",StandbyRenderType:0b,SummonedSwordColor:-4091393,SummonedSwordColorInverse:0b,TargetEntity:0,TextureName:\"recasting:slashblade/umbrella.png\",_onClick:0b,adjustXYZ:[0.0d,0.0d,0.0d],baseAttackModifier:4.0f,currentCombo:\"slashblade:none\",fallDecreaseRate:0.0f,isBroken:0b,isDefaultBewitched:0b,isSealed:0b,killCount:0,lastActionTime:0L,maxDamage:40,proudSoul:0,translationKey:\"item.recasting.slashblade.umbrella_lambda\"}}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "item.recasting.slashblade.umbrella_lambda"
+    }
+  },
+  "requirements": [
+    [
+      "obtained",
+      "crafted"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

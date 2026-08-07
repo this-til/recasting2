@@ -1,0 +1,30 @@
+{
+  "parent": "recasting:growth/root",
+  "criteria": {
+    "tick": {
+      "conditions": {},
+      "trigger": "minecraft:tick"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.growth.blades.root.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "slashblade:slashblade_wood"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.recasting.growth.blades.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "tick"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

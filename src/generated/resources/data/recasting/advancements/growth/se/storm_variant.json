@@ -1,0 +1,50 @@
+{
+  "parent": "recasting:growth/se/storm",
+  "criteria": {
+    "crafted": {
+      "conditions": {
+        "recipe_id": "recasting:storm_variant_se_crystal_recipe"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "type": "recasting:se_crystal",
+            "effect": "recasting:storm_variant",
+            "level": 1
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.growth.se.from.description",
+      "with": [
+        {
+          "translate": "se.recasting.storm"
+        }
+      ]
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "recasting:se_crystal"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "se.recasting.storm_variant"
+    }
+  },
+  "requirements": [
+    [
+      "obtained",
+      "crafted"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
