@@ -23,7 +23,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.recasting.growth.se.start.description"
+      "translate": "se.recasting.sharp_blade.desc"
     },
     "frame": "task",
     "hidden": false,

@@ -37,7 +37,7 @@
           }
         ],
         "kill": 5000,
-        "name": "recasting:slashblade/silver_wing",
+        "name": "recasting:slashblade/silver_wing_lambda",
         "refine": 600
       }
     },

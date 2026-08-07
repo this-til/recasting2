@@ -34,15 +34,13 @@ public class RecastingLanguageProvider extends LanguageProvider {
     protected void addTranslations() {
         translation(RecastingLanguageKeys.OTHER_TEST, "总该说些什么...", "I should say something...");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_ROOT_TITLE, "重铸之路", "Path of Recasting");
-        translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_ROOT_DESC, "探索命名刀的成长路线。", "Explore named blade growth paths.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_ROOT_DESC, "探索名刀的成长路线。", "Explore named blade growth paths.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_ROOT_TITLE, "结晶之路", "Crystal Path");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_ROOT_DESC, "沿效果链解锁特殊效果结晶。", "Unlock special effect crystals along their effect chains.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_START_DESC, "成长路线起点。", "Starting point of a growth path.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_FROM_DESC, "由「%s」成长而来。", "Grows from %s.");
-        translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_MENU_DESC, "趣味菜单刀。", "A gag menu blade.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_MENU_DESC, "彩蛋刀。", "An easter egg blade.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_PENDING_DESC, "尚无合成配方。", "Crafting recipe not yet available.");
-        translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_START_DESC, "基础特殊效果结晶。", "Base special effect crystal.");
-        translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_FROM_DESC, "由「%s」解锁。", "Unlocked from %s.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_FLUORESCENCE_TITLE, "荧光系列", "Fluorescence Series");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_FLUORESCENCE_DESC, "由「%s」成长而来。完成任意一把荧光刀即可。", "Grows from %s. Complete any fluorescence blade.");
         translation(buffKey(RecastingBuffTypes.SOUL_BURN), "灵魂燃烧", "Soul Burn");

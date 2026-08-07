@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-05T03:34:19.8844341	Recasting SlashBlade Recipes
+// 1.20.1	2026-08-07T23:48:16.2616472	Recasting SlashBlade Recipes
 a74627e490b2ab2d41e968543fdb44be214ba575 data/recasting/advancements/recipes/combat/art_knife_recipe.json
 5b776b6b4b893a97c920025c199a758aed3f4e1b data/recasting/advancements/recipes/combat/azure_vista_lambda_recipe.json
 28b6a154a874fbaad038a27535bf0a28f6401d5c data/recasting/advancements/recipes/combat/azure_vista_recipe.json
@@ -98,7 +98,7 @@ b8d49da32f8603355c1a6a0cbfb8cd9628770d08 data/recasting/recipes/brilliant_tea_re
 8a54580f53acd0772b835f53128d971cb0e2ca37 data/recasting/recipes/broadsword_wood_recipe.json
 3213b28fdba2a4343020eb4a103028d312e32302 data/recasting/recipes/broken_white_recipe.json
 5528a84869fd4bbce058c3fcecc96117b3fbda8d data/recasting/recipes/color_wing_lambda_recipe.json
-73831ec0de3e19b83181b510c9c75f068563dd39 data/recasting/recipes/color_wing_recipe.json
+7fe7de01660e665da09289f59e31ab270a9d7c78 data/recasting/recipes/color_wing_recipe.json
 34073a602acc6ac413aeec8b8942af251bf60eb0 data/recasting/recipes/cool_mint_lambda_recipe.json
 caad7b73bdd6a6fa7ca39ac00eafe7bff9138e12 data/recasting/recipes/cool_mint_recipe.json
 89e098c81f8c33f9042fe5c0d5a425b27f635587 data/recasting/recipes/dharma_stick_lambda_recipe.json

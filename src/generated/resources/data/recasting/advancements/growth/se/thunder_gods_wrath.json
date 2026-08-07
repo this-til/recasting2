@@ -23,12 +23,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.recasting.growth.se.from.description",
-      "with": [
-        {
-          "translate": "se.recasting.ionization"
-        }
-      ]
+      "translate": "se.recasting.thunder_gods_wrath.desc"
     },
     "frame": "task",
     "hidden": false,

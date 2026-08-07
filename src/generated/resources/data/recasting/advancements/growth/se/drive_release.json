@@ -23,12 +23,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.recasting.growth.se.from.description",
-      "with": [
-        {
-          "translate": "se.recasting.sword_qi_mastery"
-        }
-      ]
+      "translate": "se.recasting.drive_release.desc"
     },
     "frame": "task",
     "hidden": false,

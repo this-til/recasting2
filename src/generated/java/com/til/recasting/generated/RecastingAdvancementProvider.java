@@ -150,7 +150,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                         .display(
                                 seCrystalIcon(node.effectId()),
                                 Component.translatable(seDescriptionId(node.effectId())),
-                                seDescription(node.parentEffectId()),
+                                Component.translatable(seDescriptionId(node.effectId()) + ".desc"),
                                 null,
                                 FrameType.TASK,
                                 true,
@@ -319,15 +319,6 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                 return Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_PENDING_DESC);
             }
             return Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_START_DESC);
-        }
-
-        private static Component seDescription(@Nullable ResourceLocation parentEffectId) {
-            if (parentEffectId == null) {
-                return Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_START_DESC);
-            }
-            return Component.translatable(
-                    RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_FROM_DESC,
-                    Component.translatable(seDescriptionId(parentEffectId)));
         }
 
         private static String seDescriptionId(ResourceLocation effectId) {

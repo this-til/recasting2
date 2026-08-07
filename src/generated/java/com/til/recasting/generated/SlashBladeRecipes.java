@@ -2051,11 +2051,11 @@ public class SlashBladeRecipes extends RecipeProvider {
                             .save(consumer, Recasting.prefix("silver_wing_lambda_recipe"));
     
         /**
-         * 彩翼配方（t2）：从云翼升级
+         * 彩翼配方（t2）：从云翼 Lambda 升级
          * 要求：杀敌5000、锻造600、摔落保护4附魔、灵魂疾行3附魔、迅捷潜行3附魔、冰霜行者1附魔
          * 材料：钻石庸魂立方体4个
          * 染料：红色、黄色、黄绿色、蓝色各1个
-         * C=钻石庸魂立方体, X=基础刀（云翼，满足要求）, R=红色染料, Y=黄色染料, L=黄绿色染料, B=蓝色染料
+         * C=钻石庸魂立方体, X=基础刀（云翼 Lambda，满足要求）, R=红色染料, Y=黄色染料, L=黄绿色染料, B=蓝色染料
          */
         
     
@@ -2065,7 +2065,7 @@ public class SlashBladeRecipes extends RecipeProvider {
                             .pattern("CBC")
                             .define('X',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                            .name(RecastingSlashBladeKeys.SILVER_WING.location())
+                                            .name(RecastingSlashBladeKeys.SILVER_WING_LAMBDA.location())
                                             .killCount(5000)
                                             .refineCount(600)
                                             .addEnchantment(new EnchantmentDefinition(

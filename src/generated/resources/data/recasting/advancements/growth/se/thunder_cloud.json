@@ -23,12 +23,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.recasting.growth.se.from.description",
-      "with": [
-        {
-          "translate": "se.recasting.thunderstorm"
-        }
-      ]
+      "translate": "se.recasting.thunder_cloud.desc"
     },
     "frame": "task",
     "hidden": false,

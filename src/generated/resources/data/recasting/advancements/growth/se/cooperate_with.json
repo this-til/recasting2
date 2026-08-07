@@ -23,12 +23,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.recasting.growth.se.from.description",
-      "with": [
-        {
-          "translate": "se.recasting.sharp_blade"
-        }
-      ]
+      "translate": "se.recasting.cooperate_with.desc"
     },
     "frame": "task",
     "hidden": false,
