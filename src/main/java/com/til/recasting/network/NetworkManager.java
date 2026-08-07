@@ -57,6 +57,13 @@ public class NetworkManager {
                 ProudSoulBagSyncMessage::decode,
                 ProudSoulBagSyncMessage::handle
         );
+        INSTANCE.registerMessage(
+                id++,
+                TimeBeyondAccelMessage.class,
+                TimeBeyondAccelMessage::encode,
+                TimeBeyondAccelMessage::decode,
+                TimeBeyondAccelMessage::handle
+        );
     }
 }
 

@@ -100,7 +100,7 @@ public class Config {
 
     public static final ForgeConfigSpec.BooleanValue TIME_BEYOND_ENTITY_TICK_ACCEL = BUILDER
             .comment(
-                    "[EXPERIMENTAL] 时之彼端蓄力时，是否对玩家与周围实体每游戏刻额外 tick 15 次（合计约 16 倍）。",
+                    "[EXPERIMENTAL] 时之彼端满蓄加速时，是否对玩家与周围实体每游戏刻额外 tick 31 次（合计约 32 倍）。",
                     "默认关闭。开启可能导致 AI/物理/其它模组副作用，仅建议调试或明确了解风险后使用。"
             )
             .define("timeBeyondEntityTickAccel", false);
