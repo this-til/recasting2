@@ -850,6 +850,19 @@ public class RecastingItems {
         );
     }
 
+    public static List<RegistryObject<Item>> getAllSoulCube() {
+        return Arrays.asList(
+                IRON_MEDIUM_SOUL_CUBE,
+                GOLD_MEDIUM_SOUL_CUBE,
+                COPPER_MEDIUM_SOUL_CUBE,
+                DIAMOND_MEDIUM_SOUL_CUBE,
+                EMERALD_MEDIUM_SOUL_CUBE,
+                NETHERITE_MEDIUM_SOUL_CUBE,
+                LAPIS_MEDIUM_SOUL_CUBE,
+                REDSTONE_MEDIUM_SOUL_CUBE
+        );
+    }
+
     public static void onBuildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
         // 检查是否是 slashblade:slashblade 物品组
         if (!event.getTabKey().location().equals(ResourceLocation.fromNamespaceAndPath("slashblade", "slashblade"))) {

@@ -25,7 +25,8 @@ public final class JadeFireBuffHandler {
 
     private static final String TIMER_NAME = "jade_fire_tick";
     private static final float FIXED_FIRE_DAMAGE = 0.5f;
-    private static final float DAMAGE_AMP_PER_LEVEL = 0.4f;
+    /** 满层时的额外受伤比例；中间层按 level / maxLevel 线性插值。 */
+    private static final float DAMAGE_AMP_AT_MAX_LEVEL = 0.4f;
     private static final int TICKS_PER_INTERVAL = 20;
 
     private JadeFireBuffHandler() {
@@ -97,9 +98,11 @@ public final class JadeFireBuffHandler {
         }
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
-            int currentLevel = data.getLevel(RecastingBuffTypes.JADE_FIRE.get(), target.level());
-            if (currentLevel > 0) {
-                event.addModifiedRatioAmplifier(currentLevel * DAMAGE_AMP_PER_LEVEL);
+            BuffType jadeFireBuffType = RecastingBuffTypes.JADE_FIRE.get();
+            int currentLevel = data.getLevel(jadeFireBuffType, target.level());
+            int maxLevel = jadeFireBuffType.getMaxLevel();
+            if (currentLevel > 0 && maxLevel > 0) {
+                event.addModifiedRatioAmplifier(DAMAGE_AMP_AT_MAX_LEVEL * currentLevel / (float) maxLevel);
             }
         });
     }

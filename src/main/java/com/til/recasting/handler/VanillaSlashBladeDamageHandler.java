@@ -6,15 +6,11 @@ import com.til.recasting.mixin.DamageSourcesAccessor;
 import com.til.recasting.registry.RecastingAttackTypes;
 import mods.flammpfeil.slashblade.SlashBladeConfig;
 import mods.flammpfeil.slashblade.capability.concentrationrank.ConcentrationRankCapabilityProvider;
-import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -65,32 +61,51 @@ public class VanillaSlashBladeDamageHandler {
             event.addModifiedRatioAmplifier(rankBonus);
         }
 
-        // 3. 火焰附加附魔
+        // 3. 火焰附加附魔（仅剑刃/斩击）
         Entity target = event.getTarget();
-        int fireAspect = weapon.getEnchantmentLevel(Enchantments.FIRE_ASPECT);
-        if (fireAspect > 0 && !target.fireImmune()) {
-            DamageSourcesAccessor accessor = (DamageSourcesAccessor) event.getAttacker().damageSources();
-            DamageSource damageSource = accessor.callSource(DamageTypes.ON_FIRE, target, event.getAttacker());
-            event.addDamageSourceInfo(
-                    damageSource,
-                    new com.til.recasting.util.DamageStructure(0.0f, (float) (Config.FIRE_ASPECT_DAMAGE.get() * fireAspect))
-            );
+        boolean isSlash = event.getAttackTypeList().contains(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get());
+        boolean isSummonedSword = event.getAttackTypeList().contains(RecastingAttackTypes.SUMMOND_SWORD_ATTACK.get());
+        if (isSlash && !target.fireImmune()) {
+            int fireAspect = weapon.getEnchantmentLevel(Enchantments.FIRE_ASPECT);
+            if (fireAspect > 0) {
+                DamageSourcesAccessor accessor = (DamageSourcesAccessor) event.getAttacker().damageSources();
+                DamageSource damageSource = accessor.callSource(DamageTypes.ON_FIRE, target, event.getAttacker());
+                event.addDamageSourceInfo(
+                        damageSource,
+                        new com.til.recasting.util.DamageStructure(0.0f, (float) (Config.FIRE_ASPECT_DAMAGE.get() * fireAspect))
+                );
+            }
         }
 
-        // 4. 力量附魔（仅对召唤剑攻击生效）
+        // 4. 火矢附魔（仅幻影剑）
+        if (isSummonedSword && !target.fireImmune()) {
+            int flameLevel = weapon.getEnchantmentLevel(Enchantments.FLAMING_ARROWS);
+            if (flameLevel > 0) {
+                DamageSourcesAccessor accessor = (DamageSourcesAccessor) event.getAttacker().damageSources();
+                DamageSource damageSource = accessor.callSource(DamageTypes.ON_FIRE, target, event.getAttacker());
+                event.addDamageSourceInfo(
+                        damageSource,
+                        new com.til.recasting.util.DamageStructure(0.0f, (float) (Config.FLAME_ARROWS_DAMAGE.get() * flameLevel))
+                );
+            }
+        }
+
+        // 5. 力量附魔（仅对召唤剑攻击生效）
         int powerLevel = weapon.getEnchantmentLevel(Enchantments.POWER_ARROWS);
-        if (powerLevel > 0 && event.getAttackTypeList().contains(RecastingAttackTypes.SUMMOND_SWORD_ATTACK.get())) {
+        if (powerLevel > 0 && isSummonedSword) {
             event.addModifiedRatioAmplifier((float) (Config.POWER_ATTACK_BONUS.get() * powerLevel));
         }
 
-        // 5. 精炼等级加成
+        // 6. 精炼等级加成
         event.getItem().getCapability(ItemSlashBlade.BLADESTATE).ifPresent(state -> {
             int refine = state.getRefine();
             if (refine > 0) {
-                event.addModifiedRatioAmplifier((float) (Config.REFINE_ATTACK_BONUS.get() * refine));
+                double max = Config.REFINE_ATTACK_BONUS_MAX.get();
+                double half = Config.REFINE_ATTACK_BONUS_HALF.get();
+                event.addModifiedRatioAmplifier((float) (max * refine / (refine + half)));
             }
 
-            // 6. 击杀数加成
+            // 7. 击杀数加成
             int killCount = state.getKillCount();
             if (killCount > 1000) {
                 event.addMechanismModifiedRatioAmplifier(Config.THOUSAND_KILL_ATTACK_BONUS.get().floatValue());
@@ -99,7 +114,7 @@ public class VanillaSlashBladeDamageHandler {
                 event.addMechanismModifiedRatioAmplifier(Config.TEN_THOUSAND_KILL_ATTACK_BONUS.get().floatValue());
             }
 
-            // 7. 精炼数里程碑加成（第二乘区）
+            // 8. 精炼数里程碑加成（第二乘区）
             if (refine > 1000) {
                 event.addMechanismModifiedRatioAmplifier(Config.THOUSAND_REFINE_ATTACK_BONUS.get().floatValue());
             }
@@ -110,7 +125,7 @@ public class VanillaSlashBladeDamageHandler {
 
         // === 第二乘区：机制加成 ===
 
-        // 5. 配置文件中的全局伤害倍率
+        // 9. 配置文件中的全局伤害倍率
         double configDamageMultiplier = SlashBladeConfig.SLASHBLADE_DAMAGE_MULTIPLIER.get();
         if (configDamageMultiplier != 1.0) {
             event.addMechanismModifiedRatioAmplifier((float) (configDamageMultiplier - 1));

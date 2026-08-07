@@ -56,7 +56,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(buffKey(RecastingBuffTypes.SUNSET_STACK), "叠晖", "Sunset Stack");
         translation(buffKey(RecastingBuffTypes.GOLDEN_HALBERD), "金戈", "Golden Halberd");
         translation(buffKey(RecastingBuffTypes.TEA_AROMA), "茶韵", "Tea Aroma");
-        translation(buffKey(RecastingBuffTypes.JADE_DOMAIN), "青界", "Jade Domain");
+        translation(buffKey(RecastingBuffTypes.JADE_DOMAIN), "云海", "Jade Domain");
         translation(buffKey(RecastingBuffTypes.JADE_FIRE), "翠火", "Jade Fire");
         translation(buffKey(RecastingBuffTypes.CURSE_DECREE), "咒令", "Curse Decree");
         translation(buffKey(RecastingBuffTypes.SPIRIT_SILENCE), "寂灭", "Spirit Silence");
@@ -349,10 +349,10 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtKey(SlashArtsRegistry.LONG_SKY_SUNSET_LAMBDA), "^叠晖", "Sunset Mark Lambda");
         translation(slashArtDescKey(SlashArtsRegistry.LONG_SKY_SUNSET), "向目标周边随机敌人齐射幻影剑，命中叠加日核；带有日核的目标再受幻影剑伤害时触发晖光并叠加叠晖，叠满后幻影剑伤害大幅提升。", "Volleys phantom swords at random foes near the aim point, applying Sunset Core on hit. Targets with Sunset Core take Hui Guang and gain Sunset Stack when struck by phantom swords; at full stacks, phantom sword damage rises sharply.");
         translation(slashArtDescKey(SlashArtsRegistry.LONG_SKY_SUNSET_LAMBDA), "向目标周边随机敌人齐射更多幻影剑，命中叠加日核；带有日核的目标再受幻影剑伤害时触发晖光并叠加叠晖，叠满后幻影剑伤害大幅提升。", "Volleys more phantom swords at random foes near the aim point, applying Sunset Core on hit. Targets with Sunset Core take Hui Guang and gain Sunset Stack when struck by phantom swords; at full stacks, phantom sword damage rises sharply.");
-        translation(slashArtKey(SlashArtsRegistry.JADE_DOMAIN), "青界", "Jade Domain");
-        translation(slashArtKey(SlashArtsRegistry.JADE_DOMAIN_LAMBDA), "^青界", "Jade Domain Lambda");
-        translation(slashArtDescKey(SlashArtsRegistry.JADE_DOMAIN), "展开持续一段时间的青界，连续并周期性对随机目标发动刃解。刃解命中的目标会叠加翠火，翠火会造成持续火焰伤害并提高其受到的全部伤害。", "Unfolds a lasting Jade Domain that continuously and periodically performs blade releases on random targets. Targets hit by blade release gain Jade Fire, which deals periodic fire damage and amplifies all damage they take.");
-        translation(slashArtDescKey(SlashArtsRegistry.JADE_DOMAIN_LAMBDA), "展开更强的青界，释放时发动更多刃解，并召唤更多幻影剑追击目标。", "Unfolds a stronger Jade Domain, releasing more blade releases and summoning more phantom swords to pursue targets.");
+        translation(slashArtKey(SlashArtsRegistry.JADE_DOMAIN), "云海", "Jade Domain");
+        translation(slashArtKey(SlashArtsRegistry.JADE_DOMAIN_LAMBDA), "^云海", "Jade Domain Lambda");
+        translation(slashArtDescKey(SlashArtsRegistry.JADE_DOMAIN), "展开持续一段时间的云海，连续并周期性对随机目标发动刃解。刃解命中的目标会叠加翠火，翠火会造成持续火焰伤害并提高其受到的全部伤害。", "Unfolds a lasting Jade Domain that continuously and periodically performs blade releases on random targets. Targets hit by blade release gain Jade Fire, which deals periodic fire damage and amplifies all damage they take.");
+        translation(slashArtDescKey(SlashArtsRegistry.JADE_DOMAIN_LAMBDA), "展开更强的云海，释放时发动更多刃解，并召唤更多幻影剑追击目标。", "Unfolds a stronger Jade Domain, releasing more blade releases and summoning more phantom swords to pursue targets.");
         translation(slashArtKey(SlashArtsRegistry.RIFT_GALE), "裂岚", "Rift Gale");
         translation(slashArtKey(SlashArtsRegistry.RIFT_GALE_LAMBDA), "^裂岚", "Rift Gale Lambda");
         translation(slashArtDescKey(SlashArtsRegistry.RIFT_GALE), "向前方连射多道随机回旋的小剑气，收束后补上一记交错裂斩。", "Barrages forward with multiple randomly rolling small sword qi, then finishes with a crossing rift slash.");

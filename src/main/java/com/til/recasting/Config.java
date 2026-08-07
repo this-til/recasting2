@@ -25,29 +25,37 @@ public class Config {
     // 附魔加成
     public  static final ForgeConfigSpec.DoubleValue SMITE_ATTACK_BONUS = BUILDER
             .comment("亡灵杀手附魔伤害加成（每级）")
-            .defineInRange("smiteAttackBonus", 0.1, 0, 10);
+            .defineInRange("smiteAttackBonus", 0.05, 0, 10);
     
     public  static final ForgeConfigSpec.DoubleValue BANE_OF_ARTHROPODS_ATTACK_BONUS = BUILDER
             .comment("节肢杀手附魔伤害加成（每级）")
-            .defineInRange("baneOfArthropodsAttackBonus", 0.1, 0, 10);
+            .defineInRange("baneOfArthropodsAttackBonus", 0.05, 0, 10);
     
     public  static final ForgeConfigSpec.DoubleValue FIRE_ASPECT_DAMAGE = BUILDER
-            .comment("火焰附加附魔的火焰伤害倍率（每级）")
-            .defineInRange("fireAspectDamage", 0.05, 0, 10);
+            .comment("火焰附加附魔的火焰伤害（每级，仅剑刃/斩击攻击）")
+            .defineInRange("fireAspectDamage", 0.03, 0, 10);
+
+    public static final ForgeConfigSpec.DoubleValue FLAME_ARROWS_DAMAGE = BUILDER
+            .comment("火矢附魔的火焰伤害（每级，仅幻影剑攻击）")
+            .defineInRange("flameArrowsDamage", 0.03, 0, 10);
     
     public  static final ForgeConfigSpec.DoubleValue POWER_ATTACK_BONUS = BUILDER
             .comment("力量附魔对幻影剑攻击的伤害加成（每级）")
-            .defineInRange("powerAttackBonus", 0.15, 0, 10);
+            .defineInRange("powerAttackBonus", 0.1, 0, 10);
     
     // 评分等级加成
     public  static final ForgeConfigSpec.DoubleValue RANK_MAX_BONUS = BUILDER
             .comment("评分等级最大伤害加成（满级时）")
             .defineInRange("rankMaxBonus", 0.1, 0, 10);
     
-    // 精炼和击杀加成
-    public  static final ForgeConfigSpec.DoubleValue REFINE_ATTACK_BONUS = BUILDER
-            .comment("精炼等级伤害加成（每级）")
-            .defineInRange("refineAttackBonus", 0.001, 0, 10);
+    // 精炼和击杀加成：f(x) = max * x / (x + half)，极限为 max，x=half 时为 max/2
+    public static final ForgeConfigSpec.DoubleValue REFINE_ATTACK_BONUS_MAX = BUILDER
+            .comment("精炼伤害加成上限（x→∞ 时趋近该值）")
+            .defineInRange("refineAttackBonusMax", 3.0, 0, 100);
+
+    public static final ForgeConfigSpec.DoubleValue REFINE_ATTACK_BONUS_HALF = BUILDER
+            .comment("精炼伤害加成半饱和点（达到上限一半时的精炼等级")
+            .defineInRange("refineAttackBonusHalf", 1000, 1, Double.MAX_VALUE);
     
     public  static final ForgeConfigSpec.DoubleValue SUMMONED_SWORD_BASE_DAMAGE = BUILDER
             .comment("召唤剑基础伤害倍率")
@@ -86,6 +94,22 @@ public class Config {
             .comment("手持拔刀剑击败生物时，掉落带1级随机附魔的破碎的耀魂的概率")
             .defineInRange("proudSoulEnchantedTinyDropChance", 0.02, 0.0, 1.0);
 
+    public static final ForgeConfigSpec.DoubleValue BASIC_FLAME_DROP_CHANCE = BUILDER
+            .comment("手持拔刀剑击败生物时，掉落任意基础火的概率")
+            .defineInRange("basicFlameDropChance", 0.01, 0.0, 1.0);
+
+    public static final ForgeConfigSpec.DoubleValue SOUL_CUBE_DROP_CHANCE = BUILDER
+            .comment("手持拔刀剑击败生物时，掉落任意庸魂立方体的概率")
+            .defineInRange("soulCubeDropChance", 0.001, 0.0, 1.0);
+
+    public static final ForgeConfigSpec.DoubleValue SE_CRYSTAL_LEVEL_1_DROP_CHANCE = BUILDER
+            .comment("手持拔刀剑击败生物时，掉落任意1等级普通SE结晶的概率（不含特殊SE）")
+            .defineInRange("seCrystalLevel1DropChance", 0.0005, 0.0, 1.0);
+
+    public static final ForgeConfigSpec.DoubleValue SLASH_ARTS_DROP_CHANCE = BUILDER
+            .comment("手持拔刀剑击败生物时，掉落任意SA（耀魂宝珠）的概率")
+            .defineInRange("slashArtsDropChance", 0.0003, 0.0, 1.0);
+
     public static final ForgeConfigSpec.IntValue PROUD_SOUL_ENCHANTED_TINY_LEVEL = BUILDER
             .comment("掉落的随机附魔破碎耀魂的附魔等级")
             .defineInRange("proudSoulEnchantedTinyLevel", 1, 1, Integer.MAX_VALUE);
@@ -98,6 +122,7 @@ public class Config {
             .comment("是否解除铁砧 SE 铭刻数量限制。开启后，普通 SE 与特殊 SE 都不再受数量上限约束")
             .define("unlimitedSeEngraving", false);
 
+   // 实验性功能，默认关闭
     public static final ForgeConfigSpec.BooleanValue TIME_BEYOND_ENTITY_TICK_ACCEL = BUILDER
             .comment(
                     "[EXPERIMENTAL] 时之彼端满蓄加速时，是否对玩家与周围实体每游戏刻额外 tick 31 次（合计约 32 倍）。",
