@@ -106,7 +106,7 @@ public class SpecialEffectsRegistry {
     public static final RegistryObject<SpecialEffect> TEA_AROMA = registerExtendedSE("tea_aroma", () -> new TeaAromaSpecialEffect().setStoreRatio(0.2f).setDelayTicks(30).setDriveBonusStacks(10).setMaxLevel(1).setSpecial(true));
     public static final RegistryObject<SpecialEffect> TEA_AROMA_LAMBDA = registerExtendedSE("tea_aroma_lambda", () -> new TeaAromaSpecialEffect().setStoreRatio(0.3f).setDelayTicks(30).setDriveBonusStacks(15).setMaxLevel(1).setSpecial(true));
 
-    // 光子灼痕 - SE 只叠灼烧；灼痕叠层与满层光束由 Handler 在灼烧状态下处理；三档冷却
+    // 光子灼痕 - SE 只叠灼烧；灼痕叠层与满层光束由 Handler 在灼烧状态下处理
     public static final RegistryObject<SpecialEffect> PHOTON_SCAR = registerExtendedSE("photon_scar", () -> new PhotonScarSpecialEffect().setMaxLevel(1).setSpecial(true));
 
     // 长空落日 - Shift 锁敌持续幻影剑；伤害随层数提升
