@@ -16,7 +16,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.recasting.growth.blade.start.description"
+      "translate": "advancements.recasting.growth.blade.easter.description"
     },
     "frame": "task",
     "hidden": false,
