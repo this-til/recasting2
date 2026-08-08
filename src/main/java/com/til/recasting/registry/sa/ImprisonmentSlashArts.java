@@ -13,6 +13,8 @@ import com.til.recasting.registry.RecastingEntities;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
+import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -131,13 +133,13 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
             currentTarget[0] = next;
             target = next;
             Vec3 center = PosHelper.getEntityAimPosition(target);
-            jc.setPos(center.x, center.y, center.z);
+            moveJudgementCut(jc, center.x, center.y, center.z);
         }
 
         left[0]--;
 
         // 缓慢抬升中心，并将目标钉在中心高度
-        jc.setPos(jc.getX(), jc.getY() + liftPerTick, jc.getZ());
+        moveJudgementCut(jc, jc.getX(), jc.getY() + liftPerTick, jc.getZ());
         double pinY = jc.getY() - target.getBbHeight() * 0.5;
         target.teleportTo(jc.getX(), pinY, jc.getZ());
         target.setDeltaMovement(Vec3.ZERO);
@@ -167,6 +169,14 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
         blade.setIgnoringBlock(true);
         blade.lookAt(PosHelper.getEntityAimPosition(target), false);
         level.addFreshEntity(blade);
+    }
+
+    /** 移动次元斩并立刻向追踪客户端广播绝对坐标。 */
+    private void moveJudgementCut(JudgementCutEntity jc, double x, double y, double z) {
+        jc.teleportTo(x, y, z);
+        if (jc.level() instanceof ServerLevel serverLevel) {
+            serverLevel.getChunkSource().broadcastAndSend(jc, new ClientboundTeleportEntityPacket(jc));
+        }
     }
 
     @Nullable

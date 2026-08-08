@@ -157,7 +157,7 @@ public class EntityRenderExtensionRegistry {
     );
 
     /**
-     * 永恒守卫：持有 Buff 时在实体中心渲染广告牌光圈
+     * 静滞：持有 Buff 时在实体中心渲染广告牌光圈
      */
     public static final RegistryObject<EntityRenderExtension> ETERNAL_GUARD = ENTITY_RENDER_EXTENSIONS.register(
             "eternal_guard",

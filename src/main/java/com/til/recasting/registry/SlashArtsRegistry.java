@@ -318,6 +318,15 @@ public class SlashArtsRegistry {
     // 回到未来计划 · 青茫熳天摇
     public static final RegistryObject<ExtendedSlashArts> AZURE_HAZE = registerExtendedSA("azure_haze", AzureHazeSlashArts::new);
 
+    // 回到未来计划 · 红尘滚滚
+    public static final RegistryObject<ExtendedSlashArts> MORTAL_DUST = registerExtendedSA("mortal_dust", MortalDustSlashArts::new);
+
+    // 回到未来计划 · 撼海潮涌
+    public static final RegistryObject<ExtendedSlashArts> TIDAL_SURGE = registerExtendedSA("tidal_surge", TidalSurgeSlashArts::new);
+
+    // 回到未来计划 · 星辰斗转
+    public static final RegistryObject<ExtendedSlashArts> CELESTIAL_DRIVE = registerExtendedSA("celestial_drive", CelestialDriveSlashArts::new);
+
     /**
      * 注册扩展的 SlashArts，自动关联 ComboState
      */

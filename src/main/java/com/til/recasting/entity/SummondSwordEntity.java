@@ -99,6 +99,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     public final CallbackPoint<IAttackAction> attackActionCallbackPoint = new CallbackPoint<>();
     public final CallbackPoint<IAttackEndAction> attackEndActionCallbackPoint = new CallbackPoint<>();
     public final CallbackPoint<IAttackBlock> attackBlockCallbackPoint = new CallbackPoint<>();
+    public final CallbackPoint<Runnable> tickCallbackPoint = new CallbackPoint<>();
 
 
     public static final ResourceLocation defaultModel = ResourceLocation.fromNamespaceAndPath(SlashBlade.MODID, "model/util/ss.obj");
@@ -151,103 +152,106 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
 
         setOldPosAndRot();
 
-
-        switch (getActionType()) {
-            case PREPARE -> {
-                if (tickCount > getStartDelay()) {
-                    setActionType(ActionType.FLYING);
+        try {
+            switch (getActionType()) {
+                case PREPARE -> {
+                    if (tickCount > getStartDelay()) {
+                        setActionType(ActionType.FLYING);
+                    }
                 }
-            }
-            case FLYING -> {
+                case FLYING -> {
 
-                //process inAir
-                Vec3 positionVec = getPos();
-                Vec3 deltaMovement = getDeltaMovement();
-                Vec3 movedVec = positionVec.add(deltaMovement.x, deltaMovement.y, deltaMovement.z);
+                    //process inAir
+                    Vec3 positionVec = getPos();
+                    Vec3 deltaMovement = getDeltaMovement();
+                    Vec3 movedVec = positionVec.add(deltaMovement.x, deltaMovement.y, deltaMovement.z);
 
-                double mx = movedVec.x;
-                double my = movedVec.y;
-                double mz = movedVec.z;
-                setPos(mx, my, mz);
+                    double mx = movedVec.x;
+                    double my = movedVec.y;
+                    double mz = movedVec.z;
+                    setPos(mx, my, mz);
 
-                if (!isIgnoringBlock()) {
-                    BlockHitResult hitResult = level().clip(
-                            new ClipContext(
-                                    positionVec,
-                                    movedVec,
-                                    ClipContext.Block.COLLIDER,
-                                    ClipContext.Fluid.NONE,
-                                    this
-                            )
-                    );
+                    if (!isIgnoringBlock()) {
+                        BlockHitResult hitResult = level().clip(
+                                new ClipContext(
+                                        positionVec,
+                                        movedVec,
+                                        ClipContext.Block.COLLIDER,
+                                        ClipContext.Fluid.NONE,
+                                        this
+                                )
+                        );
 
-                    if (hitResult.getType() == HitResult.Type.BLOCK) {
-                        onHitBlock(hitResult);
+                        if (hitResult.getType() == HitResult.Type.BLOCK) {
+                            onHitBlock(hitResult);
+                            return;
+                        }
+
+                    }
+
+
+                    EntityHitResult entityHitResult = getRayTrace(positionVec, movedVec);
+
+                    if (entityHitResult != null && entityHitResult.getType() == HitResult.Type.ENTITY) {
+                        Entity target = entityHitResult.getEntity();
+                        onHitEntity(target, SummondAttackType.HIT);
                         return;
                     }
 
-                }
 
-
-                EntityHitResult entityHitResult = getRayTrace(positionVec, movedVec);
-
-                if (entityHitResult != null && entityHitResult.getType() == HitResult.Type.ENTITY) {
-                    Entity target = entityHitResult.getEntity();
-                    onHitEntity(target, SummondAttackType.HIT);
-                    return;
-                }
-
-
-                if (isInWater()) {
-                    for(int j = 0; j < 4; ++j) {
-                        level().addParticle(ParticleTypes.BUBBLE, getX() - mx * 0.25D, getY() - my * 0.25D, getZ() - mz * 0.25D, mx, my, mz);
+                    if (isInWater()) {
+                        for(int j = 0; j < 4; ++j) {
+                            level().addParticle(ParticleTypes.BUBBLE, getX() - mx * 0.25D, getY() - my * 0.25D, getZ() - mz * 0.25D, mx, my, mz);
+                        }
                     }
-                }
 
+                }
+                case HIT_ENTITY -> {
+
+                    Entity hits = getHitEntity();
+
+                    if (hits == null || !hits.isAlive()) {
+                        discard();
+                        return;
+                    }
+
+                    if (!recordAttackPos) {
+                        recordAttackPos = true;
+                        hitYaw = getYRot() - hits.getYRot();
+                        hitPitch = getXRot() - hits.getXRot();
+                        hitX = getX() - hits.getX();
+                        hitY = getY() - hits.getY();
+                        hitZ = getZ() - hits.getZ();
+                    }
+
+
+                    double posX = hits.getX() + (hitX * Math.cos(Math.toRadians(hits.getYRot())) - hitZ * Math.sin(Math.toRadians(hits.getYRot())));
+                    double posY = hits.getY() + hitY;
+                    double posZ = hits.getZ() + (hitX * Math.sin(Math.toRadians(hits.getYRot())) + hitZ * Math.cos(Math.toRadians(hits.getYRot())));
+
+                    setPos(posX, posY, posZ);
+                    setRot(hits.getYRot() + hitYaw, hits.getXRot() + hitPitch, false);
+
+                }
+                case HIT_GROUND -> {
+
+                    // 提升性能不做处理
+
+                    /*if (level().isClientSide()) {
+                        return;
+                    }
+
+                    BlockPos blockpos = new BlockPos((int) getX(), (int) getY(), (int) getZ());
+                    BlockState blockstate = level().getBlockState(blockpos);
+
+                    if (inBlockState != blockstate && level().noCollision(getBoundingBox().inflate(0.06D))) {
+                        discard();
+                    }*/
+
+                }
             }
-            case HIT_ENTITY -> {
-
-                Entity hits = getHitEntity();
-
-                if (hits == null || !hits.isAlive()) {
-                    discard();
-                    return;
-                }
-
-                if (!recordAttackPos) {
-                    recordAttackPos = true;
-                    hitYaw = getYRot() - hits.getYRot();
-                    hitPitch = getXRot() - hits.getXRot();
-                    hitX = getX() - hits.getX();
-                    hitY = getY() - hits.getY();
-                    hitZ = getZ() - hits.getZ();
-                }
-
-
-                double posX = hits.getX() + (hitX * Math.cos(Math.toRadians(hits.getYRot())) - hitZ * Math.sin(Math.toRadians(hits.getYRot())));
-                double posY = hits.getY() + hitY;
-                double posZ = hits.getZ() + (hitX * Math.sin(Math.toRadians(hits.getYRot())) + hitZ * Math.cos(Math.toRadians(hits.getYRot())));
-
-                setPos(posX, posY, posZ);
-                setRot(hits.getYRot() + hitYaw, hits.getXRot() + hitPitch, false);
-
-            }
-            case HIT_GROUND -> {
-
-                // 提升性能不做处理
-
-                /*if (level().isClientSide()) {
-                    return;
-                }
-
-                BlockPos blockpos = new BlockPos((int) getX(), (int) getY(), (int) getZ());
-                BlockState blockstate = level().getBlockState(blockpos);
-
-                if (inBlockState != blockstate && level().noCollision(getBoundingBox().inflate(0.06D))) {
-                    discard();
-                }*/
-
-            }
+        } finally {
+            tickCallbackPoint.call(Runnable::run);
         }
     }
 

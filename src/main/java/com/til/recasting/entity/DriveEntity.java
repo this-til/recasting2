@@ -1,5 +1,6 @@
 package com.til.recasting.entity;
 
+import com.til.recasting.handler.MathHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -28,6 +29,12 @@ public class DriveEntity extends SlashEffectEntity {
      */
     protected static final EntityDataAccessor<Boolean> PARAMETER = SynchedEntityData.defineId(DriveEntity.class, EntityDataSerializers.BOOLEAN);
 
+    /**
+     * 每 tick 速度倍率（对齐旧 RoundaboutDrive ×1.05）
+     */
+    protected static final EntityDataAccessor<Float> SPEED_SCALE_PER_TICK =
+            SynchedEntityData.defineId(DriveEntity.class, EntityDataSerializers.FLOAT);
+
     public DriveEntity(EntityType<? extends DriveEntity> entityTypeIn, Level worldIn, LivingEntity shooting) {
         super(entityTypeIn, worldIn, shooting);
 
@@ -54,14 +61,21 @@ public class DriveEntity extends SlashEffectEntity {
         super.defineSynchedData();
         getEntityData().define(SEEP, 4f);
         getEntityData().define(PARAMETER, false);
+        getEntityData().define(SPEED_SCALE_PER_TICK, 1.0f);
     }
 
     @Override
     public void tick() {
         super.tick();
 
-        Vec3 positionVec = getPos();
         Vec3 deltaMovement = getDeltaMovement();
+        float speedScale = getSpeedScalePerTick();
+        if (!MathHelper.epsilonEquals(speedScale, 1.0f)) {
+            deltaMovement = deltaMovement.scale(speedScale);
+            setDeltaMovement(deltaMovement);
+        }
+
+        Vec3 positionVec = getPos();
         Vec3 movedVec = positionVec.add(deltaMovement.x, deltaMovement.y, deltaMovement.z);
 
         double mx = movedVec.x;
@@ -110,6 +124,14 @@ public class DriveEntity extends SlashEffectEntity {
 
     public void setParameter(boolean parameter) {
         this.entityData.set(PARAMETER, parameter);
+    }
+
+    public float getSpeedScalePerTick() {
+        return this.entityData.get(SPEED_SCALE_PER_TICK);
+    }
+
+    public void setSpeedScalePerTick(float speedScalePerTick) {
+        this.entityData.set(SPEED_SCALE_PER_TICK, speedScalePerTick);
     }
 
 }

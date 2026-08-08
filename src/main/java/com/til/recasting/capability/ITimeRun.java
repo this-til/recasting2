@@ -216,10 +216,11 @@ public interface ITimeRun {
         }
 
         /**
-         * 标记为失效
+         * 标记为失效，并停止后续 {@link #up()} 回调
          */
         public void setFail() {
             this.valid = false;
+            this._use = false;
         }
 
         /**

@@ -268,10 +268,18 @@ public class RecastingBuffTypes {
     );
 
     /**
-     * 永恒守卫
+     * 静滞（永恒守卫）
      * - 每 20 tick 衰减 1 层；层数表示领域剩余秒数
      */
     public static final RegistryObject<BuffType> ETERNAL_GUARD = BUFF_TYPES.register("eternal_guard",
+            () -> new BuffType(20, 0)
+    );
+
+    /**
+     * 红尘叠伤（红尘滚滚）
+     * - 每 20 tick 衰减 1 层；层数刷新叠伤窗口；精确累加量存在 customData
+     */
+    public static final RegistryObject<BuffType> MORTAL_DUST = BUFF_TYPES.register("mortal_dust",
             () -> new BuffType(20, 0)
     );
 

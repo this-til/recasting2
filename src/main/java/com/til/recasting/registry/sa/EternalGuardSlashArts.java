@@ -18,8 +18,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
@@ -32,8 +34,8 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * 永恒守卫：以自身为中心展开领域，进入范围内的敌人被钉在进入时的绝对坐标，无法移动。
- * 边界粒子环 + 持有 Buff 时的广告牌光圈。
+ * 永恒守卫：以自身为中心展开领域，进入范围内的敌人被钉在进入时的绝对坐标，无法移动；
+ * 同时清除领域内非释放者发出的弹射物。边界粒子环绕施法者；光圈 Buff 挂在被禁锢目标身上。
  */
 @Setter
 @Accessors(chain = true)
@@ -61,13 +63,10 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
             return;
         }
 
-        BuffType buffType = RecastingBuffTypes.ETERNAL_GUARD.get();
-        livingEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffData -> {
-            buffData.setLevel(buffType, durationSeconds, level);
-            BuffSourceHelper.recordSourceEntity(buffData, buffType, livingEntity, livingEntity);
-        });
-
         Map<UUID, Vec3> absolutePins = new HashMap<>();
+        Map<UUID, LivingEntity> pinnedTargets = new HashMap<>();
+        int[] ticksLeft = {durationSeconds * 20};
+
         livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             timeRun.removeNamedTimerCell(TIMER_NAME);
             timeRun.removeNamedTimerCell(VISUAL_TIMER_NAME);
@@ -75,7 +74,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
             timeRun.addNamedTimerCell(
                     TIMER_NAME,
                     new ITimeRun.TimerCell(
-                            () -> tickFreeze(livingEntity, absolutePins, timeRun),
+                            () -> tickFreeze(livingEntity, absolutePins, pinnedTargets, ticksLeft, timeRun),
                             1,
                             true
                     )
@@ -103,23 +102,21 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
         renderBoundaryRing(livingEntity);
     }
 
-    private void tickFreeze(LivingEntity caster, Map<UUID, Vec3> absolutePins, ITimeRun timeRun) {
-        if (!caster.isAlive() || caster.isRemoved() || caster.level().isClientSide()) {
-            timeRun.removeNamedTimerCell(TIMER_NAME);
-            timeRun.removeNamedTimerCell(VISUAL_TIMER_NAME);
-            absolutePins.clear();
+    private void tickFreeze(
+            LivingEntity caster,
+            Map<UUID, Vec3> absolutePins,
+            Map<UUID, LivingEntity> pinnedTargets,
+            int[] ticksLeft,
+            ITimeRun timeRun
+    ) {
+        if (!caster.isAlive() || caster.isRemoved() || caster.level().isClientSide() || ticksLeft[0] <= 0) {
+            endDomain(timeRun, absolutePins, pinnedTargets);
             return;
         }
 
-        int buffLevel = caster.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA)
-                .map(data -> data.getLevel(RecastingBuffTypes.ETERNAL_GUARD.get(), caster.level()))
-                .orElse(0);
-        if (buffLevel <= 0) {
-            timeRun.removeNamedTimerCell(TIMER_NAME);
-            timeRun.removeNamedTimerCell(VISUAL_TIMER_NAME);
-            absolutePins.clear();
-            return;
-        }
+        ticksLeft[0]--;
+        int displayLevel = Math.max(1, (ticksLeft[0] + 19) / 20);
+        BuffType buffType = RecastingBuffTypes.ETERNAL_GUARD.get();
 
         List<LivingEntity> nearby = EntityHelper.getTargettableLivingEntityWithinAABB(
                 caster.level(),
@@ -128,16 +125,72 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
                 radius
         );
         Set<UUID> present = new HashSet<>();
-        for(LivingEntity entity : nearby) {
+        for (LivingEntity entity : nearby) {
             UUID id = entity.getUUID();
             present.add(id);
             Vec3 pin = absolutePins.computeIfAbsent(id, ignored -> entity.position());
+            pinnedTargets.put(id, entity);
             entity.teleportTo(pin.x, pin.y, pin.z);
             entity.setDeltaMovement(Vec3.ZERO);
             entity.hurtMarked = true;
+            mountGuardBuff(entity, caster, buffType, displayLevel);
         }
 
-        absolutePins.entrySet().removeIf(entry -> !present.contains(entry.getKey()));
+        Iterator<Map.Entry<UUID, LivingEntity>> iterator = pinnedTargets.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<UUID, LivingEntity> entry = iterator.next();
+            if (present.contains(entry.getKey())) {
+                continue;
+            }
+            clearGuardBuff(entry.getValue(), buffType);
+            absolutePins.remove(entry.getKey());
+            iterator.remove();
+        }
+
+        discardForeignProjectiles(caster);
+    }
+
+    /** 清除领域内非本 SA 释放者发出的弹射物。 */
+    private void discardForeignProjectiles(LivingEntity caster) {
+        Level level = caster.level();
+        AABB area = new AABB(caster.position(), caster.position()).inflate(radius);
+        for (Projectile projectile : level.getEntitiesOfClass(Projectile.class, area)) {
+            if (caster.equals(projectile.getOwner())) {
+                continue;
+            }
+            projectile.discard();
+        }
+    }
+
+    private void endDomain(
+            ITimeRun timeRun,
+            Map<UUID, Vec3> absolutePins,
+            Map<UUID, LivingEntity> pinnedTargets
+    ) {
+        timeRun.removeNamedTimerCell(TIMER_NAME);
+        timeRun.removeNamedTimerCell(VISUAL_TIMER_NAME);
+        BuffType buffType = RecastingBuffTypes.ETERNAL_GUARD.get();
+        for (LivingEntity target : pinnedTargets.values()) {
+            clearGuardBuff(target, buffType);
+        }
+        absolutePins.clear();
+        pinnedTargets.clear();
+    }
+
+    private void mountGuardBuff(LivingEntity target, LivingEntity caster, BuffType buffType, int displayLevel) {
+        target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
+            data.setLevel(buffType, displayLevel, target.level());
+            BuffSourceHelper.recordSourceEntity(data, buffType, target, caster);
+        });
+    }
+
+    private void clearGuardBuff(LivingEntity target, BuffType buffType) {
+        if (target == null || target.isRemoved()) {
+            return;
+        }
+        target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data ->
+                data.setLevel(buffType, 0, target.level())
+        );
     }
 
     private void renderBoundaryRing(LivingEntity caster) {
@@ -156,7 +209,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
         double waistY = caster.getY() + 1.0;
         double baseAngle = caster.tickCount * (Math.PI / 40.0);
 
-        for(int i = 0; i < ringSegments; i++) {
+        for (int i = 0; i < ringSegments; i++) {
             double angle = baseAngle + (Math.PI * 2.0) * i / ringSegments;
             double x = caster.getX() + Math.cos(angle) * radius;
             double z = caster.getZ() + Math.sin(angle) * radius;

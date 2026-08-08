@@ -4,6 +4,8 @@ import com.til.recasting.Recasting;
 import com.til.recasting.client.particle.AttackParticleProvider;
 import com.til.recasting.client.particle.GoldenHalberdParticleProvider;
 import com.til.recasting.client.particle.LightningHitParticleProvider;
+import com.til.recasting.client.particle.MortalDustHitParticleProvider;
+import com.til.recasting.client.particle.MortalDustTrailParticleProvider;
 import com.til.recasting.client.particle.StarBlinkParticleProvider;
 import com.til.recasting.client.particle.TeaAromaParticleProvider;
 import com.til.recasting.client.registry.BuffLevelRendererRegistry;
@@ -54,6 +56,8 @@ public class ClientSetup {
         event.registerSpecial(RecastingParticleTypes.GOLDEN_HALBERD.get(), new GoldenHalberdParticleProvider());
         event.registerSpecial(RecastingParticleTypes.TEA_AROMA.get(), new TeaAromaParticleProvider());
         event.registerSpecial(RecastingParticleTypes.LIGHTNING_HIT.get(), new LightningHitParticleProvider());
+        event.registerSpecial(RecastingParticleTypes.MORTAL_DUST_TRAIL.get(), new MortalDustTrailParticleProvider());
+        event.registerSpecial(RecastingParticleTypes.MORTAL_DUST_HIT.get(), new MortalDustHitParticleProvider());
     }
 }
 

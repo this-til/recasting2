@@ -48,5 +48,17 @@ public class RecastingParticleTypes {
      */
     public static final RegistryObject<SimpleParticleType> LIGHTNING_HIT =
             PARTICLE_TYPES.register("lightning_hit", () -> new SimpleParticleType(true));
+
+    /**
+     * 红尘滚滚飞行拖尾（对齐旧 YAO_UPDATE）
+     */
+    public static final RegistryObject<SimpleParticleType> MORTAL_DUST_TRAIL =
+            PARTICLE_TYPES.register("mortal_dust_trail", () -> new SimpleParticleType(true));
+
+    /**
+     * 红尘滚滚命中喷泉（对齐旧 YAO_ATTECK）
+     */
+    public static final RegistryObject<SimpleParticleType> MORTAL_DUST_HIT =
+            PARTICLE_TYPES.register("mortal_dust_hit", () -> new SimpleParticleType(true));
 }
 

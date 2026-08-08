@@ -137,7 +137,7 @@ public class BuffLevelRendererRegistry {
     );
 
     /**
-     * 永恒守卫 - 显示剩余秒数
+     * 静滞（永恒守卫）- 显示剩余秒数
      */
     public static final RegistryObject<BuffLevelRenderConfig> ETERNAL_GUARD = BUFF_LEVEL_RENDER_CONFIGS.register(
             "eternal_guard",

@@ -61,7 +61,8 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(buffKey(RecastingBuffTypes.CURSE_DECREE), "咒令", "Curse Decree");
         translation(buffKey(RecastingBuffTypes.SPIRIT_SILENCE), "寂灭", "Spirit Silence");
         translation(buffKey(RecastingBuffTypes.BUFF_SUPPRESS), "增益压制", "Buff Suppress");
-        translation(buffKey(RecastingBuffTypes.ETERNAL_GUARD), "永恒守卫", "Eternal Guard");
+        translation(buffKey(RecastingBuffTypes.ETERNAL_GUARD), "静滞", "Stasis");
+        translation(buffKey(RecastingBuffTypes.MORTAL_DUST), "红尘", "Mortal Dust");
         translation(slashBladeKey(RecastingSlashBladeKeys.VOID_1), "洞虚利刃", "Void Blade I");
         translation(slashBladeKey(RecastingSlashBladeKeys.VOID_2), "洞虚利刃[漆黑]", "Void Blade II");
         translation(slashBladeKey(RecastingSlashBladeKeys.VOID_3), "洞虚利刃[猩红]", "Void Blade III");
@@ -384,6 +385,12 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtDescKey(SlashArtsRegistry.ETERNAL_GUARD), "展开守卫领域，进入范围内的敌人被钉在进入时的位置，无法移动。", "Opens a guard domain that pins foes at the world position where they entered, preventing movement.");
         translation(slashArtKey(SlashArtsRegistry.AZURE_HAZE), "[回到未来计划]青茫熳天摇", "[Back to the Future Plan] Azure Haze");
         translation(slashArtDescKey(SlashArtsRegistry.AZURE_HAZE), "环绕自身射出大量幻影剑，飞剑消失时向四周扩散剑气。", "Launches many phantom swords around the caster; when they vanish they burst into spreading sword qi.");
+        translation(slashArtKey(SlashArtsRegistry.MORTAL_DUST), "[回到未来计划]红尘滚滚", "[Back to the Future Plan] Mortal Dust");
+        translation(slashArtDescKey(SlashArtsRegistry.MORTAL_DUST), "对周围敌人头顶落下追踪幻影剑，命中叠伤并溅射，伴随橙尘拖尾与命中喷泉。", "Drops tracking phantom swords onto nearby foes from above; hits stack damage and splash while leaving orange dust trails and hit bursts.");
+        translation(slashArtKey(SlashArtsRegistry.TIDAL_SURGE), "[回到未来计划]撼海潮涌", "[Back to the Future Plan] Tidal Surge");
+        translation(slashArtDescKey(SlashArtsRegistry.TIDAL_SURGE), "短暂时间内以自身为源向水平四周持续喷出蓝色剑气。", "For a brief moment, continuously sprays blue sword qi horizontally outward from the caster.");
+        translation(slashArtKey(SlashArtsRegistry.CELESTIAL_DRIVE), "[回到未来计划]星辰斗转", "[Back to the Future Plan] Celestial Drive");
+        translation(slashArtDescKey(SlashArtsRegistry.CELESTIAL_DRIVE), "从自身向四面八方散射短命剑气。", "Scatters short-lived sword qi outward in all directions from the caster.");
         translation(specialEffectKey(SpecialEffectsRegistry.COOPERATE_WITH), "协同攻击", "Cooperate With");
         translation(specialEffectDescKey(SpecialEffectsRegistry.COOPERATE_WITH), "挥刀时概率额外挥刀。", "Has a chance to perform an additional slash when slashing.");
         translation(specialEffectKey(SpecialEffectsRegistry.CROSS_CHOP), "十字斩", "Cross Chop");
