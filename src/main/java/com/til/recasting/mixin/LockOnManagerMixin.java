@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * 接管潜行锁敌：视锥 128 / 30°，否则自身中心 ±32 最近目标。
+ * 接管潜行锁敌：默认视锥索敌，否则自身中心 ±32 最近目标。
  */
 @Mixin(value = LockOnManager.class)
 public abstract class LockOnManagerMixin {
@@ -37,7 +37,7 @@ public abstract class LockOnManagerMixin {
         if (event.getOld().contains(InputCommand.SNEAK) && !event.getCurrent().contains(InputCommand.SNEAK)) {
             targetEntity = null;
         } else {
-            targetEntity = EntityHelper.selectClosestInViewCone(player, 128.0, 30.0f)
+            targetEntity = EntityHelper.selectClosestInViewCone(player)
                     .map(Entity.class::cast)
                     .or(() -> EntityHelper.selectClosestWithinRange(player, 32.0))
                     .orElse(null);

@@ -7,6 +7,7 @@ import com.til.recasting.constant.R;
 import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingEntities;
 import lombok.Setter;
@@ -21,8 +22,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
+import javax.annotation.Nullable;
+
 /**
  * 禁锢：在锁定目标处生成缓慢抬升的次元斩，钉住目标并环射普通幻影剑。
+ * 无锁定时按默认视锥索敌。
  */
 @Setter
 @Accessors(chain = true)
@@ -52,8 +56,8 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
             return;
         }
 
-        Entity lock = slashBladeState.getTargetEntity(level);
-        if (!(lock instanceof LivingEntity target) || !target.isAlive() || target.isRemoved()) {
+        LivingEntity target = resolveTarget(livingEntity, slashBladeState, level);
+        if (target == null) {
             return;
         }
 
@@ -68,7 +72,7 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
         jc.setModifiedRatio(centerRatio);
         jc.setSize(judgementCutSize);
         jc.setMaxLifeTime(durationTicks);
-        jc.setRepeatedAttack(true);
+        jc.setSingleAttack(true);
         jc.setAttackInterval(4);
         level.addFreshEntity(jc);
 
@@ -149,5 +153,14 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
         blade.setIgnoringBlock(true);
         blade.lookAt(PosHelper.getEntityAimPosition(target), false);
         level.addFreshEntity(blade);
+    }
+
+    @Nullable
+    private LivingEntity resolveTarget(LivingEntity caster, ISlashBladeState slashBladeState, Level level) {
+        Entity lock = slashBladeState.getTargetEntity(level);
+        if (lock instanceof LivingEntity locked && locked.isAlive() && !locked.isRemoved()) {
+            return locked;
+        }
+        return EntityHelper.selectClosestInViewCone(caster).orElse(null);
     }
 }

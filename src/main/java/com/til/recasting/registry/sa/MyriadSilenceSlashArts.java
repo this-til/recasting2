@@ -31,7 +31,7 @@ import java.util.List;
 
 /**
  * 万灵寂灭
- * 获得咒令：每 tick 自残 1 血，并对视角目标周围随机实体发射黑色虚空闪电并叠加寂灭。
+ * 获得咒令：每 tick 自残 1 血，并对视锥内最近目标发射黑色虚空闪电并叠加寂灭。
  */
 @Setter
 @Accessors(chain = true)
@@ -40,7 +40,6 @@ public class MyriadSilenceSlashArts extends ExtendedSlashArts {
     private String timer = "myriad_silence";
     private int decreeSeconds = 30;
     private float voidRatio = 0.34f;
-    private float lookAreaRange = 16f;
     private int talismanColor = 0xA5527B;
 
     @Override
@@ -66,7 +65,7 @@ public class MyriadSilenceSlashArts extends ExtendedSlashArts {
             timeRun.addNamedTimerCell(
                     timer,
                     new ITimeRun.TimerCell(
-                            () -> tickCurse(livingEntity, slashBladeState, timeRun),
+                            () -> tickCurse(livingEntity, timeRun),
                             1,
                             true
                     )
@@ -74,7 +73,7 @@ public class MyriadSilenceSlashArts extends ExtendedSlashArts {
         });
     }
 
-    private void tickCurse(LivingEntity user, ISlashBladeState state, ITimeRun timeRun) {
+    private void tickCurse(LivingEntity user, ITimeRun timeRun) {
         if (!user.isAlive() || user.level().isClientSide()) {
             timeRun.removeNamedTimerCell(timer);
             return;
@@ -99,7 +98,7 @@ public class MyriadSilenceSlashArts extends ExtendedSlashArts {
             return;
         }
 
-        LivingEntity target = pickRandomInLookArea(user, state);
+        LivingEntity target = EntityHelper.selectClosestInViewCone(user).orElse(null);
         if (target == null) {
             return;
         }
@@ -131,20 +130,6 @@ public class MyriadSilenceSlashArts extends ExtendedSlashArts {
         });
 
         spawnTalismanParticles(target);
-    }
-
-    private LivingEntity pickRandomInLookArea(LivingEntity user, ISlashBladeState state) {
-        Vec3 center = PosHelper.getAttackTargetPosition(user, state);
-        List<LivingEntity> targets = EntityHelper.getTargettableLivingEntityWithinAABB(
-                user.level(),
-                user,
-                center,
-                lookAreaRange
-        );
-        if (targets.isEmpty()) {
-            return null;
-        }
-        return targets.get(user.getRandom().nextInt(targets.size()));
     }
 
     private void spawnTalismanParticles(LivingEntity target) {

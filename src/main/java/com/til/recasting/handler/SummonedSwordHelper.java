@@ -145,10 +145,10 @@ public class SummonedSwordHelper {
                 TrackingSummondSwordEntity tracking = new TrackingSummondSwordEntity(RecastingEntities.TRACKING_SUMMOND_SWORD.get(), worldIn, sender);
 
                 tracking.setInterval(10);
-                // TargetEntity 仅潜行锁敌时有值；否则视锥 128 / 30°
+                // TargetEntity 仅潜行锁敌时有值；否则默认视锥索敌
                 aimTarget = state.getTargetEntity(worldIn);
                 if (aimTarget == null || !aimTarget.isAlive() || aimTarget.isRemoved()) {
-                    aimTarget = EntityHelper.selectClosestInViewCone(sender, 128.0, 30.0f).orElse(null);
+                    aimTarget = EntityHelper.selectClosestInViewCone(sender).orElse(null);
                 }
                 if (aimTarget != null) {
                     tracking.setTargetEntity(aimTarget);

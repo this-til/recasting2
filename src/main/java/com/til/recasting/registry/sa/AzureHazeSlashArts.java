@@ -29,14 +29,12 @@ import java.util.List;
 @Accessors(chain = true)
 public class AzureHazeSlashArts extends ExtendedSlashArts {
 
-    private int cloudCount = 35;
-    private float bladeRatio = 0.5f;
-    private float driveRatio = 1.5f;
-    private int driveCount = 7;
-    private int driveLife = 55;
-    private float driveSpeed = 0.23f;
-    private int bladeLifeMin = 10;
-    private int bladeLifeMax = 40;
+    private int cloudCount = 8;
+    private float bladeRatio = 0.12f;
+    private float driveRatio = 0.05f;
+    private int driveCount = 6;
+    private int driveLife = 20;
+    private float driveSpeed = 2f;
     private float bladeSize = 4.0f;
     private float seekRange = 12.0f;
 
@@ -63,9 +61,8 @@ public class AzureHazeSlashArts extends ExtendedSlashArts {
 
         RandomSource random = livingEntity.getRandom();
         int color = slashBladeState.getColorCode();
-        int lifeSpan = Math.max(0, bladeLifeMax - bladeLifeMin);
 
-        for (int i = 0; i < cloudCount; i++) {
+        for(int i = 0; i < cloudCount; i++) {
             SummondSwordEntity cloud = new SummondSwordEntity(
                     RecastingEntities.SUMMOND_SWORD.get(),
                     level,
@@ -74,8 +71,7 @@ public class AzureHazeSlashArts extends ExtendedSlashArts {
             cloud.setColor(color);
             cloud.setModifiedRatio(bladeRatio);
             cloud.setSize(bladeSize);
-            cloud.setMaxLifeTime(bladeLifeMin + random.nextInt(lifeSpan + 1));
-            cloud.setStartDelay(10 + random.nextInt(10));
+            cloud.setBreakDelay(10 + random.nextInt(20));
             cloud.setIgnoringBlock(true);
             cloud.setRoll(random.nextInt(361));
 
@@ -120,7 +116,7 @@ public class AzureHazeSlashArts extends ExtendedSlashArts {
 
         RandomSource random = level.getRandom();
         double originY = cloud.getY() + cloud.getBbHeight() * 0.5;
-        for (int d = 0; d < driveCount; d++) {
+        for(int d = 0; d < driveCount; d++) {
             DriveEntity drive = new DriveEntity(
                     RecastingEntities.DRIVE.get(),
                     level,
@@ -130,7 +126,7 @@ public class AzureHazeSlashArts extends ExtendedSlashArts {
             drive.setColor(color);
             drive.setModifiedRatio(driveRatio);
             drive.setMaxLifeTime(driveLife);
-            drive.setRoll(random.nextInt(361));
+            drive.setRoll(random.nextInt(360));
             drive.setSeep(driveSpeed);
             drive.setSize(1.2f);
             drive.lookAt(randomDirection(random), true);

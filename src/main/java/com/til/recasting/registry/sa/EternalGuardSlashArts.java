@@ -128,7 +128,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
                 radius
         );
         Set<UUID> present = new HashSet<>();
-        for (LivingEntity entity : nearby) {
+        for(LivingEntity entity : nearby) {
             UUID id = entity.getUUID();
             present.add(id);
             Vec3 pin = absolutePins.computeIfAbsent(id, ignored -> entity.position());
@@ -137,13 +137,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
             entity.hurtMarked = true;
         }
 
-        Iterator<Map.Entry<UUID, Vec3>> iterator = absolutePins.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<UUID, Vec3> entry = iterator.next();
-            if (!present.contains(entry.getKey())) {
-                iterator.remove();
-            }
-        }
+        absolutePins.entrySet().removeIf(entry -> !present.contains(entry.getKey()));
     }
 
     private void renderBoundaryRing(LivingEntity caster) {
@@ -162,7 +156,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
         double waistY = caster.getY() + 1.0;
         double baseAngle = caster.tickCount * (Math.PI / 40.0);
 
-        for (int i = 0; i < ringSegments; i++) {
+        for(int i = 0; i < ringSegments; i++) {
             double angle = baseAngle + (Math.PI * 2.0) * i / ringSegments;
             double x = caster.getX() + Math.cos(angle) * radius;
             double z = caster.getZ() + Math.sin(angle) * radius;

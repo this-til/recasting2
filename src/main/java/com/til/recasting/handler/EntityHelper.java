@@ -14,6 +14,12 @@ import java.util.Optional;
 
 public class EntityHelper {
 
+    /** 默认视锥索敌距离（格） */
+    public static final double DEFAULT_VIEW_CONE_RANGE = 128.0;
+
+    /** 默认视锥半角（度） */
+    public static final float DEFAULT_VIEW_CONE_HALF_ANGLE_DEGREES = 30.0f;
+
     public static Vec3 getEntityPosition(Entity owner) {
         return new Vec3(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ());
     }
@@ -39,6 +45,13 @@ public class EntityHelper {
                 .toList();
 
 
+    }
+
+    /**
+     * 在默认视锥（{@link #DEFAULT_VIEW_CONE_RANGE} / {@link #DEFAULT_VIEW_CONE_HALF_ANGLE_DEGREES}）内选取目标。
+     */
+    public static Optional<LivingEntity> selectClosestInViewCone(LivingEntity viewer) {
+        return selectClosestInViewCone(viewer, DEFAULT_VIEW_CONE_RANGE, DEFAULT_VIEW_CONE_HALF_ANGLE_DEGREES);
     }
 
     /**
