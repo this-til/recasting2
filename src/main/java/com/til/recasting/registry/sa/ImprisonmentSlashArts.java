@@ -23,10 +23,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * 禁锢：在锁定目标处生成缓慢抬升的次元斩，钉住目标并环射普通幻影剑。
- * 无锁定时按默认视锥索敌。
+ * 无锁定时按默认视锥索敌；目标死亡时在附近随机换下一个目标并移动次元斩。
  */
 @Setter
 @Accessors(chain = true)
@@ -42,6 +43,7 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
     private int bladeLife = 35;
     private float judgementCutSize = 2.0f;
     private float liftPerTick = 0.03f;
+    private float retargetRange = 24.0f;
 
     @Override
     public void trigger(
@@ -90,10 +92,11 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
         livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             timeRun.removeNamedTimerCell(TIMER_NAME);
             int[] left = {durationTicks};
+            LivingEntity[] currentTarget = {target};
             timeRun.addNamedTimerCell(
                     TIMER_NAME,
                     new ITimeRun.TimerCell(
-                            () -> tickImprisonment(livingEntity, target, jc, left, timeRun, slashBladeState.getColorCode()),
+                            () -> tickImprisonment(livingEntity, currentTarget, jc, left, timeRun, slashBladeState.getColorCode()),
                             1,
                             true
                     )
@@ -103,7 +106,7 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
 
     private void tickImprisonment(
             LivingEntity caster,
-            LivingEntity target,
+            LivingEntity[] currentTarget,
             JudgementCutEntity jc,
             int[] left,
             ITimeRun timeRun,
@@ -111,13 +114,24 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
     ) {
         if (!caster.isAlive()
                 || caster.isRemoved()
-                || !target.isAlive()
-                || target.isRemoved()
                 || !jc.isAlive()
                 || jc.isRemoved()
                 || left[0] <= 0) {
             timeRun.removeNamedTimerCell(TIMER_NAME);
             return;
+        }
+
+        LivingEntity target = currentTarget[0];
+        if (target == null || !target.isAlive() || target.isRemoved()) {
+            LivingEntity next = pickRetarget(caster, jc);
+            if (next == null) {
+                timeRun.removeNamedTimerCell(TIMER_NAME);
+                return;
+            }
+            currentTarget[0] = next;
+            target = next;
+            Vec3 center = PosHelper.getEntityAimPosition(target);
+            jc.setPos(center.x, center.y, center.z);
         }
 
         left[0]--;
@@ -153,6 +167,20 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
         blade.setIgnoringBlock(true);
         blade.lookAt(PosHelper.getEntityAimPosition(target), false);
         level.addFreshEntity(blade);
+    }
+
+    @Nullable
+    private LivingEntity pickRetarget(LivingEntity caster, JudgementCutEntity jc) {
+        List<LivingEntity> candidates = EntityHelper.getTargettableLivingEntityWithinAABB(
+                caster.level(),
+                caster,
+                jc.position(),
+                retargetRange
+        );
+        if (candidates.isEmpty()) {
+            return null;
+        }
+        return candidates.get(caster.getRandom().nextInt(candidates.size()));
     }
 
     @Nullable
