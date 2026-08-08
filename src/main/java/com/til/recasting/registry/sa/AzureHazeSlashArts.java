@@ -3,7 +3,8 @@ package com.til.recasting.registry.sa;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.entity.DriveEntity;
-import com.til.recasting.entity.TrackingSummondSwordEntity;
+import com.til.recasting.entity.SummondSwordEntity;
+import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingEntities;
 import lombok.Setter;
@@ -19,22 +20,24 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.List;
+
 /**
- * 青茫熳天摇：环绕施法者射出追踪飞剑，消失时扩散剑气。
+ * 青茫熳天摇：环绕施法者射出普通幻影剑，消失时扩散剑气；索敌对齐星流。
  */
 @Setter
 @Accessors(chain = true)
 public class AzureHazeSlashArts extends ExtendedSlashArts {
 
-    private int cloudCount = 35;
+    private int cloudCount = 12;
     private float bladeRatio = 0.5f;
     private float driveRatio = 1.5f;
     private int driveCount = 7;
     private int driveLife = 55;
     private float driveSpeed = 0.23f;
     private int bladeLife = 100;
-    private int bladeInterval = 15;
     private float spawnSpread = 8.0f;
+    private float seekRange = 12.0f;
 
     @Override
     public void trigger(
@@ -49,10 +52,13 @@ public class AzureHazeSlashArts extends ExtendedSlashArts {
             return;
         }
 
-        Entity lock = slashBladeState.getTargetEntity(level);
-        if (!(lock instanceof LivingEntity target) || !target.isAlive() || target.isRemoved()) {
-            return;
-        }
+        Vec3 attackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
+        List<LivingEntity> entityList = EntityHelper.getTargettableLivingEntityWithinAABB(
+                level,
+                livingEntity,
+                attackPos,
+                seekRange
+        );
 
         RandomSource random = livingEntity.getRandom();
         int color = slashBladeState.getColorCode();
@@ -71,21 +77,31 @@ public class AzureHazeSlashArts extends ExtendedSlashArts {
                     livingEntity.getZ() + ((rz * 2.0 - 1.0) * width - zSpeed * 10.0) * spawnSpread
             );
 
-            TrackingSummondSwordEntity cloud = new TrackingSummondSwordEntity(
-                    RecastingEntities.TRACKING_SUMMOND_SWORD.get(),
+            SummondSwordEntity cloud = new SummondSwordEntity(
+                    RecastingEntities.SUMMOND_SWORD.get(),
                     level,
                     livingEntity
             );
             cloud.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
             cloud.setColor(color);
             cloud.setModifiedRatio(bladeRatio);
-            cloud.setInterval(bladeInterval);
             cloud.setMaxLifeTime(bladeLife);
-            cloud.setStartDelay(random.nextInt(8));
+            cloud.setStartDelay(10 + random.nextInt(10));
             cloud.setIgnoringBlock(true);
             cloud.setRoll(random.nextInt(361));
-            cloud.setTargetEntity(target);
-            cloud.lookAt(PosHelper.getEntityAimPosition(target), false);
+
+            Vec3 targetPos;
+            if (!entityList.isEmpty()) {
+                Entity target = entityList.get(random.nextInt(entityList.size()));
+                targetPos = new Vec3(
+                        target.getX(),
+                        target.getY() + target.getEyeHeight() * 0.5,
+                        target.getZ()
+                );
+            } else {
+                targetPos = attackPos;
+            }
+            cloud.lookAt(targetPos, false);
 
             cloud.endCallbackPoint.register(() -> spawnDriveBurst(cloud, livingEntity, color));
 
@@ -97,14 +113,14 @@ public class AzureHazeSlashArts extends ExtendedSlashArts {
                 livingEntity.getX(),
                 livingEntity.getY(),
                 livingEntity.getZ(),
-                SoundEvents.TRIDENT_THROW,
+                SoundEvents.CHORUS_FRUIT_TELEPORT,
                 SoundSource.PLAYERS,
-                0.8F,
-                0.6F + random.nextFloat() * 0.4F
+                0.2F,
+                1.45F
         );
     }
 
-    private void spawnDriveBurst(TrackingSummondSwordEntity cloud, LivingEntity caster, int color) {
+    private void spawnDriveBurst(SummondSwordEntity cloud, LivingEntity caster, int color) {
         Level level = cloud.level();
         if (level.isClientSide()) {
             return;

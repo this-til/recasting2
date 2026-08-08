@@ -381,9 +381,9 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtKey(SlashArtsRegistry.PHASE_FRACTURE), "[回到未来计划]相位碎裂", "[Back to the Future Plan] Phase Fracture");
         translation(slashArtDescKey(SlashArtsRegistry.PHASE_FRACTURE), "将周围敌人拉至身前聚点，再以球面幻影剑收束打击。", "Pulls nearby foes to a focus point ahead, then strikes with phantom swords arranged on a sphere.");
         translation(slashArtKey(SlashArtsRegistry.ETERNAL_GUARD), "[回到未来计划]永恒守卫", "[Back to the Future Plan] Eternal Guard");
-        translation(slashArtDescKey(SlashArtsRegistry.ETERNAL_GUARD), "展开守卫领域，短时冻结范围内敌人相对自身的位置。", "Opens a guard domain that briefly freezes nearby foes relative to the caster.");
+        translation(slashArtDescKey(SlashArtsRegistry.ETERNAL_GUARD), "展开守卫领域，进入范围内的敌人被钉在进入时的位置，无法移动。", "Opens a guard domain that pins foes at the world position where they entered, preventing movement.");
         translation(slashArtKey(SlashArtsRegistry.AZURE_HAZE), "[回到未来计划]青茫熳天摇", "[Back to the Future Plan] Azure Haze");
-        translation(slashArtDescKey(SlashArtsRegistry.AZURE_HAZE), "环绕自身射出大量追踪飞剑，飞剑消失时向四周扩散剑气。", "Launches many tracking phantom swords around the caster; when they vanish they burst into spreading sword qi.");
+        translation(slashArtDescKey(SlashArtsRegistry.AZURE_HAZE), "环绕自身射出大量幻影剑，飞剑消失时向四周扩散剑气。", "Launches many phantom swords around the caster; when they vanish they burst into spreading sword qi.");
         translation(specialEffectKey(SpecialEffectsRegistry.COOPERATE_WITH), "协同攻击", "Cooperate With");
         translation(specialEffectDescKey(SpecialEffectsRegistry.COOPERATE_WITH), "挥刀时概率额外挥刀。", "Has a chance to perform an additional slash when slashing.");
         translation(specialEffectKey(SpecialEffectsRegistry.CROSS_CHOP), "十字斩", "Cross Chop");

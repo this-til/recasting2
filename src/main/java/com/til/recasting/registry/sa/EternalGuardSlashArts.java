@@ -32,7 +32,7 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * 永恒守卫：以自身为中心短时冻结范围内敌人相对位置，并用粒子环标示领域。
+ * 永恒守卫：以自身为中心展开领域，进入范围内的敌人被钉在进入时的绝对坐标，无法移动。
  */
 @Setter
 @Accessors(chain = true)
@@ -66,7 +66,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
             BuffSourceHelper.recordSourceEntity(buffData, buffType, livingEntity, livingEntity);
         });
 
-        Map<UUID, Vec3> relativeOffsets = new HashMap<>();
+        Map<UUID, Vec3> absolutePins = new HashMap<>();
         livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             timeRun.removeNamedTimerCell(TIMER_NAME);
             timeRun.removeNamedTimerCell(VISUAL_TIMER_NAME);
@@ -74,7 +74,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
             timeRun.addNamedTimerCell(
                     TIMER_NAME,
                     new ITimeRun.TimerCell(
-                            () -> tickFreeze(livingEntity, relativeOffsets, timeRun),
+                            () -> tickFreeze(livingEntity, absolutePins, timeRun),
                             1,
                             true
                     )
@@ -102,11 +102,11 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
         renderBoundaryRing(livingEntity);
     }
 
-    private void tickFreeze(LivingEntity caster, Map<UUID, Vec3> relativeOffsets, ITimeRun timeRun) {
+    private void tickFreeze(LivingEntity caster, Map<UUID, Vec3> absolutePins, ITimeRun timeRun) {
         if (!caster.isAlive() || caster.isRemoved() || caster.level().isClientSide()) {
             timeRun.removeNamedTimerCell(TIMER_NAME);
             timeRun.removeNamedTimerCell(VISUAL_TIMER_NAME);
-            relativeOffsets.clear();
+            absolutePins.clear();
             return;
         }
 
@@ -116,7 +116,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
         if (buffLevel <= 0) {
             timeRun.removeNamedTimerCell(TIMER_NAME);
             timeRun.removeNamedTimerCell(VISUAL_TIMER_NAME);
-            relativeOffsets.clear();
+            absolutePins.clear();
             return;
         }
 
@@ -130,19 +130,13 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
         for (LivingEntity entity : nearby) {
             UUID id = entity.getUUID();
             present.add(id);
-            Vec3 offset = relativeOffsets.computeIfAbsent(
-                    id,
-                    ignored -> entity.position().subtract(caster.position())
-            );
-            Vec3 pinned = caster.position().add(offset);
-            entity.teleportTo(pinned.x, pinned.y, pinned.z);
+            Vec3 pin = absolutePins.computeIfAbsent(id, ignored -> entity.position());
+            entity.teleportTo(pin.x, pin.y, pin.z);
             entity.setDeltaMovement(Vec3.ZERO);
-            entity.setYRot(entity.getYRot());
-            entity.setXRot(entity.getXRot());
             entity.hurtMarked = true;
         }
 
-        Iterator<Map.Entry<UUID, Vec3>> iterator = relativeOffsets.entrySet().iterator();
+        Iterator<Map.Entry<UUID, Vec3>> iterator = absolutePins.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<UUID, Vec3> entry = iterator.next();
             if (!present.contains(entry.getKey())) {
