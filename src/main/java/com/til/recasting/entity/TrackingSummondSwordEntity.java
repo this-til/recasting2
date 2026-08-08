@@ -20,20 +20,29 @@ import java.util.List;
  */
 public class TrackingSummondSwordEntity extends SummondSwordEntity {
 
-    protected static final EntityDataAccessor<Integer> TARGET_ENTITY_ID =
-            SynchedEntityData.defineId(TrackingSummondSwordEntity.class, EntityDataSerializers.INT);
-    /** 开始转向前的等待 tick（旧版 Interval） */
-    protected static final EntityDataAccessor<Integer> INTERVAL =
-            SynchedEntityData.defineId(TrackingSummondSwordEntity.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> TARGET_ENTITY_ID = SynchedEntityData.defineId(TrackingSummondSwordEntity.class, EntityDataSerializers.INT);
+    /**
+     * 开始转向前的等待 tick（旧版 Interval）
+     */
+    protected static final EntityDataAccessor<Integer> INTERVAL = SynchedEntityData.defineId(TrackingSummondSwordEntity.class, EntityDataSerializers.INT);
 
-    /** 无有效目标时一次重索敌范围；找不到则销毁 */
+    /**
+     * 无有效目标时的重索敌范围
+     */
     private static final double RETARGET_RANGE = 32.0;
     private static final float TURN_STEP = 10.0f;
+    /** 无锁定目标时的重索敌间隔（1s） */
+    private static final int RETARGET_INTERVAL_TICKS = 20;
 
     @Nullable
     protected Entity targetEntity;
 
-    /** 命中实体时冻结渲染自旋（旧版 hitTime / hitStopFactor） */
+    /** 下一次无目标索敌的 tickCount */
+    private int nextRetargetTick = 0;
+
+    /**
+     * 命中实体时冻结渲染自旋（旧版 hitTime / hitStopFactor）
+     */
     public long hitTime = 0L;
     public float hitStopFactor = 0.0f;
 
@@ -70,17 +79,13 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
     }
 
     /**
-     * 有有效目标则限速转向；否则在 32 格内一次索敌迁移，找不到则销毁。
-     * 朝向/速度一律走父类 {@link #setRot} / {@link #updateMotion(float)}。
+     * 有有效目标则限速转向；无目标则保持当前朝向前进，并按间隔重索敌。
+     * 锁定目标失效时立刻重索敌一次。朝向/速度走父类 {@link #setRot} / {@link #updateMotion(float)}。
      */
     protected void doTargeting() {
-        Entity target = null;
-        int targetId = getTargetEntityId();
-        if (targetId > 0) {
-            target = level().getEntity(targetId);
-        }
-        if (target == null || !target.isAlive()) {
-            migrateTargetOrDiscard();
+        Entity target = resolveOrAcquireTarget();
+        if (target == null) {
+            updateMotion(getSeep());
             return;
         }
 
@@ -103,9 +108,38 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
     }
 
     /**
-     * 无有效目标：在自身 32 格内一次重索敌；找到则迁移，否则销毁。
+     * 解析当前锁定目标；失效则立刻索敌，本就无目标则每 {@link #RETARGET_INTERVAL_TICKS} 索敌一次。
      */
-    private void migrateTargetOrDiscard() {
+    @Nullable
+    private Entity resolveOrAcquireTarget() {
+        int targetId = getTargetEntityId();
+        Entity target = targetId > 0 ? level().getEntity(targetId) : null;
+        if (target != null && target.isAlive()) {
+            return target;
+        }
+
+        boolean lostLockedTarget = targetId > 0;
+        if (lostLockedTarget) {
+            setTargetEntity(null);
+            tryAcquireTarget();
+            nextRetargetTick = tickCount + RETARGET_INTERVAL_TICKS;
+        } else if (tickCount >= nextRetargetTick) {
+            tryAcquireTarget();
+            nextRetargetTick = tickCount + RETARGET_INTERVAL_TICKS;
+        }
+
+        targetId = getTargetEntityId();
+        if (targetId <= 0) {
+            return null;
+        }
+        target = level().getEntity(targetId);
+        if (target == null || !target.isAlive()) {
+            return null;
+        }
+        return target;
+    }
+
+    private void tryAcquireTarget() {
         if (level().isClientSide()) {
             return;
         }
@@ -113,9 +147,7 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
         Entity replacement = findNearestAttackable(RETARGET_RANGE);
         if (replacement != null) {
             setTargetEntity(replacement);
-            return;
         }
-        discard();
     }
 
     @Nullable
@@ -134,7 +166,7 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
 
         double nearest = range;
         Entity pointed = null;
-        for (Entity entity : candidates) {
+        for(Entity entity : candidates) {
             if (entity == this || !entity.isPickable()) {
                 continue;
             }
@@ -207,7 +239,9 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
     }
 
     public void setTargetEntity(@Nullable Entity target) {
-        entityData.set(TARGET_ENTITY_ID, target != null ? target.getId() : -1);
+        entityData.set(TARGET_ENTITY_ID, target != null
+                ? target.getId()
+                : -1);
         this.targetEntity = target;
     }
 

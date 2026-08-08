@@ -28,7 +28,7 @@ public class TidalSurgeSlashArts extends ExtendedSlashArts {
     private static final String TIMER_NAME = "tidal_surge";
 
     private int durationTicks = 20;
-    private int driveCount = 5;
+    private int driveCount = 4;
     private float driveRatio = 0.15f;
     private int driveLife = 80;
     private float driveSeep = 0.1f;
@@ -100,6 +100,7 @@ public class TidalSurgeSlashArts extends ExtendedSlashArts {
             drive.setMaxLifeTime(driveLife);
             drive.setSeep(driveSeep);
             drive.setSize(1.0f);
+            drive.setAttackInterval(5);
             drive.setRepeatedAttack(false);
             // 水平锁定 + 旧 RoundaboutDrive 每 tick ×1.05
             drive.setSpeedScalePerTick(1.05f);

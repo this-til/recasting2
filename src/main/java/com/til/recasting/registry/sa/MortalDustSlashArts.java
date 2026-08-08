@@ -7,7 +7,6 @@ import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.entity.TrackingSummondSwordEntity;
 import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
-import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.handler.MortalDustEffectHelper;
 import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
@@ -23,6 +22,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -33,7 +33,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 /**
- * [回到未来计划]红尘滚滚：对周围敌人头顶落下追踪幻影剑，叠伤溅射，橙尘拖尾与命中喷泉。
+ * [回到未来计划]红尘滚滚：玩家周围随机落下追踪幻影剑，叠伤溅射，橙尘拖尾与命中喷泉。
  */
 @Setter
 @Accessors(chain = true)
@@ -41,14 +41,17 @@ public class MortalDustSlashArts extends ExtendedSlashArts {
 
     private static final String BONUS_KEY = "bonus";
 
-    private float seekRange = 35.0f;
-    private float bladeRatio = 0.72f;
+    private int bladeCount = 16;
+    private float spawnRangeXZ = 16.0f;
+    private float spawnYMin = 2.0f;
+    private float spawnYMax = 16.0f;
+    private int startDelayMin = 5;
+    private int startDelayMax = 25;
+    private float bladeRatio = 0.42f;
     private float splashRange = 12.0f;
-    private int hoverTicks = 20;
     private int bladeLife = 300;
     private int breakDelay = 10;
     private int buffWindowSeconds = 10;
-    private float spawnHeightOffset = 12.0f;
 
     @Override
     public void trigger(
@@ -63,48 +66,43 @@ public class MortalDustSlashArts extends ExtendedSlashArts {
             return;
         }
 
-        List<LivingEntity> targets = EntityHelper.getTargettableLivingEntityWithinAABB(
-                level,
-                livingEntity,
-                livingEntity.position(),
-                seekRange
-        );
-        if (targets.isEmpty()) {
-            return;
-        }
-
         int color = slashBladeState.getColorCode();
         List<AttackType> attackTypes = List.of(RecastingAttackTypes.SUMMOND_SWORD_ATTACK.get());
+        RandomSource random = livingEntity.getRandom();
+        double originX = livingEntity.getX();
+        double originY = livingEntity.getY();
+        double originZ = livingEntity.getZ();
+        float ySpan = spawnYMax - spawnYMin;
 
-        for (LivingEntity target : targets) {
+        for(int i = 0; i < bladeCount; i++) {
             TrackingSummondSwordEntity blade = new TrackingSummondSwordEntity(
                     RecastingEntities.TRACKING_SUMMOND_SWORD.get(),
                     level,
                     livingEntity
             );
-            // 头顶悬停：PREPARE 期间不位移；期满再进入 FLYING 并立刻追踪
-            // 旧版 EntityYaoHRender 为空，实体本体不可见，观感全靠粒子
-            blade.setPos(target.getX(), livingEntity.getY() + spawnHeightOffset, target.getZ());
+            // 玩家 xz ±spawnRangeXZ、相对高度 spawnYMin~spawnYMax；射出后由实体自行索敌
+            double x = originX + (random.nextDouble() * 2.0 - 1.0) * spawnRangeXZ;
+            double y = originY + spawnYMin + random.nextDouble() * ySpan;
+            double z = originZ + (random.nextDouble() * 2.0 - 1.0) * spawnRangeXZ;
+            blade.setPos(x, y, z);
             blade.setDeltaMovement(Vec3.ZERO);
             blade.setColor(color);
             blade.setModifiedRatio(bladeRatio);
-            blade.setStartDelay(hoverTicks);
+            blade.setStartDelay(startDelayMin + random.nextInt(startDelayMax - startDelayMin + 1));
             blade.setInterval(0);
             blade.setMaxLifeTime(bladeLife);
             blade.setBreakDelay(breakDelay);
-            blade.setTargetEntity(target);
             blade.setIgnoringBlock(true);
-            blade.setSize(0.001f);
+            blade.setSize(0f);
             blade.setMute(true);
-            blade.lookAt(PosHelper.getEntityAimPosition(target), false);
+            blade.lookAt(PosHelper.getAttackTargetPosition(livingEntity, slashBladeState), false);
 
             blade.tickCallbackPoint.register(() -> {
                 if (!(blade.level() instanceof ServerLevel serverLevel)) {
                     return;
                 }
                 SummondSwordEntity.ActionType action = blade.getActionType();
-                if (action != SummondSwordEntity.ActionType.PREPARE
-                        && action != SummondSwordEntity.ActionType.FLYING) {
+                if (action != SummondSwordEntity.ActionType.PREPARE && action != SummondSwordEntity.ActionType.FLYING) {
                     return;
                 }
                 MortalDustEffectHelper.spawnTrail(serverLevel, blade.position());
@@ -148,9 +146,6 @@ public class MortalDustSlashArts extends ExtendedSlashArts {
                     // 旧版在剑实体位置喷 YAO_ATTECK
                     MortalDustEffectHelper.spawnHitBurst(serverLevel, blade.position());
                 }
-
-                // 贴附结束 BROKEN 走半伤
-                blade.setModifiedRatio(bladeRatio * 0.5f);
             });
 
             level.addFreshEntity(blade);
