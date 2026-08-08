@@ -1,6 +1,7 @@
 package com.til.recasting.handler;
 
 
+import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.compat.SrelicCompat;
 import com.til.recasting.entity.SummondSpiralSwordEntity;
 import com.til.recasting.entity.SummondSwordEntity;
@@ -135,7 +136,7 @@ public class SummonedSwordHelper {
 
             Level worldIn = sender.level();
             boolean trackingMode = blade.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION)
-                    .map(ext -> ext.trackingPhantomBlade())
+                    .map(PropertiesDefinitionExtension::trackingPhantomBlade)
                     .orElse(false);
 
             SummondSwordEntity ss;
@@ -266,7 +267,7 @@ public class SummonedSwordHelper {
                 count = 8;
             }
 
-            for (int i = 0; i < count; i++) {
+            for(int i = 0; i < count; i++) {
                 SummondSpiralSwordEntity ss = new SummondSpiralSwordEntity(
                         RecastingEntities.SUMMOND_SPIRAL_SWORD.get(), worldIn, entity);
 
@@ -350,7 +351,7 @@ public class SummonedSwordHelper {
                 count = 8;
             }
 
-            for (int i = 0; i < count; i++) {
+            for(int i = 0; i < count; i++) {
                 SummondSpiralSwordEntity ss = new SummondSpiralSwordEntity(RecastingEntities.SUMMOND_SPIRAL_SWORD.get(), worldIn, entity);
 
                 ss.setCenterEntity(target);
@@ -423,7 +424,7 @@ public class SummonedSwordHelper {
                 count = 8;
             }
 
-            for (int i = 0; i < count; i++) {
+            for(int i = 0; i < count; i++) {
                 SummondSwordEntity ss = new SummondSwordEntity(
                         RecastingEntities.SUMMOND_SWORD.get(), worldIn, entity);
 
@@ -546,8 +547,8 @@ public class SummonedSwordHelper {
                 worldIn.addFreshEntity(ss);
             }
 
-            for (int i = 0; i < count; i++) {
-                for (int l = 0; l < multiplier; l++) {
+            for(int i = 0; i < count; i++) {
+                for(int l = 0; l < multiplier; l++) {
                     SummondSwordEntity ss = new SummondSwordEntity(RecastingEntities.SUMMOND_SWORD.get(), worldIn, entity);
 
                     ss.setModifiedRatio(0.1f);

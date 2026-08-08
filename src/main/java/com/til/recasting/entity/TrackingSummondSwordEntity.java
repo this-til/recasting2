@@ -1,6 +1,6 @@
 package com.til.recasting.entity;
 
-import com.til.recasting.handler.EntityPredicateHelper;
+import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.handler.MathHelper;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -11,6 +11,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * 追踪幻影飞刃：在 {@link SummondSwordEntity} 之上移植旧版 {@code EntitySummonedBlade} 的索敌/限速转向。
@@ -24,7 +26,8 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
     protected static final EntityDataAccessor<Integer> INTERVAL =
             SynchedEntityData.defineId(TrackingSummondSwordEntity.class, EntityDataSerializers.INT);
 
-    private static final double ACQUIRE_RANGE = 15.0;
+    /** 无有效目标时一次重索敌范围；找不到则销毁 */
+    private static final double RETARGET_RANGE = 32.0;
     private static final float TURN_STEP = 10.0f;
 
     @Nullable
@@ -42,6 +45,7 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
         super(entityTypeIn, worldIn, shooting);
         hitStopFactor = random.nextFloat();
         setInterval(10);
+        setIgnoringBlock(true);
     }
 
     @Override
@@ -66,23 +70,21 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
     }
 
     /**
-     * 旧版 {@code EntitySummonedBlade#doTargeting}：15 格索敌 + 每 tick 最多转 10° + 转弯减速。
+     * 有有效目标则限速转向；否则在 32 格内一次索敌迁移，找不到则销毁。
      * 朝向/速度一律走父类 {@link #setRot} / {@link #updateMotion(float)}。
      */
     protected void doTargeting() {
+        Entity target = null;
         int targetId = getTargetEntityId();
-
-        if (targetId <= 0) {
-            acquireNearestTarget();
+        if (targetId > 0) {
+            target = level().getEntity(targetId);
+        }
+        if (target == null || !target.isAlive()) {
+            migrateTargetOrDiscard();
             return;
         }
 
         if (getInterval() >= tickCount) {
-            return;
-        }
-
-        Entity target = level().getEntity(targetId);
-        if (target == null || !target.isAlive()) {
             return;
         }
 
@@ -100,27 +102,43 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
         updateMotion(speedFactor);
     }
 
-    private void acquireNearestTarget() {
-        LivingEntity viewer = getShooter();
-        if (viewer == null) {
+    /**
+     * 无有效目标：在自身 32 格内一次重索敌；找到则迁移，否则销毁。
+     */
+    private void migrateTargetOrDiscard() {
+        if (level().isClientSide()) {
             return;
         }
 
-        AABB searchBox = getBoundingBox().inflate(ACQUIRE_RANGE);
-        double nearest = ACQUIRE_RANGE;
-        Entity pointed = null;
+        Entity replacement = findNearestAttackable(RETARGET_RANGE);
+        if (replacement != null) {
+            setTargetEntity(replacement);
+            return;
+        }
+        discard();
+    }
 
-        for (Entity entity : level().getEntities(this, searchBox)) {
-            if (entity == null || !entity.isPickable()) {
-                continue;
-            }
-            if (!EntityPredicateHelper.canTarget(viewer, entity)) {
+    @Nullable
+    private Entity findNearestAttackable(double range) {
+        LivingEntity viewer = getShooter();
+        if (viewer == null) {
+            return null;
+        }
+
+        List<Entity> candidates = EntityHelper.getTargettableEntitiesWithinAABB(
+                level(),
+                viewer,
+                position(),
+                (float) range
+        );
+
+        double nearest = range;
+        Entity pointed = null;
+        for (Entity entity : candidates) {
+            if (entity == this || !entity.isPickable()) {
                 continue;
             }
             if (pierce != null && pierce.contains(entity.getId())) {
-                continue;
-            }
-            if (!viewer.hasLineOfSight(entity)) {
                 continue;
             }
 
@@ -130,10 +148,7 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
                 nearest = distance;
             }
         }
-
-        if (pointed != null) {
-            setTargetEntity(pointed);
-        }
+        return pointed;
     }
 
     /**
