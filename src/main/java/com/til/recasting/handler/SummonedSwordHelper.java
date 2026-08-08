@@ -4,6 +4,7 @@ package com.til.recasting.handler;
 import com.til.recasting.compat.SrelicCompat;
 import com.til.recasting.entity.SummondSpiralSwordEntity;
 import com.til.recasting.entity.SummondSwordEntity;
+import com.til.recasting.entity.TrackingSummondSwordEntity;
 import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.registry.se.CommandMappingSpecialEffect;
 import mods.flammpfeil.slashblade.SlashBlade;
@@ -44,6 +45,7 @@ import static com.til.recasting.Recasting.MODID;
 public class SummonedSwordHelper {
 
     public enum ArtType {
+        SUMMON,
         SPIRAL,
         STORM,
         BLISTERING,
@@ -102,27 +104,7 @@ public class SummonedSwordHelper {
 
             });
 
-            blade.getCapability(ItemSlashBlade.BLADESTATE).ifPresent((state) -> {
-
-                if (state.getProudSoulCount() < SlashBladeConfig.SUMMON_SWORD_COST.get()) {
-                    return;
-                }
-                state.setProudSoulCount(state.getProudSoulCount() - SlashBladeConfig.SUMMON_SWORD_COST.get());
-                //幻影剑
-                AdvancementHelper.grantCriterion(sender, ADVANCEMENT_SUMMONEDSWORDS);
-
-                Level worldIn = sender.level();
-
-                SummondSwordEntity ss = new SummondSwordEntity(RecastingEntities.SUMMOND_SWORD.get(), worldIn, sender);
-
-                ss.setModifiedRatio(0.1f);
-                ss.setColor(state.getColorCode());
-                ss.setRoll(sender.getRandom().nextFloat() * 360.0f);
-                ss.lookAt(PosHelper.getAttackTargetPosition(sender, state), false);
-
-                worldIn.addFreshEntity(ss);
-                sender.playNotifySound(SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 0.2F, 1.45F);
-            });
+            executeSummonedSword(sender, true, true);
         }
     }
 
@@ -131,11 +113,59 @@ public class SummonedSwordHelper {
      */
     public static void replayArt(ServerPlayer player, ArtType artType) {
         switch (artType) {
+            case SUMMON -> executeSummonedSword(player, false, false);
             case SPIRAL -> executeSpiralSwords(player, false, false);
             case STORM -> executeStormSwords(player, false, false);
             case BLISTERING -> executeBlisteringSwords(player, false, false);
             case HEAVY_RAIN -> executeHeavyRains(player, false, false);
         }
+    }
+
+    private static boolean executeSummonedSword(ServerPlayer sender, boolean consumeProud, boolean notifyCommandMapping) {
+        boolean[] success = {false};
+        ItemStack blade = sender.getMainHandItem();
+        blade.getCapability(ItemSlashBlade.BLADESTATE).ifPresent((state) -> {
+            if (consumeProud) {
+                if (state.getProudSoulCount() < SlashBladeConfig.SUMMON_SWORD_COST.get()) {
+                    return;
+                }
+                state.setProudSoulCount(state.getProudSoulCount() - SlashBladeConfig.SUMMON_SWORD_COST.get());
+            }
+            AdvancementHelper.grantCriterion(sender, ADVANCEMENT_SUMMONEDSWORDS);
+
+            Level worldIn = sender.level();
+            boolean trackingMode = blade.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION)
+                    .map(ext -> ext.trackingPhantomBlade())
+                    .orElse(false);
+
+            SummondSwordEntity ss;
+            if (trackingMode) {
+                TrackingSummondSwordEntity tracking =
+                        new TrackingSummondSwordEntity(RecastingEntities.TRACKING_SUMMOND_SWORD.get(), worldIn, sender);
+                tracking.setInterval(10);
+                Entity locked = state.getTargetEntity(worldIn);
+                if (locked != null) {
+                    tracking.setTargetEntity(locked);
+                }
+                ss = tracking;
+            } else {
+                ss = new SummondSwordEntity(RecastingEntities.SUMMOND_SWORD.get(), worldIn, sender);
+            }
+
+            ss.setModifiedRatio(0.1f);
+            ss.setColor(state.getColorCode());
+            ss.setRoll(sender.getRandom().nextFloat() * 360.0f);
+            ss.lookAt(PosHelper.getAttackTargetPosition(sender, state), false);
+
+            worldIn.addFreshEntity(ss);
+            sender.playNotifySound(SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 0.2F, 1.45F);
+            success[0] = true;
+        });
+
+        if (success[0] && notifyCommandMapping) {
+            CommandMappingSpecialEffect.trySchedule(sender, ArtType.SUMMON);
+        }
+        return success[0];
     }
 
     public static Optional<Entity> findTarget(ServerPlayer sender, Entity lockedT) {

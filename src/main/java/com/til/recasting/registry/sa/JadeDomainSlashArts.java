@@ -412,14 +412,17 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
                 return;
             }
 
-            triggerBladeReleaseAtRandomTarget(caster, resolveColor(caster));
-        }
+            ItemStack mainHand = caster.getMainHandItem();
+            if (!mainHand.getCapability(ItemSlashBlade.BLADESTATE).isPresent()) {
+                return;
+            }
 
-        private int resolveColor(LivingEntity caster) {
-            return caster.getMainHandItem()
-                    .getCapability(ItemSlashBlade.BLADESTATE)
-                    .map(ISlashBladeState::getColorCode)
-                .orElse(defaultColor);
+            triggerBladeReleaseAtRandomTarget(
+                    caster,
+                    mainHand.getCapability(ItemSlashBlade.BLADESTATE)
+                            .map(ISlashBladeState::getColorCode)
+                            .orElse(defaultColor)
+            );
         }
     }
 

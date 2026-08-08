@@ -9,7 +9,7 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class EntityHelper {
 
@@ -38,5 +38,88 @@ public class EntityHelper {
                 .toList();
 
 
+    }
+
+    /**
+     * 在视锥内选取目标：距离 ≤ {@code range}，与视线夹角 ≤ {@code halfAngleDegrees}。
+     * 优先夹角更小，夹角接近时取更近者。
+     */
+    public static Optional<LivingEntity> selectClosestInViewCone(
+            LivingEntity viewer,
+            double range,
+            float halfAngleDegrees
+    ) {
+        if (viewer == null || range <= 0.0 || halfAngleDegrees <= 0.0f) {
+            return Optional.empty();
+        }
+
+        Vec3 eye = viewer.getEyePosition(1.0f);
+        Vec3 look = viewer.getLookAngle();
+        if (look.lengthSqr() < 1.0e-8) {
+            return Optional.empty();
+        }
+        look = look.normalize();
+
+        double cosThreshold = Math.cos(Math.toRadians(halfAngleDegrees));
+        double rangeSq = range * range;
+
+        AABB searchBox = new AABB(eye, eye).inflate(range);
+        LivingEntity best = null;
+        double bestDot = -1.0;
+        double bestDistSq = Double.MAX_VALUE;
+
+        for (LivingEntity candidate : viewer.level().getEntitiesOfClass(
+                LivingEntity.class,
+                searchBox,
+                entity -> EntityPredicateHelper.canTarget(viewer, entity)
+        )) {
+            Vec3 toCenter = candidate.getBoundingBox().getCenter().subtract(eye);
+            double distSq = toCenter.lengthSqr();
+            if (distSq > rangeSq || distSq < 1.0e-8) {
+                continue;
+            }
+
+            Vec3 direction = toCenter.scale(1.0 / Math.sqrt(distSq));
+            double dot = look.dot(direction);
+            if (dot < cosThreshold) {
+                continue;
+            }
+
+            if (best == null
+                    || dot > bestDot + 1.0e-6
+                    || (Math.abs(dot - bestDot) <= 1.0e-6 && distSq < bestDistSq)) {
+                best = candidate;
+                bestDot = dot;
+                bestDistSq = distSq;
+            }
+        }
+
+        return Optional.ofNullable(best);
+    }
+
+    /**
+     * 判断目标是否落在视锥内（距离 + 视线夹角）。
+     */
+    public static boolean isInsideViewCone(
+            LivingEntity viewer,
+            LivingEntity target,
+            double range,
+            float halfAngleDegrees
+    ) {
+        if (viewer == null || target == null || range <= 0.0 || halfAngleDegrees <= 0.0f) {
+            return false;
+        }
+        Vec3 eye = viewer.getEyePosition(1.0f);
+        Vec3 look = viewer.getLookAngle();
+        if (look.lengthSqr() < 1.0e-8) {
+            return false;
+        }
+        Vec3 to = target.getBoundingBox().getCenter().subtract(eye);
+        double distSq = to.lengthSqr();
+        if (distSq > range * range || distSq < 1.0e-8) {
+            return false;
+        }
+        double dot = look.normalize().dot(to.normalize());
+        return dot >= Math.cos(Math.toRadians(halfAngleDegrees));
     }
 }

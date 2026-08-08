@@ -27,6 +27,11 @@ public final class RecastingLanguageKeys {
     public static final String TOOLTIP_SPECIAL_SE_BADGE = "recasting.tooltip.special_se.badge";
     public static final String TOOLTIP_ABYSS_FLAME_EXTRACT = "recasting.tooltip.abyss_flame.extract";
 
+    public static final String TOOLTIP_PHANTOM_BLADE_NORMAL = "recasting.tooltip.phantom_blade.normal";
+    public static final String TOOLTIP_PHANTOM_BLADE_TRACKING = "recasting.tooltip.phantom_blade.tracking";
+    public static final String MESSAGE_PHANTOM_BLADE_NORMAL = "recasting.message.phantom_blade.normal";
+    public static final String MESSAGE_PHANTOM_BLADE_TRACKING = "recasting.message.phantom_blade.tracking";
+
     public static final String ADVANCEMENT_GROWTH_ROOT_TITLE = "advancements.recasting.growth.root.title";
     public static final String ADVANCEMENT_GROWTH_ROOT_DESC = "advancements.recasting.growth.root.description";
     public static final String ADVANCEMENT_GROWTH_SE_ROOT_TITLE = "advancements.recasting.growth.se.root.title";

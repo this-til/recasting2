@@ -9,6 +9,7 @@ import com.til.recasting.client.renderer.entity.MatrixEntityRender;
 import com.til.recasting.client.renderer.entity.SlashEffectEntityRenderer;
 import com.til.recasting.client.renderer.entity.StellarRotationEntityRender;
 import com.til.recasting.client.renderer.entity.SummondSwordEntityRenderer;
+import com.til.recasting.client.renderer.entity.TrackingSummondSwordEntityRenderer;
 import com.til.recasting.registry.RecastingEntities;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -40,6 +41,9 @@ public class ClientRenderHandler {
         
         // 注册螺旋剑实体渲染器（使用相同的渲染器）
         event.registerEntityRenderer(RecastingEntities.SUMMOND_SPIRAL_SWORD.get(), SummondSwordEntityRenderer::new);
+
+        // 注册追踪幻影剑（sb 组 + 绕刀身旋转）
+        event.registerEntityRenderer(RecastingEntities.TRACKING_SUMMOND_SWORD.get(), TrackingSummondSwordEntityRenderer::new);
         
         // 注册斩击特效实体渲染器
         event.registerEntityRenderer(RecastingEntities.SLASH_EFFECT.get(), SlashEffectEntityRenderer::new);

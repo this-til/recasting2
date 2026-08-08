@@ -180,6 +180,10 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(RecastingLanguageKeys.TOOLTIP_SPECIAL_SE_EXTRACT, "• 特殊SE：左刀右渊寂火去除特殊SE（保留刀）；左刀右聚散变体提取为结晶（刀损毁）", "• Special SE: blade+abyss flame removes special SE (keeps blade); blade+gathering parting variant extracts a crystal (destroys blade)");
         translation(RecastingLanguageKeys.TOOLTIP_SPECIAL_SE_BADGE, "(特殊)", "(Special)");
         translation(RecastingLanguageKeys.TOOLTIP_ABYSS_FLAME_EXTRACT, "• 铁砧：左刀右渊寂火去除特殊SE；左刀右聚散变体提取结晶（刀损毁）", "• Anvil: blade+abyss flame removes special SE; blade+gathering parting variant extracts a crystal (blade destroyed)");
+        translation(RecastingLanguageKeys.TOOLTIP_PHANTOM_BLADE_NORMAL, "幻影剑", "Phantom Sword");
+        translation(RecastingLanguageKeys.TOOLTIP_PHANTOM_BLADE_TRACKING, "幻影飞刃", "Phantom Flying Blade");
+        translation(RecastingLanguageKeys.MESSAGE_PHANTOM_BLADE_NORMAL, "已切换为基础幻影剑", "Switched to phantom sword");
+        translation(RecastingLanguageKeys.MESSAGE_PHANTOM_BLADE_TRACKING, "已切换为幻影飞刃", "Switched to phantom flying blade");
         translation(itemKey(RecastingItems.GATHERING_PARTING_VARIANT), "聚散变体", "Gathering Parting Variant");
         translation(itemKey(RecastingItems.UPGRADE_VARIANT), "升格变体 I", "Upgrade Variant II");
         translation(itemKey(RecastingItems.UPGRADE_VARIANT_2), "升格变体 II", "Upgrade Variant II");

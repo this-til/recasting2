@@ -116,8 +116,8 @@ public class RecastingEntities {
             "tracking_summond_sword",
             () -> EntityType.Builder.<TrackingSummondSwordEntity>of((e, l) -> new TrackingSummondSwordEntity(e, l, null), MobCategory.MISC)
                     .sized(0.5f, 0.5f)               // 碰撞箱大小
-                    .clientTrackingRange(64)         // 客户端追踪范围（格）
-                    .updateInterval(20)              // 更新间隔（tick）
+                    .clientTrackingRange(128)        // 与视锥锁敌距离一致
+                    .updateInterval(20)              // 位置同步间隔；弯道靠双端本地追踪对齐
                     .fireImmune()                    // 免疫火焰伤害
                     .noSave()                        // 不保存到世界数据
                     .noSummon()                      // 不能通过命令召唤

@@ -1,5 +1,6 @@
 package com.til.recasting.entity;
 
+import com.til.recasting.handler.EntityPredicateHelper;
 import com.til.recasting.handler.MathHelper;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -8,186 +9,198 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @Author: til
- * @Description: 具有追踪目标功能的幻影剑
+ * 追踪幻影飞刃：在 {@link SummondSwordEntity} 之上移植旧版 {@code EntitySummonedBlade} 的索敌/限速转向。
+ * 位移、碰撞、生成仍走父类。
  */
 public class TrackingSummondSwordEntity extends SummondSwordEntity {
 
-    /**
-     * 追踪目标实体的ID
-     */
-    protected static final EntityDataAccessor<Integer> TARGET_ENTITY_ID = SynchedEntityData.defineId(TrackingSummondSwordEntity.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> TARGET_ENTITY_ID =
+            SynchedEntityData.defineId(TrackingSummondSwordEntity.class, EntityDataSerializers.INT);
+    /** 开始转向前的等待 tick（旧版 Interval） */
+    protected static final EntityDataAccessor<Integer> INTERVAL =
+            SynchedEntityData.defineId(TrackingSummondSwordEntity.class, EntityDataSerializers.INT);
 
-    /**
-     * 追踪更新间隔（每N tick更新一次方向）
-     */
-    protected static final EntityDataAccessor<Integer> TRACKING_UPDATE_INTERVAL = SynchedEntityData.defineId(TrackingSummondSwordEntity.class, EntityDataSerializers.INT);
-
-    /**
-     * 最大追踪距离
-     */
-    protected static final EntityDataAccessor<Float> MAX_TRACKING_DISTANCE = SynchedEntityData.defineId(TrackingSummondSwordEntity.class, EntityDataSerializers.FLOAT);
-
-    /**
-     * 最大转向速度（度/tick）
-     */
-    protected static final EntityDataAccessor<Float> MAX_TURN_SPEED = SynchedEntityData.defineId(TrackingSummondSwordEntity.class, EntityDataSerializers.FLOAT);
-
-    /**
-     * 转向平滑度（0.0-1.0，值越大转向越平滑但响应越慢）
-     */
-    protected static final EntityDataAccessor<Float> TURN_SMOOTHNESS = SynchedEntityData.defineId(TrackingSummondSwordEntity.class, EntityDataSerializers.FLOAT);
-
-    /**
-     * 预测提前量（预测目标未来位置的倍数，0表示不预测）
-     */
-    protected static final EntityDataAccessor<Float> PREDICTION_FACTOR = SynchedEntityData.defineId(TrackingSummondSwordEntity.class, EntityDataSerializers.FLOAT);
+    private static final double ACQUIRE_RANGE = 15.0;
+    private static final float TURN_STEP = 10.0f;
 
     @Nullable
     protected Entity targetEntity;
 
-    public TrackingSummondSwordEntity(EntityType<? extends TrackingSummondSwordEntity> entityTypeIn, Level worldIn, LivingEntity shooting) {
+    /** 命中实体时冻结渲染自旋（旧版 hitTime / hitStopFactor） */
+    public long hitTime = 0L;
+    public float hitStopFactor = 0.0f;
+
+    public TrackingSummondSwordEntity(
+            EntityType<? extends TrackingSummondSwordEntity> entityTypeIn,
+            Level worldIn,
+            LivingEntity shooting
+    ) {
         super(entityTypeIn, worldIn, shooting);
+        hitStopFactor = random.nextFloat();
+        setInterval(10);
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         getEntityData().define(TARGET_ENTITY_ID, -1);
-        getEntityData().define(TRACKING_UPDATE_INTERVAL, 1);
-        getEntityData().define(MAX_TRACKING_DISTANCE, 64.0f);
-        getEntityData().define(MAX_TURN_SPEED, 15.0f); // 默认每tick最多转向15度
-        getEntityData().define(TURN_SMOOTHNESS, 0.3f); // 默认平滑度0.3
-        getEntityData().define(PREDICTION_FACTOR, 0.5f); // 默认预测提前量0.5
+        getEntityData().define(INTERVAL, 10);
     }
 
     @Override
     public void tick() {
+        if (getActionType() == ActionType.FLYING) {
+            doTargeting();
+        }
         super.tick();
+    }
 
-        // 在飞行状态下更新追踪
-        if (getActionType() == ActionType.FLYING && !level().isClientSide()) {
-            updateTracking();
+    @Override
+    public void onHitEntity(Entity targetEntity, SummondAttackType summondAttackType) {
+        hitTime = level().getGameTime();
+        super.onHitEntity(targetEntity, summondAttackType);
+    }
+
+    /**
+     * 旧版 {@code EntitySummonedBlade#doTargeting}：15 格索敌 + 每 tick 最多转 10° + 转弯减速。
+     * 朝向/速度一律走父类 {@link #setRot} / {@link #updateMotion(float)}。
+     */
+    protected void doTargeting() {
+        int targetId = getTargetEntityId();
+
+        if (targetId <= 0) {
+            acquireNearestTarget();
+            return;
+        }
+
+        if (getInterval() >= tickCount) {
+            return;
+        }
+
+        Entity target = level().getEntity(targetId);
+        if (target == null || !target.isAlive()) {
+            return;
+        }
+
+        float lastYaw = getYRot();
+        float lastPitch = getXRot();
+        float lastSpeed = (float) getDeltaMovement().length();
+
+        faceEntity(target, TURN_STEP, TURN_STEP);
+
+        float speedFactor = Math.abs(getYRot() - lastYaw) / TURN_STEP
+                + Math.abs(getXRot() - lastPitch) / TURN_STEP;
+        speedFactor = 1.0f - Math.min(speedFactor, 0.75f);
+        speedFactor = (0.75f * speedFactor + lastSpeed * 9.0f) / 10.0f;
+
+        updateMotion(speedFactor);
+    }
+
+    private void acquireNearestTarget() {
+        LivingEntity viewer = getShooter();
+        if (viewer == null) {
+            return;
+        }
+
+        AABB searchBox = getBoundingBox().inflate(ACQUIRE_RANGE);
+        double nearest = ACQUIRE_RANGE;
+        Entity pointed = null;
+
+        for (Entity entity : level().getEntities(this, searchBox)) {
+            if (entity == null || !entity.isPickable()) {
+                continue;
+            }
+            if (!EntityPredicateHelper.canTarget(viewer, entity)) {
+                continue;
+            }
+            if (pierce != null && pierce.contains(entity.getId())) {
+                continue;
+            }
+            if (!viewer.hasLineOfSight(entity)) {
+                continue;
+            }
+
+            double distance = distanceTo(entity);
+            if (distance < nearest) {
+                pointed = entity;
+                nearest = distance;
+            }
+        }
+
+        if (pointed != null) {
+            setTargetEntity(pointed);
         }
     }
 
     /**
-     * 更新追踪目标的方向（使用物理弹道效果）
+     * 旧版 faceEntity：对当前 yRot/xRot 做步进，不另开驱动角。
      */
-    protected void updateTracking() {
-        Entity target = getTargetEntity();
-        
-        // 如果没有目标或目标已死亡，立刻销毁自身
-        if (target == null || !target.isAlive()) {
-            discard();
-            return;
+    protected void faceEntity(Entity target, float yawStep, float pitchStep) {
+        double d0 = target.getX() - getX();
+        double d1 = target.getZ() - getZ();
+        double d2;
+        if (target instanceof LivingEntity living) {
+            d2 = living.getY() + living.getEyeHeight() - (getY() + getEyeHeight());
+        } else {
+            AABB box = target.getBoundingBox();
+            d2 = (box.minY + box.maxY) / 2.0D - (getY() + getEyeHeight());
         }
 
-        // 检查距离
-        double distance = getPos().distanceTo(target.position());
-        if (distance > (double) getMaxTrackingDistance()) {
-            // 超出追踪距离，销毁自身
-            discard();
-            return;
-        }
+        double d3 = MathHelper.sqrt(d0 * d0 + d1 * d1);
+        float desiredYaw = (float) (Math.atan2(d1, d0) * 180.0D / Math.PI) - 90.0F;
+        float desiredPitch = (float) (-(Math.atan2(d2, d3) * 180.0D / Math.PI));
 
-        // 计算目标位置（考虑预测提前量）
-        Vec3 targetPos = MathHelper.predictEntityCenterPosition(this, target, getPredictionFactor());
-        
-        // 计算目标方向向量
-        Vec3 desiredDirection = targetPos.subtract(getPos()).normalize();
-        
-        // 计算当前速度方向
-        Vec3 currentVelocity = getDeltaMovement();
-        Vec3 currentDirection = currentVelocity.length() > 0.001 ? currentVelocity.normalize() : desiredDirection;
-        
-        Vec3 newDirection = MathHelper.smoothDirection(
-                currentDirection,
-                desiredDirection,
-                getMaxTurnSpeed(),
-                getTurnSmoothness()
+        setRot(
+                updateRotation(getYRot(), desiredYaw, yawStep),
+                updateRotation(getXRot(), desiredPitch, pitchStep),
+                false
         );
-
-        // 更新朝向和速度
-        lookAt(newDirection, true, false, false);
-        updateMotion(getSeep());
     }
 
+    private static float updateRotation(float current, float target, float maxStep) {
+        float delta = MathHelper.wrapDegrees(target - current);
+        if (delta > maxStep) {
+            delta = maxStep;
+        }
+        if (delta < -maxStep) {
+            delta = -maxStep;
+        }
+        return current + delta;
+    }
+
+    public int getTargetEntityId() {
+        return entityData.get(TARGET_ENTITY_ID);
+    }
 
     @Nullable
     public Entity getTargetEntity() {
-        int id = entityData.get(TARGET_ENTITY_ID);
-
+        int id = getTargetEntityId();
         if (targetEntity != null && targetEntity.getId() != id) {
             targetEntity = null;
         }
-
-        if (targetEntity == null) {
-            if (id > 0) {
-                Entity entity = level().getEntity(id);
-                if (entity != null && entity.isAlive()) {
-                    targetEntity = entity;
-                } else {
-                    // 实体不存在或已死亡，清除ID
-                    entityData.set(TARGET_ENTITY_ID, -1);
-                }
+        if (targetEntity == null && id > 0) {
+            Entity entity = level().getEntity(id);
+            if (entity != null && entity.isAlive()) {
+                targetEntity = entity;
             }
         }
-
         return targetEntity;
     }
 
-    public void setTargetEntity(@Nullable Entity targetEntity) {
-        entityData.set(
-                TARGET_ENTITY_ID,
-                targetEntity != null
-                        ? targetEntity.getId()
-                        : -1
-        );
-        this.targetEntity = targetEntity;
+    public void setTargetEntity(@Nullable Entity target) {
+        entityData.set(TARGET_ENTITY_ID, target != null ? target.getId() : -1);
+        this.targetEntity = target;
     }
 
-    public int getTrackingUpdateInterval() {
-        return entityData.get(TRACKING_UPDATE_INTERVAL);
+    public int getInterval() {
+        return entityData.get(INTERVAL);
     }
 
-    public void setTrackingUpdateInterval(int interval) {
-        entityData.set(TRACKING_UPDATE_INTERVAL, interval);
-    }
-
-    public float getMaxTrackingDistance() {
-        return entityData.get(MAX_TRACKING_DISTANCE);
-    }
-
-    public void setMaxTrackingDistance(float distance) {
-        entityData.set(MAX_TRACKING_DISTANCE, distance);
-    }
-
-    public float getMaxTurnSpeed() {
-        return entityData.get(MAX_TURN_SPEED);
-    }
-
-    public void setMaxTurnSpeed(float maxTurnSpeed) {
-        entityData.set(MAX_TURN_SPEED, maxTurnSpeed);
-    }
-
-    public float getTurnSmoothness() {
-        return entityData.get(TURN_SMOOTHNESS);
-    }
-
-    public void setTurnSmoothness(float turnSmoothness) {
-        entityData.set(TURN_SMOOTHNESS, MathHelper.clamp(turnSmoothness, 0.0f, 1.0f));
-    }
-
-    public float getPredictionFactor() {
-        return entityData.get(PREDICTION_FACTOR);
-    }
-
-    public void setPredictionFactor(float predictionFactor) {
-        entityData.set(PREDICTION_FACTOR, Math.max(0.0f, predictionFactor));
+    public void setInterval(int interval) {
+        entityData.set(INTERVAL, Math.max(0, interval));
     }
 }

@@ -2,6 +2,7 @@ package com.til.recasting.mixin;
 
 import com.til.recasting.capability.ISpecialEffectCrystalData;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
+import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.SpecialEffectTooltipHelper;
 import com.til.recasting.registry.SlashArtsRegistry;
@@ -18,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -30,6 +32,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -56,6 +59,19 @@ public class ItemSlashBladeMixin {
     @Inject(method = "appendHoverText", at = @At("RETURN"))
     @OnlyIn(Dist.CLIENT)
     public void appendSpecialEffectHoverText(ItemStack stack, Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn, CallbackInfo ci) {
+        stack.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> {
+            EnumSet<SwordType> swordTypes = SwordType.from(stack);
+            if (swordTypes.contains(SwordType.BEWITCHED)
+                    && stack.getEnchantmentLevel(Enchantments.POWER_ARROWS) > 0) {
+                boolean tracking = extension.trackingPhantomBlade();
+                tooltip.add(Component.translatable(
+                                tracking
+                                        ? RecastingLanguageKeys.TOOLTIP_PHANTOM_BLADE_TRACKING
+                                        : RecastingLanguageKeys.TOOLTIP_PHANTOM_BLADE_NORMAL
+                        ).withStyle(tracking ? ChatFormatting.AQUA : ChatFormatting.GRAY));
+            }
+        });
+
         stack.getCapability(ItemSlashBlade.BLADESTATE).ifPresent((s) -> {
             if (s.getSpecialEffects().isEmpty()) {
                 return;
