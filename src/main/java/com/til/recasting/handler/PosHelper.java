@@ -37,11 +37,7 @@ public class PosHelper {
         // 尝试获取锁定的目标
         var target = slashBladeState.getTargetEntity(worldIn);
         if (target != null && target.isAlive() && !target.isRemoved()) {
-            return new Vec3(
-                    target.getX(),
-                    target.getY() + target.getEyeHeight() * 0.5,
-                    target.getZ()
-            );
+            return getEntityAimPosition(target);
         } else {
             // 如果没有锁定目标，使用视线追踪
             Vec3 start = livingEntity.getEyePosition(1.0f);
@@ -68,6 +64,17 @@ public class PosHelper {
      */
     public static Vec3 getAttackTargetPosition(LivingEntity livingEntity, ISlashBladeState slashBladeState) {
         return getAttackTargetPosition(livingEntity, slashBladeState, 64.0);
+    }
+
+    /**
+     * 实体瞄准点：脚底 + 半眼高（躯干中部）。
+     */
+    public static Vec3 getEntityAimPosition(Entity entity) {
+        return new Vec3(
+                entity.getX(),
+                entity.getY() + entity.getEyeHeight() * 0.5,
+                entity.getZ()
+        );
     }
 
     /**

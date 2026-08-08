@@ -61,6 +61,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(buffKey(RecastingBuffTypes.CURSE_DECREE), "咒令", "Curse Decree");
         translation(buffKey(RecastingBuffTypes.SPIRIT_SILENCE), "寂灭", "Spirit Silence");
         translation(buffKey(RecastingBuffTypes.BUFF_SUPPRESS), "增益压制", "Buff Suppress");
+        translation(buffKey(RecastingBuffTypes.ETERNAL_GUARD), "永恒守卫", "Eternal Guard");
         translation(slashBladeKey(RecastingSlashBladeKeys.VOID_1), "洞虚利刃", "Void Blade I");
         translation(slashBladeKey(RecastingSlashBladeKeys.VOID_2), "洞虚利刃[漆黑]", "Void Blade II");
         translation(slashBladeKey(RecastingSlashBladeKeys.VOID_3), "洞虚利刃[猩红]", "Void Blade III");
@@ -375,6 +376,14 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtDescKey(SlashArtsRegistry.PHENOMENAL_RETURN_LAMBDA), "以视角目标为中心降下更久、更广的绝对伤害次元斩雨，并驱散、压制周围实体的增益效果。", "Rains longer and wider absolute-damage judgement cuts around the look target while dispelling and suppressing beneficial effects on nearby entities.");
         translation(slashArtKey(SlashArtsRegistry.TIME_BEYOND), "[回到未来计划]时之彼端", "[Back to the Future Plan] Time Beyond");
         translation(slashArtDescKey(SlashArtsRegistry.TIME_BEYOND), "蓄力时加快日夜与周围时间流速，松手释放十字斩；蓄力越久威力越高。", "While charging, accelerates day-night cycle and nearby time flow, then releases a cross slash on release; longer charge yields greater power.");
+        translation(slashArtKey(SlashArtsRegistry.IMPRISONMENT), "[回到未来计划]禁锢", "[Back to the Future Plan] Imprisonment");
+        translation(slashArtDescKey(SlashArtsRegistry.IMPRISONMENT), "将锁定目标钉在次元斩中心，并持续环射追踪幻影剑。", "Pins the locked target at a judgement-cut center while continually firing tracking phantom swords around it.");
+        translation(slashArtKey(SlashArtsRegistry.PHASE_FRACTURE), "[回到未来计划]相位碎裂", "[Back to the Future Plan] Phase Fracture");
+        translation(slashArtDescKey(SlashArtsRegistry.PHASE_FRACTURE), "将周围敌人拉至身前聚点，再以球面幻影剑收束打击。", "Pulls nearby foes to a focus point ahead, then strikes with phantom swords arranged on a sphere.");
+        translation(slashArtKey(SlashArtsRegistry.ETERNAL_GUARD), "[回到未来计划]永恒守卫", "[Back to the Future Plan] Eternal Guard");
+        translation(slashArtDescKey(SlashArtsRegistry.ETERNAL_GUARD), "展开守卫领域，短时冻结范围内敌人相对自身的位置。", "Opens a guard domain that briefly freezes nearby foes relative to the caster.");
+        translation(slashArtKey(SlashArtsRegistry.AZURE_HAZE), "[回到未来计划]青茫熳天摇", "[Back to the Future Plan] Azure Haze");
+        translation(slashArtDescKey(SlashArtsRegistry.AZURE_HAZE), "环绕自身射出大量追踪飞剑，飞剑消失时向四周扩散剑气。", "Launches many tracking phantom swords around the caster; when they vanish they burst into spreading sword qi.");
         translation(specialEffectKey(SpecialEffectsRegistry.COOPERATE_WITH), "协同攻击", "Cooperate With");
         translation(specialEffectDescKey(SpecialEffectsRegistry.COOPERATE_WITH), "挥刀时概率额外挥刀。", "Has a chance to perform an additional slash when slashing.");
         translation(specialEffectKey(SpecialEffectsRegistry.CROSS_CHOP), "十字斩", "Cross Chop");

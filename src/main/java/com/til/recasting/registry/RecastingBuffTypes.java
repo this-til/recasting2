@@ -267,4 +267,12 @@ public class RecastingBuffTypes {
             () -> new BuffType(20, 0)
     );
 
+    /**
+     * 永恒守卫
+     * - 每 20 tick 衰减 1 层；层数表示领域剩余秒数
+     */
+    public static final RegistryObject<BuffType> ETERNAL_GUARD = BUFF_TYPES.register("eternal_guard",
+            () -> new BuffType(20, 0)
+    );
+
 }

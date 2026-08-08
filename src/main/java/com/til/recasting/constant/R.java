@@ -87,6 +87,9 @@ public class R {
         }
 
         public static class Special {
+            public static final ResourceLocation imprisonment = ResourceLocation.fromNamespaceAndPath("recasting", "models/special/imprisonment");
+            public static final ResourceLocation imprisonment$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/special/imprisonment.obj");
+            public static final ResourceLocation imprisonment$png = ResourceLocation.fromNamespaceAndPath("recasting", "models/special/imprisonment.png");
             public static final ResourceLocation matrix = ResourceLocation.fromNamespaceAndPath("recasting", "models/special/matrix");
             public static final ResourceLocation matrix$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/special/matrix.obj");
             public static final ResourceLocation matrix$png = ResourceLocation.fromNamespaceAndPath("recasting", "models/special/matrix.png");
@@ -160,6 +163,15 @@ public class R {
             public static final ResourceLocation stars$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/stars.png");
             public static final ResourceLocation vortex = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/vortex");
             public static final ResourceLocation vortex$png = ResourceLocation.fromNamespaceAndPath("recasting", "particle/other/vortex.png");
+        }
+    }
+
+    public static class Shaders {
+        public static class Core {
+            public static final ResourceLocation bladeRift = ResourceLocation.fromNamespaceAndPath("recasting", "shaders/core/blade_rift");
+            public static final ResourceLocation bladeRift$fsh = ResourceLocation.fromNamespaceAndPath("recasting", "shaders/core/blade_rift.fsh");
+            public static final ResourceLocation bladeRift$json = ResourceLocation.fromNamespaceAndPath("recasting", "shaders/core/blade_rift.json");
+            public static final ResourceLocation bladeRift$vsh = ResourceLocation.fromNamespaceAndPath("recasting", "shaders/core/blade_rift.vsh");
         }
     }
 

@@ -12,6 +12,7 @@
     "EntityAccessor",
     "JEICompatMixin",
     "ItemSlashBladeInventoryTickMixin",
+    "LockOnManagerMixin",
     "RecipeProviderMixin",
     "SlashArtsAccessor",
     "SlashBladeDefinitionBladeComparatorMixin",

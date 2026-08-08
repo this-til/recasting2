@@ -136,4 +136,12 @@ public class BuffLevelRendererRegistry {
             () -> new BuffLevelRenderConfig(RecastingBuffTypes.JADE_FIRE, RecastingLanguageKeys.BUFF_JADE_FIRE)
     );
 
+    /**
+     * 永恒守卫 - 显示剩余秒数
+     */
+    public static final RegistryObject<BuffLevelRenderConfig> ETERNAL_GUARD = BUFF_LEVEL_RENDER_CONFIGS.register(
+            "eternal_guard",
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.ETERNAL_GUARD, RecastingLanguageKeys.BUFF_ETERNAL_GUARD)
+    );
+
 }

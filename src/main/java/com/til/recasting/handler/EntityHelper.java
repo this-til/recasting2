@@ -7,6 +7,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -95,6 +96,18 @@ public class EntityHelper {
         }
 
         return Optional.ofNullable(best);
+    }
+
+    /**
+     * 在自身中心 {@code range} 格内选取最近可攻击目标。
+     */
+    public static Optional<Entity> selectClosestWithinRange(LivingEntity viewer, double range) {
+        if (viewer == null || range <= 0.0) {
+            return Optional.empty();
+        }
+        return getTargettableEntitiesWithinAABB(viewer.level(), viewer, viewer.position(), (float) range)
+                .stream()
+                .min(Comparator.comparingDouble(viewer::distanceToSqr));
     }
 
     /**

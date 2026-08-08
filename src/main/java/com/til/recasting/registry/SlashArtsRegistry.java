@@ -310,6 +310,30 @@ public class SlashArtsRegistry {
             TimeBeyondSlashArts::new
     );
 
+    // 回到未来计划 · 禁锢
+    public static final RegistryObject<ExtendedSlashArts> IMPRISONMENT = registerExtendedSA(
+            "imprisonment",
+            ImprisonmentSlashArts::new
+    );
+
+    // 回到未来计划 · 相位碎裂
+    public static final RegistryObject<ExtendedSlashArts> PHASE_FRACTURE = registerExtendedSA(
+            "phase_fracture",
+            PhaseFractureSlashArts::new
+    );
+
+    // 回到未来计划 · 永恒守卫
+    public static final RegistryObject<ExtendedSlashArts> ETERNAL_GUARD = registerExtendedSA(
+            "eternal_guard",
+            EternalGuardSlashArts::new
+    );
+
+    // 回到未来计划 · 青茫熳天摇
+    public static final RegistryObject<ExtendedSlashArts> AZURE_HAZE = registerExtendedSA(
+            "azure_haze",
+            AzureHazeSlashArts::new
+    );
+
     /**
      * 注册扩展的 SlashArts，自动关联 ComboState
      */
