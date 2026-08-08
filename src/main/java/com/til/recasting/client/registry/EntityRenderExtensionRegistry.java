@@ -10,7 +10,6 @@ import com.til.recasting.client.renderer.EntityRenderExtension;
 import com.til.recasting.client.renderer.RenderStateManage;
 import mods.flammpfeil.slashblade.client.renderer.util.MSAutoCloser;
 import com.til.recasting.constant.R;
-import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.instance.BuffType;
@@ -22,6 +21,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.util.LazyOptional;
@@ -30,6 +30,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.registries.RegistryObject;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 
 import java.awt.*;
 import java.util.function.Supplier;
@@ -153,6 +154,14 @@ public class EntityRenderExtensionRegistry {
     public static final RegistryObject<EntityRenderExtension> BUFF_LEVEL_TEXT = ENTITY_RENDER_EXTENSIONS.register(
             "buff_level_text",
             BuffLevelTextRenderer::new
+    );
+
+    /**
+     * 永恒守卫：持有 Buff 时在实体中心渲染广告牌光圈
+     */
+    public static final RegistryObject<EntityRenderExtension> ETERNAL_GUARD = ENTITY_RENDER_EXTENSIONS.register(
+            "eternal_guard",
+            () -> new BuffHaloRenderExtension(RecastingBuffTypes.ETERNAL_GUARD, new Color(58, 107, 255, 180))
     );
 
     /**
@@ -300,5 +309,75 @@ public class EntityRenderExtensionRegistry {
             }
         }
 
+    }
+
+    /**
+     * 持有指定 Buff 时，在实体中心绘制朝向相机的环形光圈。
+     */
+    public static class BuffHaloRenderExtension implements EntityRenderExtension {
+
+        private static final int SEGMENTS = 48;
+
+        private final RegistryObject<BuffType> buffType;
+        private final Color color;
+
+        public BuffHaloRenderExtension(RegistryObject<BuffType> buffType, Color color) {
+            this.buffType = buffType;
+            this.color = color;
+        }
+
+        @Override
+        public void render(Entity entity, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+            if (!(entity instanceof LivingEntity livingEntity)) {
+                return;
+            }
+
+            LazyOptional<IBuffStackData> capability = entity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA);
+            if (!capability.isPresent()) {
+                return;
+            }
+
+            //noinspection DataFlowIssue
+            IBuffStackData buffData = capability.orElse(null);
+            int level = buffData.getLevel(buffType.get(), entity.level());
+            if (level <= 0) {
+                return;
+            }
+
+            float pulse = 0.85f + 0.15f * Mth.sin((livingEntity.tickCount + partialTicks) * 0.18f);
+            float base = Math.max(livingEntity.getBbWidth(), livingEntity.getBbHeight() * 0.45f) * 1.15f * pulse;
+            float outer = base;
+            float inner = base * 0.72f;
+
+            try (MSAutoCloser ignored = MSAutoCloser.pushMatrix(poseStack)) {
+                poseStack.translate(0.0f, livingEntity.getBbHeight() * 0.5f, 0.0f);
+                Quaternionf cameraRotation = new Quaternionf(Minecraft.getInstance().gameRenderer.getMainCamera().rotation());
+                poseStack.mulPose(cameraRotation);
+
+                VertexConsumer buffer = bufferSource.getBuffer(RenderStateManage.BILLBOARD_HALO);
+                Matrix4f matrix = poseStack.last().pose();
+                int r = color.getRed();
+                int g = color.getGreen();
+                int b = color.getBlue();
+                int a = color.getAlpha();
+
+                for (int i = 0; i <= SEGMENTS; i++) {
+                    float angle = (float) (Math.PI * 2.0 * i / SEGMENTS);
+                    float cos = Mth.cos(angle);
+                    float sin = Mth.sin(angle);
+                    buffer.vertex(matrix, cos * outer, sin * outer, 0.0f)
+                            .color(r, g, b, a)
+                            .endVertex();
+                    buffer.vertex(matrix, cos * inner, sin * inner, 0.0f)
+                            .color(r, g, b, (int) (a * 0.35f))
+                            .endVertex();
+                }
+            }
+        }
+
+        @Override
+        public int getPriority() {
+            return 50;
+        }
     }
 }

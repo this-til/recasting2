@@ -116,4 +116,23 @@ public class RenderStateManage extends BladeRenderState {
 
         return RenderType.create("model_" + texture, DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.TRIANGLES, 256, false, true, state);
     }
+
+    /**
+     * 无纹理广告牌光圈：加法混合 + 仅位置颜色。
+     */
+    public static final RenderType BILLBOARD_HALO = RenderType.create(
+            "recasting_billboard_halo",
+            DefaultVertexFormat.POSITION_COLOR,
+            VertexFormat.Mode.TRIANGLE_STRIP,
+            256,
+            false,
+            true,
+            RenderType.CompositeState.builder()
+                    .setShaderState(RenderStateShard.POSITION_COLOR_SHADER)
+                    .setTransparencyState(ADDITIVE_TRANSPARENCY)
+                    .setCullState(NO_CULL)
+                    .setWriteMaskState(COLOR_WRITE)
+                    .setDepthTestState(LEQUAL_DEPTH_TEST)
+                    .createCompositeState(false)
+    );
 }

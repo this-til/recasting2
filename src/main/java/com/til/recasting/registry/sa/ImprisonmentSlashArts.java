@@ -5,7 +5,7 @@ import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.constant.R;
 import com.til.recasting.entity.JudgementCutEntity;
-import com.til.recasting.entity.TrackingSummondSwordEntity;
+import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingEntities;
@@ -22,7 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * 禁锢：将锁定目标钉在次元斩中心，并持续环射追踪幻影剑。
+ * 禁锢：在锁定目标处生成缓慢抬升的次元斩，钉住目标并环射普通幻影剑。
  */
 @Setter
 @Accessors(chain = true)
@@ -36,8 +36,8 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
     private int spawnInterval = 2;
     private float shellRadius = 8.0f;
     private int bladeLife = 35;
-    private int bladeInterval = 20;
     private float judgementCutSize = 2.0f;
+    private float liftPerTick = 0.03f;
 
     @Override
     public void trigger(
@@ -117,6 +117,9 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
         }
 
         left[0]--;
+
+        // 缓慢抬升中心，并将目标钉在中心高度
+        jc.setPos(jc.getX(), jc.getY() + liftPerTick, jc.getZ());
         double pinY = jc.getY() - target.getBbHeight() * 0.5;
         target.teleportTo(jc.getX(), pinY, jc.getZ());
         target.setDeltaMovement(Vec3.ZERO);
@@ -131,8 +134,8 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
         Vec3 offset = PosHelper.getRandomVectorInCircle(random, shellRadius);
         Vec3 spawnPos = jc.position().add(offset);
 
-        TrackingSummondSwordEntity blade = new TrackingSummondSwordEntity(
-                RecastingEntities.TRACKING_SUMMOND_SWORD.get(),
+        SummondSwordEntity blade = new SummondSwordEntity(
+                RecastingEntities.SUMMOND_SWORD.get(),
                 level,
                 caster
         );
@@ -141,11 +144,9 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
         blade.setTexture(R.Models.Special.imprisonment$png);
         blade.setColor(color);
         blade.setModifiedRatio(bladeRatio);
-        blade.setInterval(bladeInterval);
         blade.setMaxLifeTime(bladeLife);
         blade.setStartDelay(0);
         blade.setIgnoringBlock(true);
-        blade.setTargetEntity(target);
         blade.lookAt(PosHelper.getEntityAimPosition(target), false);
         level.addFreshEntity(blade);
     }

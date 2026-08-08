@@ -23,20 +23,21 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 /**
- * 青茫熳天摇：环绕施法者射出普通幻影剑，消失时扩散剑气；索敌对齐星流。
+ * 青茫熳天摇：射出普通幻影剑，消失时扩散剑气；索敌对齐星流。
  */
 @Setter
 @Accessors(chain = true)
 public class AzureHazeSlashArts extends ExtendedSlashArts {
 
-    private int cloudCount = 12;
+    private int cloudCount = 35;
     private float bladeRatio = 0.5f;
     private float driveRatio = 1.5f;
     private int driveCount = 7;
     private int driveLife = 55;
     private float driveSpeed = 0.23f;
-    private int bladeLife = 100;
-    private float spawnSpread = 8.0f;
+    private int bladeLifeMin = 10;
+    private int bladeLifeMax = 40;
+    private float bladeSize = 4.0f;
     private float seekRange = 12.0f;
 
     @Override
@@ -62,30 +63,18 @@ public class AzureHazeSlashArts extends ExtendedSlashArts {
 
         RandomSource random = livingEntity.getRandom();
         int color = slashBladeState.getColorCode();
+        int lifeSpan = Math.max(0, bladeLifeMax - bladeLifeMin);
 
         for (int i = 0; i < cloudCount; i++) {
-            double rx = random.nextDouble();
-            double ry = random.nextDouble();
-            double rz = random.nextDouble();
-            double xSpeed = random.nextGaussian() * 0.02;
-            double ySpeed = random.nextGaussian() * 0.02;
-            double zSpeed = random.nextGaussian() * 0.02;
-            double width = livingEntity.getBbWidth();
-            Vec3 spawnPos = new Vec3(
-                    livingEntity.getX() + ((rx * 2.0 - 1.0) * width - xSpeed * 10.0) * spawnSpread,
-                    livingEntity.getY() + ((ry * 2.0 - 1.0) * width - ySpeed * 10.0) * spawnSpread,
-                    livingEntity.getZ() + ((rz * 2.0 - 1.0) * width - zSpeed * 10.0) * spawnSpread
-            );
-
             SummondSwordEntity cloud = new SummondSwordEntity(
                     RecastingEntities.SUMMOND_SWORD.get(),
                     level,
                     livingEntity
             );
-            cloud.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
             cloud.setColor(color);
             cloud.setModifiedRatio(bladeRatio);
-            cloud.setMaxLifeTime(bladeLife);
+            cloud.setSize(bladeSize);
+            cloud.setMaxLifeTime(bladeLifeMin + random.nextInt(lifeSpan + 1));
             cloud.setStartDelay(10 + random.nextInt(10));
             cloud.setIgnoringBlock(true);
             cloud.setRoll(random.nextInt(361));

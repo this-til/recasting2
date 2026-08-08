@@ -377,7 +377,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtKey(SlashArtsRegistry.TIME_BEYOND), "[回到未来计划]时之彼端", "[Back to the Future Plan] Time Beyond");
         translation(slashArtDescKey(SlashArtsRegistry.TIME_BEYOND), "蓄力时加快日夜与周围时间流速，松手释放十字斩；蓄力越久威力越高。", "While charging, accelerates day-night cycle and nearby time flow, then releases a cross slash on release; longer charge yields greater power.");
         translation(slashArtKey(SlashArtsRegistry.IMPRISONMENT), "[回到未来计划]禁锢", "[Back to the Future Plan] Imprisonment");
-        translation(slashArtDescKey(SlashArtsRegistry.IMPRISONMENT), "将锁定目标钉在次元斩中心，并持续环射追踪幻影剑。", "Pins the locked target at a judgement-cut center while continually firing tracking phantom swords around it.");
+        translation(slashArtDescKey(SlashArtsRegistry.IMPRISONMENT), "将锁定目标钉在缓慢抬升的次元斩中心，并持续环射幻影剑。", "Pins the locked target at a slowly rising judgement-cut center while continually firing phantom swords around it.");
         translation(slashArtKey(SlashArtsRegistry.PHASE_FRACTURE), "[回到未来计划]相位碎裂", "[Back to the Future Plan] Phase Fracture");
         translation(slashArtDescKey(SlashArtsRegistry.PHASE_FRACTURE), "将周围敌人拉至身前聚点，再以球面幻影剑收束打击。", "Pulls nearby foes to a focus point ahead, then strikes with phantom swords arranged on a sphere.");
         translation(slashArtKey(SlashArtsRegistry.ETERNAL_GUARD), "[回到未来计划]永恒守卫", "[Back to the Future Plan] Eternal Guard");
