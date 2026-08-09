@@ -13,11 +13,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * 终焉超新星爆：在瞄准点生成坍缩黑洞（每施法者唯一）。
+ * 终焉超新星爆：在瞄准点生成坍缩黑洞。
  */
 @Setter
 @Accessors(chain = true)
@@ -33,10 +32,6 @@ public class FinalSupernovaSlashArts extends ExtendedSlashArts {
     ) {
         Level level = livingEntity.level();
         if (level.isClientSide()) {
-            return;
-        }
-
-        if (hasOwnBlackHole(level, livingEntity)) {
             return;
         }
 
@@ -60,17 +55,5 @@ public class FinalSupernovaSlashArts extends ExtendedSlashArts {
                 1.0F,
                 0.6F
         );
-    }
-
-    private static boolean hasOwnBlackHole(Level level, LivingEntity shooter) {
-        AABB search = shooter.getBoundingBox().inflate(512.0);
-        return !level.getEntitiesOfClass(
-                FinalGlowBlackHoleEntity.class,
-                search,
-                entity -> {
-                    LivingEntity owner = entity.getShooter();
-                    return owner != null && owner.getId() == shooter.getId() && entity.isAlive();
-                }
-        ).isEmpty();
     }
 }

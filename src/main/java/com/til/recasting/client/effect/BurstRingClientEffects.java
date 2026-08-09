@@ -114,9 +114,15 @@ public final class BurstRingClientEffects {
             return 1.0f - (t - 0.2f) / 0.8f;
         }
 
+        /**
+         * 半径按 {@code f(x)=1-e^{-x}} 从 0 涨到设定值；{@code x} 为寿命进度（age/lifeTicks∈[0,1]）。
+         * 除以 {@code f(1)} 使周期结束时恰好等于设定半径。
+         */
         public float currentRadius(long gameTime, float partialTick) {
-            float t = progress(gameTime, partialTick);
-            return radius * (1.0f + 0.18f * t);
+            float x = progress(gameTime, partialTick);
+            float fx = (float) (1.0 - Math.exp(-x));
+            float f1 = (float) (1.0 - Math.exp(-1.0));
+            return radius * (fx / f1);
         }
     }
 }

@@ -23,7 +23,7 @@ import org.joml.Matrix4f;
 import java.util.List;
 
 /**
- * 末辉终结圆环：任意朝向环带；关闭深度测试，避免被地形/实体剔除。
+ * 末辉终结圆环：任意朝向环带；启用深度测试，使环与地形/实体正确遮挡。
  */
 @Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class BurstRingRenderHandler {
@@ -81,8 +81,8 @@ public class BurstRingRenderHandler {
         if (BUFFER.building()) {
             BufferUploader.drawWithShader(BUFFER.end());
         }
-        // 不写深度、不测深度：大环不被地形/实体遮挡剔除
-        RenderSystem.disableDepthTest();
+        // 深度测试开启：被地形/实体遮挡；不写深度避免半透明环互相挖洞
+        RenderSystem.enableDepthTest();
         RenderSystem.depthMask(false);
         RenderSystem.disableCull();
         RenderSystem.enableBlend();

@@ -7,8 +7,6 @@ import com.til.recasting.util.DamageStructure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -37,24 +35,29 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 末辉终焉超新星爆：坍缩黑洞，射线吞噬方块，终结时圆环迸发与范围伤害。
+ * 末辉终焉超新星爆：视界坍缩后爆炸。
  * <p>
- * 吸积 / 终结圆环等视觉均在客户端实体 tick（及 remove）本地生成。
+ * 时间线（与 {@link #getMaxLifeTime()} 同步）：视界 16→0、吸积粒子球半径 24→0；
+ * 实体伤害走本模组 {@link AttackHelper}；原版爆炸只负责破方块（不出伤）。
+ * 爆炸实体列表清理见 {@link com.til.recasting.handler.FinalGlowBlackHoleHandler}。
  */
-public class FinalGlowBlackHoleEntity extends StandardizationAttackEntity {
+public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
 
-    private static final int SHRINK_TICKS = 30;
-    private static final float SIZE_START = 12.0f;
-    private static final float SIZE_END = 1.5f;
-    /** 方块吞噬与吸积盘粒子起点半径。 */
-    private static final float ACCRETION_RADIUS = 48.0f;
-    private static final float PULL_RANGE = 64.0f;
+    private static final int COLLAPSE_TICKS = 100;
+    /** 视界半径（同步到 size）：16 → 0，归零后爆炸。 */
+    private static final float HORIZON_START = 16.0f;
+    private static final float HORIZON_END = 0.0f;
+    /** 球形吸积粒子发射半径：24 → 0。 */
+    private static final float PARTICLE_RADIUS_START = 24.0f;
+    private static final float PARTICLE_RADIUS_END = 0.0f;
+    /** 实体吸附、方块吞噬、终结伤害。 */
+    private static final float EFFECT_RANGE = 64.0f;
+    /** 终结原版爆炸强度（仅破方块）。 */
+    private static final float EXPLOSION_POWER = 256.0f;
     private static final float PULL_POWER = 0.02f;
-    private static final int RAYS_PER_TICK = 48;
-    /** FallingBlockEntity 距中心 ≤ 此值（格）时立即销毁，无概率。 */
+    private static final int RAYS_PER_TICK = 96;
     private static final float ABSORB_RADIUS = 2.0f;
-    private static final float DAMAGE_RANGE = 64.0f;
-    private static final float DAMAGE_RATIO = 2.5f;
+    private static final float DAMAGE_RATIO = 3.35f;
 
     private final Set<FallingBlockEntity> spawnedFallingBlocks = Collections.newSetFromMap(new IdentityHashMap<>());
     private boolean detonated;
@@ -66,11 +69,28 @@ public class FinalGlowBlackHoleEntity extends StandardizationAttackEntity {
             LivingEntity shooting
     ) {
         super(entityTypeIn, worldIn, shooting);
-        setMaxLifeTime(100);
-        setSize(SIZE_START);
+        setMaxLifeTime(COLLAPSE_TICKS);
+        setSize(HORIZON_START);
         setModifiedRatio(DAMAGE_RATIO);
         setMute(true);
+        setRepeatedAttack(false);
         addAttackType(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get());
+    }
+
+    /**
+     * 坍缩进度 0→1，客户端与服务端同一公式（基于 tickCount / maxLifeTime）。
+     */
+    public float collapseProgress(float partialTick) {
+        int life = Math.max(1, getMaxLifeTime());
+        return Mth.clamp((tickCount + partialTick) / (float) life, 0.0f, 1.0f);
+    }
+
+    public float horizonRadius(float partialTick) {
+        return Mth.lerp(collapseProgress(partialTick), HORIZON_START, HORIZON_END);
+    }
+
+    public float particleSpawnRadius(float partialTick) {
+        return Mth.lerp(collapseProgress(partialTick), PARTICLE_RADIUS_START, PARTICLE_RADIUS_END);
     }
 
     @Override
@@ -80,10 +100,16 @@ public class FinalGlowBlackHoleEntity extends StandardizationAttackEntity {
             setUp();
         }
 
+        float progress = collapseProgress(0.0f);
+        float horizon = horizonRadius(0.0f);
+
         if (level().isClientSide()) {
+            // 本地也写 size，避免网络延迟导致黑球不同步；服务端仍会覆盖同步
+            setSize(horizon);
             updateClientVisual();
             baseTick();
-            if (!clientDetonationFxSpawned && getMaxLifeTime() < tickCount) {
+            // discard/setRemoved 不会走 remove()；终结特效必须在客户端 tick 触发
+            if (!clientDetonationFxSpawned && progress >= 1.0f) {
                 spawnClientDetonationFx();
             }
             return;
@@ -102,12 +128,12 @@ public class FinalGlowBlackHoleEntity extends StandardizationAttackEntity {
             return;
         }
 
-        updateServerSize();
+        setSize(horizon);
         attractEntities();
         absorbByRays(RAYS_PER_TICK);
         tickFallingBlocks();
 
-        if (getMaxLifeTime() < tickCount) {
+        if (progress >= 1.0f) {
             detonate();
             discard();
         }
@@ -115,6 +141,7 @@ public class FinalGlowBlackHoleEntity extends StandardizationAttackEntity {
 
     @Override
     public void remove(@NotNull RemovalReason reason) {
+        // 兜底：若客户端未先走到 progress>=1（异常移除），仍尝试播一次
         if (level().isClientSide()) {
             spawnClientDetonationFx();
         } else {
@@ -124,21 +151,22 @@ public class FinalGlowBlackHoleEntity extends StandardizationAttackEntity {
     }
 
     @Override
+    public void onClientRemoval() {
+        spawnClientDetonationFx();
+        super.onClientRemoval();
+    }
+
+    @Override
     public boolean shouldRenderAtSqrDistance(double distance) {
         return true;
     }
 
-    private void updateServerSize() {
-        float t = Mth.clamp(tickCount / (float) SHRINK_TICKS, 0.0f, 1.0f);
-        setSize(Mth.lerp(t, SIZE_START, SIZE_END));
-    }
-
     private void updateClientVisual() {
-        float t = Mth.clamp(tickCount / (float) SHRINK_TICKS, 0.0f, 1.0f);
-        float size = Mth.lerp(t, SIZE_START, SIZE_END);
-        double jx = getX() + (random.nextDouble() - 0.5) * 0.12 * size;
-        double jy = getY() + (random.nextDouble() - 0.5) * 0.12 * size;
-        double jz = getZ() + (random.nextDouble() - 0.5) * 0.12 * size;
+        float horizon = Math.max(0.0f, horizonRadius(0.0f));
+        float particleRadius = Math.max(0.0f, particleSpawnRadius(0.0f));
+        double jx = getX() + (random.nextDouble() - 0.5) * 0.12 * Math.max(horizon, 0.5f);
+        double jy = getY() + (random.nextDouble() - 0.5) * 0.12 * Math.max(horizon, 0.5f);
+        double jz = getZ() + (random.nextDouble() - 0.5) * 0.12 * Math.max(horizon, 0.5f);
 
         int color = getColor().getRGB();
         float r = ((color >> 16) & 255) / 255.0f;
@@ -150,14 +178,17 @@ public class FinalGlowBlackHoleEntity extends StandardizationAttackEntity {
         level().addParticle(darkCore, true, jx, jy, jz, 0.0, 0.0, 0.0);
         level().addParticle(dust, true, jx, jy, jz, 0.0, 0.0, 0.0);
 
-        int count = 14 + (int) (size * 3);
+        if (particleRadius < 0.25f) {
+            return;
+        }
+
+        int count = 10 + (int) (particleRadius * 1.5f);
         for(int i = 0; i < count; i++) {
-            // 水平圆环吸积：起点约 ACCRETION_RADIUS，向中心吸入
-            double angle = random.nextDouble() * Math.PI * 2.0;
-            double radius = ACCRETION_RADIUS * (0.92 + random.nextDouble() * 0.08);
-            double px = jx + Math.cos(angle) * radius;
-            double py = jy + (random.nextDouble() - 0.5) * size * 0.35;
-            double pz = jz + Math.sin(angle) * radius;
+            Vec3 dir = randomUnitVector();
+            double radius = particleRadius * (0.92 + random.nextDouble() * 0.08);
+            double px = jx + dir.x * radius;
+            double py = jy + dir.y * radius;
+            double pz = jz + dir.z * radius;
             double vx = (jx - px) * 0.08;
             double vy = (jy - py) * 0.08;
             double vz = (jz - pz) * 0.08;
@@ -187,7 +218,7 @@ public class FinalGlowBlackHoleEntity extends StandardizationAttackEntity {
 
     private void attractEntities() {
         Vec3 center = position();
-        AABB box = new AABB(center, center).inflate(PULL_RANGE);
+        AABB box = new AABB(center, center).inflate(EFFECT_RANGE);
         List<Entity> entities = level().getEntities(this, box, entity -> {
             if (entity == this || entity instanceof FallingBlockEntity) {
                 return false;
@@ -196,7 +227,7 @@ public class FinalGlowBlackHoleEntity extends StandardizationAttackEntity {
             return shooter == null || entity != shooter;
         });
         for(Entity entity : entities) {
-            AttractionHelper.applyRadialPull(center, entity, PULL_RANGE, PULL_POWER);
+            AttractionHelper.applyRadialPull(center, entity, EFFECT_RANGE, PULL_POWER);
         }
     }
 
@@ -208,7 +239,7 @@ public class FinalGlowBlackHoleEntity extends StandardizationAttackEntity {
             Vec3 dir = randomUnitVector();
             BlockHitResult hit = level().clip(new ClipContext(
                     origin,
-                    origin.add(dir.scale(ACCRETION_RADIUS)),
+                    origin.add(dir.scale(EFFECT_RANGE)),
                     ClipContext.Block.COLLIDER,
                     ClipContext.Fluid.NONE,
                     this
@@ -332,22 +363,25 @@ public class FinalGlowBlackHoleEntity extends StandardizationAttackEntity {
                     shooter,
                     center,
                     new DamageStructure(DAMAGE_RATIO, 0.0f),
-                    DAMAGE_RANGE,
+                    EFFECT_RANGE,
                     List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get()),
                     null,
                     null
             );
         }
 
-        level().playSound(
+        // 原版爆炸：仅破方块（源为本实体，Detonate 清空实体列表）；不出原版粒子/音效，视觉走 ClientFx
+        level().explode(
+                this,
+                null,
                 null,
                 center.x,
                 center.y,
                 center.z,
-                SoundEvents.GENERIC_EXPLODE,
-                SoundSource.PLAYERS,
-                4.0F,
-                0.8F
+                EXPLOSION_POWER,
+                false,
+                Level.ExplosionInteraction.MOB,
+                false
         );
     }
 }
