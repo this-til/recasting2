@@ -27,7 +27,7 @@ import java.util.List;
 @Accessors(chain = true)
 public class StarBlinkSpecialEffect extends ExtendedSpecialEffect {
 
-    float attack = 2.25f;
+    float attack = 1.2f;
     int addLevel = 1;
 
     @SubscribeEvent

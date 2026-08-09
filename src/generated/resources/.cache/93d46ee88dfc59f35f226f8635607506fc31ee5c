@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-05T03:34:19.8743555	Recasting SlashBlade Definition Registry
+// 1.20.1	2026-08-10T01:50:41.8600439	Recasting SlashBlade Definition Registry
 54425988bdb3a6427dded3c85502e41a5a724eb4 data/recasting/slashblade/named_blades/slashblade/art_knife.json
 27cc0a4d8612701f8f9f634d314d012ae698e421 data/recasting/slashblade/named_blades/slashblade/azure_vista.json
 0ee980c23e6abdef3038b42c7df4618d9da50b48 data/recasting/slashblade/named_blades/slashblade/azure_vista_lambda.json
@@ -63,6 +63,7 @@ ac45c9155e506b629b37453e2195ab71dc16752d data/recasting/slashblade/named_blades/
 63faeb10cdfcc7c12d82b490247d75298ada0e6b data/recasting/slashblade/named_blades/slashblade/soulblade_lambda.json
 46f9417f33cf14e2d115728e9b28590c06ed0e24 data/recasting/slashblade/named_blades/slashblade/special/htod.json
 352fa8e7b73bf07a6517e77399db336ce725c66a data/recasting/slashblade/named_blades/slashblade/special/htod_lambda.json
+3e510f76da0bf48ae7bded8ac902b90ba4ad9115 data/recasting/slashblade/named_blades/slashblade/special/jie_yuan_dog.json
 d6c68b6d23e701cc36ee82c1f164e7a656a0bb59 data/recasting/slashblade/named_blades/slashblade/special/til.json
 22779b1b03f5331913e5fc15118cb5c170537b5f data/recasting/slashblade/named_blades/slashblade/special/til_lambda.json
 2c8798d9176b2a92a2aadf6c248d0c02b4203e06 data/recasting/slashblade/named_blades/slashblade/special/tu_wu.json

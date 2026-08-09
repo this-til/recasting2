@@ -282,7 +282,7 @@ public class SlashArtsRegistry {
             "myriad_silence_lambda",
             () -> new MyriadSilenceSlashArts()
                     .setDecreeSeconds(39)
-                    .setVoidRatio(0.442f)
+                    .setVoidRatio(0.22f)
     );
 
     // 万象归元

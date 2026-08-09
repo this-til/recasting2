@@ -31,7 +31,7 @@ public class MyriadSilenceSlashArts extends ExtendedSlashArts {
 
     private String timer = "myriad_silence";
     private int decreeSeconds = 30;
-    private float voidRatio = 0.34f;
+    private float voidRatio = 0.14f;
     private int talismanColor = 0xA5527B;
 
     @Override
