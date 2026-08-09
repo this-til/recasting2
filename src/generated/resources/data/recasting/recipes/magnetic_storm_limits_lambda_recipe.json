@@ -48,6 +48,9 @@
         "special_effect_type": "recasting:thunder_cloud"
       }
     },
+    "F": {
+      "item": "recasting:frost_vortex_core"
+    },
     "T": {
       "type": "recasting:se_crystal",
       "item": "recasting:se_crystal",
@@ -58,9 +61,9 @@
     }
   },
   "pattern": [
-    " T ",
+    "FT ",
     "CBC",
-    " T "
+    " TF"
   ],
   "result": {
     "item": "slashblade:slashblade"

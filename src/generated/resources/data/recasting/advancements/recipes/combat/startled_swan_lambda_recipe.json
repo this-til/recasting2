@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_ender_eye": {
+    "has_frost_vortex_core": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:ender_eye"
+              "recasting:frost_vortex_core"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_ender_eye",
+      "has_frost_vortex_core",
       "has_the_recipe"
     ]
   ],

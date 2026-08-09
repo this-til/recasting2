@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_diamond_medium_soul_cube": {
+    "has_frost_vortex_core": {
       "conditions": {
         "items": [
           {
             "items": [
-              "recasting:diamond_medium_soul_cube"
+              "recasting:frost_vortex_core"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_diamond_medium_soul_cube",
+      "has_frost_vortex_core",
       "has_the_recipe"
     ]
   ],

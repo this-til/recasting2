@@ -40,6 +40,9 @@
         "refine": 1600
       }
     },
+    "C": {
+      "item": "recasting:illuminating_truth_core"
+    },
     "S": {
       "type": "recasting:se_crystal",
       "item": "recasting:se_crystal",
@@ -58,9 +61,9 @@
     }
   },
   "pattern": [
-    " V ",
+    "CVC",
     "SBS",
-    " V "
+    "CVC"
   ],
   "result": {
     "item": "slashblade:slashblade"

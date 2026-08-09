@@ -153,7 +153,7 @@ public class SlashBladeRecipes extends RecipeProvider {
         /**
          * 灿茶配方：^闪茶 → 灿茶（链：闪 → ^闪 → 灿 → ^灿）
          * 要求：杀敌4000、锻造2000、海之眷顾3附魔、饵钓3附魔、精准采集1附魔、效率5附魔
-         * I=金黄庸魂立方体, B=闪茶 Lambda
+         * I=照谛核心, B=闪茶 Lambda
          */
         
     
@@ -175,14 +175,14 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLOCK_EFFICIENCY), 5))
                                             .build()))
-                            .define('I', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
-                            .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
+                            .define('I', RecastingItems.ILLUMINATING_TRUTH_CORE.get())
+                            .unlockedBy("has_illuminating_truth_core", RecipeProviderMixin.invokeHas(RecastingItems.ILLUMINATING_TRUTH_CORE.get()))
                             .save(consumer, Recasting.prefix("brilliant_tea_recipe"));
     
         /**
          * 灿茶 Lambda 配方：灿茶 → ^灿茶
          * 要求：杀敌8000、锻造4000、海之眷顾3附魔、饵钓3附魔、精准采集1附魔、效率5附魔、时运3附魔、忠诚3附魔、激流1附魔、经验修补1附魔
-         * I=金黄庸魂立方体, B=灿茶
+         * I=照谛核心, B=灿茶
          */
         
     
@@ -212,16 +212,16 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MENDING), 1))
                                             .build()))
-                            .define('I', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
-                            .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
+                            .define('I', RecastingItems.ILLUMINATING_TRUTH_CORE.get())
+                            .unlockedBy("has_illuminating_truth_core", RecipeProviderMixin.invokeHas(RecastingItems.ILLUMINATING_TRUTH_CORE.get()))
                             .save(consumer, Recasting.prefix("brilliant_tea_lambda_recipe"));
 
         /**
          * 荆楚配方（t2）：从灿茶 Lambda 升级
          * 要求：杀敌5000、锻造600、荆棘3附魔、保护4附魔、时运3附魔、精准采集1附魔
-         * 材料：钻石庸魂立方体4个
+         * 材料：霜璇核心4个
          * SE结晶：旋风 2个
-         * C=钻石庸魂立方体, W=旋风 SE结晶, B=基础刀（灿茶 Lambda，满足要求）
+         * C=霜璇核心, W=旋风 SE结晶, B=基础刀（灿茶 Lambda，满足要求）
          */
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BRIARLAND.location())
                             .pattern(" WC")
@@ -241,17 +241,17 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SILK_TOUCH), 1))
                                             .build()))
-                            .define('C', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.FROST_VORTEX_CORE.get())
                             .define('W', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.WHIRLWIND.getId(), 1))
-                            .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_frost_vortex_core", RecipeProviderMixin.invokeHas(RecastingItems.FROST_VORTEX_CORE.get()))
                             .save(consumer, Recasting.prefix("briarland_recipe"));
 
         /**
          * 荆楚 Lambda 配方（t2）：从荆楚升级
          * 要求：杀敌10000、锻造1200、荆棘3附魔、保护4附魔、时运3附魔、精准采集1附魔、效率5附魔、耐久3附魔
-         * 材料：赤红庸魂立方体4个
+         * 材料：燎焰核心4个
          * SE结晶：回旋 2个
-         * C=赤红庸魂立方体, S=回旋 SE结晶, B=基础刀（荆楚，满足要求）
+         * C=燎焰核心, S=回旋 SE结晶, B=基础刀（荆楚，满足要求）
          */
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.BRIARLAND_LAMBDA.location())
                             .pattern(" SC")
@@ -275,9 +275,9 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING), 3))
                                             .build()))
-                            .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.BLAZING_FLAME_CORE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SPIRAL.getId(), 1))
-                            .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_blazing_flame_core", RecipeProviderMixin.invokeHas(RecastingItems.BLAZING_FLAME_CORE.get()))
                             .save(consumer, Recasting.prefix("briarland_lambda_recipe"));
     
         /**
@@ -335,7 +335,7 @@ public class SlashBladeRecipes extends RecipeProvider {
         /**
          * 灿金配方：^闪金 → 灿金（链：闪 → ^闪 → 灿 → ^灿）
          * 要求：杀敌4000、荣耀200000、效率5附魔、精准采集1附魔、时运3附魔、海之眷顾2附魔
-         * I=金黄庸魂立方体, B=闪金 Lambda
+         * I=照谛核心, B=闪金 Lambda
          */
         
     
@@ -357,14 +357,14 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FISHING_LUCK), 2))
                                             .build()))
-                            .define('I', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
-                            .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
+                            .define('I', RecastingItems.ILLUMINATING_TRUTH_CORE.get())
+                            .unlockedBy("has_illuminating_truth_core", RecipeProviderMixin.invokeHas(RecastingItems.ILLUMINATING_TRUTH_CORE.get()))
                             .save(consumer, Recasting.prefix("brilliant_gold_recipe"));
     
         /**
          * 灿金 Lambda 配方：灿金 → ^灿金
          * 要求：杀敌8000、荣耀400000、效率5附魔、精准采集1附魔、时运3附魔、海之眷顾3附魔、饵钓3附魔、忠诚3附魔、激流1附魔
-         * I=金黄庸魂立方体, B=灿金
+         * I=照谛核心, B=灿金
          */
         
     
@@ -392,8 +392,8 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.RIPTIDE), 1))
                                             .build()))
-                            .define('I', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
-                            .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
+                            .define('I', RecastingItems.ILLUMINATING_TRUTH_CORE.get())
+                            .unlockedBy("has_illuminating_truth_core", RecipeProviderMixin.invokeHas(RecastingItems.ILLUMINATING_TRUTH_CORE.get()))
                             .save(consumer, Recasting.prefix("brilliant_gold_lambda_recipe"));
     
         /**
@@ -472,8 +472,8 @@ public class SlashBladeRecipes extends RecipeProvider {
         /**
          * 八卦剑大配方：从八卦剑升级
          * 要求：杀敌2000、锻造100、力量3附魔、锋利2附魔
-         * 材料：诗烬火2个、混沌火2个
-         * P=诗烬火, C=混沌火, B=基础刀（八卦剑，满足要求）
+         * 材料：诗烬火2个、古铜庸魂立方体4个
+         * P=诗烬火, C=古铜庸魂立方体, B=基础刀（八卦剑，满足要求）
          */
         
     
@@ -492,8 +492,8 @@ public class SlashBladeRecipes extends RecipeProvider {
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 2))
                                             .build()))
                             .define('P', RecastingItems.POETRY_ASH_FLAME.get())
-                            .define('C', RecastingItems.CHAOS_FLAME.get())
-                            .unlockedBy("has_poetry_ash_flame", RecipeProviderMixin.invokeHas(RecastingItems.POETRY_ASH_FLAME.get()))
+                            .define('C', RecastingItems.COPPER_MEDIUM_SOUL_CUBE.get())
+                            .unlockedBy("has_copper_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.COPPER_MEDIUM_SOUL_CUBE.get()))
                             .save(consumer, Recasting.prefix("ba_gua_big_recipe"));
     
         /**
@@ -527,8 +527,8 @@ public class SlashBladeRecipes extends RecipeProvider {
         /**
          * 太极配方：从八卦巨剑 Lambda 升级
          * 要求：杀敌12000、锻造800、力量5附魔、锋利5附魔
-         * 材料：诗烬火2个、钻石庸魂立方体4个、白羊毛1个、黑羊毛1个
-         * P=诗烬火, C=钻石庸魂立方体, W=白羊毛, K=黑羊毛, B=基础刀（八卦巨剑 Lambda，满足要求）
+         * 材料：诗烬火2个、霜璇核心4个、白羊毛1个、黑羊毛1个
+         * P=诗烬火, C=霜璇核心, W=白羊毛, K=黑羊毛, B=基础刀（八卦巨剑 Lambda，满足要求）
          */
         
     
@@ -547,18 +547,18 @@ public class SlashBladeRecipes extends RecipeProvider {
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
                                             .build()))
                             .define('P', RecastingItems.POETRY_ASH_FLAME.get())
-                            .define('C', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.FROST_VORTEX_CORE.get())
                             .define('W', Items.WHITE_WOOL)
                             .define('K', Items.BLACK_WOOL)
-                            .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_frost_vortex_core", RecipeProviderMixin.invokeHas(RecastingItems.FROST_VORTEX_CORE.get()))
                             .save(consumer, Recasting.prefix("supreme_pole_recipe"));
     
         /**
          * 太极 Lambda 配方：从太极升级
          * 要求：杀敌16000、锻造1200、力量5附魔、锋利5附魔、抢夺3附魔、耐久3附魔、经验修补1附魔
-         * 材料：漆黑的庸魂立方体6个
+         * 材料：冥渊核心6个
          * SE结晶：冲击l1 2个
-         * C=漆黑的庸魂立方体, B=基础刀（太极，满足要求）, I=冲击l1 SE结晶
+         * C=冥渊核心, B=基础刀（太极，满足要求）, I=冲击l1 SE结晶
          */
         
     
@@ -582,9 +582,9 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MENDING), 1))
                                             .build()))
-                            .define('C', RecastingItems.NETHERITE_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.ABYSS_DEPTH_CORE.get())
                             .define('I', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.IMPACT.getId(), 1))
-                            .unlockedBy("has_netherite_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.NETHERITE_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_abyss_depth_core", RecipeProviderMixin.invokeHas(RecastingItems.ABYSS_DEPTH_CORE.get()))
                             .save(consumer, Recasting.prefix("supreme_pole_lambda_recipe"));
     
         /***
@@ -667,9 +667,9 @@ public class SlashBladeRecipes extends RecipeProvider {
         /**
          * 鬼切配方（t2）：从伞 Lambda 升级
          * 要求：杀敌5000、锻造600、锋利5附魔、击退2附魔、横扫之刃3附魔、爆炸保护2附魔
-         * 材料：钻石庸魂立方体4个
+         * 材料：霜璇核心4个
          * SE结晶：震荡 2个
-         * C=钻石庸魂立方体, S=震荡 SE结晶, B=基础刀（伞 Lambda，满足要求）
+         * C=霜璇核心, S=震荡 SE结晶, B=基础刀（伞 Lambda，满足要求）
          */
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.ONIKIRI.location())
                             .pattern(" SC")
@@ -689,17 +689,17 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLAST_PROTECTION), 2))
                                             .build()))
-                            .define('C', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.FROST_VORTEX_CORE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SHOCK.getId(), 1))
-                            .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_frost_vortex_core", RecipeProviderMixin.invokeHas(RecastingItems.FROST_VORTEX_CORE.get()))
                             .save(consumer, Recasting.prefix("onikiri_recipe"));
 
         /**
          * 鬼切 Lambda 配方（t2）：从鬼切升级
          * 要求：杀敌10000、锻造1200、锋利5附魔、击退2附魔、横扫之刃3附魔、爆炸保护4附魔、亡灵杀手5附魔
-         * 材料：赤红庸魂立方体4个
+         * 材料：燎焰核心4个
          * SE结晶：过载 2个
-         * C=赤红庸魂立方体, O=过载 SE结晶, B=基础刀（鬼切，满足要求）
+         * C=燎焰核心, O=过载 SE结晶, B=基础刀（鬼切，满足要求）
          */
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.ONIKIRI_LAMBDA.location())
                             .pattern(" OC")
@@ -721,9 +721,9 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SMITE), 5))
                                             .build()))
-                            .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.BLAZING_FLAME_CORE.get())
                             .define('O', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.OVERLOAD.getId(), 1))
-                            .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_blazing_flame_core", RecipeProviderMixin.invokeHas(RecastingItems.BLAZING_FLAME_CORE.get()))
                             .save(consumer, Recasting.prefix("onikiri_lambda_recipe"));
     
         /**
@@ -783,9 +783,9 @@ public class SlashBladeRecipes extends RecipeProvider {
         /**
          * 冰薄荷配方：从青云 Lambda 升级
          * 要求：杀敌1000、锻造300、摔落保护4附魔、深海探索者3附魔、灵魂疾行3附魔、水下速掘1附魔
-         * 材料：天蓝色的庸魂立方体4个
+         * 材料：霜璇核心4个
          * SE结晶：生长l2、回溯l2
-         * D=天蓝色的庸魂立方体, B=基础刀（青云 Lambda，满足要求）, G=生长l2 SE结晶, R=回溯l2 SE结晶
+         * D=霜璇核心, B=基础刀（青云 Lambda，满足要求）, G=生长l2 SE结晶, R=回溯l2 SE结晶
          */
         
     
@@ -807,18 +807,18 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.AQUA_AFFINITY), 1))
                                             .build()))
-                            .define('D', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                            .define('D', RecastingItems.FROST_VORTEX_CORE.get())
                             .define('G', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.GROWTH.getId(), 1))
                             .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 1))
-                            .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_frost_vortex_core", RecipeProviderMixin.invokeHas(RecastingItems.FROST_VORTEX_CORE.get()))
                             .save(consumer, Recasting.prefix("cool_mint_recipe"));
     
         /**
          * 冰薄荷 Lambda 配方：从冰薄荷升级
          * 要求：杀敌200、锻造500、摔落保护4附魔、深海探索者3附魔、灵魂疾行3附魔、水下速掘1附魔、迅捷潜行3附魔、耐久3附魔、经验修补1附魔、引雷1附魔
-         * 材料：天蓝色的庸魂立方体4个
+         * 材料：霜璇核心4个
          * SE结晶：剑气释放l2 2个
-         * D=天蓝色的庸魂立方体, B=基础刀（冰薄荷，满足要求）, C=剑气释放l2 SE结晶
+         * D=霜璇核心, B=基础刀（冰薄荷，满足要求）, C=剑气释放l2 SE结晶
          */
         
     
@@ -848,20 +848,23 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.CHANNELING), 1))
                                             .build()))
-                            .define('D', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                            .define('D', RecastingItems.FROST_VORTEX_CORE.get())
                             .define('C', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.DRIVE_RELEASE.getId(), 1))
-                            .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_frost_vortex_core", RecipeProviderMixin.invokeHas(RecastingItems.FROST_VORTEX_CORE.get()))
                             .save(consumer, Recasting.prefix("cool_mint_lambda_recipe"));
     
         /**
          * 惊鸿配方：从冰薄荷 Lambda 升级。
          * 要求：杀敌1000、锻造1000、摔落保护4附魔、深海探索者3附魔、灵魂疾行3附魔
+         * 材料：霜璇核心4个
+         * SE结晶：审判 2个
+         * C=霜璇核心, J=审判 SE结晶, B=基础刀（冰薄荷 Lambda，满足要求）
          */
     
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.STARTLED_SWAN.location())
-                .pattern("PEP")
+                .pattern("C C")
                 .pattern("JBJ")
-                .pattern("PEP")
+                .pattern("C C")
                 .define('B',
                         SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
                                 .name(RecastingSlashBladeKeys.COOL_MINT_LAMBDA.location())
@@ -874,21 +877,23 @@ public class SlashBladeRecipes extends RecipeProvider {
                                 .addEnchantment(new EnchantmentDefinition(
                                         ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SOUL_SPEED), 3))
                                 .build()))
-                .define('P', Items.ENDER_PEARL)
-                .define('E', Items.CHORUS_FRUIT)
+                .define('C', RecastingItems.FROST_VORTEX_CORE.get())
                 .define('J', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.JUDGEMENT.getId(), 1))
-                .unlockedBy("has_ender_pearl", RecipeProviderMixin.invokeHas(Items.ENDER_PEARL))
+                .unlockedBy("has_frost_vortex_core", RecipeProviderMixin.invokeHas(RecastingItems.FROST_VORTEX_CORE.get()))
                 .save(consumer, Recasting.prefix("startled_swan_recipe"));
     
         /**
          * 惊鸿 Lambda 配方：从惊鸿升级。
          * 要求：杀敌2000、锻造2000、摔落保护4附魔、深海探索者3附魔、灵魂疾行3附魔、迅捷潜行3附魔、耐久3附魔、经验修补1附魔、多重射击1附魔
+         * 材料：霜璇核心4个、末影之眼2个
+         * SE结晶：斩断 2个
+         * C=霜璇核心, I=末影之眼, S=斩断 SE结晶, B=基础刀（惊鸿，满足要求）
          */
     
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.STARTLED_SWAN_LAMBDA.location())
-                .pattern("IEI")
+                .pattern("CIC")
                 .pattern("SBS")
-                .pattern("IEI")
+                .pattern("CIC")
                 .define('B',
                         SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
                                 .name(RecastingSlashBladeKeys.STARTLED_SWAN.location())
@@ -909,24 +914,23 @@ public class SlashBladeRecipes extends RecipeProvider {
                                 .addEnchantment(new EnchantmentDefinition(
                                         ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MULTISHOT), 1))
                                 .build()))
+                .define('C', RecastingItems.FROST_VORTEX_CORE.get())
                 .define('I', Items.ENDER_EYE)
-                .define('E', Items.POPPED_CHORUS_FRUIT)
                 .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SEVER_BREAK.getId(), 1))
-                .unlockedBy("has_ender_eye", RecipeProviderMixin.invokeHas(Items.ENDER_EYE))
+                .unlockedBy("has_frost_vortex_core", RecipeProviderMixin.invokeHas(RecastingItems.FROST_VORTEX_CORE.get()))
                 .save(consumer, Recasting.prefix("startled_swan_lambda_recipe"));
     
         /**
          * 龙鳞配方：从八卦剑升级
          * 要求：杀敌300、锻造50、火焰保护4附魔、火焰附加1附魔
+         * 材料：古铜庸魂立方体2个
          * SE结晶：分裂l1 2个
-         * B=基础刀（八卦剑，满足要求）, I=分裂l1 SE结晶
+         * C=古铜庸魂立方体, B=基础刀（八卦剑，满足要求）, I=分裂l1 SE结晶
          */
-        
-    
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.DRAGON_SCALE.location())
-                            .pattern("  I")
+                            .pattern("C I")
                             .pattern(" B ")
-                            .pattern("I  ")
+                            .pattern("I C")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
                                             .name(RecastingSlashBladeKeys.BA_GUA.location())
@@ -937,8 +941,9 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FIRE_ASPECT), 1))
                                             .build()))
+                            .define('C', RecastingItems.COPPER_MEDIUM_SOUL_CUBE.get())
                             .define('I', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SPLIT.getId(), 1))
-                            .unlockedBy("has_split_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
+                            .unlockedBy("has_copper_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.COPPER_MEDIUM_SOUL_CUBE.get()))
                             .save(consumer, Recasting.prefix("dragon_scale_recipe"));
     
         /**
@@ -975,9 +980,9 @@ public class SlashBladeRecipes extends RecipeProvider {
         /**
          * 龙配方：从龙鳞 Lambda 升级
          * 要求：杀敌1000、锻造300、火焰保护4附魔、火焰附加2附魔、火矢1附魔、爆炸保护4附魔
-         * 材料：银白色的庸魂立方体4个
+         * 材料：燎焰核心4个
          * SE结晶：破片l2 4个
-         * C=银白色的庸魂立方体, B=基础刀（龙鳞 Lambda，满足要求）, F=破片l2 SE结晶
+         * C=燎焰核心, B=基础刀（龙鳞 Lambda，满足要求）, F=破片l2 SE结晶
          */
         
     
@@ -999,17 +1004,17 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLAST_PROTECTION), 4))
                                             .build()))
-                            .define('C', RecastingItems.IRON_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.BLAZING_FLAME_CORE.get())
                             .define('F', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.FRAGMENT.getId(), 1))
-                            .unlockedBy("has_iron_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.IRON_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_blazing_flame_core", RecipeProviderMixin.invokeHas(RecastingItems.BLAZING_FLAME_CORE.get()))
                             .save(consumer, Recasting.prefix("dragon_recipe"));
     
         /**
          * 龙 Lambda 配方：从龙升级
          * 要求：杀敌2000、锻造500、火焰保护4附魔、火焰附加2附魔、火矢1附魔、爆炸保护4附魔、力量5附魔、击退2附魔
-         * 材料：金黄色的庸魂立方体4个
+         * 材料：照谛核心4个
          * SE结晶：螺旋l2 4个
-         * C=金黄色的庸魂立方体, B=基础刀（龙，满足要求）, S=螺旋l2 SE结晶
+         * C=照谛核心, B=基础刀（龙，满足要求）, S=螺旋l2 SE结晶
          */
         
     
@@ -1035,17 +1040,17 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.KNOCKBACK), 2))
                                             .build()))
-                            .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.ILLUMINATING_TRUTH_CORE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SPIRAL.getId(), 1))
-                            .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_illuminating_truth_core", RecipeProviderMixin.invokeHas(RecastingItems.ILLUMINATING_TRUTH_CORE.get()))
                             .save(consumer, Recasting.prefix("dragon_lambda_recipe"));
     
         /**
          * 风云配方：从苍景 Lambda 升级
          * 要求：杀敌1500、锻造400、力量5附魔、冲击2附魔、无限1附魔、穿透3附魔
-         * 材料：金黄色的庸魂立方体4个
+         * 材料：照谛核心4个
          * SE结晶：旋风l1 4个
-         * C=金黄色的庸魂立方体, B=基础刀（苍景 Lambda，满足要求）, W=旋风l1 SE结晶
+         * C=照谛核心, B=基础刀（苍景 Lambda，满足要求）, W=旋风l1 SE结晶
          */
         
     
@@ -1067,17 +1072,17 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PIERCING), 3))
                                             .build()))
-                            .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.ILLUMINATING_TRUTH_CORE.get())
                             .define('W', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.WHIRLWIND.getId(), 1))
-                            .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_illuminating_truth_core", RecipeProviderMixin.invokeHas(RecastingItems.ILLUMINATING_TRUTH_CORE.get()))
                             .save(consumer, Recasting.prefix("wind_cloud_recipe"));
     
         /**
          * 风云 Lambda 配方：从风云升级
          * 要求：杀敌2500、锻造600、力量5附魔、冲击2附魔、无限1附魔、穿透4附魔、抢夺3附魔、节肢杀手2附魔
-         * 材料：金黄色的庸魂立方体4个
+         * 材料：照谛核心4个
          * SE结晶：风暴l1 2个、风暴变体l1 2个
-         * C=金黄色的庸魂立方体, B=基础刀（风云，满足要求）, S=风暴l1 SE结晶, V=风暴变体l1 SE结晶
+         * C=照谛核心, B=基础刀（风云，满足要求）, S=风暴l1 SE结晶, V=风暴变体l1 SE结晶
          */
         
     
@@ -1103,10 +1108,10 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BANE_OF_ARTHROPODS), 2))
                                             .build()))
-                            .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.ILLUMINATING_TRUTH_CORE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM.getId(), 1))
                             .define('V', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM_VARIANT.getId(), 1))
-                            .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_illuminating_truth_core", RecipeProviderMixin.invokeHas(RecastingItems.ILLUMINATING_TRUTH_CORE.get()))
                             .save(consumer, Recasting.prefix("wind_cloud_lambda_recipe"));
 
         /**
@@ -1302,8 +1307,8 @@ public class SlashBladeRecipes extends RecipeProvider {
          * VOID_3 配方：从 VOID_2 升级
          * 要求：杀敌5000、锻造500、保护4附魔、荆棘3附魔、爆炸保护4附魔
          * SE结晶：吸血转化l3 2个
-         * 材料：赤红庸魂立方体4个
-         * C=赤红庸魂立方体, L=吸血转化l3 SE结晶, B=基础刀（VOID_2，满足要求）
+         * 材料：燎焰核心4个
+         * C=燎焰核心, L=吸血转化l3 SE结晶, B=基础刀（VOID_2，满足要求）
          */
         
     
@@ -1323,9 +1328,9 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BLAST_PROTECTION), 4))
                                             .build()))
-                            .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.BLAZING_FLAME_CORE.get())
                             .define('L', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.LIFE_STEAL.getId(), 1))
-                            .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_blazing_flame_core", RecipeProviderMixin.invokeHas(RecastingItems.BLAZING_FLAME_CORE.get()))
                             .save(consumer, Recasting.prefix("void_3_recipe"));
     
         /**
@@ -1392,8 +1397,8 @@ public class SlashBladeRecipes extends RecipeProvider {
          * SOULBLADE 配方：从 OBLITERATE Lambda 升级
          * 要求：杀敌4000、荣耀200000、火焰附加2附魔、火矢1附魔、火焰保护4附魔、荆棘3附魔、引雷1附魔
          * SE结晶：回溯l3 2个
-         * 材料：赤红庸魂立方体4个
-         * C=赤红庸魂立方体, R=回溯l3 SE结晶, B=基础刀（OBLITERATE Lambda，满足要求）
+         * 材料：燎焰核心4个
+         * C=燎焰核心, R=回溯l3 SE结晶, B=基础刀（OBLITERATE Lambda，满足要求）
          */
         
     
@@ -1417,17 +1422,17 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.CHANNELING), 1))
                                             .build()))
-                            .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.BLAZING_FLAME_CORE.get())
                             .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 1))
-                            .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_blazing_flame_core", RecipeProviderMixin.invokeHas(RecastingItems.BLAZING_FLAME_CORE.get()))
                             .save(consumer, Recasting.prefix("soulblade_recipe"));
 
         /**
          * SOULBLADE Lambda 配方：从 SOULBLADE 升级
          * 要求：杀敌8000、荣耀400000、火焰附加2附魔、火矢1附魔、火焰保护4附魔、荆棘3附魔、引雷1附魔、锋利5附魔、耐久3附魔
          * SE结晶：回溯l1 2个
-         * 材料：赤红庸魂立方体6个
-         * C=赤红庸魂立方体, R=回溯l1 SE结晶, B=基础刀（SOULBLADE，满足要求）
+         * 材料：燎焰核心6个
+         * C=燎焰核心, R=回溯l1 SE结晶, B=基础刀（SOULBLADE，满足要求）
          */
 
 
@@ -1455,9 +1460,9 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING), 3))
                                             .build()))
-                            .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.BLAZING_FLAME_CORE.get())
                             .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.REGRESSION.getId(), 1))
-                            .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_blazing_flame_core", RecipeProviderMixin.invokeHas(RecastingItems.BLAZING_FLAME_CORE.get()))
                             .save(consumer, Recasting.prefix("soulblade_lambda_recipe"));
 
         /**
@@ -1542,15 +1547,16 @@ public class SlashBladeRecipes extends RecipeProvider {
         /**
          * STAR_4 配方：从 STAR_3 升级
          * 要求：杀敌6000、锻造800、弹射物保护4附魔、荆棘3附魔、力量4附魔
+         * 材料：照谛核心2个
          * SE结晶：断灭l1 2个
-         * S=断灭l1 SE结晶, B=基础刀（STAR_3，满足要求）
+         * C=照谛核心, S=断灭l1 SE结晶, B=基础刀（STAR_3，满足要求）
          */
         
     
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.STAR_4.location())
-                            .pattern("  S")
+                            .pattern("C S")
                             .pattern(" B ")
-                            .pattern("S  ")
+                            .pattern("S C")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
                                             .name(RecastingSlashBladeKeys.STAR_3.location())
@@ -1563,22 +1569,24 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.POWER_ARROWS), 4))
                                             .build()))
+                            .define('C', RecastingItems.ILLUMINATING_TRUTH_CORE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.ANNIHILATION.getId(), 1))
-                            .unlockedBy("has_annihilation_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
+                            .unlockedBy("has_illuminating_truth_core", RecipeProviderMixin.invokeHas(RecastingItems.ILLUMINATING_TRUTH_CORE.get()))
                             .save(consumer, Recasting.prefix("star_4_recipe"));
     
         /**
          * STAR_4_LAMBDA 配方：从 STAR_4 升级
          * 要求：杀敌12000、锻造1600、弹射物保护4附魔、荆棘3附魔、力量5附魔、冲击2附魔、无限1附魔、多重射击1附魔、快速装填3附魔
+         * 材料：照谛核心4个
          * SE结晶：风暴l3 2个、风暴变体l3 2个
-         * S=风暴l3 SE结晶, V=风暴变体l3 SE结晶, B=基础刀（STAR_4，满足要求）
+         * C=照谛核心, S=风暴l3 SE结晶, V=风暴变体l3 SE结晶, B=基础刀（STAR_4，满足要求）
          */
         
     
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.STAR_4_LAMBDA.location())
-                            .pattern(" V ")
+                            .pattern("CVC")
                             .pattern("SBS")
-                            .pattern(" V ")
+                            .pattern("CVC")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
                                             .name(RecastingSlashBladeKeys.STAR_4.location())
@@ -1599,9 +1607,10 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.QUICK_CHARGE), 3))
                                             .build()))
+                            .define('C', RecastingItems.ILLUMINATING_TRUTH_CORE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM.getId(), 1))
                             .define('V', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.STORM_VARIANT.getId(), 1))
-                            .unlockedBy("has_storm_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
+                            .unlockedBy("has_illuminating_truth_core", RecipeProviderMixin.invokeHas(RecastingItems.ILLUMINATING_TRUTH_CORE.get()))
                             .save(consumer, Recasting.prefix("star_4_lambda_recipe"));
     
         /**
@@ -1663,9 +1672,9 @@ public class SlashBladeRecipes extends RecipeProvider {
         /**
          * LASER_3 配方（t2）：从 LASER_2 升级
          * 要求：杀敌5000、锻造600、保护4附魔、荆棘3附魔、弹射物保护4附魔
-         * 材料：钻石庸魂立方体4个
+         * 材料：霜璇核心4个
          * SE结晶：冲击 2个
-         * C=钻石庸魂立方体, I=冲击 SE结晶, B=基础刀（LASER_2，满足要求）
+         * C=霜璇核心, I=冲击 SE结晶, B=基础刀（LASER_2，满足要求）
          */
         
     
@@ -1685,23 +1694,24 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PROJECTILE_PROTECTION), 4))
                                             .build()))
-                            .define('C', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.FROST_VORTEX_CORE.get())
                             .define('I', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.IMPACT.getId(), 1))
-                            .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_frost_vortex_core", RecipeProviderMixin.invokeHas(RecastingItems.FROST_VORTEX_CORE.get()))
                             .save(consumer, Recasting.prefix("laser_3_recipe"));
     
         /**
          * LASER_3_LAMBDA 配方（t2）：从 LASER_3 升级
          * 要求：杀敌10000、锻造1200、保护4附魔、荆棘3附魔、弹射物保护4附魔、水下呼吸3附魔、水下速掘1附魔、耐久3附魔
+         * 材料：霜璇核心2个
          * SE结晶：分裂 2个、冲击 2个
-         * S=分裂 SE结晶, I=冲击 SE结晶, B=基础刀（LASER_3，满足要求）
+         * C=霜璇核心, S=分裂 SE结晶, I=冲击 SE结晶, B=基础刀（LASER_3，满足要求）
          */
         
     
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.LASER_3_LAMBDA.location())
-                            .pattern(" I ")
-                            .pattern("SBS")
-                            .pattern(" I ")
+                            .pattern("CSI")
+                            .pattern(" B ")
+                            .pattern("ISC")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
                                             .name(RecastingSlashBladeKeys.LASER_3.location())
@@ -1720,9 +1730,10 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING), 3))
                                             .build()))
+                            .define('C', RecastingItems.FROST_VORTEX_CORE.get())
                             .define('S', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.SPLIT.getId(), 1))
                             .define('I', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.IMPACT.getId(), 1))
-                            .unlockedBy("has_split_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
+                            .unlockedBy("has_frost_vortex_core", RecipeProviderMixin.invokeHas(RecastingItems.FROST_VORTEX_CORE.get()))
                             .save(consumer, Recasting.prefix("laser_3_lambda_recipe"));
 
         /**
@@ -1780,9 +1791,9 @@ public class SlashBladeRecipes extends RecipeProvider {
         /**
          * 磁暴[超限] 配方（t2）：从磁暴 Lambda 升级
          * 要求：杀敌5000、锻造600、引雷1附魔、穿刺5附魔、忠诚3附魔、力量2附魔
-         * 材料：钻石庸魂立方体4个
+         * 材料：霜璇核心4个
          * SE结晶：雷暴 2个
-         * C=钻石庸魂立方体, T=雷暴 SE结晶, B=基础刀（磁暴 Lambda，满足要求）
+         * C=霜璇核心, T=雷暴 SE结晶, B=基础刀（磁暴 Lambda，满足要求）
          */
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.MAGNETIC_STORM_LIMITS.location())
                             .pattern(" TC")
@@ -1802,21 +1813,22 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.POWER_ARROWS), 2))
                                             .build()))
-                            .define('C', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.FROST_VORTEX_CORE.get())
                             .define('T', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.THUNDERSTORM.getId(), 1))
-                            .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_frost_vortex_core", RecipeProviderMixin.invokeHas(RecastingItems.FROST_VORTEX_CORE.get()))
                             .save(consumer, Recasting.prefix("magnetic_storm_limits_recipe"));
 
         /**
          * 磁暴[超限] Lambda 配方（t2）：从磁暴[超限] 升级
          * 要求：杀敌10000、锻造1200、引雷1附魔、穿刺5附魔、忠诚3附魔、力量2附魔、耐久3附魔、经验修补1附魔、水下呼吸3附魔
+         * 材料：霜璇核心2个
          * SE结晶：雷云 2个、雷暴 2个
-         * C=雷云 SE结晶, T=雷暴 SE结晶, B=基础刀（磁暴[超限]，满足要求）
+         * F=霜璇核心, C=雷云 SE结晶, T=雷暴 SE结晶, B=基础刀（磁暴[超限]，满足要求）
          */
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.MAGNETIC_STORM_LIMITS_LAMBDA.location())
-                            .pattern(" T ")
+                            .pattern("FT ")
                             .pattern("CBC")
-                            .pattern(" T ")
+                            .pattern(" TF")
                             .define('B',
                                     SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
                                             .name(RecastingSlashBladeKeys.MAGNETIC_STORM_LIMITS.location())
@@ -1837,9 +1849,10 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.RESPIRATION), 3))
                                             .build()))
+                            .define('F', RecastingItems.FROST_VORTEX_CORE.get())
                             .define('C', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.THUNDER_CLOUD.getId(), 1))
                             .define('T', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.THUNDERSTORM.getId(), 1))
-                            .unlockedBy("has_thunder_cloud_crystal", RecipeProviderMixin.invokeHas(RecastingItems.SE_CRYSTAL.get()))
+                            .unlockedBy("has_frost_vortex_core", RecipeProviderMixin.invokeHas(RecastingItems.FROST_VORTEX_CORE.get()))
                             .save(consumer, Recasting.prefix("magnetic_storm_limits_lambda_recipe"));
     
         /**
@@ -2053,9 +2066,9 @@ public class SlashBladeRecipes extends RecipeProvider {
         /**
          * 彩翼配方（t2）：从云翼 Lambda 升级
          * 要求：杀敌5000、锻造600、摔落保护4附魔、灵魂疾行3附魔、迅捷潜行3附魔、冰霜行者1附魔
-         * 材料：钻石庸魂立方体4个
+         * 材料：霜璇核心4个
          * 染料：红色、黄色、黄绿色、蓝色各1个
-         * C=钻石庸魂立方体, X=基础刀（云翼 Lambda，满足要求）, R=红色染料, Y=黄色染料, L=黄绿色染料, B=蓝色染料
+         * C=霜璇核心, X=基础刀（云翼 Lambda，满足要求）, R=红色染料, Y=黄色染料, L=黄绿色染料, B=蓝色染料
          */
         
     
@@ -2077,20 +2090,20 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FROST_WALKER), 1))
                                             .build()))
-                            .define('C', RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.FROST_VORTEX_CORE.get())
                             .define('R', Items.RED_DYE)
                             .define('Y', Items.YELLOW_DYE)
                             .define('L', Items.LIME_DYE)
                             .define('B', Items.BLUE_DYE)
-                            .unlockedBy("has_diamond_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.DIAMOND_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_frost_vortex_core", RecipeProviderMixin.invokeHas(RecastingItems.FROST_VORTEX_CORE.get()))
                             .save(consumer, Recasting.prefix("color_wing_recipe"));
     
         /**
          * 彩翼 Lambda 配方（t2）：从彩翼升级
          * 要求：杀敌10000、锻造1200、摔落保护4附魔、灵魂疾行3附魔、迅捷潜行3附魔、冰霜行者2附魔、经验修补1附魔、引雷1附魔、多重射击1附魔、快速装填3附魔
-         * 材料：赤红庸魂立方体4个、荧光墨囊4个
+         * 材料：燎焰核心4个、荧光墨囊4个
          * SE结晶：雷暴 2个
-         * C=赤红庸魂立方体, G=荧光墨囊, T=雷暴 SE结晶, B=基础刀（彩翼，满足要求）
+         * C=燎焰核心, G=荧光墨囊, T=雷暴 SE结晶, B=基础刀（彩翼，满足要求）
          */
         
     
@@ -2120,10 +2133,10 @@ public class SlashBladeRecipes extends RecipeProvider {
                                             .addEnchantment(new EnchantmentDefinition(
                                                     ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.QUICK_CHARGE), 3))
                                             .build()))
-                            .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
+                            .define('C', RecastingItems.BLAZING_FLAME_CORE.get())
                             .define('G', Items.GLOW_INK_SAC)
                             .define('T', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.THUNDERSTORM.getId(), 1))
-                            .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                            .unlockedBy("has_blazing_flame_core", RecipeProviderMixin.invokeHas(RecastingItems.BLAZING_FLAME_CORE.get()))
                             .save(consumer, Recasting.prefix("color_wing_lambda_recipe"));
     
         /**
@@ -2186,6 +2199,7 @@ public class SlashBladeRecipes extends RecipeProvider {
 
         /**
          * 屠巫 Lambda：从屠巫升级。
+         * C=火毒相变
          */
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.TU_WU_LAMBDA.location())
                 .pattern(" C ")
@@ -2199,12 +2213,13 @@ public class SlashBladeRecipes extends RecipeProvider {
                                 .addEnchantment(new EnchantmentDefinition(
                                         ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
                                 .build()))
-                .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
-                .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                .define('C', RecastingItems.FIRE_TOXIN_PHASE_TRANSITION.get())
+                .unlockedBy("has_fire_toxin_phase_transition", RecipeProviderMixin.invokeHas(RecastingItems.FIRE_TOXIN_PHASE_TRANSITION.get()))
                 .save(consumer, Recasting.prefix("tu_wu_lambda_recipe"));
 
         /**
          * 轩辕·解放 Lambda：从轩辕·解放升级。
+         * C=交错相变
          */
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED_LAMBDA.location())
                 .pattern(" C ")
@@ -2218,8 +2233,8 @@ public class SlashBladeRecipes extends RecipeProvider {
                                 .addEnchantment(new EnchantmentDefinition(
                                         ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
                                 .build()))
-                .define('C', RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get())
-                .unlockedBy("has_redstone_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.REDSTONE_MEDIUM_SOUL_CUBE.get()))
+                .define('C', RecastingItems.INTERLACE_PHASE_TRANSITION.get())
+                .unlockedBy("has_interlace_phase_transition", RecipeProviderMixin.invokeHas(RecastingItems.INTERLACE_PHASE_TRANSITION.get()))
                 .save(consumer, Recasting.prefix("xuan_yuan_liberated_lambda_recipe"));
     
     }

@@ -21,6 +21,9 @@
         "refine": 50
       }
     },
+    "C": {
+      "item": "recasting:copper_medium_soul_cube"
+    },
     "I": {
       "type": "recasting:se_crystal",
       "item": "recasting:se_crystal",
@@ -31,9 +34,9 @@
     }
   },
   "pattern": [
-    "  I",
+    "C I",
     " B ",
-    "I  "
+    "I C"
   ],
   "result": {
     "item": "slashblade:slashblade"

@@ -37,6 +37,9 @@
         "refine": 1200
       }
     },
+    "C": {
+      "item": "recasting:frost_vortex_core"
+    },
     "I": {
       "type": "recasting:se_crystal",
       "item": "recasting:se_crystal",
@@ -55,9 +58,9 @@
     }
   },
   "pattern": [
-    " I ",
-    "SBS",
-    " I "
+    "CSI",
+    " B ",
+    "ISC"
   ],
   "result": {
     "item": "slashblade:slashblade"

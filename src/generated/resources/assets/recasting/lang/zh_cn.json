@@ -471,7 +471,7 @@
   "slash_art.recasting.unlimited_blade_works_lambda": "^无限剑制",
   "slash_art.recasting.unlimited_blade_works_lambda.desc": "在目标位置上方的半球面上生成大量幻影剑。",
   "slash_art.recasting.verdict": "[回到未来计划]断罪",
-  "slash_art.recasting.verdict.desc": "发射一道巨大剑气，命中后在目标周围唤出与视线同向的幻影剑。",
+  "slash_art.recasting.verdict.desc": "发射一道巨大剑气，命中后在目标周围唤出追踪幻影剑。",
   "slash_art.recasting.void_hole": "拟似黑洞",
   "slash_art.recasting.void_hole.desc": "创建一个黑洞，吸引范围内的所有实体向中心。",
   "slash_art.recasting.void_hole_fishy_red": "拟似黑洞[腥红]",

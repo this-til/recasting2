@@ -26,8 +26,8 @@
         "refine": 1000
       }
     },
-    "E": {
-      "item": "minecraft:chorus_fruit"
+    "C": {
+      "item": "recasting:frost_vortex_core"
     },
     "J": {
       "type": "recasting:se_crystal",
@@ -36,15 +36,12 @@
         "level": 1,
         "special_effect_type": "recasting:judgement"
       }
-    },
-    "P": {
-      "item": "minecraft:ender_pearl"
     }
   },
   "pattern": [
-    "PEP",
+    "C C",
     "JBJ",
-    "PEP"
+    "C C"
   ],
   "result": {
     "item": "slashblade:slashblade"

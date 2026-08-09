@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_redstone_medium_soul_cube": {
+    "has_interlace_phase_transition": {
       "conditions": {
         "items": [
           {
             "items": [
-              "recasting:redstone_medium_soul_cube"
+              "recasting:interlace_phase_transition"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_redstone_medium_soul_cube",
+      "has_interlace_phase_transition",
       "has_the_recipe"
     ]
   ],

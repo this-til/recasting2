@@ -26,6 +26,9 @@
         "refine": 800
       }
     },
+    "C": {
+      "item": "recasting:illuminating_truth_core"
+    },
     "S": {
       "type": "recasting:se_crystal",
       "item": "recasting:se_crystal",
@@ -36,9 +39,9 @@
     }
   },
   "pattern": [
-    "  S",
+    "C S",
     " B ",
-    "S  "
+    "S C"
   ],
   "result": {
     "item": "slashblade:slashblade"

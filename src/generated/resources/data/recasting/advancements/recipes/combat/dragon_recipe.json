@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_iron_medium_soul_cube": {
+    "has_blazing_flame_core": {
       "conditions": {
         "items": [
           {
             "items": [
-              "recasting:iron_medium_soul_cube"
+              "recasting:blazing_flame_core"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_iron_medium_soul_cube",
+      "has_blazing_flame_core",
       "has_the_recipe"
     ]
   ],

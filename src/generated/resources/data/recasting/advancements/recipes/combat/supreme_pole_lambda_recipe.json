@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_netherite_medium_soul_cube": {
+    "has_abyss_depth_core": {
       "conditions": {
         "items": [
           {
             "items": [
-              "recasting:netherite_medium_soul_cube"
+              "recasting:abyss_depth_core"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_netherite_medium_soul_cube",
+      "has_abyss_depth_core",
       "has_the_recipe"
     ]
   ],

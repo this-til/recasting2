@@ -1,28 +1,28 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_the_recipe": {
-      "conditions": {
-        "recipe": "recasting:magnetic_storm_limits_lambda_recipe"
-      },
-      "trigger": "minecraft:recipe_unlocked"
-    },
-    "has_thunder_cloud_crystal": {
+    "has_frost_vortex_core": {
       "conditions": {
         "items": [
           {
             "items": [
-              "recasting:se_crystal"
+              "recasting:frost_vortex_core"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "recasting:magnetic_storm_limits_lambda_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_thunder_cloud_crystal",
+      "has_frost_vortex_core",
       "has_the_recipe"
     ]
   ],

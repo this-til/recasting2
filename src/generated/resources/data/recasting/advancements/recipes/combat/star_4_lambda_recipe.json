@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_storm_crystal": {
+    "has_illuminating_truth_core": {
       "conditions": {
         "items": [
           {
             "items": [
-              "recasting:se_crystal"
+              "recasting:illuminating_truth_core"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_storm_crystal",
+      "has_illuminating_truth_core",
       "has_the_recipe"
     ]
   ],

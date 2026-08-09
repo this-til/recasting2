@@ -471,7 +471,7 @@
   "slash_art.recasting.unlimited_blade_works_lambda": "Unlimited Blade Works Lambda",
   "slash_art.recasting.unlimited_blade_works_lambda.desc": "Generate numerous phantom swords evenly distributed on a hemisphere above the target position.",
   "slash_art.recasting.verdict": "[Back to the Future Plan] Verdict",
-  "slash_art.recasting.verdict.desc": "Launches a massive sword qi that, on hit, summons phantom swords around the target aligned with the look direction.",
+  "slash_art.recasting.verdict.desc": "Launches a massive sword qi that, on hit, summons tracking phantom swords around the target.",
   "slash_art.recasting.void_hole": "Void Hole",
   "slash_art.recasting.void_hole.desc": "Create a void hole that attracts all entities within range toward the center.",
   "slash_art.recasting.void_hole_fishy_red": "Void Hole [Fishy Red]",

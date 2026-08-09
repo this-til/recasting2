@@ -40,8 +40,8 @@
         "refine": 2000
       }
     },
-    "E": {
-      "item": "minecraft:popped_chorus_fruit"
+    "C": {
+      "item": "recasting:frost_vortex_core"
     },
     "I": {
       "item": "minecraft:ender_eye"
@@ -56,9 +56,9 @@
     }
   },
   "pattern": [
-    "IEI",
+    "CIC",
     "SBS",
-    "IEI"
+    "CIC"
   ],
   "result": {
     "item": "slashblade:slashblade"
