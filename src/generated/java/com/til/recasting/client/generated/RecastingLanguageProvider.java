@@ -399,6 +399,12 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtDescKey(SlashArtsRegistry.DIVINE_SLASH), "沿视线发射多道体型递减、色泽各异的剑气。", "Fires multiple sword qi along the look direction with shrinking size and varied colors.");
         translation(slashArtKey(SlashArtsRegistry.VERDICT), "[回到未来计划]断罪", "[Back to the Future Plan] Verdict");
         translation(slashArtDescKey(SlashArtsRegistry.VERDICT), "发射一道巨大剑气，命中后在目标周围唤出与视线同向的幻影剑。", "Launches a massive sword qi that, on hit, summons phantom swords around the target aligned with the look direction.");
+        translation(slashArtKey(SlashArtsRegistry.INFINITE_BLOOM), "[回到未来计划]无限开花决", "[Back to the Future Plan] Infinite Bloom");
+        translation(slashArtDescKey(SlashArtsRegistry.INFINITE_BLOOM), "在目标或视线落点展开次元斩，并环绕射出螺旋剑气；有目标时先进行近距打击。", "Opens a judgement cut at the target or look point and rings it with spiral sword qi; with a target, first delivers a close-range strike.");
+        translation(slashArtKey(SlashArtsRegistry.BLISTERING_QI), "[回到未来计划]暴烈剑气", "[Back to the Future Plan] Blistering Qi");
+        translation(slashArtDescKey(SlashArtsRegistry.BLISTERING_QI), "持续唤出追踪幻影剑追击目标，命中时爆出小型爆炸特效；重复释放可延续时长。", "Continually summons tracking phantom swords at the target that burst with a small explosion effect on hit; reusing the art refreshes its duration.");
+        translation(slashArtKey(SlashArtsRegistry.HEAVY_PAYLOAD), "[回到未来计划]大包弹", "[Back to the Future Plan] Heavy Payload");
+        translation(slashArtDescKey(SlashArtsRegistry.HEAVY_PAYLOAD), "对锁定或视锥内目标近距打击后，在其处放出白色闪光次元斩。", "Delivers a close-range strike to a locked or view-cone target, then detonates a white flash judgement cut on them.");
         translation(specialEffectKey(SpecialEffectsRegistry.COOPERATE_WITH), "协同攻击", "Cooperate With");
         translation(specialEffectDescKey(SpecialEffectsRegistry.COOPERATE_WITH), "挥刀时概率额外挥刀。", "Has a chance to perform an additional slash when slashing.");
         translation(specialEffectKey(SpecialEffectsRegistry.CROSS_CHOP), "十字斩", "Cross Chop");

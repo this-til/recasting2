@@ -339,6 +339,15 @@ public class SlashArtsRegistry {
     // 回到未来计划 · 断罪
     public static final RegistryObject<ExtendedSlashArts> VERDICT = registerExtendedSA("verdict", VerdictSlashArts::new);
 
+    // 回到未来计划 · 无限开花决
+    public static final RegistryObject<ExtendedSlashArts> INFINITE_BLOOM = registerExtendedSA("infinite_bloom", InfiniteBloomSlashArts::new);
+
+    // 回到未来计划 · 暴烈剑气
+    public static final RegistryObject<ExtendedSlashArts> BLISTERING_QI = registerExtendedSA("blistering_qi", BlisteringQiSlashArts::new);
+
+    // 回到未来计划 · 大包弹
+    public static final RegistryObject<ExtendedSlashArts> HEAVY_PAYLOAD = registerExtendedSA("heavy_payload", HeavyPayloadSlashArts::new);
+
     /**
      * 注册扩展的 SlashArts，自动关联 ComboState
      */

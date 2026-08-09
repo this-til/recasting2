@@ -3,6 +3,7 @@ package com.til.recasting.registry.sa;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.entity.JudgementCutEntity;
+import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingEntities;
@@ -10,6 +11,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -53,21 +55,18 @@ public class StarSlashArts extends ExtendedSlashArts {
         );
 
         // 第一阶段：发射初始召唤剑
-        for(int i = 0; i < attackNumber; i++) {
-            // 使用自定义召唤剑，击中后产生次元斩
-            StarSummonedSword summonedSword = new StarSummonedSword(
+        for (int i = 0; i < attackNumber; i++) {
+            SummondSwordEntity summonedSword = new SummondSwordEntity(
                     RecastingEntities.SUMMOND_SWORD.get(),
                     worldIn,
-                    livingEntity,
-                    judgementCutAttack
+                    livingEntity
             );
 
-            // 设置属性
             summonedSword.setColor(slashBladeState.getColorCode());
             summonedSword.setModifiedRatio(attack);
             summonedSword.setStartDelay(10 + livingEntity.getRandom().nextInt(10));
+            summonedSword.attackActionCallbackPoint.register(hit -> spawnJudgementCut(summonedSword, hit));
 
-            // 设置朝向：如果有敌人，朝向随机敌人，否则朝向攻击位置
             Vec3 targetPos;
             if (!entityList.isEmpty()) {
                 Entity target = entityList.get(livingEntity.getRandom().nextInt(entityList.size()));
@@ -77,12 +76,9 @@ public class StarSlashArts extends ExtendedSlashArts {
             }
 
             summonedSword.lookAt(targetPos, false);
-
-            // 添加到世界
             worldIn.addFreshEntity(summonedSword);
         }
 
-        // 播放音效
         livingEntity.playSound(
                 SoundEvents.CHORUS_FRUIT_TELEPORT,
                 0.2F,
@@ -91,12 +87,10 @@ public class StarSlashArts extends ExtendedSlashArts {
 
         // 第二阶段：生成持续的次元斩阵地（如果 zoneNumber > 0）
         if (zoneNumber > 0) {
-            for(int i = 0; i < zoneNumber; i++) {
-                // 在玩家周围随机位置生成次元斩
+            for (int i = 0; i < zoneNumber; i++) {
                 Vec3 randomOffset = PosHelper.getRandomVectorInCircle(livingEntity.getRandom(), zonerRange);
                 Vec3 zonePos = livingEntity.position().add(randomOffset);
 
-                // 创建持续存在的次元斩（仅攻击一次；阵地召唤剑由 tick 负责）
                 JudgementCutEntity starJC = new JudgementCutEntity(
                         RecastingEntities.JUDGEMENT_CUT.get(),
                         worldIn,
@@ -108,32 +102,33 @@ public class StarSlashArts extends ExtendedSlashArts {
 
                         if (!this.level().isClientSide() && this.random.nextFloat() < attackProbability) {
                             Vec3 pos = this.position();
-
-                            // 实时获取目标位置
                             Vec3 currentTargetPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
 
-                            // 使用自定义召唤剑，击中后产生次元斩
-                            StarSummonedSword summonedSword = new StarSummonedSword(
+                            SummondSwordEntity summonedSword = new SummondSwordEntity(
                                     RecastingEntities.SUMMOND_SWORD.get(),
                                     this.level(),
-                                    livingEntity,
-                                    judgementCutAttack
+                                    livingEntity
                             );
 
                             summonedSword.setPos(pos.x, pos.y, pos.z);
                             summonedSword.setColor(slashBladeState.getColorCode());
                             summonedSword.setModifiedRatio(summondSwordAttack);
                             summonedSword.setStartDelay(10);
-
-                            // 朝向实时获取的目标位置
+                            summonedSword.attackActionCallbackPoint.register(hit -> spawnJudgementCut(summonedSword, hit));
                             summonedSword.lookAt(currentTargetPos, false);
 
                             this.level().addFreshEntity(summonedSword);
 
-                            // 播放音效
-                            this.level().playSound(null, pos.x, pos.y, pos.z,
+                            this.level().playSound(
+                                    null,
+                                    pos.x,
+                                    pos.y,
+                                    pos.z,
                                     SoundEvents.CHORUS_FRUIT_TELEPORT,
-                                    net.minecraft.sounds.SoundSource.PLAYERS, 0.2F, 1.45F);
+                                    SoundSource.PLAYERS,
+                                    0.2F,
+                                    1.45F
+                            );
                         }
                     }
 
@@ -147,6 +142,40 @@ public class StarSlashArts extends ExtendedSlashArts {
                 worldIn.addFreshEntity(starJC);
             }
         }
+    }
+
+    private void spawnJudgementCut(SummondSwordEntity sword, Entity target) {
+        Level level = sword.level();
+        if (level.isClientSide()) {
+            return;
+        }
+
+        Vec3 jcPos = target.position().add(0, target.getEyeHeight() * 0.5, 0);
+
+        JudgementCutEntity jc = new JudgementCutEntity(
+                RecastingEntities.JUDGEMENT_CUT.get(),
+                level,
+                sword.getShooter()
+        );
+
+        jc.setPos(jcPos.x, jcPos.y, jcPos.z);
+        jc.setColor(sword.getColor());
+        jc.setModifiedRatio(judgementCutAttack);
+        jc.setMaxLifeTime(10);
+        jc.setSingleAttack(true);
+
+        level.addFreshEntity(jc);
+
+        level.playSound(
+                null,
+                jcPos.x,
+                jcPos.y,
+                jcPos.z,
+                SoundEvents.ENDERMAN_TELEPORT,
+                SoundSource.PLAYERS,
+                0.5F,
+                0.8F / (level.getRandom().nextFloat() * 0.4F + 0.8F)
+        );
     }
 
 }
