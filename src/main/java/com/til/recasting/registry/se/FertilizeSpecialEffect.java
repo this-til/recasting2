@@ -33,9 +33,9 @@ public class FertilizeSpecialEffect extends ExtendedSpecialEffect {
         BlockPos origin = event.getUser().blockPosition();
         List<BlockPos> crops = new ArrayList<>();
 
-        for (int x = -range; x <= range; x++) {
-            for (int y = -range; y <= range; y++) {
-                for (int z = -range; z <= range; z++) {
+        for(int x = -range; x <= range; x++) {
+            for(int y = -range; y <= range; y++) {
+                for(int z = -range; z <= range; z++) {
                     BlockPos pos = origin.offset(x, y, z);
                     BlockState state = serverLevel.getBlockState(pos);
                     if (!(state.getBlock() instanceof CropBlock crop)) {

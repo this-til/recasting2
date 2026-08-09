@@ -42,12 +42,12 @@ public class SpecialEffectCrystalShapedRecipe extends ShapedRecipe {
      * 创建结果物品
      */
     private static ItemStack getResultItem(@Nullable ResourceLocation specialEffectType, int level) {
-        Item item = ForgeRegistries.ITEMS.containsKey(RecastingItems.SE_CRYSTAL.getId()) 
+        Item item = ForgeRegistries.ITEMS.containsKey(RecastingItems.SE_CRYSTAL.getId())
                 ? ForgeRegistries.ITEMS.getValue(RecastingItems.SE_CRYSTAL.getId())
                 : RecastingItems.SE_CRYSTAL.get();
 
         ItemStack stack = Objects.requireNonNullElseGet(item, RecastingItems.SE_CRYSTAL).getDefaultInstance();
-        
+
         // 设置 SE 结晶的特殊效果类型和等级
         if (specialEffectType != null || level >= 0) {
             stack.getCapability(CapabilityRegistryHandler.SE_CRYSTAL_DATA).ifPresent(data -> {
@@ -59,7 +59,7 @@ public class SpecialEffectCrystalShapedRecipe extends ShapedRecipe {
                 }
             });
         }
-        
+
         return stack;
     }
 
@@ -72,7 +72,7 @@ public class SpecialEffectCrystalShapedRecipe extends ShapedRecipe {
     public @NotNull ItemStack assemble(@NotNull CraftingContainer container, @NotNull RegistryAccess access) {
         // 创建输出物品
         ItemStack result = this.getResultItem(access).copy();
-        
+
         // 确保能力数据已正确设置
         result.getCapability(CapabilityRegistryHandler.SE_CRYSTAL_DATA).ifPresent(data -> {
             if (this.specialEffectType != null) {
@@ -82,7 +82,7 @@ public class SpecialEffectCrystalShapedRecipe extends ShapedRecipe {
                 data.setSpecialEffectLevel(this.level);
             }
         });
-        
+
         return result;
     }
 

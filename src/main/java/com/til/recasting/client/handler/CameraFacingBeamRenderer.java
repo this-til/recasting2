@@ -24,16 +24,22 @@ public final class CameraFacingBeamRenderer {
      * {@link #ADDITIVE} 适合亮色发光；暗色在加法混合下几乎不可见，应改用 {@link #TRANSLUCENT}。
      */
     public enum BlendMode {
-        /** SRC_ALPHA, ONE — 越亮越显，黑色无贡献 */
+        /**
+         * SRC_ALPHA, ONE — 越亮越显，黑色无贡献
+         */
         ADDITIVE,
-        /** SRC_ALPHA, ONE_MINUS_SRC_ALPHA — 可正确显示黑色/暗色 */
+        /**
+         * SRC_ALPHA, ONE_MINUS_SRC_ALPHA — 可正确显示黑色/暗色
+         */
         TRANSLUCENT
     }
 
     private CameraFacingBeamRenderer() {
     }
 
-    /** 默认加法混合，兼容既有亮色光束调用 */
+    /**
+     * 默认加法混合，兼容既有亮色光束调用
+     */
     public static void begin() {
         begin(BlendMode.ADDITIVE);
     }
@@ -74,7 +80,7 @@ public final class CameraFacingBeamRenderer {
             float blue,
             float alpha
     ) {
-        for (int i = 0; i < points.length - 1; i++) {
+        for(int i = 0; i < points.length - 1; i++) {
             drawQuad(matrix, camera, points[i], points[i + 1], halfWidth, red, green, blue, alpha);
         }
     }

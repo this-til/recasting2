@@ -53,7 +53,9 @@ public class PhantomBladeModeStandHandler {
         }
 
         blade.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> {
-            int shrink = player.isCreative() ? 0 : 1;
+            int shrink = player.isCreative()
+                    ? 0
+                    : 1;
             if (stack.getCount() < shrink) {
                 return;
             }
@@ -90,7 +92,7 @@ public class PhantomBladeModeStandHandler {
                 0.5f,
                 0.8f
         );
-        for (int i = 0; i < 32; ++i) {
+        for(int i = 0; i < 32; ++i) {
             double xDist = (random.nextFloat() * 2.0F - 1.0F);
             double yDist = (random.nextFloat() * 2.0F - 1.0F);
             double zDist = (random.nextFloat() * 2.0F - 1.0F);

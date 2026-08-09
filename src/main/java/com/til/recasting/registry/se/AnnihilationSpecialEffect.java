@@ -33,45 +33,45 @@ public class AnnihilationSpecialEffect extends ExtendedSpecialEffect {
         var state = context.state();
         int level = context.effectLevel();
 
-            // 使用Buff系统跟踪次元斩计数
-            shooter.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
-                    buffStackData -> {
-                        Level world = shooter.level();
-                        BuffType annihilationBuffType = RecastingBuffTypes.ANNIHILATION.get();
+        // 使用Buff系统跟踪次元斩计数
+        shooter.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
+                buffStackData -> {
+                    Level world = shooter.level();
+                    BuffType annihilationBuffType = RecastingBuffTypes.ANNIHILATION.get();
 
-                        // 获取当前层数
-                        int currentLevel = buffStackData.getLevel(annihilationBuffType, world);
+                    // 获取当前层数
+                    int currentLevel = buffStackData.getLevel(annihilationBuffType, world);
 
-                        // 增加层数
-                        int newLevel = currentLevel + addLevel;
-                        buffStackData.setLevel(annihilationBuffType, newLevel, world);
+                    // 增加层数
+                    int newLevel = currentLevel + addLevel;
+                    buffStackData.setLevel(annihilationBuffType, newLevel, world);
 
-                        // 检查是否达到最大层数（6层）
-                        if (newLevel >= annihilationBuffType.getMaxLevel()) {
-                            // 重置层数
-                            buffStackData.setLevel(annihilationBuffType, 0, world);
+                    // 检查是否达到最大层数（6层）
+                    if (newLevel >= annihilationBuffType.getMaxLevel()) {
+                        // 重置层数
+                        buffStackData.setLevel(annihilationBuffType, 0, world);
 
-                            // 创建巨型次元斩
-                            Level worldIn = shooter.level();
-                            Vec3 pos = jc.position();
+                        // 创建巨型次元斩
+                        Level worldIn = shooter.level();
+                        Vec3 pos = jc.position();
 
-                            JudgementCutEntity giantJc = new JudgementCutEntity(
-                                    RecastingEntities.JUDGEMENT_CUT.get(),
-                                    worldIn,
-                                    shooter
-                            );
+                        JudgementCutEntity giantJc = new JudgementCutEntity(
+                                RecastingEntities.JUDGEMENT_CUT.get(),
+                                worldIn,
+                                shooter
+                        );
 
-                            giantJc.setPos(pos.x, pos.y, pos.z);
-                            giantJc.setColor(state.getColorCode());
-                            giantJc.setModifiedRatio(attackRatio.of(level));
-                            giantJc.setMaxLifeTime(giantLifetime);
-                            giantJc.setSize(giantSize);
+                        giantJc.setPos(pos.x, pos.y, pos.z);
+                        giantJc.setColor(state.getColorCode());
+                        giantJc.setModifiedRatio(attackRatio.of(level));
+                        giantJc.setMaxLifeTime(giantLifetime);
+                        giantJc.setSize(giantSize);
 
-                            // 添加到世界
-                            worldIn.addFreshEntity(giantJc);
-                        }
+                        // 添加到世界
+                        worldIn.addFreshEntity(giantJc);
                     }
-            );
+                }
+        );
     }
 
 }

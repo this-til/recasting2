@@ -1,7 +1,6 @@
 package com.til.recasting.mixin;
 
 import com.til.recasting.event.SlashBladeLockTargetTickEvent;
-import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

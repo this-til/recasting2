@@ -1,6 +1,6 @@
 package com.til.recasting.capability.provider;
 
-import com.til.recasting.capability.ITimeRun;
+import com.til.recasting.capability.IProudSoulDropCooldown;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -12,17 +12,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * TimeRun Capability
- * 为实体提供定时器功能
+ * 玩家耀魂掉落冷却 Capability Provider。
  */
-public class TimeRunProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+public class ProudSoulDropCooldownProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-    private final ITimeRun timeRun = new ITimeRun.TimeRun();
-    private final LazyOptional<ITimeRun> lazyOptional = LazyOptional.of(() -> timeRun);
+    private final IProudSoulDropCooldown.ProudSoulDropCooldown data = new IProudSoulDropCooldown.ProudSoulDropCooldown();
+    private final LazyOptional<IProudSoulDropCooldown> lazyOptional = LazyOptional.of(() -> data);
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityRegistryHandler.TIME_RUN) {
+        if (cap == CapabilityRegistryHandler.PROUD_SOUL_DROP_COOLDOWN) {
             return lazyOptional.cast();
         }
         return LazyOptional.empty();
@@ -30,17 +29,15 @@ public class TimeRunProvider implements ICapabilityProvider, INBTSerializable<Co
 
     @Override
     public CompoundTag serializeNBT() {
-        // TimeRun 不需要持久化
-        return new CompoundTag();
+        return data.serializeNBT();
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        // TimeRun 不需要持久化
+        data.deserializeNBT(nbt);
     }
 
     public void invalidate() {
         lazyOptional.invalidate();
     }
 }
-

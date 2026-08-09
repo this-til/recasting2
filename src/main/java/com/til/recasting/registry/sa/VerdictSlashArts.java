@@ -3,7 +3,7 @@ package com.til.recasting.registry.sa;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.entity.DriveEntity;
-import com.til.recasting.entity.SummondSwordEntity;
+import com.til.recasting.entity.TrackingSummondSwordEntity;
 import com.til.recasting.registry.RecastingEntities;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * [回到未来计划]断罪：发射放大剑气，命中后在目标周围刷出与视线同向的幻影剑。
+ * [回到未来计划]断罪：发射放大剑气，命中后在目标周围刷出追踪幻影剑。
  */
 @Setter
 @Accessors(chain = true)
@@ -26,12 +26,13 @@ public class VerdictSlashArts extends ExtendedSlashArts {
     private float driveRatio = 0.75f;
     private float driveSeep = 0.25f;
     private int driveLife = 300;
-    private float driveSize = 5.0f;
+    private float driveSize = 1.25f;
     private float driveRoll = 90.0f;
-    private int followBladeCount = 12;
-    private float followBladeRatio = 0.375f;
+    private int followBladeCount = 6;
+    private float followBladeRatio = 0.12f;
     private int followBladeLife = 100;
     private float followSpawnRange = 7.0f;
+    private float speedScalePerTick = 1.05f;
 
     @Override
     public void trigger(
@@ -64,6 +65,7 @@ public class VerdictSlashArts extends ExtendedSlashArts {
         drive.setColor(color);
         drive.setRepeatedAttack(false);
         drive.setParameter(true);
+        drive.setSpeedScalePerTick(speedScalePerTick);
         drive.lookAt(look, true);
 
         drive.attackActionCallbackPoint.register(hit -> spawnFollowBlades(drive, livingEntity, hit, color));
@@ -97,10 +99,9 @@ public class VerdictSlashArts extends ExtendedSlashArts {
         }
 
         RandomSource random = level.getRandom();
-        Vec3 look = caster.getLookAngle();
-        for (int i = 0; i < followBladeCount; i++) {
-            SummondSwordEntity blade = new SummondSwordEntity(
-                    RecastingEntities.SUMMOND_SWORD.get(),
+        for(int i = 0; i < followBladeCount; i++) {
+            TrackingSummondSwordEntity blade = new TrackingSummondSwordEntity(
+                    RecastingEntities.TRACKING_SUMMOND_SWORD.get(),
                     level,
                     caster
             );
@@ -111,8 +112,9 @@ public class VerdictSlashArts extends ExtendedSlashArts {
             blade.setModifiedRatio(followBladeRatio);
             blade.setMaxLifeTime(followBladeLife);
             blade.setColor(color);
-            // 朝向与玩家视线方向一致，而非射向目标点
-            blade.lookAt(look, true);
+            blade.setTargetEntity(target);
+            blade.setInterval(0);
+            blade.lookAt(target.position().add(0.0, target.getBbHeight() * 0.5, 0.0), false);
             level.addFreshEntity(blade);
         }
     }

@@ -2,8 +2,8 @@ package com.til.recasting.registry;
 
 import com.til.recasting.Config;
 import com.til.recasting.Recasting;
-import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.capability.ISpecialEffectCrystalData;
+import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.SpecialEffectTooltipHelper;
 import com.til.recasting.item.ProudSoulBagItem;
@@ -931,7 +931,9 @@ public class RecastingItems {
                 .map(se -> (ExtendedSpecialEffect) se)
                 .flatMap(se -> {
                     // 特殊 SE 不提供 0 级结晶（去除走铁砧渊寂火）
-                    int startLevel = se.isSpecial() ? 1 : 0;
+                    int startLevel = se.isSpecial()
+                            ? 1
+                            : 0;
                     return IntStream.range(startLevel, se.getMaxLevel() + 1)
                             .mapToObj(
                                     level -> {

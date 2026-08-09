@@ -15,9 +15,9 @@ import org.jetbrains.annotations.Nullable;
 /**
  * SE结晶的需求定义
  * 用于定义和匹配特定的特殊效果类型和等级
- * 
+ *
  * @param specialEffectType 特殊效果类型，null 表示不限制
- * @param level 特殊效果等级，-1 表示不限制
+ * @param level             特殊效果等级，-1 表示不限制
  */
 @Slf4j
 public record SpecialEffectCrystalRequest(
@@ -53,7 +53,9 @@ public record SpecialEffectCrystalRequest(
     }
 
     public static SpecialEffectCrystalRequest fromNetwork(FriendlyByteBuf buffer) {
-        ResourceLocation type = buffer.readBoolean() ? buffer.readResourceLocation() : null;
+        ResourceLocation type = buffer.readBoolean()
+                ? buffer.readResourceLocation()
+                : null;
         int level = buffer.readInt();
         return new SpecialEffectCrystalRequest(type, level);
     }
@@ -73,7 +75,7 @@ public record SpecialEffectCrystalRequest(
             if (this.level >= 0) {
                 data.setSpecialEffectLevel(this.level);
             }
-            
+
             // 将 Capability 数据序列化到 NBT
             stack.getOrCreateTag().put("se_crystal_data", data.serializeNBT());
         });

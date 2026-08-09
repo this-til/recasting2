@@ -16,7 +16,9 @@ import org.joml.Vector3f;
  */
 public final class PrismBeamEffectHelper {
 
-    /** 光棱线段默认可见时长（tick） */
+    /**
+     * 光棱线段默认可见时长（tick）
+     */
     public static final int DEFAULT_LIFE_TICKS = 6;
 
     private PrismBeamEffectHelper() {

@@ -55,7 +55,7 @@ public class PrismBeamRenderHandler {
         float partialTick = event.getPartialTick();
 
         CameraFacingBeamRenderer.begin();
-        for (PrismBeamClientEffects.Beam beam : beams) {
+        for(PrismBeamClientEffects.Beam beam : beams) {
             float alpha = beam.alpha(gameTime, partialTick);
             if (alpha <= 0.01f) {
                 continue;

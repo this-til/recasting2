@@ -27,7 +27,9 @@ public class PropertiesDefinitionExtension implements INBTSerializable<CompoundT
 
     float attackDistance = 1.0f;
     Map<ResourceLocation, Integer> extendedSpecialLevels = new HashMap<>();
-    /** 为 true 时基础射击发射追踪幻影飞刃，否则为普通幻影剑 */
+    /**
+     * 为 true 时基础射击发射追踪幻影飞刃，否则为普通幻影剑
+     */
     boolean trackingPhantomBlade = false;
 
     public PropertiesDefinitionExtension() {
@@ -47,7 +49,9 @@ public class PropertiesDefinitionExtension implements INBTSerializable<CompoundT
             boolean trackingPhantomBlade
     ) {
         this.attackDistance = attackDistance;
-        this.extendedSpecialLevels = extendedSpecialLevels != null ? new HashMap<>(extendedSpecialLevels) : new HashMap<>();
+        this.extendedSpecialLevels = extendedSpecialLevels != null
+                ? new HashMap<>(extendedSpecialLevels)
+                : new HashMap<>();
         this.trackingPhantomBlade = trackingPhantomBlade;
     }
 

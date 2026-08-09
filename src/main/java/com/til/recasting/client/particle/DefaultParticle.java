@@ -2,12 +2,7 @@ package com.til.recasting.client.particle;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -44,45 +39,71 @@ import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 public class DefaultParticle extends Particle {
 
-    /** 加法粒子顶点色曝光倍率（SRC_ALPHA/ONE 下提亮普通命中闪等）。 */
+    /**
+     * 加法粒子顶点色曝光倍率（SRC_ALPHA/ONE 下提亮普通命中闪等）。
+     */
     private static final float ADDITIVE_EXPOSURE = 1.55f;
 
-    /** 本模组粒子批绘专用 Buffer，与引擎 Tesselator / 共享 BufferSource 隔离。 */
+    /**
+     * 本模组粒子批绘专用 Buffer，与引擎 Tesselator / 共享 BufferSource 隔离。
+     */
     private static final BufferBuilder BATCH_BUFFER = new BufferBuilder(512 * 1024);
 
-    /** 当前批正在写入的 Buffer；仅在对应 {@link ParticleRenderType#begin}～{@code end} 期间非 null。 */
+    /**
+     * 当前批正在写入的 Buffer；仅在对应 {@link ParticleRenderType#begin}～{@code end} 期间非 null。
+     */
     @Nullable
     protected static BufferBuilder activeBatch;
 
-    /** 生命周期一半的 tick 数，供尺寸曲线将寿命映射为 0→1→0 的三角波。 */
+    /**
+     * 生命周期一半的 tick 数，供尺寸曲线将寿命映射为 0→1→0 的三角波。
+     */
     protected float particleHalfAge;
 
-    /** 每 tick 对速度分量的乘积衰减；为 null 时不衰减。 */
+    /**
+     * 每 tick 对速度分量的乘积衰减；为 null 时不衰减。
+     */
     @Nullable
     protected Vec3 moveAttenuation;
 
-    /** 重力系数；非 0 时每 tick 对 {@code yd} 施加 {@code -0.04 * particleGravity}。 */
+    /**
+     * 重力系数；非 0 时每 tick 对 {@code yd} 施加 {@code -0.04 * particleGravity}。
+     */
     protected float particleGravity;
 
-    /** 基础渲染半宽（四边形边长的一半）。 */
+    /**
+     * 基础渲染半宽（四边形边长的一半）。
+     */
     protected float size = 1;
 
-    /** 生命周期内尺寸变化曲线；为 null 时保持 {@link #size} 不变。 */
+    /**
+     * 生命周期内尺寸变化曲线；为 null 时保持 {@link #size} 不变。
+     */
     protected SizeChangeType sizeChangeType;
 
-    /** 当前绕视线轴的滚转角（弧度）。 */
+    /**
+     * 当前绕视线轴的滚转角（弧度）。
+     */
     protected float roll;
 
-    /** 上一 tick 的滚转角，用于渲染插值。 */
+    /**
+     * 上一 tick 的滚转角，用于渲染插值。
+     */
     protected float oldRoll;
 
-    /** 每 tick 滚转增量（弧度）。 */
+    /**
+     * 每 tick 滚转增量（弧度）。
+     */
     protected float rollSpeed;
 
-    /** 为 true 时走 {@link #move} 做方块碰撞；否则直接累加坐标。 */
+    /**
+     * 为 true 时走 {@link #move} 做方块碰撞；否则直接累加坐标。
+     */
     protected boolean enableCollision = false;
 
-    /** 粒子贴图；为 null 时走 {@link #NULL_TEXTURE} 通道。 */
+    /**
+     * 粒子贴图；为 null 时走 {@link #NULL_TEXTURE} 通道。
+     */
     @Nullable
     protected ResourceLocation textureName;
 
@@ -91,10 +112,14 @@ public class DefaultParticle extends Particle {
      */
     protected boolean additiveBlend = true;
 
-    /** 按贴图缓存的加法批绘通道，同贴图粒子共用一个 {@link ParticleRenderType}。 */
+    /**
+     * 按贴图缓存的加法批绘通道，同贴图粒子共用一个 {@link ParticleRenderType}。
+     */
     public static final Map<ResourceLocation, ParticleRenderType> map = new HashMap<>();
 
-    /** 按贴图缓存的半透明批绘通道（SRC_ALPHA, ONE_MINUS_SRC_ALPHA）。 */
+    /**
+     * 按贴图缓存的半透明批绘通道（SRC_ALPHA, ONE_MINUS_SRC_ALPHA）。
+     */
     public static final Map<ResourceLocation, ParticleRenderType> translucentMap = new HashMap<>();
 
     public DefaultParticle(ClientLevel level, double x, double y, double z) {
@@ -275,7 +300,7 @@ public class DefaultParticle extends Particle {
                 new Vector3f(1.0F, 1.0F, 0.0F),
                 new Vector3f(1.0F, -1.0F, 0.0F)
         };
-        for (int i = 0; i < 4; ++i) {
+        for(int i = 0; i < 4; ++i) {
             Vector3f vertex = vertices[i];
             vertex.rotate(quaternion);
             vertex.mul(currentSize);
@@ -283,7 +308,9 @@ public class DefaultParticle extends Particle {
         }
 
         int combined = 15 << 20 | 15 << 4;
-        float exposure = additiveBlend ? ADDITIVE_EXPOSURE : 1.0f;
+        float exposure = additiveBlend
+                ? ADDITIVE_EXPOSURE
+                : 1.0f;
         float r = this.rCol * exposure;
         float g = this.gCol * exposure;
         float b = this.bCol * exposure;
@@ -312,15 +339,21 @@ public class DefaultParticle extends Particle {
     @Override
     public @NotNull ParticleRenderType getRenderType() {
         if (textureName == null) {
-            return additiveBlend ? NULL_TEXTURE : NULL_TEXTURE_TRANSLUCENT;
+            return additiveBlend
+                    ? NULL_TEXTURE
+                    : NULL_TEXTURE_TRANSLUCENT;
         }
-        Map<ResourceLocation, ParticleRenderType> cache = additiveBlend ? map : translucentMap;
+        Map<ResourceLocation, ParticleRenderType> cache = additiveBlend
+                ? map
+                : translucentMap;
         ParticleRenderType cached = cache.get(textureName);
         if (cached != null) {
             return cached;
         }
         ResourceLocation texture = textureName;
-        String prefix = additiveBlend ? "recasting:default_particle:" : "recasting:default_particle_alpha:";
+        String prefix = additiveBlend
+                ? "recasting:default_particle:"
+                : "recasting:default_particle_alpha:";
         ParticleRenderType type = createBatchType(prefix + texture, texture, additiveBlend);
         cache.put(texture, type);
         return type;
@@ -400,9 +433,13 @@ public class DefaultParticle extends Particle {
         if (sizeChangeType == null) {
             return currentSize;
         }
-        float half = particleHalfAge <= 0.0f ? 0.5f : particleHalfAge;
+        float half = particleHalfAge <= 0.0f
+                ? 0.5f
+                : particleHalfAge;
         float timeLife = age / half;
-        timeLife = timeLife > 1 ? -timeLife + 2 : timeLife;
+        timeLife = timeLife > 1
+                ? -timeLife + 2
+                : timeLife;
         timeLife = Mth.clamp(timeLife, 0.0f, 1.0f);
         return switch (sizeChangeType) {
             case SIN -> (float) (size * Math.sin(timeLife * Math.PI * 0.5));
@@ -421,21 +458,37 @@ public class DefaultParticle extends Particle {
      * 输入为寿命三角波 {@code timeLife ∈ [0, 1]}（前半升、后半降）。
      */
     public enum SizeChangeType {
-        /** {@code size * sin(π/2 * timeLife)} */
+        /**
+         * {@code size * sin(π/2 * timeLife)}
+         */
         SIN,
-        /** {@code size * sin(π/2 * √timeLife)}，前半膨胀更快 */
+        /**
+         * {@code size * sin(π/2 * √timeLife)}，前半膨胀更快
+         */
         SQUARE_SIN,
-        /** {@code size * sin(π/2 * ∜timeLife)}，胀缩极快，贴合闪光 */
+        /**
+         * {@code size * sin(π/2 * ∜timeLife)}，胀缩极快，贴合闪光
+         */
         FLASH_SIN,
-        /** {@code size * cos(π/2 * timeLife)} */
+        /**
+         * {@code size * cos(π/2 * timeLife)}
+         */
         COS,
-        /** {@code size * cos(π/2 * √timeLife)} */
+        /**
+         * {@code size * cos(π/2 * √timeLife)}
+         */
         SQUARE_COS,
-        /** {@code size * cos(π/2 * ∜timeLife)}，衰减极快 */
+        /**
+         * {@code size * cos(π/2 * ∜timeLife)}，衰减极快
+         */
         FLASH_COS,
-        /** {@code size * timeLife}，随三角波线性缩放 */
+        /**
+         * {@code size * timeLife}，随三角波线性缩放
+         */
         SMOOTH,
-        /** {@code size * ∜timeLife}，胀缩极快，无 sin 压缩 */
+        /**
+         * {@code size * ∜timeLife}，胀缩极快，无 sin 压缩
+         */
         FLASH
     }
 }

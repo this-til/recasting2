@@ -3,11 +3,7 @@ package com.til.recasting.registry.sa;
 import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
-import com.til.recasting.handler.AttackHelper;
-import com.til.recasting.handler.CapabilityRegistryHandler;
-import com.til.recasting.handler.EntityPredicateHelper;
-import com.til.recasting.handler.PosHelper;
-import com.til.recasting.handler.PrismBeamEffectHelper;
+import com.til.recasting.handler.*;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.DamageStructure;
@@ -26,11 +22,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 光棱 Slash Arts（红警2 光棱坦克）
@@ -45,21 +37,35 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
     private final double scatterBoxY = 5.0;
     private final double scatterBoxZ = 15.0;
 
-    /** 脉冲次数 */
+    /**
+     * 脉冲次数
+     */
     int beamCount = 1;
-    /** 脉冲间隔 tick */
+    /**
+     * 脉冲间隔 tick
+     */
     int delay = 3;
     float attack = 0.5f;
-    /** 散射分光伤害相对主光束 */
+    /**
+     * 散射分光伤害相对主光束
+     */
     float scatterAttack = 0.15f;
     float range = 24f;
-    /** 散射索敌/空分光盒相对基准的倍率（每级约 +33%） */
+    /**
+     * 散射索敌/空分光盒相对基准的倍率（每级约 +33%）
+     */
     float scatterRange = 1.0f;
-    /** 主碰撞后同时发出的散射条数 */
+    /**
+     * 主碰撞后同时发出的散射条数
+     */
     int scatterCount = 5;
-    /** 散射命中后再发出的二阶散射条数 */
+    /**
+     * 散射命中后再发出的二阶散射条数
+     */
     int secondaryScatterCount = 0;
-    /** 二阶散射命中后再发出的三阶散射条数 */
+    /**
+     * 二阶散射命中后再发出的三阶散射条数
+     */
     int tertiaryScatterCount = 0;
 
     @Override
@@ -75,7 +81,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
 
         LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN);
         timeRunOptional.ifPresent(timeRun -> {
-            for (int i = 0; i < beamCount; i++) {
+            for(int i = 0; i < beamCount; i++) {
                 int pulseIndex = i;
                 timeRun.addTimerCell(
                         () -> firePrismPulse(livingEntity, slashBladeState, finalRange, color, attackTypes, pulseIndex),
@@ -176,7 +182,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
     ) {
         List<LivingEntity> targets = findScatterTargets(attacker, origin, exclude, count, scatterRangeMul);
         List<LivingEntity> scatterHits = new ArrayList<>();
-        for (LivingEntity target : targets) {
+        for(LivingEntity target : targets) {
             exclude.add(target);
             PosHelper.BeamHit hit = fireCollidingBeam(
                     attacker,
@@ -197,7 +203,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
 
         int remaining = count - targets.size();
         RandomSource random = attacker.getRandom();
-        for (int i = 0; i < remaining; i++) {
+        for(int i = 0; i < remaining; i++) {
             Vec3 aim = randomPointInScatterBox(origin, random, scatterRangeMul);
             // 空分光同样做物理碰撞，只播特效不结算伤害
             PosHelper.BeamHit hit = PosHelper.castLivingBeam(serverLevel, attacker, origin, aim);
@@ -208,7 +214,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
             return;
         }
         float secondaryDamage = damageRatio * 0.75f;
-        for (LivingEntity hit : scatterHits) {
+        for(LivingEntity hit : scatterHits) {
             fireScatterFrom(
                     attacker,
                     serverLevel,
@@ -263,7 +269,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
         AABB searchBox = new AABB(start, lookEnd).inflate(2.0);
         LivingEntity best = null;
         double bestScore = Double.MAX_VALUE;
-        for (LivingEntity candidate : attacker.level().getEntitiesOfClass(
+        for(LivingEntity candidate : attacker.level().getEntitiesOfClass(
                 LivingEntity.class,
                 searchBox,
                 entity -> EntityPredicateHelper.canTarget(attacker, entity)

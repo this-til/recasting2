@@ -99,7 +99,7 @@ public class HumanEmperorDomainSpecialEffect extends ExtendedSpecialEffect imple
         }
 
         int size = player.getInventory().getContainerSize();
-        for (int i = 0; i < size; i++) {
+        for(int i = 0; i < size; i++) {
             ItemStack stack = player.getInventory().getItem(i);
             if (stack.isEmpty() || !(stack.getItem() instanceof ItemSlashBlade)) {
                 continue;

@@ -63,7 +63,7 @@ public class RiftGaleSlashArts extends ExtendedSlashArts {
             ISlashBladeState slashBladeState
     ) {
         RandomSource random = livingEntity.getRandom();
-        for (int i = 0; i < driveCount; i++) {
+        for(int i = 0; i < driveCount; i++) {
             int delay = random.nextInt(driveDuration);
             timeRun.addTimerCell(
                     () -> spawnDrive(livingEntity.level(), livingEntity, slashBladeState, livingEntity.getRandom()),
@@ -81,7 +81,7 @@ public class RiftGaleSlashArts extends ExtendedSlashArts {
             ISlashBladeState slashBladeState
     ) {
         RandomSource random = livingEntity.getRandom();
-        for (int i = 0; i < driveCount; i++) {
+        for(int i = 0; i < driveCount; i++) {
             spawnDrive(livingEntity.level(), livingEntity, slashBladeState, random);
         }
         spawnCross(livingEntity, slashBladeState, random);

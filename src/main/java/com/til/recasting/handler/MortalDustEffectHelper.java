@@ -16,7 +16,7 @@ public final class MortalDustEffectHelper {
      * 飞行拖尾：每 tick 入队 2 次（与旧 EntityYao 服务端循环一致）。
      */
     public static void spawnTrail(ServerLevel serverLevel, Vec3 pos) {
-        for (int i = 0; i < 2; i++) {
+        for(int i = 0; i < 2; i++) {
             ParticleHelper.sendParticlesLongRange(
                     serverLevel,
                     RecastingParticleTypes.MORTAL_DUST_TRAIL.get(),

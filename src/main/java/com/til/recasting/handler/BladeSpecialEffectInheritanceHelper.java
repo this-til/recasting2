@@ -11,11 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * 拔刀剑合成时 SE 的继承与替换规则：
@@ -75,7 +71,7 @@ public final class BladeSpecialEffectInheritanceHelper {
     ) {
         Map<ResourceLocation, Integer> merged = new LinkedHashMap<>();
 
-        for (Map.Entry<ResourceLocation, Integer> inherited : inheritedNormals.entrySet()) {
+        for(Map.Entry<ResourceLocation, Integer> inherited : inheritedNormals.entrySet()) {
             if (merged.size() >= MAX_NORMAL_SPECIAL_EFFECTS) {
                 break;
             }
@@ -88,7 +84,7 @@ public final class BladeSpecialEffectInheritanceHelper {
             merged.put(seId, level);
         }
 
-        for (Map.Entry<ResourceLocation, Integer> definition : definitionNormals.entrySet()) {
+        for(Map.Entry<ResourceLocation, Integer> definition : definitionNormals.entrySet()) {
             ResourceLocation seId = definition.getKey();
             if (merged.containsKey(seId)) {
                 continue;
@@ -109,7 +105,7 @@ public final class BladeSpecialEffectInheritanceHelper {
         result.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(bladeState ->
                 result.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> {
                     List<ResourceLocation> toRemove = new ArrayList<>();
-                    for (ResourceLocation existingSeId : bladeState.getSpecialEffects()) {
+                    for(ResourceLocation existingSeId : bladeState.getSpecialEffects()) {
                         if (BladeSpecialEffectHelper.isSpecialExtendedEffect(existingSeId)) {
                             continue;
                         }
@@ -117,12 +113,12 @@ public final class BladeSpecialEffectInheritanceHelper {
                             toRemove.add(existingSeId);
                         }
                     }
-                    for (ResourceLocation seToRemove : toRemove) {
+                    for(ResourceLocation seToRemove : toRemove) {
                         bladeState.removeSpecialEffect(seToRemove);
                         extension.setExtendedSpecialLevels(seToRemove, 0);
                     }
 
-                    for (Map.Entry<ResourceLocation, Integer> entry : mergedNormals.entrySet()) {
+                    for(Map.Entry<ResourceLocation, Integer> entry : mergedNormals.entrySet()) {
                         bladeState.addSpecialEffect(entry.getKey());
                         extension.setExtendedSpecialLevels(entry.getKey(), entry.getValue());
                     }
@@ -140,7 +136,7 @@ public final class BladeSpecialEffectInheritanceHelper {
         if (definition instanceof com.til.recasting.mixin_api.ISlashBladeStateExtension stateExtension) {
             extension = stateExtension.getRecasting$propertiesDefinitionExtension();
         }
-        for (ResourceLocation seId : definition.getStateDefinition().getSpecialEffects()) {
+        for(ResourceLocation seId : definition.getStateDefinition().getSpecialEffects()) {
             if (BladeSpecialEffectHelper.isSpecialExtendedEffect(seId)) {
                 continue;
             }
@@ -157,7 +153,7 @@ public final class BladeSpecialEffectInheritanceHelper {
     }
 
     private static boolean definitionHasSpecialEffect(SlashBladeDefinition definition) {
-        for (ResourceLocation seId : definition.getStateDefinition().getSpecialEffects()) {
+        for(ResourceLocation seId : definition.getStateDefinition().getSpecialEffects()) {
             if (BladeSpecialEffectHelper.isSpecialExtendedEffect(seId)) {
                 return true;
             }
@@ -166,7 +162,7 @@ public final class BladeSpecialEffectInheritanceHelper {
     }
 
     private static Optional<EffectEntry> findInputSpecialEffect(CraftingContainer container) {
-        for (ItemStack stack : container.getItems()) {
+        for(ItemStack stack : container.getItems()) {
             if (stack.isEmpty() || !(stack.getItem() instanceof ItemSlashBlade)) {
                 continue;
             }
@@ -180,11 +176,11 @@ public final class BladeSpecialEffectInheritanceHelper {
 
     private static Map<ResourceLocation, Integer> findInputNormalEffects(CraftingContainer container) {
         Map<ResourceLocation, Integer> inheritedEffects = new LinkedHashMap<>();
-        for (ItemStack stack : container.getItems()) {
+        for(ItemStack stack : container.getItems()) {
             if (stack.isEmpty() || !(stack.getItem() instanceof ItemSlashBlade)) {
                 continue;
             }
-            for (EffectEntry entry : findNormalEffectsOnBlade(stack)) {
+            for(EffectEntry entry : findNormalEffectsOnBlade(stack)) {
                 Integer existing = inheritedEffects.get(entry.seId());
                 if (existing == null || entry.level() > existing) {
                     inheritedEffects.put(entry.seId(), entry.level());
@@ -208,7 +204,7 @@ public final class BladeSpecialEffectInheritanceHelper {
             return effects;
         }
 
-        for (ResourceLocation seId : bladeState.getSpecialEffects()) {
+        for(ResourceLocation seId : bladeState.getSpecialEffects()) {
             if (BladeSpecialEffectHelper.isSpecialExtendedEffect(seId)) {
                 continue;
             }

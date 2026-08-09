@@ -1,6 +1,5 @@
 package com.til.recasting.handler;
 
-import com.til.recasting.Recasting;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -67,7 +66,7 @@ public class ParticleHelper {
             double zOffset,
             double speed
     ) {
-        for (ServerPlayer player : serverLevel.players()) {
+        for(ServerPlayer player : serverLevel.players()) {
             serverLevel.sendParticles(player, type, true, x, y, z, count, xOffset, yOffset, zOffset, speed);
         }
     }

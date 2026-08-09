@@ -29,10 +29,10 @@ import java.util.List;
 @Accessors(chain = true)
 public class SkySeizeSlashArts extends ExtendedSlashArts {
 
-    private int bladeCount = 44;
+    private int bladeCount = 22;
     private float spawnRate = 35.0f;
     private float spawnHeight = 18.0f;
-    private float bladeRatio = 1.25f;
+    private float bladeRatio = 0.32f;
     private int startDelay = 5;
     private int breakDelay = 10;
     private int bladeColor = 0x3333FF;
@@ -41,7 +41,7 @@ public class SkySeizeSlashArts extends ExtendedSlashArts {
     private int chainHops = 3;
     private int chainHopDelay = 2;
     private float chainRange = 16.0f;
-    private float chainRatio = 0.4f;
+    private float chainRatio = 0.2f;
 
     @Override
     public void trigger(
@@ -59,8 +59,9 @@ public class SkySeizeSlashArts extends ExtendedSlashArts {
         RandomSource random = livingEntity.getRandom();
         int color = bladeColor;
         float playerWidth = livingEntity.getBbWidth();
+        Vec3 look = livingEntity.getLookAngle();
 
-        for (int i = 1; i <= bladeCount; i++) {
+        for(int i = 1; i <= bladeCount; i++) {
             double xSpeed = random.nextGaussian() * 0.02;
             double ySpeed = random.nextGaussian() * 0.02;
             double zSpeed = random.nextGaussian() * 0.02;
@@ -81,10 +82,11 @@ public class SkySeizeSlashArts extends ExtendedSlashArts {
             sword.setModifiedRatio(bladeRatio);
             sword.setColor(color);
             sword.setStartDelay(startDelay);
-            sword.setMaxLifeTime(random.nextInt(i) + 30);
+            sword.setMaxLifeTime(random.nextInt(i) + 40);
             sword.setBreakDelay(breakDelay);
             sword.setRoll(90.0f);
-            sword.lookAt(new Vec3(0.0, -1.0, 0.0), true);
+            // 朝向与玩家视线方向一致，而非竖直下落/射向目标点
+            sword.lookAt(look, true);
 
             sword.endCallbackPoint.register(() -> onBladeEnd(sword, livingEntity, color));
 

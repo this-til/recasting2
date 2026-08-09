@@ -74,7 +74,7 @@ public class CommandMappingSpecialEffect extends ExtendedSpecialEffect {
             return;
         }
         player.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
-            for (int i = 1; i <= extraTriggers; i++) {
+            for(int i = 1; i <= extraTriggers; i++) {
                 int delay = delayTicks * i;
                 timeRun.addTimerCell(() -> recast(player, artType), delay);
             }

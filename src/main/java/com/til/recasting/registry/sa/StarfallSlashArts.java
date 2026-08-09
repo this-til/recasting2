@@ -26,7 +26,7 @@ import net.minecraft.world.level.Level;
 import java.util.UUID;
 
 /**
- * [回到未来计划]群星坠落：展开阵体，无锁跟随落星，有锁钉阵禁锢并密集落星。
+ * [回到未来计划]群星坠落：展开粒子阵体，无锁跟随落星，有锁钉阵禁锢并密集落星。
  */
 @Setter
 @Accessors(chain = true)
@@ -34,13 +34,11 @@ public class StarfallSlashArts extends ExtendedSlashArts {
 
     private static final String KEY_ARRAY_UUID = "StarfallArrayUuid";
 
-    private ResourceLocation arrayModel = R.Models.Special.starfall$obj;
-    private ResourceLocation arrayTexture = R.Models.Special.starfall$png;
     private ResourceLocation starModel = R.Models.Special.starfallStar$obj;
     private ResourceLocation starTexture = R.Models.Special.starfallStar$png;
-    private float starRatio = 0.25f;
-    private int life = 300;
-    private int arrayColor = 0xFFFFFF;
+    private float starRatio = 0.08f;
+    private int life = 600;
+    private int arrayColor = 0xAACCFF;
     private float seekRange = 45.0f;
 
     @Override
@@ -65,15 +63,15 @@ public class StarfallSlashArts extends ExtendedSlashArts {
         discardExistingArray(buffStackData, starfallBuff, level);
 
         Entity locked = slashBladeState.getTargetEntity(level);
-        LivingEntity pinTarget = locked instanceof LivingEntity living && living.isAlive() ? living : null;
+        LivingEntity pinTarget = locked instanceof LivingEntity living && living.isAlive()
+                ? living
+                : null;
 
         StarfallArrayEntity array = new StarfallArrayEntity(
                 RecastingEntities.STARFALL_ARRAY.get(),
                 level,
                 livingEntity
         );
-        array.setModel(arrayModel);
-        array.setTexture(arrayTexture);
         array.setMaxLifeTime(life);
         array.setModifiedRatio(starRatio);
         array.setColor(arrayColor);

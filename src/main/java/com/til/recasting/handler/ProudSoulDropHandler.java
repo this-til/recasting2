@@ -2,6 +2,9 @@ package com.til.recasting.handler;
 
 import com.til.recasting.Config;
 import com.til.recasting.Recasting;
+import com.til.recasting.capability.IProudSoulDropCooldown;
+import com.til.recasting.capability.IProudSoulDropCooldown.DropKind;
+import com.til.recasting.capability.provider.ProudSoulDropCooldownProvider;
 import com.til.recasting.inventory.ProudSoulBagMenu;
 import com.til.recasting.registry.RecastingItems;
 import com.til.recasting.registry.requir.SlashBladeItems;
@@ -12,11 +15,15 @@ import mods.flammpfeil.slashblade.slasharts.SlashArts;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -36,6 +43,27 @@ public class ProudSoulDropHandler {
     private static final int SE_CRYSTAL_DROP_LEVEL = 1;
 
     @SubscribeEvent
+    public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
+        if (!(event.getObject() instanceof Player)) {
+            return;
+        }
+        ProudSoulDropCooldownProvider provider = new ProudSoulDropCooldownProvider();
+        event.addCapability(Recasting.prefix("proud_soul_drop_cooldown"), provider);
+        event.addListener(provider::invalidate);
+    }
+
+    @SubscribeEvent
+    public static void onPlayerClone(PlayerEvent.Clone event) {
+        event.getOriginal().reviveCaps();
+        LazyOptional<IProudSoulDropCooldown> oldOptional =
+                event.getOriginal().getCapability(CapabilityRegistryHandler.PROUD_SOUL_DROP_COOLDOWN);
+        LazyOptional<IProudSoulDropCooldown> newOptional =
+                event.getEntity().getCapability(CapabilityRegistryHandler.PROUD_SOUL_DROP_COOLDOWN);
+        oldOptional.ifPresent(oldData -> newOptional.ifPresent(newData -> newData.copyFrom(oldData)));
+        event.getOriginal().invalidateCaps();
+    }
+
+    @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
         if (event.getEntity().level().isClientSide()) {
             return;
@@ -51,6 +79,7 @@ public class ProudSoulDropHandler {
         }
 
         RandomSource random = event.getEntity().getRandom();
+        long gameTime = event.getEntity().level().getGameTime();
 
         if (random.nextDouble() < Config.PROUD_SOUL_TINY_DROP_CHANCE.get()) {
             giveProudSoul(player, new ItemStack(SlashBladeItems.PROUDSOUL_TINY.get()));
@@ -67,33 +96,43 @@ public class ProudSoulDropHandler {
             }
         }
 
-        if (random.nextDouble() < Config.BASIC_FLAME_DROP_CHANCE.get()) {
-            ItemStack flame = createRandomItem(RecastingItems.getAllFlame(), random);
-            if (!flame.isEmpty()) {
-                giveProudSoul(player, flame);
+        player.getCapability(CapabilityRegistryHandler.PROUD_SOUL_DROP_COOLDOWN).ifPresent(cooldown -> {
+            if (cooldown.isReady(DropKind.BASIC_FLAME, gameTime, Config.BASIC_FLAME_DROP_COOLDOWN_TICKS.get())
+                    && random.nextDouble() < Config.BASIC_FLAME_DROP_CHANCE.get()) {
+                ItemStack flame = createRandomItem(RecastingItems.getAllFlame(), random);
+                if (!flame.isEmpty()) {
+                    giveProudSoul(player, flame);
+                    cooldown.mark(DropKind.BASIC_FLAME, gameTime);
+                }
             }
-        }
 
-        if (random.nextDouble() < Config.SOUL_CUBE_DROP_CHANCE.get()) {
-            ItemStack cube = createRandomItem(RecastingItems.getAllSoulCube(), random);
-            if (!cube.isEmpty()) {
-                giveProudSoul(player, cube);
+            if (cooldown.isReady(DropKind.SOUL_CUBE, gameTime, Config.SOUL_CUBE_DROP_COOLDOWN_TICKS.get())
+                    && random.nextDouble() < Config.SOUL_CUBE_DROP_CHANCE.get()) {
+                ItemStack cube = createRandomItem(RecastingItems.getAllSoulCube(), random);
+                if (!cube.isEmpty()) {
+                    giveProudSoul(player, cube);
+                    cooldown.mark(DropKind.SOUL_CUBE, gameTime);
+                }
             }
-        }
 
-        if (random.nextDouble() < Config.SE_CRYSTAL_LEVEL_1_DROP_CHANCE.get()) {
-            ItemStack seCrystal = createRandomLevel1SeCrystal(random);
-            if (!seCrystal.isEmpty()) {
-                giveProudSoul(player, seCrystal);
+            if (cooldown.isReady(DropKind.SE_CRYSTAL, gameTime, Config.SE_CRYSTAL_DROP_COOLDOWN_TICKS.get())
+                    && random.nextDouble() < Config.SE_CRYSTAL_LEVEL_1_DROP_CHANCE.get()) {
+                ItemStack seCrystal = createRandomWhitelistedSeCrystal(random);
+                if (!seCrystal.isEmpty()) {
+                    giveProudSoul(player, seCrystal);
+                    cooldown.mark(DropKind.SE_CRYSTAL, gameTime);
+                }
             }
-        }
 
-        if (random.nextDouble() < Config.SLASH_ARTS_DROP_CHANCE.get()) {
-            ItemStack slashArtsSphere = createRandomSlashArtsSphere(random);
-            if (!slashArtsSphere.isEmpty()) {
-                giveProudSoul(player, slashArtsSphere);
+            if (cooldown.isReady(DropKind.SLASH_ARTS, gameTime, Config.SLASH_ARTS_DROP_COOLDOWN_TICKS.get())
+                    && random.nextDouble() < Config.SLASH_ARTS_DROP_CHANCE.get()) {
+                ItemStack slashArtsSphere = createRandomWhitelistedSlashArtsSphere(random);
+                if (!slashArtsSphere.isEmpty()) {
+                    giveProudSoul(player, slashArtsSphere);
+                    cooldown.mark(DropKind.SLASH_ARTS, gameTime);
+                }
             }
-        }
+        });
     }
 
     private static void giveProudSoul(Player player, ItemStack stack) {
@@ -111,7 +150,7 @@ public class ProudSoulDropHandler {
      */
     private static ItemStack createEnchantedTinyProudSoul(RandomSource random) {
         List<Enchantment> enchantments = new ArrayList<>();
-        for (Enchantment enchantment : ForgeRegistries.ENCHANTMENTS) {
+        for(Enchantment enchantment : ForgeRegistries.ENCHANTMENTS) {
             if (enchantment != null) {
                 enchantments.add(enchantment);
             }
@@ -138,13 +177,16 @@ public class ProudSoulDropHandler {
         return new ItemStack(items.get(random.nextInt(items.size())).get());
     }
 
-    private static ItemStack createRandomLevel1SeCrystal(RandomSource random) {
+    private static ItemStack createRandomWhitelistedSeCrystal(RandomSource random) {
+        List<ResourceLocation> whitelist = parseWhitelist(Config.SE_CRYSTAL_DROP_WHITELIST.get());
+        if (whitelist.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+
         List<ExtendedSpecialEffect> candidates = new ArrayList<>();
-        for (SpecialEffect specialEffect : mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValues()) {
+        for(ResourceLocation key : whitelist) {
+            SpecialEffect specialEffect = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(key);
             if (!(specialEffect instanceof ExtendedSpecialEffect extended)) {
-                continue;
-            }
-            if (extended.isSpecial()) {
                 continue;
             }
             if (extended.getMaxLevel() < SE_CRYSTAL_DROP_LEVEL) {
@@ -169,19 +211,22 @@ public class ProudSoulDropHandler {
         return stack;
     }
 
-    private static ItemStack createRandomSlashArtsSphere(RandomSource random) {
+    private static ItemStack createRandomWhitelistedSlashArtsSphere(RandomSource random) {
+        List<ResourceLocation> whitelist = parseWhitelist(Config.SLASH_ARTS_DROP_WHITELIST.get());
+        if (whitelist.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+
         List<ResourceLocation> candidates = new ArrayList<>();
-        for (SlashArts slashArts : mods.flammpfeil.slashblade.registry.SlashArtsRegistry.REGISTRY.get().getValues()) {
+        for(ResourceLocation key : whitelist) {
+            SlashArts slashArts = mods.flammpfeil.slashblade.registry.SlashArtsRegistry.REGISTRY.get().getValue(key);
             if (slashArts == null) {
                 continue;
             }
             if (slashArts.equals(mods.flammpfeil.slashblade.registry.SlashArtsRegistry.NONE.get())) {
                 continue;
             }
-            ResourceLocation key = mods.flammpfeil.slashblade.registry.SlashArtsRegistry.REGISTRY.get().getKey(slashArts);
-            if (key != null) {
-                candidates.add(key);
-            }
+            candidates.add(key);
         }
         if (candidates.isEmpty()) {
             return ItemStack.EMPTY;
@@ -191,5 +236,19 @@ public class ProudSoulDropHandler {
         CompoundTag tag = stack.getOrCreateTag();
         tag.putString("SpecialAttackType", candidates.get(random.nextInt(candidates.size())).toString());
         return stack;
+    }
+
+    private static List<ResourceLocation> parseWhitelist(List<? extends String> entries) {
+        List<ResourceLocation> result = new ArrayList<>();
+        for(String entry : entries) {
+            if (entry == null || entry.isBlank()) {
+                continue;
+            }
+            ResourceLocation key = ResourceLocation.tryParse(entry.trim());
+            if (key != null) {
+                result.add(key);
+            }
+        }
+        return result;
     }
 }

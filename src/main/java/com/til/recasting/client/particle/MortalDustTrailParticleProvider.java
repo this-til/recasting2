@@ -33,9 +33,15 @@ public class MortalDustTrailParticleProvider implements ParticleProvider<SimpleP
     ) {
         RandomSource random = level.random;
         // Pos.getRandomPos(0.07, 0.07, 0.07)
-        double mx = random.nextBoolean() ? random.nextDouble() * 0.07 : -(random.nextDouble() * 0.07);
-        double my = random.nextBoolean() ? random.nextDouble() * 0.07 : -(random.nextDouble() * 0.07);
-        double mz = random.nextBoolean() ? random.nextDouble() * 0.07 : -(random.nextDouble() * 0.07);
+        double mx = random.nextBoolean()
+                ? random.nextDouble() * 0.07
+                : -(random.nextDouble() * 0.07);
+        double my = random.nextBoolean()
+                ? random.nextDouble() * 0.07
+                : -(random.nextDouble() * 0.07);
+        double mz = random.nextBoolean()
+                ? random.nextDouble() * 0.07
+                : -(random.nextDouble() * 0.07);
 
         DefaultParticle particle = new DefaultParticle(level, x, y, z);
         particle.setMove(mx, my, mz)

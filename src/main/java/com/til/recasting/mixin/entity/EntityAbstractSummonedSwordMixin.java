@@ -1,18 +1,15 @@
 package com.til.recasting.mixin.entity;
 
-import com.til.recasting.Config;
-import com.til.recasting.mixin.EntityAccessor;
 import com.til.recasting.handler.AttackHelper;
-import com.til.recasting.util.DamageStructure;
-import net.minecraft.world.entity.Entity;
+import com.til.recasting.mixin.EntityAccessor;
 import com.til.recasting.registry.RecastingAttackTypes;
-import lombok.Getter;
-import lombok.Setter;
+import com.til.recasting.util.DamageStructure;
 import mods.flammpfeil.slashblade.entity.EntityAbstractSummonedSword;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.entity.EntityAccess;
 import net.minecraft.world.phys.EntityHitResult;

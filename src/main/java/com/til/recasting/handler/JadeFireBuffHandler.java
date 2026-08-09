@@ -8,10 +8,11 @@ import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
-import java.util.List;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.List;
 
 /**
  * 翠火 Buff 处理器
@@ -25,7 +26,9 @@ public final class JadeFireBuffHandler {
 
     private static final String TIMER_NAME = "jade_fire_tick";
     private static final float FIXED_FIRE_DAMAGE = 0.5f;
-    /** 满层时的额外受伤比例；中间层按 level / maxLevel 线性插值。 */
+    /**
+     * 满层时的额外受伤比例；中间层按 level / maxLevel 线性插值。
+     */
     private static final float DAMAGE_AMP_AT_MAX_LEVEL = 0.4f;
     private static final int TICKS_PER_INTERVAL = 20;
 

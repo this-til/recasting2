@@ -8,11 +8,11 @@ import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.client.renderer.BuffLevelTextRenderer;
 import com.til.recasting.client.renderer.EntityRenderExtension;
 import com.til.recasting.client.renderer.RenderStateManage;
-import mods.flammpfeil.slashblade.client.renderer.util.MSAutoCloser;
 import com.til.recasting.constant.R;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.instance.BuffType;
+import mods.flammpfeil.slashblade.client.renderer.util.MSAutoCloser;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -361,7 +361,7 @@ public class EntityRenderExtensionRegistry {
                 int b = color.getBlue();
                 int a = color.getAlpha();
 
-                for (int i = 0; i <= SEGMENTS; i++) {
+                for(int i = 0; i <= SEGMENTS; i++) {
                     float angle = (float) (Math.PI * 2.0 * i / SEGMENTS);
                     float cos = Mth.cos(angle);
                     float sin = Mth.sin(angle);

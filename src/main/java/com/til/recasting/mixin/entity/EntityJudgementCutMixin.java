@@ -1,19 +1,17 @@
 package com.til.recasting.mixin.entity;
 
 import com.til.recasting.Config;
-import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.handler.AttackHelper;
+import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.util.DamageStructure;
 import mods.flammpfeil.slashblade.entity.EntityJudgementCut;
-import net.minecraft.world.entity.Entity;
 import mods.flammpfeil.slashblade.entity.EntitySlashEffect;
-import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;

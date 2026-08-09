@@ -4,7 +4,9 @@ import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
-/** Recasting SlashBlade 定义的稳定注册 key。 */
+/**
+ * Recasting SlashBlade 定义的稳定注册 key。
+ */
 public final class RecastingSlashBladeKeys {
     private RecastingSlashBladeKeys() {
     }

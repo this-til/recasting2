@@ -11,8 +11,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 /**
  * @Author: til
  * @Description: 次次次次次元斩

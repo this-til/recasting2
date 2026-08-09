@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * 三八面体 {@code getEnchantmentValue} 取 {@code TRAPEZOHEDRON_MAX_REFINE}
- *（默认 {@link Integer#MAX_VALUE}）时，原版 {@code level * 10} 会 int 溢出为负，
+ * （默认 {@link Integer#MAX_VALUE}）时，原版 {@code level * 10} 会 int 溢出为负，
  * 精炼结算无法正确增加荣耀值。
  */
 @Mixin(value = RefineHandler.class, remap = false)

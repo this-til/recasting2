@@ -46,7 +46,7 @@ public class ProudSoulItem extends Item implements IGradientColorProvider {
         // 添加介绍文本（从翻译系统获取）
         String descKey = stack.getDescriptionId() + ".desc";
         Component descComponent = Component.translatable(descKey);
-        
+
         if (!descComponent.getString().equals(descKey)) {
             tooltip.add(descComponent.copy().withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
         }

@@ -37,7 +37,7 @@ public final class BladeTranslationHelper {
 
     private static ResourceLocation joinPath(String namespace, String[] parts, int pathStart) {
         StringBuilder pathBuilder = new StringBuilder();
-        for (int i = pathStart; i < parts.length; i++) {
+        for(int i = pathStart; i < parts.length; i++) {
             if (i > pathStart) {
                 pathBuilder.append('/');
             }

@@ -24,7 +24,7 @@ public final class ProudSoulBagHelper {
         if (offhand.getItem() instanceof ProudSoulBagItem) {
             return offhand;
         }
-        for (int i = 0; i < inventory.items.size(); i++) {
+        for(int i = 0; i < inventory.items.size(); i++) {
             ItemStack stack = inventory.items.get(i);
             if (stack.getItem() instanceof ProudSoulBagItem) {
                 return stack;

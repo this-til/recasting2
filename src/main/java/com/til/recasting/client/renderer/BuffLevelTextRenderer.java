@@ -1,7 +1,6 @@
 package com.til.recasting.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.client.registry.BuffLevelRendererRegistry;
 import com.til.recasting.client.registry.instance.BuffLevelRenderConfig;
@@ -65,7 +64,7 @@ public class BuffLevelTextRenderer implements EntityRenderExtension {
             return;
         }
 
-        for (BuffLevelRenderConfig config : registry.getValues()) {
+        for(BuffLevelRenderConfig config : registry.getValues()) {
             BuffType buffType = config.getBuffType();
             if (buffType == null) {
                 continue;
@@ -76,7 +75,7 @@ public class BuffLevelTextRenderer implements EntityRenderExtension {
             if (level != 0) {
                 String translationKey = config.getTranslationKey();
                 String buffName = Component.translatable(translationKey).getString();
-                
+
                 // 格式：{名称}:{当前层级}/{最大层级}
                 int maxLevel = buffType.getMaxLevel();
                 String displayText;
@@ -86,7 +85,7 @@ public class BuffLevelTextRenderer implements EntityRenderExtension {
                     // 如果没有最大层级限制，只显示当前层级
                     displayText = buffName + ": " + level;
                 }
-                
+
                 buffsToRender.add(new BuffInfo(displayText, buffType));
             }
         }
@@ -129,7 +128,7 @@ public class BuffLevelTextRenderer implements EntityRenderExtension {
 
             // 面向玩家视角
             poseStack.mulPose(minecraft.getEntityRenderDispatcher().cameraOrientation());
-            
+
             // 缩放文本（使其更小更精致）
             float scale = 0.025F;
             poseStack.scale(-scale, -scale, scale);
@@ -138,7 +137,7 @@ public class BuffLevelTextRenderer implements EntityRenderExtension {
 
             // 从上到下渲染每个 Buff
             int yOffset = 0;
-            for (BuffInfo buffInfo : buffInfos) {
+            for(BuffInfo buffInfo : buffInfos) {
                 String text = buffInfo.displayText;
                 float textWidth = font.width(text);
                 float x = -textWidth / 2.0F;

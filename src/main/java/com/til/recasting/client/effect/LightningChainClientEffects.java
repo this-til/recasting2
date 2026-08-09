@@ -65,7 +65,7 @@ public final class LightningChainClientEffects {
 
         double length = Math.sqrt(lengthSqr);
         float jitter = (float) Math.min(1.2, length * 0.08) * 0.35f;
-        for (int i = 1; i < 8; i++) {
+        for(int i = 1; i < 8; i++) {
             float t = i / 8.0f;
             Vec3 base = start.add(delta.scale(t));
             double ox = signedUnit(seed, i * 2L) * jitter;

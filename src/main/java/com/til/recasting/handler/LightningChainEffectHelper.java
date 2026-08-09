@@ -13,10 +13,14 @@ import net.minecraftforge.network.PacketDistributor;
  */
 public final class LightningChainEffectHelper {
 
-    /** 折线默认可见时长（tick） */
+    /**
+     * 折线默认可见时长（tick）
+     */
     public static final int DEFAULT_LIFE_TICKS = 8;
 
-    /** 特效同步半径（格），对齐 {@link ParticleHelper#sendParticlesLongRange}，避免远距横跳丢包 */
+    /**
+     * 特效同步半径（格），对齐 {@link ParticleHelper#sendParticlesLongRange}，避免远距横跳丢包
+     */
     private static final double SYNC_RANGE = 512.0;
 
     private LightningChainEffectHelper() {
@@ -36,7 +40,7 @@ public final class LightningChainEffectHelper {
 
         LightningChainMessage message = new LightningChainMessage(start, end, color, seed, lifeTicks);
         double rangeSqr = SYNC_RANGE * SYNC_RANGE;
-        for (ServerPlayer player : serverLevel.players()) {
+        for(ServerPlayer player : serverLevel.players()) {
             // 以端点判定：横跳远离施法者时中点可能很远，仅用 mid+64 会丢包
             if (player.distanceToSqr(start) <= rangeSqr || player.distanceToSqr(end) <= rangeSqr) {
                 NetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);

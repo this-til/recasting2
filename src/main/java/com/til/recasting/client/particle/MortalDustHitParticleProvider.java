@@ -33,10 +33,18 @@ public class MortalDustHitParticleProvider implements ParticleProvider<SimplePar
     ) {
         RandomSource random = level.random;
         // Pos.getRandomPos(1.55, 1.55, 1.55)，竖直分量翻正并 +0.21
-        double mx = random.nextBoolean() ? random.nextDouble() * 1.55 : -(random.nextDouble() * 1.55);
-        double my = random.nextBoolean() ? random.nextDouble() * 1.55 : -(random.nextDouble() * 1.55);
-        double mz = random.nextBoolean() ? random.nextDouble() * 1.55 : -(random.nextDouble() * 1.55);
-        my = my < 0.0 ? -my + 0.21 : my + 0.21;
+        double mx = random.nextBoolean()
+                ? random.nextDouble() * 1.55
+                : -(random.nextDouble() * 1.55);
+        double my = random.nextBoolean()
+                ? random.nextDouble() * 1.55
+                : -(random.nextDouble() * 1.55);
+        double mz = random.nextBoolean()
+                ? random.nextDouble() * 1.55
+                : -(random.nextDouble() * 1.55);
+        my = my < 0.0
+                ? -my + 0.21
+                : my + 0.21;
 
         float scale = random.nextFloat() * 3.25f + 0.22f;
         int life = random.nextInt(70) + 20;

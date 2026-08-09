@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
  * SE Crystal 数据实现类
  */
 public class SECrystalData implements ISpecialEffectCrystalData, INBTSerializable<CompoundTag> {
-    
+
     private static final String KEY_SPECIAL_EFFECT_TYPE = "SpecialEffectType";
     private static final String KEY_SPECIAL_EFFECT_LEVEL = "SpecialEffectTypeLevel";
 
@@ -41,15 +41,15 @@ public class SECrystalData implements ISpecialEffectCrystalData, INBTSerializabl
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-        
+
         if (specialEffectType != null) {
             tag.putString(KEY_SPECIAL_EFFECT_TYPE, specialEffectType.toString());
         }
-        
+
         if (specialEffectLevel > 0) {
             tag.putInt(KEY_SPECIAL_EFFECT_LEVEL, specialEffectLevel);
         }
-        
+
         return tag;
     }
 

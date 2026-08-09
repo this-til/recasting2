@@ -65,7 +65,7 @@ public class AnvilSlashArtsExtractionHandler {
 
         // 创建输出物品（耀魂宝珠的副本）
         ItemStack output = leftItem.copy();
-        
+
         // 设置SA信息到NBT
         CompoundTag tag = output.getOrCreateTag();
         tag.putString("SpecialAttackType", foundSALocation.get().toString());

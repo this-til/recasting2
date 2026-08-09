@@ -1,18 +1,14 @@
 package com.til.recasting.compat.jei;
 
 import com.til.recasting.Recasting;
-import com.til.recasting.capability.ISpecialEffectCrystalData;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.recipe.SpecialEffectCrystalShapedRecipe;
 import com.til.recasting.registry.RecastingItems;
-import com.til.recasting.registry.SpecialEffectsRegistry;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.ingredients.subtypes.UidContext;
-import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
-import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;

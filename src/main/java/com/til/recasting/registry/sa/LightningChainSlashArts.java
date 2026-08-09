@@ -3,12 +3,7 @@ package com.til.recasting.registry.sa;
 import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
-import com.til.recasting.handler.AttackHelper;
-import com.til.recasting.handler.CapabilityRegistryHandler;
-import com.til.recasting.handler.EntityPredicateHelper;
-import com.til.recasting.handler.LightningChainEffectHelper;
-import com.til.recasting.handler.LightningChainHelper;
-import com.til.recasting.handler.PosHelper;
+import com.til.recasting.handler.*;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.DamageStructure;
@@ -39,23 +34,41 @@ import java.util.Set;
 @Accessors(chain = true)
 public class LightningChainSlashArts extends ExtendedSlashArts {
 
-    /** 脉冲次数（对齐光棱 beamCount） */
+    /**
+     * 脉冲次数（对齐光棱 beamCount）
+     */
     int chainCount = 1;
-    /** 脉冲间隔 tick（对齐光棱 delay） */
+    /**
+     * 脉冲间隔 tick（对齐光棱 delay）
+     */
     int delay = 5;
-    /** 总跳数（含首击） */
+    /**
+     * 总跳数（含首击）
+     */
     int maxHops = 6;
-    /** 每跳间隔 tick */
+    /**
+     * 每跳间隔 tick
+     */
     int hopDelay = 2;
-    /** 横跳索敌半径 */
+    /**
+     * 横跳索敌半径
+     */
     float hopRange = 8f;
-    /** 首击伤害倍率 */
+    /**
+     * 首击伤害倍率
+     */
     float firstAttack = 0.55f;
-    /** 横跳基础倍率（每跳 ×0.9 衰减） */
+    /**
+     * 横跳基础倍率（每跳 ×0.9 衰减）
+     */
     float chainAttack = 0.4f;
-    /** 无锁定实体时，看向点附近搜首目标半径 */
+    /**
+     * 无锁定实体时，看向点附近搜首目标半径
+     */
     float seedRadius = 2.5f;
-    /** 范围内未命中目标耗尽后清空名单，允许新一轮跳跃（仍排除上一跳目标） */
+    /**
+     * 范围内未命中目标耗尽后清空名单，允许新一轮跳跃（仍排除上一跳目标）
+     */
     boolean allowRepeatJump = false;
 
     @Override
@@ -78,7 +91,7 @@ public class LightningChainSlashArts extends ExtendedSlashArts {
 
         LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN);
         timeRunOptional.ifPresent(timeRun -> {
-            for (int i = 0; i < chainCount; i++) {
+            for(int i = 0; i < chainCount; i++) {
                 int pulseIndex = i;
                 timeRun.addTimerCell(
                         () -> fireChainPulse(livingEntity, slashBladeState, serverLevel, color, attackTypes, pulseIndex),

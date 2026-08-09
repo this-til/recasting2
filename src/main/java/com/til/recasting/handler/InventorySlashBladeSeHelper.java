@@ -25,7 +25,9 @@ public final class InventorySlashBladeSeHelper {
     public record BladeSeHit(ItemStack blade, ISlashBladeState state, int slot) {
     }
 
-    /** playerUUID -> (effectId -> inventory slot) */
+    /**
+     * playerUUID -> (effectId -> inventory slot)
+     */
     private static final Map<UUID, Map<ResourceLocation, Integer>> SLOT_CACHE = new ConcurrentHashMap<>();
 
     private InventorySlashBladeSeHelper() {
@@ -78,7 +80,7 @@ public final class InventorySlashBladeSeHelper {
         }
 
         int size = player.getInventory().getContainerSize();
-        for (int i = 0; i < size; i++) {
+        for(int i = 0; i < size; i++) {
             BladeSeHit hit = resolveSlot(player, i, effectId);
             if (hit != null) {
                 putCachedSlot(player.getUUID(), effectId, i);

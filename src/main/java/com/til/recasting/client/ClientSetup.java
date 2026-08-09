@@ -1,13 +1,7 @@
 package com.til.recasting.client;
 
 import com.til.recasting.Recasting;
-import com.til.recasting.client.particle.AttackParticleProvider;
-import com.til.recasting.client.particle.GoldenHalberdParticleProvider;
-import com.til.recasting.client.particle.LightningHitParticleProvider;
-import com.til.recasting.client.particle.MortalDustHitParticleProvider;
-import com.til.recasting.client.particle.MortalDustTrailParticleProvider;
-import com.til.recasting.client.particle.StarBlinkParticleProvider;
-import com.til.recasting.client.particle.TeaAromaParticleProvider;
+import com.til.recasting.client.particle.*;
 import com.til.recasting.client.registry.BuffLevelRendererRegistry;
 import com.til.recasting.client.registry.EntityRenderExtensionRegistry;
 import com.til.recasting.client.screen.ProudSoulBagScreen;

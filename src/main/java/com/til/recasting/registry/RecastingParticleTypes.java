@@ -11,13 +11,13 @@ import net.minecraftforge.registries.RegistryObject;
  * Recasting 模组的粒子类型注册表
  */
 public class RecastingParticleTypes {
-    
+
     /**
      * 粒子类型延迟注册器
      */
-    public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = 
+    public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES =
             DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Recasting.MODID);
-    
+
     /**
      * 默认粒子类型
      * 支持自定义纹理、大小、颜色、旋转等效果

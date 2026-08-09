@@ -21,14 +21,14 @@ public class WhirlwindSpecialEffect extends ExtendedSpecialEffect {
         }
         JudgementCutEntity jc = context.judgementCut();
 
-            // 设置次元斩允许重复攻击
-            jc.setRepeatedAttack(true);
+        // 设置次元斩允许重复攻击
+        jc.setRepeatedAttack(true);
 
-            float v = attackInterval.of(context.effectLevel());
+        float v = attackInterval.of(context.effectLevel());
 
-            if (jc.getAttackInterval() > v) {
-                jc.setAttackInterval((int) v);
-            }
+        if (jc.getAttackInterval() > v) {
+            jc.setAttackInterval((int) v);
+        }
     }
 
 }

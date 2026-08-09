@@ -1,6 +1,5 @@
 package com.til.recasting.registry.se;
 
-import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.registry.RecastingEntities;
@@ -30,35 +29,35 @@ public class StormSpecialEffect extends ExtendedSpecialEffect {
         var state = context.state();
         int level = context.effectLevel();
 
-            // 获取次元斩位置
-            Vec3 pos = jc.position();
+        // 获取次元斩位置
+        Vec3 pos = jc.position();
 
-            // 生成幻影剑数量
-            int n = (int) number.of(level);
-            float attack = attackRatio.of(level);
+        // 生成幻影剑数量
+        int n = (int) number.of(level);
+        float attack = attackRatio.of(level);
 
-            for(int i = 0; i < n; i++) {
-                SummondSwordEntity summondSword = new SummondSwordEntity(
-                        RecastingEntities.SUMMOND_SWORD.get(),
-                        event.getLevel(),
-                        shooter
-                );
-
-                summondSword.lookAt(pos, false);
-                summondSword.setColor(state.getColorCode());
-                summondSword.setModifiedRatio(attack);
-                summondSword.setStartDelay(shooter.getRandom().nextInt(10));
-
-                // 添加到世界
-                event.getLevel().addFreshEntity(summondSword);
-            }
-
-            // 播放音效
-            event.getEntity().playSound(
-                    SoundEvents.CHORUS_FRUIT_TELEPORT,
-                    0.2F,
-                    1.45F
+        for(int i = 0; i < n; i++) {
+            SummondSwordEntity summondSword = new SummondSwordEntity(
+                    RecastingEntities.SUMMOND_SWORD.get(),
+                    event.getLevel(),
+                    shooter
             );
+
+            summondSword.lookAt(pos, false);
+            summondSword.setColor(state.getColorCode());
+            summondSword.setModifiedRatio(attack);
+            summondSword.setStartDelay(shooter.getRandom().nextInt(10));
+
+            // 添加到世界
+            event.getLevel().addFreshEntity(summondSword);
+        }
+
+        // 播放音效
+        event.getEntity().playSound(
+                SoundEvents.CHORUS_FRUIT_TELEPORT,
+                0.2F,
+                1.45F
+        );
     }
 
 }

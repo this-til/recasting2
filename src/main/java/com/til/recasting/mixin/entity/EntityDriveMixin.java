@@ -1,26 +1,17 @@
 package com.til.recasting.mixin.entity;
 
 import com.til.recasting.handler.AttackHelper;
-import com.til.recasting.mixin.EntityAccessor;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.util.DamageStructure;
-import lombok.Getter;
-import lombok.Setter;
 import mods.flammpfeil.slashblade.entity.EntityDrive;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.entity.EntityAccess;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;

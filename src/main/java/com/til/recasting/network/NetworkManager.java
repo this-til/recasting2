@@ -1,7 +1,6 @@
 package com.til.recasting.network;
 
 import com.til.recasting.Recasting;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 

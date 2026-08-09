@@ -2,11 +2,7 @@ package com.til.recasting.client.particle;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import com.til.recasting.client.RecastingShaderHandler;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -32,7 +28,9 @@ import java.awt.*;
 @OnlyIn(Dist.CLIENT)
 public class RiftSlashParticle extends Particle {
 
-    /** SDF 轴向半长（与 FD 默认一致） */
+    /**
+     * SDF 轴向半长（与 FD 默认一致）
+     */
     private static final float SDF_RIFT_LENGTH = 0.9f;
 
     private final Vec3 start;

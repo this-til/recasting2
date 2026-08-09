@@ -1,6 +1,5 @@
 package com.til.recasting.registry.instance;
 
-import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

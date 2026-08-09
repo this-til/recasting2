@@ -36,21 +36,21 @@ public class SlashBladeDefinitionExtensionProvider implements ICapabilityProvide
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag baseTag = new CompoundTag();
-        
+
         propertiesExtension.ifPresent(instance -> {
             CompoundTag propertiesTag = instance.serializeNBT();
             if (propertiesTag != null && !propertiesTag.isEmpty()) {
                 baseTag.put("properties", propertiesTag);
             }
         });
-        
+
         renderExtension.ifPresent(instance -> {
             CompoundTag renderTag = instance.serializeNBT();
             if (renderTag != null && !renderTag.isEmpty()) {
                 baseTag.put("render", renderTag);
             }
         });
-        
+
         return baseTag;
     }
 
@@ -59,14 +59,14 @@ public class SlashBladeDefinitionExtensionProvider implements ICapabilityProvide
         if (baseTag == null) {
             return;
         }
-        
+
         if (baseTag.contains("properties")) {
-            propertiesExtension.ifPresent(instance -> 
+            propertiesExtension.ifPresent(instance ->
                     instance.deserializeNBT(baseTag.getCompound("properties")));
         }
-        
+
         if (baseTag.contains("render")) {
-            renderExtension.ifPresent(instance -> 
+            renderExtension.ifPresent(instance ->
                     instance.deserializeNBT(baseTag.getCompound("render")));
         }
     }

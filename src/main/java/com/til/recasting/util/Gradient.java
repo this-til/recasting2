@@ -403,12 +403,13 @@ public class Gradient {
         colors.add(new ColorKey(0.5f, 0.0f, 1.0f, 1.0f, 1.0f));  // 紫
         return new Gradient(colors, null, Mode.BLEND);
     }
-    
+
     /**
      * 从 RGB 颜色值创建渐变
      * 从较暗的版本渐变到较亮的版本，再回到较暗的版本（循环）
-     * @param baseColor RGB 颜色值（0xRRGGBB 格式）
-     * @param darkFactor 暗色系数（默认 0.5）
+     *
+     * @param baseColor    RGB 颜色值（0xRRGGBB 格式）
+     * @param darkFactor   暗色系数（默认 0.5）
      * @param brightFactor 亮色系数（默认 1.2）
      * @return Gradient 对象
      */
@@ -417,21 +418,21 @@ public class Gradient {
         int r = (baseColor >> 16) & 0xFF;
         int g = (baseColor >> 8) & 0xFF;
         int b = baseColor & 0xFF;
-        
+
         // 转换为 0.0-1.0 范围
         float rNorm = r / 255.0f;
         float gNorm = g / 255.0f;
         float bNorm = b / 255.0f;
-        
+
         // 创建较暗和较亮的版本
         float darkR = Math.min(1.0f, rNorm * darkFactor);
         float darkG = Math.min(1.0f, gNorm * darkFactor);
         float darkB = Math.min(1.0f, bNorm * darkFactor);
-        
+
         float brightR = Math.min(1.0f, rNorm * brightFactor);
         float brightG = Math.min(1.0f, gNorm * brightFactor);
         float brightB = Math.min(1.0f, bNorm * brightFactor);
-        
+
         List<ColorKey> colorKeys = new ArrayList<>();
         // 从暗色开始（time = 0.0）
         colorKeys.add(new ColorKey(darkR, darkG, darkB, 1.0f, 0.0f));
@@ -441,18 +442,20 @@ public class Gradient {
         colorKeys.add(new ColorKey(brightR, brightG, brightB, 1.0f, 0.75f));
         // 回到暗色（time = 1.0），实现平滑循环
         colorKeys.add(new ColorKey(darkR, darkG, darkB, 1.0f, 1.0f));
-        
+
         return new Gradient(colorKeys, null, Mode.BLEND);
     }
-    
+
     /**
      * 从 RGB 颜色值创建渐变（使用默认系数）
+     *
      * @param baseColor RGB 颜色值（0xRRGGBB 格式）
      * @return Gradient 对象
      */
     public static Gradient createFromColor(int baseColor) {
         return createFromColor(baseColor, 0.7f, 1.2f);
     }
+
     public static Gradient createFromColor(Color baseColor) {
         return createFromColor(baseColor.getRGB());
     }

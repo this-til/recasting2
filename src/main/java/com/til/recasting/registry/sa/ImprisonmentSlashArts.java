@@ -171,7 +171,9 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
         level.addFreshEntity(blade);
     }
 
-    /** 移动次元斩并立刻向追踪客户端广播绝对坐标。 */
+    /**
+     * 移动次元斩并立刻向追踪客户端广播绝对坐标。
+     */
     private void moveJudgementCut(JudgementCutEntity jc, double x, double y, double z) {
         jc.teleportTo(x, y, z);
         if (jc.level() instanceof ServerLevel serverLevel) {

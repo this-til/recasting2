@@ -1,17 +1,13 @@
 package com.til.recasting.mixin;
 
-import com.til.recasting.capability.ISpecialEffectCrystalData;
-import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.SpecialEffectTooltipHelper;
-import com.til.recasting.registry.SlashArtsRegistry;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.item.SwordType;
 import mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
-import mods.flammpfeil.slashblade.slasharts.SlashArts;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -31,7 +27,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -65,10 +60,12 @@ public class ItemSlashBladeMixin {
                     && stack.getEnchantmentLevel(Enchantments.POWER_ARROWS) > 0) {
                 boolean tracking = extension.trackingPhantomBlade();
                 tooltip.add(Component.translatable(
-                                tracking
-                                        ? RecastingLanguageKeys.TOOLTIP_PHANTOM_BLADE_TRACKING
-                                        : RecastingLanguageKeys.TOOLTIP_PHANTOM_BLADE_NORMAL
-                        ).withStyle(tracking ? ChatFormatting.AQUA : ChatFormatting.GRAY));
+                        tracking
+                                ? RecastingLanguageKeys.TOOLTIP_PHANTOM_BLADE_TRACKING
+                                : RecastingLanguageKeys.TOOLTIP_PHANTOM_BLADE_NORMAL
+                ).withStyle(tracking
+                        ? ChatFormatting.AQUA
+                        : ChatFormatting.GRAY));
             }
         });
 
@@ -102,7 +99,9 @@ public class ItemSlashBladeMixin {
                     if (specialEffect instanceof com.til.recasting.registry.se.ExtendedSpecialEffect extendedSpecialEffect) {
                         nameComponent = SpecialEffect.getDescription(specialEffectResourceLocation)
                                 .copy()
-                                .withStyle(extendedSpecialEffect.isSpecial() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.GRAY);
+                                .withStyle(extendedSpecialEffect.isSpecial()
+                                        ? ChatFormatting.LIGHT_PURPLE
+                                        : ChatFormatting.GRAY);
                         valueComponent = Component.literal(
                                 es.getExtendedSpecialLevels(specialEffectResourceLocation) + "/" + extendedSpecialEffect.getMaxLevel()
                         ).withStyle(ChatFormatting.LIGHT_PURPLE);

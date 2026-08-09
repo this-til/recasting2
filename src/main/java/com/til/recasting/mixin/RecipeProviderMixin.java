@@ -1,8 +1,8 @@
 package com.til.recasting.mixin;
 
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 

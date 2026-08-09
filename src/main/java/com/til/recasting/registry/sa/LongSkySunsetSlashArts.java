@@ -54,7 +54,7 @@ public class LongSkySunsetSlashArts extends ExtendedSlashArts {
                 range
         );
 
-        for (int i = 0; i < swordCount; i++) {
+        for(int i = 0; i < swordCount; i++) {
             SummondSwordEntity summonedSword = new SummondSwordEntity(
                     RecastingEntities.SUMMOND_SWORD.get(),
                     worldIn,

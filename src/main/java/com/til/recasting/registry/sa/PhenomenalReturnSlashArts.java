@@ -35,10 +35,14 @@ public class PhenomenalReturnSlashArts extends ExtendedSlashArts {
     private float dispelRange = 128f;
     private float attackRatio = 0.08f;
     private int suppressSeconds = 9;
-    /** 次元斩生命时间：0.5s ~ 1s */
+    /**
+     * 次元斩生命时间：0.5s ~ 1s
+     */
     private int lifeTicksMin = 10;
     private int lifeTicksMax = 20;
-    /** 主动锁定存活目标的概率 */
+    /**
+     * 主动锁定存活目标的概率
+     */
     private float targetedChance = 0.4f;
 
     @Override
@@ -59,7 +63,7 @@ public class PhenomenalReturnSlashArts extends ExtendedSlashArts {
                 livingEntity.position(),
                 dispelRange
         );
-        for (LivingEntity entity : nearby) {
+        for(LivingEntity entity : nearby) {
             BuffSuppressHandler.dispelBeneficial(entity);
             BuffSuppressHandler.apply(entity, suppressSeconds);
         }

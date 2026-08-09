@@ -40,7 +40,9 @@ public class TeaAromaSpecialEffect extends ExtendedSpecialEffect {
 
     float storeRatio = 0.2f;
     int delayTicks = 30;
-    /** 剑气命中时额外叠加的 Buff 层级 */
+    /**
+     * 剑气命中时额外叠加的 Buff 层级
+     */
     int driveBonusStacks = 10;
 
     /**

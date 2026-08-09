@@ -61,7 +61,7 @@ public class PhaseFractureSlashArts extends ExtendedSlashArts {
                 livingEntity.position(),
                 pullRange
         );
-        for (LivingEntity entity : nearby) {
+        for(LivingEntity entity : nearby) {
             double jitterX = (random.nextDouble() - 0.5) * 0.8;
             double jitterZ = (random.nextDouble() - 0.5) * 0.8;
             entity.teleportTo(focus.x + jitterX, focus.y, focus.z + jitterZ);
@@ -85,8 +85,8 @@ public class PhaseFractureSlashArts extends ExtendedSlashArts {
 
         float yawStep = 360.0f / yawSteps;
         float pitchStep = 360.0f / pitchSteps;
-        for (int i = 0; i < yawSteps; i++) {
-            for (int o = 0; o < pitchSteps; o++) {
+        for(int i = 0; i < yawSteps; i++) {
+            for(int o = 0; o < pitchSteps; o++) {
                 float yaw = i * yawStep;
                 float pitch = o * pitchStep;
                 Vec3 dir = directionFromYawPitch(yaw, pitch);

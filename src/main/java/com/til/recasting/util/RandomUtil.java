@@ -6,14 +6,14 @@ import java.util.Random;
 
 /**
  * 随机工具类
- * 
+ *
  * @author til
  */
 public class RandomUtil {
-    
+
     /**
      * 在圆形范围内生成随机向量
-     * 
+     *
      * @param random 随机数生成器
      * @param radius 半径
      * @return 随机向量

@@ -1,7 +1,6 @@
 package com.til.recasting.handler;
 
 import com.til.recasting.Recasting;
-import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.registry.RecastingBuffTypes;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,11 +41,11 @@ public class CalculusBuffHandler {
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
             // 获取当前 calculus buff 的层数
             int currentLevel = data.getLevel(RecastingBuffTypes.CALCULUS.get(), target.level());
-            
+
             // 应用伤害增加：每层增加 10% 伤害
             if (currentLevel > 0) {
                 float damageIncrease = currentLevel * DAMAGE_INCREASE_PER_LEVEL;
-                
+
                 // 通过增加攻击倍率来实现伤害增加
                 // 例如：如果有 1 层（10% 增加），则攻击倍率增加 10%
                 event.addModifiedRatioAmplifier(damageIncrease);

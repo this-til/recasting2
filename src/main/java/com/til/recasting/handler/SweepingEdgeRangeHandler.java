@@ -18,7 +18,7 @@ public class SweepingEdgeRangeHandler {
     public static void onDoSlashExtend(DoSlashExtendEvent event) {
         // 获取横扫之刃附魔等级
         int sweepingLevel = event.getBlade().getEnchantmentLevel(Enchantments.SWEEPING_EDGE);
-        
+
         if (sweepingLevel > 0) {
             // 每级增加 0.2 攻击范围
             event.addAttackRange(sweepingLevel * 0.2f);

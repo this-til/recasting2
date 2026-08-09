@@ -25,13 +25,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 永恒守卫：以自身为中心展开领域，进入范围内的敌人被钉在进入时的绝对坐标，无法移动；
@@ -125,7 +119,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
                 radius
         );
         Set<UUID> present = new HashSet<>();
-        for (LivingEntity entity : nearby) {
+        for(LivingEntity entity : nearby) {
             UUID id = entity.getUUID();
             present.add(id);
             Vec3 pin = absolutePins.computeIfAbsent(id, ignored -> entity.position());
@@ -150,11 +144,13 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
         discardForeignProjectiles(caster);
     }
 
-    /** 清除领域内非本 SA 释放者发出的弹射物。 */
+    /**
+     * 清除领域内非本 SA 释放者发出的弹射物。
+     */
     private void discardForeignProjectiles(LivingEntity caster) {
         Level level = caster.level();
         AABB area = new AABB(caster.position(), caster.position()).inflate(radius);
-        for (Projectile projectile : level.getEntitiesOfClass(Projectile.class, area)) {
+        for(Projectile projectile : level.getEntitiesOfClass(Projectile.class, area)) {
             if (caster.equals(projectile.getOwner())) {
                 continue;
             }
@@ -170,7 +166,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
         timeRun.removeNamedTimerCell(TIMER_NAME);
         timeRun.removeNamedTimerCell(VISUAL_TIMER_NAME);
         BuffType buffType = RecastingBuffTypes.ETERNAL_GUARD.get();
-        for (LivingEntity target : pinnedTargets.values()) {
+        for(LivingEntity target : pinnedTargets.values()) {
             clearGuardBuff(target, buffType);
         }
         absolutePins.clear();
@@ -209,7 +205,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
         double waistY = caster.getY() + 1.0;
         double baseAngle = caster.tickCount * (Math.PI / 40.0);
 
-        for (int i = 0; i < ringSegments; i++) {
+        for(int i = 0; i < ringSegments; i++) {
             double angle = baseAngle + (Math.PI * 2.0) * i / ringSegments;
             double x = caster.getX() + Math.cos(angle) * radius;
             double z = caster.getZ() + Math.sin(angle) * radius;

@@ -5,18 +5,14 @@ import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.instance.BuffType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -48,7 +44,9 @@ public class BuffStackSyncMessage {
         if (hasEntry) {
             int level = buf.readInt();
             long lastUpdateTime = buf.readLong();
-            CompoundTag customData = buf.readBoolean() ? buf.readNbt() : null;
+            CompoundTag customData = buf.readBoolean()
+                    ? buf.readNbt()
+                    : null;
             msg.entry = new IBuffStackData.BuffEntry(level, lastUpdateTime, customData);
         } else {
             msg.entry = null; // 表示移除该buff

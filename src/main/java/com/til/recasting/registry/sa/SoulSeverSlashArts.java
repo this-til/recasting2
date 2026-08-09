@@ -6,10 +6,9 @@ import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.entity.SlashEffectEntity;
 import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
-import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.registry.RecastingAttackTypes;
+import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.util.DamageStructure;
-import java.util.List;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.SlashBlade;
@@ -27,6 +26,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 /**
  * 断魄 Slash Arts
@@ -159,7 +160,7 @@ public class SoulSeverSlashArts extends ExtendedSlashArts {
         }
 
         int count = Math.min(giantJudgementCutCount, targetPositions.size());
-        for (int i = 0; i < count; i++) {
+        for(int i = 0; i < count; i++) {
             int delay = i + 1;
             spawnJudgementCut(
                     shooter.level(),
@@ -220,7 +221,9 @@ public class SoulSeverSlashArts extends ExtendedSlashArts {
 
         return java.util.stream.IntStream.range(0, giantJudgementCutCount)
                 .mapToObj(i -> {
-                    LivingEntity target = hitTargets.get(hitTargets.size() == 1 ? 0 : shooter.getRandom().nextInt(hitTargets.size()));
+                    LivingEntity target = hitTargets.get(hitTargets.size() == 1
+                            ? 0
+                            : shooter.getRandom().nextInt(hitTargets.size()));
                     return getTargetPos(target);
                 })
                 .toList();
@@ -284,7 +287,9 @@ public class SoulSeverSlashArts extends ExtendedSlashArts {
                 return;
             }
 
-            List<LivingEntity> hitTargets = (this.alreadyHits == null ? List.<Entity>of() : this.alreadyHits).stream()
+            List<LivingEntity> hitTargets = (this.alreadyHits == null
+                    ? List.<Entity>of()
+                    : this.alreadyHits).stream()
                     .filter(LivingEntity.class::isInstance)
                     .map(LivingEntity.class::cast)
                     .filter(target -> target != shooter)
@@ -292,7 +297,7 @@ public class SoulSeverSlashArts extends ExtendedSlashArts {
 
             List<Vec3> plannedTargetPositions = planRepeatableTargetPositions(shooter, hitTargets);
 
-            for (LivingEntity target : hitTargets) {
+            for(LivingEntity target : hitTargets) {
                 if (!target.isAlive()) {
                     continue;
                 }

@@ -31,14 +31,22 @@ public class PhotonScarBuffHandler {
 
     private static final String PHOTON_BURN_TIMER_NAME = "photon_burn_tick";
 
-    /** 灼烧每层每次结算的火焰伤害 */
+    /**
+     * 灼烧每层每次结算的火焰伤害
+     */
     private static final float DAMAGE_PER_STACK = 0.1f;
-    /** 灼烧结算间隔（tick） */
+    /**
+     * 灼烧结算间隔（tick）
+     */
     private static final int TICKS_PER_INTERVAL = 10;
 
-    /** 灼痕满层短光束伤害倍率 */
+    /**
+     * 灼痕满层短光束伤害倍率
+     */
     private static final float MINI_LASER_ATTACK = 0.25f;
-    /** 刀状态缺失时的短光束默认颜色 */
+    /**
+     * 刀状态缺失时的短光束默认颜色
+     */
     private static final int DEFAULT_COLOR = 0x50DCFF;
 
     public static void ensurePhotonBurnTimer(LivingEntity target) {

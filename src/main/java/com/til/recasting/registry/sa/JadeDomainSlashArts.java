@@ -5,18 +5,11 @@ import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.entity.SummondSpiralSwordEntity;
-import com.til.recasting.handler.BuffSourceHelper;
-import com.til.recasting.handler.CapabilityRegistryHandler;
-import com.til.recasting.handler.EntityHelper;
-import com.til.recasting.handler.JadeFireBuffHandler;
-import com.til.recasting.handler.ParticleHelper;
-import com.til.recasting.handler.PosHelper;
+import com.til.recasting.handler.*;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.registry.instance.BuffType;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -33,6 +26,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 云界 Slash Arts
@@ -101,7 +97,7 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
                 domainRange
         ));
         livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
-            for (int i = 0; i < initialBladeReleaseCount; i++) {
+            for(int i = 0; i < initialBladeReleaseCount; i++) {
                 timeRun.addTimerCell(
                         () -> triggerInitialBladeRelease(
                                 livingEntity,
@@ -191,7 +187,7 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
 
         DustParticleOptions ringDust = createPaleDust(ringDustSize);
         double footY = caster.getY() + 0.2;
-        for (int i = 0; i < ringSegments; i++) {
+        for(int i = 0; i < ringSegments; i++) {
             double angle = baseAngle + (Math.PI * 2.0) * i / ringSegments;
             spawnRingParticle(serverLevel, ringDust, caster, angle, footY, 1, 0.0, 0.0, 0.0, 0.0);
         }
@@ -199,7 +195,7 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
         DustParticleOptions waistDust = createPaleDust(waistDustSize);
         double waistY = caster.getY() + 1.1;
         double halfStep = Math.PI / waistSegments;
-        for (int i = 0; i < waistSegments; i++) {
+        for(int i = 0; i < waistSegments; i++) {
             double angle = baseAngle + halfStep + (Math.PI * 2.0) * i / waistSegments;
             spawnRingParticle(serverLevel, waistDust, caster, angle, waistY, 1, 0.0, 0.0, 0.0, 0.0);
         }
@@ -211,7 +207,7 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
         }
 
         DustParticleOptions highlightDust = createPaleDust(highlightDustSize);
-        for (int i = 0; i < highlightNodes; i++) {
+        for(int i = 0; i < highlightNodes; i++) {
             double angle = baseAngle + (Math.PI * 2.0) * i / highlightNodes;
             double x = caster.getX() + Math.cos(angle) * domainRange;
             double z = caster.getZ() + Math.sin(angle) * domainRange;
@@ -272,7 +268,7 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
     }
 
     private LivingEntity pickRandomAliveTarget(LivingEntity caster, List<LivingEntity> targets) {
-        for (int attempt = 0; attempt < 10 && !targets.isEmpty(); attempt++) {
+        for(int attempt = 0; attempt < 10 && !targets.isEmpty(); attempt++) {
             LivingEntity candidate = targets.get(caster.getRandom().nextInt(targets.size()));
             if (candidate.isAlive()) {
                 return candidate;
@@ -335,7 +331,7 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
         float tiltAngle = caster.getRandom().nextFloat() * (phantomSwordMaxTiltAngle - phantomSwordMinTiltAngle) + phantomSwordMinTiltAngle;
         float horizontalAngle = caster.getRandom().nextFloat() * 360f;
 
-        for (int i = 0; i < swordCount; i++) {
+        for(int i = 0; i < swordCount; i++) {
             spawnSmallPhantomSword(world, caster, target, color, angleOffset, tiltAngle, horizontalAngle, swordCount, i);
         }
     }

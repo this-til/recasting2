@@ -47,8 +47,12 @@ public class LightningHitParticleProvider implements ParticleProvider<SimplePart
     ) {
         Color color = resolveColor(xSpeed, ySpeed, zSpeed);
         boolean dark = isDark(color);
-        Color bright = dark ? liftDark(color) : brighten(color, 1.35f);
-        Color soft = withAlpha(color, dark ? 200 : 140);
+        Color bright = dark
+                ? liftDark(color)
+                : brighten(color, 1.35f);
+        Color soft = withAlpha(color, dark
+                ? 200
+                : 140);
 
         spawnCloudPuffs(level, x, y, z, soft, bright, dark);
         spawnSparks(level, x, y, z, bright, color, dark);
@@ -58,7 +62,9 @@ public class LightningHitParticleProvider implements ParticleProvider<SimplePart
                 .setSizeChangeType(DefaultParticle.SizeChangeType.SQUARE_SIN)
                 .setParticleCollide(false)
                 .setLifeTime(10 + random.nextInt(4))
-                .setColor(withAlpha(bright, dark ? 220 : 200))
+                .setColor(withAlpha(bright, dark
+                        ? 220
+                        : 200))
                 .setTextureName(CLOUD_TEXTURE)
                 .setAdditiveBlend(!dark)
                 .setRollSpeed((random.nextFloat() - 0.5f) * 0.15f);
@@ -72,7 +78,7 @@ public class LightningHitParticleProvider implements ParticleProvider<SimplePart
             Color bright,
             boolean dark
     ) {
-        for (int i = 0; i < CLOUD_COUNT; i++) {
+        for(int i = 0; i < CLOUD_COUNT; i++) {
             Vec3 offset = RandomUtil.nextVector3dOnCircles(random, 1.0)
                     .scale(CLOUD_SPREAD * (0.35 + random.nextDouble() * 0.65));
             Vec3 drift = RandomUtil.nextVector3dOnCircles(random, 1.0)
@@ -90,7 +96,11 @@ public class LightningHitParticleProvider implements ParticleProvider<SimplePart
                     .setSizeChangeType(DefaultParticle.SizeChangeType.SQUARE_SIN)
                     .setParticleCollide(false)
                     .setLifeTime(8 + random.nextInt(6))
-                    .setColor(i % 2 == 0 ? soft : withAlpha(bright, dark ? 200 : 160))
+                    .setColor(i % 2 == 0
+                            ? soft
+                            : withAlpha(bright, dark
+                                    ? 200
+                                    : 160))
                     .setTextureName(CLOUD_TEXTURE)
                     .setAdditiveBlend(!dark)
                     .setRollSpeed((random.nextFloat() - 0.5f) * 0.2f);
@@ -106,7 +116,7 @@ public class LightningHitParticleProvider implements ParticleProvider<SimplePart
             Color color,
             boolean dark
     ) {
-        for (int i = 0; i < SPARK_COUNT; i++) {
+        for(int i = 0; i < SPARK_COUNT; i++) {
             Vec3 offset = RandomUtil.nextVector3dOnCircles(random, 1.0)
                     .scale(CLOUD_SPREAD * (0.2 + random.nextDouble() * 0.9));
             Vec3 crackle = RandomUtil.nextVector3dOnCircles(random, 1.0)
@@ -124,7 +134,9 @@ public class LightningHitParticleProvider implements ParticleProvider<SimplePart
                     .setSizeChangeType(DefaultParticle.SizeChangeType.FLASH_SIN)
                     .setParticleCollide(false)
                     .setLifeTime(4 + random.nextInt(5))
-                    .setColor(withAlpha(i % 2 == 0 ? bright : color, 230))
+                    .setColor(withAlpha(i % 2 == 0
+                            ? bright
+                            : color, 230))
                     .setTextureName(SPARK_TEXTURE)
                     .setAdditiveBlend(!dark);
 
@@ -157,7 +169,9 @@ public class LightningHitParticleProvider implements ParticleProvider<SimplePart
         );
     }
 
-    /** 暗色略提亮，便于核/火花与纯黑鞘区分，不退回高亮加法色 */
+    /**
+     * 暗色略提亮，便于核/火花与纯黑鞘区分，不退回高亮加法色
+     */
     private static Color liftDark(Color color) {
         return new Color(
                 Mth.clamp(color.getRed() + 28, 0, 255),

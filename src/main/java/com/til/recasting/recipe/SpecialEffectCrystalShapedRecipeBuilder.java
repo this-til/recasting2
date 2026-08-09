@@ -6,7 +6,6 @@ import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.til.recasting.registry.RecastingItems;
-import com.til.recasting.registry.SpecialEffectsRegistry;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
@@ -49,7 +48,7 @@ public class SpecialEffectCrystalShapedRecipeBuilder extends CraftingRecipeBuild
     @Nullable
     private String group;
     private boolean showNotification = true;
-    
+
     // SE结晶特定字段
     @Nullable
     private ResourceLocation specialEffectType = null;
@@ -210,7 +209,9 @@ public class SpecialEffectCrystalShapedRecipeBuilder extends CraftingRecipeBuild
                 .requirements(RequirementsStrategy.OR);
         consumer.accept(new SpecialEffectCrystalShapedRecipeBuilder.Result(
                 id, this.result, this.count, this.specialEffectType, this.level,
-                this.group == null ? "" : this.group, this.rows, this.key, this.advancement,
+                this.group == null
+                        ? ""
+                        : this.group, this.rows, this.key, this.advancement,
                 id.withPrefix("recipes/" + this.category.getFolderName() + "/"), this.showNotification
         ));
     }
@@ -222,8 +223,8 @@ public class SpecialEffectCrystalShapedRecipeBuilder extends CraftingRecipeBuild
             Set<Character> set = Sets.newHashSet(this.key.keySet());
             set.remove(' ');
 
-            for (String s : this.rows) {
-                for (int i = 0; i < s.length(); ++i) {
+            for(String s : this.rows) {
+                for(int i = 0; i < s.length(); ++i) {
                     char c0 = s.charAt(i);
                     if (!this.key.containsKey(c0) && c0 != ' ') {
                         throw new IllegalStateException(
@@ -282,19 +283,19 @@ public class SpecialEffectCrystalShapedRecipeBuilder extends CraftingRecipeBuild
         @Override
         public void serializeRecipeData(@NotNull JsonObject json) {
             super.serializeRecipeData(json);
-            
+
             if (!this.group.isEmpty()) {
                 json.addProperty("group", this.group);
             }
 
             JsonArray jsonarray = new JsonArray();
-            for (String s : this.pattern) {
+            for(String s : this.pattern) {
                 jsonarray.add(s);
             }
             json.add("pattern", jsonarray);
 
             JsonObject jsonobject = new JsonObject();
-            for (Map.Entry<Character, Ingredient> entry : this.key.entrySet()) {
+            for(Map.Entry<Character, Ingredient> entry : this.key.entrySet()) {
                 jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
             }
             json.add("key", jsonobject);

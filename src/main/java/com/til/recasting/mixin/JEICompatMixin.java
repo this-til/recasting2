@@ -87,12 +87,12 @@ public class JEICompatMixin {
         // 格式1: "item.{namespace}.{path}"
         // 格式2: "slashblade.name.{namespace}.{path}"
         String[] parts = translationKey.split("\\.");
-        
+
         // 检查格式1: item.namespace.path
         if (parts.length >= 3 && "item".equals(parts[0])) {
             String namespace = parts[1];
             StringBuilder pathBuilder = new StringBuilder();
-            for (int i = 2; i < parts.length; i++) {
+            for(int i = 2; i < parts.length; i++) {
                 if (i > 2) {
                     pathBuilder.append("/");
                 }
@@ -101,12 +101,12 @@ public class JEICompatMixin {
             String path = pathBuilder.toString();
             return ResourceLocation.fromNamespaceAndPath(namespace, path);
         }
-        
+
         // 检查格式2: slashblade.name.namespace.path
         if (parts.length >= 4 && "slashblade".equals(parts[0]) && "name".equals(parts[1])) {
             String namespace = parts[2];
             StringBuilder pathBuilder = new StringBuilder();
-            for (int i = 3; i < parts.length; i++) {
+            for(int i = 3; i < parts.length; i++) {
                 if (i > 3) {
                     pathBuilder.append("/");
                 }

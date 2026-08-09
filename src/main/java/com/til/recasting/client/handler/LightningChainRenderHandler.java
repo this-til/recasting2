@@ -26,7 +26,9 @@ public class LightningChainRenderHandler {
 
     private static final float CORE_HALF_WIDTH = 0.04f;
     private static final float SHEATH_HALF_WIDTH = 0.14f;
-    /** 低于此亮度视为暗色闪电，改用半透明混合而非加法 */
+    /**
+     * 低于此亮度视为暗色闪电，改用半透明混合而非加法
+     */
     private static final float DARK_LUMINANCE_THRESHOLD = 0.18f;
 
     @SubscribeEvent
@@ -59,7 +61,7 @@ public class LightningChainRenderHandler {
 
         List<LightningChainClientEffects.Bolt> brightBolts = new ArrayList<>();
         List<LightningChainClientEffects.Bolt> darkBolts = new ArrayList<>();
-        for (LightningChainClientEffects.Bolt bolt : bolts) {
+        for(LightningChainClientEffects.Bolt bolt : bolts) {
             if (bolt.alpha(gameTime, partialTick) <= 0.01f) {
                 continue;
             }
@@ -72,7 +74,7 @@ public class LightningChainRenderHandler {
 
         if (!brightBolts.isEmpty()) {
             CameraFacingBeamRenderer.begin(CameraFacingBeamRenderer.BlendMode.ADDITIVE);
-            for (LightningChainClientEffects.Bolt bolt : brightBolts) {
+            for(LightningChainClientEffects.Bolt bolt : brightBolts) {
                 drawBolt(matrix, camera, bolt, gameTime, partialTick, true);
             }
             CameraFacingBeamRenderer.end();
@@ -80,7 +82,7 @@ public class LightningChainRenderHandler {
 
         if (!darkBolts.isEmpty()) {
             CameraFacingBeamRenderer.begin(CameraFacingBeamRenderer.BlendMode.TRANSLUCENT);
-            for (LightningChainClientEffects.Bolt bolt : darkBolts) {
+            for(LightningChainClientEffects.Bolt bolt : darkBolts) {
                 drawBolt(matrix, camera, bolt, gameTime, partialTick, false);
             }
             CameraFacingBeamRenderer.end();
@@ -117,13 +119,17 @@ public class LightningChainRenderHandler {
 
         Vec3[] points = bolt.points();
         CameraFacingBeamRenderer.drawPolyline(
-                matrix, camera, points, SHEATH_HALF_WIDTH, r, g, b, alpha * (bright ? 0.5f : 0.7f)
+                matrix, camera, points, SHEATH_HALF_WIDTH, r, g, b, alpha * (bright
+                        ? 0.5f
+                        : 0.7f)
         );
         CameraFacingBeamRenderer.drawPolyline(
-                matrix, camera, points, CORE_HALF_WIDTH, coreR, coreG, coreB, alpha * (bright ? 1.0f : 0.9f)
+                matrix, camera, points, CORE_HALF_WIDTH, coreR, coreG, coreB, alpha * (bright
+                        ? 1.0f
+                        : 0.9f)
         );
 
-        for (int i = 2; i < points.length - 2; i += 2) {
+        for(int i = 2; i < points.length - 2; i += 2) {
             if (!shouldDrawBranch(bolt.seed(), i)) {
                 continue;
             }
@@ -137,11 +143,15 @@ public class LightningChainRenderHandler {
             Vec3 branchEnd = mid.add(side);
             CameraFacingBeamRenderer.drawQuad(
                     matrix, camera, mid, branchEnd,
-                    SHEATH_HALF_WIDTH * 0.6f, r, g, b, alpha * (bright ? 0.35f : 0.55f)
+                    SHEATH_HALF_WIDTH * 0.6f, r, g, b, alpha * (bright
+                            ? 0.35f
+                            : 0.55f)
             );
             CameraFacingBeamRenderer.drawQuad(
                     matrix, camera, mid, branchEnd,
-                    CORE_HALF_WIDTH * 0.6f, coreR, coreG, coreB, alpha * (bright ? 0.7f : 0.8f)
+                    CORE_HALF_WIDTH * 0.6f, coreR, coreG, coreB, alpha * (bright
+                            ? 0.7f
+                            : 0.8f)
             );
         }
     }

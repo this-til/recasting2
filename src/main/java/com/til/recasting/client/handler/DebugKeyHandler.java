@@ -1,14 +1,5 @@
 package com.til.recasting.client.handler;
 
-import com.til.recasting.Recasting;
-import com.til.recasting.client.renderer.entity.SummondSwordEntityRenderer;
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import org.lwjgl.glfw.GLFW;
-
 /**
  * 调试按键处理器
  * 用于调试召唤剑渲染角度

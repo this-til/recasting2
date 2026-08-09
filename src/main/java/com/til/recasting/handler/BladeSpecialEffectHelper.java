@@ -33,7 +33,7 @@ public final class BladeSpecialEffectHelper {
             return Optional.empty();
         }
 
-        for (ResourceLocation effectId : context.state().getSpecialEffects()) {
+        for(ResourceLocation effectId : context.state().getSpecialEffects()) {
             if (!isSpecialExtendedEffect(effectId)) {
                 continue;
             }
@@ -52,7 +52,7 @@ public final class BladeSpecialEffectHelper {
         }
 
         int count = 0;
-        for (ResourceLocation effectId : context.state().getSpecialEffects()) {
+        for(ResourceLocation effectId : context.state().getSpecialEffects()) {
             SpecialEffect effect = getSpecialEffect(effectId);
             if (!(effect instanceof ExtendedSpecialEffect extendedEffect) || extendedEffect.isSpecial()) {
                 continue;
@@ -76,7 +76,7 @@ public final class BladeSpecialEffectHelper {
             @Nullable ResourceLocation keep
     ) {
         List<ResourceLocation> removals = new ArrayList<>();
-        for (ResourceLocation effectId : state.getSpecialEffects()) {
+        for(ResourceLocation effectId : state.getSpecialEffects()) {
             if (effectId.equals(keep)) {
                 continue;
             }
@@ -85,7 +85,7 @@ public final class BladeSpecialEffectHelper {
             }
         }
 
-        for (ResourceLocation effectId : removals) {
+        for(ResourceLocation effectId : removals) {
             state.removeSpecialEffect(effectId);
             properties.setExtendedSpecialLevels(effectId, 0);
         }

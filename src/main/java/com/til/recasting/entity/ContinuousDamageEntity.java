@@ -1,6 +1,5 @@
 package com.til.recasting.entity;
 
-import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.util.CallbackPoint;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -45,7 +44,9 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
     @Nullable
     protected List<Entity> alreadyHits;
 
-    /** 单次攻击模式下是否已触发过 onAttackTime */
+    /**
+     * 单次攻击模式下是否已触发过 onAttackTime
+     */
     protected boolean singleAttackTriggered;
 
     public final CallbackPoint<IAttackAction> attackActionCallbackPoint = new CallbackPoint<>();

@@ -131,7 +131,7 @@ public class SpecialEffectCrystalIngredient extends Ingredient {
             } else if (json.has("items")) {
                 ImmutableSet.Builder<Item> builder = ImmutableSet.builder();
                 JsonArray itemArray = GsonHelper.getAsJsonArray(json, "items");
-                for (int i = 0; i < itemArray.size(); i++) {
+                for(int i = 0; i < itemArray.size(); i++) {
                     builder.add(CraftingHelper.getItem(GsonHelper.convertToString(itemArray.get(i), "items[" + i + ']'),
                             true));
                 }
@@ -146,7 +146,7 @@ public class SpecialEffectCrystalIngredient extends Ingredient {
         @Override
         public void write(FriendlyByteBuf buffer, SpecialEffectCrystalIngredient ingredient) {
             buffer.writeVarInt(ingredient.items.size());
-            for (Item item : ingredient.items) {
+            for(Item item : ingredient.items) {
                 buffer.writeRegistryIdUnsafe(ForgeRegistries.ITEMS, item);
             }
             ingredient.request.toNetwork(buffer);

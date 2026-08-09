@@ -2,6 +2,8 @@ package com.til.recasting.entity;
 
 import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.registry.RecastingEntities;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -12,25 +14,39 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
+import java.awt.*;
 import java.util.List;
 
 /**
  * [回到未来计划]群星坠落阵：自身不造成伤害，按模式跟随或禁锢并刷追踪落星。
+ * 客户端粒子阵：仅边框（参考 CryptoMorin/XSeries 轮廓绘制，不做填充）。
  */
 public class StarfallArrayEntity extends StandardizationAttackEntity {
 
     public static final int MODE_FOLLOW = 0;
     public static final int MODE_PIN = 1;
 
-    protected static final EntityDataAccessor<Integer> MODE =
-            SynchedEntityData.defineId(StarfallArrayEntity.class, EntityDataSerializers.INT);
+    /**
+     * 与旧 OBJ 渲染一致：模型外延约 522，BASE_SCALE 0.02 → 半径约 10.44 格；
+     * 实际绘制半径 = 该值 × {@link #getSize()}。
+     */
+    private static final double MODEL_EXTENT = 522.0;
+    private static final double MODEL_BASE_SCALE = 0.02;
+    private static final double OUTER_RADIUS = MODEL_EXTENT * MODEL_BASE_SCALE;
+    private static final double STAR_RADIUS_RATIO = 0.825;
+    /**
+     * 五角星内凹半径相对外尖的比例
+     */
+    private static final double STAR_INNER_RATIO = 0.382;
+    private static final double ARRAY_Y_OFFSET = 0.1;
 
-    protected static final EntityDataAccessor<Integer> TARGET_ENTITY_ID =
-            SynchedEntityData.defineId(StarfallArrayEntity.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> MODE = SynchedEntityData.defineId(StarfallArrayEntity.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> TARGET_ENTITY_ID = SynchedEntityData.defineId(StarfallArrayEntity.class, EntityDataSerializers.INT);
 
     private float seekRange = 45.0f;
-    private float starDropHeight = 12.0f;
+    private float starDropHeight = 32.0f;
     private int starLife = 200;
     private int starColor = 0x3333FF;
     private float starSize = 2.67f;
@@ -60,6 +76,9 @@ public class StarfallArrayEntity extends StandardizationAttackEntity {
     public void tick() {
         super.tick();
         if (level().isClientSide()) {
+            if (tickCount % 2 == 0) {
+                spawnArrayParticles();
+            }
             return;
         }
 
@@ -92,6 +111,82 @@ public class StarfallArrayEntity extends StandardizationAttackEntity {
         double offset = target.getBbWidth() * (random.nextDouble() * 2.0 - 1.0);
         double spawnY = target.getY() + Math.abs(offset) * 0.5 + 1.0;
         spawnStar(caster, target, spawnY);
+    }
+
+    /**
+     * 粒子阵法：仅绘制边框（外圈 + 五角星边 + 内五边形），不填充。
+     * 半径与旧模型 {@code BASE_SCALE * extent * size} 对齐。
+     */
+    private void spawnArrayParticles() {
+        double cx = getX();
+        double cy = getY() + ARRAY_Y_OFFSET;
+        double cz = getZ();
+        float size = Math.max(0.5f, getSize());
+        double outer = OUTER_RADIUS * size;
+        double starOuter = outer * STAR_RADIUS_RATIO;
+        double starInner = starOuter * STAR_INNER_RATIO;
+        double rotation = tickCount * 0.006;
+
+        Color color = getColor();
+        DustParticleOptions rimDust = new DustParticleOptions(
+                new Vector3f(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f),
+                1.1f
+        );
+
+        // 外圈边框
+        double rimStep = Math.max(0.05, 0.5 / outer);
+        for(double angle = 0.0; angle < Math.PI * 2.0; angle += rimStep) {
+            double x = cx + Math.cos(angle + rotation) * outer;
+            double z = cz + Math.sin(angle + rotation) * outer;
+            level().addParticle(ParticleTypes.END_ROD, true, x, cy, z, 0.0, 0.0, 0.0);
+            level().addParticle(rimDust, true, x, cy + 0.02, z, 0.0, 0.0, 0.0);
+        }
+
+        // 五角星边框（{5/2}）
+        double edgeStep = Math.max(0.04, 0.32 / starOuter);
+        for(int i = 0; i < 5; i++) {
+            double a1 = rotation + i * Math.PI * 2.0 / 5.0 - Math.PI / 2.0;
+            double a2 = rotation + ((i + 2) % 5) * Math.PI * 2.0 / 5.0 - Math.PI / 2.0;
+            spawnEdge(
+                    cx, cy, cz,
+                    Math.cos(a1) * starOuter, Math.sin(a1) * starOuter,
+                    Math.cos(a2) * starOuter, Math.sin(a2) * starOuter,
+                    edgeStep,
+                    rimDust
+            );
+        }
+
+        // 内五边形边框
+        for(int i = 0; i < 5; i++) {
+            double a1 = rotation + i * Math.PI * 2.0 / 5.0 + Math.PI / 5.0 - Math.PI / 2.0;
+            double a2 = rotation + ((i + 1) % 5) * Math.PI * 2.0 / 5.0 + Math.PI / 5.0 - Math.PI / 2.0;
+            spawnEdge(
+                    cx, cy, cz,
+                    Math.cos(a1) * starInner, Math.sin(a1) * starInner,
+                    Math.cos(a2) * starInner, Math.sin(a2) * starInner,
+                    edgeStep,
+                    rimDust
+            );
+        }
+    }
+
+    private void spawnEdge(
+            double cx,
+            double cy,
+            double cz,
+            double ax,
+            double az,
+            double bx,
+            double bz,
+            double step,
+            DustParticleOptions dust
+    ) {
+        for(double t = 0.0; t <= 1.0; t += step) {
+            double x = cx + ax * (1.0 - t) + bx * t;
+            double z = cz + az * (1.0 - t) + bz * t;
+            level().addParticle(ParticleTypes.END_ROD, true, x, cy, z, 0.0, 0.0, 0.0);
+            level().addParticle(dust, true, x, cy + 0.02, z, 0.0, 0.0, 0.0);
+        }
     }
 
     @Nullable
@@ -153,7 +248,9 @@ public class StarfallArrayEntity extends StandardizationAttackEntity {
     }
 
     public void setPinTarget(@Nullable LivingEntity target) {
-        setTargetEntityId(target != null ? target.getId() : -1);
+        setTargetEntityId(target != null
+                ? target.getId()
+                : -1);
     }
 
     @Nullable

@@ -4,15 +4,9 @@ import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.util.DamageStructure;
 import com.til.recasting.util.ICreateDamageSource;
-import lombok.AllArgsConstructor;
-import mods.flammpfeil.slashblade.registry.SlashArtsRegistry;
-import net.minecraft.Util;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.Objects;
 

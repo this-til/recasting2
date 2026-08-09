@@ -1,16 +1,7 @@
 package com.til.recasting.registry;
 
 import com.til.recasting.Recasting;
-import com.til.recasting.entity.DriveEntity;
-import com.til.recasting.entity.JudgementCutEntity;
-import com.til.recasting.entity.LightningEntity;
-import com.til.recasting.entity.MatrixEntity;
-import com.til.recasting.entity.SlashEffectEntity;
-import com.til.recasting.entity.StarfallArrayEntity;
-import com.til.recasting.entity.StellarRotationEntity;
-import com.til.recasting.entity.SummondSpiralSwordEntity;
-import com.til.recasting.entity.SummondSwordEntity;
-import com.til.recasting.entity.TrackingSummondSwordEntity;
+import com.til.recasting.entity.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;

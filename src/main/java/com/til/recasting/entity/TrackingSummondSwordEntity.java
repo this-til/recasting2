@@ -31,13 +31,17 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
      */
     private static final double RETARGET_RANGE = 32.0;
     private static final float TURN_STEP = 10.0f;
-    /** 无锁定目标时的重索敌间隔（1s） */
+    /**
+     * 无锁定目标时的重索敌间隔（1s）
+     */
     private static final int RETARGET_INTERVAL_TICKS = 20;
 
     @Nullable
     protected Entity targetEntity;
 
-    /** 下一次无目标索敌的 tickCount */
+    /**
+     * 下一次无目标索敌的 tickCount
+     */
     private int nextRetargetTick = 0;
 
     /**
@@ -113,7 +117,9 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
     @Nullable
     private Entity resolveOrAcquireTarget() {
         int targetId = getTargetEntityId();
-        Entity target = targetId > 0 ? level().getEntity(targetId) : null;
+        Entity target = targetId > 0
+                ? level().getEntity(targetId)
+                : null;
         if (target != null && target.isAlive()) {
             return target;
         }

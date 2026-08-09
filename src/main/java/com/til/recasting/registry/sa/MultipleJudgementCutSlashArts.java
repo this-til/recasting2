@@ -7,7 +7,6 @@ import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingEntities;
-import java.util.concurrent.atomic.AtomicReference;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -17,6 +16,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 多重次元斩·决 Slash Arts

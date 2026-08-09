@@ -1,7 +1,7 @@
 package com.til.recasting.mixin.entity;
 
-import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.handler.AttackHelper;
+import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.util.DamageStructure;
 import mods.flammpfeil.slashblade.entity.EntitySlashEffect;
 import net.minecraft.world.entity.Entity;

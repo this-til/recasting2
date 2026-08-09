@@ -70,24 +70,24 @@ public final class BuffSuppressHandler {
 
     public static void dispelBeneficial(LivingEntity entity) {
         List<MobEffectInstance> toRemove = new ArrayList<>();
-        for (MobEffectInstance instance : entity.getActiveEffects()) {
+        for(MobEffectInstance instance : entity.getActiveEffects()) {
             if (instance.getEffect().isBeneficial()) {
                 toRemove.add(instance);
             }
         }
-        for (MobEffectInstance instance : toRemove) {
+        for(MobEffectInstance instance : toRemove) {
             entity.removeEffect(instance.getEffect());
         }
     }
 
     public static void dispelHarmful(LivingEntity entity) {
         List<MobEffectInstance> toRemove = new ArrayList<>();
-        for (MobEffectInstance instance : entity.getActiveEffects()) {
+        for(MobEffectInstance instance : entity.getActiveEffects()) {
             if (!instance.getEffect().isBeneficial()) {
                 toRemove.add(instance);
             }
         }
-        for (MobEffectInstance instance : toRemove) {
+        for(MobEffectInstance instance : toRemove) {
             entity.removeEffect(instance.getEffect());
         }
     }

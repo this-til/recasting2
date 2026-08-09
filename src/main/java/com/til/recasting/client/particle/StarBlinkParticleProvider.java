@@ -55,7 +55,7 @@ public class StarBlinkParticleProvider implements ParticleProvider<SimpleParticl
     }
 
     private void spawnSmallParticles(ClientLevel level, double x, double y, double z) {
-        for (int i = 0; i < smallNumber; i++) {
+        for(int i = 0; i < smallNumber; i++) {
             var move = RandomUtil.nextVector3dOnCircles(random, 1.0)
                     .scale(smallMove.of(random.nextFloat()));
 

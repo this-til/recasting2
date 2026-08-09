@@ -30,7 +30,7 @@ public class ProudSoulBagSyncMessage {
 
     public static void encode(ProudSoulBagSyncMessage msg, FriendlyByteBuf buf) {
         buf.writeVarInt(msg.entries.size());
-        for (ProudSoulBagStorage.StoredEntry entry : msg.entries) {
+        for(ProudSoulBagStorage.StoredEntry entry : msg.entries) {
             ProudSoulBagStorage.writeTemplate(buf, entry.template());
             buf.writeVarLong(entry.count());
         }
@@ -40,7 +40,7 @@ public class ProudSoulBagSyncMessage {
         ProudSoulBagSyncMessage msg = new ProudSoulBagSyncMessage();
         int size = buf.readVarInt();
         List<ProudSoulBagStorage.StoredEntry> list = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
+        for(int i = 0; i < size; i++) {
             ItemStack template = ProudSoulBagStorage.readTemplate(buf);
             long count = buf.readVarLong();
             list.add(new ProudSoulBagStorage.StoredEntry(template, count));

@@ -55,7 +55,7 @@ public class StarSlashArts extends ExtendedSlashArts {
         );
 
         // 第一阶段：发射初始召唤剑
-        for (int i = 0; i < attackNumber; i++) {
+        for(int i = 0; i < attackNumber; i++) {
             SummondSwordEntity summonedSword = new SummondSwordEntity(
                     RecastingEntities.SUMMOND_SWORD.get(),
                     worldIn,
@@ -87,7 +87,7 @@ public class StarSlashArts extends ExtendedSlashArts {
 
         // 第二阶段：生成持续的次元斩阵地（如果 zoneNumber > 0）
         if (zoneNumber > 0) {
-            for (int i = 0; i < zoneNumber; i++) {
+            for(int i = 0; i < zoneNumber; i++) {
                 Vec3 randomOffset = PosHelper.getRandomVectorInCircle(livingEntity.getRandom(), zonerRange);
                 Vec3 zonePos = livingEntity.position().add(randomOffset);
 

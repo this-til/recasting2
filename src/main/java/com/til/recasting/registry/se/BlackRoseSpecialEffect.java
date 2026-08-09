@@ -115,7 +115,7 @@ public class BlackRoseSpecialEffect extends ExtendedSpecialEffect {
             int nextUnits = (int) (units * attenuation);
             if (nextUnits <= 0) {
                 buffStackData.setLevel(blackRoseBuffType, 0, target.level());
-            timeRun.removeNamedTimerCell(timerName);
+                timeRun.removeNamedTimerCell(timerName);
                 return;
             }
 

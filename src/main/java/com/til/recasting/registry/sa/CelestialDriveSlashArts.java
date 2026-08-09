@@ -25,7 +25,7 @@ public class CelestialDriveSlashArts extends ExtendedSlashArts {
 
     private int yawSteps = 8;
     private int pitchSteps = 8;
-    private float driveRatio = 0.65f;
+    private float driveRatio = 0.25f;
     private float driveSeep = 1.8f;
     private int life = 10;
     private int driveColor = 0x3333FF;
@@ -48,8 +48,8 @@ public class CelestialDriveSlashArts extends ExtendedSlashArts {
         float yawStep = 360.0f / yawSteps;
         float pitchStep = 360.0f / pitchSteps;
 
-        for (int i = 0; i < yawSteps; i++) {
-            for (int o = 0; o < pitchSteps; o++) {
+        for(int i = 0; i < yawSteps; i++) {
+            for(int o = 0; o < pitchSteps; o++) {
                 Vec3 dir = directionFromYawPitch(i * yawStep, o * pitchStep);
                 DriveEntity drive = new DriveEntity(
                         RecastingEntities.DRIVE.get(),

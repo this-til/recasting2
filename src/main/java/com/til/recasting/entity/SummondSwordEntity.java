@@ -1,9 +1,9 @@
 package com.til.recasting.entity;
 
-import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.handler.AttackHelper;
-import com.til.recasting.util.CallbackPoint;
 import com.til.recasting.handler.EntityPredicateHelper;
+import com.til.recasting.registry.RecastingAttackTypes;
+import com.til.recasting.util.CallbackPoint;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.ability.StunManager;
@@ -429,7 +429,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     }
 
     @Override
-    public void updateMotion(){
+    public void updateMotion() {
         updateMotion(getSeep());
     }
 

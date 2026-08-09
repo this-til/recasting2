@@ -25,9 +25,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 @Accessors(chain = true)
 public class PhotonScarSpecialEffect extends ExtendedSpecialEffect {
 
-    /** 灼烧满层时的全伤害增伤上限 */
+    /**
+     * 灼烧满层时的全伤害增伤上限
+     */
     float maxLaserBonus = 0.33f;
-    /** 每次激光命中叠加的灼烧层数 */
+    /**
+     * 每次激光命中叠加的灼烧层数
+     */
     int addLevel = 1;
 
     @SubscribeEvent

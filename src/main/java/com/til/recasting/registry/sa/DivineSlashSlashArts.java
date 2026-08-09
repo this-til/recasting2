@@ -24,7 +24,7 @@ public class DivineSlashSlashArts extends ExtendedSlashArts {
 
     private int driveCount = 16;
     private float driveRatio = 0.15f;
-    private float driveSeep = 0.45f;
+    private float driveSeep = 0.15f;
     private int life = 200;
     private float speedScalePerTick = 1.05f;
 
@@ -45,7 +45,7 @@ public class DivineSlashSlashArts extends ExtendedSlashArts {
         Vec3 origin = livingEntity.position().add(0.0, livingEntity.getEyeHeight() * 0.5, 0.0);
         Vec3 look = livingEntity.getLookAngle();
 
-        for (int i = 0; i < driveCount; i++) {
+        for(int i = 0; i < driveCount; i++) {
             DriveEntity drive = new DriveEntity(
                     RecastingEntities.DRIVE.get(),
                     level,
@@ -55,14 +55,14 @@ public class DivineSlashSlashArts extends ExtendedSlashArts {
             drive.setModifiedRatio(driveRatio);
             drive.setSeep(driveSeep);
             drive.setMaxLifeTime(life);
+            drive.setAttackInterval(5);
             drive.setRepeatedAttack(false);
             drive.setRoll(random.nextInt(361));
             drive.setColor(randomRgb(random));
-            drive.setSize((driveCount - i) * (random.nextFloat() * 0.75f + 1.25f));
+            drive.setSize((driveCount - i) * (random.nextFloat() * 0.75f + 1.25f) / 4.0f);
             drive.setSpeedScalePerTick(speedScalePerTick);
             drive.setParameter(true);
             drive.lookAt(look, true);
-            drive.setSpeedScalePerTick(1.05f);
             level.addFreshEntity(drive);
         }
 

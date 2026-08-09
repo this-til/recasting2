@@ -1,8 +1,6 @@
 package com.til.recasting.handler;
 
 import lombok.extern.slf4j.Slf4j;
-import mods.flammpfeil.slashblade.SlashBlade;
-import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;

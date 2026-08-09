@@ -1,14 +1,9 @@
 package com.til.recasting.client.renderer;
 
-import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.til.recasting.capability.IBuffStackData;
-import com.til.recasting.client.registry.EntityRenderExtensionRegistry;
-import com.til.recasting.entity.StandardizationAttackEntity;
-import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.handler.CapabilityRegistryHandler;
-import com.til.recasting.registry.SpecialEffectsRegistry;
 import com.til.recasting.registry.instance.BuffType;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;
@@ -22,7 +17,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.function.Supplier;
 

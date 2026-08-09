@@ -20,7 +20,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ProudSoulLethalAbsorbHelper {
 
-    /** 近窗统计时长：0.2s */
+    /**
+     * 近窗统计时长：0.2s
+     */
     public static final int PROTECT_WINDOW_TICKS = 4;
 
     private record ProudSpend(long gameTime, int amount) {
@@ -86,7 +88,7 @@ public final class ProudSoulLethalAbsorbHelper {
 
     private static int sum(Deque<ProudSpend> spends) {
         int total = 0;
-        for (ProudSpend spend : spends) {
+        for(ProudSpend spend : spends) {
             total += spend.amount();
         }
         return total;

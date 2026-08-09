@@ -1,27 +1,17 @@
 package com.til.recasting;
 
 import com.til.recasting.client.ClientSetup;
+import com.til.recasting.network.NetworkManager;
 import com.til.recasting.registry.*;
 import lombok.extern.log4j.Log4j2;
-import mods.flammpfeil.slashblade.SlashBlade;
-import mods.flammpfeil.slashblade.SlashBladeConfig;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.RegistryObject;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import com.til.recasting.network.NetworkManager;
-import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 
 @Log4j2
 @Mod(Recasting.MODID)

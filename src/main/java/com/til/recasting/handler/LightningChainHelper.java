@@ -1,6 +1,5 @@
 package com.til.recasting.handler;
 
-import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.DamageStructure;
 import net.minecraft.server.level.ServerLevel;
@@ -31,17 +30,17 @@ public final class LightningChainHelper {
     /**
      * 从给定起点启动横跳传导序列（不含首击伤害，仅传导后续跳）。
      *
-     * @param attacker       攻击者
-     * @param startPos       传导起点坐标
-     * @param startTarget    首击目标（放入已命中集合，传导不会重打）；为 null 时从 startPos 开始无排除
-     * @param serverLevel    服务端世界
-     * @param color          闪电链颜色
-     * @param maxHops        最大跳数
-     * @param hopDelay       每跳间隔 tick
-     * @param hopRange       横跳索敌半径
-     * @param baseRatio      首跳伤害倍率（每跳 ×0.9 衰减）
-     * @param attackTypes     攻击类型列表
-     * @param allowRepeat    范围内目标全部命中后是否清空名单重新跳跃
+     * @param attacker    攻击者
+     * @param startPos    传导起点坐标
+     * @param startTarget 首击目标（放入已命中集合，传导不会重打）；为 null 时从 startPos 开始无排除
+     * @param serverLevel 服务端世界
+     * @param color       闪电链颜色
+     * @param maxHops     最大跳数
+     * @param hopDelay    每跳间隔 tick
+     * @param hopRange    横跳索敌半径
+     * @param baseRatio   首跳伤害倍率（每跳 ×0.9 衰减）
+     * @param attackTypes 攻击类型列表
+     * @param allowRepeat 范围内目标全部命中后是否清空名单重新跳跃
      */
     public static void startHopSequence(
             LivingEntity attacker,
@@ -65,7 +64,7 @@ public final class LightningChainHelper {
             AtomicReference<Vec3> tipRef = new AtomicReference<>(startPos);
             AtomicReference<LivingEntity> lastRef = new AtomicReference<>(startTarget);
             float decayed = baseRatio;
-            for (int hop = 0; hop < maxHops; hop++) {
+            for(int hop = 0; hop < maxHops; hop++) {
                 int hopTick = hopDelay * (hop + 1);
                 float ratio = decayed;
                 timeRun.addTimerCell(() -> {

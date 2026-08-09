@@ -2,12 +2,11 @@ package com.til.recasting.registry.sa;
 
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
-import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.handler.EntityHelper;
+import com.til.recasting.handler.ParticleHelper;
 import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
-import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -26,17 +25,14 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * [回到未来计划]大包弹：锁定优先、视锥索敌；近距盒伤后在目标处放出白色闪光次元斩。
+ * [回到未来计划]大包弹：锁定优先、视锥索敌；目标处大范围盒伤与爆炸特效，无次元斩。
  */
 @Setter
 @Accessors(chain = true)
 public class HeavyPayloadSlashArts extends ExtendedSlashArts {
 
     private float meleeRatio = 1.0f;
-    private float judgementRatio = 1.25f;
-    private float areaRange = 2.5f;
-    private int judgementLife = 2;
-    private int judgementColor = 0xFFFFFF;
+    private float areaRange = 40.0f;
 
     @Override
     public void trigger(
@@ -68,38 +64,28 @@ public class HeavyPayloadSlashArts extends ExtendedSlashArts {
                 null
         );
 
-        JudgementCutEntity jc = new JudgementCutEntity(
-                RecastingEntities.JUDGEMENT_CUT.get(),
-                level,
-                livingEntity
-        );
-        jc.setPos(center.x, center.y, center.z);
-        jc.setColor(judgementColor);
-        jc.setModifiedRatio(judgementRatio);
-        jc.setMaxLifeTime(judgementLife);
-        level.addFreshEntity(jc);
-
         level.playSound(
                 null,
                 center.x,
                 center.y,
                 center.z,
-                SoundEvents.ENDERMAN_TELEPORT,
+                SoundEvents.GENERIC_EXPLODE,
                 SoundSource.PLAYERS,
-                0.5F,
-                1.0F
+                1.0F,
+                0.8F
         );
 
         if (level instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(
+            ParticleHelper.sendParticlesLongRange(
+                    serverLevel,
                     ParticleTypes.EXPLOSION,
                     center.x,
                     center.y,
                     center.z,
-                    4,
-                    0.35,
-                    0.35,
-                    0.35,
+                    64,
+                    5.6,
+                    5.6,
+                    5.6,
                     0.05
             );
         }

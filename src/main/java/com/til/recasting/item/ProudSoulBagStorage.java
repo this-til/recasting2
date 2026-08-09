@@ -37,7 +37,7 @@ public final class ProudSoulBagStorage {
             return Collections.emptyList();
         }
         List<StoredEntry> result = new ArrayList<>(list.size());
-        for (int i = 0; i < list.size(); i++) {
+        for(int i = 0; i < list.size(); i++) {
             CompoundTag entry = list.getCompound(i);
             ItemStack template = ItemStack.of(entry.getCompound(ENTRY_ITEM_KEY));
             if (template.isEmpty()) {
@@ -150,7 +150,7 @@ public final class ProudSoulBagStorage {
     }
 
     private static int findMatchingIndex(ListTag list, ItemStack match) {
-        for (int i = 0; i < list.size(); i++) {
+        for(int i = 0; i < list.size(); i++) {
             CompoundTag entry = list.getCompound(i);
             ItemStack template = ItemStack.of(entry.getCompound(ENTRY_ITEM_KEY));
             if (!template.isEmpty() && ItemStack.isSameItemSameTags(template, match)) {

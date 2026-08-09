@@ -86,11 +86,11 @@ public final class TimeBeyondChargeHandler {
 
         ACCELERATING.set(true);
         try {
-            for (Entity entity : entities) {
+            for(Entity entity : entities) {
                 if (!entity.isAlive()) {
                     continue;
                 }
-                for (int i = 0; i < EXTRA_TICKS; i++) {
+                for(int i = 0; i < EXTRA_TICKS; i++) {
                     if (!entity.isAlive()) {
                         break;
                     }
@@ -155,7 +155,7 @@ public final class TimeBeyondChargeHandler {
 
     private static int countActiveInLevel(ServerLevel level) {
         int count = 0;
-        for (UUID uuid : ACTIVE_ACCEL) {
+        for(UUID uuid : ACTIVE_ACCEL) {
             if (level.getEntity(uuid) != null) {
                 count++;
             }

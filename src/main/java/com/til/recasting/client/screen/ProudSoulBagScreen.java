@@ -20,11 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * 耀魂背包界面：搜索、分页、AE2 风格虚拟格交互。
@@ -39,7 +35,9 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
     private static final ResourceLocation BACKGROUND =
             ResourceLocation.fromNamespaceAndPath("minecraft", "textures/gui/container/generic_54.png");
 
-    /** 原版双层箱子面板灰，用于遮罩多余格子 */
+    /**
+     * 原版双层箱子面板灰，用于遮罩多余格子
+     */
     private static final int PANEL_COLOR = 0xFFC6C6C6;
 
     private static final int GRID_LEFT = 8;
@@ -49,7 +47,9 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
     private EditBox searchBox;
     private int page;
     private SortMode sortMode = SortMode.NAME;
-    /** 按住 Shift 时冻结展示顺序（仅模板身份），数量仍从最新同步数据解析。 */
+    /**
+     * 按住 Shift 时冻结展示顺序（仅模板身份），数量仍从最新同步数据解析。
+     */
     private List<ItemStack> frozenOrderKeys = List.of();
     private boolean wasShiftDown;
 
@@ -83,7 +83,9 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
     }
 
     private void cycleSort() {
-        this.sortMode = this.sortMode == SortMode.NAME ? SortMode.AMOUNT : SortMode.NAME;
+        this.sortMode = this.sortMode == SortMode.NAME
+                ? SortMode.AMOUNT
+                : SortMode.NAME;
         this.page = 0;
         this.frozenOrderKeys = List.of();
         this.wasShiftDown = false;
@@ -126,7 +128,7 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
         super.render(graphics, mouseX, mouseY, partialTick);
 
         List<IndexedEntry> pageEntries = currentPageEntries();
-        for (int i = 0; i < pageEntries.size(); i++) {
+        for(int i = 0; i < pageEntries.size(); i++) {
             IndexedEntry entry = pageEntries.get(i);
             if (entry.entry().count() <= 0 || entry.storageIndex() < 0) {
                 continue;
@@ -298,13 +300,15 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
      */
     private List<IndexedEntry> resolveFrozenView() {
         List<ProudSoulBagStorage.StoredEntry> raw = this.menu.getDisplayEntries();
-        String query = this.searchBox == null ? "" : this.searchBox.getValue().trim().toLowerCase(Locale.ROOT);
+        String query = this.searchBox == null
+                ? ""
+                : this.searchBox.getValue().trim().toLowerCase(Locale.ROOT);
         List<IndexedEntry> result = new ArrayList<>(frozenOrderKeys.size());
         List<ItemStack> nextKeys = new ArrayList<>(frozenOrderKeys.size());
 
-        for (ItemStack key : frozenOrderKeys) {
+        for(ItemStack key : frozenOrderKeys) {
             IndexedEntry matched = null;
-            for (int i = 0; i < raw.size(); i++) {
+            for(int i = 0; i < raw.size(); i++) {
                 ProudSoulBagStorage.StoredEntry entry = raw.get(i);
                 if (entry.count() <= 0 || !ItemStack.isSameItemSameTags(entry.template(), key)) {
                     continue;
@@ -320,13 +324,13 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
             nextKeys.add(matched.entry().template().copyWithCount(1));
         }
 
-        for (int i = 0; i < raw.size(); i++) {
+        for(int i = 0; i < raw.size(); i++) {
             ProudSoulBagStorage.StoredEntry entry = raw.get(i);
             if (entry.count() <= 0) {
                 continue;
             }
             boolean already = false;
-            for (ItemStack key : nextKeys) {
+            for(ItemStack key : nextKeys) {
                 if (ItemStack.isSameItemSameTags(entry.template(), key)) {
                     already = true;
                     break;
@@ -355,9 +359,11 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
 
     private List<IndexedEntry> filteredEntries() {
         List<ProudSoulBagStorage.StoredEntry> raw = this.menu.getDisplayEntries();
-        String query = this.searchBox == null ? "" : this.searchBox.getValue().trim().toLowerCase(Locale.ROOT);
+        String query = this.searchBox == null
+                ? ""
+                : this.searchBox.getValue().trim().toLowerCase(Locale.ROOT);
         List<IndexedEntry> result = new ArrayList<>();
-        for (int i = 0; i < raw.size(); i++) {
+        for(int i = 0; i < raw.size(); i++) {
             ProudSoulBagStorage.StoredEntry entry = raw.get(i);
             if (!matchesSearch(entry.template(), query)) {
                 continue;
@@ -379,7 +385,7 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
         if (query.isEmpty() || stack.isEmpty()) {
             return true;
         }
-        for (Component line : collectAppendHoverHints(stack)) {
+        for(Component line : collectAppendHoverHints(stack)) {
             if (line.getString().toLowerCase(Locale.ROOT).contains(query)) {
                 return true;
             }
@@ -401,7 +407,9 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
                 this.minecraft != null && this.minecraft.options.advancedItemTooltips
                         ? TooltipFlag.Default.ADVANCED
                         : TooltipFlag.Default.NORMAL;
-        Level level = this.minecraft != null ? this.minecraft.level : null;
+        Level level = this.minecraft != null
+                ? this.minecraft.level
+                : null;
         tip.getItem().appendHoverText(tip, level, lines, flag);
         return lines;
     }

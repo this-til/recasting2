@@ -1,6 +1,5 @@
 package com.til.recasting.compat.jei;
 
-import com.til.recasting.capability.ISpecialEffectCrystalData;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.recipe.SpecialEffectCrystalShapedRecipe;
 import com.til.recasting.registry.RecastingItems;
@@ -11,7 +10,6 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 

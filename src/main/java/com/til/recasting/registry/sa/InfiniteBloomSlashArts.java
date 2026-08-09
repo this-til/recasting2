@@ -45,6 +45,7 @@ public class InfiniteBloomSlashArts extends ExtendedSlashArts {
     private int driveLifeMax = 80;
     private float driveSeepMin = 0.05f;
     private float driveSeepMax = 0.35f;
+    private float speedScalePerTick = 1.05f;
 
     @Override
     public void trigger(
@@ -117,7 +118,7 @@ public class InfiniteBloomSlashArts extends ExtendedSlashArts {
         float yawStep = 360.0f / driveCount;
         float offsetYaw = random.nextFloat() * 180.0f;
 
-        for (int i = 0; i < driveCount; i++) {
+        for(int i = 0; i < driveCount; i++) {
             float yaw = yawStep * i;
             float yawWithOffset = yaw + offsetYaw;
             float pitch = -30.0f * Mth.cos((yaw - 60.0f) * Mth.DEG_TO_RAD);
@@ -140,10 +141,12 @@ public class InfiniteBloomSlashArts extends ExtendedSlashArts {
             drive.setModifiedRatio(driveRatio);
             drive.setSeep(seep);
             drive.setMaxLifeTime(life);
-            drive.setRoll(roll);
+            drive.setRoll(roll + 90.0f);
             drive.setSize(1.0f);
+            drive.setAttackInterval(5);
             drive.setRepeatedAttack(false);
             drive.setParameter(true);
+            drive.setSpeedScalePerTick(speedScalePerTick);
             drive.lookAt(directionFromYawPitch(yawWithOffset, pitch), true);
             level.addFreshEntity(drive);
         }

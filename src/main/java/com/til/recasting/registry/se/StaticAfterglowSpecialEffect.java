@@ -31,16 +31,24 @@ import java.util.List;
 @Accessors(chain = true)
 public class StaticAfterglowSpecialEffect extends ExtendedSpecialEffect {
 
-    /** 雷电附加伤害倍率 */
+    /**
+     * 雷电附加伤害倍率
+     */
     private float lightningDamageRatio = 0.3f;
 
-    /** 附加雷电伤害的内置冷却（tick），记录在受击目标 */
+    /**
+     * 附加雷电伤害的内置冷却（tick），记录在受击目标
+     */
     private int damageCooldownTick = 4;
 
-    /** 触发闪电链的概率 */
+    /**
+     * 触发闪电链的概率
+     */
     private float chainChance = 0.10f;
 
-    /** 闪电链触发的内置冷却（tick），记录在受击目标 */
+    /**
+     * 闪电链触发的内置冷却（tick），记录在受击目标
+     */
     private int chainCooldownTick = 14;
 
     @SubscribeEvent

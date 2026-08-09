@@ -1,10 +1,10 @@
 package com.til.recasting.capability;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Nullable;
 
 /**
  * 基于实体的定时器接口
@@ -167,9 +167,9 @@ public interface ITimeRun {
         /**
          * 创建定时任务
          *
-         * @param run      要执行的任务
-         * @param timer    延迟时间（tick）
-         * @param cycle    是否循环执行
+         * @param run   要执行的任务
+         * @param timer 延迟时间（tick）
+         * @param cycle 是否循环执行
          */
         public TimerCell(Runnable run, int timer, boolean cycle) {
             this._use = true;

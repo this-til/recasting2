@@ -45,7 +45,7 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
         this(containerId, playerInventory, buf.readEnum(InteractionHand.class));
         int size = buf.readVarInt();
         List<ProudSoulBagStorage.StoredEntry> initial = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
+        for(int i = 0; i < size; i++) {
             ItemStack template = ProudSoulBagStorage.readTemplate(buf);
             long count = buf.readVarLong();
             initial.add(new ProudSoulBagStorage.StoredEntry(template, count));
@@ -63,13 +63,13 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
                 : Inventory.SLOT_OFFHAND;
 
         // 主物品栏 27 格（对齐 generic_54 六行箱子布局：103 + (6-4)*18 = 139）
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 9; col++) {
+        for(int row = 0; row < 3; row++) {
+            for(int col = 0; col < 9; col++) {
                 this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 139 + row * 18));
             }
         }
         // 快捷栏（161 + 36 = 197）
-        for (int col = 0; col < 9; col++) {
+        for(int col = 0; col < 9; col++) {
             int index = col;
             this.addSlot(new Slot(playerInventory, index, 8 + col * 18, 197) {
                 @Override
@@ -127,7 +127,7 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
         buf.writeEnum(hand);
         List<ProudSoulBagStorage.StoredEntry> entries = ProudSoulBagStorage.list(bag);
         buf.writeVarInt(entries.size());
-        for (ProudSoulBagStorage.StoredEntry entry : entries) {
+        for(ProudSoulBagStorage.StoredEntry entry : entries) {
             ProudSoulBagStorage.writeTemplate(buf, entry.template());
             buf.writeVarLong(entry.count());
         }
