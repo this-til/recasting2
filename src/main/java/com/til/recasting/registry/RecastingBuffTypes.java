@@ -242,6 +242,14 @@ public class RecastingBuffTypes {
     );
 
     /**
+     * 犬缘冷却
+     * - 衰减间隔 1 tick；层数 = 剩余冷却 tick（记录在持有者）
+     */
+    public static final RegistryObject<BuffType> DOG_BOND_COOLDOWN = BUFF_TYPES.register("dog_bond_cooldown",
+            () -> new BuffType(1, 0)
+    );
+
+    /**
      * 咒令
      * - 每 20 tick 衰减 1 层；层数表示剩余秒数
      */

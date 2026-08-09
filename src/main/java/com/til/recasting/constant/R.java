@@ -337,6 +337,9 @@ public class R {
             public static final ResourceLocation htod = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/htod");
             public static final ResourceLocation htod$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/htod.obj");
             public static final ResourceLocation htod$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/htod.png");
+            public static final ResourceLocation jieYuanDog = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/jie_yuan_dog");
+            public static final ResourceLocation jieYuanDog$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/jie_yuan_dog.obj");
+            public static final ResourceLocation jieYuanDog$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/jie_yuan_dog.png");
             public static final ResourceLocation til = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/til");
             public static final ResourceLocation til$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/til.obj");
             public static final ResourceLocation til$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/til.png");

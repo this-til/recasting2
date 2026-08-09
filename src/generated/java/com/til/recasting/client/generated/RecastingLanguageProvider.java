@@ -147,6 +147,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashBladeKey(RecastingSlashBladeKeys.TU_WU_LAMBDA), "^屠巫", "Tu Wu Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.XING_KONG), "星空的刀", "Xing Kong");
         translation(slashBladeKey(RecastingSlashBladeKeys.XING_KONG_LAMBDA), "^星空的刀", "Xing Kong Lambda");
+        translation(slashBladeKey(RecastingSlashBladeKeys.JIE_YUAN_DOG), "结缘剑「犬」", "Bond Blade \"Dog\"");
         translation(slashBladeKey(RecastingSlashBladeKeys.STAR_1), "星流利刃I", "Star Blade I");
         translation(slashBladeKey(RecastingSlashBladeKeys.STAR_2), "星流利刃II", "Star Blade II");
         translation(slashBladeKey(RecastingSlashBladeKeys.STAR_3), "星流利刃III", "Star Blade III");
@@ -367,6 +368,8 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtKey(SlashArtsRegistry.FLEETING_SHADOW_LAMBDA), "^掠影", "Fleeting Shadow Lambda");
         translation(slashArtDescKey(SlashArtsRegistry.FLEETING_SHADOW), "连续掠向周围敌人身侧，每次位移后发动短促乱舞并恢复生命。", "Repeatedly flashes beside nearby foes, performing a brief dance of slashes and restoring health after each movement.");
         translation(slashArtDescKey(SlashArtsRegistry.FLEETING_SHADOW_LAMBDA), "以更远距离连续掠向敌人，位移节奏更快并在每次停顿时发动成对斩击。", "Flashes farther between enemies at a faster rhythm, releasing paired slashes at each pause.");
+        translation(slashArtKey(SlashArtsRegistry.DOG_BITE), "犬咬", "Dog Bite");
+        translation(slashArtDescKey(SlashArtsRegistry.DOG_BITE), "对锁定或视锥内目标连续撕咬多段，力量附魔可额外增加段数。", "Repeatedly bites the locked or cone-selected target; Power enchantment adds extra hits.");
         translation(slashArtKey(SlashArtsRegistry.MYRIAD_SILENCE), "万灵寂灭", "Myriad Silence");
         translation(slashArtDescKey(SlashArtsRegistry.MYRIAD_SILENCE), "获得咒令：持续自损生命，并向视角目标周围敌人发射黑色虚空闪电，叠加寂灭削弱护甲。", "Gains Curse Decree: continually sacrifices health to fire black void lightning at foes near the aim point, stacking Spirit Silence to weaken armor.");
         translation(slashArtKey(SlashArtsRegistry.MYRIAD_SILENCE_LAMBDA), "^万灵寂灭", "Myriad Silence Lambda");
@@ -520,6 +523,8 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(specialEffectDescKey(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN), "置于背包即可驱散负面并持续回血，免疫击退，屏蔽着火画面，持有血咒的增伤与致命抵挡；刀上仍有耀魂时可抵御常见秒杀，并消耗耀魂修复背包中受损的拔刀剑；自动消耗耀魂补充饥饿。", "While in inventory, dispels harmful effects and continually heals, resists knockback, hides the on-fire screen overlay, inherits blood-curse amp and lethal absorb; resists common instant kills while the blade still holds proud souls, and spends proud souls to repair damaged slash blades in the inventory; automatically spends proud souls to restore hunger.");
         translation(specialEffectKey(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN_LAMBDA), "^人皇领域", "Human Emperor Domain Lambda");
         translation(specialEffectDescKey(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN_LAMBDA), "置于背包即可驱散负面并更快回血，免疫击退，屏蔽着火画面，持有更强血咒增伤与更高效致命抵挡；刀上仍有耀魂时可抵御常见秒杀，并以更低耀魂消耗修复背包中受损的拔刀剑；自动消耗耀魂补充饥饿。", "While in inventory, dispels harmful effects and heals faster, resists knockback, hides the on-fire screen overlay, inherits stronger blood-curse amp and more efficient lethal absorb; resists common instant kills while the blade still holds proud souls, and repairs damaged slash blades in the inventory at a lower proud-soul cost; automatically spends proud souls to restore hunger.");
+        translation(specialEffectKey(SpecialEffectsRegistry.DOG_BOND), "犬缘", "Dog Bond");
+        translation(specialEffectDescKey(SpecialEffectsRegistry.DOG_BOND), "置于背包时，受伤会获得伤害吸收；若伤害来自可攻击实体则对其释放犬咬并消耗耐久，内置冷却。", "While in inventory, taking damage grants Absorption; if the damage has an attackable entity source, releases Dog Bite on it and consumes durability, with an internal cooldown.");
     }
 
     private void translation(String key, String zhCnText, String enUsText) {

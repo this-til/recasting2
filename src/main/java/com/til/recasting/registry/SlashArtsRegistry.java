@@ -348,6 +348,9 @@ public class SlashArtsRegistry {
     // 回到未来计划 · 大包弹
     public static final RegistryObject<ExtendedSlashArts> HEAVY_PAYLOAD = registerExtendedSA("heavy_payload", HeavyPayloadSlashArts::new);
 
+    // 犬咬（结缘剑「犬」）
+    public static final RegistryObject<ExtendedSlashArts> DOG_BITE = registerExtendedSA("dog_bite", DogBiteSlashArts::new);
+
     /**
      * 注册扩展的 SlashArts，自动关联 ComboState
      */

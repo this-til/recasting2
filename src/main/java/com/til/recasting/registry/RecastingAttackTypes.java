@@ -284,6 +284,18 @@ public class RecastingAttackTypes {
     );
 
     /**
+     * 犬咬多段伤害（物理）
+     */
+    public static final RegistryObject<AttackType> DOG_BITE_ATTACK = ATTACK_TYPES.register("dog_bite",
+            () -> new AttackType((attacker, target) -> new AttackAmplifierEvent.DamageSourceInfo(
+                    attacker instanceof Player
+                            ? attacker.damageSources().playerAttack((Player) attacker)
+                            : attacker.damageSources().mobAttack(attacker),
+                    new DamageStructure(1.0f, 0.0f)
+            ))
+    );
+
+    /**
      * 绝对伤害标记：不产生独立 DamageSource；AttackHelper 在 hurt 后生命未减少时 setHealth 补伤
      */
     public static final RegistryObject<AttackType> ABSOLUTE_ATTACK = ATTACK_TYPES.register("absolute",

@@ -216,6 +216,12 @@ public class SpecialEffectsRegistry {
                     .setSpecial(true)
     );
 
+    // 犬缘 - 背包；受伤时伤害吸收并对来源释放犬咬
+    public static final RegistryObject<SpecialEffect> DOG_BOND = registerExtendedSE(
+            "dog_bond",
+            () -> new DogBondSpecialEffect().setMaxLevel(1).setSpecial(true)
+    );
+
     public static RegistryObject<SpecialEffect> registerExtendedSE(String name, Supplier<SpecialEffect> factory) {
         return SPECIAL_EFFECT.register(name, factory);
     }

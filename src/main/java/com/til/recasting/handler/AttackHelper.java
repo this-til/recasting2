@@ -42,17 +42,31 @@ import java.util.stream.Collectors;
 public class AttackHelper {
 
     public static void attack(LivingEntity attacker, Entity target, DamageStructure damageStructure, List<AttackType> attackTypeList) {
+        attack(attacker, target, damageStructure, attackTypeList, attacker.getMainHandItem());
+    }
+
+    /**
+     * @param blade 用于读取拔刀剑状态的堆叠；可为背包中的刀（无需切到主手）。
+     */
+    public static void attack(
+            LivingEntity attacker,
+            Entity target,
+            DamageStructure damageStructure,
+            List<AttackType> attackTypeList,
+            ItemStack blade
+    ) {
         // 判断攻击目标是否可以被攻击
         if (!target.isAttackable()) {
             return;
         }
+        if (blade == null || blade.isEmpty()) {
+            return;
+        }
 
-        ItemStack mainHandItem = attacker.getMainHandItem();
-
-        mainHandItem.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(s -> {
+        blade.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(s -> {
             // 创建攻击放大事件
             AttackAmplifierEvent attackAmplifierEvent = new AttackAmplifierEvent(
-                    mainHandItem, s, attacker, target, damageStructure.modifiedRatio(), damageStructure.extraDamage(), attackTypeList,
+                    blade, s, attacker, target, damageStructure.modifiedRatio(), damageStructure.extraDamage(), attackTypeList,
                     attackTypeList.stream()
                             .map(a -> a.createDamageSource(attacker, target))
                             .filter(Objects::nonNull)
@@ -73,24 +87,14 @@ public class AttackHelper {
 
             // 计算最终伤害倍率（事件监听器已经添加了各种加成）
             double ultimatelyModifiedRatio = attackAmplifierEvent.getUltimatelyModifiedRatio();
-            AttributeInstance attribute = attacker.getAttribute(Attributes.ATTACK_DAMAGE);
+            double attackDamage = resolveAttackDamage(attacker, blade);
 
-            if (attribute == null) {
+            if (attackDamage <= 0) {
                 return;
             }
 
-            double damage = attribute.getValue() * ultimatelyModifiedRatio;
+            double damage = attackDamage * ultimatelyModifiedRatio;
             damage += attackAmplifierEvent.getExtraDamage();
-
-            // 处理暴击
-            //if (attacker instanceof Player player) {
-            //    CriticalHitEvent criticalHitEvent = ForgeHooks.getCriticalHit(player, target, isCritical, isCritical
-            //            ? 1.5F
-            //            : 1.0F);
-            //    if (criticalHitEvent != null) {
-            //        damage *= criticalHitEvent.getDamageModifier();
-            //    }
-            //}
 
             if (damage <= 0) {
                 return;
@@ -147,6 +151,27 @@ public class AttackHelper {
 
         });
 
+    }
+
+    /**
+     * 主手即该刀时用实体攻强；背包刀则按该刀主手属性修正合成攻强。
+     */
+    private static double resolveAttackDamage(LivingEntity attacker, ItemStack blade) {
+        ItemStack mainHand = attacker.getMainHandItem();
+        if (mainHand == blade) {
+            AttributeInstance attribute = attacker.getAttribute(Attributes.ATTACK_DAMAGE);
+            return attribute == null ? 0.0 : attribute.getValue();
+        }
+
+        double base = attacker.getAttributeBaseValue(Attributes.ATTACK_DAMAGE);
+        for(var modifier : blade.getAttributeModifiers(net.minecraft.world.entity.EquipmentSlot.MAINHAND)
+                .get(Attributes.ATTACK_DAMAGE)) {
+            switch (modifier.getOperation()) {
+                case ADDITION -> base += modifier.getAmount();
+                case MULTIPLY_BASE, MULTIPLY_TOTAL -> base *= (1.0 + modifier.getAmount());
+            }
+        }
+        return base;
     }
 
     private static void spawnDamageParticlesIfNeeded(Entity target, AttackAmplifierEvent.DamageSourceInfo info) {

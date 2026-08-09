@@ -1193,6 +1193,25 @@ public final class SlashBladeDefinitions {
                 .addSpecialEffects(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN_LAMBDA, 1)
                 .build();
 
+        // 结缘剑「犬」 t3 特典（占位黑紫块）
+        register(bootstrap, RecastingSlashBladeKeys.JIE_YUAN_DOG)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.Special.jieYuanDog$obj)
+                                .textureName(R.Slashblade.Special.jieYuanDog$png)
+                                .effectColor(new Color(0x280040).getRGB())
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(5f)
+                                .maxDamage(12 * 40)
+                                .slashArtsType(SlashArtsRegistry.DOG_BITE.getId())
+                                .defaultSwordType(List.of(SwordType.BEWITCHED))
+                )
+                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+                .addSpecialEffects(SpecialEffectsRegistry.DOG_BOND, 1)
+                .build();
+
         //endregion
 
 
