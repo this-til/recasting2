@@ -1017,6 +1017,7 @@ public final class SlashBladeDefinitions {
 
         //region t1
 
+        // 星缕
         register(bootstrap, RecastingSlashBladeKeys.STAR_THREAD)
                 .renderDefinition(
                         RenderDefinition.Builder.newInstance()
@@ -1035,6 +1036,7 @@ public final class SlashBladeDefinitions {
                 .addSpecialEffects(SpecialEffectsRegistry.STAR_BLINK, 1)
                 .build();
 
+        // 星缕 Lambda
         register(bootstrap, RecastingSlashBladeKeys.STAR_THREAD_LAMBDA)
                 .renderDefinition(
                         RenderDefinition.Builder.newInstance()
@@ -1053,6 +1055,7 @@ public final class SlashBladeDefinitions {
                 .addSpecialEffects(SpecialEffectsRegistry.STAR_BLINK_LAMBDA, 1)
                 .build();
 
+        // 末辉
         register(bootstrap, RecastingSlashBladeKeys.FINAL_GLOW)
                 .renderDefinition(
                         RenderDefinition.Builder.newInstance()
@@ -1064,11 +1067,13 @@ public final class SlashBladeDefinitions {
                         PropertiesDefinition.Builder.newInstance()
                                 .baseAttackModifier(10f)
                                 .maxDamage(48 * 40)
+                                .slashArtsType(SlashArtsRegistry.FINAL_SUPERNOVA.getId())
                                 .defaultSwordType(List.of(SwordType.BEWITCHED))
                 )
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
                 .build();
 
+        // 末辉 Lambda
         register(bootstrap, RecastingSlashBladeKeys.FINAL_GLOW_LAMBDA)
                 .renderDefinition(
                         RenderDefinition.Builder.newInstance()
@@ -1080,11 +1085,13 @@ public final class SlashBladeDefinitions {
                         PropertiesDefinition.Builder.newInstance()
                                 .baseAttackModifier(12f)
                                 .maxDamage(96 * 40)
+                                .slashArtsType(SlashArtsRegistry.FINAL_SUPERNOVA.getId())
                                 .defaultSwordType(List.of(SwordType.BEWITCHED))
                 )
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
                 .build();
 
+        // 穹鳞
         register(bootstrap, RecastingSlashBladeKeys.VAULT_SCALE)
                 .renderDefinition(
                         RenderDefinition.Builder.newInstance()
@@ -1096,11 +1103,13 @@ public final class SlashBladeDefinitions {
                         PropertiesDefinition.Builder.newInstance()
                                 .baseAttackModifier(10f)
                                 .maxDamage(48 * 40)
+                                .slashArtsType(SlashArtsRegistry.UNLIMITED_BLADE_WORKS.getId())
                                 .defaultSwordType(List.of(SwordType.BEWITCHED))
                 )
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
                 .build();
 
+        // 穹鳞 Lambda
         register(bootstrap, RecastingSlashBladeKeys.VAULT_SCALE_LAMBDA)
                 .renderDefinition(
                         RenderDefinition.Builder.newInstance()
@@ -1112,6 +1121,7 @@ public final class SlashBladeDefinitions {
                         PropertiesDefinition.Builder.newInstance()
                                 .baseAttackModifier(12f)
                                 .maxDamage(48 * 40)
+                                .slashArtsType(SlashArtsRegistry.UNLIMITED_BLADE_WORKS_LAMBDA.getId())
                                 .defaultSwordType(List.of(SwordType.BEWITCHED))
                 )
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))

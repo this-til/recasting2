@@ -210,5 +210,22 @@ public class RecastingEntities {
                     .setShouldReceiveVelocityUpdates(true)
                     .build("starfall_array")
     );
+
+    /**
+     * 末辉坍缩黑洞
+     * - 射线吞噬方块、吸附实体，终结圆环迸发与范围伤害
+     */
+    public static final RegistryObject<EntityType<FinalGlowBlackHoleEntity>> FINAL_GLOW_BLACK_HOLE = ENTITY_TYPES.register(
+            "final_glow_black_hole",
+            () -> EntityType.Builder.<FinalGlowBlackHoleEntity>of((e, l) -> new FinalGlowBlackHoleEntity(e, l, null), MobCategory.MISC)
+                    .sized(1.0f, 1.0f)
+                    .clientTrackingRange(128)
+                    .updateInterval(1)
+                    .fireImmune()
+                    .noSave()
+                    .noSummon()
+                    .setShouldReceiveVelocityUpdates(true)
+                    .build("final_glow_black_hole")
+    );
 }
 

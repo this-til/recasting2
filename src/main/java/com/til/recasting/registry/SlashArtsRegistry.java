@@ -303,6 +303,12 @@ public class SlashArtsRegistry {
                     .setTargetedChance(0.52f)
     );
 
+    // 终焉超新星爆
+    public static final RegistryObject<ExtendedSlashArts> FINAL_SUPERNOVA = registerExtendedSA("final_supernova", FinalSupernovaSlashArts::new);
+
+    // 犬咬
+    public static final RegistryObject<ExtendedSlashArts> DOG_BITE = registerExtendedSA("dog_bite", DogBiteSlashArts::new);
+
     // 回到未来计划 · 时之彼端
     public static final RegistryObject<ExtendedSlashArts> TIME_BEYOND = registerExtendedSA("time_beyond", TimeBeyondSlashArts::new);
 
@@ -348,8 +354,7 @@ public class SlashArtsRegistry {
     // 回到未来计划 · 大包弹
     public static final RegistryObject<ExtendedSlashArts> HEAVY_PAYLOAD = registerExtendedSA("heavy_payload", HeavyPayloadSlashArts::new);
 
-    // 犬咬（结缘剑「犬」）
-    public static final RegistryObject<ExtendedSlashArts> DOG_BITE = registerExtendedSA("dog_bite", DogBiteSlashArts::new);
+
 
     /**
      * 注册扩展的 SlashArts，自动关联 ComboState

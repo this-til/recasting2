@@ -1,0 +1,40 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/special/final_glow",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "recasting:blind_phase_transition"
+    },
+    "C": {
+      "item": "recasting:concealed_edge_phase_transition"
+    },
+    "D": {
+      "item": "recasting:detonation_phase_transition"
+    },
+    "I": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:sharpness",
+            "lvl": 5
+          }
+        ],
+        "kill": 8000,
+        "name": "recasting:slashblade/void/void_3",
+        "refine": 800
+      }
+    }
+  },
+  "pattern": [
+    " DB",
+    "CIC",
+    "BD "
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

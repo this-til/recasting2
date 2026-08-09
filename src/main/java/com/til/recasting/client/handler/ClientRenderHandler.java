@@ -48,6 +48,9 @@ public class ClientRenderHandler {
 
         // 注册群星坠落阵实体渲染器
         event.registerEntityRenderer(RecastingEntities.STARFALL_ARRAY.get(), StarfallArrayEntityRender::new);
+
+        // 末辉坍缩黑洞（粒子驱动，无模型）
+        event.registerEntityRenderer(RecastingEntities.FINAL_GLOW_BLACK_HOLE.get(), FinalGlowBlackHoleEntityRender::new);
     }
 }
 

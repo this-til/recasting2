@@ -52,6 +52,7 @@ public class ClientSetup {
         event.registerSpecial(RecastingParticleTypes.LIGHTNING_HIT.get(), new LightningHitParticleProvider());
         event.registerSpecial(RecastingParticleTypes.MORTAL_DUST_TRAIL.get(), new MortalDustTrailParticleProvider());
         event.registerSpecial(RecastingParticleTypes.MORTAL_DUST_HIT.get(), new MortalDustHitParticleProvider());
+        event.registerSpecial(RecastingParticleTypes.BURST_RING.get(), new BurstRingParticleProvider());
     }
 }
 

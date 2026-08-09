@@ -60,5 +60,11 @@ public class RecastingParticleTypes {
      */
     public static final RegistryObject<SimpleParticleType> MORTAL_DUST_HIT =
             PARTICLE_TYPES.register("mortal_dust_hit", () -> new SimpleParticleType(true));
+
+    /**
+     * 水平圆环迸发（一粒子一整圈；速度通道传半径 / 环宽 / 打包色）
+     */
+    public static final RegistryObject<SimpleParticleType> BURST_RING =
+            PARTICLE_TYPES.register("burst_ring", () -> new SimpleParticleType(true));
 }
 

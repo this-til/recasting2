@@ -8,6 +8,7 @@
   "properties": {
     "attack_base": 12.0,
     "max_damage": 1920,
+    "slash_art": "recasting:unlimited_blade_works_lambda",
     "sword_type": [
       "bewitched"
     ]

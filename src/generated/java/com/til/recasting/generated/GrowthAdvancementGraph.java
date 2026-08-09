@@ -84,6 +84,8 @@ public final class GrowthAdvancementGraph {
             blade(RecastingSlashBladeKeys.SHINE_GOLD_LAMBDA, RecastingSlashBladeKeys.SHINE_GOLD, "shine_gold_lambda_recipe", true),
             blade(RecastingSlashBladeKeys.BRILLIANT_GOLD, RecastingSlashBladeKeys.SHINE_GOLD_LAMBDA, "brilliant_gold_recipe", false),
             blade(RecastingSlashBladeKeys.BRILLIANT_GOLD_LAMBDA, RecastingSlashBladeKeys.BRILLIANT_GOLD, "brilliant_gold_lambda_recipe", true),
+            blade(RecastingSlashBladeKeys.STAR_THREAD, RecastingSlashBladeKeys.BRILLIANT_GOLD_LAMBDA, "star_thread_recipe", false),
+            blade(RecastingSlashBladeKeys.STAR_THREAD_LAMBDA, RecastingSlashBladeKeys.STAR_THREAD, "star_thread_lambda_recipe", true),
             blade(RecastingSlashBladeKeys.BROKEN_WHITE, RecastingSlashBladeKeys.GREEN_BLADE_IRON, "broken_white_recipe", false),
 
             blade(RecastingSlashBladeKeys.BA_GUA, RecastingSlashBladeKeys.BROKEN_WHITE, "ba_gua_recipe", false),
@@ -96,6 +98,8 @@ public final class GrowthAdvancementGraph {
             blade(RecastingSlashBladeKeys.DRAGON_SCALE_LAMBDA, RecastingSlashBladeKeys.DRAGON_SCALE, "dragon_scale_lambda_recipe", true),
             blade(RecastingSlashBladeKeys.DRAGON, RecastingSlashBladeKeys.DRAGON_SCALE_LAMBDA, "dragon_recipe", false),
             blade(RecastingSlashBladeKeys.DRAGON_LAMBDA, RecastingSlashBladeKeys.DRAGON, "dragon_lambda_recipe", true),
+            blade(RecastingSlashBladeKeys.VAULT_SCALE, RecastingSlashBladeKeys.DRAGON_LAMBDA, "vault_scale_recipe", false),
+            blade(RecastingSlashBladeKeys.VAULT_SCALE_LAMBDA, RecastingSlashBladeKeys.VAULT_SCALE, "vault_scale_lambda_recipe", true),
             blade(RecastingSlashBladeKeys.AZURE_VISTA, RecastingSlashBladeKeys.DRAGON_SCALE_LAMBDA, "azure_vista_recipe", false),
             blade(RecastingSlashBladeKeys.AZURE_VISTA_LAMBDA, RecastingSlashBladeKeys.AZURE_VISTA, "azure_vista_lambda_recipe", true),
             blade(RecastingSlashBladeKeys.WIND_CLOUD, RecastingSlashBladeKeys.AZURE_VISTA_LAMBDA, "wind_cloud_recipe", false),
@@ -116,6 +120,8 @@ public final class GrowthAdvancementGraph {
             blade(RecastingSlashBladeKeys.VOID_1, RecastingSlashBladeKeys.BLACK, "void_1_recipe", false),
             blade(RecastingSlashBladeKeys.VOID_2, RecastingSlashBladeKeys.VOID_1, "void_2_recipe", false),
             blade(RecastingSlashBladeKeys.VOID_3, RecastingSlashBladeKeys.VOID_2, "void_3_recipe", false),
+            blade(RecastingSlashBladeKeys.FINAL_GLOW, RecastingSlashBladeKeys.VOID_3, "final_glow_recipe", false),
+            blade(RecastingSlashBladeKeys.FINAL_GLOW_LAMBDA, RecastingSlashBladeKeys.FINAL_GLOW, "final_glow_lambda_recipe", true),
 
             blade(RecastingSlashBladeKeys.OBLITERATE, RecastingSlashBladeKeys.BLACK, "obliterate_recipe", false),
             blade(RecastingSlashBladeKeys.OBLITERATE_LAMBDA, RecastingSlashBladeKeys.OBLITERATE, "obliterate_lambda_recipe", true),

@@ -2166,5 +2166,152 @@ public class SlashBladeRecipes extends RecipeProvider {
                 .unlockedBy("has_interlace_phase_transition", RecipeProviderMixin.invokeHas(RecastingItems.INTERLACE_PHASE_TRANSITION.get()))
                 .save(consumer, Recasting.prefix("xuan_yuan_liberated_lambda_recipe"));
 
+        /**
+         * 毕业路线：洞虚[猩红] → 末辉 → 末辉Λ
+         * 每步三相相变各 2
+         */
+
+        /**
+         * 末辉：从洞虚[猩红]升级。坍缩闪光——爆燃/致盲/藏锋 各 2。
+         * 要求：杀敌8000、锻造800、锋利5
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.FINAL_GLOW.location())
+                .pattern(" DB")
+                .pattern("CIC")
+                .pattern("BD ")
+                .define('I',
+                        SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                .name(RecastingSlashBladeKeys.VOID_3.location())
+                                .killCount(8000)
+                                .refineCount(800)
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                .build()))
+                .define('D', RecastingItems.DETONATION_PHASE_TRANSITION.get())
+                .define('B', RecastingItems.BLIND_PHASE_TRANSITION.get())
+                .define('C', RecastingItems.CONCEALED_EDGE_PHASE_TRANSITION.get())
+                .unlockedBy("has_detonation_phase_transition", RecipeProviderMixin.invokeHas(RecastingItems.DETONATION_PHASE_TRANSITION.get()))
+                .save(consumer, Recasting.prefix("final_glow_recipe"));
+
+        /**
+         * 末辉 Lambda：从末辉升级。终焉收束——火毒/侵蚀/交错 各 2。
+         * 要求：杀敌10000、锻造1200、锋利5
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.FINAL_GLOW_LAMBDA.location())
+                .pattern(" TE")
+                .pattern("IBI")
+                .pattern("ET ")
+                .define('B',
+                        SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                .name(RecastingSlashBladeKeys.FINAL_GLOW.location())
+                                .killCount(10000)
+                                .refineCount(1200)
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                .build()))
+                .define('T', RecastingItems.FIRE_TOXIN_PHASE_TRANSITION.get())
+                .define('E', RecastingItems.EROSION_PHASE_TRANSITION.get())
+                .define('I', RecastingItems.INTERLACE_PHASE_TRANSITION.get())
+                .unlockedBy("has_fire_toxin_phase_transition", RecipeProviderMixin.invokeHas(RecastingItems.FIRE_TOXIN_PHASE_TRANSITION.get()))
+                .save(consumer, Recasting.prefix("final_glow_lambda_recipe"));
+
+        /**
+         * 毕业路线：龙魂Λ → 穹鳞 → 穹鳞Λ
+         * 每步三相相变各 2
+         */
+
+        /**
+         * 穹鳞：从龙魂 Lambda 升级。鳞穹蔓生——蔓延/缠绕/侵蚀 各 2。
+         * 要求：杀敌8000、锻造800、锋利5
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.VAULT_SCALE.location())
+                .pattern(" SW")
+                .pattern("EBE")
+                .pattern("WS ")
+                .define('B',
+                        SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                .name(RecastingSlashBladeKeys.DRAGON_LAMBDA.location())
+                                .killCount(8000)
+                                .refineCount(800)
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                .build()))
+                .define('S', RecastingItems.SPREAD_PHASE_TRANSITION.get())
+                .define('W', RecastingItems.WINDING_PHASE_TRANSITION.get())
+                .define('E', RecastingItems.EROSION_PHASE_TRANSITION.get())
+                .unlockedBy("has_spread_phase_transition", RecipeProviderMixin.invokeHas(RecastingItems.SPREAD_PHASE_TRANSITION.get()))
+                .save(consumer, Recasting.prefix("vault_scale_recipe"));
+
+        /**
+         * 穹鳞 Lambda：从穹鳞升级。穹幕定型——折射/藏锋/交错 各 2。
+         * 要求：杀敌10000、锻造1200、锋利5
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.VAULT_SCALE_LAMBDA.location())
+                .pattern(" RC")
+                .pattern("IBI")
+                .pattern("CR ")
+                .define('B',
+                        SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                .name(RecastingSlashBladeKeys.VAULT_SCALE.location())
+                                .killCount(10000)
+                                .refineCount(1200)
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                .build()))
+                .define('R', RecastingItems.REFRACTION_PHASE_TRANSITION.get())
+                .define('C', RecastingItems.CONCEALED_EDGE_PHASE_TRANSITION.get())
+                .define('I', RecastingItems.INTERLACE_PHASE_TRANSITION.get())
+                .unlockedBy("has_refraction_phase_transition", RecipeProviderMixin.invokeHas(RecastingItems.REFRACTION_PHASE_TRANSITION.get()))
+                .save(consumer, Recasting.prefix("vault_scale_lambda_recipe"));
+
+        /**
+         * 毕业路线：灿金Λ → 星缕 → 星缕Λ
+         * 每步三相相变各 2
+         */
+
+        /**
+         * 星缕：从灿金 Lambda 升级。星光织缕——折射/致盲/缠绕 各 2。
+         * 要求：杀敌8000、锻造800、锋利5
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.STAR_THREAD.location())
+                .pattern(" RL")
+                .pattern("WBW")
+                .pattern("LR ")
+                .define('B',
+                        SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                .name(RecastingSlashBladeKeys.BRILLIANT_GOLD_LAMBDA.location())
+                                .killCount(8000)
+                                .refineCount(800)
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                .build()))
+                .define('R', RecastingItems.REFRACTION_PHASE_TRANSITION.get())
+                .define('L', RecastingItems.BLIND_PHASE_TRANSITION.get())
+                .define('W', RecastingItems.WINDING_PHASE_TRANSITION.get())
+                .unlockedBy("has_refraction_phase_transition", RecipeProviderMixin.invokeHas(RecastingItems.REFRACTION_PHASE_TRANSITION.get()))
+                .save(consumer, Recasting.prefix("star_thread_recipe"));
+
+        /**
+         * 星缕 Lambda：从星缕升级。星轨交汇——交错/蔓延/折射 各 2。
+         * 要求：杀敌10000、锻造1200、锋利5
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.STAR_THREAD_LAMBDA.location())
+                .pattern(" IS")
+                .pattern("RBR")
+                .pattern("SI ")
+                .define('B',
+                        SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                .name(RecastingSlashBladeKeys.STAR_THREAD.location())
+                                .killCount(10000)
+                                .refineCount(1200)
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 5))
+                                .build()))
+                .define('I', RecastingItems.INTERLACE_PHASE_TRANSITION.get())
+                .define('S', RecastingItems.SPREAD_PHASE_TRANSITION.get())
+                .define('R', RecastingItems.REFRACTION_PHASE_TRANSITION.get())
+                .unlockedBy("has_interlace_phase_transition", RecipeProviderMixin.invokeHas(RecastingItems.INTERLACE_PHASE_TRANSITION.get()))
+                .save(consumer, Recasting.prefix("star_thread_lambda_recipe"));
+
     }
 }

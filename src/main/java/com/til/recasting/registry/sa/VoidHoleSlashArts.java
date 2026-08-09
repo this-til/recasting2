@@ -3,6 +3,7 @@ package com.til.recasting.registry.sa;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.entity.JudgementCutEntity;
+import com.til.recasting.handler.AttractionHelper;
 import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingEntities;
@@ -51,8 +52,6 @@ public class VoidHoleSlashArts extends ExtendedSlashArts {
                 if (!this.level().isClientSide()) {
                     Vec3 centerPos = this.position();
 
-
-                    // 获取范围内的所有实体
                     List<Entity> entities = EntityHelper.getTargettableEntitiesWithinAABB(
                             level(),
                             getShooter(),
@@ -60,27 +59,8 @@ public class VoidHoleSlashArts extends ExtendedSlashArts {
                             range
                     );
 
-                    // 对每个实体施加吸引力
                     for(Entity entity : entities) {
-                        Vec3 direction = centerPos.subtract(entity.position());
-                        double length = direction.length();
-
-                        if (length > range || length < 0.1) {
-                            continue;
-                        }
-
-                        // 计算力度：距离越近力度越大（平方衰减）
-                        double lengthRatio = length / range;
-                        double strength = (1 - lengthRatio) * (1 - lengthRatio);
-                        double _power = power * range;
-
-                        // 应用吸引力
-                        Vec3 currentMotion = entity.getDeltaMovement();
-                        entity.setDeltaMovement(currentMotion.add(
-                                (direction.x / length) * strength * _power,
-                                (direction.y / length) * strength * _power,
-                                (direction.z / length) * strength * _power
-                        ));
+                        AttractionHelper.applyRadialPull(centerPos, entity, range, power);
                     }
                 }
             }
@@ -89,7 +69,6 @@ public class VoidHoleSlashArts extends ExtendedSlashArts {
         jc.setPos(pos.x, pos.y, pos.z);
 
         jc.setColor(slashBladeState.getColorCode());
-
 
         // 设置伤害倍率
         jc.setModifiedRatio(attack);

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_interlace_phase_transition": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "recasting:interlace_phase_transition"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "recasting:star_thread_lambda_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_interlace_phase_transition",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "recasting:star_thread_lambda_recipe"
+    ]
+  },
+  "sends_telemetry_event": false
+}

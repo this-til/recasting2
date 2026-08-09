@@ -1,0 +1,40 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/special/star_thread_lambda",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "item": "slashblade:slashblade",
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:sharpness",
+            "lvl": 5
+          }
+        ],
+        "kill": 10000,
+        "name": "recasting:slashblade/special/star_thread",
+        "refine": 1200
+      }
+    },
+    "I": {
+      "item": "recasting:interlace_phase_transition"
+    },
+    "R": {
+      "item": "recasting:refraction_phase_transition"
+    },
+    "S": {
+      "item": "recasting:spread_phase_transition"
+    }
+  },
+  "pattern": [
+    " IS",
+    "RBR",
+    "SI "
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}
