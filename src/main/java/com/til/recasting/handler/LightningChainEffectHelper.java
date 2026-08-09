@@ -54,7 +54,7 @@ public final class LightningChainEffectHelper {
         float g = ((color >> 8) & 0xFF) / 255.0f;
         float b = (color & 0xFF) / 255.0f;
 
-        // count=0：颜色走速度通道（与星闪/光棱命中同约定）
+        // count=0：颜色走速度通道（与光棱命中同约定）
         ParticleHelper.sendParticlesLongRange(
                 serverLevel,
                 RecastingParticleTypes.LIGHTNING_HIT.get(),

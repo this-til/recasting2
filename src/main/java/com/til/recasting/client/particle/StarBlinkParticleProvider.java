@@ -9,7 +9,6 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +19,7 @@ import java.util.Random;
 
 /**
  * 星闪满层触发粒子：主闪光 + 散射小粒子。
- * 颜色通过 {@code sendParticles(..., count=0, r, g, b, 1.0)} 的速度通道传入（0~1）。
+ * 主闪光与每个小粒子均在客户端各自随机高饱和色。
  */
 @OnlyIn(Dist.CLIENT)
 public class StarBlinkParticleProvider implements ParticleProvider<SimpleParticleType> {
@@ -43,21 +42,19 @@ public class StarBlinkParticleProvider implements ParticleProvider<SimpleParticl
             double x, double y, double z,
             double xSpeed, double ySpeed, double zSpeed
     ) {
-        Color color = resolveColor(xSpeed, ySpeed, zSpeed);
-
         DefaultParticle main = new DefaultParticle(level, x, y, z);
         main.setSize(size)
                 .setSizeChangeType(DefaultParticle.SizeChangeType.SQUARE_SIN)
                 .setParticleCollide(false)
                 .setLifeTime(life)
-                .setColor(color)
+                .setColor(randomVividColor())
                 .setTextureName(TEXTURE);
 
-        spawnSmallParticles(level, x, y, z, color);
+        spawnSmallParticles(level, x, y, z);
         return main;
     }
 
-    private void spawnSmallParticles(ClientLevel level, double x, double y, double z, Color color) {
+    private void spawnSmallParticles(ClientLevel level, double x, double y, double z) {
         for (int i = 0; i < smallNumber; i++) {
             var move = RandomUtil.nextVector3dOnCircles(random, 1.0)
                     .scale(smallMove.of(random.nextFloat()));
@@ -65,7 +62,7 @@ public class StarBlinkParticleProvider implements ParticleProvider<SimpleParticl
             DefaultParticle particle = new DefaultParticle(level, x, y, z);
             particle.setMove(move.x, move.y, move.z)
                     .setLifeTime((int) smallLife.of(random.nextFloat()))
-                    .setColor(color)
+                    .setColor(randomVividColor())
                     .setSize((float) smallSize.of(random.nextFloat()))
                     .setSizeChangeType(DefaultParticle.SizeChangeType.SQUARE_SIN)
                     .setParticleCollide(false)
@@ -75,11 +72,10 @@ public class StarBlinkParticleProvider implements ParticleProvider<SimpleParticl
         }
     }
 
-    private static Color resolveColor(double r, double g, double b) {
-        return new Color(
-                Mth.clamp(Mth.floor(r * 255.0 + 0.5), 0, 255),
-                Mth.clamp(Mth.floor(g * 255.0 + 0.5), 0, 255),
-                Mth.clamp(Mth.floor(b * 255.0 + 0.5), 0, 255)
-        );
+    private Color randomVividColor() {
+        float hue = random.nextFloat();
+        float saturation = 0.7f + random.nextFloat() * 0.3f;
+        float brightness = 0.6f + random.nextFloat() * 0.4f;
+        return new Color(Color.HSBtoRGB(hue, saturation, brightness));
     }
 }

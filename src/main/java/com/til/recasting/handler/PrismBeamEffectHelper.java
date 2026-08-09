@@ -57,7 +57,7 @@ public final class PrismBeamEffectHelper {
         DustParticleOptions core = new DustParticleOptions(new Vector3f(1.0f, 0.95f, 0.55f), 1.35f);
         DustParticleOptions sheath = new DustParticleOptions(new Vector3f(r, g, b), 1.0f);
 
-        // 外层高闪：DefaultParticle，颜色走速度通道（与星闪同约定）
+        // 外层高闪：DefaultParticle，颜色走速度通道
         ParticleHelper.sendParticlesLongRange(
                 serverLevel,
                 RecastingParticleTypes.DEFAULT_PARTICLE.get(),
