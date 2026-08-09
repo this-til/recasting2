@@ -166,15 +166,15 @@ public class DogBiteSlashArts extends ExtendedSlashArts {
             );
             ParticleHelper.sendParticlesLongRange(
                     serverLevel,
-                    ParticleTypes.DAMAGE_INDICATOR,
+                    ParticleTypes.ENCHANTED_HIT,
                     pos.x,
                     pos.y,
                     pos.z,
-                    6,
-                    0.25,
-                    0.35,
-                    0.25,
-                    0.05
+                    8,
+                    0.3,
+                    0.4,
+                    0.3,
+                    0.2
             );
         }
     }

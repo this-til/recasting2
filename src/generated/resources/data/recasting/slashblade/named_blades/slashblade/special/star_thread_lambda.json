@@ -4,13 +4,13 @@
       "id": "minecraft:sharpness"
     }
   ],
-  "name": "recasting:slashblade/special/til",
+  "name": "recasting:slashblade/special/star_thread_lambda",
   "properties": {
-    "attack_base": 10.0,
-    "max_damage": 1920,
+    "attack_base": 12.0,
+    "max_damage": 3840,
     "slash_art": "recasting:stellar_rotation",
     "special_effects": [
-      "recasting:star_blink"
+      "recasting:star_blink_lambda"
     ],
     "sword_type": [
       "bewitched"
@@ -18,13 +18,13 @@
   },
   "properties_extension": {
     "extended_special_levels": {
-      "recasting:star_blink": 1
+      "recasting:star_blink_lambda": 1
     }
   },
   "render": {
     "carry_type": "default",
-    "model": "recasting:slashblade/special/til.obj",
+    "model": "recasting:slashblade/special/star_thread.obj",
     "summon_sword_color": -2984202,
-    "texture": "recasting:slashblade/special/til.png"
+    "texture": "recasting:slashblade/special/star_thread.png"
   }
 }

@@ -1017,11 +1017,11 @@ public final class SlashBladeDefinitions {
 
         //region t1
 
-        register(bootstrap, RecastingSlashBladeKeys.TIL)
+        register(bootstrap, RecastingSlashBladeKeys.STAR_THREAD)
                 .renderDefinition(
                         RenderDefinition.Builder.newInstance()
-                                .modelName(R.Slashblade.Special.til$obj)
-                                .textureName(R.Slashblade.Special.til$png)
+                                .modelName(R.Slashblade.Special.starThread$obj)
+                                .textureName(R.Slashblade.Special.starThread$png)
                                 .effectColor(new Color(210, 118, 246).getRGB())
                 )
                 .propertiesDefinition(
@@ -1035,11 +1035,11 @@ public final class SlashBladeDefinitions {
                 .addSpecialEffects(SpecialEffectsRegistry.STAR_BLINK, 1)
                 .build();
 
-        register(bootstrap, RecastingSlashBladeKeys.TIL_LAMBDA)
+        register(bootstrap, RecastingSlashBladeKeys.STAR_THREAD_LAMBDA)
                 .renderDefinition(
                         RenderDefinition.Builder.newInstance()
-                                .modelName(R.Slashblade.Special.til$obj)
-                                .textureName(R.Slashblade.Special.til$png)
+                                .modelName(R.Slashblade.Special.starThread$obj)
+                                .textureName(R.Slashblade.Special.starThread$png)
                                 .effectColor(new Color(210, 118, 246).getRGB())
                 )
                 .propertiesDefinition(
@@ -1053,11 +1053,11 @@ public final class SlashBladeDefinitions {
                 .addSpecialEffects(SpecialEffectsRegistry.STAR_BLINK_LAMBDA, 1)
                 .build();
 
-        register(bootstrap, RecastingSlashBladeKeys.HTOD)
+        register(bootstrap, RecastingSlashBladeKeys.FINAL_GLOW)
                 .renderDefinition(
                         RenderDefinition.Builder.newInstance()
-                                .modelName(R.Slashblade.Special.htod$obj)
-                                .textureName(R.Slashblade.Special.htod$png)
+                                .modelName(R.Slashblade.Special.finalGlow$obj)
+                                .textureName(R.Slashblade.Special.finalGlow$png)
                                 .effectColor(new Color(246, 67, 67, 255).getRGB())
                 )
                 .propertiesDefinition(
@@ -1069,11 +1069,11 @@ public final class SlashBladeDefinitions {
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
                 .build();
 
-        register(bootstrap, RecastingSlashBladeKeys.HTOD_LAMBDA)
+        register(bootstrap, RecastingSlashBladeKeys.FINAL_GLOW_LAMBDA)
                 .renderDefinition(
                         RenderDefinition.Builder.newInstance()
-                                .modelName(R.Slashblade.Special.htod$obj)
-                                .textureName(R.Slashblade.Special.htod$png)
+                                .modelName(R.Slashblade.Special.finalGlow$obj)
+                                .textureName(R.Slashblade.Special.finalGlow$png)
                                 .effectColor(new Color(246, 67, 67, 255).getRGB())
                 )
                 .propertiesDefinition(
@@ -1085,11 +1085,11 @@ public final class SlashBladeDefinitions {
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
                 .build();
 
-        register(bootstrap, RecastingSlashBladeKeys.XING_KONG)
+        register(bootstrap, RecastingSlashBladeKeys.VAULT_SCALE)
                 .renderDefinition(
                         RenderDefinition.Builder.newInstance()
-                                .modelName(R.Slashblade.Special.xingKong$obj)
-                                .textureName(R.Slashblade.Special.xingKong$png)
+                                .modelName(R.Slashblade.Special.vaultScale$obj)
+                                .textureName(R.Slashblade.Special.vaultScale$png)
                                 .effectColor(new Color(0, 17, 86).getRGB())
                 )
                 .propertiesDefinition(
@@ -1101,11 +1101,11 @@ public final class SlashBladeDefinitions {
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
                 .build();
 
-        register(bootstrap, RecastingSlashBladeKeys.XING_KONG_LAMBDA)
+        register(bootstrap, RecastingSlashBladeKeys.VAULT_SCALE_LAMBDA)
                 .renderDefinition(
                         RenderDefinition.Builder.newInstance()
-                                .modelName(R.Slashblade.Special.xingKong$obj)
-                                .textureName(R.Slashblade.Special.xingKong$png)
+                                .modelName(R.Slashblade.Special.vaultScale$obj)
+                                .textureName(R.Slashblade.Special.vaultScale$png)
                                 .effectColor(new Color(0, 17, 86).getRGB()
                                 ))
                 .propertiesDefinition(

@@ -334,21 +334,21 @@ public class R {
         }
 
         public static class Special {
-            public static final ResourceLocation htod = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/htod");
-            public static final ResourceLocation htod$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/htod.obj");
-            public static final ResourceLocation htod$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/htod.png");
+            public static final ResourceLocation finalGlow = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/final_glow");
+            public static final ResourceLocation finalGlow$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/final_glow.obj");
+            public static final ResourceLocation finalGlow$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/final_glow.png");
             public static final ResourceLocation jieYuanDog = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/jie_yuan_dog");
             public static final ResourceLocation jieYuanDog$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/jie_yuan_dog.obj");
             public static final ResourceLocation jieYuanDog$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/jie_yuan_dog.png");
-            public static final ResourceLocation til = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/til");
-            public static final ResourceLocation til$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/til.obj");
-            public static final ResourceLocation til$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/til.png");
+            public static final ResourceLocation starThread = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/star_thread");
+            public static final ResourceLocation starThread$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/star_thread.obj");
+            public static final ResourceLocation starThread$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/star_thread.png");
             public static final ResourceLocation tuWu = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/tu_wu");
             public static final ResourceLocation tuWu$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/tu_wu.obj");
             public static final ResourceLocation tuWu$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/tu_wu.png");
-            public static final ResourceLocation xingKong = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/xing_kong");
-            public static final ResourceLocation xingKong$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/xing_kong.obj");
-            public static final ResourceLocation xingKong$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/xing_kong.png");
+            public static final ResourceLocation vaultScale = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/vault_scale");
+            public static final ResourceLocation vaultScale$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/vault_scale.obj");
+            public static final ResourceLocation vaultScale$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/vault_scale.png");
             public static final ResourceLocation xuanYuanLiberated = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/xuan_yuan_liberated");
             public static final ResourceLocation xuanYuanLiberated$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/xuan_yuan_liberated.obj");
             public static final ResourceLocation xuanYuanLiberated$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/special/xuan_yuan_liberated.png");

@@ -28,7 +28,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class DogBondSpecialEffect extends ExtendedSpecialEffect {
 
     private int absorptionDurationTicks = 50;
-    private int absorptionAmplifier = 0;
+    private int absorptionAmplifier = 1;
     private int durabilityCost = 40;
     private int cooldownTicks = 40;
 

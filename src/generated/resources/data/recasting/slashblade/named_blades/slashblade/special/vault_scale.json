@@ -4,9 +4,9 @@
       "id": "minecraft:sharpness"
     }
   ],
-  "name": "recasting:slashblade/special/xing_kong_lambda",
+  "name": "recasting:slashblade/special/vault_scale",
   "properties": {
-    "attack_base": 12.0,
+    "attack_base": 10.0,
     "max_damage": 1920,
     "sword_type": [
       "bewitched"
@@ -14,8 +14,8 @@
   },
   "render": {
     "carry_type": "default",
-    "model": "recasting:slashblade/special/xing_kong.obj",
+    "model": "recasting:slashblade/special/vault_scale.obj",
     "summon_sword_color": -16772778,
-    "texture": "recasting:slashblade/special/xing_kong.png"
+    "texture": "recasting:slashblade/special/vault_scale.png"
   }
 }

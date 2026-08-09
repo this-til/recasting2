@@ -4,18 +4,18 @@
       "id": "minecraft:sharpness"
     }
   ],
-  "name": "recasting:slashblade/special/htod_lambda",
+  "name": "recasting:slashblade/special/final_glow",
   "properties": {
-    "attack_base": 12.0,
-    "max_damage": 3840,
+    "attack_base": 10.0,
+    "max_damage": 1920,
     "sword_type": [
       "bewitched"
     ]
   },
   "render": {
     "carry_type": "default",
-    "model": "recasting:slashblade/special/htod.obj",
+    "model": "recasting:slashblade/special/final_glow.obj",
     "summon_sword_color": -638141,
-    "texture": "recasting:slashblade/special/htod.png"
+    "texture": "recasting:slashblade/special/final_glow.png"
   }
 }
