@@ -292,4 +292,13 @@ public class RecastingBuffTypes {
             () -> new BuffType(1, 0)
     );
 
+    /**
+     * 群星坠落阵
+     * - 不衰减；最大 1 层；记录在释放者
+     * - 自定义数据存放当前 StarfallArrayEntity 的 UUID
+     */
+    public static final RegistryObject<BuffType> STARFALL = BUFF_TYPES.register("starfall",
+            () -> new BuffType(0, 1)
+    );
+
 }

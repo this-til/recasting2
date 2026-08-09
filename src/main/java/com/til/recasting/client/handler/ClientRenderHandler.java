@@ -7,6 +7,7 @@ import com.til.recasting.client.renderer.entity.JudgementCutEntityRenderer;
 import com.til.recasting.client.renderer.entity.LightningEntityRenderer;
 import com.til.recasting.client.renderer.entity.MatrixEntityRender;
 import com.til.recasting.client.renderer.entity.SlashEffectEntityRenderer;
+import com.til.recasting.client.renderer.entity.StarfallArrayEntityRender;
 import com.til.recasting.client.renderer.entity.StellarRotationEntityRender;
 import com.til.recasting.client.renderer.entity.SummondSwordEntityRenderer;
 import com.til.recasting.client.renderer.entity.TrackingSummondSwordEntityRenderer;
@@ -56,6 +57,9 @@ public class ClientRenderHandler {
         
         // 注册穷观阵实体渲染器
         event.registerEntityRenderer(RecastingEntities.MATRIX.get(), MatrixEntityRender::new);
+
+        // 注册群星坠落阵实体渲染器
+        event.registerEntityRenderer(RecastingEntities.STARFALL_ARRAY.get(), StarfallArrayEntityRender::new);
     }
 }
 

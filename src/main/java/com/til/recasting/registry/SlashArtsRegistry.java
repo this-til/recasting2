@@ -327,6 +327,18 @@ public class SlashArtsRegistry {
     // 回到未来计划 · 星辰斗转
     public static final RegistryObject<ExtendedSlashArts> CELESTIAL_DRIVE = registerExtendedSA("celestial_drive", CelestialDriveSlashArts::new);
 
+    // 回到未来计划 · 群星坠落
+    public static final RegistryObject<ExtendedSlashArts> STARFALL = registerExtendedSA("starfall", StarfallSlashArts::new);
+
+    // 回到未来计划 · 擒苍决
+    public static final RegistryObject<ExtendedSlashArts> SKY_SEIZE = registerExtendedSA("sky_seize", SkySeizeSlashArts::new);
+
+    // 回到未来计划 · 神斩
+    public static final RegistryObject<ExtendedSlashArts> DIVINE_SLASH = registerExtendedSA("divine_slash", DivineSlashSlashArts::new);
+
+    // 回到未来计划 · 断罪
+    public static final RegistryObject<ExtendedSlashArts> VERDICT = registerExtendedSA("verdict", VerdictSlashArts::new);
+
     /**
      * 注册扩展的 SlashArts，自动关联 ComboState
      */

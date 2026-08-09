@@ -391,6 +391,14 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtDescKey(SlashArtsRegistry.TIDAL_SURGE), "短暂时间内以自身为源向水平四周持续喷出蓝色剑气。", "For a brief moment, continuously sprays blue sword qi horizontally outward from the caster.");
         translation(slashArtKey(SlashArtsRegistry.CELESTIAL_DRIVE), "[回到未来计划]星辰斗转", "[Back to the Future Plan] Celestial Drive");
         translation(slashArtDescKey(SlashArtsRegistry.CELESTIAL_DRIVE), "从自身向四面八方散射短命剑气。", "Scatters short-lived sword qi outward in all directions from the caster.");
+        translation(slashArtKey(SlashArtsRegistry.STARFALL), "[回到未来计划]群星坠落", "[Back to the Future Plan] Starfall");
+        translation(slashArtDescKey(SlashArtsRegistry.STARFALL), "展开阵体：无锁时跟随自身对周围敌人落星；有锁时钉住目标并持续落星。", "Unfolds an array: without a lock it follows the caster and drops stars on nearby foes; with a lock it pins the target and keeps raining stars.");
+        translation(slashArtKey(SlashArtsRegistry.SKY_SEIZE), "[回到未来计划]擒苍决", "[Back to the Future Plan] Sky Seize");
+        translation(slashArtDescKey(SlashArtsRegistry.SKY_SEIZE), "自高空雨落大量幻影剑，飞剑消失时落雷并沿附近敌人传导闪电链。", "Rains many phantom swords from above; when they vanish they strike with lightning and chain to nearby foes.");
+        translation(slashArtKey(SlashArtsRegistry.DIVINE_SLASH), "[回到未来计划]神斩", "[Back to the Future Plan] Divine Slash");
+        translation(slashArtDescKey(SlashArtsRegistry.DIVINE_SLASH), "沿视线发射多道体型递减、色泽各异的剑气。", "Fires multiple sword qi along the look direction with shrinking size and varied colors.");
+        translation(slashArtKey(SlashArtsRegistry.VERDICT), "[回到未来计划]断罪", "[Back to the Future Plan] Verdict");
+        translation(slashArtDescKey(SlashArtsRegistry.VERDICT), "发射一道巨大剑气，命中后在目标周围唤出与视线同向的幻影剑。", "Launches a massive sword qi that, on hit, summons phantom swords around the target aligned with the look direction.");
         translation(specialEffectKey(SpecialEffectsRegistry.COOPERATE_WITH), "协同攻击", "Cooperate With");
         translation(specialEffectDescKey(SpecialEffectsRegistry.COOPERATE_WITH), "挥刀时概率额外挥刀。", "Has a chance to perform an additional slash when slashing.");
         translation(specialEffectKey(SpecialEffectsRegistry.CROSS_CHOP), "十字斩", "Cross Chop");

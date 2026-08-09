@@ -6,6 +6,7 @@ import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.entity.LightningEntity;
 import com.til.recasting.entity.MatrixEntity;
 import com.til.recasting.entity.SlashEffectEntity;
+import com.til.recasting.entity.StarfallArrayEntity;
 import com.til.recasting.entity.StellarRotationEntity;
 import com.til.recasting.entity.SummondSpiralSwordEntity;
 import com.til.recasting.entity.SummondSwordEntity;
@@ -199,6 +200,24 @@ public class RecastingEntities {
                     .noSummon()                      // 不能通过命令召唤
                     .setShouldReceiveVelocityUpdates(true)
                     .build("matrix")
+    );
+
+    /**
+     * 群星坠落阵实体
+     * - 跟随或钉死目标，周期性刷追踪落星
+     * - 使用 starfall 阵模型渲染
+     */
+    public static final RegistryObject<EntityType<StarfallArrayEntity>> STARFALL_ARRAY = ENTITY_TYPES.register(
+            "starfall_array",
+            () -> EntityType.Builder.<StarfallArrayEntity>of((e, l) -> new StarfallArrayEntity(e, l, null), MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .clientTrackingRange(128)
+                    .updateInterval(1)
+                    .fireImmune()
+                    .noSave()
+                    .noSummon()
+                    .setShouldReceiveVelocityUpdates(true)
+                    .build("starfall_array")
     );
 }
 

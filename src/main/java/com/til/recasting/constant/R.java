@@ -93,6 +93,12 @@ public class R {
             public static final ResourceLocation matrix = ResourceLocation.fromNamespaceAndPath("recasting", "models/special/matrix");
             public static final ResourceLocation matrix$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/special/matrix.obj");
             public static final ResourceLocation matrix$png = ResourceLocation.fromNamespaceAndPath("recasting", "models/special/matrix.png");
+            public static final ResourceLocation starfall = ResourceLocation.fromNamespaceAndPath("recasting", "models/special/starfall");
+            public static final ResourceLocation starfall$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/special/starfall.obj");
+            public static final ResourceLocation starfall$png = ResourceLocation.fromNamespaceAndPath("recasting", "models/special/starfall.png");
+            public static final ResourceLocation starfallStar = ResourceLocation.fromNamespaceAndPath("recasting", "models/special/starfall_star");
+            public static final ResourceLocation starfallStar$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/special/starfall_star.obj");
+            public static final ResourceLocation starfallStar$png = ResourceLocation.fromNamespaceAndPath("recasting", "models/special/starfall_star.png");
         }
     }
 
