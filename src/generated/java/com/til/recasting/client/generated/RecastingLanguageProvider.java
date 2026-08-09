@@ -386,7 +386,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtKey(SlashArtsRegistry.AZURE_HAZE), "[回到未来计划]青茫熳天摇", "[Back to the Future Plan] Azure Haze");
         translation(slashArtDescKey(SlashArtsRegistry.AZURE_HAZE), "环绕自身射出大量幻影剑，飞剑消失时向四周扩散剑气。", "Launches many phantom swords around the caster; when they vanish they burst into spreading sword qi.");
         translation(slashArtKey(SlashArtsRegistry.MORTAL_DUST), "[回到未来计划]红尘滚滚", "[Back to the Future Plan] Mortal Dust");
-        translation(slashArtDescKey(SlashArtsRegistry.MORTAL_DUST), "对周围敌人头顶落下追踪幻影剑，命中叠伤并溅射，伴随橙尘拖尾与命中喷泉。", "Drops tracking phantom swords onto nearby foes from above; hits stack damage and splash while leaving orange dust trails and hit bursts.");
+        translation(slashArtDescKey(SlashArtsRegistry.MORTAL_DUST), "对周围敌人头顶落下追踪幻影剑，命中叠加红尘并溅射；红尘提高目标所受伤害，受击时额外造成固定伤害，伴随橙尘拖尾与命中喷泉。", "Drops tracking phantom swords onto nearby foes from above, applying Mortal Dust with splash; Mortal Dust amplifies damage taken and deals fixed damage when struck, with orange dust trails and hit bursts.");
         translation(slashArtKey(SlashArtsRegistry.TIDAL_SURGE), "[回到未来计划]撼海潮涌", "[Back to the Future Plan] Tidal Surge");
         translation(slashArtDescKey(SlashArtsRegistry.TIDAL_SURGE), "短暂时间内以自身为源向水平四周持续喷出蓝色剑气。", "For a brief moment, continuously sprays blue sword qi horizontally outward from the caster.");
         translation(slashArtKey(SlashArtsRegistry.CELESTIAL_DRIVE), "[回到未来计划]星辰斗转", "[Back to the Future Plan] Celestial Drive");

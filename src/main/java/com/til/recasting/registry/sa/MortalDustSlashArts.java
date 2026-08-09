@@ -1,12 +1,14 @@
 package com.til.recasting.registry.sa;
 
-import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.entity.TrackingSummondSwordEntity;
 import com.til.recasting.handler.AttackHelper;
+import com.til.recasting.handler.BuffSourceHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.handler.EntityHelper;
+import com.til.recasting.handler.MathHelper;
 import com.til.recasting.handler.MortalDustEffectHelper;
 import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
@@ -18,14 +20,11 @@ import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -33,13 +32,11 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 /**
- * [回到未来计划]红尘滚滚：玩家周围随机落下追踪幻影剑，叠伤溅射，橙尘拖尾与命中喷泉。
+ * [回到未来计划]红尘滚滚：玩家周围随机落下追踪幻影剑，命中叠红尘并溅射，橙尘拖尾与命中喷泉。
  */
 @Setter
 @Accessors(chain = true)
 public class MortalDustSlashArts extends ExtendedSlashArts {
-
-    private static final String BONUS_KEY = "bonus";
 
     private int bladeCount = 16;
     private float spawnRangeXZ = 16.0f;
@@ -51,7 +48,8 @@ public class MortalDustSlashArts extends ExtendedSlashArts {
     private float splashRange = 12.0f;
     private int bladeLife = 300;
     private int breakDelay = 10;
-    private int buffWindowSeconds = 10;
+    private int stackAtCenter = 10;
+    private int stackAtEdge = 1;
 
     @Override
     public void trigger(
@@ -117,33 +115,20 @@ public class MortalDustSlashArts extends ExtendedSlashArts {
                     return;
                 }
 
-                float bonus = readBonus(livingHit);
-                float thisHitAmount = estimateHitAmount(shooter, bladeRatio);
+                Vec3 splashCenter = livingHit.getBoundingBox().getCenter();
+                applyMortalDustByDistance(shooter, splashCenter);
 
-                // 主目标：已由幻影剑打过一刀；再补叠伤层
-                if (bonus > 0.0f) {
-                    AttackHelper.attack(
-                            shooter,
-                            livingHit,
-                            new DamageStructure(0.0f, bonus),
-                            attackTypes
-                    );
-                }
-
-                // 溅射：同帧伤害 = 本击量级 + 叠层（排除主目标）
                 AttackHelper.areaAttack(
                         shooter,
-                        livingHit.position().add(0.0, livingHit.getBbHeight() * 0.5, 0.0),
-                        new DamageStructure(bladeRatio, bonus),
+                        splashCenter,
+                        new DamageStructure(bladeRatio, 0.0f),
                         splashRange,
                         attackTypes,
                         List.of(livingHit),
                         null
                 );
-                writeBonus(livingHit, bonus + thisHitAmount);
 
                 if (blade.level() instanceof ServerLevel serverLevel) {
-                    // 旧版在剑实体位置喷 YAO_ATTECK
                     MortalDustEffectHelper.spawnHitBurst(serverLevel, blade.position());
                 }
             });
@@ -163,33 +148,34 @@ public class MortalDustSlashArts extends ExtendedSlashArts {
         );
     }
 
-    private float estimateHitAmount(LivingEntity attacker, float ratio) {
-        AttributeInstance attribute = attacker.getAttribute(Attributes.ATTACK_DAMAGE);
-        if (attribute == null) {
-            return Math.max(1.0f, ratio);
+    private void applyMortalDustByDistance(LivingEntity shooter, Vec3 splashCenter) {
+        List<LivingEntity> targets = EntityHelper.getTargettableLivingEntityWithinAABB(
+                shooter.level(),
+                shooter,
+                splashCenter,
+                splashRange
+        );
+        for(LivingEntity target : targets) {
+            int stacks = stacksByDistance(splashCenter, target);
+            if (stacks <= 0) {
+                continue;
+            }
+            addMortalDustStacks(shooter, target, stacks);
         }
-        return Math.max(1.0f, (float) (attribute.getValue() * ratio));
     }
 
-    private float readBonus(LivingEntity target) {
-        BuffType buffType = RecastingBuffTypes.MORTAL_DUST.get();
-        IBuffStackData data = target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).orElse(null);
-        if (data == null) {
-            return 0.0f;
-        }
-        if (data.getLevel(buffType, target.level()) <= 0) {
-            return 0.0f;
-        }
-        return data.getOrCreateCustomData(buffType, target.level()).getFloat(BONUS_KEY);
+    private int stacksByDistance(Vec3 splashCenter, LivingEntity target) {
+        double dist = target.getBoundingBox().getCenter().distanceTo(splashCenter);
+        float t = MathHelper.clamp((float) (dist / splashRange), 0.0f, 1.0f);
+        return Math.max(stackAtEdge, Math.round(MathHelper.lerp(t, (float) stackAtCenter, (float) stackAtEdge)));
     }
 
-    private void writeBonus(LivingEntity target, float bonus) {
+    private void addMortalDustStacks(LivingEntity shooter, LivingEntity target, int addStacks) {
         BuffType buffType = RecastingBuffTypes.MORTAL_DUST.get();
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
-            // 层数只表示叠伤窗口剩余秒数，精确累加量在 customData
-            data.setLevel(buffType, buffWindowSeconds, target.level());
-            CompoundTag customData = data.getOrCreateCustomData(buffType, target.level());
-            customData.putFloat(BONUS_KEY, Math.max(0.0f, bonus));
+            int current = data.getLevel(buffType, target.level());
+            data.setLevel(buffType, current + addStacks, target.level());
+            BuffSourceHelper.recordSourceEntity(data, buffType, target, shooter);
         });
     }
 }

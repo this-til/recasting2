@@ -399,7 +399,7 @@
   "slash_art.recasting.matrix_lambda": "Matrix Lambda",
   "slash_art.recasting.matrix_lambda.desc": "Create a matrix at the target position that deals continuous damage and stacks calculus buff layers, increasing damage taken by targets.",
   "slash_art.recasting.mortal_dust": "[Back to the Future Plan] Mortal Dust",
-  "slash_art.recasting.mortal_dust.desc": "Drops tracking phantom swords onto nearby foes from above; hits stack damage and splash while leaving orange dust trails and hit bursts.",
+  "slash_art.recasting.mortal_dust.desc": "Drops tracking phantom swords onto nearby foes from above, applying Mortal Dust with splash; Mortal Dust amplifies damage taken and deals fixed damage when struck, with orange dust trails and hit bursts.",
   "slash_art.recasting.multiple_drive": "Multiple Drive",
   "slash_art.recasting.multiple_drive.desc": "Launch multiple sword qi forward, each with random size and rotation angle.",
   "slash_art.recasting.multiple_drive_lambda": "Multiple Drive Lambda",

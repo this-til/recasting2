@@ -144,4 +144,12 @@ public class BuffLevelRendererRegistry {
             () -> new BuffLevelRenderConfig(RecastingBuffTypes.ETERNAL_GUARD, RecastingLanguageKeys.BUFF_ETERNAL_GUARD)
     );
 
+    /**
+     * 红尘 - 显示层数
+     */
+    public static final RegistryObject<BuffLevelRenderConfig> MORTAL_DUST = BUFF_LEVEL_RENDER_CONFIGS.register(
+            "mortal_dust",
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.MORTAL_DUST, RecastingLanguageKeys.BUFF_MORTAL_DUST)
+    );
+
 }

@@ -276,11 +276,20 @@ public class RecastingBuffTypes {
     );
 
     /**
-     * 红尘叠伤（红尘滚滚）
-     * - 每 20 tick 衰减 1 层；层数刷新叠伤窗口；精确累加量存在 customData
+     * 红尘（红尘滚滚）
+     * - 每 20 tick 衰减 1 层；最大 160 层
+     * - 按层提高所受全部伤害；受击时按层造成固定伤害（有内置冷却）
      */
     public static final RegistryObject<BuffType> MORTAL_DUST = BUFF_TYPES.register("mortal_dust",
-            () -> new BuffType(20, 0)
+            () -> new BuffType(20, 160)
+    );
+
+    /**
+     * 红尘受击固伤冷却
+     * - 衰减间隔 1 tick；层数 = 剩余冷却 tick（记录在受击目标）
+     */
+    public static final RegistryObject<BuffType> MORTAL_DUST_PROC_CD = BUFF_TYPES.register("mortal_dust_proc_cd",
+            () -> new BuffType(1, 0)
     );
 
 }
