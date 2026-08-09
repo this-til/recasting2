@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_erosion_phase_transition": {
+    "has_interlace_phase_transition": {
       "conditions": {
         "items": [
           {
             "items": [
-              "recasting:erosion_phase_transition"
+              "recasting:interlace_phase_transition"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "recasting:tu_wu_lambda_recipe"
+        "recipe": "recasting:xuan_yuan_liberated_recipe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_erosion_phase_transition",
+      "has_interlace_phase_transition",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "recasting:tu_wu_lambda_recipe"
+      "recasting:xuan_yuan_liberated_recipe"
     ]
   },
   "sends_telemetry_event": false

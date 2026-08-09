@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-07T23:48:16.267661	Advancements
+// 1.20.1	2026-08-09T23:58:14.7039082	Advancements
 1712a697927bd33f2ac61bd946afa4eb235d72d6 data/recasting/advancements/growth/blades/slashblade/art_knife.json
 84a907fb18a21655c41f203ef6e301210710e6f5 data/recasting/advancements/growth/blades/slashblade/azure_vista.json
 1563f8fe50126bf4ea4b687614ac67e2859928f2 data/recasting/advancements/growth/blades/slashblade/azure_vista_lambda.json
@@ -54,9 +54,9 @@ e1e1345d7cb5cc9b3a68dd300ee84d775d1fce3c data/recasting/advancements/growth/blad
 c11622ee483cda5910e3baaeec0b7e21cb95ede7 data/recasting/advancements/growth/blades/slashblade/silver_wing_lambda.json
 c5b94fec179102941c90c265f45db5327995e87c data/recasting/advancements/growth/blades/slashblade/soulblade.json
 f7b15f292bd9d05ff7ae19ab15d9ca23efad7c5d data/recasting/advancements/growth/blades/slashblade/soulblade_lambda.json
-49fecda64207040ac29c9e8e3fb92c1fc3c7e15e data/recasting/advancements/growth/blades/slashblade/special/tu_wu.json
+d7c1b2bfd4c2e650703f2dcd4054762b75c4778b data/recasting/advancements/growth/blades/slashblade/special/tu_wu.json
 acca3a9fa34f6200b060b512a2d5ee585e07cc58 data/recasting/advancements/growth/blades/slashblade/special/tu_wu_lambda.json
-a2289baf121ed880069acae446d655ec01319af7 data/recasting/advancements/growth/blades/slashblade/special/xuan_yuan_liberated.json
+7d0e21a68eda99e2816370cbbe1b59b81c654812 data/recasting/advancements/growth/blades/slashblade/special/xuan_yuan_liberated.json
 7a47c285c14c8f352226d4371db1e0237e5253e2 data/recasting/advancements/growth/blades/slashblade/special/xuan_yuan_liberated_lambda.json
 8fd645bec04d2969a933917db16057fcb40ccd8a data/recasting/advancements/growth/blades/slashblade/startled_swan.json
 a05b2fbff5e81deac284d6b7cfe3c6d8cc847cca data/recasting/advancements/growth/blades/slashblade/startled_swan_lambda.json

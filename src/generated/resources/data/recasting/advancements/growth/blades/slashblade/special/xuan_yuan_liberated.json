@@ -1,6 +1,12 @@
 {
-  "parent": "recasting:growth/root",
+  "parent": "recasting:growth/blades/slashblade/special/tu_wu_lambda",
   "criteria": {
+    "crafted": {
+      "conditions": {
+        "recipe_id": "recasting:xuan_yuan_liberated_recipe"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
     "obtained": {
       "conditions": {
         "items": [
@@ -16,7 +22,12 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.recasting.growth.blade.pending.description"
+      "translate": "advancements.recasting.growth.blade.from.description",
+      "with": [
+        {
+          "translate": "item.recasting.slashblade.special.tu_wu_lambda"
+        }
+      ]
     },
     "frame": "task",
     "hidden": false,
@@ -31,7 +42,8 @@
   },
   "requirements": [
     [
-      "obtained"
+      "obtained",
+      "crafted"
     ]
   ],
   "sends_telemetry_event": true

@@ -146,10 +146,9 @@ public final class GrowthAdvancementGraph {
             blade(RecastingSlashBladeKeys.LONG_SKY_SUNSET, RecastingSlashBladeKeys.BLACK, "long_sky_sunset_recipe", false),
             blade(RecastingSlashBladeKeys.LONG_SKY_SUNSET_LAMBDA, RecastingSlashBladeKeys.LONG_SKY_SUNSET, "long_sky_sunset_lambda_recipe", true),
 
-            // 无本模组合成配方，仅作为 Lambda 前置
-            blade(RecastingSlashBladeKeys.TU_WU, null, null, false),
+            blade(RecastingSlashBladeKeys.TU_WU, RecastingSlashBladeKeys.SOULBLADE, "tu_wu_recipe", false),
             blade(RecastingSlashBladeKeys.TU_WU_LAMBDA, RecastingSlashBladeKeys.TU_WU, "tu_wu_lambda_recipe", true),
-            blade(RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED, null, null, false),
+            blade(RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED, RecastingSlashBladeKeys.TU_WU_LAMBDA, "xuan_yuan_liberated_recipe", false),
             blade(RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED_LAMBDA, RecastingSlashBladeKeys.XUAN_YUAN_LIBERATED, "xuan_yuan_liberated_lambda_recipe", true)
     );
 

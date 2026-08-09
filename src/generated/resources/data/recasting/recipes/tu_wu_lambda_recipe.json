@@ -19,13 +19,19 @@
       }
     },
     "C": {
+      "item": "recasting:concealed_edge_phase_transition"
+    },
+    "E": {
+      "item": "recasting:erosion_phase_transition"
+    },
+    "T": {
       "item": "recasting:fire_toxin_phase_transition"
     }
   },
   "pattern": [
-    " C ",
+    " TE",
     "CBC",
-    " C "
+    "ET "
   ],
   "result": {
     "item": "slashblade:slashblade"

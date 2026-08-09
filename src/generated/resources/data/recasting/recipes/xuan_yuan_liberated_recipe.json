@@ -1,6 +1,6 @@
 {
   "type": "slashblade:shaped_blade",
-  "blade": "recasting:slashblade/special/xuan_yuan_liberated_lambda",
+  "blade": "recasting:slashblade/special/xuan_yuan_liberated",
   "category": "equipment",
   "key": {
     "B": {
@@ -13,25 +13,25 @@
             "lvl": 5
           }
         ],
-        "kill": 15000,
-        "name": "recasting:slashblade/special/xuan_yuan_liberated",
-        "refine": 1600
+        "kill": 12000,
+        "name": "recasting:slashblade/special/tu_wu_lambda",
+        "refine": 1400
       }
     },
     "I": {
       "item": "recasting:interlace_phase_transition"
     },
-    "R": {
-      "item": "recasting:refraction_phase_transition"
+    "L": {
+      "item": "recasting:blind_phase_transition"
     },
-    "S": {
-      "item": "recasting:spread_phase_transition"
+    "W": {
+      "item": "recasting:winding_phase_transition"
     }
   },
   "pattern": [
-    " IR",
-    "SBS",
-    "RI "
+    " IW",
+    "LBL",
+    "WI "
   ],
   "result": {
     "item": "slashblade:slashblade"
