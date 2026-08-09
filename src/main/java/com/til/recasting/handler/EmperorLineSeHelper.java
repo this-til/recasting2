@@ -8,7 +8,10 @@ import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -108,5 +111,40 @@ public final class EmperorLineSeHelper {
             return;
         }
         event.addModifiedRatioAmplifier(active.stats().getDamageAmplifier());
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
+        Player player = event.player;
+        if (player.level().isClientSide()) {
+            return;
+        }
+        ActiveLine active = resolveHighest(player);
+        if (active == null) {
+            return;
+        }
+        tryRestoreFood(player, active);
+    }
+
+    private static void tryRestoreFood(Player player, ActiveLine active) {
+        int cost = active.stats().getFoodProudCost();
+        int restore = active.stats().getFoodRestore();
+        if (cost <= 0 || restore <= 0) {
+            return;
+        }
+        ISlashBladeState state = active.state();
+        if (state.getProudSoulCount() < cost) {
+            return;
+        }
+        FoodData foodData = player.getFoodData();
+        int foodLevel = foodData.getFoodLevel();
+        if (foodLevel >= 20) {
+            return;
+        }
+        foodData.setFoodLevel(Math.min(20, foodLevel + restore));
+        state.setProudSoulCount(state.getProudSoulCount() - cost);
     }
 }

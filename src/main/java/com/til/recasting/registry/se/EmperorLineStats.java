@@ -14,4 +14,8 @@ public interface EmperorLineStats {
     int getMaxProudPerHit();
 
     int getProtectThreshold();
+
+    int getFoodProudCost();
+
+    int getFoodRestore();
 }

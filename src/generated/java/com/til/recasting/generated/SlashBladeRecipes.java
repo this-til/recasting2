@@ -2074,12 +2074,12 @@ public class SlashBladeRecipes extends RecipeProvider {
                 .save(consumer, Recasting.prefix("long_sky_sunset_lambda_recipe"));
 
         /**
-         * 毕业路线：魂刃 → 屠巫 → 屠巫Λ → 轩辕·解放 → 轩辕·解放Λ
+         * 毕业路线：魂刃Λ → 屠巫 → 屠巫Λ → 轩辕·解放 → 轩辕·解放Λ
          * 每步三相相变各 2，图案同 " SC"/"CBC"/"CS "
          */
 
         /**
-         * 屠巫：从魂刃升级。燎焰系入巫——爆燃/燃烧/火毒 各 2。
+         * 屠巫：从魂刃 Lambda 升级。燎焰系入巫——爆燃/燃烧/火毒 各 2。
          * 要求：杀敌8000、锻造800、锋利5
          */
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.TU_WU.location())
@@ -2088,7 +2088,7 @@ public class SlashBladeRecipes extends RecipeProvider {
                 .pattern("RD ")
                 .define('B',
                         SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                .name(RecastingSlashBladeKeys.SOULBLADE.location())
+                                .name(RecastingSlashBladeKeys.SOULBLADE_LAMBDA.location())
                                 .killCount(8000)
                                 .refineCount(800)
                                 .addEnchantment(new EnchantmentDefinition(

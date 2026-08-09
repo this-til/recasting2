@@ -166,6 +166,8 @@ public class SpecialEffectsRegistry {
                     .setProudPerDamage(200)
                     .setMaxProudPerHit(5000)
                     .setProtectThreshold(5000)
+                    .setFoodProudCost(500)
+                    .setFoodRestore(1)
                     .setMaxLevel(1)
                     .setSpecial(true)
     );
@@ -177,6 +179,8 @@ public class SpecialEffectsRegistry {
                     .setProudPerDamage(134)
                     .setMaxProudPerHit(4333)
                     .setProtectThreshold(4333)
+                    .setFoodProudCost(500)
+                    .setFoodRestore(1)
                     .setMaxLevel(1)
                     .setSpecial(true)
     );
@@ -191,6 +195,8 @@ public class SpecialEffectsRegistry {
                     .setProtectThreshold(3667)
                     .setHealPerTick(0.3f)
                     .setRepairProudCost(135)
+                    .setFoodProudCost(500)
+                    .setFoodRestore(1)
                     .setMaxLevel(1)
                     .setSpecial(true)
     );
@@ -204,6 +210,8 @@ public class SpecialEffectsRegistry {
                     .setProtectThreshold(3000)
                     .setHealPerTick(0.5f)
                     .setRepairProudCost(90)
+                    .setFoodProudCost(500)
+                    .setFoodRestore(1)
                     .setMaxLevel(1)
                     .setSpecial(true)
     );

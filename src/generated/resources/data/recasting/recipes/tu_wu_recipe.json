@@ -14,7 +14,7 @@
           }
         ],
         "kill": 8000,
-        "name": "recasting:slashblade/soulblade",
+        "name": "recasting:slashblade/soulblade_lambda",
         "refine": 800
       }
     },

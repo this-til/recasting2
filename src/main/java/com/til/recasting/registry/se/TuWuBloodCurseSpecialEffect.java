@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 
 /**
  * 屠巫血咒
- * 手持时参与阶梯增伤与致命抵挡；优先级由 {@link com.til.recasting.handler.EmperorLineSeHelper} 结算。
+ * 手持时参与阶梯增伤、致命抵挡与自动补充饥饿；优先级由 {@link com.til.recasting.handler.EmperorLineSeHelper} 结算。
  */
 @Getter
 @Setter
@@ -18,4 +18,6 @@ public class TuWuBloodCurseSpecialEffect extends ExtendedSpecialEffect implement
     int proudPerDamage = 200;
     int maxProudPerHit = 5000;
     int protectThreshold = 5000;
+    int foodProudCost = 500;
+    int foodRestore = 1;
 }

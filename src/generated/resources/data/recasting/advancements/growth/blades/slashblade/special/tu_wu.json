@@ -1,5 +1,5 @@
 {
-  "parent": "recasting:growth/blades/slashblade/soulblade",
+  "parent": "recasting:growth/blades/slashblade/soulblade_lambda",
   "criteria": {
     "crafted": {
       "conditions": {
@@ -25,7 +25,7 @@
       "translate": "advancements.recasting.growth.blade.from.description",
       "with": [
         {
-          "translate": "item.recasting.slashblade.soulblade"
+          "translate": "item.recasting.slashblade.soulblade_lambda"
         }
       ]
     },

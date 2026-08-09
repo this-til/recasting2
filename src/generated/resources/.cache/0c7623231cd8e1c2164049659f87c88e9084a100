@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-10T00:09:48.7263139	Recasting SlashBlade Recipes
+// 1.20.1	2026-08-10T01:03:38.5305464	Recasting SlashBlade Recipes
 a74627e490b2ab2d41e968543fdb44be214ba575 data/recasting/advancements/recipes/combat/art_knife_recipe.json
 5b776b6b4b893a97c920025c199a758aed3f4e1b data/recasting/advancements/recipes/combat/azure_vista_lambda_recipe.json
 28b6a154a874fbaad038a27535bf0a28f6401d5c data/recasting/advancements/recipes/combat/azure_vista_recipe.json
@@ -153,7 +153,7 @@ b11bf8af7a1044562559c50992aa21b71165e45a data/recasting/recipes/star_3_recipe.js
 b0f5e17e9e8ccea331b622c73146291cb829fb85 data/recasting/recipes/supreme_pole_lambda_recipe.json
 fd2bda0fbe848fa871266cf01a5e312503375737 data/recasting/recipes/supreme_pole_recipe.json
 aa2622cb9bda9188ff162125bde16603646b3dd9 data/recasting/recipes/tu_wu_lambda_recipe.json
-f1635839fde108ae83f4188f5cf4e961f2c92fa3 data/recasting/recipes/tu_wu_recipe.json
+d6d9c603b4fbfafaebd3835b6d48656c4a513bed data/recasting/recipes/tu_wu_recipe.json
 f64a90b3fb233465b8bb7c3c304a04c0833a7151 data/recasting/recipes/umbrella_lambda_recipe.json
 41de649779c2a4236cd057ed7715c22cc9bb2e82 data/recasting/recipes/umbrella_recipe.json
 84da10ee5ecf51cbfe19ace08c0dfa38c4720719 data/recasting/recipes/void_1_recipe.json

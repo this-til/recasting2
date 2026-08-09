@@ -20,7 +20,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 /**
  * 人皇领域
  * 背包触发：驱散负面、每 tick 回血、免疫击退、屏蔽着火屏幕叠层、秒杀兜底、耀魂修刀。
- * 增伤与致命抵挡由 {@link EmperorLineSeHelper} / ProudSoulLethalAbsorbHelper 按最高阶结算。
+ * 增伤、致命抵挡与自动补充饥饿由 {@link EmperorLineSeHelper} / ProudSoulLethalAbsorbHelper 按最高阶结算。
  */
 @Getter
 @Setter
@@ -35,6 +35,8 @@ public class HumanEmperorDomainSpecialEffect extends ExtendedSpecialEffect imple
     float healPerTick = 0.3f;
     int repairProudCost = 135;
     int repairAmount = 1;
+    int foodProudCost = 500;
+    int foodRestore = 1;
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
