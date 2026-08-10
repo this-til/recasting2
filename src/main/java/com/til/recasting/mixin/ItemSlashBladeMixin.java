@@ -2,6 +2,7 @@ package com.til.recasting.mixin;
 
 import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.handler.FeEnergyHelper;
 import com.til.recasting.handler.SpecialEffectTooltipHelper;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
@@ -54,6 +55,8 @@ public class ItemSlashBladeMixin {
     @Inject(method = "appendHoverText", at = @At("RETURN"))
     @OnlyIn(Dist.CLIENT)
     public void appendSpecialEffectHoverText(ItemStack stack, Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn, CallbackInfo ci) {
+        FeEnergyHelper.appendTooltip(stack, tooltip);
+
         stack.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION).ifPresent(extension -> {
             EnumSet<SwordType> swordTypes = SwordType.from(stack);
             if (swordTypes.contains(SwordType.BEWITCHED)

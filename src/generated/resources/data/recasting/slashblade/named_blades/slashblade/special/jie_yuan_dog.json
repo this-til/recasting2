@@ -23,8 +23,6 @@
   },
   "render": {
     "carry_type": "default",
-    "model": "recasting:slashblade/special/jie_yuan_dog.obj",
-    "summon_sword_color": -14155712,
-    "texture": "recasting:slashblade/special/jie_yuan_dog.png"
+    "summon_sword_color": -14155712
   }
 }

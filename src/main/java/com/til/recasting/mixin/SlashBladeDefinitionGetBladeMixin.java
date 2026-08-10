@@ -3,6 +3,7 @@ package com.til.recasting.mixin;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.handler.FeEnergyHelper;
 import com.til.recasting.mixin_api.ISlashBladeStateExtension;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
 import net.minecraft.world.item.ItemStack;
@@ -46,6 +47,11 @@ public abstract class SlashBladeDefinitionGetBladeMixin {
                     if (source != null) {
                         capability.attackDistance(source.attackDistance());
                         capability.extendedSpecialLevels(new HashMap<>(source.extendedSpecialLevels()));
+                        capability.trackingPhantomBlade(source.trackingPhantomBlade());
+                        capability.feCapacity(source.feCapacity());
+                        if (source.feCapacity() > 0L) {
+                            FeEnergyHelper.fillToCapacity(result);
+                        }
                     }
                 });
 

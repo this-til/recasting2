@@ -105,6 +105,8 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(buffKey(RecastingBuffTypes.BUFF_SUPPRESS), "增益压制", "Buff Suppress");
         translation(buffKey(RecastingBuffTypes.ETERNAL_GUARD), "静滞", "Stasis");
         translation(buffKey(RecastingBuffTypes.MORTAL_DUST), "红尘", "Mortal Dust");
+        translation(buffKey(RecastingBuffTypes.ELECTRIC_SURGE), "电涌", "Electric Surge");
+        translation(buffKey(RecastingBuffTypes.OTHERWORLD_SLASH_CD), "异界斩切冷却", "Otherworld Slash Cooldown");
         translation(slashBladeKey(RecastingSlashBladeKeys.VOID_1), "洞虚利刃", "Void Blade I");
         translation(slashBladeKey(RecastingSlashBladeKeys.VOID_2), "洞虚利刃[漆黑]", "Void Blade II");
         translation(slashBladeKey(RecastingSlashBladeKeys.VOID_3), "洞虚利刃[猩红]", "Void Blade III");
@@ -119,6 +121,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashBladeKey(RecastingSlashBladeKeys.SILVER_WING_LAMBDA), "^云翼", "Silver Wing Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.COLOR_WING), "彩翼", "Color Wing");
         translation(slashBladeKey(RecastingSlashBladeKeys.COLOR_WING_LAMBDA), "^彩翼", "Color Wing Lambda");
+        translation(slashBladeKey(RecastingSlashBladeKeys.RADIANT_STAR), "彩耀之星", "Radiant Star");
         translation(slashBladeKey(RecastingSlashBladeKeys.COOL_MINT), "冰薄荷", "Cool Mint");
         translation(slashBladeKey(RecastingSlashBladeKeys.COOL_MINT_LAMBDA), "^冰薄荷", "Cool Mint Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.DHARMA_STICK), "法棍", "Dharma Stick");
@@ -230,6 +233,12 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(RecastingLanguageKeys.TOOLTIP_ABYSS_FLAME_EXTRACT, "• 铁砧：左刀右渊寂火去除特殊SE；左刀右聚散变体提取结晶（刀损毁）", "• Anvil: blade+abyss flame removes special SE; blade+gathering parting variant extracts a crystal (blade destroyed)");
         translation(RecastingLanguageKeys.TOOLTIP_PHANTOM_BLADE_NORMAL, "幻影剑", "Phantom Sword");
         translation(RecastingLanguageKeys.TOOLTIP_PHANTOM_BLADE_TRACKING, "幻影飞刃", "Phantom Flying Blade");
+        translation(RecastingLanguageKeys.TOOLTIP_FE_ENERGY_HINT, "按住 Shift 查看 FE 能量", "Hold Shift to view FE energy");
+        translation(RecastingLanguageKeys.TOOLTIP_FE_ENERGY_INFO, "FE 能量：%s", "FE Energy: %s");
+        translation(RecastingLanguageKeys.COMMAND_FE_NOT_FE_BLADE, "主手物品不是带 FE 缓存的拔刀剑。", "Main-hand item is not an FE slash blade.");
+        translation(RecastingLanguageKeys.COMMAND_FE_FAILED, "无法写入 FE 能量。", "Failed to write FE energy.");
+        translation(RecastingLanguageKeys.COMMAND_FE_FILL_SUCCESS, "已将 %s 的主手刀 FE 填满（%s）。", "Filled FE on %s's main-hand blade (%s).");
+        translation(RecastingLanguageKeys.COMMAND_FE_SET_SUCCESS, "已将 %s 的主手刀 FE 设为 %s。", "Set FE on %s's main-hand blade to %s.");
         translation(RecastingLanguageKeys.MESSAGE_PHANTOM_BLADE_NORMAL, "已切换为基础幻影剑", "Switched to phantom sword");
         translation(RecastingLanguageKeys.MESSAGE_PHANTOM_BLADE_TRACKING, "已切换为幻影飞刃", "Switched to phantom flying blade");
         translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP, "你获得了 %s。%s 将在 %s 后可再次掉落。", "You obtained %s. %s can drop again after %s.");
@@ -466,6 +475,8 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtDescKey(SlashArtsRegistry.BLISTERING_QI), "持续唤出追踪幻影剑追击目标，命中时爆出小型爆炸特效；重复释放可延续时长。", "Continually summons tracking phantom swords at the target that burst with a small explosion effect on hit; reusing the art refreshes its duration.");
         translation(slashArtKey(SlashArtsRegistry.HEAVY_PAYLOAD), "[回到未来计划]大包弹", "[Back to the Future Plan] Heavy Payload");
         translation(slashArtDescKey(SlashArtsRegistry.HEAVY_PAYLOAD), "对锁定或视锥内目标近距打击后，在其处放出白色闪光次元斩。", "Delivers a close-range strike to a locked or view-cone target, then detonates a white flash judgement cut on them.");
+        translation(slashArtKey(SlashArtsRegistry.OTHERWORLD_SLASH), "异界斩切", "Otherworld Slash");
+        translation(slashArtDescKey(SlashArtsRegistry.OTHERWORLD_SLASH), "发动大范围环状斩击，并对命中目标追加冲击打击；单次释放不会对同一目标重复叠加冲击。", "Unleashes a wide ring slash and applies Impact strikes to hit targets; a single cast will not stack Impact repeatedly on the same target.");
         translation(slashArtKey(SlashArtsRegistry.FINAL_SUPERNOVA), "终焉超新星爆", "Final Supernova");
         translation(slashArtDescKey(SlashArtsRegistry.FINAL_SUPERNOVA), "在瞄准点展开坍缩黑洞，吞噬周围方块并吸附实体，最终迸发圆环并造成大量伤害。", "Unfolds a collapsing black hole at the aim point that consumes blocks and pulls entities, then bursts into rings and deals heavy damage.");
         translation(specialEffectKey(SpecialEffectsRegistry.COOPERATE_WITH), "协同攻击", "Cooperate With");
@@ -585,6 +596,8 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(specialEffectDescKey(SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN_LAMBDA), "置于背包即可驱散负面并更快回血，免疫击退，屏蔽着火画面，提供更强的同阶梯增伤与更高效致命抵挡；刀上仍有耀魂时可抵御常见秒杀，并以更低耀魂消耗修复背包中受损的拔刀剑；自动消耗耀魂补充饥饿。", "While in inventory, dispels harmful effects and heals faster, resists knockback, hides the on-fire screen overlay, and grants stronger line-tier damage amp and more efficient lethal absorb; resists common instant kills while the blade still holds proud souls, and repairs damaged slash blades in the inventory at a lower proud-soul cost; automatically spends proud souls to restore hunger.");
         translation(specialEffectKey(SpecialEffectsRegistry.DOG_BOND), "犬缘", "Dog Bond");
         translation(specialEffectDescKey(SpecialEffectsRegistry.DOG_BOND), "置于背包时，受伤会获得伤害吸收；若伤害来自可攻击实体则对其释放犬咬并消耗耐久，内置冷却。", "While in inventory, taking damage grants Absorption; if the damage has an attackable entity source, releases Dog Bite on it and consumes durability, with an internal cooldown.");
+        translation(specialEffectKey(SpecialEffectsRegistry.FOCUSED_ENERGY_BLADE), "聚焦能量刃", "Focused Energy Blade");
+        translation(specialEffectDescKey(SpecialEffectsRegistry.FOCUSED_ENERGY_BLADE), "造成伤害时消耗 FE 追加雷电伤害并叠电涌；电涌满层时尝试消耗大量 FE 释放异界斩切，冷却期间仍可继续叠层。", "On dealing damage, consumes FE to add lightning damage and stack Electric Surge; at full Surge, attempts to spend a large amount of FE to cast Otherworld Slash. Surge can still build during cooldown.");
     }
 
     private void translation(String key, String zhCnText, String enUsText) {

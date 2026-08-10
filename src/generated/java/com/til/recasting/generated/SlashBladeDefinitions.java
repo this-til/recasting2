@@ -610,8 +610,6 @@ public final class SlashBladeDefinitions {
         register(bootstrap, RecastingSlashBladeKeys.JIE_YUAN_DOG)
                 .renderDefinition(
                         RenderDefinition.Builder.newInstance()
-                                .modelName(R.Slashblade.Special.jieYuanDog$obj)
-                                .textureName(R.Slashblade.Special.jieYuanDog$png)
                                 .effectColor(new Color(0x280040).getRGB())
                 )
                 .propertiesDefinition(
@@ -628,6 +626,26 @@ public final class SlashBladeDefinitions {
         //endregion
 
         //region t2
+
+        // 彩耀之星 t2 TODO 贴图模型 / 特效
+        register(bootstrap, RecastingSlashBladeKeys.RADIANT_STAR)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .effectColor(new Color(0xFF66CC).getRGB())
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(7f)
+                                .maxDamage(96 * 40)
+                                .slashArtsType(SlashArtsRegistry.OTHERWORLD_SLASH.getId())
+                                .defaultSwordType(List.of(SwordType.BEWITCHED))
+                )
+                .propertiesDefinitionExtension(
+                        new PropertiesDefinitionExtension().feCapacity(1_000_000_000_000L)
+                )
+                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+                .addSpecialEffects(SpecialEffectsRegistry.FOCUSED_ENERGY_BLADE, 1)
+                .build();
 
         // 冰薄荷
         register(bootstrap, RecastingSlashBladeKeys.COOL_MINT)

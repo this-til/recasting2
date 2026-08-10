@@ -222,6 +222,12 @@ public class SpecialEffectsRegistry {
             () -> new DogBondSpecialEffect().setMaxLevel(1).setSpecial(true)
     );
 
+    // 聚焦能量刃 - 耗 FE 追加雷电伤害并叠电涌，满层耗 FE 释放异界斩切
+    public static final RegistryObject<SpecialEffect> FOCUSED_ENERGY_BLADE = registerExtendedSE(
+            "focused_energy_blade",
+            () -> new FocusedEnergyBladeSpecialEffect().setMaxLevel(1).setSpecial(true)
+    );
+
     public static RegistryObject<SpecialEffect> registerExtendedSE(String name, Supplier<SpecialEffect> factory) {
         return SPECIAL_EFFECT.register(name, factory);
     }

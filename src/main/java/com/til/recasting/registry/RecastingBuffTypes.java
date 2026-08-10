@@ -263,4 +263,18 @@ public class RecastingBuffTypes {
             () -> new BuffType().setMaxLevel(1)
     );
 
+    /**
+     * 电涌
+     */
+    public static final RegistryObject<BuffType> ELECTRIC_SURGE = BUFF_TYPES.register("electric_surge",
+            () -> new BuffType().setMaxLevel(128)
+    );
+
+    /**
+     * 异界斩切冷却
+     */
+    public static final RegistryObject<BuffType> OTHERWORLD_SLASH_CD = BUFF_TYPES.register("otherworld_slash_cd",
+            () -> new BuffType().setDecayInterval(1)
+    );
+
 }

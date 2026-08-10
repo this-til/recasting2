@@ -354,6 +354,12 @@ public class SlashArtsRegistry {
     // 回到未来计划 · 大包弹
     public static final RegistryObject<ExtendedSlashArts> HEAVY_PAYLOAD = registerExtendedSA("heavy_payload", HeavyPayloadSlashArts::new);
 
+    // 异界斩切
+    public static final RegistryObject<ExtendedSlashArts> OTHERWORLD_SLASH = registerExtendedSA(
+            "otherworld_slash",
+            OtherworldSlashSlashArts::new
+    );
+
 
 
     /**

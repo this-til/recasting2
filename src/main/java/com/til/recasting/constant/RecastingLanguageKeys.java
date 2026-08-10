@@ -31,6 +31,12 @@ public final class RecastingLanguageKeys {
 
     public static final String TOOLTIP_PHANTOM_BLADE_NORMAL = "recasting.tooltip.phantom_blade.normal";
     public static final String TOOLTIP_PHANTOM_BLADE_TRACKING = "recasting.tooltip.phantom_blade.tracking";
+    public static final String TOOLTIP_FE_ENERGY_HINT = "recasting.tooltip.fe_energy.hint";
+    public static final String TOOLTIP_FE_ENERGY_INFO = "recasting.tooltip.fe_energy.info";
+    public static final String COMMAND_FE_NOT_FE_BLADE = "recasting.command.fe.not_fe_blade";
+    public static final String COMMAND_FE_FAILED = "recasting.command.fe.failed";
+    public static final String COMMAND_FE_FILL_SUCCESS = "recasting.command.fe.fill_success";
+    public static final String COMMAND_FE_SET_SUCCESS = "recasting.command.fe.set_success";
     public static final String MESSAGE_PHANTOM_BLADE_NORMAL = "recasting.message.phantom_blade.normal";
     public static final String MESSAGE_PHANTOM_BLADE_TRACKING = "recasting.message.phantom_blade.tracking";
     public static final String MESSAGE_PROUD_SOUL_DROP = "recasting.message.proud_soul_drop";

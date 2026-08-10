@@ -22,7 +22,9 @@ public class PropertiesDefinitionExtension implements INBTSerializable<CompoundT
                             .optionalFieldOf("extended_special_levels", new HashMap<>())
                             .forGetter(PropertiesDefinitionExtension::extendedSpecialLevels),
                     Codec.BOOL.optionalFieldOf("tracking_phantom_blade", false)
-                            .forGetter(PropertiesDefinitionExtension::trackingPhantomBlade))
+                            .forGetter(PropertiesDefinitionExtension::trackingPhantomBlade),
+                    Codec.LONG.optionalFieldOf("fe_capacity", 0L)
+                            .forGetter(PropertiesDefinitionExtension::feCapacity))
             .apply(instance, PropertiesDefinitionExtension::new));
 
     float attackDistance = 1.0f;
@@ -31,6 +33,10 @@ public class PropertiesDefinitionExtension implements INBTSerializable<CompoundT
      * 为 true 时基础射击发射追踪幻影飞刃，否则为普通幻影剑
      */
     boolean trackingPhantomBlade = false;
+    /**
+     * FE 能量缓存上限；0 表示不具备 FE 能力
+     */
+    long feCapacity = 0L;
 
     public PropertiesDefinitionExtension() {
     }
@@ -40,7 +46,7 @@ public class PropertiesDefinitionExtension implements INBTSerializable<CompoundT
     }
 
     public PropertiesDefinitionExtension(float attackDistance, Map<ResourceLocation, Integer> extendedSpecialLevels) {
-        this(attackDistance, extendedSpecialLevels, false);
+        this(attackDistance, extendedSpecialLevels, false, 0L);
     }
 
     public PropertiesDefinitionExtension(
@@ -48,11 +54,21 @@ public class PropertiesDefinitionExtension implements INBTSerializable<CompoundT
             Map<ResourceLocation, Integer> extendedSpecialLevels,
             boolean trackingPhantomBlade
     ) {
+        this(attackDistance, extendedSpecialLevels, trackingPhantomBlade, 0L);
+    }
+
+    public PropertiesDefinitionExtension(
+            float attackDistance,
+            Map<ResourceLocation, Integer> extendedSpecialLevels,
+            boolean trackingPhantomBlade,
+            long feCapacity
+    ) {
         this.attackDistance = attackDistance;
         this.extendedSpecialLevels = extendedSpecialLevels != null
                 ? new HashMap<>(extendedSpecialLevels)
                 : new HashMap<>();
         this.trackingPhantomBlade = trackingPhantomBlade;
+        this.feCapacity = Math.max(0L, feCapacity);
     }
 
     public int getExtendedSpecialLevels(ResourceLocation resourceLocation) {
@@ -86,6 +102,7 @@ public class PropertiesDefinitionExtension implements INBTSerializable<CompoundT
                             ? new HashMap<>(decoded.extendedSpecialLevels)
                             : new HashMap<>();
                     this.trackingPhantomBlade = decoded.trackingPhantomBlade;
+                    this.feCapacity = decoded.feCapacity;
                 });
     }
 }
