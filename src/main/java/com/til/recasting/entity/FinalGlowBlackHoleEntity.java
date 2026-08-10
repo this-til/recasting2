@@ -5,10 +5,12 @@ import com.til.recasting.handler.AttractionHelper;
 import com.til.recasting.handler.BuffSourceHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.EntityHelper;
+import com.til.recasting.item.MatterBallStorage;
 import com.til.recasting.network.FinalGlowIngestMessage;
 import com.til.recasting.network.NetworkManager;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
+import com.til.recasting.registry.RecastingItems;
 import com.til.recasting.util.DamageStructure;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -28,13 +30,20 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
@@ -43,6 +52,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
@@ -58,9 +68,9 @@ import java.util.UUID;
  * 末辉终焉超新星爆：视界坍缩后终结。
  * <p>
  * 时间线（与 {@link #getMaxLifeTime()} 同步）：视界与吸积粒子半径按实例字段插值归零后终结；
- * absorbRadius 内核挂静滞并销毁经验球/非释放者弹射物；
- * 方块吞噬只向客户端同步起始方块信息，由客户端本地渲染吸附（无 FallingBlockEntity）；
- * 终结伤害走本模组 {@link AttackHelper}，按距离在 {@link #damageFalloffStart}～{@link #effectRange} 从 {@link #damageRatio} 线性衰减至 0。
+ * absorbRadius 内核：静滞、收集凋落物、经验归释放者、清除外来 FallingBlockEntity；
+ * mobGriefing 时方块按精准采集入账并删除；非破坏规则仅特效；
+ * 终结时返还物质球；伤害按距离在 {@link #damageFalloffStart}～{@link #effectRange} 从 {@link #damageRatio} 线性衰减至 0。
  */
 @Getter
 @Setter
@@ -93,6 +103,10 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private final Map<UUID, LivingEntity> stasisTargets = new HashMap<>();
+    /** 生命周期内收集物（临时物质球）。 */
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private final ItemStack collectBall = new ItemStack(RecastingItems.MATTER_BALL.get());
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private boolean detonated;
@@ -380,7 +394,7 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
     }
 
     /**
-     * absorbRadius 内核：新进生物钉死至爆炸；经验球与非释放者弹射物直接销毁。
+     * absorbRadius 内核：收集凋落物；经验归释放者；清除外来 FallingBlock；生物钉死至爆炸。
      */
     private void tickAbsorbCore(LivingEntity shooter) {
         Vec3 center = position();
@@ -392,8 +406,20 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
             if (entity.distanceToSqr(center) > rangeSqr) {
                 continue;
             }
-            if (entity instanceof ExperienceOrb) {
-                entity.discard();
+            if (entity instanceof ItemEntity itemEntity) {
+                MatterBallStorage.insert(collectBall, itemEntity.getItem());
+                itemEntity.discard();
+                continue;
+            }
+            if (entity instanceof ExperienceOrb orb) {
+                if (shooter instanceof Player player) {
+                    player.giveExperiencePoints(orb.getValue());
+                }
+                orb.discard();
+                continue;
+            }
+            if (entity instanceof FallingBlockEntity falling) {
+                falling.discard();
                 continue;
             }
             if (entity instanceof Projectile projectile) {
@@ -457,13 +483,15 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
     }
 
     private void absorbByRays(int rayCount) {
-        if (level().isClientSide()) {
+        if (level().isClientSide() || !(level() instanceof ServerLevel serverLevel)) {
             return;
         }
         Vec3 origin = position();
         boolean grief = level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
         int breakFxLeft = blockBreakFxPerTick;
         List<FinalGlowIngestMessage.Entry> ingestEntries = new ArrayList<>();
+        LivingEntity shooter = getShooter();
+        ItemStack silkTool = null;
 
         for(int i = 0; i < rayCount; i++) {
             Vec3 dir = randomUnitVector();
@@ -489,9 +517,20 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
             }
 
             ingestEntries.add(new FinalGlowIngestMessage.Entry(state, pos));
-            if (grief) {
-                level().removeBlock(pos, false);
+
+            if (!grief) {
+                continue;
             }
+
+            if (silkTool == null) {
+                silkTool = new ItemStack(Items.DIAMOND_PICKAXE);
+                silkTool.enchant(Enchantments.SILK_TOUCH, 1);
+            }
+            BlockEntity blockEntity = level().getBlockEntity(pos);
+            for(ItemStack drop : Block.getDrops(state, serverLevel, pos, blockEntity, shooter, silkTool)) {
+                MatterBallStorage.insert(collectBall, drop);
+            }
+            level().removeBlock(pos, false);
         }
 
         if (ingestEntries.isEmpty()) {
@@ -544,6 +583,8 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
         Vec3 center = position();
 
         LivingEntity shooter = getShooter();
+        giveMatterBall(shooter, center);
+
         if (shooter == null) {
             return;
         }
@@ -562,6 +603,22 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
                 continue;
             }
             AttackHelper.doMeleeAttack(shooter, target, new DamageStructure(ratio, 0.0f), attackTypes);
+        }
+    }
+
+    private void giveMatterBall(LivingEntity shooter, Vec3 center) {
+        if (MatterBallStorage.isEmpty(collectBall)) {
+            return;
+        }
+        ItemStack ball = new ItemStack(RecastingItems.MATTER_BALL.get());
+        MatterBallStorage.copyFrom(collectBall, ball);
+        MatterBallStorage.clear(collectBall);
+        if (shooter instanceof Player player) {
+            ItemHandlerHelper.giveItemToPlayer(player, ball);
+            return;
+        }
+        if (!ball.isEmpty()) {
+            level().addFreshEntity(new ItemEntity(level(), center.x, center.y, center.z, ball));
         }
     }
 

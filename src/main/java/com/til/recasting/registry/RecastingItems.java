@@ -6,6 +6,7 @@ import com.til.recasting.capability.ISpecialEffectCrystalData;
 import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.SpecialEffectTooltipHelper;
+import com.til.recasting.item.MatterBallItem;
 import com.til.recasting.item.ProudSoulBagItem;
 import com.til.recasting.item.ProudSoulItem;
 import com.til.recasting.registry.se.ExtendedSpecialEffect;
@@ -43,6 +44,12 @@ public class RecastingItems {
     public static final RegistryObject<Item> PROUD_SOUL_BAG = ITEMS.register(
             "proud_soul_bag",
             () -> new ProudSoulBagItem(new Item.Properties().stacksTo(1))
+    );
+
+    // 物质球：无尽贪婪式仓储（末辉黑洞返还）
+    public static final RegistryObject<Item> MATTER_BALL = ITEMS.register(
+            "matter_ball",
+            () -> new MatterBallItem(new Item.Properties().stacksTo(1))
     );
 
     // 执念火：躁动不定的橘红色，焰心处有苍白闪烁
@@ -871,6 +878,7 @@ public class RecastingItems {
 
         // 将所有 RecastingItems 中的物品添加到该物品组
         event.accept(PROUD_SOUL_BAG);
+        event.accept(MATTER_BALL);
 
         RecastingItems.getAllFlame().stream()
                 .map(RegistryObject::get)
