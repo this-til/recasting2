@@ -26,7 +26,7 @@ public class FocusedEnergyBladeSpecialEffect extends ExtendedSpecialEffect {
 
     private long lightningCost = 10_000L;
     private float lightningRatio = 0.12f;
-    private int surgeTriggerStacks = 128;
+    private int surgeTriggerStacks = 64;
     private long slashCost = 1_000_000L;
     private int slashCooldownTicks = 20;
 

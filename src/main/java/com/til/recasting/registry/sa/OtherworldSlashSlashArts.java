@@ -11,7 +11,6 @@ import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
-import mods.flammpfeil.slashblade.util.KnockBacks;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -22,22 +21,19 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * 异界斩切：对照原版巴刃（{@code circle_slash} / {@code CircleSlash}）四向环斩；
- * 斩击范围三倍；命中目标结算一批冲击（4×0.08），单次 SA 每目标仅一批。
- * 特效 TODO 悬空。
+ * 异界斩切：出伤仍走 {@link AttackHelper#doSlash}；表现朝向对照巴刃四向 yRot。
+ * size=3、倍率 0.32；命中一批冲击（4×0.08），单次 SA 每目标仅一批。特效 TODO 悬空。
  */
 @Setter
 @Accessors(chain = true)
 public class OtherworldSlashSlashArts extends ExtendedSlashArts {
 
-    /** 与原版 CircleSlash DoSlashEvent damage 0.325 对齐的业务倍率。 */
     private float slashRatio = 0.32f;
-    /** 相对原版默认斩击 size=1 的三倍。 */
     private float slashSize = 3.0f;
     private int impactHits = 4;
     private float impactRatio = 0.08f;
 
-    /** 原版 ComboState 在 tick 4–7 依次调用的 yRot 偏移。 */
+    /** 巴刃 ComboState 四段 yRot，仅用于斩击实体朝向表现。 */
     private static final float[] CIRCLE_Y_ROT_OFFSETS = {180.0f, 90.0f, 0.0f, -90.0f};
 
     @Override
@@ -61,15 +57,15 @@ public class OtherworldSlashSlashArts extends ExtendedSlashArts {
                     slashBladeState.getColorCode(),
                     Vec3.ZERO,
                     false,
-                    true,
+                    false,
                     new DamageStructure(slashRatio, 0.0f),
                     slashSize,
-                    KnockBacks.cancel
+                    null
             );
             if (slash == null) {
                 continue;
             }
-            // 原版：jc.setYRot(living.getYRot() - 22.5F + yRot)
+            // 仅表现：与 CircleSlash 相同朝向
             slash.setYRot(livingEntity.getYRot() - 22.5f + yRotOffset);
             slash.setXRot(0.0f);
             slash.attackActionCallbackPoint.register(hitEntity -> {

@@ -267,7 +267,7 @@ public class RecastingBuffTypes {
      * 电涌
      */
     public static final RegistryObject<BuffType> ELECTRIC_SURGE = BUFF_TYPES.register("electric_surge",
-            () -> new BuffType().setMaxLevel(128)
+            () -> new BuffType().setMaxLevel(64)
     );
 
     /**
