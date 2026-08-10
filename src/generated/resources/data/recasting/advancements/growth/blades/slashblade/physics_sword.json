@@ -1,5 +1,5 @@
 {
-  "parent": "recasting:growth/hub/new_blade_smith",
+  "parent": "recasting:growth/blades/slashblade/hoe",
   "criteria": {
     "crafted": {
       "conditions": {

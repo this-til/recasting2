@@ -659,13 +659,13 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
         }
 
         private static Component bladeDescription(GrowthAdvancementGraph.BladeNode node) {
+            if (node.menu()) {
+                return Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_MENU_DESC);
+            }
             if (node.parent() != null) {
                 return Component.translatable(
                         RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_FROM_DESC,
                         Component.translatable(BladeTranslationHelper.itemDescriptionId(node.parent().location())));
-            }
-            if (node.menu()) {
-                return Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_MENU_DESC);
             }
             if (node.recipeId() == null) {
                 return Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_PENDING_DESC);

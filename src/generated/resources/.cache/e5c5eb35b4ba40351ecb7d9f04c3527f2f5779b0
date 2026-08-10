@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-11T00:02:35.506264	Advancements
+// 1.20.1	2026-08-11T01:48:48.1183154	Advancements
 1712a697927bd33f2ac61bd946afa4eb235d72d6 data/recasting/advancements/growth/blades/slashblade/art_knife.json
 84a907fb18a21655c41f203ef6e301210710e6f5 data/recasting/advancements/growth/blades/slashblade/azure_vista.json
 1563f8fe50126bf4ea4b687614ac67e2859928f2 data/recasting/advancements/growth/blades/slashblade/azure_vista_lambda.json
@@ -30,7 +30,7 @@ da61d277075815a88390ef3a80821d4ca0ca09b6 data/recasting/advancements/growth/blad
 f1d4bf6139ddd3d42c8ce25367bba4e9ceebdcf4 data/recasting/advancements/growth/blades/slashblade/fluorescence.json
 0d6397a8ba1aeb4e53766db44896db2908a58126 data/recasting/advancements/growth/blades/slashblade/green_blade_iron.json
 68a2fe12504cda9dde3b14d2b5251766ef21514d data/recasting/advancements/growth/blades/slashblade/green_blade_wood.json
-824a71ef0bae79f124950d3f9fbe74e6f8215902 data/recasting/advancements/growth/blades/slashblade/hoe.json
+ae82fd2b433d06843e8edf03881ab848a8a74412 data/recasting/advancements/growth/blades/slashblade/hoe.json
 5fb3eeb8fe9c0884fd34f514b579eaf5147f4a47 data/recasting/advancements/growth/blades/slashblade/laser/laser_1.json
 c587560b65dd4902b7e1173face28536fbb0c1d4 data/recasting/advancements/growth/blades/slashblade/laser/laser_2.json
 f3fd8380fc915d940b3109f9e77dcd35b41cf027 data/recasting/advancements/growth/blades/slashblade/laser/laser_3.json
@@ -45,7 +45,7 @@ fee4ce3bf5f024acfa2b405135b925005fd6c932 data/recasting/advancements/growth/blad
 c6a0995d9c81ccaf4b06e229a15cd09652c25177 data/recasting/advancements/growth/blades/slashblade/obliterate_lambda.json
 134baef2784fc30e189579a564e949dd2c4ff057 data/recasting/advancements/growth/blades/slashblade/onikiri.json
 695da10421d32b02662e38c0b9c36d72b50db476 data/recasting/advancements/growth/blades/slashblade/onikiri_lambda.json
-2484ea74c8d1b87db3fbd38316fcae5286ea2335 data/recasting/advancements/growth/blades/slashblade/physics_sword.json
+b0069e80615da76f230126214352142b4484d530 data/recasting/advancements/growth/blades/slashblade/physics_sword.json
 1992adc005b56d21f953c266db10a3ed5228226f data/recasting/advancements/growth/blades/slashblade/shine_gold.json
 e1e1345d7cb5cc9b3a68dd300ee84d775d1fce3c data/recasting/advancements/growth/blades/slashblade/shine_gold_lambda.json
 6dad2e7bccc3c73d988368b40b937e7dc2f6a4e5 data/recasting/advancements/growth/blades/slashblade/shine_tea.json
