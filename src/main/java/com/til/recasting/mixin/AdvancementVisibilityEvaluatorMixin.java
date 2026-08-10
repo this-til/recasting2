@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 
 /**
  * 原版对未完成节点只向前显示 {@code VISIBILITY_DEPTH}（2）层。
- * 对本模组「回到未来 SA」「附魔」「锻造」分支：若任一祖先已完成（含自动 hub），整条链直接可见。
+ * 「重铸之路」整棵成就树始终公开可见。
  */
 @Mixin(AdvancementVisibilityEvaluator.class)
 public abstract class AdvancementVisibilityEvaluatorMixin {
@@ -21,37 +21,25 @@ public abstract class AdvancementVisibilityEvaluatorMixin {
             method = "evaluateVisibility(Lnet/minecraft/advancements/Advancement;Ljava/util/function/Predicate;Lnet/minecraft/server/advancements/AdvancementVisibilityEvaluator$Output;)V",
             at = @At("RETURN")
     )
-    private static void recasting$forceLinearBranchVisible(
+    private static void recasting$forceGrowthTreeVisible(
             Advancement root,
             Predicate<Advancement> doneTest,
             AdvancementVisibilityEvaluator.Output output,
             CallbackInfo ci
     ) {
-        forceShowForcedBranches(root, doneTest, output, false);
+        forceShowGrowthTree(root, output);
     }
 
-    private static void forceShowForcedBranches(
-            Advancement advancement,
-            Predicate<Advancement> doneTest,
-            AdvancementVisibilityEvaluator.Output output,
-            boolean ancestorDone
-    ) {
-        boolean selfOrAncestorDone = ancestorDone || doneTest.test(advancement);
-        if (selfOrAncestorDone && isForcedVisibleBranch(advancement.getId())) {
+    private static void forceShowGrowthTree(Advancement advancement, AdvancementVisibilityEvaluator.Output output) {
+        if (isRecastingGrowth(advancement.getId())) {
             output.accept(advancement, true);
         }
         for (Advancement child : advancement.getChildren()) {
-            forceShowForcedBranches(child, doneTest, output, selfOrAncestorDone);
+            forceShowGrowthTree(child, output);
         }
     }
 
-    private static boolean isForcedVisibleBranch(ResourceLocation id) {
-        if (!"recasting".equals(id.getNamespace())) {
-            return false;
-        }
-        String path = id.getPath();
-        return path.startsWith("growth/drop/btf/")
-                || path.startsWith("growth/enchant/")
-                || path.startsWith("growth/forge/");
+    private static boolean isRecastingGrowth(ResourceLocation id) {
+        return "recasting".equals(id.getNamespace()) && id.getPath().startsWith("growth/");
     }
 }
