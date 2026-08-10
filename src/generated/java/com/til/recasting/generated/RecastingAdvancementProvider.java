@@ -6,6 +6,8 @@ import com.til.recasting.Recasting;
 import com.til.recasting.advancement.BladeStatItemPredicate;
 import com.til.recasting.advancement.BladeTranslationHelper;
 import com.til.recasting.advancement.EnchantedSlashBladeItemPredicate;
+import com.til.recasting.advancement.ForgeSeAction;
+import com.til.recasting.advancement.ForgeSeActionTrigger;
 import com.til.recasting.advancement.NamedSlashBladeItemPredicate;
 import com.til.recasting.advancement.SeCrystalItemPredicate;
 import com.til.recasting.advancement.SlashArtsSphereItemPredicate;
@@ -49,7 +51,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 /**
- * 生成「重铸之路」单栏成就树（刀 / SE / 杀敌 / 附魔 / 精炼）。
+ * 生成「重铸之路」单栏成就树（刀 / SE / 杀敌 / 附魔 / 精炼 / 锻造）。
  */
 public class RecastingAdvancementProvider extends AdvancementProvider {
 
@@ -124,6 +126,13 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                     new ItemStack(SlashBladeItems.PROUDSOUL_INGOT.get()),
                     RecastingLanguageKeys.ADVANCEMENT_HUB_REFINE_AGAIN_TITLE,
                     RecastingLanguageKeys.ADVANCEMENT_HUB_REFINE_AGAIN_DESC);
+            Advancement hubForge = autoHub(
+                    writer,
+                    root,
+                    "growth/hub/forge",
+                    new ItemStack(Items.ANVIL),
+                    RecastingLanguageKeys.ADVANCEMENT_HUB_FORGE_TITLE,
+                    RecastingLanguageKeys.ADVANCEMENT_HUB_FORGE_DESC);
 
             for (GrowthAdvancementGraph.BladeNode node : GrowthAdvancementGraph.BLADES) {
                 Advancement parent = node.parent() == null
@@ -202,6 +211,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
             saveKillMilestones(writer, hubKill);
             saveEnchantChain(writer, hubEnch);
             saveRefineMilestones(writer, hubRefine);
+            saveForgeBranch(writer, hubForge);
         }
 
         private static Advancement autoHub(
@@ -236,7 +246,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                         .display(
                                 icon,
                                 Component.translatable(slashArtDescriptionId(saId)),
-                                Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_BTF_DESC),
+                                Component.translatable(slashArtDescriptionId(saId) + ".desc"),
                                 null,
                                 FrameType.TASK,
                                 true,
@@ -381,6 +391,126 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             InventoryChangeTrigger.TriggerInstance.hasItems(
                                     BladeStatItemPredicate.minRefine(GrowthAdvancementGraph.REFINE_MILESTONE_2)))
                     .save(writer, Recasting.prefix("growth/refine/10000").toString());
+        }
+
+        private static void saveForgeBranch(Consumer<Advancement> writer, Advancement hubForge) {
+            Advancement newCapability = Advancement.Builder.advancement()
+                    .parent(hubForge)
+                    .display(
+                            seCrystalIcon(SpecialEffectsRegistry.SHARP_BLADE.getId()),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_NEW_CAPABILITY_TITLE),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_NEW_CAPABILITY_DESC),
+                            null,
+                            FrameType.TASK,
+                            true,
+                            false,
+                            false)
+                    .addCriterion(
+                            "action",
+                            ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.ENGRAVE_ANY))
+                    .save(writer, Recasting.prefix("growth/forge/new_capability").toString());
+
+            Advancement.Builder.advancement()
+                    .parent(newCapability)
+                    .display(
+                            seCrystalIcon(SpecialEffectsRegistry.SHARP_BLADE.getId()),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_PEAK_EFFECT_TITLE),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_PEAK_EFFECT_DESC),
+                            null,
+                            FrameType.GOAL,
+                            true,
+                            false,
+                            false)
+                    .addCriterion(
+                            "action",
+                            ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.ENGRAVE_MAX_NORMAL))
+                    .save(writer, Recasting.prefix("growth/forge/peak_effect").toString());
+
+            Advancement fullyEquipped = Advancement.Builder.advancement()
+                    .parent(newCapability)
+                    .display(
+                            bladeIconForForge(),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_FULLY_EQUIPPED_TITLE),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_FULLY_EQUIPPED_DESC),
+                            null,
+                            FrameType.GOAL,
+                            true,
+                            false,
+                            false)
+                    .addCriterion(
+                            "action",
+                            ForgeSeActionTrigger.TriggerInstance.action(
+                                    ForgeSeAction.LAYOUT_FOUR_NORMAL_ONE_SPECIAL))
+                    .save(writer, Recasting.prefix("growth/forge/fully_equipped").toString());
+
+            Advancement.Builder.advancement()
+                    .parent(fullyEquipped)
+                    .display(
+                            bladeIconForForge(),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_ULTIMATE_REFINE_TITLE),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_ULTIMATE_REFINE_DESC),
+                            null,
+                            FrameType.CHALLENGE,
+                            true,
+                            false,
+                            false)
+                    .addCriterion(
+                            "action",
+                            ForgeSeActionTrigger.TriggerInstance.action(
+                                    ForgeSeAction.LAYOUT_FOUR_MAX_NORMAL_ONE_SPECIAL))
+                    .save(writer, Recasting.prefix("growth/forge/ultimate_refine").toString());
+
+            Advancement sacrifice = Advancement.Builder.advancement()
+                    .parent(newCapability)
+                    .display(
+                            new ItemStack(RecastingItems.GATHERING_PARTING_VARIANT.get()),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_SACRIFICE_TITLE),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_SACRIFICE_DESC),
+                            null,
+                            FrameType.TASK,
+                            true,
+                            false,
+                            false)
+                    .addCriterion(
+                            "action",
+                            ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.EXTRACT_SPECIAL))
+                    .save(writer, Recasting.prefix("growth/forge/sacrifice").toString());
+
+            Advancement.Builder.advancement()
+                    .parent(sacrifice)
+                    .display(
+                            seCrystalIcon(SpecialEffectsRegistry.STORM_VARIANT.getId()),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_AFFINITY_SWAP_TITLE),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_AFFINITY_SWAP_DESC),
+                            null,
+                            FrameType.TASK,
+                            true,
+                            false,
+                            false)
+                    .addCriterion(
+                            "action",
+                            ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.SWAP_SPECIAL))
+                    .save(writer, Recasting.prefix("growth/forge/affinity_swap").toString());
+
+            Advancement.Builder.advancement()
+                    .parent(newCapability)
+                    .display(
+                            new ItemStack(RecastingItems.ABYSS_FLAME.get()),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_SILENCE_TITLE),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_SILENCE_DESC),
+                            null,
+                            FrameType.TASK,
+                            true,
+                            false,
+                            false)
+                    .addCriterion(
+                            "action",
+                            ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.ERASE_SE))
+                    .save(writer, Recasting.prefix("growth/forge/silence").toString());
+        }
+
+        private static ItemStack bladeIconForForge() {
+            return new ItemStack(SlashBladeItems.SLASHBLADE.get());
         }
 
         private void saveFluorescenceSeries(

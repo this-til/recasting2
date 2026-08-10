@@ -6,6 +6,7 @@
   "plugin": "com.til.recasting.mixin.RecastingMixinPlugin",
   "refmap": "recasting.refmap.json",
   "mixins": [
+    "AdvancementVisibilityEvaluatorMixin",
     "AttackHelperMixin",
     "AttackManagerMixin",
     "DamageSourcesAccessor",

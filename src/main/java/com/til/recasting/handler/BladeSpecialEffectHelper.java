@@ -64,6 +64,42 @@ public final class BladeSpecialEffectHelper {
         return count;
     }
 
+    public static int countMaxLevelNormalExtendedEffects(ItemStack blade) {
+        BladeContext context = resolveBladeContext(blade);
+        if (context == null) {
+            return 0;
+        }
+
+        int count = 0;
+        for (ResourceLocation effectId : context.state().getSpecialEffects()) {
+            SpecialEffect effect = getSpecialEffect(effectId);
+            if (!(effect instanceof ExtendedSpecialEffect extendedEffect) || extendedEffect.isSpecial()) {
+                continue;
+            }
+            int level = context.properties().getExtendedSpecialLevels(effectId);
+            if (level >= extendedEffect.getMaxLevel()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static boolean hasActiveSpecialExtendedEffect(ItemStack blade) {
+        return findFirstSpecialEffect(blade).isPresent();
+    }
+
+    public static boolean matchesFourNormalOneSpecial(ItemStack blade) {
+        return countActiveNormalExtendedEffects(blade)
+                >= BladeSpecialEffectInheritanceHelper.MAX_NORMAL_SPECIAL_EFFECTS
+                && hasActiveSpecialExtendedEffect(blade);
+    }
+
+    public static boolean matchesFourMaxNormalOneSpecial(ItemStack blade) {
+        return countMaxLevelNormalExtendedEffects(blade)
+                >= BladeSpecialEffectInheritanceHelper.MAX_NORMAL_SPECIAL_EFFECTS
+                && hasActiveSpecialExtendedEffect(blade);
+    }
+
     public static boolean isSpecialExtendedEffect(ResourceLocation effectId) {
         SpecialEffect effect = getSpecialEffect(effectId);
         return effect instanceof ExtendedSpecialEffect extendedEffect

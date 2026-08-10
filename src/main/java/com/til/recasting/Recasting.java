@@ -1,5 +1,6 @@
 package com.til.recasting;
 
+import com.til.recasting.advancement.RecastingCriteriaTriggers;
 import com.til.recasting.client.ClientSetup;
 import com.til.recasting.network.NetworkManager;
 import com.til.recasting.registry.*;
@@ -32,6 +33,8 @@ public class Recasting {
 
         // 注册网络管理器
         NetworkManager.register();
+
+        RecastingCriteriaTriggers.bootstrap();
 
         RecastingEntityDataSerializers.ENTITY_DATA_SERIALIZERS.register(modEventBus);
 

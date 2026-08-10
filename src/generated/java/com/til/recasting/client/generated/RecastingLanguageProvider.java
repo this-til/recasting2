@@ -34,7 +34,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
     protected void addTranslations() {
         translation(RecastingLanguageKeys.OTHER_TEST, "总该说些什么...", "I should say something...");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_ROOT_TITLE, "重铸之路", "Path of Recasting");
-        translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_ROOT_DESC, "名刀、结晶、杀敌掉落、附魔与精炼，尽在此途。", "Named blades, crystals, kill drops, enchantments, and refining — all along this path.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_ROOT_DESC, "名刀、结晶、杀敌掉落、附魔、精炼与锻造，尽在此途。", "Named blades, crystals, kill drops, enchantments, refining, and forging — all along this path.");
         translation(RecastingLanguageKeys.ADVANCEMENT_HUB_NEW_BLADE_SMITH_TITLE, "新生刀匠", "New Blade Smith");
         translation(RecastingLanguageKeys.ADVANCEMENT_HUB_NEW_BLADE_SMITH_DESC, "踏上名刀成长之路。", "Begin the named blade growth path.");
         translation(RecastingLanguageKeys.ADVANCEMENT_HUB_START_CRYSTAL_TITLE, "开始结晶", "Begin Crystallization");
@@ -45,7 +45,22 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(RecastingLanguageKeys.ADVANCEMENT_HUB_ENCHANT_POWER_DESC, "拔刀剑上的附魔会改变斩击与幻影剑的威力与范围。", "Enchantments on a slash blade alter slash and summoned-sword power and range.");
         translation(RecastingLanguageKeys.ADVANCEMENT_HUB_REFINE_AGAIN_TITLE, "精炼再精炼", "Refine and Refine Again");
         translation(RecastingLanguageKeys.ADVANCEMENT_HUB_REFINE_AGAIN_DESC, "持续精炼可提升拔刀剑的伤害加成。", "Continued refining strengthens a slash blade's damage bonus.");
-        translation(RecastingLanguageKeys.ADVANCEMENT_DROP_BTF_DESC, "取得回到未来计划中对应拔刀术的耀魂宝珠。", "Obtain the Proud Soul Sphere for this Back-to-the-Future Plan slash art.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_HUB_FORGE_TITLE, "锻造", "Forging");
+        translation(RecastingLanguageKeys.ADVANCEMENT_HUB_FORGE_DESC, "在铁砧上铭刻、替换、提取或抹除特殊效果。", "Engrave, swap, extract, or erase special effects at an anvil.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_NEW_CAPABILITY_TITLE, "新能力", "New Capability");
+        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_NEW_CAPABILITY_DESC, "用结晶在刀上铭刻任意特殊效果。", "Engrave any special effect onto a blade with a crystal.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_PEAK_EFFECT_TITLE, "极限效果", "Peak Effect");
+        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_PEAK_EFFECT_DESC, "将任意普通特殊效果铭刻至满级。", "Engrave any normal special effect to its maximum level.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_FULLY_EQUIPPED_TITLE, "整装待发", "Fully Equipped");
+        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_FULLY_EQUIPPED_DESC, "在一把刀上集齐满额普通特殊效果与一个特殊效果。", "Fill a blade with a full set of normal special effects plus one special effect.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_ULTIMATE_REFINE_TITLE, "极尽升华", "Ultimate Ascension");
+        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_ULTIMATE_REFINE_DESC, "在一把刀上集齐满额满级普通特殊效果与一个特殊效果。", "Fill a blade with a full set of max-level normal special effects plus one special effect.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_SACRIFICE_TITLE, "牺牲品", "Sacrifice");
+        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_SACRIFICE_DESC, "以聚散变体从刀上提取一个特殊效果结晶。", "Extract a special-effect crystal from a blade with a Gathering Parting Variant.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_AFFINITY_SWAP_TITLE, "相性交换", "Affinity Swap");
+        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_AFFINITY_SWAP_DESC, "用新的特殊效果替换刀上已有的特殊效果。", "Replace an existing special effect on a blade with another.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_SILENCE_TITLE, "静默", "Silence");
+        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_SILENCE_DESC, "抹除刀上的普通或特殊效果。", "Erase a normal or special effect from a blade.");
         translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000_TITLE, "杀意初凝", "Rising Bloodlust");
         translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000_DESC, "持有击杀数足够高的刀，解锁击杀带来的伤害加成。", "Hold a blade with enough kill count to unlock kill-based damage bonus.");
         translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_10000_TITLE, "杀意滔天", "Surging Bloodlust");

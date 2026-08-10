@@ -16,7 +16,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancements.recasting.drop.btf.description"
+      "translate": "slash_art.recasting.starfall.desc"
     },
     "frame": "task",
     "hidden": false,

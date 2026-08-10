@@ -1,0 +1,32 @@
+{
+  "parent": "recasting:growth/hub/forge",
+  "criteria": {
+    "action": {
+      "conditions": {
+        "action": "engrave_any"
+      },
+      "trigger": "recasting:forge_se_action"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.forge.new_capability.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "recasting:se_crystal"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.recasting.forge.new_capability.title"
+    }
+  },
+  "requirements": [
+    [
+      "action"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
