@@ -4,10 +4,8 @@ import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.entity.SlashEffectEntity;
 import com.til.recasting.entity.SummondSwordEntity;
-import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingEntities;
-import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -52,31 +50,31 @@ public class OtherworldSlashSlashArts extends ExtendedSlashArts {
 
         Set<UUID> impacted = new HashSet<>();
         float baseYRot = livingEntity.getYRot();
+        Vec3 pos = livingEntity.position()
+                .add(0.0D, livingEntity.getEyeHeight() * 0.75D, 0.0D)
+                .add(livingEntity.getLookAngle().scale(0.3f));
 
         for (int i = 0; i < SLASH_COUNT; i++) {
-            SlashEffectEntity slash = AttackHelper.doSlash(
-                    livingEntity,
-                    SLASH_ROLL,
-                    slashBladeState.getColorCode(),
-                    Vec3.ZERO,
-                    i != 0,
-                    false,
-                    new DamageStructure(slashRatio, 0.0f),
-                    slashSize,
-                    null
+            SlashEffectEntity slash = new SlashEffectEntity(
+                    RecastingEntities.SLASH_EFFECT.get(),
+                    level,
+                    livingEntity
             );
-            if (slash == null) {
-                continue;
-            }
-
+            slash.setPos(pos.x, pos.y, pos.z);
             slash.setYRot(baseYRot + i * Y_ROT_STEP);
-
+            slash.setXRot(0.0f);
+            slash.setRoll(SLASH_ROLL);
+            slash.setColor(slashBladeState.getColorCode());
+            slash.setMute(i != 0);
+            slash.setModifiedRatio(slashRatio);
+            slash.setSize(slashSize);
             slash.attackActionCallbackPoint.register(hitEntity -> {
                 if (!impacted.add(hitEntity.getUUID())) {
                     return;
                 }
                 applyImpactBatch(livingEntity, hitEntity, slashBladeState);
             });
+            level.addFreshEntity(slash);
         }
     }
 
