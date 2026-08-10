@@ -22,6 +22,18 @@ import net.minecraft.world.phys.Vec3;
 @Accessors(chain = true)
 public class FinalSupernovaSlashArts extends ExtendedSlashArts {
 
+    private int collapseTicks = 100;
+    private float horizonStart = 16.0f;
+    private float horizonEnd = 0.0f;
+    private float particleRadiusStart = 24.0f;
+    private float particleRadiusEnd = 0.0f;
+    private float effectRange = 64.0f;
+    private float explosionPower = 256.0f;
+    private float pullPower = 0.02f;
+    private int raysPerTick = 96;
+    private float absorbRadius = 2.0f;
+    private float damageRatio = 3.35f;
+
     @Override
     public void trigger(
             LivingEntity livingEntity,
@@ -41,6 +53,18 @@ public class FinalSupernovaSlashArts extends ExtendedSlashArts {
                 level,
                 livingEntity
         );
+        hole.setCollapseTicks(collapseTicks)
+                .setHorizonStart(horizonStart)
+                .setHorizonEnd(horizonEnd)
+                .setParticleRadiusStart(particleRadiusStart)
+                .setParticleRadiusEnd(particleRadiusEnd)
+                .setEffectRange(effectRange)
+                .setExplosionPower(explosionPower)
+                .setPullPower(pullPower)
+                .setRaysPerTick(raysPerTick)
+                .setAbsorbRadius(absorbRadius)
+                .setDamageRatio(damageRatio)
+                .applyConfig();
         hole.setPos(pos.x, pos.y, pos.z);
         hole.setColor(slashBladeState.getColorCode());
         level.addFreshEntity(hole);
