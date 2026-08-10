@@ -157,8 +157,8 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(itemKey(RecastingItems.PROUD_SOUL_BAG), "耀魂背包", "Proud Soul Bag");
         translation(itemDescKey(RecastingItems.PROUD_SOUL_BAG), "自动收集并无限存储耀魂类物品，右键打开终端式界面。", "Automatically collects and stores proud-soul items without limits; right-click to open a terminal-like interface.");
         translation(itemKey(RecastingItems.MATTER_BALL), "物质球", "Matter Sphere");
-        translation(itemDescKey(RecastingItems.MATTER_BALL), "无限记录收集到的物品，右键倒入背包。", "Stores collected items without limits; right-click to empty into your inventory.");
-        translation(itemKey(RecastingItems.MATTER_BALL) + ".contents", "种类 %s · 总量 %s", "Types %s · Total %s");
+        translation(itemDescKey(RecastingItems.MATTER_BALL), "无限记录收集到的物品；右键尽量填入背包，潜行右键填入容器，空则消失；获取时自动合并。", "Stores collected items without limits; right-click to fill your inventory, sneak-right-click a container to fill it; vanishes when empty; merges on obtain.");
+        translation(itemKey(RecastingItems.MATTER_BALL) + ".contents", "共 %s 种 · 总量 %s", "%s types · Total %s");
         translation(itemKey(RecastingItems.MEMORY_FLAME), "记忆火", "Memory Flame");
         translation(itemKey(RecastingItems.SIN_FLAME), "罪孽火", "Sin Flame");
         translation(itemKey(RecastingItems.HOLY_FLAME), "圣愿火", "Holy Flame");

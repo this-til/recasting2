@@ -3,14 +3,18 @@ package com.til.recasting.item;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * 物质球 NBT 存取：类型无限，单类型数量为 long（无尽贪婪式）。
@@ -97,7 +101,6 @@ public final class MatterBallStorage {
         clear(target);
         for(StoredEntry entry : list(source)) {
             ItemStack stack = entry.template().copy();
-            // insert 按 int count 扣除；按 long 分批写入
             long remain = entry.count();
             while (remain > 0) {
                 int chunk = (int) Math.min(remain, Integer.MAX_VALUE);
@@ -106,6 +109,25 @@ public final class MatterBallStorage {
                 remain -= chunk;
             }
         }
+    }
+
+    /** 将 {@code source} 全部内容并入 {@code target}，并清空 source。 */
+    public static void mergeFrom(@NotNull ItemStack source, @NotNull ItemStack target) {
+        if (source == target || isEmpty(source)) {
+            clear(source);
+            return;
+        }
+        for(StoredEntry entry : list(source)) {
+            ItemStack stack = entry.template().copy();
+            long remain = entry.count();
+            while (remain > 0) {
+                int chunk = (int) Math.min(remain, Integer.MAX_VALUE);
+                stack.setCount(chunk);
+                insert(target, stack);
+                remain -= chunk;
+            }
+        }
+        clear(source);
     }
 
     public static void clear(@NotNull ItemStack ball) {
@@ -120,20 +142,116 @@ public final class MatterBallStorage {
     }
 
     /**
-     * 将球内全部内容尽量给予玩家；塞不下的由 {@link ItemHandlerHelper#giveItemToPlayer} 掉落。
+     * 尽量填入玩家主背包（不含护甲）；塞不下的留在球内。
+     *
+     * @return 实际取出数量
      */
-    public static void extractToPlayer(@NotNull ItemStack ball, @NotNull Player player) {
-        List<StoredEntry> entries = list(ball);
-        clear(ball);
-        for(StoredEntry entry : entries) {
-            long remain = entry.count();
-            while (remain > 0) {
-                int take = (int) Math.min(remain, entry.template().getMaxStackSize());
-                ItemStack give = entry.template().copyWithCount(take);
-                ItemHandlerHelper.giveItemToPlayer(player, give);
-                remain -= take;
+    public static long extractToPlayer(@NotNull ItemStack ball, @NotNull Player player) {
+        return extractToInventory(ball, player.getInventory());
+    }
+
+    /**
+     * 尽量填入 {@link Inventory#items}；塞不下的留在球内。
+     *
+     * @return 实际取出数量
+     */
+    public static long extractToInventory(@NotNull ItemStack ball, @NotNull Inventory inventory) {
+        return extractRemaining(ball, give -> {
+            inventory.add(give);
+            return give;
+        });
+    }
+
+    /**
+     * 尽量填入物品处理器（容器）；塞不下的留在球内。
+     *
+     * @return 实际取出数量
+     */
+    public static long extractToHandler(@NotNull ItemStack ball, @NotNull IItemHandler handler) {
+        return extractRemaining(ball, give -> ItemHandlerHelper.insertItemStacked(handler, give, false));
+    }
+
+    /**
+     * 查找玩家主背包或副手中的物质球；{@code exclude} 非空时跳过该引用。
+     */
+    public static @NotNull ItemStack findBall(@NotNull Player player, @Nullable ItemStack exclude) {
+        for(ItemStack stack : player.getInventory().items) {
+            if (stack.getItem() instanceof MatterBallItem && stack != exclude) {
+                return stack;
             }
         }
+        ItemStack offhand = player.getOffhandItem();
+        if (offhand.getItem() instanceof MatterBallItem && offhand != exclude) {
+            return offhand;
+        }
+        return ItemStack.EMPTY;
+    }
+
+    /**
+     * 若玩家已有另一颗物质球，则将 {@code incoming} 并入其中并清空 incoming。
+     *
+     * @return 是否完成合并
+     */
+    public static boolean absorbIntoExisting(@NotNull Player player, @NotNull ItemStack incoming) {
+        if (incoming.isEmpty() || !(incoming.getItem() instanceof MatterBallItem)) {
+            return false;
+        }
+        ItemStack existing = findBall(player, incoming);
+        if (existing.isEmpty()) {
+            return false;
+        }
+        mergeFrom(incoming, existing);
+        incoming.setCount(0);
+        return true;
+    }
+
+    /**
+     * @param insertOne 尝试放入一叠；返回未放入的剩余堆叠（数量可为 0）
+     */
+    private static long extractRemaining(
+            @NotNull ItemStack ball,
+            @NotNull Function<ItemStack, ItemStack> insertOne
+    ) {
+        ListTag list = getOrCreateList(ball, false);
+        if (list == null || list.isEmpty()) {
+            return 0L;
+        }
+        long total = 0L;
+        for(int i = 0; i < list.size(); ) {
+            CompoundTag entry = list.getCompound(i);
+            ItemStack template = ItemStack.of(entry.getCompound(ENTRY_ITEM_KEY));
+            if (template.isEmpty()) {
+                list.remove(i);
+                continue;
+            }
+            template.setCount(1);
+            long remain = entry.getLong(ENTRY_COUNT_KEY);
+            if (remain <= 0) {
+                list.remove(i);
+                continue;
+            }
+            while (remain > 0) {
+                int take = (int) Math.min(remain, template.getMaxStackSize());
+                ItemStack give = template.copyWithCount(take);
+                ItemStack leftover = insertOne.apply(give);
+                int inserted = take - leftover.getCount();
+                if (inserted <= 0) {
+                    break;
+                }
+                remain -= inserted;
+                total += inserted;
+            }
+            if (remain <= 0) {
+                list.remove(i);
+            } else {
+                entry.putLong(ENTRY_COUNT_KEY, remain);
+                i++;
+            }
+        }
+        if (list.isEmpty()) {
+            clear(ball);
+        }
+        return total;
     }
 
     private static int findMatchingIndex(ListTag list, ItemStack match) {

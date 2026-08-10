@@ -610,13 +610,21 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
         if (MatterBallStorage.isEmpty(collectBall)) {
             return;
         }
-        ItemStack ball = new ItemStack(RecastingItems.MATTER_BALL.get());
-        MatterBallStorage.copyFrom(collectBall, ball);
-        MatterBallStorage.clear(collectBall);
         if (shooter instanceof Player player) {
+            ItemStack existing = MatterBallStorage.findBall(player, null);
+            if (!existing.isEmpty()) {
+                MatterBallStorage.mergeFrom(collectBall, existing);
+                return;
+            }
+            ItemStack ball = new ItemStack(RecastingItems.MATTER_BALL.get());
+            MatterBallStorage.copyFrom(collectBall, ball);
+            MatterBallStorage.clear(collectBall);
             ItemHandlerHelper.giveItemToPlayer(player, ball);
             return;
         }
+        ItemStack ball = new ItemStack(RecastingItems.MATTER_BALL.get());
+        MatterBallStorage.copyFrom(collectBall, ball);
+        MatterBallStorage.clear(collectBall);
         if (!ball.isEmpty()) {
             level().addFreshEntity(new ItemEntity(level(), center.x, center.y, center.z, ball));
         }
