@@ -177,8 +177,7 @@ public class ProudSoulDropHandler {
                         return Component.translatable(
                                 RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_SE,
                                 Component.translatable(se.getDescriptionId()),
-                                data.getSpecialEffectLevel(),
-                                stack.getHoverName()
+                                data.getSpecialEffectLevel()
                         );
                     })
                     .orElseGet(stack::getHoverName);
@@ -192,8 +191,7 @@ public class ProudSoulDropHandler {
                 if (sa != null) {
                     return Component.translatable(
                             RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_SA,
-                            Component.translatable(sa.getDescriptionId()),
-                            stack.getHoverName()
+                            Component.translatable(sa.getDescriptionId())
                     );
                 }
             }

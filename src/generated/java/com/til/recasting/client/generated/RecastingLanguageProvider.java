@@ -191,12 +191,12 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(RecastingLanguageKeys.MESSAGE_PHANTOM_BLADE_NORMAL, "已切换为基础幻影剑", "Switched to phantom sword");
         translation(RecastingLanguageKeys.MESSAGE_PHANTOM_BLADE_TRACKING, "已切换为幻影飞刃", "Switched to phantom flying blade");
         translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP, "你获得了 %s。%s 将在 %s 后可再次掉落。", "You obtained %s. %s can drop again after %s.");
-        translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_SE, "%s Lv.%d 的%s", "%s Lv.%d %s");
-        translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_SA, "%s 的%s", "%s %s");
+        translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_SE, "%s Lv.%d 的SE结晶", "%s Lv.%d SE Crystal");
+        translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_SA, "%s 的耀魂宝珠", "%s Proud Soul Sphere");
         translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_KIND_BASIC_FLAME, "基础火", "Basic flame");
         translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_KIND_SOUL_CUBE, "庸魂立方体", "Soul cube");
         translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_KIND_SE_CRYSTAL, "SE结晶", "SE crystal");
-        translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_KIND_SLASH_ARTS, "拔刀术", "Slash art");
+        translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_KIND_SLASH_ARTS, "SA宝珠", "SA sphere");
         translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_H, "%d 小时", "%d hour(s)");
         translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_HM, "%d 小时 %d 分钟", "%d hour(s) %d minute(s)");
         translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_M, "%d 分钟", "%d minute(s)");
