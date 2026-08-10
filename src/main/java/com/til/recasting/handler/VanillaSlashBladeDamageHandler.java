@@ -113,6 +113,12 @@ public class VanillaSlashBladeDamageHandler {
             if (killCount > 10000) {
                 event.addMechanismModifiedRatioAmplifier(Config.TEN_THOUSAND_KILL_ATTACK_BONUS.get().floatValue());
             }
+            if (killCount > 100000) {
+                event.addMechanismModifiedRatioAmplifier(Config.HUNDRED_THOUSAND_KILL_ATTACK_BONUS.get().floatValue());
+            }
+            if (killCount > 1000000) {
+                event.addMechanismModifiedRatioAmplifier(Config.MILLION_KILL_ATTACK_BONUS.get().floatValue());
+            }
 
             // 8. 精炼数里程碑加成（第二乘区）
             if (refine > 1000) {

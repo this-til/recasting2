@@ -65,6 +65,14 @@ public class Config {
             .comment("击杀数超过10000的伤害加成")
             .defineInRange("tenThousandKillAttackBonus", 0.1, 0.0, 10.0);
 
+    public static final ForgeConfigSpec.DoubleValue HUNDRED_THOUSAND_KILL_ATTACK_BONUS = BUILDER
+            .comment("击杀数超过100000的伤害加成")
+            .defineInRange("hundredThousandKillAttackBonus", 0.05, 0.0, 10.0);
+
+    public static final ForgeConfigSpec.DoubleValue MILLION_KILL_ATTACK_BONUS = BUILDER
+            .comment("击杀数超过1000000的伤害加成")
+            .defineInRange("millionKillAttackBonus", 0.05, 0.0, 10.0);
+
     public static final ForgeConfigSpec.DoubleValue THOUSAND_REFINE_ATTACK_BONUS = BUILDER
             .comment("精炼等级超过1000的伤害加成")
             .defineInRange("thousandRefineAttackBonus", 0.1, 0.0, 10.0);

@@ -1,0 +1,38 @@
+{
+  "parent": "recasting:growth/drop/btf/starfall",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "type": "recasting:slash_arts_sphere",
+            "slash_arts": "recasting:sky_seize"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.drop.btf.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "slashblade:proudsoul_sphere",
+      "nbt": "{SpecialAttackType:\"recasting:sky_seize\"}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "slash_art.recasting.sky_seize"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

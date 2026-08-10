@@ -1,0 +1,38 @@
+{
+  "parent": "recasting:growth/enchant/flame",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "type": "recasting:enchanted_slashblade",
+            "enchantment": "minecraft:power"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.enchant.power.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:enchanted_book",
+      "nbt": "{Enchantments:[{id:\"minecraft:power\",lvl:1s}]}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "enchantment.minecraft.power"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,38 @@
+{
+  "parent": "recasting:growth/drop/btf/tidal_surge",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "type": "recasting:slash_arts_sphere",
+            "slash_arts": "recasting:celestial_drive"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.drop.btf.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "slashblade:proudsoul_sphere",
+      "nbt": "{SpecialAttackType:\"recasting:celestial_drive\"}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "slash_art.recasting.celestial_drive"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

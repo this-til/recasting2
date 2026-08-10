@@ -1,0 +1,38 @@
+{
+  "parent": "recasting:growth/drop/btf/phase_fracture",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "type": "recasting:slash_arts_sphere",
+            "slash_arts": "recasting:eternal_guard"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.drop.btf.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "slashblade:proudsoul_sphere",
+      "nbt": "{SpecialAttackType:\"recasting:eternal_guard\"}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "slash_art.recasting.eternal_guard"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

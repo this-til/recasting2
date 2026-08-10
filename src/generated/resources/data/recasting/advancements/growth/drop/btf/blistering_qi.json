@@ -1,0 +1,38 @@
+{
+  "parent": "recasting:growth/drop/btf/infinite_bloom",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "type": "recasting:slash_arts_sphere",
+            "slash_arts": "recasting:blistering_qi"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.drop.btf.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "slashblade:proudsoul_sphere",
+      "nbt": "{SpecialAttackType:\"recasting:blistering_qi\"}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "slash_art.recasting.blistering_qi"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

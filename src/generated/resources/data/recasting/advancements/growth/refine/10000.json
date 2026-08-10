@@ -1,0 +1,37 @@
+{
+  "parent": "recasting:growth/refine/1000",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "type": "recasting:blade_stat",
+            "min_exclusive_refine": 10000
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.refine.10000.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "slashblade:proudsoul_trapezohedron"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.recasting.refine.10000.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

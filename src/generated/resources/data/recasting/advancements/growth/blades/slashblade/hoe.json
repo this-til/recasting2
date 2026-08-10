@@ -1,5 +1,5 @@
 {
-  "parent": "recasting:growth/root",
+  "parent": "recasting:growth/hub/new_blade_smith",
   "criteria": {
     "crafted": {
       "conditions": {

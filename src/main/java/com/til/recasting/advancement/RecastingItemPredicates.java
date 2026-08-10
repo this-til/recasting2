@@ -17,6 +17,9 @@ public final class RecastingItemPredicates {
         event.enqueueWork(() -> {
             ItemPredicate.register(NamedSlashBladeItemPredicate.TYPE, NamedSlashBladeItemPredicate::fromJson);
             ItemPredicate.register(SeCrystalItemPredicate.TYPE, SeCrystalItemPredicate::fromJson);
+            ItemPredicate.register(SlashArtsSphereItemPredicate.TYPE, SlashArtsSphereItemPredicate::fromJson);
+            ItemPredicate.register(BladeStatItemPredicate.TYPE, BladeStatItemPredicate::fromJson);
+            ItemPredicate.register(EnchantedSlashBladeItemPredicate.TYPE, EnchantedSlashBladeItemPredicate::fromJson);
         });
     }
 }

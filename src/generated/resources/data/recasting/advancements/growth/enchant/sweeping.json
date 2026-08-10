@@ -1,0 +1,38 @@
+{
+  "parent": "recasting:growth/enchant/power",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "type": "recasting:enchanted_slashblade",
+            "enchantment": "minecraft:sweeping"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.enchant.sweeping.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:enchanted_book",
+      "nbt": "{Enchantments:[{id:\"minecraft:sweeping\",lvl:1s}]}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "enchantment.minecraft.sweeping"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

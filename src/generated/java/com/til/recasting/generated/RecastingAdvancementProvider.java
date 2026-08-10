@@ -3,9 +3,12 @@ package com.til.recasting.generated;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.til.recasting.Recasting;
+import com.til.recasting.advancement.BladeStatItemPredicate;
 import com.til.recasting.advancement.BladeTranslationHelper;
+import com.til.recasting.advancement.EnchantedSlashBladeItemPredicate;
 import com.til.recasting.advancement.NamedSlashBladeItemPredicate;
 import com.til.recasting.advancement.SeCrystalItemPredicate;
+import com.til.recasting.advancement.SlashArtsSphereItemPredicate;
 import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.constant.RecastingSlashBladeKeys;
 import com.til.recasting.handler.CapabilityRegistryHandler;
@@ -25,10 +28,14 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.data.advancements.AdvancementSubProvider;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
@@ -42,7 +49,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 /**
- * 生成刀成长与 SE 结晶成就树。
+ * 生成「重铸之路」单栏成就树（刀 / SE / 杀敌 / 附魔 / 精炼）。
  */
 public class RecastingAdvancementProvider extends AdvancementProvider {
 
@@ -82,23 +89,45 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                     .addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
                     .save(writer, Recasting.prefix("growth/root").toString());
 
-            // SE 独立成就栏（带 background 的根节点）
-            Advancement seRoot = Advancement.Builder.advancement()
-                    .display(
-                            seCrystalIcon(SpecialEffectsRegistry.SHARP_BLADE.getId()),
-                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_ROOT_TITLE),
-                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_SE_ROOT_DESC),
-                            BACKGROUND,
-                            FrameType.TASK,
-                            false,
-                            false,
-                            false)
-                    .addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
-                    .save(writer, Recasting.prefix("growth/se/root").toString());
+            Advancement hubBlade = autoHub(
+                    writer,
+                    root,
+                    "growth/hub/new_blade_smith",
+                    bladeIcon(registries, RecastingSlashBladeKeys.BROADSWORD_WOOD),
+                    RecastingLanguageKeys.ADVANCEMENT_HUB_NEW_BLADE_SMITH_TITLE,
+                    RecastingLanguageKeys.ADVANCEMENT_HUB_NEW_BLADE_SMITH_DESC);
+            Advancement hubSe = autoHub(
+                    writer,
+                    root,
+                    "growth/hub/start_crystal",
+                    seCrystalIcon(SpecialEffectsRegistry.SHARP_BLADE.getId()),
+                    RecastingLanguageKeys.ADVANCEMENT_HUB_START_CRYSTAL_TITLE,
+                    RecastingLanguageKeys.ADVANCEMENT_HUB_START_CRYSTAL_DESC);
+            Advancement hubKill = autoHub(
+                    writer,
+                    root,
+                    "growth/hub/just_kill",
+                    new ItemStack(SlashBladeItems.PROUDSOUL.get()),
+                    RecastingLanguageKeys.ADVANCEMENT_HUB_JUST_KILL_TITLE,
+                    RecastingLanguageKeys.ADVANCEMENT_HUB_JUST_KILL_DESC);
+            Advancement hubEnch = autoHub(
+                    writer,
+                    root,
+                    "growth/hub/enchant_power",
+                    enchantedBookIcon(GrowthAdvancementGraph.ENCHANT_BONUS_CHAIN.get(0)),
+                    RecastingLanguageKeys.ADVANCEMENT_HUB_ENCHANT_POWER_TITLE,
+                    RecastingLanguageKeys.ADVANCEMENT_HUB_ENCHANT_POWER_DESC);
+            Advancement hubRefine = autoHub(
+                    writer,
+                    root,
+                    "growth/hub/refine_again",
+                    new ItemStack(SlashBladeItems.PROUDSOUL_INGOT.get()),
+                    RecastingLanguageKeys.ADVANCEMENT_HUB_REFINE_AGAIN_TITLE,
+                    RecastingLanguageKeys.ADVANCEMENT_HUB_REFINE_AGAIN_DESC);
 
             for (GrowthAdvancementGraph.BladeNode node : GrowthAdvancementGraph.BLADES) {
                 Advancement parent = node.parent() == null
-                        ? root
+                        ? hubBlade
                         : bladeAdvancements.get(node.parent());
                 if (parent == null) {
                     throw new IllegalStateException("Missing parent advancement for blade " + node.blade().location()
@@ -124,7 +153,6 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
 
                 if (node.recipeId() != null) {
                     builder.addCriterion("crafted", RecipeCraftedTrigger.TriggerInstance.craftedItem(node.recipeId()));
-                    // 同组内为 OR：合成或获得任一即可
                     builder.requirements(new String[][]{{"obtained", "crafted"}});
                 }
 
@@ -138,7 +166,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
 
             for (GrowthAdvancementGraph.SeNode node : GrowthAdvancementGraph.SPECIAL_EFFECTS) {
                 Advancement parent = node.parentEffectId() == null
-                        ? seRoot
+                        ? hubSe
                         : seAdvancements.get(node.parentEffectId());
                 if (parent == null) {
                     throw new IllegalStateException("Missing parent advancement for se " + node.effectId()
@@ -162,7 +190,6 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                         InventoryChangeTrigger.TriggerInstance.hasItems(
                                 SeCrystalItemPredicate.of(node.effectId(), 1)));
                 builder.addCriterion("crafted", RecipeCraftedTrigger.TriggerInstance.craftedItem(node.recipeId()));
-                // 同组内为 OR：合成或获得任一即可
                 builder.requirements(new String[][]{{"obtained", "crafted"}});
 
                 Advancement advancement = builder.save(
@@ -170,6 +197,190 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                         Recasting.prefix("growth/se/" + node.effectId().getPath()).toString());
                 seAdvancements.put(node.effectId(), advancement);
             }
+
+            saveBackToFutureChain(writer, hubKill);
+            saveKillMilestones(writer, hubKill);
+            saveEnchantChain(writer, hubEnch);
+            saveRefineMilestones(writer, hubRefine);
+        }
+
+        private static Advancement autoHub(
+                Consumer<Advancement> writer,
+                Advancement parent,
+                String path,
+                ItemStack icon,
+                String titleKey,
+                String descKey
+        ) {
+            return Advancement.Builder.advancement()
+                    .parent(parent)
+                    .display(
+                            icon,
+                            Component.translatable(titleKey),
+                            Component.translatable(descKey),
+                            null,
+                            FrameType.TASK,
+                            false,
+                            false,
+                            false)
+                    .addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
+                    .save(writer, Recasting.prefix(path).toString());
+        }
+
+        private static void saveBackToFutureChain(Consumer<Advancement> writer, Advancement hubKill) {
+            Advancement parent = hubKill;
+            for (ResourceLocation saId : GrowthAdvancementGraph.BACK_TO_FUTURE_SLASH_ARTS) {
+                ItemStack icon = slashArtsSphereIcon(saId);
+                parent = Advancement.Builder.advancement()
+                        .parent(parent)
+                        .display(
+                                icon,
+                                Component.translatable(slashArtDescriptionId(saId)),
+                                Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_BTF_DESC),
+                                null,
+                                FrameType.TASK,
+                                true,
+                                false,
+                                false)
+                        .addCriterion(
+                                "obtained",
+                                InventoryChangeTrigger.TriggerInstance.hasItems(
+                                        SlashArtsSphereItemPredicate.of(saId)))
+                        .save(writer, Recasting.prefix("growth/drop/btf/" + saId.getPath()).toString());
+            }
+        }
+
+        private static void saveKillMilestones(Consumer<Advancement> writer, Advancement hubKill) {
+            Advancement kill1 = Advancement.Builder.advancement()
+                    .parent(hubKill)
+                    .display(
+                            new ItemStack(SlashBladeItems.PROUDSOUL_TINY.get()),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000_TITLE),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000_DESC),
+                            null,
+                            FrameType.GOAL,
+                            true,
+                            false,
+                            false)
+                    .addCriterion(
+                            "obtained",
+                            InventoryChangeTrigger.TriggerInstance.hasItems(
+                                    BladeStatItemPredicate.minKill(GrowthAdvancementGraph.KILL_MILESTONE_1)))
+                    .save(writer, Recasting.prefix("growth/drop/kill_1000").toString());
+
+            Advancement kill2 = Advancement.Builder.advancement()
+                    .parent(kill1)
+                    .display(
+                            new ItemStack(SlashBladeItems.PROUDSOUL.get()),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_10000_TITLE),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_10000_DESC),
+                            null,
+                            FrameType.GOAL,
+                            true,
+                            false,
+                            false)
+                    .addCriterion(
+                            "obtained",
+                            InventoryChangeTrigger.TriggerInstance.hasItems(
+                                    BladeStatItemPredicate.minKill(GrowthAdvancementGraph.KILL_MILESTONE_2)))
+                    .save(writer, Recasting.prefix("growth/drop/kill_10000").toString());
+
+            Advancement kill3 = Advancement.Builder.advancement()
+                    .parent(kill2)
+                    .display(
+                            new ItemStack(SlashBladeItems.PROUDSOUL_INGOT.get()),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_100000_TITLE),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_100000_DESC),
+                            null,
+                            FrameType.CHALLENGE,
+                            true,
+                            false,
+                            false)
+                    .addCriterion(
+                            "obtained",
+                            InventoryChangeTrigger.TriggerInstance.hasItems(
+                                    BladeStatItemPredicate.minKill(GrowthAdvancementGraph.KILL_MILESTONE_3)))
+                    .save(writer, Recasting.prefix("growth/drop/kill_100000").toString());
+
+            Advancement.Builder.advancement()
+                    .parent(kill3)
+                    .display(
+                            new ItemStack(SlashBladeItems.PROUDSOUL_TRAPEZOHEDRON.get()),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000000_TITLE),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000000_DESC),
+                            null,
+                            FrameType.CHALLENGE,
+                            true,
+                            false,
+                            false)
+                    .addCriterion(
+                            "obtained",
+                            InventoryChangeTrigger.TriggerInstance.hasItems(
+                                    BladeStatItemPredicate.minKill(GrowthAdvancementGraph.KILL_MILESTONE_4)))
+                    .save(writer, Recasting.prefix("growth/drop/kill_1000000").toString());
+        }
+
+        private static void saveEnchantChain(Consumer<Advancement> writer, Advancement hubEnch) {
+            Advancement parent = hubEnch;
+            for (Enchantment enchantment : GrowthAdvancementGraph.ENCHANT_BONUS_CHAIN) {
+                ResourceLocation enchId = ForgeRegistries.ENCHANTMENTS.getKey(enchantment);
+                if (enchId == null) {
+                    throw new IllegalStateException("Unregistered enchantment in bonus chain: " + enchantment);
+                }
+                String path = enchId.getPath();
+                parent = Advancement.Builder.advancement()
+                        .parent(parent)
+                        .display(
+                                enchantedBookIcon(enchantment),
+                                Component.translatable(enchantment.getDescriptionId()),
+                                Component.translatable(enchantDescKey(path)),
+                                null,
+                                FrameType.TASK,
+                                true,
+                                false,
+                                false)
+                        .addCriterion(
+                                "obtained",
+                                InventoryChangeTrigger.TriggerInstance.hasItems(
+                                        EnchantedSlashBladeItemPredicate.of(enchantment)))
+                        .save(writer, Recasting.prefix("growth/enchant/" + path).toString());
+            }
+        }
+
+        private static void saveRefineMilestones(Consumer<Advancement> writer, Advancement hubRefine) {
+            Advancement refine1 = Advancement.Builder.advancement()
+                    .parent(hubRefine)
+                    .display(
+                            new ItemStack(SlashBladeItems.PROUDSOUL_INGOT.get()),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_REFINE_1000_TITLE),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_REFINE_1000_DESC),
+                            null,
+                            FrameType.GOAL,
+                            true,
+                            false,
+                            false)
+                    .addCriterion(
+                            "obtained",
+                            InventoryChangeTrigger.TriggerInstance.hasItems(
+                                    BladeStatItemPredicate.minRefine(GrowthAdvancementGraph.REFINE_MILESTONE_1)))
+                    .save(writer, Recasting.prefix("growth/refine/1000").toString());
+
+            Advancement.Builder.advancement()
+                    .parent(refine1)
+                    .display(
+                            new ItemStack(SlashBladeItems.PROUDSOUL_TRAPEZOHEDRON.get()),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_REFINE_10000_TITLE),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_REFINE_10000_DESC),
+                            null,
+                            FrameType.CHALLENGE,
+                            true,
+                            false,
+                            false)
+                    .addCriterion(
+                            "obtained",
+                            InventoryChangeTrigger.TriggerInstance.hasItems(
+                                    BladeStatItemPredicate.minRefine(GrowthAdvancementGraph.REFINE_MILESTONE_2)))
+                    .save(writer, Recasting.prefix("growth/refine/10000").toString());
         }
 
         private void saveFluorescenceSeries(
@@ -217,9 +428,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                 }
             }
 
-            // 同组内 OR：任意一把荧光刀（合成或获得）即可
             builder.requirements(new String[][]{anyBlade.toArray(String[]::new)});
-
             builder.save(writer, Recasting.prefix("growth/blades/slashblade/fluorescence").toString());
         }
 
@@ -306,6 +515,19 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
             return stack;
         }
 
+        private static ItemStack slashArtsSphereIcon(ResourceLocation saId) {
+            ItemStack stack = new ItemStack(SlashBladeItems.PROUDSOUL_SPHERE.get());
+            CompoundTag tag = stack.getOrCreateTag();
+            tag.putString("SpecialAttackType", saId.toString());
+            return stack;
+        }
+
+        private static ItemStack enchantedBookIcon(Enchantment enchantment) {
+            ItemStack stack = new ItemStack(Items.ENCHANTED_BOOK);
+            stack.enchant(enchantment, 1);
+            return stack;
+        }
+
         private static Component bladeDescription(GrowthAdvancementGraph.BladeNode node) {
             if (node.parent() != null) {
                 return Component.translatable(
@@ -327,8 +549,28 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
             if (effect != null) {
                 return effect.getDescriptionId();
             }
-            // ponytail: datagen 早期注册表可能为空，回退约定 key
             return net.minecraft.Util.makeDescriptionId("se", effectId);
+        }
+
+        private static String slashArtDescriptionId(ResourceLocation saId) {
+            mods.flammpfeil.slashblade.slasharts.SlashArts arts =
+                    mods.flammpfeil.slashblade.registry.SlashArtsRegistry.REGISTRY.get().getValue(saId);
+            if (arts != null) {
+                return arts.getDescriptionId();
+            }
+            return net.minecraft.Util.makeDescriptionId("slash_art", saId);
+        }
+
+        private static String enchantDescKey(String path) {
+            return switch (path) {
+                case "smite" -> RecastingLanguageKeys.ADVANCEMENT_ENCHANT_SMITE_DESC;
+                case "bane_of_arthropods" -> RecastingLanguageKeys.ADVANCEMENT_ENCHANT_BANE_DESC;
+                case "fire_aspect" -> RecastingLanguageKeys.ADVANCEMENT_ENCHANT_FIRE_ASPECT_DESC;
+                case "flame" -> RecastingLanguageKeys.ADVANCEMENT_ENCHANT_FLAME_DESC;
+                case "power" -> RecastingLanguageKeys.ADVANCEMENT_ENCHANT_POWER_DESC;
+                case "sweeping" -> RecastingLanguageKeys.ADVANCEMENT_ENCHANT_SWEEPING_DESC;
+                default -> RecastingLanguageKeys.ADVANCEMENT_HUB_ENCHANT_POWER_DESC;
+            };
         }
     }
 }

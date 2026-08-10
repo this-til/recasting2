@@ -1,0 +1,38 @@
+{
+  "parent": "recasting:growth/enchant/bane_of_arthropods",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "type": "recasting:enchanted_slashblade",
+            "enchantment": "minecraft:fire_aspect"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.enchant.fire_aspect.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:enchanted_book",
+      "nbt": "{Enchantments:[{id:\"minecraft:fire_aspect\",lvl:1s}]}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "enchantment.minecraft.fire_aspect"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

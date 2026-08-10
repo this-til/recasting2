@@ -2,21 +2,67 @@ package com.til.recasting.generated;
 
 import com.til.recasting.Recasting;
 import com.til.recasting.constant.RecastingSlashBladeKeys;
+import com.til.recasting.registry.SlashArtsRegistry;
 import com.til.recasting.registry.SpecialEffectsRegistry;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 /**
- * 刀 / SE 成长成就树拓扑，与配方前置一一对应。
+ * 刀 / SE 成长成就树拓扑，与配方前置一一对应；并含杀敌 / 附魔 / 精炼分支常量。
  */
 public final class GrowthAdvancementGraph {
 
     private GrowthAdvancementGraph() {
     }
+
+    /** 与伤害加成判定一致：{@code killCount > threshold}。 */
+    public static final int KILL_MILESTONE_1 = 1000;
+    public static final int KILL_MILESTONE_2 = 10000;
+    public static final int KILL_MILESTONE_3 = 100000;
+    public static final int KILL_MILESTONE_4 = 1000000;
+
+    /** 与伤害加成判定一致：{@code refine > threshold}。 */
+    public static final int REFINE_MILESTONE_1 = 1000;
+    public static final int REFINE_MILESTONE_2 = 10000;
+
+    /**
+     * [回到未来计划] SA 直线链，顺序对齐 {@code Config.SLASH_ARTS_DROP_WHITELIST} 默认值。
+     */
+    public static final List<ResourceLocation> BACK_TO_FUTURE_SLASH_ARTS = List.of(
+            SlashArtsRegistry.TIME_BEYOND.getId(),
+            SlashArtsRegistry.IMPRISONMENT.getId(),
+            SlashArtsRegistry.PHASE_FRACTURE.getId(),
+            SlashArtsRegistry.ETERNAL_GUARD.getId(),
+            SlashArtsRegistry.AZURE_HAZE.getId(),
+            SlashArtsRegistry.MORTAL_DUST.getId(),
+            SlashArtsRegistry.TIDAL_SURGE.getId(),
+            SlashArtsRegistry.CELESTIAL_DRIVE.getId(),
+            SlashArtsRegistry.STARFALL.getId(),
+            SlashArtsRegistry.SKY_SEIZE.getId(),
+            SlashArtsRegistry.DIVINE_SLASH.getId(),
+            SlashArtsRegistry.VERDICT.getId(),
+            SlashArtsRegistry.INFINITE_BLOOM.getId(),
+            SlashArtsRegistry.BLISTERING_QI.getId(),
+            SlashArtsRegistry.HEAVY_PAYLOAD.getId()
+    );
+
+    /**
+     * 项目运行时消费的附魔加成直线链。
+     */
+    public static final List<Enchantment> ENCHANT_BONUS_CHAIN = List.of(
+            Enchantments.SMITE,
+            Enchantments.BANE_OF_ARTHROPODS,
+            Enchantments.FIRE_ASPECT,
+            Enchantments.FLAMING_ARROWS,
+            Enchantments.POWER_ARROWS,
+            Enchantments.SWEEPING_EDGE
+    );
 
     public record BladeNode(
             ResourceKey<SlashBladeDefinition> blade,

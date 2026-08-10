@@ -1,0 +1,37 @@
+{
+  "parent": "recasting:growth/hub/just_kill",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "type": "recasting:blade_stat",
+            "min_exclusive_kill": 1000
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.drop.kill_1000.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "slashblade:proudsoul_tiny"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.recasting.drop.kill_1000.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

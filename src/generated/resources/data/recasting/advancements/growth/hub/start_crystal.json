@@ -1,4 +1,5 @@
 {
+  "parent": "recasting:growth/root",
   "criteria": {
     "tick": {
       "conditions": {},
@@ -7,9 +8,8 @@
   },
   "display": {
     "announce_to_chat": false,
-    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
     "description": {
-      "translate": "advancements.recasting.growth.se.root.description"
+      "translate": "advancements.recasting.hub.start_crystal.description"
     },
     "frame": "task",
     "hidden": false,
@@ -18,7 +18,7 @@
     },
     "show_toast": false,
     "title": {
-      "translate": "advancements.recasting.growth.se.root.title"
+      "translate": "advancements.recasting.hub.start_crystal.title"
     }
   },
   "requirements": [
