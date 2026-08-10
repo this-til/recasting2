@@ -4,7 +4,9 @@ import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.handler.AttractionHelper;
 import com.til.recasting.handler.BuffSourceHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
-import com.til.recasting.handler.ParticleHelper;
+import com.til.recasting.handler.EntityHelper;
+import com.til.recasting.network.FinalGlowIngestMessage;
+import com.til.recasting.network.NetworkManager;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.util.DamageStructure;
@@ -13,10 +15,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -25,14 +28,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
@@ -41,32 +43,29 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 /**
- * 末辉终焉超新星爆：视界坍缩后爆炸。
+ * 末辉终焉超新星爆：视界坍缩后终结。
  * <p>
- * 时间线（与 {@link #getMaxLifeTime()} 同步）：视界与吸积粒子半径按实例字段插值归零后爆炸；
+ * 时间线（与 {@link #getMaxLifeTime()} 同步）：视界与吸积粒子半径按实例字段插值归零后终结；
  * absorbRadius 内核挂静滞并销毁经验球/非释放者弹射物；
- * 实体伤害走本模组 {@link AttackHelper}；原版爆炸只负责破方块（不出伤）。
- * 爆炸实体列表清理见 {@link com.til.recasting.handler.FinalGlowBlackHoleHandler}。
+ * 方块吞噬只向客户端同步起始方块信息，由客户端本地渲染吸附（无 FallingBlockEntity）；
+ * 终结伤害走本模组 {@link AttackHelper}，按距离在 {@link #damageFalloffStart}～{@link #effectRange} 从 {@link #damageRatio} 线性衰减至 0。
  */
 @Getter
 @Setter
 @Accessors(chain = true)
 public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
-
-    private static final int BLOCK_BREAK_FX_PER_TICK = 6;
 
     /** 坍缩时长（同步到 maxLifeTime）。 */
     private int collapseTicks = 100;
@@ -76,18 +75,17 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
     /** 球形吸积粒子发射半径。 */
     private float particleRadiusStart = 24.0f;
     private float particleRadiusEnd = 0.0f;
-    /** 实体吸附、方块吞噬、终结伤害。 */
+    /** 实体吸附、方块吞噬、终结伤害半径。 */
     private float effectRange = 64.0f;
-    /** 终结原版爆炸强度（仅破方块）。 */
-    private float explosionPower = 256.0f;
     private float pullPower = 0.02f;
     private int raysPerTick = 96;
     private float absorbRadius = 2.0f;
     private float damageRatio = 3.35f;
+    /** 终结伤害满额内径；该距离至 {@link #effectRange} 线性衰减至 0。 */
+    private float damageFalloffStart = 16.0f;
+    /** 每 tick 最多播几次方块破坏音效/粒子。 */
+    private int blockBreakFxPerTick = 6;
 
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private final Set<FallingBlockEntity> spawnedFallingBlocks = Collections.newSetFromMap(new IdentityHashMap<>());
     /** 进入 absorbRadius 时钉死的绝对坐标（静滞）。 */
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
@@ -101,6 +99,9 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private boolean clientDetonationFxSpawned;
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private boolean ingestedBlocksThisTick;
 
     public FinalGlowBlackHoleEntity(
             EntityType<? extends FinalGlowBlackHoleEntity> entityTypeIn,
@@ -168,18 +169,17 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
 
         LivingEntity shooter = getShooter();
         if (shooter == null || !shooter.isAlive()) {
-            clearSpawnedFallingBlocks();
             clearAllStasis();
             discard();
             return;
         }
 
+        ingestedBlocksThisTick = false;
         setSize(horizon);
-        tickAmbientSounds(progress, horizon);
         attractEntities();
         tickAbsorbCore(shooter);
         absorbByRays(raysPerTick);
-        tickFallingBlocks();
+        tickAmbientSounds(progress, horizon);
 
         if (progress >= 1.0f) {
             detonate();
@@ -193,7 +193,6 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
         if (level().isClientSide()) {
             spawnClientDetonationFx();
         } else {
-            clearSpawnedFallingBlocks();
             clearAllStasis();
         }
         super.remove(reason);
@@ -252,19 +251,14 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
         }
     }
 
-    /** 持续吸附环境音：随坍缩进度与视界半径抬升强度。 */
+    /** 持续吸附环境音：随坍缩进度与视界半径抬升强度；直接发给维度内玩家，无视距离。 */
     private void tickAmbientSounds(float progress, float horizon) {
-        Vec3 center = position();
         float intensity = Mth.clamp(horizon / Math.max(horizonStart, 0.5f), 0.12f, 1.0f);
         float pitch = 0.55f + progress * 0.7f;
-        boolean activePull = !spawnedFallingBlocks.isEmpty() || !stasisTargets.isEmpty() || hasNearbyPullTargets();
+        boolean activePull = ingestedBlocksThisTick || !stasisTargets.isEmpty() || hasNearbyPullTargets();
 
         if (tickCount % 4 == 0) {
-            level().playSound(
-                    null,
-                    center.x,
-                    center.y,
-                    center.z,
+            playGlobalSound(
                     SoundEvents.PORTAL_AMBIENT,
                     SoundSource.AMBIENT,
                     0.22f + intensity * 0.38f,
@@ -272,11 +266,7 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
             );
         }
         if (tickCount % 8 == 0) {
-            level().playSound(
-                    null,
-                    center.x,
-                    center.y,
-                    center.z,
+            playGlobalSound(
                     SoundEvents.CONDUIT_AMBIENT,
                     SoundSource.AMBIENT,
                     0.1f + intensity * 0.22f,
@@ -284,11 +274,7 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
             );
         }
         if (activePull && tickCount % 6 == 0) {
-            level().playSound(
-                    null,
-                    center.x,
-                    center.y,
-                    center.z,
+            playGlobalSound(
                     SoundEvents.ENDERMAN_TELEPORT,
                     SoundSource.HOSTILE,
                     0.06f + intensity * 0.14f,
@@ -296,23 +282,15 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
             );
         }
         if (activePull && tickCount % 11 == 0) {
-            level().playSound(
-                    null,
-                    center.x,
-                    center.y,
-                    center.z,
+            playGlobalSound(
                     SoundEvents.SOUL_ESCAPE,
                     SoundSource.AMBIENT,
                     0.14f + intensity * 0.18f,
                     0.45f + progress * 0.85f
             );
         }
-        if (!spawnedFallingBlocks.isEmpty() && tickCount % 5 == 0) {
-            level().playSound(
-                    null,
-                    center.x,
-                    center.y,
-                    center.z,
+        if (ingestedBlocksThisTick && tickCount % 5 == 0) {
+            playGlobalSound(
                     SoundEvents.SCULK_CLICKING,
                     SoundSource.BLOCKS,
                     0.08f + intensity * 0.16f,
@@ -320,11 +298,7 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
             );
         }
         if (progress >= 0.8f && tickCount % 3 == 0) {
-            level().playSound(
-                    null,
-                    center.x,
-                    center.y,
-                    center.z,
+            playGlobalSound(
                     SoundEvents.BEACON_AMBIENT,
                     SoundSource.AMBIENT,
                     0.08f + (progress - 0.8f) * 0.55f,
@@ -333,12 +307,21 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
         }
     }
 
+    private void playGlobalSound(SoundEvent sound, SoundSource source, float volume, float pitch) {
+        if (!(level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+        for(ServerPlayer player : serverLevel.players()) {
+            player.playNotifySound(sound, source, volume, pitch);
+        }
+    }
+
     private boolean hasNearbyPullTargets() {
         Vec3 center = position();
         AABB box = new AABB(center, center).inflate(effectRange * 0.35);
         LivingEntity shooter = getShooter();
         for(Entity entity : level().getEntities(this, box, e -> {
-            if (e == this || e instanceof FallingBlockEntity) {
+            if (e == this) {
                 return false;
             }
             return shooter == null || e != shooter;
@@ -355,49 +338,13 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
         if (state.isAir() || !(level() instanceof ServerLevel serverLevel)) {
             return;
         }
-        serverLevel.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(state));
-        Vec3 soundPos = Vec3.atCenterOf(pos);
-        level().playSound(
-                null,
-                soundPos.x,
-                soundPos.y,
-                soundPos.z,
+        // 与玩家破坏方块相同的碎块粒子（global 保证远距也能看到）
+        serverLevel.globalLevelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(state));
+        playGlobalSound(
                 state.getSoundType().getBreakSound(),
                 SoundSource.BLOCKS,
                 0.5f + random.nextFloat() * 0.3f,
                 0.62f + random.nextFloat() * 0.38f
-        );
-        spawnBlockIngestParticles(soundPos, state);
-    }
-
-    private void spawnBlockIngestParticles(Vec3 pos, BlockState state) {
-        if (!(level() instanceof ServerLevel serverLevel)) {
-            return;
-        }
-        BlockParticleOption particle = new BlockParticleOption(ParticleTypes.BLOCK, state);
-        ParticleHelper.sendParticlesLongRange(
-                serverLevel,
-                particle,
-                pos.x,
-                pos.y,
-                pos.z,
-                10,
-                0.18,
-                0.18,
-                0.18,
-                0.04
-        );
-        ParticleHelper.sendParticlesLongRange(
-                serverLevel,
-                ParticleTypes.POOF,
-                pos.x,
-                pos.y,
-                pos.z,
-                2,
-                0.05,
-                0.05,
-                0.05,
-                0.01
         );
     }
 
@@ -418,7 +365,7 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
         Vec3 center = position();
         AABB box = new AABB(center, center).inflate(effectRange);
         List<Entity> entities = level().getEntities(this, box, entity -> {
-            if (entity == this || entity instanceof FallingBlockEntity) {
+            if (entity == this) {
                 return false;
             }
             LivingEntity shooter = getShooter();
@@ -441,7 +388,7 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
         AABB box = new AABB(center, center).inflate(absorbRadius);
         int displayLevel = Math.max(1, (Math.max(0, getMaxLifeTime() - tickCount) + 19) / 20);
 
-        for(Entity entity : level().getEntities(this, box, e -> e != this && !(e instanceof FallingBlockEntity))) {
+        for(Entity entity : level().getEntities(this, box, e -> e != this)) {
             if (entity.distanceToSqr(center) > rangeSqr) {
                 continue;
             }
@@ -510,9 +457,13 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
     }
 
     private void absorbByRays(int rayCount) {
+        if (level().isClientSide()) {
+            return;
+        }
         Vec3 origin = position();
         boolean grief = level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-        int breakFxLeft = BLOCK_BREAK_FX_PER_TICK;
+        int breakFxLeft = blockBreakFxPerTick;
+        List<FinalGlowIngestMessage.Entry> ingestEntries = new ArrayList<>();
 
         for(int i = 0; i < rayCount; i++) {
             Vec3 dir = randomUnitVector();
@@ -537,18 +488,21 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
                 breakFxLeft--;
             }
 
-            FallingBlockEntity falling = FallingBlockEntity.fall(level(), pos, state);
-            configureFallingBlock(falling);
-            if (falling.distanceToSqr(origin) <= absorbRadius * absorbRadius) {
-                falling.discard();
-            } else {
-                spawnedFallingBlocks.add(falling);
-            }
-
-            if (!grief) {
-                level().setBlock(pos, state, 3);
+            ingestEntries.add(new FinalGlowIngestMessage.Entry(state, pos));
+            if (grief) {
+                level().removeBlock(pos, false);
             }
         }
+
+        if (ingestEntries.isEmpty()) {
+            return;
+        }
+
+        ingestedBlocksThisTick = true;
+        NetworkManager.INSTANCE.send(
+                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this),
+                new FinalGlowIngestMessage(getId(), absorbRadius, ingestEntries)
+        );
     }
 
     private Vec3 randomUnitVector() {
@@ -578,129 +532,50 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
         return !state.is(BlockTags.PORTALS);
     }
 
-    private void configureFallingBlock(FallingBlockEntity falling) {
-        falling.noPhysics = true;
-        falling.setNoGravity(true);
-        falling.dropItem = false;
-        falling.disableDrop();
-        falling.setDeltaMovement(Vec3.ZERO);
-    }
-
-    /**
-     * 每 tick 强制拽向中心；距中心 ≤ {@link #absorbRadius} 立即 {@code discard}，无概率。
-     */
-    private void tickFallingBlocks() {
-        Vec3 center = position();
-        double absorbRangeSqr = absorbRadius * absorbRadius;
-        Iterator<FallingBlockEntity> iterator = spawnedFallingBlocks.iterator();
-        while (iterator.hasNext()) {
-            FallingBlockEntity falling = iterator.next();
-            if (falling.isRemoved()) {
-                iterator.remove();
-                continue;
-            }
-
-            falling.noPhysics = true;
-            falling.setNoGravity(true);
-            falling.dropItem = false;
-
-            double dx = center.x - falling.getX();
-            double dy = center.y - falling.getY();
-            double dz = center.z - falling.getZ();
-            double distSqr = dx * dx + dy * dy + dz * dz;
-            if (distSqr <= absorbRangeSqr) {
-                BlockState state = falling.getBlockState();
-                if (!state.isAir()) {
-                    spawnBlockBreakFx(BlockPos.containing(falling.getX(), falling.getY(), falling.getZ()), state);
-                }
-                falling.discard();
-                iterator.remove();
-                continue;
-            }
-
-            if (tickCount % 2 == 0 && random.nextInt(3) == 0) {
-                BlockState state = falling.getBlockState();
-                if (!state.isAir()) {
-                    spawnBlockIngestParticles(
-                            new Vec3(falling.getX(), falling.getY(), falling.getZ()),
-                            state
-                    );
-                }
-            }
-
-            double dist = Math.sqrt(distSqr);
-            double step = Math.min(1.5, dist);
-            double inv = step / dist;
-            falling.setPos(falling.getX() + dx * inv, falling.getY() + dy * inv, falling.getZ() + dz * inv);
-            falling.setDeltaMovement(dx * inv, dy * inv, dz * inv);
-            falling.hasImpulse = true;
-        }
-    }
-
-    private void clearSpawnedFallingBlocks() {
-        for(FallingBlockEntity falling : spawnedFallingBlocks) {
-            if (falling.isAlive() && !falling.isRemoved()) {
-                falling.discard();
-            }
-        }
-        spawnedFallingBlocks.clear();
-    }
-
     private void detonate() {
         if (detonated) {
             return;
         }
         detonated = true;
 
-        clearSpawnedFallingBlocks();
         clearAllStasis();
+        playGlobalSound(SoundEvents.GENERIC_EXPLODE, SoundSource.HOSTILE, 2.4f, 0.55f);
+        playGlobalSound(SoundEvents.END_PORTAL_SPAWN, SoundSource.HOSTILE, 1.6f, 0.45f);
         Vec3 center = position();
-        level().playSound(
-                null,
-                center.x,
-                center.y,
-                center.z,
-                SoundEvents.GENERIC_EXPLODE,
-                SoundSource.HOSTILE,
-                2.4f,
-                0.55f
-        );
-        level().playSound(
-                null,
-                center.x,
-                center.y,
-                center.z,
-                SoundEvents.END_PORTAL_SPAWN,
-                SoundSource.HOSTILE,
-                1.6f,
-                0.45f
-        );
 
         LivingEntity shooter = getShooter();
-        if (shooter != null) {
-            AttackHelper.areaAttack(
-                    shooter,
-                    center,
-                    new DamageStructure(damageRatio, 0.0f),
-                    effectRange,
-                    List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get()),
-                    null,
-                    null
-            );
+        if (shooter == null) {
+            return;
         }
 
-        // 原版爆炸：仅破方块（源为本实体，Detonate 清空实体列表）；不出原版粒子/音效，视觉走 ClientFx
-        level().explode(
-                this,
-                null,
-                null,
-                center.x,
-                center.y,
-                center.z,
-                explosionPower,
-                false,
-                Level.ExplosionInteraction.MOB,
-                false
-        );
+        var attackTypes = List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get());
+        float falloffStart = Math.min(damageFalloffStart, effectRange);
+        for(LivingEntity target : EntityHelper.getTargettableLivingEntityWithinAABB(
+                level(),
+                shooter,
+                center,
+                effectRange
+        )) {
+            float dist = (float) target.position().distanceTo(center);
+            float ratio = damageRatioAtDistance(dist, falloffStart);
+            if (ratio <= 0.0f) {
+                continue;
+            }
+            AttackHelper.doMeleeAttack(shooter, target, new DamageStructure(ratio, 0.0f), attackTypes);
+        }
+    }
+
+    /**
+     * {@code dist ≤ falloffStart} 为满额；{@code falloffStart～effectRange} 线性降至 0。
+     */
+    private float damageRatioAtDistance(float dist, float falloffStart) {
+        if (dist <= falloffStart) {
+            return damageRatio;
+        }
+        if (dist >= effectRange || effectRange <= falloffStart) {
+            return 0.0f;
+        }
+        float t = (dist - falloffStart) / (effectRange - falloffStart);
+        return damageRatio * (1.0f - t);
     }
 }

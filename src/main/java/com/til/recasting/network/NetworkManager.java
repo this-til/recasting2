@@ -63,6 +63,13 @@ public class NetworkManager {
                 TimeBeyondAccelMessage::decode,
                 TimeBeyondAccelMessage::handle
         );
+        INSTANCE.registerMessage(
+                id++,
+                FinalGlowIngestMessage.class,
+                FinalGlowIngestMessage::encode,
+                FinalGlowIngestMessage::decode,
+                FinalGlowIngestMessage::handle
+        );
     }
 }
 

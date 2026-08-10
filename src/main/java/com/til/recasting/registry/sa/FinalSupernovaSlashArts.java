@@ -28,11 +28,12 @@ public class FinalSupernovaSlashArts extends ExtendedSlashArts {
     private float particleRadiusStart = 24.0f;
     private float particleRadiusEnd = 0.0f;
     private float effectRange = 64.0f;
-    private float explosionPower = 256.0f;
     private float pullPower = 0.02f;
     private int raysPerTick = 96;
     private float absorbRadius = 2.0f;
     private float damageRatio = 3.35f;
+    private float damageFalloffStart = 16.0f;
+    private int blockBreakFxPerTick = 6;
 
     @Override
     public void trigger(
@@ -59,11 +60,12 @@ public class FinalSupernovaSlashArts extends ExtendedSlashArts {
                 .setParticleRadiusStart(particleRadiusStart)
                 .setParticleRadiusEnd(particleRadiusEnd)
                 .setEffectRange(effectRange)
-                .setExplosionPower(explosionPower)
                 .setPullPower(pullPower)
                 .setRaysPerTick(raysPerTick)
                 .setAbsorbRadius(absorbRadius)
                 .setDamageRatio(damageRatio)
+                .setDamageFalloffStart(damageFalloffStart)
+                .setBlockBreakFxPerTick(blockBreakFxPerTick)
                 .applyConfig();
         hole.setPos(pos.x, pos.y, pos.z);
         hole.setColor(slashBladeState.getColorCode());
