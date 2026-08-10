@@ -3,18 +3,17 @@ package com.til.recasting.item;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * 物质球 NBT 存取：类型无限，单类型数量为 long（无尽贪婪式）。
@@ -142,24 +141,14 @@ public final class MatterBallStorage {
     }
 
     /**
-     * 尽量填入玩家主背包（不含护甲）；塞不下的留在球内。
+     * 尽量填入玩家主背包（热键栏+背包，不含护甲/副手）；塞不下的留在球内。
+     * <p>
+     * 不走 {@code Inventory#add}：创造模式下塞不下时会把剩余直接 {@code setCount(0)}，造成球内物品被误扣销毁。
      *
      * @return 实际取出数量
      */
     public static long extractToPlayer(@NotNull ItemStack ball, @NotNull Player player) {
-        return extractToInventory(ball, player.getInventory());
-    }
-
-    /**
-     * 尽量填入 {@link Inventory#items}；塞不下的留在球内。
-     *
-     * @return 实际取出数量
-     */
-    public static long extractToInventory(@NotNull ItemStack ball, @NotNull Inventory inventory) {
-        return extractRemaining(ball, give -> {
-            inventory.add(give);
-            return give;
-        });
+        return extractToHandler(ball, new PlayerMainInvWrapper(player.getInventory()));
     }
 
     /**
@@ -168,7 +157,46 @@ public final class MatterBallStorage {
      * @return 实际取出数量
      */
     public static long extractToHandler(@NotNull ItemStack ball, @NotNull IItemHandler handler) {
-        return extractRemaining(ball, give -> ItemHandlerHelper.insertItemStacked(handler, give, false));
+        ListTag list = getOrCreateList(ball, false);
+        if (list == null || list.isEmpty()) {
+            return 0L;
+        }
+        long total = 0L;
+        for(int i = 0; i < list.size(); ) {
+            CompoundTag entry = list.getCompound(i);
+            ItemStack template = ItemStack.of(entry.getCompound(ENTRY_ITEM_KEY));
+            if (template.isEmpty()) {
+                list.remove(i);
+                continue;
+            }
+            template.setCount(1);
+            long remain = entry.getLong(ENTRY_COUNT_KEY);
+            if (remain <= 0) {
+                list.remove(i);
+                continue;
+            }
+            while (remain > 0) {
+                int take = (int) Math.min(remain, template.getMaxStackSize());
+                ItemStack give = template.copyWithCount(take);
+                ItemStack leftover = ItemHandlerHelper.insertItemStacked(handler, give, false);
+                int inserted = take - leftover.getCount();
+                if (inserted <= 0) {
+                    break;
+                }
+                remain -= inserted;
+                total += inserted;
+            }
+            if (remain <= 0) {
+                list.remove(i);
+            } else {
+                entry.putLong(ENTRY_COUNT_KEY, remain);
+                i++;
+            }
+        }
+        if (list.isEmpty()) {
+            clear(ball);
+        }
+        return total;
     }
 
     /**
@@ -203,55 +231,6 @@ public final class MatterBallStorage {
         mergeFrom(incoming, existing);
         incoming.setCount(0);
         return true;
-    }
-
-    /**
-     * @param insertOne 尝试放入一叠；返回未放入的剩余堆叠（数量可为 0）
-     */
-    private static long extractRemaining(
-            @NotNull ItemStack ball,
-            @NotNull Function<ItemStack, ItemStack> insertOne
-    ) {
-        ListTag list = getOrCreateList(ball, false);
-        if (list == null || list.isEmpty()) {
-            return 0L;
-        }
-        long total = 0L;
-        for(int i = 0; i < list.size(); ) {
-            CompoundTag entry = list.getCompound(i);
-            ItemStack template = ItemStack.of(entry.getCompound(ENTRY_ITEM_KEY));
-            if (template.isEmpty()) {
-                list.remove(i);
-                continue;
-            }
-            template.setCount(1);
-            long remain = entry.getLong(ENTRY_COUNT_KEY);
-            if (remain <= 0) {
-                list.remove(i);
-                continue;
-            }
-            while (remain > 0) {
-                int take = (int) Math.min(remain, template.getMaxStackSize());
-                ItemStack give = template.copyWithCount(take);
-                ItemStack leftover = insertOne.apply(give);
-                int inserted = take - leftover.getCount();
-                if (inserted <= 0) {
-                    break;
-                }
-                remain -= inserted;
-                total += inserted;
-            }
-            if (remain <= 0) {
-                list.remove(i);
-            } else {
-                entry.putLong(ENTRY_COUNT_KEY, remain);
-                i++;
-            }
-        }
-        if (list.isEmpty()) {
-            clear(ball);
-        }
-        return total;
     }
 
     private static int findMatchingIndex(ListTag list, ItemStack match) {
