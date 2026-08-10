@@ -54,13 +54,13 @@ public interface EntityRenderExtension {
 
         ResourceLocation modelLocation;
         ResourceLocation textureLocation;
-        Supplier<BuffType> buffTypeSupplier;
+        Supplier<? extends BuffType> buffTypeSupplier;
         int color;
 
         int renderOffset;
         static int renderOffsetGlobalCounter = 0;
 
-        public BuffLevelRender(ResourceLocation modelLocation, ResourceLocation resourceLocation, int color, Supplier<BuffType> buffTypeSupplier) {
+        public BuffLevelRender(ResourceLocation modelLocation, ResourceLocation resourceLocation, int color, Supplier<? extends BuffType> buffTypeSupplier) {
             this.modelLocation = modelLocation;
             this.textureLocation = resourceLocation;
             this.buffTypeSupplier = buffTypeSupplier;
@@ -69,7 +69,7 @@ public interface EntityRenderExtension {
             renderOffset = renderOffsetGlobalCounter++;
         }
 
-        public BuffLevelRender(ResourceLocation modelLocation, int color, Supplier<BuffType> buffTypeSupplier) {
+        public BuffLevelRender(ResourceLocation modelLocation, int color, Supplier<? extends BuffType> buffTypeSupplier) {
             this(modelLocation, defaultTexture, color, buffTypeSupplier);
         }
 

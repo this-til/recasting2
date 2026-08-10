@@ -17,7 +17,7 @@ public class BuffLevelRenderConfig {
     /**
      * 关联的 BuffType 供应商
      */
-    private final Supplier<BuffType> buffTypeSupplier;
+    private final Supplier<? extends BuffType> buffTypeSupplier;
 
     /**
      * 直接使用的翻译键

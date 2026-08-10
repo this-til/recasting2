@@ -22,12 +22,12 @@ public class BuffType {
     /**
      * 衰减间隔（每过多少 tick 减少一级）；0 表示不衰减
      */
-    int decayInterval;
+    protected int decayInterval;
 
     /**
      * 最大等级；0 表示无上限
      */
-    int maxLevel;
+    protected int maxLevel;
 
     public BuffType() {
         decayInterval = 0;

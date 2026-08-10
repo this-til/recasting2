@@ -169,10 +169,10 @@ public class EntityRenderExtensionRegistry {
      */
     public static class BuffFireRenderExtension implements EntityRenderExtension {
 
-        private final RegistryObject<BuffType> buffType;
+        private final RegistryObject<? extends BuffType> buffType;
         private final Color color;
 
-        public BuffFireRenderExtension(RegistryObject<BuffType> buffType, Color color) {
+        public BuffFireRenderExtension(RegistryObject<? extends BuffType> buffType, Color color) {
             this.buffType = buffType;
             this.color = color;
         }
@@ -318,10 +318,10 @@ public class EntityRenderExtensionRegistry {
 
         private static final int SEGMENTS = 48;
 
-        private final RegistryObject<BuffType> buffType;
+        private final RegistryObject<? extends BuffType> buffType;
         private final Color color;
 
-        public BuffHaloRenderExtension(RegistryObject<BuffType> buffType, Color color) {
+        public BuffHaloRenderExtension(RegistryObject<? extends BuffType> buffType, Color color) {
             this.buffType = buffType;
             this.color = color;
         }
