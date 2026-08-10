@@ -27,7 +27,7 @@ public class RecastingItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        generateProudsoulModel(RecastingItems.PROUD_SOUL_BAG, 3);
+        basicItem(RecastingItems.PROUD_SOUL_BAG.get());
         basicItem(RecastingItems.MATTER_BALL.get());
 
         RecastingItems.getAllFlame().forEach(this::generateProudsoulModel);
