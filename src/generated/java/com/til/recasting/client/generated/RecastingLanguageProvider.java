@@ -409,7 +409,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtKey(SlashArtsRegistry.HEAVY_PAYLOAD), "[回到未来计划]大包弹", "[Back to the Future Plan] Heavy Payload");
         translation(slashArtDescKey(SlashArtsRegistry.HEAVY_PAYLOAD), "对锁定或视锥内目标近距打击后，在其处放出白色闪光次元斩。", "Delivers a close-range strike to a locked or view-cone target, then detonates a white flash judgement cut on them.");
         translation(slashArtKey(SlashArtsRegistry.FINAL_SUPERNOVA), "终焉超新星爆", "Final Supernova");
-        translation(slashArtDescKey(SlashArtsRegistry.FINAL_SUPERNOVA), "在瞄准点展开坍缩黑洞，吞噬周围方块并吸附实体，最终迸发圆环并造成大量伤害。同施法者同时仅能存在一个黑洞。", "Unfold a collapsing black hole at the aim point that consumes blocks and pulls entities, then bursts into rings and deals heavy damage. Only one black hole may exist per caster.");
+        translation(slashArtDescKey(SlashArtsRegistry.FINAL_SUPERNOVA), "在瞄准点展开坍缩黑洞，吞噬周围方块并吸附实体，最终迸发圆环并造成大量伤害。", "Unfolds a collapsing black hole at the aim point that consumes blocks and pulls entities, then bursts into rings and deals heavy damage.");
         translation(specialEffectKey(SpecialEffectsRegistry.COOPERATE_WITH), "协同攻击", "Cooperate With");
         translation(specialEffectDescKey(SpecialEffectsRegistry.COOPERATE_WITH), "挥刀时概率额外挥刀。", "Has a chance to perform an additional slash when slashing.");
         translation(specialEffectKey(SpecialEffectsRegistry.CROSS_CHOP), "十字斩", "Cross Chop");

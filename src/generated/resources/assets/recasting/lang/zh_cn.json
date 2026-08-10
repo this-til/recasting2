@@ -360,7 +360,7 @@
   "slash_art.recasting.fanatical_dance_lambda": "^乱舞",
   "slash_art.recasting.fanatical_dance_lambda.desc": "快速连续发动多次随机角度的斩击。",
   "slash_art.recasting.final_supernova": "终焉超新星爆",
-  "slash_art.recasting.final_supernova.desc": "在瞄准点展开坍缩黑洞，吞噬周围方块并吸附实体，最终迸发圆环并造成大量伤害。同施法者同时仅能存在一个黑洞。",
+  "slash_art.recasting.final_supernova.desc": "在瞄准点展开坍缩黑洞，吞噬周围方块并吸附实体，最终迸发圆环并造成大量伤害。",
   "slash_art.recasting.fleeting_shadow": "掠影",
   "slash_art.recasting.fleeting_shadow.desc": "连续掠向周围敌人身侧，每次位移后发动短促乱舞并恢复生命。",
   "slash_art.recasting.fleeting_shadow_lambda": "^掠影",
