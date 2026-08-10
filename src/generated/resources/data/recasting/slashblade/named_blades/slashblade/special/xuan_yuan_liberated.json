@@ -6,8 +6,8 @@
   ],
   "name": "recasting:slashblade/special/xuan_yuan_liberated",
   "properties": {
-    "attack_base": 10.0,
-    "max_damage": 1920,
+    "attack_base": 8.0,
+    "max_damage": 7680,
     "slash_art": "recasting:phenomenal_return",
     "special_effects": [
       "recasting:human_emperor_domain"

@@ -6,8 +6,8 @@
   ],
   "name": "recasting:slashblade/special/star_thread",
   "properties": {
-    "attack_base": 10.0,
-    "max_damage": 1920,
+    "attack_base": 8.0,
+    "max_damage": 7680,
     "slash_art": "recasting:stellar_rotation",
     "special_effects": [
       "recasting:star_blink"

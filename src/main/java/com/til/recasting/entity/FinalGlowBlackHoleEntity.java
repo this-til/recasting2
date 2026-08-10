@@ -90,7 +90,7 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
     private float pullPower = 0.02f;
     private int raysPerTick = 96;
     private float absorbRadius = 2.0f;
-    private float damageRatio = 3.35f;
+    private float damageRatio = 4.35f;
     /** 终结伤害满额内径；该距离至 {@link #effectRange} 线性衰减至 0。 */
     private float damageFalloffStart = 16.0f;
     /** 每 tick 最多播几次方块破坏音效/粒子。 */

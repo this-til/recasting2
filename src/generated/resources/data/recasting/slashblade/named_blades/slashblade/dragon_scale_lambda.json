@@ -6,8 +6,8 @@
   ],
   "name": "recasting:slashblade/dragon_scale_lambda",
   "properties": {
-    "attack_base": 5.0,
-    "max_damage": 400,
+    "attack_base": 6.0,
+    "max_damage": 2560,
     "slash_art": "recasting:storm_phantom_swords_lambda",
     "sword_type": [
       "bewitched"

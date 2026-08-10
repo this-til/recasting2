@@ -7,7 +7,7 @@
   "name": "recasting:slashblade/briarland_lambda",
   "properties": {
     "attack_base": 7.0,
-    "max_damage": 1440,
+    "max_damage": 5120,
     "slash_art": "recasting:rift_gale_lambda",
     "sword_type": [
       "bewitched"

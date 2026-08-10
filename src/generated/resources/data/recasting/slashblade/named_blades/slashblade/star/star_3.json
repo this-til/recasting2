@@ -7,7 +7,7 @@
   "name": "recasting:slashblade/star/star_3",
   "properties": {
     "attack_base": 6.0,
-    "max_damage": 720,
+    "max_damage": 2560,
     "slash_art": "recasting:star_3",
     "sword_type": [
       "bewitched"

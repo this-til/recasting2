@@ -7,7 +7,7 @@
   "name": "recasting:slashblade/ba_gua_big_lambda",
   "properties": {
     "attack_base": 6.0,
-    "max_damage": 480,
+    "max_damage": 2560,
     "slash_art": "recasting:matrix_lambda",
     "sword_type": [
       "bewitched"

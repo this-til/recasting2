@@ -1,7 +1,8 @@
 {
   "name": "recasting:slashblade/broadsword_wood",
   "properties": {
-    "attack_base": 3.0
+    "attack_base": 3.0,
+    "max_damage": 320
   },
   "render": {
     "carry_type": "default",

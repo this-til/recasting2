@@ -7,7 +7,7 @@
   "name": "recasting:slashblade/long_sky_sunset",
   "properties": {
     "attack_base": 6.0,
-    "max_damage": 400,
+    "max_damage": 1280,
     "slash_art": "recasting:long_sky_sunset",
     "special_effects": [
       "recasting:long_sky_sunset"

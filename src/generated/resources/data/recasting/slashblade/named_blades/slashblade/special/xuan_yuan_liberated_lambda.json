@@ -6,8 +6,8 @@
   ],
   "name": "recasting:slashblade/special/xuan_yuan_liberated_lambda",
   "properties": {
-    "attack_base": 13.0,
-    "max_damage": 2496,
+    "attack_base": 8.0,
+    "max_damage": 10240,
     "slash_art": "recasting:phenomenal_return_lambda",
     "special_effects": [
       "recasting:human_emperor_domain_lambda"

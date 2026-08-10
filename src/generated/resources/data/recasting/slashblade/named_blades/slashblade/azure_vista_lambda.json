@@ -6,8 +6,8 @@
   ],
   "name": "recasting:slashblade/azure_vista_lambda",
   "properties": {
-    "attack_base": 7.0,
-    "max_damage": 1440,
+    "attack_base": 6.0,
+    "max_damage": 2560,
     "slash_art": "recasting:phantom_explosion_lambda",
     "sword_type": [
       "bewitched"

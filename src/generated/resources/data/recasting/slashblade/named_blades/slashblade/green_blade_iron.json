@@ -1,7 +1,7 @@
 {
   "name": "recasting:slashblade/green_blade_iron",
   "properties": {
-    "max_damage": 80
+    "max_damage": 480
   },
   "render": {
     "carry_type": "default",

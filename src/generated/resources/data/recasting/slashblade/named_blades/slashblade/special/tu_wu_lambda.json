@@ -6,8 +6,8 @@
   ],
   "name": "recasting:slashblade/special/tu_wu_lambda",
   "properties": {
-    "attack_base": 13.0,
-    "max_damage": 2496,
+    "attack_base": 8.0,
+    "max_damage": 10240,
     "slash_art": "recasting:myriad_silence_lambda",
     "special_effects": [
       "recasting:tu_wu_blood_curse_lambda"

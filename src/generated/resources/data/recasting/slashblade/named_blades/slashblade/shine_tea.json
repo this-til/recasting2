@@ -7,7 +7,7 @@
   "name": "recasting:slashblade/shine_tea",
   "properties": {
     "attack_base": 6.0,
-    "max_damage": 960,
+    "max_damage": 1280,
     "slash_art": "recasting:zantetsuden_row",
     "sword_type": [
       "bewitched"

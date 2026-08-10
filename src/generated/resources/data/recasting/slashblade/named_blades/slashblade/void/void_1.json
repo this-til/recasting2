@@ -6,8 +6,8 @@
   ],
   "name": "recasting:slashblade/void/void_1",
   "properties": {
-    "attack_base": 8.0,
-    "max_damage": 480,
+    "attack_base": 6.0,
+    "max_damage": 1280,
     "slash_art": "recasting:void_hole",
     "sword_type": [
       "bewitched"

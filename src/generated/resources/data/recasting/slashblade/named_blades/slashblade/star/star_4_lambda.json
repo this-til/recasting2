@@ -6,8 +6,8 @@
   ],
   "name": "recasting:slashblade/star/star_4_lambda",
   "properties": {
-    "attack_base": 8.0,
-    "max_damage": 1280,
+    "attack_base": 7.0,
+    "max_damage": 5120,
     "slash_art": "recasting:star_4_lambda",
     "sword_type": [
       "bewitched"

@@ -6,8 +6,8 @@
   ],
   "name": "recasting:slashblade/color_wing_lambda",
   "properties": {
-    "attack_base": 8.0,
-    "max_damage": 960,
+    "attack_base": 7.0,
+    "max_damage": 5120,
     "slash_art": "recasting:heaven_twelve_hit_lambda",
     "special_effects": [
       "recasting:color_dye"

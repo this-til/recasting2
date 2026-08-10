@@ -2,7 +2,7 @@
   "name": "recasting:slashblade/art_knife",
   "properties": {
     "attack_base": 5.0,
-    "max_damage": 80
+    "max_damage": 960
   },
   "render": {
     "carry_type": "default",

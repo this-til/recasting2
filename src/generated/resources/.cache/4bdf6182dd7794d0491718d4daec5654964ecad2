@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-05T03:34:19.8933513	Item Models: recasting
+// 1.20.1	2026-08-10T21:51:27.7899502	Item Models: recasting
 c8f2cd6159851ebfad469214bdf6a687396ed8e9 assets/recasting/models/item/abyss_depth_core.json
 d2a54def92412811b0f7b83680b7254b0907f28f assets/recasting/models/item/abyss_flame.json
 c8f2cd6159851ebfad469214bdf6a687396ed8e9 assets/recasting/models/item/blazing_flame_core.json
@@ -25,6 +25,7 @@ acb61e94d669ce95c292ec7bbf49102b7ae2905e assets/recasting/models/item/iron_mediu
 d2a54def92412811b0f7b83680b7254b0907f28f assets/recasting/models/item/karma_flame.json
 acb61e94d669ce95c292ec7bbf49102b7ae2905e assets/recasting/models/item/lapis_medium_soul_cube.json
 d2a54def92412811b0f7b83680b7254b0907f28f assets/recasting/models/item/last_words_flame.json
+2d18c009fd03c7c4d02bcbaa2ee5b15cc671dfa1 assets/recasting/models/item/matter_ball.json
 d2a54def92412811b0f7b83680b7254b0907f28f assets/recasting/models/item/memory_flame.json
 d2a54def92412811b0f7b83680b7254b0907f28f assets/recasting/models/item/mirage_flame.json
 d2a54def92412811b0f7b83680b7254b0907f28f assets/recasting/models/item/mirror_flame.json
@@ -33,7 +34,7 @@ d2a54def92412811b0f7b83680b7254b0907f28f assets/recasting/models/item/obsession_
 d2a54def92412811b0f7b83680b7254b0907f28f assets/recasting/models/item/other_shore_flame.json
 d2a54def92412811b0f7b83680b7254b0907f28f assets/recasting/models/item/ouroboros_flame.json
 d2a54def92412811b0f7b83680b7254b0907f28f assets/recasting/models/item/poetry_ash_flame.json
-7fa6c42388bd83f53ae0485c8fa914992e5841b3 assets/recasting/models/item/proud_soul_bag.json
+770468330c170654d459d7e12a608b35359a2e51 assets/recasting/models/item/proud_soul_bag.json
 acb61e94d669ce95c292ec7bbf49102b7ae2905e assets/recasting/models/item/redstone_medium_soul_cube.json
 2a722b7aa9179d575dc51c4b7242dc5a2b5027a5 assets/recasting/models/item/refraction_phase_transition.json
 d2a54def92412811b0f7b83680b7254b0907f28f assets/recasting/models/item/royal_flame.json

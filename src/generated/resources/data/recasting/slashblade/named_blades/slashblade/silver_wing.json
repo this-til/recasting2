@@ -7,7 +7,7 @@
   "name": "recasting:slashblade/silver_wing",
   "properties": {
     "attack_base": 6.0,
-    "max_damage": 320,
+    "max_damage": 1280,
     "slash_art": "recasting:cloud_wheel",
     "sword_type": [
       "bewitched"

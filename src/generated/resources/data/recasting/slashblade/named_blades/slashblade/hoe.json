@@ -2,7 +2,7 @@
   "name": "recasting:slashblade/hoe",
   "properties": {
     "attack_base": 2.0,
-    "max_damage": 200,
+    "max_damage": 320,
     "special_effects": [
       "recasting:fertilize"
     ]

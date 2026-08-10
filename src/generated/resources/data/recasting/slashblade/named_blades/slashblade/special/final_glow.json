@@ -6,8 +6,8 @@
   ],
   "name": "recasting:slashblade/special/final_glow",
   "properties": {
-    "attack_base": 10.0,
-    "max_damage": 1920,
+    "attack_base": 8.0,
+    "max_damage": 7680,
     "slash_art": "recasting:final_supernova",
     "sword_type": [
       "bewitched"

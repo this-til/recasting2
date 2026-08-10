@@ -7,7 +7,7 @@
   "name": "recasting:slashblade/umbrella_lambda",
   "properties": {
     "attack_base": 6.0,
-    "max_damage": 720,
+    "max_damage": 2560,
     "slash_art": "recasting:infinite_judgement_cut",
     "special_effects": [
       "recasting:black_rose"

@@ -5,6 +5,7 @@ import com.til.recasting.Recasting;
 import com.til.recasting.capability.IProudSoulDropCooldown;
 import com.til.recasting.capability.IProudSoulDropCooldown.DropKind;
 import com.til.recasting.capability.provider.ProudSoulDropCooldownProvider;
+import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.inventory.ProudSoulBagMenu;
 import com.til.recasting.registry.RecastingItems;
 import com.til.recasting.registry.requir.SlashBladeItems;
@@ -13,6 +14,7 @@ import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import mods.flammpfeil.slashblade.slasharts.SlashArts;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -101,6 +103,7 @@ public class ProudSoulDropHandler {
                     && random.nextDouble() < Config.BASIC_FLAME_DROP_CHANCE.get()) {
                 ItemStack flame = createRandomItem(RecastingItems.getAllFlame(), random);
                 if (!flame.isEmpty()) {
+                    notifyCooldownDrop(player, flame, DropKind.BASIC_FLAME, Config.BASIC_FLAME_DROP_COOLDOWN_TICKS.get());
                     giveProudSoul(player, flame);
                     cooldown.mark(DropKind.BASIC_FLAME, gameTime);
                 }
@@ -110,6 +113,7 @@ public class ProudSoulDropHandler {
                     && random.nextDouble() < Config.SOUL_CUBE_DROP_CHANCE.get()) {
                 ItemStack cube = createRandomItem(RecastingItems.getAllSoulCube(), random);
                 if (!cube.isEmpty()) {
+                    notifyCooldownDrop(player, cube, DropKind.SOUL_CUBE, Config.SOUL_CUBE_DROP_COOLDOWN_TICKS.get());
                     giveProudSoul(player, cube);
                     cooldown.mark(DropKind.SOUL_CUBE, gameTime);
                 }
@@ -119,6 +123,7 @@ public class ProudSoulDropHandler {
                     && random.nextDouble() < Config.SE_CRYSTAL_LEVEL_1_DROP_CHANCE.get()) {
                 ItemStack seCrystal = createRandomWhitelistedSeCrystal(random);
                 if (!seCrystal.isEmpty()) {
+                    notifyCooldownDrop(player, seCrystal, DropKind.SE_CRYSTAL, Config.SE_CRYSTAL_DROP_COOLDOWN_TICKS.get());
                     giveProudSoul(player, seCrystal);
                     cooldown.mark(DropKind.SE_CRYSTAL, gameTime);
                 }
@@ -128,11 +133,95 @@ public class ProudSoulDropHandler {
                     && random.nextDouble() < Config.SLASH_ARTS_DROP_CHANCE.get()) {
                 ItemStack slashArtsSphere = createRandomWhitelistedSlashArtsSphere(random);
                 if (!slashArtsSphere.isEmpty()) {
+                    notifyCooldownDrop(player, slashArtsSphere, DropKind.SLASH_ARTS, Config.SLASH_ARTS_DROP_COOLDOWN_TICKS.get());
                     giveProudSoul(player, slashArtsSphere);
                     cooldown.mark(DropKind.SLASH_ARTS, gameTime);
                 }
             }
         });
+    }
+
+    private static void notifyCooldownDrop(Player player, ItemStack stack, DropKind kind, int cooldownTicks) {
+        player.sendSystemMessage(Component.translatable(
+                RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP,
+                describeDrop(stack),
+                describeKind(kind),
+                formatCooldown(cooldownTicks)
+        ));
+    }
+
+    private static Component describeKind(DropKind kind) {
+        return switch (kind) {
+            case BASIC_FLAME -> Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_KIND_BASIC_FLAME);
+            case SOUL_CUBE -> Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_KIND_SOUL_CUBE);
+            case SE_CRYSTAL -> Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_KIND_SE_CRYSTAL);
+            case SLASH_ARTS -> Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_KIND_SLASH_ARTS);
+        };
+    }
+
+    private static Component describeDrop(ItemStack stack) {
+        if (stack.is(RecastingItems.SE_CRYSTAL.get())) {
+            return stack.getCapability(CapabilityRegistryHandler.SE_CRYSTAL_DATA)
+                    .map(data -> {
+                        if (!data.hasSpecialEffect()) {
+                            return stack.getHoverName();
+                        }
+                        ResourceLocation seKey = data.getSpecialEffectType();
+                        if (seKey == null) {
+                            return stack.getHoverName();
+                        }
+                        SpecialEffect se = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(seKey);
+                        if (se == null) {
+                            return stack.getHoverName();
+                        }
+                        return Component.translatable(
+                                RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_SE,
+                                Component.translatable(se.getDescriptionId()),
+                                data.getSpecialEffectLevel(),
+                                stack.getHoverName()
+                        );
+                    })
+                    .orElseGet(stack::getHoverName);
+        }
+
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.contains("SpecialAttackType")) {
+            ResourceLocation saKey = ResourceLocation.tryParse(tag.getString("SpecialAttackType"));
+            if (saKey != null) {
+                SlashArts sa = mods.flammpfeil.slashblade.registry.SlashArtsRegistry.REGISTRY.get().getValue(saKey);
+                if (sa != null) {
+                    return Component.translatable(
+                            RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_SA,
+                            Component.translatable(sa.getDescriptionId()),
+                            stack.getHoverName()
+                    );
+                }
+            }
+        }
+        return stack.getHoverName();
+    }
+
+    private static Component formatCooldown(int cooldownTicks) {
+        if (cooldownTicks <= 0) {
+            return Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_NOW);
+        }
+        int totalSeconds = (cooldownTicks + 19) / 20;
+        int hours = totalSeconds / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int seconds = totalSeconds % 60;
+        if (hours > 0) {
+            if (minutes == 0) {
+                return Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_H, hours);
+            }
+            return Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_HM, hours, minutes);
+        }
+        if (minutes > 0) {
+            if (seconds == 0) {
+                return Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_M, minutes);
+            }
+            return Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_MS, minutes, seconds);
+        }
+        return Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_S, seconds);
     }
 
     private static void giveProudSoul(Player player, ItemStack stack) {

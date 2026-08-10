@@ -7,8 +7,8 @@
   ],
   "name": "recasting:slashblade/laser/laser_3_lambda",
   "properties": {
-    "attack_base": 9.0,
-    "max_damage": 960,
+    "attack_base": 7.0,
+    "max_damage": 5120,
     "slash_art": "recasting:laser_3_lambda",
     "special_effects": [
       "recasting:photon_scar"

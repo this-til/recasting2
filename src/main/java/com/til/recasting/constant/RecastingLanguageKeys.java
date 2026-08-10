@@ -33,6 +33,19 @@ public final class RecastingLanguageKeys {
     public static final String TOOLTIP_PHANTOM_BLADE_TRACKING = "recasting.tooltip.phantom_blade.tracking";
     public static final String MESSAGE_PHANTOM_BLADE_NORMAL = "recasting.message.phantom_blade.normal";
     public static final String MESSAGE_PHANTOM_BLADE_TRACKING = "recasting.message.phantom_blade.tracking";
+    public static final String MESSAGE_PROUD_SOUL_DROP = "recasting.message.proud_soul_drop";
+    public static final String MESSAGE_PROUD_SOUL_DROP_SE = "recasting.message.proud_soul_drop.se";
+    public static final String MESSAGE_PROUD_SOUL_DROP_SA = "recasting.message.proud_soul_drop.sa";
+    public static final String MESSAGE_PROUD_SOUL_DROP_KIND_BASIC_FLAME = "recasting.message.proud_soul_drop.kind.basic_flame";
+    public static final String MESSAGE_PROUD_SOUL_DROP_KIND_SOUL_CUBE = "recasting.message.proud_soul_drop.kind.soul_cube";
+    public static final String MESSAGE_PROUD_SOUL_DROP_KIND_SE_CRYSTAL = "recasting.message.proud_soul_drop.kind.se_crystal";
+    public static final String MESSAGE_PROUD_SOUL_DROP_KIND_SLASH_ARTS = "recasting.message.proud_soul_drop.kind.slash_arts";
+    public static final String MESSAGE_PROUD_SOUL_DROP_COOLDOWN_H = "recasting.message.proud_soul_drop.cooldown.h";
+    public static final String MESSAGE_PROUD_SOUL_DROP_COOLDOWN_HM = "recasting.message.proud_soul_drop.cooldown.hm";
+    public static final String MESSAGE_PROUD_SOUL_DROP_COOLDOWN_M = "recasting.message.proud_soul_drop.cooldown.m";
+    public static final String MESSAGE_PROUD_SOUL_DROP_COOLDOWN_MS = "recasting.message.proud_soul_drop.cooldown.ms";
+    public static final String MESSAGE_PROUD_SOUL_DROP_COOLDOWN_S = "recasting.message.proud_soul_drop.cooldown.s";
+    public static final String MESSAGE_PROUD_SOUL_DROP_COOLDOWN_NOW = "recasting.message.proud_soul_drop.cooldown.now";
 
     public static final String ADVANCEMENT_GROWTH_ROOT_TITLE = "advancements.recasting.growth.root.title";
     public static final String ADVANCEMENT_GROWTH_ROOT_DESC = "advancements.recasting.growth.root.description";
