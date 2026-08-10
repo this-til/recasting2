@@ -11,6 +11,7 @@ import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
+import mods.flammpfeil.slashblade.util.KnockBacks;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -21,17 +22,23 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * 异界斩切：三倍范围环状斩击；命中目标结算一批冲击（4×0.08），单次 SA 每目标仅一批。
+ * 异界斩切：对照原版巴刃（{@code circle_slash} / {@code CircleSlash}）四向环斩；
+ * 斩击范围三倍；命中目标结算一批冲击（4×0.08），单次 SA 每目标仅一批。
  * 特效 TODO 悬空。
  */
 @Setter
 @Accessors(chain = true)
 public class OtherworldSlashSlashArts extends ExtendedSlashArts {
 
+    /** 与原版 CircleSlash DoSlashEvent damage 0.325 对齐的业务倍率。 */
     private float slashRatio = 0.32f;
+    /** 相对原版默认斩击 size=1 的三倍。 */
     private float slashSize = 3.0f;
     private int impactHits = 4;
     private float impactRatio = 0.08f;
+
+    /** 原版 ComboState 在 tick 4–7 依次调用的 yRot 偏移。 */
+    private static final float[] CIRCLE_Y_ROT_OFFSETS = {180.0f, 90.0f, 0.0f, -90.0f};
 
     @Override
     public void trigger(
@@ -46,28 +53,32 @@ public class OtherworldSlashSlashArts extends ExtendedSlashArts {
             return;
         }
 
-        SlashEffectEntity slash = AttackHelper.doSlash(
-                livingEntity,
-                0.0f,
-                slashBladeState.getColorCode(),
-                Vec3.ZERO,
-                false,
-                false,
-                new DamageStructure(slashRatio, 0.0f),
-                slashSize,
-                null
-        );
-        if (slash == null) {
-            return;
-        }
-
         Set<UUID> impacted = new HashSet<>();
-        slash.attackActionCallbackPoint.register(hitEntity -> {
-            if (!impacted.add(hitEntity.getUUID())) {
-                return;
+        for (float yRotOffset : CIRCLE_Y_ROT_OFFSETS) {
+            SlashEffectEntity slash = AttackHelper.doSlash(
+                    livingEntity,
+                    0.0f,
+                    slashBladeState.getColorCode(),
+                    Vec3.ZERO,
+                    false,
+                    true,
+                    new DamageStructure(slashRatio, 0.0f),
+                    slashSize,
+                    KnockBacks.cancel
+            );
+            if (slash == null) {
+                continue;
             }
-            applyImpactBatch(livingEntity, hitEntity, slashBladeState);
-        });
+            // 原版：jc.setYRot(living.getYRot() - 22.5F + yRot)
+            slash.setYRot(livingEntity.getYRot() - 22.5f + yRotOffset);
+            slash.setXRot(0.0f);
+            slash.attackActionCallbackPoint.register(hitEntity -> {
+                if (!impacted.add(hitEntity.getUUID())) {
+                    return;
+                }
+                applyImpactBatch(livingEntity, hitEntity, slashBladeState);
+            });
+        }
     }
 
     private void applyImpactBatch(LivingEntity attacker, LivingEntity target, ISlashBladeState state) {
