@@ -545,7 +545,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         return item.get().getDescriptionId() + ".desc";
     }
 
-    private static String buffKey(RegistryObject<BuffType> buffType) {
+    private static String buffKey(RegistryObject<? extends BuffType> buffType) {
         return buffType.get().getDescriptionId();
     }
 
