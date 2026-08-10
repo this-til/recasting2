@@ -381,7 +381,7 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
             int currentLevel = buffData.getLevel(jadeFireBuffType, target.level());
             buffData.setLevel(jadeFireBuffType, currentLevel + jadeFireStacksPerRelease, target.level());
             BuffSourceHelper.recordSourceEntity(buffData, jadeFireBuffType, target, caster);
-            JadeFireBuffHandler.ensureJadeFireTimer(target);
+            RecastingBuffTypes.JADE_FIRE.get().ensureTimer(target);
         });
     }
 

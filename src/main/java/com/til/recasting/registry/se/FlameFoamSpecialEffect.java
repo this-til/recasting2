@@ -3,10 +3,9 @@ package com.til.recasting.registry.se;
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.ParticleHelper;
-import com.til.recasting.handler.SoulBurnBuffHandler;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
-import com.til.recasting.registry.instance.BuffType;
+import com.til.recasting.registry.buff.SoulBurnBuffType;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.minecraft.core.particles.ParticleTypes;
@@ -41,7 +40,7 @@ public class FlameFoamSpecialEffect extends ExtendedSpecialEffect {
         }
 
         Level world = target.level();
-        BuffType soulBurnBuffType = RecastingBuffTypes.SOUL_BURN.get();
+        SoulBurnBuffType soulBurnBuffType = RecastingBuffTypes.SOUL_BURN.get();
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
                 buffStackData -> {
@@ -65,7 +64,7 @@ public class FlameFoamSpecialEffect extends ExtendedSpecialEffect {
                         int maxLevel = soulBurnBuffType.getMaxLevel();
                         int newLevel = Math.min(currentSoulBurnLevel + 1, maxLevel);
                         buffStackData.setLevel(soulBurnBuffType, newLevel, world);
-                        SoulBurnBuffHandler.ensureSoulBurnTimer(target);
+                        soulBurnBuffType.ensureTimer(target);
                     }
                 }
         );

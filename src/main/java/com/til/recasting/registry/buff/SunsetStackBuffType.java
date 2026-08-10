@@ -1,40 +1,45 @@
-package com.til.recasting.handler;
+package com.til.recasting.registry.buff;
 
-import com.til.recasting.Recasting;
 import com.til.recasting.event.AttackAmplifierEvent;
+import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.handler.ParticleHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 
 /**
- * 长空落日：晖光 / 叠晖 / 日核消耗
- * <ul>
- *   <li>日核仅由 LongSkySunsetSlashArts 命中叠加</li>
- *   <li>其它幻影剑命中且目标有日核：追加晖光伤害、叠晖 +1，并消耗 1 层日核</li>
- *   <li>叠晖满层：对该目标的幻影剑伤害 +100%</li>
- * </ul>
+ * 叠晖：有日核时幻影剑命中追加晖光、叠晖并耗日核；满层幻影剑伤害翻倍。
  */
-@Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class SunsetMarkBuffHandler {
+@Getter
+@Setter
+@Accessors(chain = true)
+public class SunsetStackBuffType extends BuffType {
 
-    private static final int STACK_ADD_PER_HIT = 1;
-    private static final int CORE_CONSUME_PER_HIT = 1;
-    private static final float HUI_GUANG_RATIO = 0.15f;
-    private static final float FULL_STACK_AMPLIFIER = 0.5f;
+    int stackAddPerHit = 1;
+    int coreConsumePerHit = 1;
+    float huiGuangRatio = 0.15f;
+    float fullStackAmplifier = 0.5f;
+
+    public SunsetStackBuffType() {
+        decayInterval = 100;
+        maxLevel = 50;
+    }
 
     @SubscribeEvent
-    public static void onAttackAmplifier(AttackAmplifierEvent event) {
+    public void onAttackAmplifier(AttackAmplifierEvent event) {
         if (event.getAttacker().level().isClientSide()) {
             return;
         }
@@ -55,7 +60,6 @@ public class SunsetMarkBuffHandler {
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
             BuffType coreType = RecastingBuffTypes.SUNSET_CORE.get();
-            BuffType stackType = RecastingBuffTypes.SUNSET_STACK.get();
 
             int coreLevel = buffStackData.getLevel(coreType, world);
             if (coreLevel > 0) {
@@ -65,27 +69,27 @@ public class SunsetMarkBuffHandler {
                     var attackDamage = event.getAttacker().getAttribute(Attributes.ATTACK_DAMAGE);
                     float extraDamage = attackDamage == null
                             ? 0f
-                            : (float) (attackDamage.getValue() * HUI_GUANG_RATIO);
+                            : (float) (attackDamage.getValue() * huiGuangRatio);
                     event.addDamageSourceInfo(huiGuangSource.damageSource(), new DamageStructure(0f, extraDamage));
                 }
 
                 spawnHuiGuangHitParticles(target);
 
-                int currentStack = buffStackData.getLevel(stackType, world);
-                buffStackData.setLevel(stackType, currentStack + STACK_ADD_PER_HIT, world);
+                int currentStack = buffStackData.getLevel(this, world);
+                buffStackData.setLevel(this, currentStack + stackAddPerHit, world);
 
                 if (!fromSunsetSa) {
-                    buffStackData.setLevel(coreType, coreLevel - CORE_CONSUME_PER_HIT, world);
+                    buffStackData.setLevel(coreType, coreLevel - coreConsumePerHit, world);
                 }
             }
 
-            if (buffStackData.getLevel(stackType, world) >= stackType.getMaxLevel()) {
-                event.addModifiedRatioAmplifier(FULL_STACK_AMPLIFIER);
+            if (buffStackData.getLevel(this, world) >= maxLevel) {
+                event.addModifiedRatioAmplifier(fullStackAmplifier);
             }
         });
     }
 
-    private static void spawnHuiGuangHitParticles(LivingEntity target) {
+    private void spawnHuiGuangHitParticles(LivingEntity target) {
         if (!(target.level() instanceof ServerLevel serverLevel)) {
             return;
         }

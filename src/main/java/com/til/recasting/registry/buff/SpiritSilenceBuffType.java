@@ -1,38 +1,44 @@
-package com.til.recasting.handler;
+package com.til.recasting.registry.buff;
 
-import com.til.recasting.Recasting;
 import com.til.recasting.capability.ITimeRun;
-import com.til.recasting.registry.RecastingBuffTypes;
+import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.instance.BuffType;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
 
 /**
- * 寂灭：叠层时写入 ARMOR 修饰器；每秒减 1 层并刷新；0 层移除。
+ * 寂灭：叠层写入 ARMOR 修饰器；每秒减 1 层并刷新；0 层移除。
  */
-@Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public final class SpiritSilenceBuffHandler {
+@Getter
+@Setter
+@Accessors(chain = true)
+public class SpiritSilenceBuffType extends BuffType {
 
-    public static final UUID SILENCE_ARMOR_UUID = UUID.fromString("a3f8c2e1-5b4d-4e9a-8c7f-1d2e3f4a5b6c");
+    private static final UUID SILENCE_ARMOR_UUID = UUID.fromString("a3f8c2e1-5b4d-4e9a-8c7f-1d2e3f4a5b6c");
     private static final String TIMER = "spirit_silence_decay";
-    private static final int DECAY_INTERVAL = 20;
 
-    private SpiritSilenceBuffHandler() {
+    int decayTicks = 20;
+    double armorPenaltyPerStack = 0.01d;
+
+    public SpiritSilenceBuffType() {
+        decayInterval = 0;
+        maxLevel = 66;
     }
 
-    public static void onStacksChanged(LivingEntity target) {
+    public void onStacksChanged(LivingEntity target) {
         if (target.level().isClientSide()) {
             return;
         }
-        BuffType buffType = RecastingBuffTypes.SPIRIT_SILENCE.get();
         int stacks = target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA)
-                .map(data -> data.getLevel(buffType, target.level()))
+                .map(data -> data.getLevel(this, target.level()))
                 .orElse(0);
         refreshArmorModifier(target, stacks);
         if (stacks > 0) {
@@ -40,7 +46,7 @@ public final class SpiritSilenceBuffHandler {
         }
     }
 
-    public static void refreshArmorModifier(LivingEntity target, int stacks) {
+    private void refreshArmorModifier(LivingEntity target, int stacks) {
         AttributeInstance armor = target.getAttribute(Attributes.ARMOR);
         if (armor == null) {
             return;
@@ -52,29 +58,28 @@ public final class SpiritSilenceBuffHandler {
         armor.addTransientModifier(new AttributeModifier(
                 SILENCE_ARMOR_UUID,
                 "spirit_silence_armor",
-                -0.01d * stacks,
+                -armorPenaltyPerStack * stacks,
                 AttributeModifier.Operation.MULTIPLY_TOTAL
         ));
     }
 
-    private static void ensureDecayTimer(LivingEntity target) {
+    private void ensureDecayTimer(LivingEntity target) {
         target.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             if (timeRun.getNamedTimerCell(TIMER) != null) {
                 return;
             }
-            BuffType buffType = RecastingBuffTypes.SPIRIT_SILENCE.get();
             timeRun.addNamedTimerCell(
                     TIMER,
                     new ITimeRun.TimerCell(
-                            () -> tickDecay(target, buffType, timeRun),
-                            DECAY_INTERVAL,
+                            () -> tickDecay(target, timeRun),
+                            decayTicks,
                             true
                     )
             );
         });
     }
 
-    private static void tickDecay(LivingEntity target, BuffType buffType, ITimeRun timeRun) {
+    private void tickDecay(LivingEntity target, ITimeRun timeRun) {
         if (!target.isAlive() || target.level().isClientSide()) {
             refreshArmorModifier(target, 0);
             timeRun.removeNamedTimerCell(TIMER);
@@ -83,14 +88,14 @@ public final class SpiritSilenceBuffHandler {
 
         Level world = target.level();
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
-            int stacks = data.getLevel(buffType, world);
+            int stacks = data.getLevel(this, world);
             if (stacks <= 0) {
                 refreshArmorModifier(target, 0);
                 timeRun.removeNamedTimerCell(TIMER);
                 return;
             }
-            data.setLevel(buffType, stacks - 1, world);
-            int next = data.getLevel(buffType, world);
+            data.setLevel(this, stacks - 1, world);
+            int next = data.getLevel(this, world);
             refreshArmorModifier(target, next);
             if (next <= 0) {
                 timeRun.removeNamedTimerCell(TIMER);

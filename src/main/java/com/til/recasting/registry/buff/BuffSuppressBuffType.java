@@ -1,50 +1,53 @@
-package com.til.recasting.handler;
+package com.til.recasting.registry.buff;
 
-import com.til.recasting.Recasting;
 import com.til.recasting.capability.ITimeRun;
-import com.til.recasting.registry.RecastingBuffTypes;
+import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.instance.BuffType;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 增益压制：持有 Buff 期间每 tick 驱散增益效果。
+ * 增益压制：持有期间每 tick 驱散增益效果。
  */
-@Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public final class BuffSuppressHandler {
+@Getter
+@Setter
+@Accessors(chain = true)
+public class BuffSuppressBuffType extends BuffType {
 
     private static final String TIMER = "buff_suppress_tick";
 
-    private BuffSuppressHandler() {
+    public BuffSuppressBuffType() {
+        decayInterval = 20;
+        maxLevel = 0;
     }
 
-    public static void apply(LivingEntity target, int seconds) {
+    public void apply(LivingEntity target, int seconds) {
         if (target.level().isClientSide()) {
             return;
         }
-        BuffType buffType = RecastingBuffTypes.BUFF_SUPPRESS.get();
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
-            data.setLevel(buffType, Math.max(1, seconds), target.level());
+            data.setLevel(this, Math.max(1, seconds), target.level());
         });
         ensureTimer(target);
         dispelBeneficial(target);
     }
 
-    public static void ensureTimer(LivingEntity target) {
+    public void ensureTimer(LivingEntity target) {
         target.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             if (timeRun.getNamedTimerCell(TIMER) != null) {
                 return;
             }
-            BuffType buffType = RecastingBuffTypes.BUFF_SUPPRESS.get();
             timeRun.addNamedTimerCell(
                     TIMER,
                     new ITimeRun.TimerCell(
-                            () -> tick(target, buffType, timeRun),
+                            () -> tick(target, timeRun),
                             1,
                             true
                     )
@@ -52,14 +55,14 @@ public final class BuffSuppressHandler {
         });
     }
 
-    private static void tick(LivingEntity target, BuffType buffType, ITimeRun timeRun) {
+    private void tick(LivingEntity target, ITimeRun timeRun) {
         if (!target.isAlive() || target.level().isClientSide()) {
             timeRun.removeNamedTimerCell(TIMER);
             return;
         }
         Level world = target.level();
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
-            int level = data.getLevel(buffType, world);
+            int level = data.getLevel(this, world);
             if (level <= 0) {
                 timeRun.removeNamedTimerCell(TIMER);
                 return;
@@ -68,7 +71,7 @@ public final class BuffSuppressHandler {
         });
     }
 
-    public static void dispelBeneficial(LivingEntity entity) {
+    public void dispelBeneficial(LivingEntity entity) {
         List<MobEffectInstance> toRemove = new ArrayList<>();
         for(MobEffectInstance instance : entity.getActiveEffects()) {
             if (instance.getEffect().isBeneficial()) {
@@ -80,7 +83,7 @@ public final class BuffSuppressHandler {
         }
     }
 
-    public static void dispelHarmful(LivingEntity entity) {
+    public void dispelHarmful(LivingEntity entity) {
         List<MobEffectInstance> toRemove = new ArrayList<>();
         for(MobEffectInstance instance : entity.getActiveEffects()) {
             if (!instance.getEffect().isBeneficial()) {

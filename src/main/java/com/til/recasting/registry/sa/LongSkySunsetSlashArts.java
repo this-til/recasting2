@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * 长空落日 Slash Arts
- * 星流索敌齐射幻影剑；仅本 SA 幻影剑命中可叠加日核
+ * 星流索敌齐射幻影剑；仅本 SA 幻影剑命中可叠加日核。
  */
 @Setter
 @Accessors(chain = true)

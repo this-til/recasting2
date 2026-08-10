@@ -6,6 +6,7 @@ import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.handler.*;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
+import com.til.recasting.registry.buff.SpiritSilenceBuffType;
 import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
@@ -112,13 +113,13 @@ public class MyriadSilenceSlashArts extends ExtendedSlashArts {
                 )
         );
 
-        BuffType silenceType = RecastingBuffTypes.SPIRIT_SILENCE.get();
+        SpiritSilenceBuffType silenceType = RecastingBuffTypes.SPIRIT_SILENCE.get();
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
             int current = data.getLevel(silenceType, level);
             int next = Math.min(silenceType.getMaxLevel(), current + 1);
             data.setLevel(silenceType, next, level);
             BuffSourceHelper.recordSourceEntity(data, silenceType, target, user);
-            SpiritSilenceBuffHandler.onStacksChanged(target);
+            silenceType.onStacksChanged(target);
         });
 
         spawnTalismanParticles(target);

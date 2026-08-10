@@ -1,47 +1,44 @@
 package com.til.recasting.registry.instance;
 
 import com.til.recasting.registry.RecastingBuffTypes;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
 
 /**
- * Buff类型
- * 用于标识不同类型的buff，支持扩展能力
+ * Buff 类型：可配置衰减/上限，构造期注册到 Forge 事件总线供子类实例监听。
  */
 @Getter
-@AllArgsConstructor
+@Setter
+@Accessors(chain = true)
 public class BuffType {
 
     /**
-     * 衰减间隔（每过多少tick减少一级）
-     * 例如：值为1表示每1tick减少1级，值为10表示每10tick减少1级
-     * 0表示不衰减
+     * 衰减间隔（每过多少 tick 减少一级）；0 表示不衰减
      */
-    private final int decayInterval;
+    int decayInterval;
 
     /**
-     * 最大等级（0表示无限制）
+     * 最大等级；0 表示无上限
      */
-    private final int maxLevel;
+    int maxLevel;
 
-    /**
-     * 检查是否有最大等级限制
-     */
+    public BuffType() {
+        decayInterval = 0;
+        maxLevel = 0;
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
     public boolean hasMaxLevel() {
         return maxLevel > 0;
     }
 
-    /**
-     * 应用等级限制
-     *
-     * @param level 原始等级
-     * @return 限制后的等级
-     */
     public int applyMaxLevel(int level) {
         if (hasMaxLevel()) {
             return Math.min(level, maxLevel);
@@ -49,9 +46,6 @@ public class BuffType {
         return level;
     }
 
-    /**
-     * 获取BuffType的ResourceLocation key
-     */
     @Nullable
     public ResourceLocation getKey() {
         IForgeRegistry<BuffType> registry = RecastingBuffTypes.REGISTRY.get();
@@ -66,10 +60,8 @@ public class BuffType {
         return "buff." + key.getNamespace() + "." + key.getPath();
     }
 
+    @Override
     public String toString() {
-        return Objects.requireNonNull((RecastingBuffTypes.REGISTRY.get()).getKey(this)).toString();
+        return Objects.requireNonNull(RecastingBuffTypes.REGISTRY.get().getKey(this)).toString();
     }
-
-
 }
-

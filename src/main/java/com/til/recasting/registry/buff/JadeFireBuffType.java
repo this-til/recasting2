@@ -1,46 +1,46 @@
-package com.til.recasting.handler;
+package com.til.recasting.registry.buff;
 
-import com.til.recasting.Recasting;
 import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.event.AttackAmplifierEvent;
+import com.til.recasting.handler.AttackHelper;
+import com.til.recasting.handler.BuffSourceHelper;
+import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingAttackTypes;
-import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 
 /**
- * 翠火 Buff 处理器
- * <ul>
- *   <li>服务端每秒造成固定火焰伤害</li>
- *   <li>目标承受的全部伤害按层提高</li>
- * </ul>
+ * 翠火：周期固定火焰伤害；按层提高所受伤害。
  */
-@Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public final class JadeFireBuffHandler {
+@Getter
+@Setter
+@Accessors(chain = true)
+public class JadeFireBuffType extends BuffType {
 
     private static final String TIMER_NAME = "jade_fire_tick";
-    private static final float FIXED_FIRE_DAMAGE = 0.5f;
-    /**
-     * 满层时的额外受伤比例；中间层按 level / maxLevel 线性插值。
-     */
-    private static final float DAMAGE_AMP_AT_MAX_LEVEL = 0.4f;
-    private static final int TICKS_PER_INTERVAL = 20;
 
-    private JadeFireBuffHandler() {
+    float fixedFireDamage = 0.5f;
+    float damageAmpAtMaxLevel = 0.4f;
+    int ticksPerInterval = 20;
+
+    public JadeFireBuffType() {
+        decayInterval = 20;
+        maxLevel = 40;
     }
 
-    public static void ensureJadeFireTimer(LivingEntity target) {
+    public void ensureTimer(LivingEntity target) {
         if (target.level().isClientSide()) {
             return;
         }
 
-        BuffType jadeFireBuffType = RecastingBuffTypes.JADE_FIRE.get();
         target.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             if (timeRun.getNamedTimerCell(TIMER_NAME) != null) {
                 return;
@@ -49,49 +49,45 @@ public final class JadeFireBuffHandler {
             timeRun.addNamedTimerCell(
                     TIMER_NAME,
                     new ITimeRun.TimerCell(
-                            () -> tickJadeFire(target, jadeFireBuffType, timeRun),
-                            TICKS_PER_INTERVAL,
+                            () -> tick(target, timeRun),
+                            ticksPerInterval,
                             true
                     )
             );
         });
     }
 
-    private static void tickJadeFire(LivingEntity target, BuffType jadeFireBuffType, ITimeRun timeRun) {
+    private void tick(LivingEntity target, ITimeRun timeRun) {
         if (!target.isAlive() || target.level().isClientSide()) {
-            removeJadeFireTimer(timeRun);
+            timeRun.removeNamedTimerCell(TIMER_NAME);
             return;
         }
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
-            int currentLevel = data.getLevel(jadeFireBuffType, target.level());
+            int currentLevel = data.getLevel(this, target.level());
             if (currentLevel <= 0) {
-                removeJadeFireTimer(timeRun);
+                timeRun.removeNamedTimerCell(TIMER_NAME);
                 return;
             }
 
-            IBuffStackData.BuffEntry entry = data.getEntry(jadeFireBuffType);
+            IBuffStackData.BuffEntry entry = data.getEntry(this);
             LivingEntity source = BuffSourceHelper.getSourceEntity(entry, target.level());
             if (source == null) {
-                removeJadeFireTimer(timeRun);
+                timeRun.removeNamedTimerCell(TIMER_NAME);
                 return;
             }
 
             AttackHelper.attack(
                     source,
                     target,
-                    new DamageStructure(0f, FIXED_FIRE_DAMAGE),
+                    new DamageStructure(0f, fixedFireDamage),
                     List.of(RecastingAttackTypes.JADE_FIRE_ATTACK.get())
             );
         });
     }
 
-    private static void removeJadeFireTimer(ITimeRun timeRun) {
-        timeRun.removeNamedTimerCell(TIMER_NAME);
-    }
-
     @SubscribeEvent
-    public static void onAttackAmplifier(AttackAmplifierEvent event) {
+    public void onAttackAmplifier(AttackAmplifierEvent event) {
         if (event.getAttacker().level().isClientSide()) {
             return;
         }
@@ -101,11 +97,9 @@ public final class JadeFireBuffHandler {
         }
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
-            BuffType jadeFireBuffType = RecastingBuffTypes.JADE_FIRE.get();
-            int currentLevel = data.getLevel(jadeFireBuffType, target.level());
-            int maxLevel = jadeFireBuffType.getMaxLevel();
+            int currentLevel = data.getLevel(this, target.level());
             if (currentLevel > 0 && maxLevel > 0) {
-                event.addModifiedRatioAmplifier(DAMAGE_AMP_AT_MAX_LEVEL * currentLevel / (float) maxLevel);
+                event.addModifiedRatioAmplifier(damageAmpAtMaxLevel * currentLevel / (float) maxLevel);
             }
         });
     }

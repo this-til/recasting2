@@ -1,6 +1,15 @@
 package com.til.recasting.registry;
 
 import com.til.recasting.Recasting;
+import com.til.recasting.registry.buff.BuffSuppressBuffType;
+import com.til.recasting.registry.buff.CalculusBuffType;
+import com.til.recasting.registry.buff.JadeFireBuffType;
+import com.til.recasting.registry.buff.MortalDustBuffType;
+import com.til.recasting.registry.buff.PhotonBurnBuffType;
+import com.til.recasting.registry.buff.PhotonScarBuffType;
+import com.til.recasting.registry.buff.SoulBurnBuffType;
+import com.til.recasting.registry.buff.SpiritSilenceBuffType;
+import com.til.recasting.registry.buff.SunsetStackBuffType;
 import com.til.recasting.registry.instance.BuffType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -17,21 +26,12 @@ import java.util.function.Supplier;
  */
 public class RecastingBuffTypes {
 
-    /**
-     * Buff类型注册表键
-     */
     public static final ResourceKey<Registry<BuffType>> BUFF_TYPE_REGISTRY_KEY =
             ResourceKey.createRegistryKey(Recasting.prefix("buff_type"));
 
-    /**
-     * Buff类型注册表
-     */
     public static final DeferredRegister<BuffType> BUFF_TYPES =
             DeferredRegister.create(BUFF_TYPE_REGISTRY_KEY, Recasting.MODID);
 
-    /**
-     * Buff类型注册表实例
-     */
     public static final Supplier<IForgeRegistry<BuffType>> REGISTRY =
             BUFF_TYPES.makeRegistry(() -> new RegistryBuilder<BuffType>()
                     .setDefaultKey(Recasting.prefix("default"))
@@ -41,272 +41,226 @@ public class RecastingBuffTypes {
 
     /**
      * 星闪
-     * - 用于星闪特效的层数累积
      */
     public static final RegistryObject<BuffType> STAR_BLINK = BUFF_TYPES.register("star_blink",
-            () -> new BuffType(0, 4)
+            () -> new BuffType().setMaxLevel(4)
     );
 
     /**
      * 演算
-     * - 每层提供5%增伤
      */
-    public static final RegistryObject<BuffType> CALCULUS = BUFF_TYPES.register("calculus",
-            () -> new BuffType(20, 16)
+    public static final RegistryObject<CalculusBuffType> CALCULUS = BUFF_TYPES.register("calculus",
+            CalculusBuffType::new
     );
 
     /**
      * 穷观阵
-     * - 不衰减；最大 1 层；记录在释放者
-     * - 自定义数据存放当前 MatrixEntity 的 UUID
      */
     public static final RegistryObject<BuffType> MATRIX = BUFF_TYPES.register("matrix",
-            () -> new BuffType(0, 1)
+            () -> new BuffType().setMaxLevel(1)
     );
 
     /**
      * 灵魂燃烧
-     * - 每秒造成当前6%生命值的火属性伤害
      */
-    public static final RegistryObject<BuffType> SOUL_BURN = BUFF_TYPES.register("soul_burn",
-            () -> new BuffType(20, 99)
+    public static final RegistryObject<SoulBurnBuffType> SOUL_BURN = BUFF_TYPES.register("soul_burn",
+            SoulBurnBuffType::new
     );
 
     /**
      * 破片
-     * - 用于破片特效的层数累积
      */
     public static final RegistryObject<BuffType> FRAGMENT = BUFF_TYPES.register("fragment",
-            () -> new BuffType(5, 12)
+            () -> new BuffType().setDecayInterval(5).setMaxLevel(12)
     );
 
     /**
      * 剑势
-     * - 用于回旋特效的层数累积
      */
     public static final RegistryObject<BuffType> SWORD_MOMENTUM = BUFF_TYPES.register("sword_momentum",
-            () -> new BuffType(10, 12)
+            () -> new BuffType().setDecayInterval(10).setMaxLevel(12)
     );
 
     /**
      * 回旋冷却
-     * - 衰减间隔 1 tick；层数 = 剩余冷却 tick
      */
     public static final RegistryObject<BuffType> SPIRAL_COOLDOWN = BUFF_TYPES.register("spiral_cooldown",
-            () -> new BuffType(1, 0)
+            () -> new BuffType().setDecayInterval(1)
     );
 
     /**
      * 电离
-     * - 受到闪电伤害时叠加，每层提供1%增伤
      */
     public static final RegistryObject<BuffType> IONIZATION = BUFF_TYPES.register("ionization",
-            () -> new BuffType(20, 64)
+            () -> new BuffType().setDecayInterval(20).setMaxLevel(64)
     );
 
     /**
      * 蓄能
-     * - 受到伤害时叠加层数，达到48层时触发闪电攻击
      */
     public static final RegistryObject<BuffType> ENERGY_STORAGE = BUFF_TYPES.register("energy_storage",
-            () -> new BuffType(20, 12)
+            () -> new BuffType().setDecayInterval(20).setMaxLevel(12)
     );
 
     /**
      * 雷光
-     * - 受到雷电伤害后获得，持有雷光的实体受到伤害后附加闪电伤害
      */
     public static final RegistryObject<BuffType> THUNDER_LIGHT = BUFF_TYPES.register("thunder_light",
-            () -> new BuffType(20, 8)
+            () -> new BuffType().setDecayInterval(20).setMaxLevel(8)
     );
 
     /**
      * 撕裂
-     * - 用于撕裂特效的层数累积
      */
     public static final RegistryObject<BuffType> TEAR = BUFF_TYPES.register("tear",
-            () -> new BuffType(20, 12)
+            () -> new BuffType().setDecayInterval(20).setMaxLevel(12)
     );
 
     /**
      * 断灭
-     * - 用于断灭特效的次元斩计数累积
      */
     public static final RegistryObject<BuffType> ANNIHILATION = BUFF_TYPES.register("annihilation",
-            () -> new BuffType(0, 7)
+            () -> new BuffType().setMaxLevel(7)
     );
 
     /**
      * 光子灼痕
-     * - 衰减间隔 100 tick；最大 9 层
-     * - 灼烧状态下叠层；满层释放短光束并清零
      */
-    public static final RegistryObject<BuffType> PHOTON_SCAR = BUFF_TYPES.register("photon_scar",
-            () -> new BuffType(100, 9)
+    public static final RegistryObject<PhotonScarBuffType> PHOTON_SCAR = BUFF_TYPES.register("photon_scar",
+            PhotonScarBuffType::new
     );
 
     /**
      * 光子灼烧
-     * - 衰减间隔 60 tick；最大 50 层
-     * - 激光叠层；持续火焰伤害与全伤害增伤均基于此层数
      */
-    public static final RegistryObject<BuffType> PHOTON_BURN = BUFF_TYPES.register("photon_burn",
-            () -> new BuffType(60, 50)
+    public static final RegistryObject<PhotonBurnBuffType> PHOTON_BURN = BUFF_TYPES.register("photon_burn",
+            PhotonBurnBuffType::new
     );
 
     /**
      * 日核
-     * - 不随时间衰减；无层数上限
-     * - 仅长空落日 SA 幻影剑命中叠加；其它幻影剑触发晖光时消耗
      */
     public static final RegistryObject<BuffType> SUNSET_CORE = BUFF_TYPES.register("sunset_core",
-            () -> new BuffType(0, 0)
+            BuffType::new
     );
 
     /**
      * 叠晖
-     * - 衰减间隔 100 tick；最大 50 层
-     * - 有日核时受幻影剑伤害叠加；满层幻影剑伤害翻倍
      */
-    public static final RegistryObject<BuffType> SUNSET_STACK = BUFF_TYPES.register("sunset_stack",
-            () -> new BuffType(100, 50)
+    public static final RegistryObject<SunsetStackBuffType> SUNSET_STACK = BUFF_TYPES.register("sunset_stack",
+            SunsetStackBuffType::new
     );
 
     /**
      * 金戈
-     * - 衰减间隔 40 tick；最大 12 层
-     * - 斩击命中叠加；满层引爆小范围伤害
      */
     public static final RegistryObject<BuffType> GOLDEN_HALBERD = BUFF_TYPES.register("golden_halberd",
-            () -> new BuffType(40, 12)
+            () -> new BuffType().setDecayInterval(40).setMaxLevel(12)
     );
 
     /**
      * 黑色玫瑰
-     * - 不随时间自动衰减；层数 = 持续伤害 × 10
-     * - 来源实体记录在自定义数据中，用于后续持续伤害追踪
      */
     public static final RegistryObject<BuffType> BLACK_ROSE = BUFF_TYPES.register("black_rose",
-            () -> new BuffType(0, 0)
+            BuffType::new
     );
 
     /**
      * 茶韵
-     * - 不随时间自动衰减（到期由 SE 的 TIME_RUN 结算并清零）；无层数上限
-     * - 层数 = 延迟伤害 × 10（不足 1 记为 1）
-     * - 来源实体记录在自定义数据中，用于后续持续伤害追踪
      */
     public static final RegistryObject<BuffType> TEA_AROMA = BUFF_TYPES.register("tea_aroma",
-            () -> new BuffType(0, 0)
+            BuffType::new
     );
 
     /**
      * 云界领域
-     * - 每 20 tick 衰减 1 层；层数表示领域剩余秒数
      */
     public static final RegistryObject<BuffType> JADE_DOMAIN = BUFF_TYPES.register("jade_domain",
-            () -> new BuffType(20, 0)
+            () -> new BuffType().setDecayInterval(20)
     );
 
     /**
      * 翠火
-     * - 每 20 tick 衰减 1 层；最大 40 层
-     * - 持续期间造成固定火焰伤害并按层提高所受伤害
      */
-    public static final RegistryObject<BuffType> JADE_FIRE = BUFF_TYPES.register("jade_fire",
-            () -> new BuffType(20, 40)
+    public static final RegistryObject<JadeFireBuffType> JADE_FIRE = BUFF_TYPES.register("jade_fire",
+            JadeFireBuffType::new
     );
 
     /**
      * 静电余韵 · 附加伤害冷却
-     * - 衰减间隔 1 tick；层数 = 剩余冷却 tick（记录在受击目标）
      */
     public static final RegistryObject<BuffType> STATIC_AFTERGLOW_DAMAGE_CD = BUFF_TYPES.register("static_afterglow_damage_cd",
-            () -> new BuffType(1, 0)
+            () -> new BuffType().setDecayInterval(1)
     );
 
     /**
      * 静电余韵 · 闪电链冷却
-     * - 衰减间隔 1 tick；层数 = 剩余冷却 tick（记录在起始目标）
      */
     public static final RegistryObject<BuffType> STATIC_AFTERGLOW_CHAIN_CD = BUFF_TYPES.register("static_afterglow_chain_cd",
-            () -> new BuffType(1, 0)
+            () -> new BuffType().setDecayInterval(1)
     );
 
     /**
      * 宝具连发冷却
-     * - 衰减间隔 1 tick；层数 = 剩余冷却 tick（记录在释放者）
      */
     public static final RegistryObject<BuffType> TREASURE_BARRAGE_COOLDOWN = BUFF_TYPES.register("treasure_barrage_cooldown",
-            () -> new BuffType(1, 0)
+            () -> new BuffType().setDecayInterval(1)
     );
 
     /**
      * 犬缘冷却
-     * - 衰减间隔 1 tick；层数 = 剩余冷却 tick（记录在持有者）
      */
     public static final RegistryObject<BuffType> DOG_BOND_COOLDOWN = BUFF_TYPES.register("dog_bond_cooldown",
-            () -> new BuffType(1, 0)
+            () -> new BuffType().setDecayInterval(1)
     );
 
     /**
      * 咒令
-     * - 每 20 tick 衰减 1 层；层数表示剩余秒数
      */
     public static final RegistryObject<BuffType> CURSE_DECREE = BUFF_TYPES.register("curse_decree",
-            () -> new BuffType(20, 0)
+            () -> new BuffType().setDecayInterval(20)
     );
 
     /**
      * 寂灭
-     * - 不随时间自动衰减（由 SpiritSilenceBuffHandler 每秒减层）；最大 66 层
-     * - 每层使目标护甲 ×(1 - 0.01)
      */
-    public static final RegistryObject<BuffType> SPIRIT_SILENCE = BUFF_TYPES.register("spirit_silence",
-            () -> new BuffType(0, 66)
+    public static final RegistryObject<SpiritSilenceBuffType> SPIRIT_SILENCE = BUFF_TYPES.register("spirit_silence",
+            SpiritSilenceBuffType::new
     );
 
     /**
      * 增益压制
-     * - 每 20 tick 衰减 1 层；层数表示剩余秒数
-     * - 持有期间反复驱散增益效果
      */
-    public static final RegistryObject<BuffType> BUFF_SUPPRESS = BUFF_TYPES.register("buff_suppress",
-            () -> new BuffType(20, 0)
+    public static final RegistryObject<BuffSuppressBuffType> BUFF_SUPPRESS = BUFF_TYPES.register("buff_suppress",
+            BuffSuppressBuffType::new
     );
 
     /**
      * 静滞（永恒守卫）
-     * - 每 20 tick 衰减 1 层；层数表示领域剩余秒数
      */
     public static final RegistryObject<BuffType> ETERNAL_GUARD = BUFF_TYPES.register("eternal_guard",
-            () -> new BuffType(20, 0)
+            () -> new BuffType().setDecayInterval(20)
     );
 
     /**
      * 红尘（红尘滚滚）
-     * - 每 20 tick 衰减 1 层；最大 160 层
-     * - 按层提高所受全部伤害；受击时按层造成固定伤害（有内置冷却）
      */
-    public static final RegistryObject<BuffType> MORTAL_DUST = BUFF_TYPES.register("mortal_dust",
-            () -> new BuffType(20, 160)
+    public static final RegistryObject<MortalDustBuffType> MORTAL_DUST = BUFF_TYPES.register("mortal_dust",
+            MortalDustBuffType::new
     );
 
     /**
      * 红尘受击固伤冷却
-     * - 衰减间隔 1 tick；层数 = 剩余冷却 tick（记录在受击目标）
      */
     public static final RegistryObject<BuffType> MORTAL_DUST_PROC_CD = BUFF_TYPES.register("mortal_dust_proc_cd",
-            () -> new BuffType(1, 0)
+            () -> new BuffType().setDecayInterval(1)
     );
 
     /**
      * 群星坠落阵
-     * - 不衰减；最大 1 层；记录在释放者
-     * - 自定义数据存放当前 StarfallArrayEntity 的 UUID
      */
     public static final RegistryObject<BuffType> STARFALL = BUFF_TYPES.register("starfall",
-            () -> new BuffType(0, 1)
+            () -> new BuffType().setMaxLevel(1)
     );
 
 }

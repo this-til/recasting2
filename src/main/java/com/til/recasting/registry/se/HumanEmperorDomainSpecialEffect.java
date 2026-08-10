@@ -1,8 +1,8 @@
 package com.til.recasting.registry.se;
 
 import com.til.recasting.handler.AbsoluteHealthChangeGuard;
-import com.til.recasting.handler.BuffSuppressHandler;
 import com.til.recasting.handler.EmperorLineSeHelper;
+import com.til.recasting.registry.RecastingBuffTypes;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -55,7 +55,7 @@ public class HumanEmperorDomainSpecialEffect extends ExtendedSpecialEffect imple
             return;
         }
 
-        BuffSuppressHandler.dispelHarmful(player);
+        RecastingBuffTypes.BUFF_SUPPRESS.get().dispelHarmful(player);
         player.heal(healPerTick);
         tryRepairInventoryBlade(player, active.state(), repairProudCost);
     }

@@ -4,12 +4,13 @@ import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.entity.JudgementCutEntity;
-import com.til.recasting.handler.BuffSuppressHandler;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
+import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
+import com.til.recasting.registry.buff.BuffSuppressBuffType;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -63,12 +64,13 @@ public class PhenomenalReturnSlashArts extends ExtendedSlashArts {
                 livingEntity.position(),
                 dispelRange
         );
+        BuffSuppressBuffType suppress = RecastingBuffTypes.BUFF_SUPPRESS.get();
         for(LivingEntity entity : nearby) {
-            BuffSuppressHandler.dispelBeneficial(entity);
-            BuffSuppressHandler.apply(entity, suppressSeconds);
+            suppress.dispelBeneficial(entity);
+            suppress.apply(entity, suppressSeconds);
         }
-        BuffSuppressHandler.dispelBeneficial(livingEntity);
-        BuffSuppressHandler.apply(livingEntity, suppressSeconds);
+        suppress.dispelBeneficial(livingEntity);
+        suppress.apply(livingEntity, suppressSeconds);
 
         livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             timeRun.removeNamedTimerCell(rainTimer);

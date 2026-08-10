@@ -8,6 +8,7 @@ import com.til.recasting.handler.*;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
+import com.til.recasting.registry.RecastingParticleTypes;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
@@ -72,7 +73,6 @@ public class MortalDustSlashArts extends ExtendedSlashArts {
                     level,
                     livingEntity
             );
-            // 玩家 xz ±spawnRangeXZ、相对高度 spawnYMin~spawnYMax；射出后由实体自行索敌
             double x = originX + (random.nextDouble() * 2.0 - 1.0) * spawnRangeXZ;
             double y = originY + spawnYMin + random.nextDouble() * ySpan;
             double z = originZ + (random.nextDouble() * 2.0 - 1.0) * spawnRangeXZ;
@@ -97,7 +97,7 @@ public class MortalDustSlashArts extends ExtendedSlashArts {
                 if (action != SummondSwordEntity.ActionType.PREPARE && action != SummondSwordEntity.ActionType.FLYING) {
                     return;
                 }
-                MortalDustEffectHelper.spawnTrail(serverLevel, blade.position());
+                spawnTrail(serverLevel, blade.position());
             });
 
             blade.attackActionCallbackPoint.register(hit -> {
@@ -123,7 +123,7 @@ public class MortalDustSlashArts extends ExtendedSlashArts {
                 );
 
                 if (blade.level() instanceof ServerLevel serverLevel) {
-                    MortalDustEffectHelper.spawnHitBurst(serverLevel, blade.position());
+                    spawnHitBurst(serverLevel, blade.position());
                 }
             });
 
@@ -139,6 +139,38 @@ public class MortalDustSlashArts extends ExtendedSlashArts {
                 SoundSource.PLAYERS,
                 0.55F,
                 0.65F + livingEntity.getRandom().nextFloat() * 0.2F
+        );
+    }
+
+    private static void spawnTrail(ServerLevel serverLevel, Vec3 pos) {
+        for(int i = 0; i < 2; i++) {
+            ParticleHelper.sendParticlesLongRange(
+                    serverLevel,
+                    RecastingParticleTypes.MORTAL_DUST_TRAIL.get(),
+                    pos.x,
+                    pos.y,
+                    pos.z,
+                    1,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+            );
+        }
+    }
+
+    private static void spawnHitBurst(ServerLevel serverLevel, Vec3 pos) {
+        ParticleHelper.sendParticlesLongRange(
+                serverLevel,
+                RecastingParticleTypes.MORTAL_DUST_HIT.get(),
+                pos.x,
+                pos.y,
+                pos.z,
+                45,
+                0.0,
+                0.0,
+                0.0,
+                0.0
         );
     }
 
