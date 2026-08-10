@@ -49,11 +49,13 @@
 - **Lombok** —— 项目已使用 `@Getter`、`@Setter`、`@AllArgsConstructor`、`@Log4j2`、`@Accessors` 等；新增代码在同类场景下可继续使用，不为此单独手写样板代码
 - **简单不可变数据优先 `record`** —— 纯数据载体（如 `NumberPack`）优先用 `record`，不必再写等价 POJO
 - **可空语义用 `@Nullable` 标注** —— 参数或返回值可能为 `null` 时，用 `javax.annotation.Nullable` 标明；调用方与实现保持一致
+- **禁止用数组做跨域可变捕获** —— 禁止 `boolean[] a = {false}; … a[0] = true;`、`int[] n = {k}; … n[0]--;`、`T[] box = {x}; … box[0] = y;` 这类单元素（或少量元素）数组，在 lambda / 回调 / 闭包之间传递可变状态。应改用 `AtomicBoolean`、`AtomicInteger`、`AtomicReference` 等原子类。查找表、顶点缓冲、多元素真实序列等正当数组用途不受此限
+- **注册项在使用点直接 `get()`** —— 不推荐 `T tmp = XxxRegistry.FOO.get();` 再使用 `tmp`；应在调用处直接写 `XxxRegistry.FOO.get()`。适用于 `RegistryObject` / `Supplier` / `DeferredHolder` 等注册项（如 `RecastingBuffTypes.*`、`RecastingEntities.*`、`RecastingItems.*`、`RecastingAttackTypes.*`、`SlashArtsRegistry.*`）。对整个注册表 `REGISTRY.get()` 后多次查找，可局部持有注册表引用，不在此列
 
 ## Minecraft / Forge 约定
 
 - **资源标识禁止随意硬编码** —— `ResourceLocation` 等业务代码中优先使用 `R` 常量或 `Recasting.prefix(...)`；`R.java` 为自动生成文件，**禁止手动修改**
-- **注册表统一走 DeferredRegister** —— 新物品、实体、配方等参照 `RecastingItems`、`RecastingEntities` 等现有注册类，不散落 `Registry.register` 调用
+- **注册表统一走 DeferredRegister** —— 新物品、实体、配方等参照 `RecastingItems`、`RecastingEntities` 等现有注册类，不散落 `Registry.register` 调用；取单个注册项时遵循上文「注册项在使用点直接 `get()`」
 - **逻辑侧必须区分客户端与服务端** —— 修改世界、实体、Capability、网络同步等须在服务端执行；用 `!level().isClientSide()` / `level().isClientSide()` 或 `@OnlyIn(Dist.CLIENT)`、`DistExecutor` 区分。客户端专用渲染、粒子、按键等放在 `client/` 包下
 - **本地化条目写在 `LanguageItems`** —— 玩家可见文案在 `LanguageItems` 中维护翻译，不直接手改生成的语言文件
 - **描述文案只做定性说明** —— `LanguageItems` 中 SA/SE/Buff 的 `.desc` 与 tooltip 补充句**禁止写入具体数值**（百分比、层数、秒数、材料数量、配方门槛等），只写效果性质与行为；除非用户明确要求写明数字
@@ -86,5 +88,5 @@
 - **Mixin 边界** —— 仅用于定义扩展、攻击路由（`AttackManagerMixin`）、CODEC 序列化、tooltip、JEI 兼容；目标类在 `mods.flammpfeil.slashblade.*` 时 **`remap = false`**；新 Mixin 必须登记 `recasting.mixins.json`
 - **参考库** —— 运行时依赖 CurseMaven JAR；`SlashBlade_Resharped/` 源码目录只读，查 API 用，禁止修改
 
-**最后更新：** 2026-07-10
+**最后更新：** 2026-08-10
 **维护者：** til

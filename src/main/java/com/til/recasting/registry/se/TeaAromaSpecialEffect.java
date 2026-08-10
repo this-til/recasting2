@@ -10,7 +10,6 @@ import com.til.recasting.handler.ParticleHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingParticleTypes;
-import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -74,12 +73,11 @@ public class TeaAromaSpecialEffect extends ExtendedSpecialEffect {
         int finalAddUnits = addUnits;
 
         Level world = target.level();
-        BuffType teaAromaBuffType = RecastingBuffTypes.TEA_AROMA.get();
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
-            int current = buffStackData.getLevel(teaAromaBuffType, world);
-            buffStackData.setLevel(teaAromaBuffType, current + finalAddUnits, world);
-            BuffSourceHelper.recordSourceEntity(buffStackData, teaAromaBuffType, target, attacker);
+            int current = buffStackData.getLevel(RecastingBuffTypes.TEA_AROMA.get(), world);
+            buffStackData.setLevel(RecastingBuffTypes.TEA_AROMA.get(), current + finalAddUnits, world);
+            BuffSourceHelper.recordSourceEntity(buffStackData, RecastingBuffTypes.TEA_AROMA.get(), target, attacker);
 
             attacker.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
                 String timerName = buildReleaseTimerName(target.getUUID());
@@ -93,7 +91,7 @@ public class TeaAromaSpecialEffect extends ExtendedSpecialEffect {
                 timeRun.addNamedTimerCell(
                         timerName,
                         new ITimeRun.TimerCell(
-                                () -> tryRelease(attacker, target, teaAromaBuffType),
+                                () -> tryRelease(attacker, target),
                                 delayTicks
                         )
                 );
@@ -105,7 +103,7 @@ public class TeaAromaSpecialEffect extends ExtendedSpecialEffect {
         return "tea_aroma_release:" + targetId;
     }
 
-    private void tryRelease(LivingEntity attacker, LivingEntity target, BuffType teaAromaBuffType) {
+    private void tryRelease(LivingEntity attacker, LivingEntity target) {
         if (attacker.level().isClientSide()) {
             return;
         }
@@ -114,14 +112,14 @@ public class TeaAromaSpecialEffect extends ExtendedSpecialEffect {
         }
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
-            IBuffStackData.BuffEntry entry = buffStackData.getEntry(teaAromaBuffType);
+            IBuffStackData.BuffEntry entry = buffStackData.getEntry(RecastingBuffTypes.TEA_AROMA.get());
             if (entry == null || entry.getLevel() <= 0) {
                 return;
             }
 
             LivingEntity source = BuffSourceHelper.getSourceEntity(entry, target.level());
             int units = entry.getLevel();
-            buffStackData.setLevel(teaAromaBuffType, 0, target.level());
+            buffStackData.setLevel(RecastingBuffTypes.TEA_AROMA.get(), 0, target.level());
 
             if (source == null) {
                 return;

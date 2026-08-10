@@ -10,7 +10,6 @@ import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
-import com.til.recasting.registry.buff.BuffSuppressBuffType;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -21,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 万象归元
@@ -64,17 +64,16 @@ public class PhenomenalReturnSlashArts extends ExtendedSlashArts {
                 livingEntity.position(),
                 dispelRange
         );
-        BuffSuppressBuffType suppress = RecastingBuffTypes.BUFF_SUPPRESS.get();
         for(LivingEntity entity : nearby) {
-            suppress.dispelBeneficial(entity);
-            suppress.apply(entity, suppressSeconds);
+            RecastingBuffTypes.BUFF_SUPPRESS.get().dispelBeneficial(entity);
+            RecastingBuffTypes.BUFF_SUPPRESS.get().apply(entity, suppressSeconds);
         }
-        suppress.dispelBeneficial(livingEntity);
-        suppress.apply(livingEntity, suppressSeconds);
+        RecastingBuffTypes.BUFF_SUPPRESS.get().dispelBeneficial(livingEntity);
+        RecastingBuffTypes.BUFF_SUPPRESS.get().apply(livingEntity, suppressSeconds);
 
         livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             timeRun.removeNamedTimerCell(rainTimer);
-            int[] remaining = {durationTicks};
+            AtomicInteger remaining = new AtomicInteger(durationTicks);
             timeRun.addNamedTimerCell(
                     rainTimer,
                     new ITimeRun.TimerCell(
@@ -83,11 +82,11 @@ public class PhenomenalReturnSlashArts extends ExtendedSlashArts {
                                     timeRun.removeNamedTimerCell(rainTimer);
                                     return;
                                 }
-                                if (remaining[0] <= 0) {
+                                if (remaining.get() <= 0) {
                                     timeRun.removeNamedTimerCell(rainTimer);
                                     return;
                                 }
-                                remaining[0]--;
+                                remaining.decrementAndGet();
                                 spawnJudgementCut(livingEntity, slashBladeState);
                             },
                             1,

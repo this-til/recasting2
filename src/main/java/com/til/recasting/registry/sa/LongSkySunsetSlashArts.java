@@ -10,7 +10,6 @@ import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
-import com.til.recasting.registry.instance.BuffType;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -85,9 +84,8 @@ public class LongSkySunsetSlashArts extends ExtendedSlashArts {
             return;
         }
         living.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
-            BuffType coreType = RecastingBuffTypes.SUNSET_CORE.get();
-            int currentCore = buffStackData.getLevel(coreType, world);
-            buffStackData.setLevel(coreType, currentCore + coreAddPerHit, world);
+            int currentCore = buffStackData.getLevel(RecastingBuffTypes.SUNSET_CORE.get(), world);
+            buffStackData.setLevel(RecastingBuffTypes.SUNSET_CORE.get(), currentCore + coreAddPerHit, world);
         });
         spawnSunsetCoreHitParticles(living);
     }

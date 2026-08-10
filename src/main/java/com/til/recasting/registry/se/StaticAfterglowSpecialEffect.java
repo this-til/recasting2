@@ -8,7 +8,6 @@ import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.instance.AttackType;
-import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -20,6 +19,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 静电余韵
@@ -89,26 +89,25 @@ public class StaticAfterglowSpecialEffect extends ExtendedSpecialEffect {
             Level level,
             int color
     ) {
-        BuffType damageCdBuff = RecastingBuffTypes.STATIC_AFTERGLOW_DAMAGE_CD.get();
-        boolean[] added = {false};
+        AtomicBoolean added = new AtomicBoolean(false);
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(targetBuff -> {
-            if (targetBuff.getLevel(damageCdBuff, level) > 0) {
+            if (targetBuff.getLevel(RecastingBuffTypes.STATIC_AFTERGLOW_DAMAGE_CD.get(), level) > 0) {
                 return;
             }
 
-            AttackType lightningAttackType = RecastingAttackTypes.LIGHTNING_ATTACK.get();
-            AttackAmplifierEvent.DamageSourceInfo damageSourceInfo = lightningAttackType.createDamageSource(attacker, target);
+            AttackAmplifierEvent.DamageSourceInfo damageSourceInfo =
+                    RecastingAttackTypes.LIGHTNING_ATTACK.get().createDamageSource(attacker, target);
             if (damageSourceInfo == null) {
                 return;
             }
 
-            targetBuff.setLevel(damageCdBuff, damageCooldownTick, level);
+            targetBuff.setLevel(RecastingBuffTypes.STATIC_AFTERGLOW_DAMAGE_CD.get(), damageCooldownTick, level);
             event.addDamageSourceInfo(
                     damageSourceInfo.damageSource(),
                     new DamageStructure(lightningDamageRatio, 0f)
             );
-            added[0] = true;
+            added.set(true);
 
             if (level instanceof ServerLevel serverLevel) {
                 Vec3 targetPos = target.getBoundingBox().getCenter();
@@ -116,7 +115,7 @@ public class StaticAfterglowSpecialEffect extends ExtendedSpecialEffect {
             }
         });
 
-        return added[0];
+        return added.get();
     }
 
     private void tryTriggerLightningChain(LivingEntity attacker, LivingEntity target, Level level, int color) {
@@ -124,12 +123,11 @@ public class StaticAfterglowSpecialEffect extends ExtendedSpecialEffect {
             return;
         }
 
-        BuffType chainCdBuff = RecastingBuffTypes.STATIC_AFTERGLOW_CHAIN_CD.get();
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(targetBuff -> {
-            if (targetBuff.getLevel(chainCdBuff, level) > 0) {
+            if (targetBuff.getLevel(RecastingBuffTypes.STATIC_AFTERGLOW_CHAIN_CD.get(), level) > 0) {
                 return;
             }
-            targetBuff.setLevel(chainCdBuff, chainCooldownTick, level);
+            targetBuff.setLevel(RecastingBuffTypes.STATIC_AFTERGLOW_CHAIN_CD.get(), chainCooldownTick, level);
 
             if (level instanceof ServerLevel serverLevel) {
                 List<AttackType> attackTypes = List.of(

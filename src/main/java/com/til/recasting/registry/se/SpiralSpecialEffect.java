@@ -8,7 +8,6 @@ import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
-import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.NumberPack;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import net.minecraft.sounds.SoundEvents;
@@ -68,29 +67,27 @@ public class SpiralSpecialEffect extends ExtendedSpecialEffect {
         }
 
         Level world = target.level();
-        BuffType swordMomentumBuffType = RecastingBuffTypes.SWORD_MOMENTUM.get();
-        BuffType spiralCooldownBuffType = RecastingBuffTypes.SPIRAL_COOLDOWN.get();
 
         // 获取当前层数
-        int currentLevel = buffStackData.getLevel(swordMomentumBuffType, world);
+        int currentLevel = buffStackData.getLevel(RecastingBuffTypes.SWORD_MOMENTUM.get(), world);
         int interval = (int) triggerInterval.of(getLevel(se));
-        int cooldown = buffStackData.getLevel(spiralCooldownBuffType, world);
+        int cooldown = buffStackData.getLevel(RecastingBuffTypes.SPIRAL_COOLDOWN.get(), world);
 
         // 如果触发间隔还没到，不触发风暴效果，也不叠加层数
         if (cooldown > 0) {
             return;
         }
 
-        if (currentLevel < swordMomentumBuffType.getMaxLevel()) {
+        if (currentLevel < RecastingBuffTypes.SWORD_MOMENTUM.get().getMaxLevel()) {
             int newLevel = currentLevel + addLevel;
-            buffStackData.setLevel(swordMomentumBuffType, newLevel, world);
+            buffStackData.setLevel(RecastingBuffTypes.SWORD_MOMENTUM.get(), newLevel, world);
             return;
         }
 
         // 触发间隔到了，触发风暴效果并重置层数
-        buffStackData.setLevel(swordMomentumBuffType, 0, world);
+        buffStackData.setLevel(RecastingBuffTypes.SWORD_MOMENTUM.get(), 0, world);
         if (interval > 0) {
-            buffStackData.setLevel(spiralCooldownBuffType, interval, world);
+            buffStackData.setLevel(RecastingBuffTypes.SPIRAL_COOLDOWN.get(), interval, world);
         }
 
         // 触发风暴效果

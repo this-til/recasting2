@@ -8,7 +8,6 @@ import com.til.recasting.entity.StarfallArrayEntity;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
-import com.til.recasting.registry.instance.BuffType;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -59,8 +58,7 @@ public class StarfallSlashArts extends ExtendedSlashArts {
             return;
         }
 
-        BuffType starfallBuff = RecastingBuffTypes.STARFALL.get();
-        discardExistingArray(buffStackData, starfallBuff, level);
+        discardExistingArray(buffStackData, level);
 
         Entity locked = slashBladeState.getTargetEntity(level);
         LivingEntity pinTarget = locked instanceof LivingEntity living && living.isAlive()
@@ -91,9 +89,9 @@ public class StarfallSlashArts extends ExtendedSlashArts {
 
         level.addFreshEntity(array);
 
-        CompoundTag customData = buffStackData.getOrCreateCustomData(starfallBuff, level);
+        CompoundTag customData = buffStackData.getOrCreateCustomData(RecastingBuffTypes.STARFALL.get(), level);
         customData.putUUID(KEY_ARRAY_UUID, array.getUUID());
-        buffStackData.setLevel(starfallBuff, 1, level);
+        buffStackData.setLevel(RecastingBuffTypes.STARFALL.get(), 1, level);
 
         level.playSound(
                 null,
@@ -107,12 +105,12 @@ public class StarfallSlashArts extends ExtendedSlashArts {
         );
     }
 
-    private static void discardExistingArray(IBuffStackData buffStackData, BuffType buffType, Level world) {
+    private static void discardExistingArray(IBuffStackData buffStackData, Level world) {
         if (!(world instanceof ServerLevel serverLevel)) {
             return;
         }
 
-        IBuffStackData.BuffEntry entry = buffStackData.getEntry(buffType);
+        IBuffStackData.BuffEntry entry = buffStackData.getEntry(RecastingBuffTypes.STARFALL.get());
         if (entry == null || entry.getCustomData() == null) {
             return;
         }

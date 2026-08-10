@@ -59,10 +59,9 @@ public class PhotonScarBuffType extends BuffType {
 
         LivingEntity attacker = event.getAttacker();
         Level world = target.level();
-        BuffType photonBurnBuffType = RecastingBuffTypes.PHOTON_BURN.get();
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
-            int burnLevel = buffStackData.getLevel(photonBurnBuffType, world);
+            int burnLevel = buffStackData.getLevel(RecastingBuffTypes.PHOTON_BURN.get(), world);
             if (burnLevel <= 0) {
                 return;
             }

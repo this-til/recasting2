@@ -41,6 +41,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 import static com.til.recasting.Recasting.MODID;
@@ -126,7 +127,7 @@ public class SummonedSwordHelper {
     }
 
     private static boolean executeSummonedSword(ServerPlayer sender, boolean consumeProud, boolean notifyCommandMapping) {
-        boolean[] success = {false};
+        AtomicBoolean success = new AtomicBoolean(false);
         ItemStack blade = sender.getMainHandItem();
         blade.getCapability(ItemSlashBlade.BLADESTATE).ifPresent((state) -> {
             if (consumeProud) {
@@ -165,13 +166,13 @@ public class SummonedSwordHelper {
 
             worldIn.addFreshEntity(ss);
             sender.playNotifySound(SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 0.2F, 1.45F);
-            success[0] = true;
+            success.set(true);
         });
 
-        if (success[0] && notifyCommandMapping) {
+        if (success.get() && notifyCommandMapping) {
             CommandMappingSpecialEffect.trySchedule(sender, ArtType.SUMMON);
         }
-        return success[0];
+        return success.get();
     }
 
     public static Optional<Entity> findTarget(ServerPlayer sender, Entity lockedT) {
@@ -251,7 +252,7 @@ public class SummonedSwordHelper {
             return true;
         }
 
-        boolean[] success = {false};
+        AtomicBoolean success = new AtomicBoolean(false);
         entity.getMainHandItem().getCapability(ItemSlashBlade.BLADESTATE).ifPresent((state) -> {
             if (consumeProud) {
                 if (state.getProudSoulCount() < SlashBladeConfig.SUMMON_SWORD_ART_COST.get()) {
@@ -299,13 +300,13 @@ public class SummonedSwordHelper {
                 entity.playNotifySound(SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 0.2F,
                         1.45F);
             }
-            success[0] = true;
+            success.set(true);
         });
 
-        if (success[0] && notifyCommandMapping) {
+        if (success.get() && notifyCommandMapping) {
             CommandMappingSpecialEffect.trySchedule(entity, ArtType.SPIRAL);
         }
-        return success[0];
+        return success.get();
     }
 
     private static void performStormSwords(final Long pressTime, LivingEntity rawEntity) {
@@ -329,7 +330,7 @@ public class SummonedSwordHelper {
     }
 
     private static boolean executeStormSwords(ServerPlayer entity, boolean consumeProud, boolean notifyCommandMapping) {
-        boolean[] success = {false};
+        AtomicBoolean success = new AtomicBoolean(false);
         entity.getMainHandItem().getCapability(ItemSlashBlade.BLADESTATE).ifPresent((state) -> {
             Level worldIn = entity.level();
             Entity target = state.getTargetEntity(worldIn);
@@ -376,13 +377,13 @@ public class SummonedSwordHelper {
 
                 entity.playNotifySound(SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 0.2F, 1.45F);
             }
-            success[0] = true;
+            success.set(true);
         });
 
-        if (success[0] && notifyCommandMapping) {
+        if (success.get() && notifyCommandMapping) {
             CommandMappingSpecialEffect.trySchedule(entity, ArtType.STORM);
         }
-        return success[0];
+        return success.get();
     }
 
 
@@ -407,7 +408,7 @@ public class SummonedSwordHelper {
     }
 
     private static boolean executeBlisteringSwords(ServerPlayer entity, boolean consumeProud, boolean notifyCommandMapping) {
-        boolean[] success = {false};
+        AtomicBoolean success = new AtomicBoolean(false);
         entity.getMainHandItem().getCapability(ItemSlashBlade.BLADESTATE).ifPresent((state) -> {
             Level worldIn = entity.level();
 
@@ -474,13 +475,13 @@ public class SummonedSwordHelper {
                 entity.playNotifySound(SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 0.2F,
                         1.45F);
             }
-            success[0] = true;
+            success.set(true);
         });
 
-        if (success[0] && notifyCommandMapping) {
+        if (success.get() && notifyCommandMapping) {
             CommandMappingSpecialEffect.trySchedule(entity, ArtType.BLISTERING);
         }
-        return success[0];
+        return success.get();
     }
 
     private static void performHeavyRains(final Long pressTime, LivingEntity rawEntity, long now) {
@@ -504,7 +505,7 @@ public class SummonedSwordHelper {
     }
 
     private static boolean executeHeavyRains(ServerPlayer entity, boolean consumeProud, boolean notifyCommandMapping) {
-        boolean[] success = {false};
+        AtomicBoolean success = new AtomicBoolean(false);
         entity.getMainHandItem().getCapability(ItemSlashBlade.BLADESTATE).ifPresent((state) -> {
             Level worldIn = entity.level();
             Entity target = state.getTargetEntity(worldIn);
@@ -576,12 +577,12 @@ public class SummonedSwordHelper {
                             1.45F);
                 }
             }
-            success[0] = true;
+            success.set(true);
         });
 
-        if (success[0] && notifyCommandMapping) {
+        if (success.get() && notifyCommandMapping) {
             CommandMappingSpecialEffect.trySchedule(entity, ArtType.HEAVY_RAIN);
         }
-        return success[0];
+        return success.get();
     }
 }

@@ -45,12 +45,11 @@ public class MortalDustBuffType extends BuffType {
 
             event.addModifiedRatioAmplifier(damageAmpAtMaxLevel * currentLevel / (float) maxLevel);
 
-            BuffType procCd = RecastingBuffTypes.MORTAL_DUST_PROC_CD.get();
-            if (data.getLevel(procCd, target.level()) > 0) {
+            if (data.getLevel(RecastingBuffTypes.MORTAL_DUST_PROC_CD.get(), target.level()) > 0) {
                 return;
             }
 
-            data.setLevel(procCd, procCooldownTicks, target.level());
+            data.setLevel(RecastingBuffTypes.MORTAL_DUST_PROC_CD.get(), procCooldownTicks, target.level());
             event.addExtraDamage(currentLevel * fixedDamagePerLevel);
         });
     }

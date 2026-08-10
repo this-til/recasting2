@@ -8,7 +8,6 @@ import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.handler.ParticleHelper;
 import com.til.recasting.registry.RecastingBuffTypes;
-import com.til.recasting.registry.instance.BuffType;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -26,6 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 永恒守卫：以自身为中心展开领域，进入范围内的敌人被钉在进入时的绝对坐标，无法移动；
@@ -59,7 +59,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
 
         Map<UUID, Vec3> absolutePins = new HashMap<>();
         Map<UUID, LivingEntity> pinnedTargets = new HashMap<>();
-        int[] ticksLeft = {durationSeconds * 20};
+        AtomicInteger ticksLeft = new AtomicInteger(durationSeconds * 20);
 
         livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             timeRun.removeNamedTimerCell(TIMER_NAME);
@@ -100,17 +100,16 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
             LivingEntity caster,
             Map<UUID, Vec3> absolutePins,
             Map<UUID, LivingEntity> pinnedTargets,
-            int[] ticksLeft,
+            AtomicInteger ticksLeft,
             ITimeRun timeRun
     ) {
-        if (!caster.isAlive() || caster.isRemoved() || caster.level().isClientSide() || ticksLeft[0] <= 0) {
+        if (!caster.isAlive() || caster.isRemoved() || caster.level().isClientSide() || ticksLeft.get() <= 0) {
             endDomain(timeRun, absolutePins, pinnedTargets);
             return;
         }
 
-        ticksLeft[0]--;
-        int displayLevel = Math.max(1, (ticksLeft[0] + 19) / 20);
-        BuffType buffType = RecastingBuffTypes.ETERNAL_GUARD.get();
+        ticksLeft.decrementAndGet();
+        int displayLevel = Math.max(1, (ticksLeft.get() + 19) / 20);
 
         List<LivingEntity> nearby = EntityHelper.getTargettableLivingEntityWithinAABB(
                 caster.level(),
@@ -127,7 +126,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
             entity.teleportTo(pin.x, pin.y, pin.z);
             entity.setDeltaMovement(Vec3.ZERO);
             entity.hurtMarked = true;
-            mountGuardBuff(entity, caster, buffType, displayLevel);
+            mountGuardBuff(entity, caster, displayLevel);
         }
 
         Iterator<Map.Entry<UUID, LivingEntity>> iterator = pinnedTargets.entrySet().iterator();
@@ -136,7 +135,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
             if (present.contains(entry.getKey())) {
                 continue;
             }
-            clearGuardBuff(entry.getValue(), buffType);
+            clearGuardBuff(entry.getValue());
             absolutePins.remove(entry.getKey());
             iterator.remove();
         }
@@ -165,27 +164,26 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
     ) {
         timeRun.removeNamedTimerCell(TIMER_NAME);
         timeRun.removeNamedTimerCell(VISUAL_TIMER_NAME);
-        BuffType buffType = RecastingBuffTypes.ETERNAL_GUARD.get();
         for(LivingEntity target : pinnedTargets.values()) {
-            clearGuardBuff(target, buffType);
+            clearGuardBuff(target);
         }
         absolutePins.clear();
         pinnedTargets.clear();
     }
 
-    private void mountGuardBuff(LivingEntity target, LivingEntity caster, BuffType buffType, int displayLevel) {
+    private void mountGuardBuff(LivingEntity target, LivingEntity caster, int displayLevel) {
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
-            data.setLevel(buffType, displayLevel, target.level());
-            BuffSourceHelper.recordSourceEntity(data, buffType, target, caster);
+            data.setLevel(RecastingBuffTypes.ETERNAL_GUARD.get(), displayLevel, target.level());
+            BuffSourceHelper.recordSourceEntity(data, RecastingBuffTypes.ETERNAL_GUARD.get(), target, caster);
         });
     }
 
-    private void clearGuardBuff(LivingEntity target, BuffType buffType) {
+    private void clearGuardBuff(LivingEntity target) {
         if (target == null || target.isRemoved()) {
             return;
         }
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data ->
-                data.setLevel(buffType, 0, target.level())
+                data.setLevel(RecastingBuffTypes.ETERNAL_GUARD.get(), 0, target.level())
         );
     }
 

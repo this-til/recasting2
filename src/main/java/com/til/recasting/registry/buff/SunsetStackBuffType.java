@@ -59,9 +59,7 @@ public class SunsetStackBuffType extends BuffType {
         Level world = target.level();
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
-            BuffType coreType = RecastingBuffTypes.SUNSET_CORE.get();
-
-            int coreLevel = buffStackData.getLevel(coreType, world);
+            int coreLevel = buffStackData.getLevel(RecastingBuffTypes.SUNSET_CORE.get(), world);
             if (coreLevel > 0) {
                 AttackAmplifierEvent.DamageSourceInfo huiGuangSource =
                         RecastingAttackTypes.HUI_GUANG_ATTACK.get().createDamageSource(event.getAttacker(), target);
@@ -79,7 +77,7 @@ public class SunsetStackBuffType extends BuffType {
                 buffStackData.setLevel(this, currentStack + stackAddPerHit, world);
 
                 if (!fromSunsetSa) {
-                    buffStackData.setLevel(coreType, coreLevel - coreConsumePerHit, world);
+                    buffStackData.setLevel(RecastingBuffTypes.SUNSET_CORE.get(), coreLevel - coreConsumePerHit, world);
                 }
             }
 

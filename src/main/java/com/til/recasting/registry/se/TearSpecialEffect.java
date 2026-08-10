@@ -7,7 +7,6 @@ import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.ParticleHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
-import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import com.til.recasting.util.NumberPack;
 import net.minecraft.core.particles.ParticleTypes;
@@ -48,19 +47,18 @@ public class TearSpecialEffect extends ExtendedSpecialEffect {
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
                 buffStackData -> {
                     Level world = target.level();
-                    BuffType tearBuffType = RecastingBuffTypes.TEAR.get();
 
                     // 获取当前层数
-                    int currentLevel = buffStackData.getLevel(tearBuffType, world);
+                    int currentLevel = buffStackData.getLevel(RecastingBuffTypes.TEAR.get(), world);
 
                     // 增加层数
                     int newLevel = currentLevel + addLevel;
-                    buffStackData.setLevel(tearBuffType, newLevel, world);
+                    buffStackData.setLevel(RecastingBuffTypes.TEAR.get(), newLevel, world);
 
                     // 检查是否达到最大层数
-                    if (newLevel >= tearBuffType.getMaxLevel()) {
+                    if (newLevel >= RecastingBuffTypes.TEAR.get().getMaxLevel()) {
                         // 重置层数
-                        buffStackData.setLevel(tearBuffType, 0, world);
+                        buffStackData.setLevel(RecastingBuffTypes.TEAR.get(), 0, world);
 
                         // 粒子与音效
                         if (world instanceof ServerLevel serverLevel) {

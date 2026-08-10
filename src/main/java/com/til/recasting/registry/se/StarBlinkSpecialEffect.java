@@ -7,7 +7,6 @@ import com.til.recasting.handler.ParticleHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingParticleTypes;
-import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -44,15 +43,14 @@ public class StarBlinkSpecialEffect extends ExtendedSpecialEffect {
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
                 buffStackData -> {
                     Level world = target.level();
-                    BuffType starBlinkBuffType = RecastingBuffTypes.STAR_BLINK.get();
 
                     // 获取当前层数
-                    int currentLevel = buffStackData.getLevel(starBlinkBuffType, world);
+                    int currentLevel = buffStackData.getLevel(RecastingBuffTypes.STAR_BLINK.get(), world);
 
                     // 检查是否达到最大层数
-                    if (currentLevel >= starBlinkBuffType.getMaxLevel()) {
+                    if (currentLevel >= RecastingBuffTypes.STAR_BLINK.get().getMaxLevel()) {
                         // 重置层数
-                        buffStackData.setLevel(starBlinkBuffType, 0, world);
+                        buffStackData.setLevel(RecastingBuffTypes.STAR_BLINK.get(), 0, world);
 
                         if (world instanceof ServerLevel serverLevel) {
                             ParticleHelper.sendParticlesLongRange(
@@ -82,7 +80,7 @@ public class StarBlinkSpecialEffect extends ExtendedSpecialEffect {
 
                     // 增加层数
                     int newLevel = currentLevel + addLevel;
-                    buffStackData.setLevel(starBlinkBuffType, newLevel, world);
+                    buffStackData.setLevel(RecastingBuffTypes.STAR_BLINK.get(), newLevel, world);
 
                 }
         );

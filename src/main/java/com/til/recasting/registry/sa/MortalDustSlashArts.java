@@ -10,7 +10,6 @@ import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.registry.RecastingParticleTypes;
 import com.til.recasting.registry.instance.AttackType;
-import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -197,11 +196,10 @@ public class MortalDustSlashArts extends ExtendedSlashArts {
     }
 
     private void addMortalDustStacks(LivingEntity shooter, LivingEntity target, int addStacks) {
-        BuffType buffType = RecastingBuffTypes.MORTAL_DUST.get();
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
-            int current = data.getLevel(buffType, target.level());
-            data.setLevel(buffType, current + addStacks, target.level());
-            BuffSourceHelper.recordSourceEntity(data, buffType, target, shooter);
+            int current = data.getLevel(RecastingBuffTypes.MORTAL_DUST.get(), target.level());
+            data.setLevel(RecastingBuffTypes.MORTAL_DUST.get(), current + addStacks, target.level());
+            BuffSourceHelper.recordSourceEntity(data, RecastingBuffTypes.MORTAL_DUST.get(), target, shooter);
         });
     }
 }

@@ -18,6 +18,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * [回到未来计划]撼海潮涌：对齐旧版玩家余韵 —— 持续 20 tick，每 tick 水平喷出 5～8 道剑气。
  */
@@ -47,7 +49,7 @@ public class TidalSurgeSlashArts extends ExtendedSlashArts {
             return;
         }
 
-        int[] ticksLeft = {durationTicks};
+        AtomicInteger ticksLeft = new AtomicInteger(durationTicks);
 
         livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             timeRun.removeNamedTimerCell(TIMER_NAME);
@@ -73,8 +75,8 @@ public class TidalSurgeSlashArts extends ExtendedSlashArts {
         );
     }
 
-    private void tickDriveRain(LivingEntity caster, ITimeRun timeRun, int[] ticksLeft) {
-        if (!caster.isAlive() || --ticksLeft[0] < 0) {
+    private void tickDriveRain(LivingEntity caster, ITimeRun timeRun, AtomicInteger ticksLeft) {
+        if (!caster.isAlive() || ticksLeft.decrementAndGet() < 0) {
             timeRun.removeNamedTimerCell(TIMER_NAME);
             return;
         }

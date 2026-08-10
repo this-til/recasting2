@@ -10,7 +10,6 @@ import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
-import com.til.recasting.registry.instance.BuffType;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -58,8 +57,7 @@ public class MatrixSlashArts extends ExtendedSlashArts {
             return;
         }
 
-        BuffType matrixBuffType = RecastingBuffTypes.MATRIX.get();
-        discardExistingMatrix(buffStackData, matrixBuffType, worldIn);
+        discardExistingMatrix(buffStackData, worldIn);
 
         Vec3 attackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
 
@@ -82,26 +80,25 @@ public class MatrixSlashArts extends ExtendedSlashArts {
         matrix.attackActionCallbackPoint.register(hitEntity -> hitEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
                 hitBuffStackData -> {
                     Level world = hitEntity.level();
-                    BuffType chaosLayerBuffType = RecastingBuffTypes.CALCULUS.get();
-                    int currentLevel = hitBuffStackData.getLevel(chaosLayerBuffType, world);
-                    hitBuffStackData.setLevel(chaosLayerBuffType, currentLevel + 1, world);
+                    int currentLevel = hitBuffStackData.getLevel(RecastingBuffTypes.CALCULUS.get(), world);
+                    hitBuffStackData.setLevel(RecastingBuffTypes.CALCULUS.get(), currentLevel + 1, world);
                     KnockBacks.cancel.action.accept(hitEntity);
                 }
         ));
 
         worldIn.addFreshEntity(matrix);
 
-        CompoundTag customData = buffStackData.getOrCreateCustomData(matrixBuffType, worldIn);
+        CompoundTag customData = buffStackData.getOrCreateCustomData(RecastingBuffTypes.MATRIX.get(), worldIn);
         customData.putUUID(KEY_MATRIX_ENTITY_UUID, matrix.getUUID());
-        buffStackData.setLevel(matrixBuffType, 1, worldIn);
+        buffStackData.setLevel(RecastingBuffTypes.MATRIX.get(), 1, worldIn);
     }
 
-    private static void discardExistingMatrix(IBuffStackData buffStackData, BuffType matrixBuffType, Level world) {
+    private static void discardExistingMatrix(IBuffStackData buffStackData, Level world) {
         if (!(world instanceof ServerLevel serverLevel)) {
             return;
         }
 
-        IBuffStackData.BuffEntry entry = buffStackData.getEntry(matrixBuffType);
+        IBuffStackData.BuffEntry entry = buffStackData.getEntry(RecastingBuffTypes.MATRIX.get());
         if (entry == null || entry.getCustomData() == null) {
             return;
         }

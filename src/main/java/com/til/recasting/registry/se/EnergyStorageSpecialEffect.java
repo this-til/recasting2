@@ -7,7 +7,6 @@ import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
-import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.NumberPack;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import net.minecraft.world.entity.LivingEntity;
@@ -44,25 +43,24 @@ public class EnergyStorageSpecialEffect extends ExtendedSpecialEffect {
 
         // 获取蓄能buff类型（对目标叠加）
         Level world = target.level();
-        BuffType energyStorageBuffType = RecastingBuffTypes.ENERGY_STORAGE.get();
 
         // 获取当前层数（对目标叠加）
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
                 buffStackData -> {
-                    int currentLevel = buffStackData.getLevel(energyStorageBuffType, world);
-                    int maxLevel = energyStorageBuffType.getMaxLevel();
+                    int currentLevel = buffStackData.getLevel(RecastingBuffTypes.ENERGY_STORAGE.get(), world);
+                    int maxLevel = RecastingBuffTypes.ENERGY_STORAGE.get().getMaxLevel();
 
                     // 计算要叠加的层数
                     int addLevel = (int) addLevelPerHit.of(level);
                     int newLevel = Math.min(currentLevel + addLevel, maxLevel);
 
                     // 设置新层数
-                    buffStackData.setLevel(energyStorageBuffType, newLevel, world);
+                    buffStackData.setLevel(RecastingBuffTypes.ENERGY_STORAGE.get(), newLevel, world);
 
                     // 检查是否达到最大层数（48层）
                     if (newLevel >= maxLevel) {
                         // 重置层数
-                        buffStackData.setLevel(energyStorageBuffType, 0, world);
+                        buffStackData.setLevel(RecastingBuffTypes.ENERGY_STORAGE.get(), 0, world);
 
                         // 触发闪电攻击（攻击目标）
                         LivingEntity attacker = event.getAttacker();

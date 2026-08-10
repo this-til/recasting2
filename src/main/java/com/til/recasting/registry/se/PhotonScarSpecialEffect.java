@@ -5,7 +5,6 @@ import com.til.recasting.handler.BuffSourceHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
-import com.til.recasting.registry.buff.PhotonBurnBuffType;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,14 +41,13 @@ public class PhotonScarSpecialEffect extends ExtendedSpecialEffect {
 
         LivingEntity attacker = event.getAttacker();
         Level world = target.level();
-        PhotonBurnBuffType photonBurnBuffType = RecastingBuffTypes.PHOTON_BURN.get();
         boolean isLaser = event.getAttackTypeList().contains(RecastingAttackTypes.LASER_ATTACK.get());
         boolean isNoRecursion = event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get());
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
-            int burnLevel = buffStackData.getLevel(photonBurnBuffType, world);
+            int burnLevel = buffStackData.getLevel(RecastingBuffTypes.PHOTON_BURN.get(), world);
             if (burnLevel > 0) {
-                int burnMax = photonBurnBuffType.getMaxLevel();
+                int burnMax = RecastingBuffTypes.PHOTON_BURN.get().getMaxLevel();
                 float damageBonus = burnMax <= 0
                         ? 0f
                         : maxLaserBonus * ((float) burnLevel / (float) burnMax);
@@ -63,11 +61,11 @@ public class PhotonScarSpecialEffect extends ExtendedSpecialEffect {
             }
 
             if (isLaser) {
-                int currentBurn = buffStackData.getLevel(photonBurnBuffType, world);
-                int newBurn = Math.min(currentBurn + addLevel, photonBurnBuffType.getMaxLevel());
-                buffStackData.setLevel(photonBurnBuffType, newBurn, world);
-                BuffSourceHelper.recordSourceEntity(buffStackData, photonBurnBuffType, target, attacker);
-                photonBurnBuffType.ensureTimer(target);
+                int currentBurn = buffStackData.getLevel(RecastingBuffTypes.PHOTON_BURN.get(), world);
+                int newBurn = Math.min(currentBurn + addLevel, RecastingBuffTypes.PHOTON_BURN.get().getMaxLevel());
+                buffStackData.setLevel(RecastingBuffTypes.PHOTON_BURN.get(), newBurn, world);
+                BuffSourceHelper.recordSourceEntity(buffStackData, RecastingBuffTypes.PHOTON_BURN.get(), target, attacker);
+                RecastingBuffTypes.PHOTON_BURN.get().ensureTimer(target);
             }
         });
     }

@@ -5,7 +5,6 @@ import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
-import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.NumberPack;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -37,22 +36,21 @@ public class IonizationSpecialEffect extends ExtendedSpecialEffect {
 
         // 获取电离buff类型
         Level world = target.level();
-        BuffType ionizationBuffType = RecastingBuffTypes.IONIZATION.get();
 
         // 检查是否是闪电攻击，如果是则叠加buff
         if (event.getAttackTypeList().contains(RecastingAttackTypes.LIGHTNING_ATTACK.get()) && !event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get())) {
             // 获取目标的当前层数
             target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
                     buffStackData -> {
-                        int currentLevel = buffStackData.getLevel(ionizationBuffType, world);
-                        int maxLevel = ionizationBuffType.getMaxLevel();
+                        int currentLevel = buffStackData.getLevel(RecastingBuffTypes.IONIZATION.get(), world);
+                        int maxLevel = RecastingBuffTypes.IONIZATION.get().getMaxLevel();
 
                         // 计算要叠加的层数（高等级叠层更快）
                         int addLevel = (int) addLevelPerHit.of(level);
                         int newLevel = Math.min(currentLevel + addLevel, maxLevel);
 
                         // 设置新层数
-                        buffStackData.setLevel(ionizationBuffType, newLevel, world);
+                        buffStackData.setLevel(RecastingBuffTypes.IONIZATION.get(), newLevel, world);
                     }
             );
         }
@@ -60,7 +58,7 @@ public class IonizationSpecialEffect extends ExtendedSpecialEffect {
         // 应用增伤：根据目标的电离buff层数提供全伤害增伤（对所有攻击类型都生效）
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
                 buffStackData -> {
-                    int ionizationLevel = buffStackData.getLevel(ionizationBuffType, world);
+                    int ionizationLevel = buffStackData.getLevel(RecastingBuffTypes.IONIZATION.get(), world);
                     if (ionizationLevel > 0) {
                         // 每层提供1%全伤害增伤
                         float damageBonus = ionizationLevel * 0.01f;

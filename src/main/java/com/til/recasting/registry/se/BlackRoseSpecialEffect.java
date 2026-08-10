@@ -7,7 +7,6 @@ import com.til.recasting.handler.BuffSourceHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
-import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -47,17 +46,16 @@ public class BlackRoseSpecialEffect extends ExtendedSpecialEffect {
         float baseDamage = (float) (attribute.getValue() * event.getUltimatelyModifiedRatio());
         baseDamage += event.getExtraDamage();
 
-        BuffType blackRoseBuffType = RecastingBuffTypes.BLACK_ROSE.get();
         int addUnits = Math.max(1, (int) (baseDamage * attack * 10f));
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
-            int currentUnits = buffStackData.getLevel(blackRoseBuffType, target.level());
-            buffStackData.setLevel(blackRoseBuffType, currentUnits + addUnits, target.level());
-            BuffSourceHelper.recordSourceEntity(buffStackData, blackRoseBuffType, target, attacker);
-            ensureBlackRoseTimer(target, blackRoseBuffType);
+            int currentUnits = buffStackData.getLevel(RecastingBuffTypes.BLACK_ROSE.get(), target.level());
+            buffStackData.setLevel(RecastingBuffTypes.BLACK_ROSE.get(), currentUnits + addUnits, target.level());
+            BuffSourceHelper.recordSourceEntity(buffStackData, RecastingBuffTypes.BLACK_ROSE.get(), target, attacker);
+            ensureBlackRoseTimer(target);
         });
     }
 
-    private void ensureBlackRoseTimer(LivingEntity target, BuffType blackRoseBuffType) {
+    private void ensureBlackRoseTimer(LivingEntity target) {
         target.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             if (timeRun.getNamedTimerCell(timerName) != null) {
                 return;
@@ -66,7 +64,7 @@ public class BlackRoseSpecialEffect extends ExtendedSpecialEffect {
             timeRun.addNamedTimerCell(
                     timerName,
                     new ITimeRun.TimerCell(
-                            () -> tickBlackRose(target, blackRoseBuffType, timeRun),
+                            () -> tickBlackRose(target, timeRun),
                             attackInterval,
                             true
                     )
@@ -74,30 +72,30 @@ public class BlackRoseSpecialEffect extends ExtendedSpecialEffect {
         });
     }
 
-    private void tickBlackRose(LivingEntity target, BuffType blackRoseBuffType, ITimeRun timeRun) {
+    private void tickBlackRose(LivingEntity target, ITimeRun timeRun) {
         if (!target.isAlive() || target.level().isClientSide()) {
             timeRun.removeNamedTimerCell(timerName);
             return;
         }
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
-            int units = buffStackData.getLevel(blackRoseBuffType, target.level());
+            int units = buffStackData.getLevel(RecastingBuffTypes.BLACK_ROSE.get(), target.level());
             if (units <= 0) {
                 timeRun.removeNamedTimerCell(timerName);
                 return;
             }
 
-            var entry = buffStackData.getEntry(blackRoseBuffType);
+            var entry = buffStackData.getEntry(RecastingBuffTypes.BLACK_ROSE.get());
             LivingEntity attacker = BuffSourceHelper.getSourceEntity(entry, target.level());
             if (attacker == null) {
-                buffStackData.setLevel(blackRoseBuffType, 0, target.level());
+                buffStackData.setLevel(RecastingBuffTypes.BLACK_ROSE.get(), 0, target.level());
                 timeRun.removeNamedTimerCell(timerName);
                 return;
             }
 
             float damage = units / 10f;
             if (damage <= 0) {
-                buffStackData.setLevel(blackRoseBuffType, 0, target.level());
+                buffStackData.setLevel(RecastingBuffTypes.BLACK_ROSE.get(), 0, target.level());
                 timeRun.removeNamedTimerCell(timerName);
                 return;
             }
@@ -114,12 +112,12 @@ public class BlackRoseSpecialEffect extends ExtendedSpecialEffect {
 
             int nextUnits = (int) (units * attenuation);
             if (nextUnits <= 0) {
-                buffStackData.setLevel(blackRoseBuffType, 0, target.level());
+                buffStackData.setLevel(RecastingBuffTypes.BLACK_ROSE.get(), 0, target.level());
                 timeRun.removeNamedTimerCell(timerName);
                 return;
             }
 
-            buffStackData.setLevel(blackRoseBuffType, nextUnits, target.level());
+            buffStackData.setLevel(RecastingBuffTypes.BLACK_ROSE.get(), nextUnits, target.level());
         });
     }
 }

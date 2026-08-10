@@ -3,7 +3,6 @@ package com.til.recasting.registry.se;
 import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingBuffTypes;
-import com.til.recasting.registry.instance.BuffType;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.event.SlashBladeEvent;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
@@ -52,12 +51,11 @@ public class TreasureBarrageSpecialEffect extends ExtendedSpecialEffect {
             return;
         }
 
-        BuffType cooldownBuff = RecastingBuffTypes.TREASURE_BARRAGE_COOLDOWN.get();
-        if (buffStackData.getLevel(cooldownBuff, level) > 0) {
+        if (buffStackData.getLevel(RecastingBuffTypes.TREASURE_BARRAGE_COOLDOWN.get(), level) > 0) {
             return;
         }
 
-        buffStackData.setLevel(cooldownBuff, cooldownTicks, level);
+        buffStackData.setLevel(RecastingBuffTypes.TREASURE_BARRAGE_COOLDOWN.get(), cooldownTicks, level);
 
         user.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             timeRun.addTimerCell(() -> recast(user, artsType), recastDelayTicks);

@@ -5,7 +5,6 @@ import com.til.recasting.handler.InventorySlashBladeSeHelper;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.SlashArtsRegistry;
 import com.til.recasting.registry.SpecialEffectsRegistry;
-import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.registry.sa.DogBiteSlashArts;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -51,16 +50,15 @@ public class DogBondSpecialEffect extends ExtendedSpecialEffect {
             return;
         }
 
-        BuffType cooldownBuff = RecastingBuffTypes.DOG_BOND_COOLDOWN.get();
         var buffData = getBuffStackData(victim);
         if (buffData == null) {
             return;
         }
-        if (buffData.getLevel(cooldownBuff, level) > 0) {
+        if (buffData.getLevel(RecastingBuffTypes.DOG_BOND_COOLDOWN.get(), level) > 0) {
             return;
         }
 
-        buffData.setLevel(cooldownBuff, cooldownTicks, level);
+        buffData.setLevel(RecastingBuffTypes.DOG_BOND_COOLDOWN.get(), cooldownTicks, level);
         victim.addEffect(new MobEffectInstance(
                 MobEffects.ABSORPTION,
                 absorptionDurationTicks,

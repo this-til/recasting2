@@ -9,7 +9,6 @@ import com.til.recasting.handler.*;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
-import com.til.recasting.registry.instance.BuffType;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -81,10 +80,9 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
             return;
         }
 
-        BuffType domainBuffType = RecastingBuffTypes.JADE_DOMAIN.get();
         livingEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffData -> {
-            buffData.setLevel(domainBuffType, domainStacks, livingEntity.level());
-            BuffSourceHelper.recordSourceEntity(buffData, domainBuffType, livingEntity, livingEntity);
+            buffData.setLevel(RecastingBuffTypes.JADE_DOMAIN.get(), domainStacks, livingEntity.level());
+            BuffSourceHelper.recordSourceEntity(buffData, RecastingBuffTypes.JADE_DOMAIN.get(), livingEntity, livingEntity);
         });
         renderHighlightNodes(livingEntity, 0.0);
         renderBoundaryRing(livingEntity, 0.0);
@@ -377,10 +375,9 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
 
     private void applyJadeFire(LivingEntity target, LivingEntity caster) {
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffData -> {
-            BuffType jadeFireBuffType = RecastingBuffTypes.JADE_FIRE.get();
-            int currentLevel = buffData.getLevel(jadeFireBuffType, target.level());
-            buffData.setLevel(jadeFireBuffType, currentLevel + jadeFireStacksPerRelease, target.level());
-            BuffSourceHelper.recordSourceEntity(buffData, jadeFireBuffType, target, caster);
+            int currentLevel = buffData.getLevel(RecastingBuffTypes.JADE_FIRE.get(), target.level());
+            buffData.setLevel(RecastingBuffTypes.JADE_FIRE.get(), currentLevel + jadeFireStacksPerRelease, target.level());
+            BuffSourceHelper.recordSourceEntity(buffData, RecastingBuffTypes.JADE_FIRE.get(), target, caster);
             RecastingBuffTypes.JADE_FIRE.get().ensureTimer(target);
         });
     }

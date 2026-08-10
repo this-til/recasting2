@@ -5,8 +5,6 @@ import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
-import com.til.recasting.registry.instance.AttackType;
-import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import com.til.recasting.util.NumberPack;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,17 +40,16 @@ public class ThunderCloudSpecialEffect extends ExtendedSpecialEffect {
 
         // 给目标添加雷光buff
         Level world = target.level();
-        BuffType thunderLightBuffType = RecastingBuffTypes.THUNDER_LIGHT.get();
 
         ItemStack blade = event.getItem();
         PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(blade);
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
                 buffStackData -> {
-                    int currentLevel = buffStackData.getLevel(thunderLightBuffType, world);
-                    int maxLevel = thunderLightBuffType.getMaxLevel();
+                    int currentLevel = buffStackData.getLevel(RecastingBuffTypes.THUNDER_LIGHT.get(), world);
+                    int maxLevel = RecastingBuffTypes.THUNDER_LIGHT.get().getMaxLevel();
                     int newLevel = Math.min(currentLevel + (int) thunderLightLevelPerHit.of(getLevel(properties)), maxLevel);
-                    buffStackData.setLevel(thunderLightBuffType, newLevel, world);
+                    buffStackData.setLevel(RecastingBuffTypes.THUNDER_LIGHT.get(), newLevel, world);
                 }
         );
     }
@@ -77,11 +74,10 @@ public class ThunderCloudSpecialEffect extends ExtendedSpecialEffect {
 
         // 检查目标（受害者）是否有雷光buff
         Level world = target.level();
-        BuffType thunderLightBuffType = RecastingBuffTypes.THUNDER_LIGHT.get();
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
                 buffStackData -> {
-                    int thunderLightLevel = buffStackData.getLevel(thunderLightBuffType, world);
+                    int thunderLightLevel = buffStackData.getLevel(RecastingBuffTypes.THUNDER_LIGHT.get(), world);
                     if (thunderLightLevel <= 0) {
                         return;
                     }
@@ -90,8 +86,8 @@ public class ThunderCloudSpecialEffect extends ExtendedSpecialEffect {
                     float damageRatioValue = damageRatio;
 
                     // 创建闪电伤害源，使用 modifiedRatio 基于 finalDamage 计算额外伤害
-                    AttackType lightningAttackType = RecastingAttackTypes.LIGHTNING_ATTACK.get();
-                    AttackAmplifierEvent.DamageSourceInfo damageSourceInfo = lightningAttackType.createDamageSource(event.getAttacker(), target);
+                    AttackAmplifierEvent.DamageSourceInfo damageSourceInfo =
+                            RecastingAttackTypes.LIGHTNING_ATTACK.get().createDamageSource(event.getAttacker(), target);
 
                     if (damageSourceInfo != null) {
                         // 使用 addDamageSourceInfo 添加额外的闪电伤害（基于伤害倍率）

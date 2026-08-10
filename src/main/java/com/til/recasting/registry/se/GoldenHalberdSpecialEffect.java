@@ -7,7 +7,6 @@ import com.til.recasting.handler.ParticleHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingParticleTypes;
-import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -52,13 +51,12 @@ public class GoldenHalberdSpecialEffect extends ExtendedSpecialEffect {
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffStackData -> {
             Level world = target.level();
-            BuffType goldenHalberdBuffType = RecastingBuffTypes.GOLDEN_HALBERD.get();
 
-            int current = buffStackData.getLevel(goldenHalberdBuffType, world);
+            int current = buffStackData.getLevel(RecastingBuffTypes.GOLDEN_HALBERD.get(), world);
             int next = current + stacksPerHit;
 
             if (next >= maxStacks) {
-                buffStackData.setLevel(goldenHalberdBuffType, 0, world);
+                buffStackData.setLevel(RecastingBuffTypes.GOLDEN_HALBERD.get(), 0, world);
 
                 Vec3 pos = target.position().add(0, target.getEyeHeight() * 0.5, 0);
                 AttackHelper.areaAttack(
@@ -95,7 +93,7 @@ public class GoldenHalberdSpecialEffect extends ExtendedSpecialEffect {
                     );
                 }
             } else {
-                buffStackData.setLevel(goldenHalberdBuffType, next, world);
+                buffStackData.setLevel(RecastingBuffTypes.GOLDEN_HALBERD.get(), next, world);
             }
         });
     }

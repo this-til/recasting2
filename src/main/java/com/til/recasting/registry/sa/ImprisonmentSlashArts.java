@@ -26,6 +26,8 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 禁锢：在锁定目标处生成缓慢抬升的次元斩，钉住目标并环射普通幻影剑。
@@ -93,8 +95,8 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
 
         livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             timeRun.removeNamedTimerCell(TIMER_NAME);
-            int[] left = {durationTicks};
-            LivingEntity[] currentTarget = {target};
+            AtomicInteger left = new AtomicInteger(durationTicks);
+            AtomicReference<LivingEntity> currentTarget = new AtomicReference<>(target);
             timeRun.addNamedTimerCell(
                     TIMER_NAME,
                     new ITimeRun.TimerCell(
@@ -108,9 +110,9 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
 
     private void tickImprisonment(
             LivingEntity caster,
-            LivingEntity[] currentTarget,
+            AtomicReference<LivingEntity> currentTarget,
             JudgementCutEntity jc,
-            int[] left,
+            AtomicInteger left,
             ITimeRun timeRun,
             int color
     ) {
@@ -118,25 +120,25 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
                 || caster.isRemoved()
                 || !jc.isAlive()
                 || jc.isRemoved()
-                || left[0] <= 0) {
+                || left.get() <= 0) {
             timeRun.removeNamedTimerCell(TIMER_NAME);
             return;
         }
 
-        LivingEntity target = currentTarget[0];
+        LivingEntity target = currentTarget.get();
         if (target == null || !target.isAlive() || target.isRemoved()) {
             LivingEntity next = pickRetarget(caster, jc);
             if (next == null) {
                 timeRun.removeNamedTimerCell(TIMER_NAME);
                 return;
             }
-            currentTarget[0] = next;
+            currentTarget.set(next);
             target = next;
             Vec3 center = PosHelper.getEntityAimPosition(target);
             moveJudgementCut(jc, center.x, center.y, center.z);
         }
 
-        left[0]--;
+        left.decrementAndGet();
 
         // 缓慢抬升中心，并将目标钉在中心高度
         moveJudgementCut(jc, jc.getX(), jc.getY() + liftPerTick, jc.getZ());
@@ -145,7 +147,7 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
         target.setDeltaMovement(Vec3.ZERO);
         target.hurtMarked = true;
 
-        if (left[0] % spawnInterval != 0) {
+        if (left.get() % spawnInterval != 0) {
             return;
         }
 

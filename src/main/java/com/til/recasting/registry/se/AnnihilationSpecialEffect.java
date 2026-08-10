@@ -4,7 +4,6 @@ import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
-import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.NumberPack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -37,19 +36,18 @@ public class AnnihilationSpecialEffect extends ExtendedSpecialEffect {
         shooter.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
                 buffStackData -> {
                     Level world = shooter.level();
-                    BuffType annihilationBuffType = RecastingBuffTypes.ANNIHILATION.get();
 
                     // 获取当前层数
-                    int currentLevel = buffStackData.getLevel(annihilationBuffType, world);
+                    int currentLevel = buffStackData.getLevel(RecastingBuffTypes.ANNIHILATION.get(), world);
 
                     // 增加层数
                     int newLevel = currentLevel + addLevel;
-                    buffStackData.setLevel(annihilationBuffType, newLevel, world);
+                    buffStackData.setLevel(RecastingBuffTypes.ANNIHILATION.get(), newLevel, world);
 
                     // 检查是否达到最大层数（6层）
-                    if (newLevel >= annihilationBuffType.getMaxLevel()) {
+                    if (newLevel >= RecastingBuffTypes.ANNIHILATION.get().getMaxLevel()) {
                         // 重置层数
-                        buffStackData.setLevel(annihilationBuffType, 0, world);
+                        buffStackData.setLevel(RecastingBuffTypes.ANNIHILATION.get(), 0, world);
 
                         // 创建巨型次元斩
                         Level worldIn = shooter.level();

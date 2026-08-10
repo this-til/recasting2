@@ -20,6 +20,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * [回到未来计划]暴烈剑气：持续刷出普通幻影剑，指向锁定/视线目标；命中仅播小型爆炸特效。
  */
@@ -50,7 +52,7 @@ public class BlisteringQiSlashArts extends ExtendedSlashArts {
             return;
         }
 
-        int[] ticksLeft = {durationTicks};
+        AtomicInteger ticksLeft = new AtomicInteger(durationTicks);
 
         livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             timeRun.removeNamedTimerCell(TIMER_NAME);
@@ -80,9 +82,9 @@ public class BlisteringQiSlashArts extends ExtendedSlashArts {
             LivingEntity caster,
             ISlashBladeState slashBladeState,
             ITimeRun timeRun,
-            int[] ticksLeft
+            AtomicInteger ticksLeft
     ) {
-        if (!caster.isAlive() || --ticksLeft[0] < 0) {
+        if (!caster.isAlive() || ticksLeft.decrementAndGet() < 0) {
             timeRun.removeNamedTimerCell(TIMER_NAME);
             return;
         }

@@ -8,7 +8,6 @@ import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
-import com.til.recasting.registry.buff.SoulBurnBuffType;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -61,16 +60,15 @@ public class InfernoSlashArts extends ExtendedSlashArts {
             hitEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
                     buffStackData -> {
                         Level world = hitEntity.level();
-                        SoulBurnBuffType soulBurnBuffType = RecastingBuffTypes.SOUL_BURN.get();
 
                         // 获取当前层数
-                        int currentLevel = buffStackData.getLevel(soulBurnBuffType, world);
+                        int currentLevel = buffStackData.getLevel(RecastingBuffTypes.SOUL_BURN.get(), world);
 
                         // 附加指定层数灵魂燃烧
                         int newLevel = currentLevel + finalSoulBurnLevel;
-                        buffStackData.setLevel(soulBurnBuffType, newLevel, world);
-                        BuffSourceHelper.recordSourceEntity(buffStackData, soulBurnBuffType, hitEntity, livingEntity);
-                        soulBurnBuffType.ensureTimer(hitEntity);
+                        buffStackData.setLevel(RecastingBuffTypes.SOUL_BURN.get(), newLevel, world);
+                        BuffSourceHelper.recordSourceEntity(buffStackData, RecastingBuffTypes.SOUL_BURN.get(), hitEntity, livingEntity);
+                        RecastingBuffTypes.SOUL_BURN.get().ensureTimer(hitEntity);
                     }
             );
         });

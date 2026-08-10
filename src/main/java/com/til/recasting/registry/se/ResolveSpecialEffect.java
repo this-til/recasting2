@@ -5,7 +5,6 @@ import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
-import com.til.recasting.registry.instance.BuffType;
 import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -47,18 +46,17 @@ public class ResolveSpecialEffect extends ExtendedSpecialEffect {
 
         // 检查目标是否有演算buff
         Level world = target.level();
-        BuffType calculusBuffType = RecastingBuffTypes.CALCULUS.get();
 
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(
                 buffStackData -> {
-                    int currentLevel = buffStackData.getLevel(calculusBuffType, world);
+                    int currentLevel = buffStackData.getLevel(RecastingBuffTypes.CALCULUS.get(), world);
                     if (currentLevel <= 0) {
                         return;
                     }
 
                     // 消耗一层演算
                     int newLevel = Math.max(0, currentLevel - 1);
-                    buffStackData.setLevel(calculusBuffType, newLevel, world);
+                    buffStackData.setLevel(RecastingBuffTypes.CALCULUS.get(), newLevel, world);
 
                     AttackHelper.attack(
                             event.getAttacker(),
