@@ -32,7 +32,8 @@
   ],
   "client": [
     "ItemSlashBladeMixin",
-    "client.ItemModelBuilderMixin"
+    "client.ItemModelBuilderMixin",
+    "client.LayerMainBladeMixin"
   ],
   "injectors": {
     "defaultRequire": 1
