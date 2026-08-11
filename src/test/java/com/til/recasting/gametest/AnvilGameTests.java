@@ -13,6 +13,7 @@ import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
@@ -269,6 +270,89 @@ public final class AnvilGameTests {
             }
         } catch (AssertionError error) {
             helper.fail(error.getMessage());
+            return;
+        }
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", batch = "recastingAnvil")
+    public static void advancement_engraveAny_granted(GameTestHelper helper) {
+        ServerPlayer player = helper.makeMockServerPlayerInLevel();
+        ResourceLocation seId = SpecialEffectsRegistry.SHARP_BLADE.getId();
+        ItemStack blade = TestItemFactory.bladeFromDefinition(
+                helper.getLevel().registryAccess(),
+                RecastingSlashBladeKeys.BROADSWORD_WOOD.location()
+        );
+        ItemStack crystal = TestItemFactory.seCrystal(seId, 1);
+        ItemStack output = AnvilTestHelper.preview(blade, crystal, player);
+        AnvilTestHelper.simulateRepair(player, blade, crystal, output);
+        ResourceLocation advId = Recasting.prefix("growth/forge/new_capability");
+        if (!AnvilTestHelper.hasAdvancement(player, advId)) {
+            helper.fail("Advancement new_capability not granted after engrave");
+            return;
+        }
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", batch = "recastingAnvil")
+    public static void advancement_engraveMaxNormal_granted(GameTestHelper helper) {
+        ServerPlayer player = helper.makeMockServerPlayerInLevel();
+        ResourceLocation seId = SpecialEffectsRegistry.SHARP_BLADE.getId();
+        var extendedSE = (com.til.recasting.registry.se.ExtendedSpecialEffect)
+                mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(seId);
+        int maxLevel = extendedSE.getMaxLevel();
+        ItemStack blade = TestItemFactory.bladeFromDefinition(
+                helper.getLevel().registryAccess(),
+                RecastingSlashBladeKeys.BROADSWORD_WOOD.location()
+        );
+        ItemStack crystal = TestItemFactory.seCrystal(seId, maxLevel);
+        ItemStack output = AnvilTestHelper.preview(blade, crystal, player);
+        AnvilTestHelper.simulateRepair(player, blade, crystal, output);
+        ResourceLocation advId = Recasting.prefix("growth/forge/peak_effect");
+        if (!AnvilTestHelper.hasAdvancement(player, advId)) {
+            helper.fail("Advancement peak_effect not granted after max-level engrave");
+            return;
+        }
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", batch = "recastingAnvil")
+    public static void advancement_eraseSe_granted(GameTestHelper helper) {
+        ServerPlayer player = helper.makeMockServerPlayerInLevel();
+        ResourceLocation seId = SpecialEffectsRegistry.SHARP_BLADE.getId();
+        ItemStack blade = TestItemFactory.bladeWithSpecialEffect(
+                helper.getLevel().registryAccess(),
+                RecastingSlashBladeKeys.BROADSWORD_WOOD.location(),
+                seId,
+                1
+        );
+        ItemStack crystal = TestItemFactory.seCrystal(seId, 0);
+        ItemStack output = AnvilTestHelper.preview(blade, crystal, player);
+        AnvilTestHelper.simulateRepair(player, blade, crystal, output);
+        ResourceLocation advId = Recasting.prefix("growth/forge/silence");
+        if (!AnvilTestHelper.hasAdvancement(player, advId)) {
+            helper.fail("Advancement silence not granted after erase SE");
+            return;
+        }
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", batch = "recastingAnvil")
+    public static void advancement_extractSpecial_granted(GameTestHelper helper) {
+        ServerPlayer player = helper.makeMockServerPlayerInLevel();
+        ResourceLocation seId = SpecialEffectsRegistry.BLACK_ROSE.getId();
+        ItemStack blade = TestItemFactory.bladeWithSpecialEffect(
+                helper.getLevel().registryAccess(),
+                RecastingSlashBladeKeys.UMBRELLA.location(),
+                seId,
+                1
+        );
+        ItemStack variant = new ItemStack(RecastingItems.GATHERING_PARTING_VARIANT.get());
+        ItemStack output = AnvilTestHelper.preview(blade, variant, player);
+        AnvilTestHelper.simulateRepair(player, blade, variant, output);
+        ResourceLocation advId = Recasting.prefix("growth/forge/sacrifice");
+        if (!AnvilTestHelper.hasAdvancement(player, advId)) {
+            helper.fail("Advancement sacrifice not granted after extract special SE");
             return;
         }
         helper.succeed();
