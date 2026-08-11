@@ -17,6 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
+import java.util.List;
+
 /**
  * 铁砧 SE 铭刻、渊寂火去除特殊 SE、聚散变体提取特殊 SE、SA 提取的正/负向用例。
  */
@@ -201,6 +203,68 @@ public final class AnvilGameTests {
             CompoundTag tag = output.getTag();
             if (tag == null || !tag.contains("SpecialAttackType")) {
                 helper.fail("Proud soul sphere missing SpecialAttackType");
+                return;
+            }
+        } catch (AssertionError error) {
+            helper.fail(error.getMessage());
+            return;
+        }
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", batch = "recastingAnvil")
+    public static void engraveSe_upgradeNoDuplicate(GameTestHelper helper) {
+        ResourceLocation seId = SpecialEffectsRegistry.SHARP_BLADE.getId();
+        ItemStack blade = TestItemFactory.bladeWithSpecialEffect(
+                helper.getLevel().registryAccess(),
+                RecastingSlashBladeKeys.BROADSWORD_WOOD.location(),
+                seId,
+                1
+        );
+        ItemStack crystal = TestItemFactory.seCrystal(seId, 5);
+        ItemStack output = AnvilTestHelper.preview(blade, crystal, helper.makeMockPlayer());
+        try {
+            AnvilTestHelper.assertHasOutput(output, "engraveSe_upgradeNoDuplicate");
+            List<ResourceLocation> seList = output.getCapability(ItemSlashBlade.BLADESTATE)
+                    .map(state -> state.getSpecialEffects().stream().filter(seId::equals).toList())
+                    .orElse(List.of());
+            if (seList.size() != 1) {
+                helper.fail("SE duplicated after upgrade: count=" + seList.size());
+                return;
+            }
+            int level = output.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION)
+                    .map(ext -> ext.getExtendedSpecialLevels(seId))
+                    .orElse(0);
+            if (level != 5) {
+                helper.fail("SE level expected 5 but was " + level);
+                return;
+            }
+        } catch (AssertionError error) {
+            helper.fail(error.getMessage());
+            return;
+        }
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", batch = "recastingAnvil")
+    public static void engraveSe_maxLevelTriggersAdvancement(GameTestHelper helper) {
+        ResourceLocation seId = SpecialEffectsRegistry.SHARP_BLADE.getId();
+        ItemStack blade = TestItemFactory.bladeFromDefinition(
+                helper.getLevel().registryAccess(),
+                RecastingSlashBladeKeys.BROADSWORD_WOOD.location()
+        );
+        var extendedSE = (com.til.recasting.registry.se.ExtendedSpecialEffect)
+                mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(seId);
+        int maxLevel = extendedSE.getMaxLevel();
+        ItemStack crystal = TestItemFactory.seCrystal(seId, maxLevel);
+        ItemStack output = AnvilTestHelper.preview(blade, crystal, helper.makeMockPlayer());
+        try {
+            AnvilTestHelper.assertHasOutput(output, "engraveSe_maxLevelTriggersAdvancement");
+            int level = output.getCapability(CapabilityRegistryHandler.PROPERTIES_DEFINITION_EXTENSION)
+                    .map(ext -> ext.getExtendedSpecialLevels(seId))
+                    .orElse(0);
+            if (level != maxLevel) {
+                helper.fail("SE level expected " + maxLevel + " but was " + level);
                 return;
             }
         } catch (AssertionError error) {

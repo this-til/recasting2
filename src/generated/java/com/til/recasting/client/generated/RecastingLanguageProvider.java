@@ -61,7 +61,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_AFFINITY_SWAP_TITLE, "相性交换", "Affinity Swap");
         translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_AFFINITY_SWAP_DESC, "用新的特殊效果替换刀上已有的特殊效果。", "Replace an existing special effect on a blade with another.");
         translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_SILENCE_TITLE, "静默", "Silence");
-        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_SILENCE_DESC, "抹除刀上的普通或特殊效果。", "Erase a normal or special effect from a blade.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_SILENCE_DESC, "抹除刀上的任意一个普通或特殊效果即可获得。", "Obtain this by erasing any one normal or special effect from a blade.");
         translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000_TITLE, "杀意初凝", "Rising Bloodlust");
         translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000_DESC, "持有击杀数足够高的刀，解锁击杀带来的伤害加成。", "Hold a blade with enough kill count to unlock kill-based damage bonus.");
         translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_10000_TITLE, "杀意滔天", "Surging Bloodlust");

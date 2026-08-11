@@ -124,7 +124,9 @@ public class AnvilSpecialEffectEngravingHandler {
                                         seLocation
                                 );
                             }
-                            bladeState.addSpecialEffect(seLocation);
+                            if (currentLevel.get() == 0) {
+                                bladeState.addSpecialEffect(seLocation);
+                            }
                             extension.setExtendedSpecialLevels(crystalData.getSpecialEffectType(), crystalData.getSpecialEffectLevel());
                         })
                 );
