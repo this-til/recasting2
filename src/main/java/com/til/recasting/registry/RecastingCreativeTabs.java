@@ -18,6 +18,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
@@ -49,8 +51,8 @@ public final class RecastingCreativeTabs {
     }
 
     private static void fillDisplayItems(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-        fillOrderedBlades(parameters, output);
         fillRegisteredItems(output);
+        fillOrderedBlades(parameters, output);
         fillSpecialEffectCrystals(output);
     }
 
@@ -75,9 +77,18 @@ public final class RecastingCreativeTabs {
     }
 
     private static void fillSpecialEffectCrystals(CreativeModeTab.Output output) {
-        mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValues().stream()
+        List<ExtendedSpecialEffect> sortedSpecialEffects = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValues().stream()
                 .filter(specialEffect -> specialEffect instanceof ExtendedSpecialEffect)
                 .map(specialEffect -> (ExtendedSpecialEffect) specialEffect)
+                .sorted(Comparator
+                        .comparing(ExtendedSpecialEffect::isSpecial).reversed()
+                        .thenComparing(specialEffect -> {
+                            ResourceLocation specialEffectKey = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getKey(specialEffect);
+                            return specialEffectKey == null ? "" : specialEffectKey.toString();
+                        }))
+                .toList();
+
+        sortedSpecialEffects.stream()
                 .flatMap(specialEffect -> {
                     int startLevel = specialEffect.isSpecial() ? 1 : 0;
                     return IntStream.range(startLevel, specialEffect.getMaxLevel() + 1)

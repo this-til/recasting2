@@ -115,6 +115,7 @@ public class RecastingItems {
             new ProudSoulItem(new Item.Properties(), null, 16.f) {
 
                 private final Gradient effective = Gradient.createFromColor(new Color(0xFFFF00).getRGB());
+                private final Gradient special = Gradient.createFromColor(new Color(0x9C5CFF).getRGB());
                 private final Gradient invalid = Gradient.createFromColor(new Color(0x818488).getRGB());
 
                 @Override
@@ -206,9 +207,21 @@ public class RecastingItems {
                         return invalid;
                     }
 
-                    return iSpecialEffectCrystalData.getSpecialEffectLevel() <= 0
-                            ? invalid
-                            : effective;
+                    if (iSpecialEffectCrystalData.getSpecialEffectLevel() <= 0) {
+                        return invalid;
+                    }
+
+                    ResourceLocation specialEffectType = iSpecialEffectCrystalData.getSpecialEffectType();
+                    if (specialEffectType == null) {
+                        return effective;
+                    }
+
+                    SpecialEffect specialEffect = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValue(specialEffectType);
+                    if (specialEffect instanceof ExtendedSpecialEffect extendedSpecialEffect && extendedSpecialEffect.isSpecial()) {
+                        return special;
+                    }
+
+                    return effective;
 
                 }
             }
