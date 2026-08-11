@@ -1,5 +1,7 @@
 package com.til.recasting.capability;
 
+import lombok.extern.log4j.Log4j2;
+
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,7 +67,7 @@ public interface ITimeRun {
 
             // 更新所有任务
             if (!this.runList.isEmpty()) {
-                for(int i = 0; i < this.runList.size(); ++i) {
+                for (int i = 0; i < this.runList.size(); ++i) {
                     TimerCell timerCell = this.runList.get(i);
                     timerCell.up();
 
@@ -152,6 +154,7 @@ public interface ITimeRun {
     /**
      * 定时任务单元
      */
+    @Log4j2
     class TimerCell {
         protected Runnable run;
         public final int timer;        // 延迟时间（tick）
@@ -187,7 +190,11 @@ public interface ITimeRun {
                 ++this.time;
                 if (this.time >= this.timer) {
                     this.time = 0;
-                    this.run.run();
+                    try {
+                        this.run.run();
+                    } catch (Exception e) {
+                        log.error("TimerCell run failed", e);
+                    }
                     if (!this.cycle) {
                         this.valid = false;
                     }

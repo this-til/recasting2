@@ -794,6 +794,8 @@ public class RecastingItems {
      */
     public static List<RegistryObject<Item>> getAllItems() {
         return Arrays.asList(
+                PROUD_SOUL_BAG,
+                MATTER_BALL,
                 OBSESSION_FLAME,
                 MEMORY_FLAME,
                 SIN_FLAME,

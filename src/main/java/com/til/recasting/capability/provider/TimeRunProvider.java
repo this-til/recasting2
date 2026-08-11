@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class TimeRunProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-    private final ITimeRun timeRun = new ITimeRun.TimeRun();
+    private final ITimeRun.TimeRun timeRun = new ITimeRun.TimeRun();
     private final LazyOptional<ITimeRun> lazyOptional = LazyOptional.of(() -> timeRun);
 
     @Override

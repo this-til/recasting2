@@ -22,13 +22,15 @@ public class TimeRunEventHandler {
      */
     @SubscribeEvent
     public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
-        if (event.getObject() instanceof LivingEntity) {
-            TimeRunProvider provider = new TimeRunProvider();
-            event.addCapability(Recasting.prefix("time_run"), provider);
-
-            // 确保在实体移除时失效
-            event.addListener(provider::invalidate);
+        if (!(event.getObject() instanceof LivingEntity)) {
+            return;
         }
+
+        TimeRunProvider provider = new TimeRunProvider();
+        event.addCapability(Recasting.prefix("time_run"), provider);
+
+        // 确保在实体移除时失效
+        event.addListener(provider::invalidate);
     }
 
     /**

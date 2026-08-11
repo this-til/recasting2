@@ -683,7 +683,7 @@ public class MathHelper {
     }
 
     public static int signum(double x) {
-        if (x == 0.0D) {
+        if (epsilonEquals(x, 0.0D)) {
             return 0;
         } else {
             return x > 0.0D

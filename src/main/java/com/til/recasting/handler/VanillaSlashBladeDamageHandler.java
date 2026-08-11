@@ -133,7 +133,7 @@ public class VanillaSlashBladeDamageHandler {
 
         // 9. 配置文件中的全局伤害倍率
         double configDamageMultiplier = SlashBladeConfig.SLASHBLADE_DAMAGE_MULTIPLIER.get();
-        if (configDamageMultiplier != 1.0) {
+        if (!MathHelper.epsilonEquals(configDamageMultiplier, 1.0)) {
             event.addMechanismModifiedRatioAmplifier((float) (configDamageMultiplier - 1));
         }
     }
