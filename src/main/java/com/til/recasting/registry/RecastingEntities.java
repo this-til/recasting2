@@ -126,7 +126,7 @@ public class RecastingEntities {
     public static final RegistryObject<EntityType<SlashEffectEntity>> SLASH_EFFECT = ENTITY_TYPES.register(
             "slash_effect",
             () -> EntityType.Builder.<SlashEffectEntity>of((e, l) -> new SlashEffectEntity(e, l, null), MobCategory.MISC)
-                    .sized(0.5f, 0.5f)               // 碰撞箱大小
+                    .sized(4f, 4f)               // 碰撞箱大小
                     .clientTrackingRange(64)         // 客户端追踪范围（格）
                     .updateInterval(20)              // 更新间隔（tick）
                     .fireImmune()                    // 免疫火焰伤害
