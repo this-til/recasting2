@@ -64,6 +64,11 @@ public class DataGenerator {
                 new RecastingAdvancementProvider(packOutput, lookupProvider)
         );
 
+        dataGenerator.addProvider(
+                event.includeServer(),
+                new RecastingLootTableProvider(packOutput)
+        );
+
         BlockTagsProvider blockTags = new BlockTagsProvider(packOutput, lookupProvider, Recasting.MODID, existingFileHelper) {
             @Override
             protected void addTags(@NotNull HolderLookup.Provider provider) {

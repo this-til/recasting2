@@ -458,6 +458,24 @@ tasks.register('syncRunServerMods', Copy) {
     }
 }
 
+tasks.register('syncRunDataMods', Copy) {
+    description = 'Syncs server-safe mod JARs into run-data/mods for datagen (slashblade etc.).'
+    group = 'forgegradle runs'
+
+    inputs.property('runCompatSrelic', runCompatSrelic)
+    inputs.property('runCompatTruePower', runCompatTruePower)
+
+    from configurations.runServerModLibraries
+    into layout.projectDirectory.dir('run-data/mods')
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    include includeRunModJar
+    rename renameRunModJar
+
+    doFirst {
+        cleanRunModsDir(layout.projectDirectory.dir('run-data/mods').asFile, serverForbiddenClientModMatchers)
+    }
+}
+
 // Modrinth CDN 固定版本；仅下载缺失文件，不覆盖本地手改
 def runShaderPackDownloads = [
         [
@@ -512,6 +530,10 @@ afterEvaluate {
     // 专用服 / GameTest：同步 run-server/mods（无客户端 jar）
     tasks.matching { it.name in ['prepareRunServer', 'prepareRunServerCompile', 'prepareRunGameTestServer', 'prepareRunGameTestServerCompile'] }.configureEach {
         dependsOn 'syncRunServerMods'
+    }
+    // datagen：同步 run-data/mods，满足 mods.toml 对 slashblade 的强制依赖
+    tasks.matching { it.name in ['prepareRunData', 'prepareRunDataCompile'] }.configureEach {
+        dependsOn 'syncRunDataMods'
     }
 }
 

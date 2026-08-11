@@ -431,6 +431,8 @@
   "slash_art.recasting.fanatical_dance_lambda.desc": "Quickly launch more slashes at random angles in succession.",
   "slash_art.recasting.final_supernova": "Final Supernova",
   "slash_art.recasting.final_supernova.desc": "Unfolds a collapsing black hole at the aim point that consumes blocks and pulls entities, then bursts into rings and deals heavy damage.",
+  "slash_art.recasting.final_supernova_lambda": "Final Supernova Lambda",
+  "slash_art.recasting.final_supernova_lambda.desc": "Unfolds a wider collapsing black hole at the aim point that consumes blocks and pulls entities, then bursts into rings and deals heavier damage.",
   "slash_art.recasting.fleeting_shadow": "Fleeting Shadow",
   "slash_art.recasting.fleeting_shadow.desc": "Repeatedly flashes beside nearby foes, performing a brief dance of slashes and restoring health after each movement.",
   "slash_art.recasting.fleeting_shadow_lambda": "Fleeting Shadow Lambda",
