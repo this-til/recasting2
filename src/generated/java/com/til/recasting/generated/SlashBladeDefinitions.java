@@ -1125,7 +1125,7 @@ public final class SlashBladeDefinitions {
                         PropertiesDefinition.Builder.newInstance()
                                 .baseAttackModifier(8f)
                                 .maxDamage(256 * 40)
-                                .slashArtsType(SlashArtsRegistry.FINAL_SUPERNOVA.getId())
+                                .slashArtsType(SlashArtsRegistry.FINAL_SUPERNOVA_LAMBDA.getId())
                                 .defaultSwordType(List.of(SwordType.BEWITCHED))
                 )
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))

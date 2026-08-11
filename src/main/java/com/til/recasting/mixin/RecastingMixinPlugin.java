@@ -1,5 +1,6 @@
 package com.til.recasting.mixin;
 
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -10,7 +11,6 @@ import java.util.Set;
 public final class RecastingMixinPlugin implements IMixinConfigPlugin {
 
     private static final String JEI_COMPAT_MIXIN = "com.til.recasting.mixin.JEICompatMixin";
-    private static final String JEI_COMPAT_TARGET = "mods.flammpfeil.slashblade.compat.jei.JEICompat";
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -27,7 +27,8 @@ public final class RecastingMixinPlugin implements IMixinConfigPlugin {
             return true;
         }
 
-        return isClassPresent(JEI_COMPAT_TARGET);
+        // Mixin prepare 时尚无法可靠解析 JEICompat（类加载器隔离 / JEI 接口未就绪），改以 mod 列表判定。
+        return FMLLoader.getLoadingModList().getModFileById("jei") != null;
     }
 
     @Override
@@ -45,14 +46,5 @@ public final class RecastingMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-    }
-
-    private boolean isClassPresent(String className) {
-        try {
-            Class.forName(className, false, this.getClass().getClassLoader());
-            return true;
-        } catch (Throwable ignored) {
-            return false;
-        }
     }
 }

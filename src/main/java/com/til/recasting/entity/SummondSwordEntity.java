@@ -27,8 +27,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,18 +77,13 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     @javax.annotation.Nullable
     protected IntOpenHashSet pierce;
 
-    @OnlyIn(Dist.CLIENT)
+    /** 命中后相对位置是否已记录（服务端与客户端均需跟随目标） */
     protected boolean recordAttackPos;
 
-    @OnlyIn(Dist.CLIENT)
     protected double hitX;
-    @OnlyIn(Dist.CLIENT)
     protected double hitY;
-    @OnlyIn(Dist.CLIENT)
     protected double hitZ;
-    @OnlyIn(Dist.CLIENT)
     protected float hitYaw;
-    @OnlyIn(Dist.CLIENT)
     protected float hitPitch;
 
     protected BlockState inBlockState;

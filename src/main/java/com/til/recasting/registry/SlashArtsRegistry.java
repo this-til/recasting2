@@ -305,6 +305,16 @@ public class SlashArtsRegistry {
 
     // 终焉超新星爆
     public static final RegistryObject<ExtendedSlashArts> FINAL_SUPERNOVA = registerExtendedSA("final_supernova", FinalSupernovaSlashArts::new);
+    public static final RegistryObject<ExtendedSlashArts> FINAL_SUPERNOVA_LAMBDA = registerExtendedSA(
+            "final_supernova_lambda",
+            () -> new FinalSupernovaSlashArts()
+                    .setDamageRatio(7.6125f)
+                    .setHorizonStart(21.28f)
+                    .setParticleRadiusStart(31.92f)
+                    .setEffectRange(85.12f)
+                    .setAbsorbRadius(2.66f)
+                    .setDamageFalloffStart(21.28f)
+    );
 
     // 犬咬
     public static final RegistryObject<ExtendedSlashArts> DOG_BITE = registerExtendedSA("dog_bite", DogBiteSlashArts::new);

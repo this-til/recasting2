@@ -480,6 +480,8 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtDescKey(SlashArtsRegistry.OTHERWORLD_SLASH), "发动大范围环状斩击，并对命中目标追加冲击打击；单次释放不会对同一目标重复叠加冲击。", "Unleashes a wide ring slash and applies Impact strikes to hit targets; a single cast will not stack Impact repeatedly on the same target.");
         translation(slashArtKey(SlashArtsRegistry.FINAL_SUPERNOVA), "终焉超新星爆", "Final Supernova");
         translation(slashArtDescKey(SlashArtsRegistry.FINAL_SUPERNOVA), "在瞄准点展开坍缩黑洞，吞噬周围方块并吸附实体，最终迸发圆环并造成大量伤害。", "Unfolds a collapsing black hole at the aim point that consumes blocks and pulls entities, then bursts into rings and deals heavy damage.");
+        translation(slashArtKey(SlashArtsRegistry.FINAL_SUPERNOVA_LAMBDA), "^终焉超新星爆", "Final Supernova Lambda");
+        translation(slashArtDescKey(SlashArtsRegistry.FINAL_SUPERNOVA_LAMBDA), "在瞄准点展开更广的坍缩黑洞，吞噬周围方块并吸附实体，最终迸发圆环并造成更大量伤害。", "Unfolds a wider collapsing black hole at the aim point that consumes blocks and pulls entities, then bursts into rings and deals heavier damage.");
         translation(specialEffectKey(SpecialEffectsRegistry.COOPERATE_WITH), "协同攻击", "Cooperate With");
         translation(specialEffectDescKey(SpecialEffectsRegistry.COOPERATE_WITH), "挥刀时概率额外挥刀。", "Has a chance to perform an additional slash when slashing.");
         translation(specialEffectKey(SpecialEffectsRegistry.CROSS_CHOP), "十字斩", "Cross Chop");

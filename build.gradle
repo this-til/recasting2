@@ -120,6 +120,8 @@ minecraft {
         }
 
         server {
+            // 与客户端 run/ 隔离，避免 oculus 等客户端 jar 进入专用服
+            workingDirectory project.file('run-server')
             property 'forge.enabledGameTestNamespaces', mod_id
             args '--nogui'
             mods {
@@ -134,6 +136,7 @@ minecraft {
         // By default, the server will crash when no gametests are provided.
         // The gametest system is also enabled by default for other run configs under the /test command.
         gameTestServer {
+            workingDirectory project.file('run-server')
             property 'forge.enabledGameTestNamespaces', mod_id
             mods {
                 "${mod_id}" {
@@ -209,9 +212,16 @@ repositories {
 }
 
 configurations {
+    // 专用服 run-server/mods：仅双方都需要的运行时依赖
+    runServerModLibraries {
+        canBeConsumed = false
+        canBeResolved = true
+    }
+    // 客户端 run/mods：继承服务端集合，再叠加客户端专用 jar
     runModLibraries {
         canBeConsumed = false
         canBeResolved = true
+        extendsFrom runServerModLibraries
     }
 }
 
@@ -231,11 +241,81 @@ def parseRunFlag(String name) {
     return value.equalsIgnoreCase('true') || value == '1'
 }
 
-// SlashBlade 扩展兼容 mod：默认不注入 run/mods
+// SlashBlade 扩展兼容 mod：默认不注入 run*/mods
 def runCompatSrelic = parseRunFlag('runCompatSrelic')
 def runCompatTruePower = parseRunFlag('runCompatTruePower')
-// Oculus + Embeddium + 主流光影包：默认开启；关闭 -PrunShaders=false
+// Oculus + Embeddium + 主流光影包：仅客户端；默认开启；关闭 -PrunShaders=false
 def runShaders = project.hasProperty('runShaders') ? parseRunFlag('runShaders') : true
+
+/** 仅同步带 META-INF/mods.toml 的依赖 jar，排除 forge/minecraft 本体。 */
+def includeRunModJar = { FileTreeElement details ->
+    if (!details.file.name.endsWith('.jar')) {
+        return false
+    }
+    def name = details.file.name.toLowerCase()
+    if (name.startsWith('forge-') || name.startsWith('minecraft-')) {
+        return false
+    }
+    def jarFile = new java.util.zip.ZipFile(details.file)
+    try {
+        return jarFile.getEntry('META-INF/mods.toml') != null
+    } finally {
+        jarFile.close()
+    }
+}
+
+/** SecureJar 自动模块名：true-power → truepower */
+def renameRunModJar = { String fileName ->
+    fileName.replace('true-power', 'truepower')
+}
+
+/**
+ * 按开关清理 mods 目录中不应保留的 jar。
+ * @param alwaysRemove 始终删除的文件名谓词（如服务端排除客户端 jar）
+ */
+def cleanRunModsDir = { File modsDir, List alwaysRemove = [] ->
+    if (!modsDir.isDirectory()) {
+        return
+    }
+    def removeNameMatchers = [] as List
+    removeNameMatchers.addAll(alwaysRemove)
+    if (!runCompatSrelic) {
+        removeNameMatchers.addAll([
+                { String n -> n.startsWith('slashblade-gamerelic') || n.startsWith('srelic') },
+                { String n -> n.startsWith('legendreliclib') },
+                { String n -> n.startsWith('patchouli') },
+        ])
+    }
+    if (!runCompatTruePower) {
+        removeNameMatchers.addAll([
+                { String n -> n.startsWith('true-power') || n.startsWith('truepower') },
+                { String n -> n.startsWith('mrqx') },
+                { String n -> n.startsWith('playeranimator') || n.startsWith('player_animator') },
+        ])
+    }
+    if (!runShaders) {
+        removeNameMatchers.addAll([
+                { String n -> n.startsWith('embeddium') },
+                { String n -> n.startsWith('oculus') },
+        ])
+    }
+    modsDir.listFiles()?.each { File file ->
+        if (!file.name.toLowerCase(Locale.ROOT).endsWith('.jar')) {
+            return
+        }
+        def lowerName = file.name.toLowerCase(Locale.ROOT)
+        if (removeNameMatchers.any { it.call(lowerName) }) {
+            logger.lifecycle("Removing duplicate/disabled run mod: ${file.name}")
+            file.delete()
+        }
+    }
+}
+
+// 服务端 mods 目录禁止出现的客户端专用 jar 前缀（渲染/光影类）
+def serverForbiddenClientModMatchers = [
+        { String n -> n.startsWith('embeddium') },
+        { String n -> n.startsWith('oculus') },
+]
 
 dependencies {
     // Specify the version of Minecraft to use.
@@ -270,52 +350,58 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
 
     //implementation fg.deobf("mods.flammpfeil.slashblade:SlashBlade_Resharped:${slash_blade_version}")
-    // 已在 implementation：勿再 runModLibraries，否则 classpath + run/mods 双加载会触发 JPMS 包导出冲突
-    implementation fg.deobf("curse.maven:SlashBlade_Resharped-1022428:8090912")
-    //拔刀剑物品栏/图标渲染预热优化，仅开发运行时注入
-    runModLibraries fg.deobf("curse.maven:slashblade-model-warmup-1468875:7663355")
+    // 编译用 compileOnly；运行时走 run*/mods，避免 implementation+run/mods 双加载 JPMS 冲突，
+    // 也避免 IntelliJ userdev 仅靠 implementation 时 FML 扫不到 mod（slashblade MISSING）
+    compileOnly fg.deobf("curse.maven:SlashBlade_Resharped-1022428:8090912")
+    testCompileOnly fg.deobf("curse.maven:SlashBlade_Resharped-1022428:8090912")
+    runServerModLibraries fg.deobf("curse.maven:SlashBlade_Resharped-1022428:8090912")
 
-
-    //nbt编辑器
-    runModLibraries fg.deobf("curse.maven:ibe-editor-256822:4994072")
-    //伤害数值显示
-    runModLibraries fg.deobf("curse.maven:damage-number-998849:5538112")
-    //curios：同 SlashBlade，仅 implementation，避免双加载
-    implementation fg.deobf("curse.maven:curios-309927:5680164")
+    //curios：SlashBlade 前置，与 JEI/SlashBlade 同样只 compile + run*/mods
+    compileOnly fg.deobf("curse.maven:curios-309927:5680164")
+    testCompileOnly fg.deobf("curse.maven:curios-309927:5680164")
+    runServerModLibraries fg.deobf("curse.maven:curios-309927:5680164")
     //假人前置
-    runModLibraries fg.deobf("curse.maven:selene-499980:5942980")
+    runServerModLibraries fg.deobf("curse.maven:selene-499980:5942980")
     //训练假人
-    runModLibraries fg.deobf("curse.maven:mmmmmmmmmmmm-225738:5737040")
-    //JEI API 参与编译，完整 Mod 仅在开发环境运行时注入
+    runServerModLibraries fg.deobf("curse.maven:mmmmmmmmmmmm-225738:5737040")
+    //JEI API 参与编译；完整 Mod 进 runServerModLibraries（客户端经 extendsFrom 一并带上）
     compileOnly fg.deobf("curse.maven:jei-238222:7391695")
-    runModLibraries fg.deobf("curse.maven:jei-238222:7391695")
+    runServerModLibraries fg.deobf("curse.maven:jei-238222:7391695")
+
+    // 开发辅助：未声明 IGNORE_SERVER_VERSION，进专用服需双侧一致
+    //拔刀剑物品栏/图标渲染预热优化
+    runServerModLibraries fg.deobf("curse.maven:slashblade-model-warmup-1468875:7663355")
+    //nbt编辑器
+    runServerModLibraries fg.deobf("curse.maven:ibe-editor-256822:4994072")
+    //伤害数值显示
+    runServerModLibraries fg.deobf("curse.maven:damage-number-998849:5538112")
 
     if (runCompatSrelic) {
         // srelic 兼容验证（仅开发运行时，-PrunCompatSrelic）
         // SlashBlade: Gamerelic（拔刀剑游戏遗物 / srelic）
-        runModLibraries fg.deobf("curse.maven:slashblade-gamerelic-1143914:7701562")
+        runServerModLibraries fg.deobf("curse.maven:slashblade-gamerelic-1143914:7701562")
         // LegendRelicLib（srelic 前置库）
-        runModLibraries fg.deobf("curse.maven:legendreliclib-1307366:8456355")
+        runServerModLibraries fg.deobf("curse.maven:legendreliclib-1307366:8456355")
         // Patchouli（帕秋莉手册，srelic 依赖）
-        runModLibraries fg.deobf("curse.maven:patchouli-306770:6164575")
+        runServerModLibraries fg.deobf("curse.maven:patchouli-306770:6164575")
     }
 
     if (runCompatTruePower) {
         // true_power_dmc5_sfx 兼容验证（仅开发运行时，-PrunCompatTruePower）
         // True POWER: DMC5 SFX（DMC5 风格音效）
-        runModLibraries fg.deobf("curse.maven:true-power-dmc5-sfx-1609911:8457290")
+        runServerModLibraries fg.deobf("curse.maven:true-power-dmc5-sfx-1609911:8457290")
         // True POWER（拔刀战斗系统大改）
-        runModLibraries fg.deobf("curse.maven:true-power-1287990:8456203")
+        runServerModLibraries fg.deobf("curse.maven:true-power-1287990:8456203")
         // mrqx's Slashblade Core（True POWER 前置库）
-        runModLibraries fg.deobf("curse.maven:mrqx-s-slashblade-core-1235855:8018780")
+        runServerModLibraries fg.deobf("curse.maven:mrqx-s-slashblade-core-1235855:8018780")
         // playerAnimator（玩家动画库，True POWER 依赖）
-        runModLibraries fg.deobf("curse.maven:playeranimator-658587:4587214")
+        runServerModLibraries fg.deobf("curse.maven:playeranimator-658587:4587214")
     }
 
     if (runShaders) {
-        // Embeddium（Sodium Forge 移植，Oculus 渲染前置）
+        // Embeddium（Sodium Forge 移植，Oculus 渲染前置）—— 仅客户端
         runModLibraries fg.deobf("curse.maven:embeddium-908741:5681725")
-        // Oculus（Iris Forge 移植，光影加载器）
+        // Oculus（Iris Forge 移植，光影加载器）—— 仅客户端
         runModLibraries fg.deobf("curse.maven:oculus-581495:6020952")
     }
 
@@ -345,69 +431,30 @@ tasks.register('syncRunMods', Copy) {
     from configurations.runModLibraries
     into layout.projectDirectory.dir('run/mods')
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    include includeRunModJar
+    rename renameRunModJar
 
-    include { FileTreeElement details ->
-        if (!details.file.name.endsWith('.jar')) {
-            return false
-        }
-        def name = details.file.name.toLowerCase()
-        if (name.startsWith('forge-') || name.startsWith('minecraft-')) {
-            return false
-        }
-        def jarFile = new java.util.zip.ZipFile(details.file)
-        try {
-            return jarFile.getEntry('META-INF/mods.toml') != null
-        } finally {
-            jarFile.close()
-        }
-    }
-
-    // SecureJar 用文件名推导自动模块名；true-power 会变成 true.power（true 非法）
-    rename { String fileName ->
-        fileName.replace('true-power', 'truepower')
-    }
-
-    // 清理不应出现在 run/mods 的残留 jar（implementation 依赖 / 关闭的兼容开关）
     doFirst {
-        def modsDir = layout.projectDirectory.dir('run/mods').asFile
-        if (!modsDir.isDirectory()) {
-            return
-        }
-        // implementation 已进 classpath，run/mods 再放一份会 JPMS 双导出冲突
-        def removeNameMatchers = [
-                { String n -> n.startsWith('slashblade_resharped') || n.startsWith('slashblade-resharped') },
-                { String n -> n.startsWith('curios-') },
-        ]
-        if (!runCompatSrelic) {
-            removeNameMatchers.addAll([
-                    { String n -> n.startsWith('slashblade-gamerelic') || n.startsWith('srelic') },
-                    { String n -> n.startsWith('legendreliclib') },
-                    { String n -> n.startsWith('patchouli') },
-            ])
-        }
-        if (!runCompatTruePower) {
-            removeNameMatchers.addAll([
-                    { String n -> n.startsWith('true-power') || n.startsWith('truepower') },
-                    { String n -> n.startsWith('mrqx') },
-                    { String n -> n.startsWith('playeranimator') || n.startsWith('player_animator') },
-            ])
-        }
-        if (!runShaders) {
-            removeNameMatchers.addAll([
-                    { String n -> n.startsWith('embeddium') },
-                    { String n -> n.startsWith('oculus') },
-            ])
-        }
-        modsDir.listFiles()?.each { File file ->
-            if (!file.name.toLowerCase(Locale.ROOT).endsWith('.jar')) {
-                return
-            }
-            def lowerName = file.name.toLowerCase(Locale.ROOT)
-            if (removeNameMatchers.any { it.call(lowerName) }) {
-                logger.lifecycle("Removing duplicate/disabled run mod: ${file.name}")
-                file.delete()
-            }
-        }
+        cleanRunModsDir(layout.projectDirectory.dir('run/mods').asFile)
+    }
+}
+
+tasks.register('syncRunServerMods', Copy) {
+    description = 'Syncs server-safe mod JARs into run-server/mods (no client-only jars).'
+    group = 'forgegradle runs'
+
+    inputs.property('runCompatSrelic', runCompatSrelic)
+    inputs.property('runCompatTruePower', runCompatTruePower)
+
+    from configurations.runServerModLibraries
+    into layout.projectDirectory.dir('run-server/mods')
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    include includeRunModJar
+    rename renameRunModJar
+
+    doFirst {
+        // 始终清掉客户端专用 jar，即使曾被手动放进 run-server/mods
+        cleanRunModsDir(layout.projectDirectory.dir('run-server/mods').asFile, serverForbiddenClientModMatchers)
     }
 }
 
@@ -458,8 +505,13 @@ tasks.register('syncRunShaderpacks') {
 }
 
 afterEvaluate {
-    tasks.matching { it.name == 'prepareRuns' }.configureEach {
+    // 客户端：同步 run/mods + 光影包
+    tasks.matching { it.name in ['prepareRunClient', 'prepareRunClientCompile'] }.configureEach {
         dependsOn 'syncRunMods', 'syncRunShaderpacks'
+    }
+    // 专用服 / GameTest：同步 run-server/mods（无客户端 jar）
+    tasks.matching { it.name in ['prepareRunServer', 'prepareRunServerCompile', 'prepareRunGameTestServer', 'prepareRunGameTestServerCompile'] }.configureEach {
+        dependsOn 'syncRunServerMods'
     }
 }
 

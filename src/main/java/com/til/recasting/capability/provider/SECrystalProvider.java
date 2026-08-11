@@ -31,12 +31,12 @@ public class SECrystalProvider implements ICapabilityProvider, INBTSerializable<
 
     @Override
     public CompoundTag serializeNBT() {
-        return ((SECrystalData) data).serializeNBT();
+        return data.serializeNBT();
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        ((SECrystalData) data).deserializeNBT(nbt);
+        data.deserializeNBT(nbt);
     }
 
     public void invalidate() {
