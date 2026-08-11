@@ -249,6 +249,7 @@
   "item.recasting.upgrade_variant_4": "Upgrade Variant IV",
   "item.recasting.winding_phase_transition": "Winding Phase Transition",
   "item.recasting.winding_phase_transition.desc": "Gold threads and sandalwood lines wind together into slender cords of light.",
+  "itemGroup.recasting": "Recasting",
   "other.test": "I should say something...",
   "recasting.command.fe.failed": "Failed to write FE energy.",
   "recasting.command.fe.fill_success": "Filled FE on %s's main-hand blade (%s).",

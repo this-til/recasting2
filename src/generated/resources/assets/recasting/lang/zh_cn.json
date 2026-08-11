@@ -249,6 +249,7 @@
   "item.recasting.upgrade_variant_4": "升格变体 IV",
   "item.recasting.winding_phase_transition": "缠绕相变",
   "item.recasting.winding_phase_transition.desc": "金丝与檀纹彼此缠绕，拉出细长的光缆。",
+  "itemGroup.recasting": "重铸",
   "other.test": "总该说些什么...",
   "recasting.command.fe.failed": "无法写入 FE 能量。",
   "recasting.command.fe.fill_success": "已将 %s 的主手刀 FE 填满（%s）。",

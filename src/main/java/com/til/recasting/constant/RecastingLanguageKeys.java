@@ -4,6 +4,8 @@ public final class RecastingLanguageKeys {
 
     public static final String OTHER_TEST = "other.test";
 
+    public static final String ITEM_GROUP = "itemGroup.recasting";
+
     public static final String BUFF_SOUL_BURN = "buff.recasting.soul_burn";
     public static final String BUFF_FRAGMENT = "buff.recasting.fragment";
     public static final String BUFF_IONIZATION = "buff.recasting.ionization";

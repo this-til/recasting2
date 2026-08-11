@@ -33,6 +33,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
         translation(RecastingLanguageKeys.OTHER_TEST, "总该说些什么...", "I should say something...");
+        translation(RecastingLanguageKeys.ITEM_GROUP, "重铸", "Recasting");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_ROOT_TITLE, "重铸之路", "Path of Recasting");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_ROOT_DESC, "名刀、结晶、杀敌掉落、附魔、精炼与锻造，尽在此途。", "Named blades, crystals, kill drops, enchantments, refining, and forging — all along this path.");
         translation(RecastingLanguageKeys.ADVANCEMENT_HUB_NEW_BLADE_SMITH_TITLE, "新生刀匠", "New Blade Smith");

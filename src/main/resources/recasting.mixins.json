@@ -16,6 +16,7 @@
     "LockOnManagerMixin",
     "RecipeProviderMixin",
     "SlashArtsAccessor",
+    "SlashBladeCreativeGroupMixin",
     "SlashBladeDefinitionBladeComparatorMixin",
     "SlashBladeDefinitionCodecMixin",
     "SlashBladeDefinitionGetBladeMixin",

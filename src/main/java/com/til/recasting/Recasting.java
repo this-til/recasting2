@@ -64,6 +64,9 @@ public class Recasting {
         // 注册配方序列化器
         RecastingRecipeSerializers.register(modEventBus);
 
+        // 注册创造栏 Tab
+        RecastingCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
+
         // 注册物品
         RecastingItems.ITEMS.register(modEventBus);
 

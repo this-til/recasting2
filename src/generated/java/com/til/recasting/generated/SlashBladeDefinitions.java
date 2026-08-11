@@ -1,6 +1,7 @@
 
 package com.til.recasting.generated;
 
+import com.til.recasting.Recasting;
 import com.til.recasting.constant.R;
 import com.til.recasting.constant.RecastingSlashBladeKeys;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
@@ -1743,11 +1744,13 @@ public final class SlashBladeDefinitions {
                 propertiesDefinitionExtension.setExtendedSpecialLevels(specialEffectResourceLocation, 1);
             }
 
+
             SlashBladeDefinition slashBladeDefinition = new SlashBladeDefinition(
                     key.location(),
                     renderDefinitionInstance,
                     propertiesDefinitionInstance,
-                    enchantments
+                    enchantments,
+                    null
             );
 
 
