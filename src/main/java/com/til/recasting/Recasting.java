@@ -7,7 +7,6 @@ import com.til.recasting.registry.*;
 import lombok.extern.log4j.Log4j2;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -72,8 +71,6 @@ public class Recasting {
 
         // 注册容器菜单
         RecastingMenus.MENUS.register(modEventBus);
-
-        modEventBus.addListener(EventPriority.HIGH, RecastingItems::onBuildCreativeModeTabContents);
     }
 
     public static ResourceLocation prefix(String path) {

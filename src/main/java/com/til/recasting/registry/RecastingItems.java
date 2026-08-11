@@ -19,7 +19,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -30,8 +29,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.IntStream;
 
 /**
  * Recasting 模组的物品注册类
@@ -870,91 +867,4 @@ public class RecastingItems {
         );
     }
 
-    public static void onBuildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
-        // 检查是否是 slashblade:slashblade 物品组
-        if (!event.getTabKey().location().equals(ResourceLocation.fromNamespaceAndPath("slashblade", "slashblade"))) {
-            return;
-        }
-
-        // 将所有 RecastingItems 中的物品添加到该物品组
-        event.accept(PROUD_SOUL_BAG);
-        event.accept(MATTER_BALL);
-
-        RecastingItems.getAllFlame().stream()
-                .map(RegistryObject::get)
-                .forEach(event::accept);
-
-        event.accept(GATHERING_PARTING_VARIANT);
-        event.accept(UPGRADE_VARIANT);
-        event.accept(UPGRADE_VARIANT_2);
-        event.accept(UPGRADE_VARIANT_3);
-        event.accept(UPGRADE_VARIANT_4);
-
-        // 添加庸魂立方体
-        event.accept(IRON_MEDIUM_SOUL_CUBE);
-        event.accept(GOLD_MEDIUM_SOUL_CUBE);
-        event.accept(COPPER_MEDIUM_SOUL_CUBE);
-        event.accept(DIAMOND_MEDIUM_SOUL_CUBE);
-        event.accept(EMERALD_MEDIUM_SOUL_CUBE);
-        event.accept(NETHERITE_MEDIUM_SOUL_CUBE);
-        event.accept(LAPIS_MEDIUM_SOUL_CUBE);
-        event.accept(REDSTONE_MEDIUM_SOUL_CUBE);
-
-        event.accept(FROST_VORTEX_CORE);
-        event.accept(SANDALWOOD_RHYME_CORE);
-        event.accept(BLAZING_FLAME_CORE);
-        event.accept(ILLUMINATING_TRUTH_CORE);
-        event.accept(ABYSS_DEPTH_CORE);
-
-        event.accept(DETONATION_PHASE_TRANSITION);
-        event.accept(BURNING_PHASE_TRANSITION);
-        event.accept(BLIND_PHASE_TRANSITION);
-        event.accept(FIRE_TOXIN_PHASE_TRANSITION);
-        event.accept(SPREAD_PHASE_TRANSITION);
-        event.accept(REFRACTION_PHASE_TRANSITION);
-        event.accept(CONCEALED_EDGE_PHASE_TRANSITION);
-        event.accept(WINDING_PHASE_TRANSITION);
-        event.accept(EROSION_PHASE_TRANSITION);
-        event.accept(INTERLACE_PHASE_TRANSITION);
-
-        //mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValues().stream()
-        //        .filter(se -> se instanceof ExtendedSpecialEffect)
-        //        .map(se -> (ExtendedSpecialEffect) se)
-        //        .flatMap(se -> IntStream.range(1, se.getMaxLevel() + 1)
-        //                .mapToObj(
-        //                        level -> {
-        //                            ItemStack itemStack = new ItemStack(SlashBladeItems.PROUDSOUL_CRYSTAL.get());
-        //                            CompoundTag tag = itemStack.getOrCreateTag();
-        //                            tag.putString("SpecialEffectType", Objects.requireNonNull(mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getKey(se)).toString());
-        //                            tag.putInt("SpecialEffectTypeLevel", level);
-        //                            return itemStack;
-        //                        }
-        //                )
-        //        )
-        //        .forEach(event::accept);
-
-
-        mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getValues().stream()
-                .filter(se -> se instanceof ExtendedSpecialEffect)
-                .map(se -> (ExtendedSpecialEffect) se)
-                .flatMap(se -> {
-                    // 特殊 SE 不提供 0 级结晶（去除走铁砧渊寂火）
-                    int startLevel = se.isSpecial()
-                            ? 1
-                            : 0;
-                    return IntStream.range(startLevel, se.getMaxLevel() + 1)
-                            .mapToObj(
-                                    level -> {
-                                        ItemStack itemStack = new ItemStack(RecastingItems.SE_CRYSTAL.get());
-                                        itemStack.getCapability(CapabilityRegistryHandler.SE_CRYSTAL_DATA).ifPresent(data -> {
-                                            ResourceLocation seKey = Objects.requireNonNull(mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getKey(se));
-                                            data.setSpecialEffectType(seKey);
-                                            data.setSpecialEffectLevel(level);
-                                        });
-                                        return itemStack;
-                                    }
-                            );
-                })
-                .forEach(event::accept);
-    }
 }
