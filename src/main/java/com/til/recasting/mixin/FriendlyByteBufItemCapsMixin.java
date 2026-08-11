@@ -5,32 +5,61 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
 
 /**
- * ItemStack.getShareTag 为 IForgeItemStack 默认方法，无法直接 Inject；在容器同步读写处嵌入 Cap。
+ * 容器同步（limitedTag=true → getShareTag）与创造栏取物（limitedTag=false → getTag）
+ * 均在写入 NBT 前嵌入本模组 Cap。
  */
 @Mixin(FriendlyByteBuf.class)
 public abstract class FriendlyByteBufItemCapsMixin {
 
+    @Unique
+    private static final ThreadLocal<ItemStack> RECASTING$WRITING_STACK = new ThreadLocal<>();
+
+    @Inject(
+            method = "writeItemStack(Lnet/minecraft/world/item/ItemStack;Z)Lnet/minecraft/network/FriendlyByteBuf;",
+            at = @At("HEAD"),
+            remap = false
+    )
+    private void recasting$captureWritingStack(ItemStack stack, boolean limitedTag, CallbackInfoReturnable<FriendlyByteBuf> cir) {
+        RECASTING$WRITING_STACK.set(stack);
+    }
+
+    @Inject(
+            method = "writeItemStack(Lnet/minecraft/world/item/ItemStack;Z)Lnet/minecraft/network/FriendlyByteBuf;",
+            at = @At("RETURN"),
+            remap = false
+    )
+    private void recasting$clearWritingStack(ItemStack stack, boolean limitedTag, CallbackInfoReturnable<FriendlyByteBuf> cir) {
+        RECASTING$WRITING_STACK.remove();
+    }
+
     /**
-     * {@code writeItemStack(ItemStack, boolean)} 为 Forge 补丁方法（vanilla 仅有 writeItem）。
+     * {@code writeItemStack} 为 Forge 方法；在 {@code writeNbt} 前统一补 Cap，覆盖两条分支。
      */
-    @Redirect(
+    @ModifyArg(
             method = "writeItemStack(Lnet/minecraft/world/item/ItemStack;Z)Lnet/minecraft/network/FriendlyByteBuf;",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/item/ItemStack;getShareTag()Lnet/minecraft/nbt/CompoundTag;",
-                    remap = false
+                    target = "Lnet/minecraft/network/FriendlyByteBuf;writeNbt(Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/network/FriendlyByteBuf;"
             ),
+            index = 0,
             remap = false
     )
-    private CompoundTag recasting$writeShareTagWithCaps(ItemStack stack) {
-        // 走 Item#getShareTag，避开对本 Redirect 的递归
-        return ItemStackShareCapSync.appendToShareTag(stack, stack.getItem().getShareTag(stack));
+    private CompoundTag recasting$appendCapsBeforeWriteNbt(@Nullable CompoundTag tag) {
+        ItemStack stack = RECASTING$WRITING_STACK.get();
+        if (stack == null || stack.isEmpty()) {
+            return tag;
+        }
+        return ItemStackShareCapSync.appendToShareTag(stack, tag);
     }
 
     @Redirect(
