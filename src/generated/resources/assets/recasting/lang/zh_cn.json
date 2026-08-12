@@ -281,6 +281,7 @@
   "recasting.tooltip.fe_energy.info": "FE 能量：%s",
   "recasting.tooltip.phantom_blade.normal": "幻影剑",
   "recasting.tooltip.phantom_blade.tracking": "幻影飞刃",
+  "recasting.tooltip.sa_se_desc.hint": "按住 Shift 查看 SA/SE 描述",
   "recasting.tooltip.special_se.badge": "(特殊)",
   "recasting.tooltip.special_se_extract": "• 特殊SE：左刀右渊寂火去除特殊SE（保留刀）；左刀右聚散变体提取为结晶（刀损毁）",
   "se.recasting.annihilation": "断灭",
@@ -401,6 +402,7 @@
   "se.recasting.tu_wu_blood_curse_lambda.desc": "手持时更大幅度提升全部伤害；受到致命伤害时以更高效率消耗耀魂抵挡，短时内过量消耗后仍可免疫致命但不继续扣费；手持时自动消耗耀魂补充饥饿。",
   "se.recasting.whirlwind": "旋风",
   "se.recasting.whirlwind.desc": "你的次元斩将允许造成重复的伤害。",
+  "se.slashblade.wither_edge.desc": "等级足够时攻击使目标凋零；不足时持刀反噬自身。",
   "slash_art.recasting.azure_haze": "[回到未来计划]青茫熳天摇",
   "slash_art.recasting.azure_haze.desc": "环绕自身射出大量幻影剑，飞剑消失时向四周扩散剑气。",
   "slash_art.recasting.blade_storm": "剑刃风暴",
@@ -566,5 +568,13 @@
   "slash_art.recasting.zantetsuden_row": "斩铁式·行",
   "slash_art.recasting.zantetsuden_row.desc": "向各个方向发射大量驱动剑气，剑气会从目标位置向四面八方飞散。",
   "slash_art.recasting.zantetsuden_row_lambda": "^斩铁式·行",
-  "slash_art.recasting.zantetsuden_row_lambda.desc": "在目标位置向各个方向发射更多驱动剑气，向四面八方飞散。"
+  "slash_art.recasting.zantetsuden_row_lambda.desc": "在目标位置向各个方向发射更多驱动剑气，向四面八方飞散。",
+  "slash_art.slashblade.circle_slash.desc": "环绕自身发动圆形斩击。",
+  "slash_art.slashblade.drive_horizontal.desc": "向前发射横向幻影刃。",
+  "slash_art.slashblade.drive_vertical.desc": "向前发射纵向幻影刃。",
+  "slash_art.slashblade.judgement_cut.desc": "蓄力后在目标处发动次元斩。",
+  "slash_art.slashblade.piercing.desc": "向前突刺。",
+  "slash_art.slashblade.sakura_end.desc": "连续发动快速斩击。",
+  "slash_art.slashblade.void_slash.desc": "展开虚无刀界斩击。",
+  "slash_art.slashblade.wave_edge.desc": "连续发出波状斩击。"
 }

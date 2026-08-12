@@ -281,6 +281,7 @@
   "recasting.tooltip.fe_energy.info": "FE Energy: %s",
   "recasting.tooltip.phantom_blade.normal": "Phantom Sword",
   "recasting.tooltip.phantom_blade.tracking": "Phantom Flying Blade",
+  "recasting.tooltip.sa_se_desc.hint": "Hold Shift to view SA/SE descriptions",
   "recasting.tooltip.special_se.badge": "(Special)",
   "recasting.tooltip.special_se_extract": "• Special SE: blade+abyss flame removes special SE (keeps blade); blade+gathering parting variant extracts a crystal (destroys blade)",
   "se.recasting.annihilation": "Annihilation",
@@ -401,6 +402,7 @@
   "se.recasting.tu_wu_blood_curse_lambda.desc": "While held, amplifies all damage more strongly; lethal hits consume proud souls more efficiently to absorb damage, and after heavy short-window spending still blocks lethality without further cost; while held, automatically spends proud souls to restore hunger.",
   "se.recasting.whirlwind": "Whirlwind",
   "se.recasting.whirlwind.desc": "Your judgement cuts will be allowed to deal repeated damage.",
+  "se.slashblade.wither_edge.desc": "Hits inflict Wither when your level is high enough; otherwise holding the blade withers you.",
   "slash_art.recasting.azure_haze": "[Back to the Future Plan] Azure Haze",
   "slash_art.recasting.azure_haze.desc": "Launches many phantom swords around the caster; when they vanish they burst into spreading sword qi.",
   "slash_art.recasting.blade_storm": "Blade Storm",
@@ -566,5 +568,13 @@
   "slash_art.recasting.zantetsuden_row": "Zantetsuden Row",
   "slash_art.recasting.zantetsuden_row.desc": "Launch numerous drive sword qi in all directions from the target position, scattering in every direction.",
   "slash_art.recasting.zantetsuden_row_lambda": "Zantetsuden Row Lambda",
-  "slash_art.recasting.zantetsuden_row_lambda.desc": "Launch even more drive sword qi in all directions from the target position, scattering in every direction."
+  "slash_art.recasting.zantetsuden_row_lambda.desc": "Launch even more drive sword qi in all directions from the target position, scattering in every direction.",
+  "slash_art.slashblade.circle_slash.desc": "Slash in a circle around yourself.",
+  "slash_art.slashblade.drive_horizontal.desc": "Launch a horizontal drive slash forward.",
+  "slash_art.slashblade.drive_vertical.desc": "Launch a vertical drive slash forward.",
+  "slash_art.slashblade.judgement_cut.desc": "Charge, then unleash a judgement cut at the target.",
+  "slash_art.slashblade.piercing.desc": "Thrust forward.",
+  "slash_art.slashblade.sakura_end.desc": "Unleash a rapid succession of slashes.",
+  "slash_art.slashblade.void_slash.desc": "Unfold a void-realm slash.",
+  "slash_art.slashblade.wave_edge.desc": "Send out successive wave slashes."
 }

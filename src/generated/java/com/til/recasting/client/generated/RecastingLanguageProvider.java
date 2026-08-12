@@ -236,6 +236,16 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(RecastingLanguageKeys.TOOLTIP_PHANTOM_BLADE_TRACKING, "幻影飞刃", "Phantom Flying Blade");
         translation(RecastingLanguageKeys.TOOLTIP_FE_ENERGY_HINT, "按住 Shift 查看 FE 能量", "Hold Shift to view FE energy");
         translation(RecastingLanguageKeys.TOOLTIP_FE_ENERGY_INFO, "FE 能量：%s", "FE Energy: %s");
+        translation(RecastingLanguageKeys.TOOLTIP_SA_SE_DESC_HINT, "按住 Shift 查看 SA/SE 描述", "Hold Shift to view SA/SE descriptions");
+        translation("slash_art.slashblade.circle_slash.desc", "环绕自身发动圆形斩击。", "Slash in a circle around yourself.");
+        translation("slash_art.slashblade.drive_horizontal.desc", "向前发射横向幻影刃。", "Launch a horizontal drive slash forward.");
+        translation("slash_art.slashblade.drive_vertical.desc", "向前发射纵向幻影刃。", "Launch a vertical drive slash forward.");
+        translation("slash_art.slashblade.judgement_cut.desc", "蓄力后在目标处发动次元斩。", "Charge, then unleash a judgement cut at the target.");
+        translation("slash_art.slashblade.piercing.desc", "向前突刺。", "Thrust forward.");
+        translation("slash_art.slashblade.sakura_end.desc", "连续发动快速斩击。", "Unleash a rapid succession of slashes.");
+        translation("slash_art.slashblade.void_slash.desc", "展开虚无刀界斩击。", "Unfold a void-realm slash.");
+        translation("slash_art.slashblade.wave_edge.desc", "连续发出波状斩击。", "Send out successive wave slashes.");
+        translation("se.slashblade.wither_edge.desc", "等级足够时攻击使目标凋零；不足时持刀反噬自身。", "Hits inflict Wither when your level is high enough; otherwise holding the blade withers you.");
         translation(RecastingLanguageKeys.COMMAND_FE_NOT_FE_BLADE, "主手物品不是带 FE 缓存的拔刀剑。", "Main-hand item is not an FE slash blade.");
         translation(RecastingLanguageKeys.COMMAND_FE_FAILED, "无法写入 FE 能量。", "Failed to write FE energy.");
         translation(RecastingLanguageKeys.COMMAND_FE_FILL_SUCCESS, "已将 %s 的主手刀 FE 填满（%s）。", "Filled FE on %s's main-hand blade (%s).");

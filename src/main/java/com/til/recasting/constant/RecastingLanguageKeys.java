@@ -35,6 +35,7 @@ public final class RecastingLanguageKeys {
     public static final String TOOLTIP_PHANTOM_BLADE_TRACKING = "recasting.tooltip.phantom_blade.tracking";
     public static final String TOOLTIP_FE_ENERGY_HINT = "recasting.tooltip.fe_energy.hint";
     public static final String TOOLTIP_FE_ENERGY_INFO = "recasting.tooltip.fe_energy.info";
+    public static final String TOOLTIP_SA_SE_DESC_HINT = "recasting.tooltip.sa_se_desc.hint";
     public static final String COMMAND_FE_NOT_FE_BLADE = "recasting.command.fe.not_fe_blade";
     public static final String COMMAND_FE_FAILED = "recasting.command.fe.failed";
     public static final String COMMAND_FE_FILL_SUCCESS = "recasting.command.fe.fill_success";
