@@ -1,5 +1,7 @@
 # User-specific stuff
 .idea/
+.vscode/
+.cursor/skills/continuous-learning-data/
 
 *.iml
 *.ipr
