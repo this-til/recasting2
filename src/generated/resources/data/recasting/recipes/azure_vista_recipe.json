@@ -42,9 +42,9 @@
     }
   },
   "pattern": [
-    " DC",
+    " CD",
     "CBC",
-    "CD "
+    "DC "
   ],
   "result": {
     "item": "slashblade:slashblade"

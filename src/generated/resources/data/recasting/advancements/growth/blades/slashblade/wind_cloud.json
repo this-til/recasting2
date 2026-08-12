@@ -1,5 +1,5 @@
 {
-  "parent": "recasting:growth/blades/slashblade/azure_vista_lambda",
+  "parent": "recasting:growth/blades/slashblade/xuan_ming_lambda",
   "criteria": {
     "crafted": {
       "conditions": {
@@ -25,7 +25,7 @@
       "translate": "advancements.recasting.growth.blade.from.description",
       "with": [
         {
-          "translate": "item.recasting.slashblade.azure_vista_lambda"
+          "translate": "item.recasting.slashblade.xuan_ming_lambda"
         }
       ]
     },

@@ -53,9 +53,9 @@
     }
   },
   "pattern": [
-    " GC",
+    " CG",
     "CBC",
-    "CG "
+    "GC "
   ],
   "result": {
     "item": "slashblade:slashblade"

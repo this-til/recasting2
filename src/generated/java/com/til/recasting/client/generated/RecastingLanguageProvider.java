@@ -4,6 +4,7 @@ package com.til.recasting.client.generated;
 import com.til.recasting.Recasting;
 import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.constant.RecastingSlashBladeKeys;
+import com.til.recasting.generated.GrowthAdvancementGraph;
 import com.til.recasting.registry.RecastingItems;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.SlashArtsRegistry;
@@ -63,13 +64,21 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_SILENCE_TITLE, "静默", "Silence");
         translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_SILENCE_DESC, "抹除刀上的任意一个普通或特殊效果即可获得。", "Obtain this by erasing any one normal or special effect from a blade.");
         translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000_TITLE, "杀意初凝", "Rising Bloodlust");
-        translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000_DESC, "持有击杀数足够高的刀，解锁击杀带来的伤害加成。", "Hold a blade with enough kill count to unlock kill-based damage bonus.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000_DESC,
+                "持有击杀数超过 " + GrowthAdvancementGraph.KILL_MILESTONE_1 + " 的刀，解锁击杀带来的伤害加成。",
+                "Hold a blade with more than " + GrowthAdvancementGraph.KILL_MILESTONE_1 + " kills to unlock the kill-based damage bonus.");
         translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_10000_TITLE, "杀意滔天", "Surging Bloodlust");
-        translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_10000_DESC, "持有击杀数极高的刀，进一步强化击杀带来的伤害加成。", "Hold a blade with an extreme kill count for a further kill-based damage bonus.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_10000_DESC,
+                "持有击杀数超过 " + GrowthAdvancementGraph.KILL_MILESTONE_2 + " 的刀，进一步强化击杀带来的伤害加成。",
+                "Hold a blade with more than " + GrowthAdvancementGraph.KILL_MILESTONE_2 + " kills for a further kill-based damage bonus.");
         translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_100000_TITLE, "杀意如潮", "Tide of Bloodlust");
-        translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_100000_DESC, "持有击杀数更深的刀，继续强化击杀带来的伤害加成。", "Hold a blade with a deeper kill count for another kill-based damage bonus.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_100000_DESC,
+                "持有击杀数超过 " + GrowthAdvancementGraph.KILL_MILESTONE_3 + " 的刀，继续强化击杀带来的伤害加成。",
+                "Hold a blade with more than " + GrowthAdvancementGraph.KILL_MILESTONE_3 + " kills for another kill-based damage bonus.");
         translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000000_TITLE, "杀意无尽", "Endless Bloodlust");
-        translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000000_DESC, "持有击杀数近乎无尽的刀，再度强化击杀带来的伤害加成。", "Hold a blade with near-endless kill count for yet another kill-based damage bonus.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000000_DESC,
+                "持有击杀数超过 " + GrowthAdvancementGraph.KILL_MILESTONE_4 + " 的刀，再度强化击杀带来的伤害加成。",
+                "Hold a blade with more than " + GrowthAdvancementGraph.KILL_MILESTONE_4 + " kills for yet another kill-based damage bonus.");
         translation(RecastingLanguageKeys.ADVANCEMENT_ENCHANT_SMITE_DESC, "对亡灵目标提升斩击伤害。", "Increases slash damage against undead.");
         translation(RecastingLanguageKeys.ADVANCEMENT_ENCHANT_BANE_DESC, "对节肢目标提升斩击伤害。", "Increases slash damage against arthropods.");
         translation(RecastingLanguageKeys.ADVANCEMENT_ENCHANT_FIRE_ASPECT_DESC, "斩击可附加火焰伤害。", "Slash attacks can deal bonus fire damage.");
@@ -77,9 +86,13 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(RecastingLanguageKeys.ADVANCEMENT_ENCHANT_POWER_DESC, "提升幻影剑伤害，并影响部分拔刀术表现。", "Boosts summoned-sword damage and affects some slash arts.");
         translation(RecastingLanguageKeys.ADVANCEMENT_ENCHANT_SWEEPING_DESC, "扩大挥刀攻击范围。", "Widens slash attack range.");
         translation(RecastingLanguageKeys.ADVANCEMENT_REFINE_1000_TITLE, "千锻", "Thousand Refines");
-        translation(RecastingLanguageKeys.ADVANCEMENT_REFINE_1000_DESC, "持有精炼足够深的刀，解锁精炼里程碑伤害加成。", "Hold a deeply refined blade to unlock refine milestone damage bonus.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_REFINE_1000_DESC,
+                "持有精炼超过 " + GrowthAdvancementGraph.REFINE_MILESTONE_1 + " 的刀，解锁精炼里程碑伤害加成。",
+                "Hold a blade with more than " + GrowthAdvancementGraph.REFINE_MILESTONE_1 + " refines to unlock the refine milestone damage bonus.");
         translation(RecastingLanguageKeys.ADVANCEMENT_REFINE_10000_TITLE, "万锻", "Ten Thousand Refines");
-        translation(RecastingLanguageKeys.ADVANCEMENT_REFINE_10000_DESC, "持有精炼极深的刀，进一步强化精炼里程碑伤害加成。", "Hold an extremely refined blade for a further refine milestone damage bonus.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_REFINE_10000_DESC,
+                "持有精炼超过 " + GrowthAdvancementGraph.REFINE_MILESTONE_2 + " 的刀，进一步强化精炼里程碑伤害加成。",
+                "Hold a blade with more than " + GrowthAdvancementGraph.REFINE_MILESTONE_2 + " refines for a further refine milestone damage bonus.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_START_DESC, "成长路线起点。", "Starting point of a growth path.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_FROM_DESC, "由「%s」成长而来。", "Grows from %s.");
         translation(RecastingLanguageKeys.ADVANCEMENT_GROWTH_BLADE_MENU_DESC, "彩蛋刀。", "An easter egg blade.");

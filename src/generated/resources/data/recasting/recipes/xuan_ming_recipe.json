@@ -1,6 +1,6 @@
 {
   "type": "slashblade:shaped_blade",
-  "blade": "recasting:slashblade/wind_cloud",
+  "blade": "recasting:slashblade/xuan_ming",
   "category": "equipment",
   "key": {
     "B": {
@@ -25,26 +25,26 @@
           }
         ],
         "kill": 1500,
-        "name": "recasting:slashblade/xuan_ming_lambda",
-        "refine": 400
+        "name": "recasting:slashblade/dragon_scale_lambda",
+        "refine": 300
       }
     },
     "C": {
-      "item": "recasting:illuminating_truth_core"
+      "item": "recasting:lapis_medium_soul_cube"
     },
-    "W": {
+    "T": {
       "type": "recasting:se_crystal",
       "item": "recasting:se_crystal",
       "request": {
         "level": 1,
-        "special_effect_type": "recasting:whirlwind"
+        "special_effect_type": "recasting:tear"
       }
     }
   },
   "pattern": [
-    "CWC",
-    "WBW",
-    "CWC"
+    " CT",
+    "CBC",
+    "TC "
   ],
   "result": {
     "item": "slashblade:slashblade"

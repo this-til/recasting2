@@ -9,7 +9,7 @@
   "properties": {
     "attack_base": 8.0,
     "max_damage": 10240,
-    "slash_art": "recasting:final_supernova",
+    "slash_art": "recasting:final_supernova_lambda",
     "sword_type": [
       "bewitched"
     ]

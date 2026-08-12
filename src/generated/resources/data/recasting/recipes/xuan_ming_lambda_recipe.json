@@ -1,6 +1,6 @@
 {
   "type": "slashblade:shaped_blade",
-  "blade": "recasting:slashblade/wind_cloud",
+  "blade": "recasting:slashblade/xuan_ming_lambda",
   "category": "equipment",
   "key": {
     "B": {
@@ -21,30 +21,41 @@
           },
           {
             "id": "minecraft:piercing",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:looting",
             "lvl": 3
+          },
+          {
+            "id": "minecraft:bane_of_arthropods",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:impaling"
           }
         ],
-        "kill": 1500,
-        "name": "recasting:slashblade/xuan_ming_lambda",
-        "refine": 400
+        "kill": 3000,
+        "name": "recasting:slashblade/xuan_ming",
+        "refine": 600
       }
     },
     "C": {
-      "item": "recasting:illuminating_truth_core"
+      "item": "recasting:gold_medium_soul_cube"
     },
-    "W": {
+    "R": {
       "type": "recasting:se_crystal",
       "item": "recasting:se_crystal",
       "request": {
         "level": 1,
-        "special_effect_type": "recasting:whirlwind"
+        "special_effect_type": "recasting:resist"
       }
     }
   },
   "pattern": [
-    "CWC",
-    "WBW",
-    "CWC"
+    " CR",
+    "CBC",
+    "RC "
   ],
   "result": {
     "item": "slashblade:slashblade"

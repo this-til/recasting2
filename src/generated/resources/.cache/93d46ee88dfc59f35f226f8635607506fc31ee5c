@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-11T15:29:50.2483727	Recasting SlashBlade Definition Registry
+// 1.20.1	2026-08-12T21:25:19.6373838	Recasting SlashBlade Definition Registry
 dc314aafdb9885f2c02f8750416a9770ded86441 data/recasting/slashblade/named_blades/slashblade/art_knife.json
 fb5ea4ae03dcd4a94816be3a56b635322ecc90e8 data/recasting/slashblade/named_blades/slashblade/azure_vista.json
 ef829620573a4554652583038a7d8fa9e87ca05e data/recasting/slashblade/named_blades/slashblade/azure_vista_lambda.json
@@ -63,7 +63,7 @@ dab8b4521e05d91b5ef37b64b37bc6bb60ccf1a4 data/recasting/slashblade/named_blades/
 d4a4eb61c16b171913c0b08832720fb9ad0e15af data/recasting/slashblade/named_blades/slashblade/soulblade.json
 a97eca045307d8d5c5387b207a27cee13b5083b3 data/recasting/slashblade/named_blades/slashblade/soulblade_lambda.json
 b8f68fd5548525b4853c1f067a874732e454be3c data/recasting/slashblade/named_blades/slashblade/special/final_glow.json
-ed9acb29363938032375ff1ac9efcebb8778a7a5 data/recasting/slashblade/named_blades/slashblade/special/final_glow_lambda.json
+924134bf8e12bb1d401df657c3929ab8ac169ed7 data/recasting/slashblade/named_blades/slashblade/special/final_glow_lambda.json
 656d7a227aba4c5fab679620b215bb127f6f52ff data/recasting/slashblade/named_blades/slashblade/special/jie_yuan_dog.json
 374a8059ec6733f9880c3b9e21ec2bc7ebd9ff5c data/recasting/slashblade/named_blades/slashblade/special/star_thread.json
 3e1a8571d950d20c85eb0739e8c41ac8441d6134 data/recasting/slashblade/named_blades/slashblade/special/star_thread_lambda.json
@@ -89,3 +89,5 @@ f016e6dce7507794436f1a1bbef08272764ffab2 data/recasting/slashblade/named_blades/
 c55a8329cc3fe1a9e7510b21b589e2e30cb1ab58 data/recasting/slashblade/named_blades/slashblade/void/void_3.json
 9e11e0213c07f265be3f8207783dc6a41e4b2098 data/recasting/slashblade/named_blades/slashblade/wind_cloud.json
 9a53de1a937b56d363b8db9e2b67692ca4adfeb0 data/recasting/slashblade/named_blades/slashblade/wind_cloud_lambda.json
+ff144c2e6160c980b4666d99d8f97e183c83f9b0 data/recasting/slashblade/named_blades/slashblade/xuan_ming.json
+aefd3dc8effc9f075fbefc2c8ba9fff5ae3ed751 data/recasting/slashblade/named_blades/slashblade/xuan_ming_lambda.json

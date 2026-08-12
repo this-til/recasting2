@@ -1786,7 +1786,7 @@ public final class SlashBladeDefinitions {
                     renderDefinitionInstance,
                     propertiesDefinitionInstance,
                     enchantments,
-                    null
+                    Recasting.prefix("hidden")
             );
 
 

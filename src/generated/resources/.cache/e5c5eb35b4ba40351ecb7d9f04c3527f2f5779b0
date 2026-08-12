@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-11T01:48:48.1183154	Advancements
+// 1.20.1	2026-08-12T21:21:22.9007918	Advancements
 1712a697927bd33f2ac61bd946afa4eb235d72d6 data/recasting/advancements/growth/blades/slashblade/art_knife.json
 84a907fb18a21655c41f203ef6e301210710e6f5 data/recasting/advancements/growth/blades/slashblade/azure_vista.json
 1563f8fe50126bf4ea4b687614ac67e2859928f2 data/recasting/advancements/growth/blades/slashblade/azure_vista_lambda.json
@@ -78,8 +78,10 @@ e9b93bc5b05ab6bff4db43080a64efdc000a8103 data/recasting/advancements/growth/blad
 7554436724919e161683d6bbdf22906e180646f5 data/recasting/advancements/growth/blades/slashblade/void/void_1.json
 ce497042a86915f3f16dbf37c6c77aa922400d55 data/recasting/advancements/growth/blades/slashblade/void/void_2.json
 7a681e7dc1de2f8ddde286e688358ecb95cd0e44 data/recasting/advancements/growth/blades/slashblade/void/void_3.json
-86c0363efca5804c387a8a775a40147c43a2da4f data/recasting/advancements/growth/blades/slashblade/wind_cloud.json
+58b77f8b4b413bf6d38d2a48e27b1eb8be5de92e data/recasting/advancements/growth/blades/slashblade/wind_cloud.json
 e439ebfee26d8633199cc196ae8ee45edefb0e13 data/recasting/advancements/growth/blades/slashblade/wind_cloud_lambda.json
+d787be465217b96ec7f3630a35cd6e9df7edb282 data/recasting/advancements/growth/blades/slashblade/xuan_ming.json
+d710635b2806d877e527a63100eebaed078ed9f6 data/recasting/advancements/growth/blades/slashblade/xuan_ming_lambda.json
 25d2e5215b9d72c5d55bfded30b1cd6de7196423 data/recasting/advancements/growth/drop/btf/azure_haze.json
 194e83cd399ab6e809d9b77513ba7f2471943714 data/recasting/advancements/growth/drop/btf/blistering_qi.json
 4642622150e5824f856b734740bac412828ee51a data/recasting/advancements/growth/drop/btf/celestial_drive.json
