@@ -6,7 +6,27 @@ Minecraft Forge 1.20.1 的 [SlashBlade Resharped](https://www.curseforge.com/min
 
 ## 展示
 
-OverviewP0P1P2P3P4P5
+![Overview](showcase/gallery/overview.png)
+
+![P0](showcase/gallery/P0.png)
+
+![P1](showcase/gallery/P1.png)
+
+![P2](showcase/gallery/P2.png)
+
+![P3](showcase/gallery/P3.png)
+
+![P4](showcase/gallery/P4.png)
+
+![P5](showcase/gallery/P5.png)
+
+![F1](showcase/gallery/F1.png)
+
+![F2](showcase/gallery/F2.png)
+
+![F3](showcase/gallery/F3.png)
+
+![F4](showcase/gallery/F4.png)
 
 ## 前置
 
