@@ -4,29 +4,16 @@ Minecraft Forge 1.20.1 的 [SlashBlade Resharped](https://www.curseforge.com/min
 
 新增 **61** 把名刀、**85** 种拔刀术（SA）、**59** 种特殊效果（SE）。在铁砧上铭刻结晶、精炼刀身，沿「重铸之路」成长。
 
-A SlashBlade addon with **61** named blades, **85** slash arts, and **59** special effects. Engrave crystals at the anvil, refine your blade, and grow along the Path of Recasting.
-
 ## 展示
 
-![Overview](showcase/overview.png)
-
-![P0](showcase/P0.png)
-
-![P1](showcase/P1.png)
-
-![P2](showcase/P2.png)
-
-![P3](showcase/P3.png)
-
-![P4](showcase/P4.png)
-
-![P5](showcase/P5.png)
+OverviewP0P1P2P3P4P5
 
 ## 前置
 
 - Minecraft **1.20.1** + Forge **47.4.13+** + Java **17**
 - 强制依赖：[SlashBlade Resharped](https://www.curseforge.com/minecraft/mc-mods/slashblade-resharped) **1.9+**
-- 可选：[JEI](https://www.curseforge.com/minecraft/mc-mods/jei)
+
+
 
 ## 从源码构建
 
@@ -49,6 +36,8 @@ A SlashBlade addon with **61** named blades, **85** slash arts, and **59** speci
 ```powershell
 .\gradlew runData
 ```
+
+
 
 ## 许可证
 
