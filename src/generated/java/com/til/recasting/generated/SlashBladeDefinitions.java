@@ -571,6 +571,42 @@ public final class SlashBladeDefinitions {
         //        .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
         //        .build();
 
+        // 玄澪
+        register(bootstrap, RecastingSlashBladeKeys.XUAN_MING)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.xuanMing$obj)
+                                .textureName(R.Slashblade.xuanMing$png)
+                                .effectColor(new Color(0x8A7A5C).getRGB())
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(6f)
+                                .maxDamage(32 * 40)
+                                .slashArtsType(SlashArtsRegistry.RAPID_PHANTOM_SWORDS_DENSE.getId())
+                                .defaultSwordType(List.of(SwordType.BEWITCHED))
+                )
+                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+                .build();
+
+        // 玄澪 Lambda
+        register(bootstrap, RecastingSlashBladeKeys.XUAN_MING_LAMBDA)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.xuanMing$obj)
+                                .textureName(R.Slashblade.xuanMing$png)
+                                .effectColor(new Color(0x8A7A5C).getRGB())
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(6f)
+                                .maxDamage(64 * 40)
+                                .slashArtsType(SlashArtsRegistry.RAPID_PHANTOM_SWORDS_DENSE_LAMBDA.getId())
+                                .defaultSwordType(List.of(SwordType.BEWITCHED))
+                )
+                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+                .build();
+
         // 苍景
         register(bootstrap, RecastingSlashBladeKeys.AZURE_VISTA)
                 .renderDefinition(

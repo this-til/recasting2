@@ -74,6 +74,8 @@ public final class RecastingSlashBladeKeys {
     public static final ResourceKey<SlashBladeDefinition> ONIKIRI_LAMBDA = lambdaOf(ONIKIRI);
     public static final ResourceKey<SlashBladeDefinition> AZURE_VISTA = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.azureVista);
     public static final ResourceKey<SlashBladeDefinition> AZURE_VISTA_LAMBDA = lambdaOf(AZURE_VISTA);
+    public static final ResourceKey<SlashBladeDefinition> XUAN_MING = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.xuanMing);
+    public static final ResourceKey<SlashBladeDefinition> XUAN_MING_LAMBDA = lambdaOf(XUAN_MING);
     public static final ResourceKey<SlashBladeDefinition> STAR_THREAD = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Special.starThread);
     public static final ResourceKey<SlashBladeDefinition> STAR_THREAD_LAMBDA = lambdaOf(STAR_THREAD);
     public static final ResourceKey<SlashBladeDefinition> FINAL_GLOW = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Special.finalGlow);

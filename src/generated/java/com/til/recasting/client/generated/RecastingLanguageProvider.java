@@ -163,6 +163,8 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashBladeKey(RecastingSlashBladeKeys.BRILLIANT_TEA_LAMBDA), "^灿茶", "Brilliant Tea Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.AZURE_VISTA), "苍景", "Azure Vista");
         translation(slashBladeKey(RecastingSlashBladeKeys.AZURE_VISTA_LAMBDA), "^苍景", "Azure Vista Lambda");
+        translation(slashBladeKey(RecastingSlashBladeKeys.XUAN_MING), "玄澪", "Xuan Ming");
+        translation(slashBladeKey(RecastingSlashBladeKeys.XUAN_MING_LAMBDA), "^玄澪", "Xuan Ming Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.BRIARLAND), "荆楚", "Briarland");
         translation(slashBladeKey(RecastingSlashBladeKeys.BRIARLAND_LAMBDA), "^荆楚", "Briarland Lambda");
         translation(slashBladeKey(RecastingSlashBladeKeys.SHINE_GOLD), "闪金", "Shine Gold");
@@ -358,6 +360,8 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtKey(SlashArtsRegistry.CLOUD_WHEEL_STORM), "云轮风暴", "Cloud Wheel Storm");
         translation(slashArtKey(SlashArtsRegistry.STELLAR_ROTATION), "星旋", "Stellar Rotation");
         translation(slashArtKey(SlashArtsRegistry.RAPID_PHANTOM_SWORDS), "急行幻影剑", "Rapid Phantom Swords");
+        translation(slashArtKey(SlashArtsRegistry.RAPID_PHANTOM_SWORDS_DENSE), "急行幻影剑[密]", "Rapid Phantom Swords [Dense]");
+        translation(slashArtKey(SlashArtsRegistry.RAPID_PHANTOM_SWORDS_DENSE_LAMBDA), "^急行幻影剑[密]", "Rapid Phantom Swords [Dense] Lambda");
         translation(slashArtKey(SlashArtsRegistry.MATRIX), "穷观阵", "Matrix");
         translation(slashArtKey(SlashArtsRegistry.MATRIX_LAMBDA), "^穷观阵", "Matrix Lambda");
         translation(slashArtKey(SlashArtsRegistry.SOUL_SEVER), "断魄", "Duan Po");
@@ -410,6 +414,8 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtDescKey(SlashArtsRegistry.CLOUD_WHEEL_STORM), "在目标位置上方生成更多幻影剑，并连续落下大量引雷飞剑。", "Generate more summoned swords above the target and rain numerous lightning-calling blades.");
         translation(slashArtDescKey(SlashArtsRegistry.STELLAR_ROTATION), "在目标位置创建一个旋转的次元斩，持续造成伤害。", "Create a rotating judgement cut at the target position that deals continuous damage.");
         translation(slashArtDescKey(SlashArtsRegistry.RAPID_PHANTOM_SWORDS), "在目标位置周围召唤多把幻影剑。", "Summon multiple phantom swords around the target position.");
+        translation(slashArtDescKey(SlashArtsRegistry.RAPID_PHANTOM_SWORDS_DENSE), "在目标位置周围召唤更密集的幻影剑。", "Summon a denser volley of phantom swords around the target position.");
+        translation(slashArtDescKey(SlashArtsRegistry.RAPID_PHANTOM_SWORDS_DENSE_LAMBDA), "在目标位置周围召唤更为密集的幻影剑。", "Summon an even denser volley of phantom swords around the target position.");
         translation(slashArtDescKey(SlashArtsRegistry.MATRIX), "在目标位置创建一个穷观阵，持续造成伤害，同时叠加演算，使目标受到的伤害更高。", "Create a matrix at the target position that deals continuous damage and stacks calculus, increasing damage taken by targets.");
         translation(slashArtDescKey(SlashArtsRegistry.MATRIX_LAMBDA), "在目标位置创建一个穷观阵，攻击更频繁，持续造成伤害并叠加演算。", "Create a matrix at the target that ticks damage faster, stacking calculus to amplify damage taken.");
         translation(slashArtDescKey(SlashArtsRegistry.SOUL_SEVER), "展开虚无刀界刀幕，对命中敌人追加近战伤害并在其位置降下巨型次元斩。", "Unfolds a void-blade curtain, then deals melee damage to struck foes and drops giant judgement cuts at their positions.");

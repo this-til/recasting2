@@ -291,7 +291,9 @@ public final class RecipeIdCatalog {
                 Recasting.prefix("whirlwind_upgrade_recipes_3"),
                 Recasting.prefix("whirlwind_upgrade_recipes_4"),
                 Recasting.prefix("wind_cloud_lambda_recipe"),
-                Recasting.prefix("wind_cloud_recipe")
+                Recasting.prefix("wind_cloud_recipe"),
+                Recasting.prefix("xuan_ming_lambda_recipe"),
+                Recasting.prefix("xuan_ming_recipe")
         );
     }
 }

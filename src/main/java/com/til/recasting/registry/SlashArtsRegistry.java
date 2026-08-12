@@ -126,6 +126,15 @@ public class SlashArtsRegistry {
 
     // 急行幻影剑
     public static final RegistryObject<ExtendedSlashArts> RAPID_PHANTOM_SWORDS = registerExtendedSA("rapid_phantom_swords", RapidPhantomSwordsSlashArts::new);
+    // 急行幻影剑[密]
+    public static final RegistryObject<ExtendedSlashArts> RAPID_PHANTOM_SWORDS_DENSE = registerExtendedSA(
+            "rapid_phantom_swords_dense",
+            () -> new RapidPhantomSwordsSlashArts().setNumber(36)
+    );
+    public static final RegistryObject<ExtendedSlashArts> RAPID_PHANTOM_SWORDS_DENSE_LAMBDA = registerExtendedSA(
+            "rapid_phantom_swords_dense_lambda",
+            () -> new RapidPhantomSwordsSlashArts().setNumber(48)
+    );
 
     // 穷观阵
     public static final RegistryObject<ExtendedSlashArts> MATRIX = registerExtendedSA("matrix", MatrixSlashArts::new);

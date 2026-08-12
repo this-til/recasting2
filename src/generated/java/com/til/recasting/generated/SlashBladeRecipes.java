@@ -992,11 +992,11 @@ public class SlashBladeRecipes extends RecipeProvider {
                 .save(consumer, Recasting.prefix("dragon_lambda_recipe"));
 
         /**
-         * 风云配方：从苍景 Lambda 升级
+         * 风云配方：从玄澪 Lambda 升级
          * 要求：杀敌1500、锻造400、力量5附魔、冲击2附魔、无限1附魔、穿透3附魔
          * 材料：照谛核心4个
          * SE结晶：旋风l1 4个
-         * C=照谛核心, B=基础刀（苍景 Lambda，满足要求）, W=旋风l1 SE结晶
+         * C=照谛核心, B=基础刀（玄澪 Lambda，满足要求）, W=旋风l1 SE结晶
          */
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.WIND_CLOUD.location())
                 .pattern("CWC")
@@ -1004,7 +1004,7 @@ public class SlashBladeRecipes extends RecipeProvider {
                 .pattern("CWC")
                 .define('B',
                         SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
-                                .name(RecastingSlashBladeKeys.AZURE_VISTA_LAMBDA.location())
+                                .name(RecastingSlashBladeKeys.XUAN_MING_LAMBDA.location())
                                 .killCount(1500)
                                 .refineCount(400)
                                 .addEnchantment(new EnchantmentDefinition(
@@ -1057,6 +1057,72 @@ public class SlashBladeRecipes extends RecipeProvider {
                 .save(consumer, Recasting.prefix("wind_cloud_lambda_recipe"));
 
         /**
+         * 玄澪配方（t3）：从龙鳞 Lambda 升级
+         * 要求：杀敌1500、锻造300、力量5附魔、冲击2附魔、无限1附魔、穿透3附魔
+         * 材料：靛蓝的庸魂立方体4个
+         * SE结晶：撕裂 2个
+         * C=靛蓝的庸魂立方体, T=撕裂 SE结晶, B=基础刀（龙鳞 Lambda，满足要求）
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.XUAN_MING.location())
+                .pattern(" CT")
+                .pattern("CBC")
+                .pattern("TC ")
+                .define('B',
+                        SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                .name(RecastingSlashBladeKeys.DRAGON_SCALE_LAMBDA.location())
+                                .killCount(1500)
+                                .refineCount(300)
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.POWER_ARROWS), 5))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PUNCH_ARROWS), 2))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.INFINITY_ARROWS), 1))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PIERCING), 3))
+                                .build()))
+                .define('C', RecastingItems.LAPIS_MEDIUM_SOUL_CUBE.get())
+                .define('T', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.TEAR.getId(), 1))
+                .unlockedBy("has_lapis_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.LAPIS_MEDIUM_SOUL_CUBE.get()))
+                .save(consumer, Recasting.prefix("xuan_ming_recipe"));
+
+        /**
+         * 玄澪 Lambda 配方（t3）：从玄澪升级
+         * 要求：杀敌3000、锻造600、力量5附魔、冲击2附魔、无限1附魔、穿透4附魔、抢夺3附魔、节肢杀手2附魔、穿刺1附魔
+         * 材料：金黄庸魂立方体4个
+         * SE结晶：抵抗 2个
+         * C=金黄庸魂立方体, R=抵抗 SE结晶, B=基础刀（玄澪，满足要求）
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.XUAN_MING_LAMBDA.location())
+                .pattern(" CR")
+                .pattern("CBC")
+                .pattern("RC ")
+                .define('B',
+                        SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                .name(RecastingSlashBladeKeys.XUAN_MING.location())
+                                .killCount(3000)
+                                .refineCount(600)
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.POWER_ARROWS), 5))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PUNCH_ARROWS), 2))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.INFINITY_ARROWS), 1))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.PIERCING), 4))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MOB_LOOTING), 3))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.BANE_OF_ARTHROPODS), 2))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.IMPALING), 1))
+                                .build()))
+                .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
+                .define('R', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.RESIST.getId(), 1))
+                .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
+                .save(consumer, Recasting.prefix("xuan_ming_lambda_recipe"));
+
+        /**
          * 苍景配方（t3）：从龙鳞 Lambda 升级
          * 要求：杀敌1500、锻造300、力量5附魔、冲击2附魔、无限1附魔、穿透3附魔
          * 材料：翠绿的庸魂立方体4个
@@ -1064,9 +1130,9 @@ public class SlashBladeRecipes extends RecipeProvider {
          * C=翠绿的庸魂立方体, D=剑气释放 SE结晶, B=基础刀（龙鳞 Lambda，满足要求）
          */
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.AZURE_VISTA.location())
-                .pattern(" DC")
+                .pattern(" CD")
                 .pattern("CBC")
-                .pattern("CD ")
+                .pattern("DC ")
                 .define('B',
                         SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
                                 .name(RecastingSlashBladeKeys.DRAGON_SCALE_LAMBDA.location())
@@ -1094,9 +1160,9 @@ public class SlashBladeRecipes extends RecipeProvider {
          * C=钻石庸魂立方体, G=生长 SE结晶, B=基础刀（苍景，满足要求）
          */
         SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.AZURE_VISTA_LAMBDA.location())
-                .pattern(" GC")
+                .pattern(" CG")
                 .pattern("CBC")
-                .pattern("CG ")
+                .pattern("GC ")
                 .define('B',
                         SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
                                 .name(RecastingSlashBladeKeys.AZURE_VISTA.location())

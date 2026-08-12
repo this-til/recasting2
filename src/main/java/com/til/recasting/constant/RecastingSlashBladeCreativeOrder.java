@@ -41,6 +41,8 @@ public final class RecastingSlashBladeCreativeOrder {
             RecastingSlashBladeKeys.SILVER_WING_LAMBDA,
             RecastingSlashBladeKeys.LONG_SKY_SUNSET,
             RecastingSlashBladeKeys.LONG_SKY_SUNSET_LAMBDA,
+            RecastingSlashBladeKeys.XUAN_MING,
+            RecastingSlashBladeKeys.XUAN_MING_LAMBDA,
             RecastingSlashBladeKeys.AZURE_VISTA,
             RecastingSlashBladeKeys.AZURE_VISTA_LAMBDA,
             RecastingSlashBladeKeys.JIE_YUAN_DOG,

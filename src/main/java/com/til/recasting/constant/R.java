@@ -290,6 +290,9 @@ public class R {
         public static final ResourceLocation windCloud = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/wind_cloud");
         public static final ResourceLocation windCloud$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/wind_cloud.obj");
         public static final ResourceLocation windCloud$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/wind_cloud.png");
+        public static final ResourceLocation xuanMing = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/xuan_ming");
+        public static final ResourceLocation xuanMing$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/xuan_ming.obj");
+        public static final ResourceLocation xuanMing$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/xuan_ming.png");
         public static final ResourceLocation xuanYuan = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/xuan_yuan");
         public static final ResourceLocation xuanYuan$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/xuan_yuan.obj");
         public static final ResourceLocation xuanYuan$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/xuan_yuan.png");
@@ -428,6 +431,10 @@ public class R {
 
     public static class Textures {
         public static class Item {
+            public static final ResourceLocation matterBall = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/matter_ball");
+            public static final ResourceLocation matterBall$png = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/matter_ball.png");
+            public static final ResourceLocation proudSoulBag = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/proud_soul_bag");
+            public static final ResourceLocation proudSoulBag$png = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/proud_soul_bag.png");
             public static final ResourceLocation soul = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul");
             public static final ResourceLocation soul$png = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul.png");
             public static final ResourceLocation soul0 = ResourceLocation.fromNamespaceAndPath("recasting", "textures/item/soul_0");
