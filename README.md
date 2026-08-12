@@ -2,7 +2,7 @@
 
 Minecraft Forge 1.20.1 的 [SlashBlade Resharped](https://www.curseforge.com/minecraft/mc-mods/slashblade-resharped) 扩展模组。
 
-新增 **61** 把名刀、**85** 种拔刀术（SA）、**59** 种特殊效果（SE）。在铁砧上铭刻结晶、精炼刀身，沿「重铸之路」成长。
+新增**61**把名刀、**85**种SA、**59**种SE。
 
 ## 展示
 
@@ -12,8 +12,6 @@ OverviewP0P1P2P3P4P5
 
 - Minecraft **1.20.1** + Forge **47.4.13+** + Java **17**
 - 强制依赖：[SlashBlade Resharped](https://www.curseforge.com/minecraft/mc-mods/slashblade-resharped) **1.9+**
-
-
 
 ## 从源码构建
 
