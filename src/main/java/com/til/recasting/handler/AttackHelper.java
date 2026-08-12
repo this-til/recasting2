@@ -21,6 +21,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
@@ -151,6 +152,26 @@ public class AttackHelper {
 
         });
 
+    }
+
+    /**
+     * 拔刀剑锋利在 {@code getDamageBonus} 中记录的固定额外伤害：每级 0.2，上限 1.0。
+     */
+    public static float sharpnessDamageBonus(int level) {
+        if (level <= 0) {
+            return 0.0F;
+        }
+        return Math.min(level * 0.2F, 1.0F);
+    }
+
+    /**
+     * 原版锋利 {@code DamageEnchantment.getDamageBonus}：{@code 1 + 0.5 * max(0, level - 1)}。
+     */
+    public static float vanillaSharpnessDamageBonus(int level) {
+        if (level <= 0) {
+            return 0.0F;
+        }
+        return 1.0F + (float) Math.max(0, level - 1) * 0.5F;
     }
 
     /**

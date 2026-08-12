@@ -11,6 +11,7 @@
     "AttackManagerMixin",
     "CapabilityProviderAccessor",
     "DamageSourcesAccessor",
+    "EnchantmentHelperMixin",
     "EntityAccessor",
     "FriendlyByteBufItemCapsMixin",
     "JEICompatMixin",
