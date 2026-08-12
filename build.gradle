@@ -27,7 +27,7 @@ base {
     // 输出：
     //   recasting2-1.20.1-{version}[-SNAPSHOT].jar            （reobf，发布用）
     //   recasting2-1.20.1-{version}-COMPRESSED[-SNAPSHOT].jar （reobf + PNG≤512）
-    //   recasting2-1.20.1-{version}-DEV[-SNAPSHOT].jar          （未 reobf，开发者用）
+    //   recasting2-1.20.1-{version}-DEV[-SNAPSHOT].jar          （未 reobf + PNG≤512，开发者用）
     archivesName = "recasting2-${minecraft_version}"
 }
 
@@ -622,6 +622,65 @@ def resolveCompressedPng(byte[] sourceBytes, int maxDimension, File cacheDir) {
     return [bytes: resizedBytes, cacheHit: false]
 }
 
+/**
+ * 从源 jar 写出 PNG 长边≤maxDimension 的压缩包；源指纹未变则跳过。
+ */
+def writeCompressedJar(File sourceJar, File outputJar, int maxDimension, File cacheDir, File fingerprintFile, def taskLogger) {
+    def sourceFingerprint = sha256FileHex(sourceJar)
+    outputJar.parentFile.mkdirs()
+    cacheDir.mkdirs()
+
+    if (outputJar.isFile() && fingerprintFile.isFile() && fingerprintFile.text.trim() == sourceFingerprint) {
+        taskLogger.lifecycle("Skipped ${outputJar.name}: source jar fingerprint unchanged.")
+        return
+    }
+
+    def compressedCount = 0
+    def cacheHitCount = 0
+    def cacheMissCount = 0
+    def copiedCount = 0
+    def zipFile = new java.util.zip.ZipFile(sourceJar)
+    def zipOutput = new java.util.zip.ZipOutputStream(new BufferedOutputStream(new FileOutputStream(outputJar)))
+    try {
+        zipFile.entries().each { entry ->
+            def outputEntry = new java.util.zip.ZipEntry(entry.name)
+            outputEntry.time = entry.time
+            if (entry.directory) {
+                zipOutput.putNextEntry(outputEntry)
+                zipOutput.closeEntry()
+                copiedCount++
+                return
+            }
+
+            byte[] bytes = zipFile.getInputStream(entry).withCloseable { it.bytes }
+            if (entry.name.toLowerCase(Locale.ROOT).endsWith('.png')) {
+                int originalLength = bytes.length
+                def resolved = resolveCompressedPng(bytes, maxDimension, cacheDir)
+                bytes = resolved.bytes as byte[]
+                if (resolved.cacheHit) {
+                    cacheHitCount++
+                } else {
+                    cacheMissCount++
+                }
+                if (bytes.length != originalLength) {
+                    compressedCount++
+                }
+            }
+
+            zipOutput.putNextEntry(outputEntry)
+            zipOutput.write(bytes)
+            zipOutput.closeEntry()
+            copiedCount++
+        }
+    } finally {
+        zipOutput.close()
+        zipFile.close()
+    }
+
+    fingerprintFile.text = sourceFingerprint
+    taskLogger.lifecycle("Created ${outputJar} with ${compressedCount} PNG capped to ${maxDimension}px across ${copiedCount} entries (png cache hit=${cacheHitCount}, miss=${cacheMissCount}).")
+}
+
 tasks.register('compressed512Jar') {
     description = 'Builds an additional mod JAR with PNG resources capped to 512 pixels.'
     group = 'build'
@@ -633,7 +692,7 @@ tasks.register('compressed512Jar') {
     // 输出：recasting2-1.20.1-{version}-COMPRESSED[-SNAPSHOT].jar
     def outputJarProvider = layout.buildDirectory.file("libs/${base.archivesName.get()}-${modVersionBase}-COMPRESSED${snapshotSuffix}.jar")
     def cacheDirProvider = layout.buildDirectory.dir('compressed512-cache')
-    def fingerprintProvider = layout.buildDirectory.file('compressed512-cache/source-fingerprint.txt')
+    def fingerprintProvider = layout.buildDirectory.file('compressed512-cache/compressed-source-fingerprint.txt')
 
     inputs.file(sourceJarProvider)
     inputs.property('maxDimension', maxDimension)
@@ -641,64 +700,14 @@ tasks.register('compressed512Jar') {
     outputs.cacheIf { true }
 
     doLast {
-        def sourceJar = sourceJarProvider.get().asFile
-        def outputJar = outputJarProvider.get().asFile
-        def cacheDir = cacheDirProvider.get().asFile
-        def fingerprintFile = fingerprintProvider.get().asFile
-        def sourceFingerprint = sha256FileHex(sourceJar)
-        outputJar.parentFile.mkdirs()
-        cacheDir.mkdirs()
-
-        // 源 jar 内容哈希未变且产物仍在：整包跳过
-        if (outputJar.isFile() && fingerprintFile.isFile() && fingerprintFile.text.trim() == sourceFingerprint) {
-            logger.lifecycle("Skipped ${outputJar.name}: source jar fingerprint unchanged.")
-            return
-        }
-
-        def compressedCount = 0
-        def cacheHitCount = 0
-        def cacheMissCount = 0
-        def copiedCount = 0
-        def zipFile = new java.util.zip.ZipFile(sourceJar)
-        def zipOutput = new java.util.zip.ZipOutputStream(new BufferedOutputStream(new FileOutputStream(outputJar)))
-        try {
-            zipFile.entries().each { entry ->
-                def outputEntry = new java.util.zip.ZipEntry(entry.name)
-                outputEntry.time = entry.time
-                if (entry.directory) {
-                    zipOutput.putNextEntry(outputEntry)
-                    zipOutput.closeEntry()
-                    copiedCount++
-                    return
-                }
-
-                byte[] bytes = zipFile.getInputStream(entry).withCloseable { it.bytes }
-                if (entry.name.toLowerCase(Locale.ROOT).endsWith('.png')) {
-                    int originalLength = bytes.length
-                    def resolved = resolveCompressedPng(bytes, maxDimension, cacheDir)
-                    bytes = resolved.bytes as byte[]
-                    if (resolved.cacheHit) {
-                        cacheHitCount++
-                    } else {
-                        cacheMissCount++
-                    }
-                    if (bytes.length != originalLength) {
-                        compressedCount++
-                    }
-                }
-
-                zipOutput.putNextEntry(outputEntry)
-                zipOutput.write(bytes)
-                zipOutput.closeEntry()
-                copiedCount++
-            }
-        } finally {
-            zipOutput.close()
-            zipFile.close()
-        }
-
-        fingerprintFile.text = sourceFingerprint
-        logger.lifecycle("Created ${outputJar} with ${compressedCount} PNG capped to ${maxDimension}px across ${copiedCount} entries (png cache hit=${cacheHitCount}, miss=${cacheMissCount}).")
+        writeCompressedJar(
+                sourceJarProvider.get().asFile,
+                outputJarProvider.get().asFile,
+                maxDimension,
+                cacheDirProvider.get().asFile,
+                fingerprintProvider.get().asFile,
+                logger
+        )
     }
 }
 
@@ -714,20 +723,21 @@ tasks.named('jar', Jar).configure {
                     "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")])
     }
 
-    // reobfJar 会就地覆写主 jar；在此之前另存一份未混淆包给开发者用
+    // reobfJar 会就地覆写主 jar；在此之前写出未混淆 + PNG≤512 的开发者包
+    def maxDimension = 512
     def devJarProvider = layout.buildDirectory.file("libs/${base.archivesName.get()}-${modVersionBase}-DEV${snapshotSuffix}.jar")
+    def cacheDirProvider = layout.buildDirectory.dir('compressed512-cache')
+    def fingerprintProvider = layout.buildDirectory.file('compressed512-cache/dev-source-fingerprint.txt')
     outputs.file(devJarProvider)
     doLast {
-        def sourceJar = archiveFile.get().asFile
-        def devJar = devJarProvider.get().asFile
-        devJar.parentFile.mkdirs()
-        java.nio.file.Files.copy(
-                sourceJar.toPath(),
-                devJar.toPath(),
-                java.nio.file.StandardCopyOption.REPLACE_EXISTING,
-                java.nio.file.StandardCopyOption.COPY_ATTRIBUTES
+        writeCompressedJar(
+                archiveFile.get().asFile,
+                devJarProvider.get().asFile,
+                maxDimension,
+                cacheDirProvider.get().asFile,
+                fingerprintProvider.get().asFile,
+                logger
         )
-        logger.lifecycle("Created ${devJar} (non-reobfuscated developer jar).")
     }
 
     // This is the preferred method to reobfuscate your jar file
