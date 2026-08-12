@@ -24,6 +24,7 @@
 ## 工具与工作流
 
 - **使用 PowerShell 作为终端** —— 使用 `$env:变量名` 访问环境变量，使用 PowerShell cmdlet（如 `Remove-Item`）而不是 Unix 命令
+- **CurseForge 上传鉴权** —— Author Token 存放在用户环境变量 `curseforge_api_token`；发布/上传脚本与助手操作从此变量读取，禁止把令牌写入仓库或聊天记录。PowerShell 读取：`$env:curseforge_api_token`（新开终端后才继承已写入的用户级变量）
 - **排查与检索以当前工作区为准，禁止默认依赖 Git** —— 查找问题、理解现状、代码检查与全文检索时，以磁盘上**当前**文件内容为准（Read、Grep、Glob、`.\gradlew build` 等），不得用 `git status`、`git diff`、`git log`、`git show`、`git blame` 等推断「应有」代码、还原历史版本或替代直接读文件；除非用户**明确要求**使用 Git（如查看提交记录、对比分支、创建 commit/PR），否则不主动执行 Git 命令作为调查手段
 - **禁止使用命令行编辑仓库内源码文件** —— 修改 `.java`、`.json`、`.md` 等源文件须通过编辑器或 Cursor 提供的文件编辑工具（直接改写、补丁式替换等）；禁止用终端里的重定向、`sed`、对源文件路径的 `Set-Content`/`Out-File` 批量覆盖等方式改写内容。终端可用于 `.\gradlew build`、用户要求的 Git 操作、仅输出到终端的查询等**不写入源文件**的操作
 - **`read_lints` 工具无法正常工作** —— 使用 `.\gradlew build` 手动编译检查错误，简单编写时可跳过检查
@@ -88,5 +89,5 @@
 - **Mixin 边界** —— 仅用于定义扩展、攻击路由（`AttackManagerMixin`）、CODEC 序列化、tooltip、JEI 兼容；目标类在 `mods.flammpfeil.slashblade.*` 时 **`remap = false`**；新 Mixin 必须登记 `recasting.mixins.json`
 - **参考库** —— 运行时依赖 CurseMaven JAR；`SlashBlade_Resharped/` 源码目录只读，查 API 用，禁止修改
 
-**最后更新：** 2026-08-10
+**最后更新：** 2026-08-12
 **维护者：** til
