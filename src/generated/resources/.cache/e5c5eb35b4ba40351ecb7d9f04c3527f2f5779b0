@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-12T21:21:22.9007918	Advancements
+// 1.20.1	2026-08-15T01:11:21.9019417	Advancements
 1712a697927bd33f2ac61bd946afa4eb235d72d6 data/recasting/advancements/growth/blades/slashblade/art_knife.json
 84a907fb18a21655c41f203ef6e301210710e6f5 data/recasting/advancements/growth/blades/slashblade/azure_vista.json
 1563f8fe50126bf4ea4b687614ac67e2859928f2 data/recasting/advancements/growth/blades/slashblade/azure_vista_lambda.json
@@ -108,6 +108,7 @@ cbac00b01ac529663af59221911f42090e209054 data/recasting/advancements/growth/drop
 cb7da9c3755a5bd611df2c52169e2ab2600cd724 data/recasting/advancements/growth/enchant/smite.json
 1f3cf13520aea62fd1f14d857e4e2df5e2d87bb1 data/recasting/advancements/growth/enchant/sweeping.json
 473166450875d781786ac49df9db51fb8580fc64 data/recasting/advancements/growth/forge/affinity_swap.json
+316de0ce2803a0d022fd4fca798d7ca29048b3b1 data/recasting/advancements/growth/forge/arts_offering.json
 660fa1e69f481d926985d83e50eb36faa3e92099 data/recasting/advancements/growth/forge/fully_equipped.json
 55d68705c0d2dfd023546ed45443e510ecf9dbb1 data/recasting/advancements/growth/forge/new_capability.json
 d44a94c908dc86b9cec9bc85c7912cc4cd68252e data/recasting/advancements/growth/forge/peak_effect.json
