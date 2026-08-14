@@ -33,7 +33,7 @@ public class Config {
 
     public static final ForgeConfigSpec.DoubleValue POWER_ATTACK_BONUS = BUILDER
             .comment("力量附魔对幻影剑攻击的伤害加成（每级）")
-            .defineInRange("powerAttackBonus", 0.1, 0, 10);
+            .defineInRange("powerAttackBonus", 0.05, 0, 10);
 
     // 评分等级加成
     public static final ForgeConfigSpec.DoubleValue RANK_MAX_BONUS = BUILDER

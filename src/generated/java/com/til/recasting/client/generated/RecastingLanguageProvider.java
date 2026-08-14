@@ -59,6 +59,12 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_ULTIMATE_REFINE_DESC, "在一把刀上集齐满额满级普通特殊效果与一个特殊效果。", "Fill a blade with a full set of max-level normal special effects plus one special effect.");
         translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_SACRIFICE_TITLE, "牺牲品", "Sacrifice");
         translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_SACRIFICE_DESC, "以聚散变体从刀上提取一个特殊效果结晶。", "Extract a special-effect crystal from a blade with a Gathering Parting Variant.");
+        translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_ARTS_OFFERING_TITLE, "技艺献祭", "Arts Offering");
+        translation(
+                RecastingLanguageKeys.ADVANCEMENT_FORGE_ARTS_OFFERING_DESC,
+                "以耀魂宝珠从刀上提取拔刀术（刀损毁）。",
+                "Extract a slash art onto a proud soul sphere from a blade (the blade is destroyed)."
+        );
         translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_AFFINITY_SWAP_TITLE, "相性交换", "Affinity Swap");
         translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_AFFINITY_SWAP_DESC, "用新的特殊效果替换刀上已有的特殊效果。", "Replace an existing special effect on a blade with another.");
         translation(RecastingLanguageKeys.ADVANCEMENT_FORGE_SILENCE_TITLE, "静默", "Silence");

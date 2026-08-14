@@ -4,11 +4,13 @@ import com.til.recasting.Recasting;
 import com.til.recasting.advancement.ForgeSeAction;
 import com.til.recasting.advancement.RecastingCriteriaTriggers;
 import com.til.recasting.registry.RecastingItems;
+import com.til.recasting.registry.requir.SlashBladeItems;
 import com.til.recasting.registry.se.ExtendedSpecialEffect;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerPlayer;
@@ -59,6 +61,17 @@ public final class AnvilForgeAdvancementHandler {
             if (before.isPresent() && (after.isEmpty() || !before.get().id().equals(after.get().id()))) {
                 grantAdvancement(player, Recasting.prefix("growth/forge/new_capability"));
                 trigger(player, ForgeSeAction.ERASE_SE);
+            }
+            return;
+        }
+
+        if (right.is(SlashBladeItems.PROUDSOUL_SPHERE.get())
+                && left.getItem() instanceof ItemSlashBlade
+                && output.is(SlashBladeItems.PROUDSOUL_SPHERE.get())) {
+            CompoundTag tag = output.getTag();
+            if (tag != null && tag.contains("SpecialAttackType")) {
+                grantAdvancement(player, Recasting.prefix("growth/forge/new_capability"));
+                trigger(player, ForgeSeAction.EXTRACT_SLASH_ARTS);
             }
             return;
         }

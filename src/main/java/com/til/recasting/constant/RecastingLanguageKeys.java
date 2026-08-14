@@ -20,6 +20,7 @@ public final class RecastingLanguageKeys {
     public static final String BUFF_JADE_FIRE = "buff.recasting.jade_fire";
     public static final String BUFF_ETERNAL_GUARD = "buff.recasting.eternal_guard";
     public static final String BUFF_MORTAL_DUST = "buff.recasting.mortal_dust";
+    public static final String BUFF_ELECTRIC_SURGE = "buff.recasting.electric_surge";
 
     public static final String TOOLTIP_ENGRAVING_RULE_TITLE = "recasting.tooltip.engraving_rule.title";
     public static final String TOOLTIP_ENGRAVING_RULE_MAIN = "recasting.tooltip.engraving_rule.main";
@@ -80,6 +81,8 @@ public final class RecastingLanguageKeys {
     public static final String ADVANCEMENT_FORGE_ULTIMATE_REFINE_DESC = "advancements.recasting.forge.ultimate_refine.description";
     public static final String ADVANCEMENT_FORGE_SACRIFICE_TITLE = "advancements.recasting.forge.sacrifice.title";
     public static final String ADVANCEMENT_FORGE_SACRIFICE_DESC = "advancements.recasting.forge.sacrifice.description";
+    public static final String ADVANCEMENT_FORGE_ARTS_OFFERING_TITLE = "advancements.recasting.forge.arts_offering.title";
+    public static final String ADVANCEMENT_FORGE_ARTS_OFFERING_DESC = "advancements.recasting.forge.arts_offering.description";
     public static final String ADVANCEMENT_FORGE_AFFINITY_SWAP_TITLE = "advancements.recasting.forge.affinity_swap.title";
     public static final String ADVANCEMENT_FORGE_AFFINITY_SWAP_DESC = "advancements.recasting.forge.affinity_swap.description";
     public static final String ADVANCEMENT_FORGE_SILENCE_TITLE = "advancements.recasting.forge.silence.title";

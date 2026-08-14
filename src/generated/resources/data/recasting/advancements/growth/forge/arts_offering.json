@@ -1,0 +1,32 @@
+{
+  "parent": "recasting:growth/forge/new_capability",
+  "criteria": {
+    "action": {
+      "conditions": {
+        "action": "extract_slash_arts"
+      },
+      "trigger": "recasting:forge_se_action"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.forge.arts_offering.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "slashblade:proudsoul_sphere"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.recasting.forge.arts_offering.title"
+    }
+  },
+  "requirements": [
+    [
+      "action"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -477,6 +477,22 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                     .save(writer, Recasting.prefix("growth/forge/sacrifice").toString());
 
             Advancement.Builder.advancement()
+                    .parent(newCapability)
+                    .display(
+                            new ItemStack(SlashBladeItems.PROUDSOUL_SPHERE.get()),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_ARTS_OFFERING_TITLE),
+                            Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_ARTS_OFFERING_DESC),
+                            null,
+                            FrameType.TASK,
+                            true,
+                            false,
+                            false)
+                    .addCriterion(
+                            "action",
+                            ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.EXTRACT_SLASH_ARTS))
+                    .save(writer, Recasting.prefix("growth/forge/arts_offering").toString());
+
+            Advancement.Builder.advancement()
                     .parent(sacrifice)
                     .display(
                             seCrystalIcon(SpecialEffectsRegistry.STORM_VARIANT.getId()),

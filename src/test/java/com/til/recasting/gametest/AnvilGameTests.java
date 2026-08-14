@@ -198,9 +198,13 @@ public final class AnvilGameTests {
                 helper.getLevel().registryAccess(),
         RecastingSlashBladeKeys.BROADSWORD_WOOD.location()
         );
-        ItemStack output = AnvilTestHelper.preview(sphere, blade, helper.makeMockPlayer());
+        ItemStack output = AnvilTestHelper.preview(blade, sphere, helper.makeMockPlayer());
         try {
             AnvilTestHelper.assertHasOutput(output, "extractSa_toProudSoulSphere");
+            if (!output.is(SlashBladeItems.PROUDSOUL_SPHERE.get())) {
+                helper.fail("Expected proud soul sphere output, blade should be destroyed");
+                return;
+            }
             CompoundTag tag = output.getTag();
             if (tag == null || !tag.contains("SpecialAttackType")) {
                 helper.fail("Proud soul sphere missing SpecialAttackType");
@@ -359,13 +363,31 @@ public final class AnvilGameTests {
     }
 
     @GameTest(template = "empty", batch = "recastingAnvil")
+    public static void advancement_extractSlashArts_granted(GameTestHelper helper) {
+        ServerPlayer player = helper.makeMockServerPlayerInLevel();
+        ItemStack sphere = new ItemStack(SlashBladeItems.PROUDSOUL_SPHERE.get());
+        ItemStack blade = TestItemFactory.bladeFromDefinition(
+                helper.getLevel().registryAccess(),
+                RecastingSlashBladeKeys.BROADSWORD_WOOD.location()
+        );
+        ItemStack output = AnvilTestHelper.preview(blade, sphere, player);
+        AnvilTestHelper.simulateRepair(player, blade, sphere, output);
+        ResourceLocation advId = Recasting.prefix("growth/forge/arts_offering");
+        if (!AnvilTestHelper.hasAdvancement(player, advId)) {
+            helper.fail("Advancement arts_offering not granted after extract slash arts");
+            return;
+        }
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", batch = "recastingAnvil")
     public static void extractSa_noArts_noOutput(GameTestHelper helper) {
         ItemStack sphere = new ItemStack(SlashBladeItems.PROUDSOUL_SPHERE.get());
         ItemStack blade = TestItemFactory.bladeWithoutSlashArts(
                 helper.getLevel().registryAccess(),
         RecastingSlashBladeKeys.BROADSWORD_WOOD.location()
         );
-        ItemStack output = AnvilTestHelper.preview(sphere, blade, helper.makeMockPlayer());
+        ItemStack output = AnvilTestHelper.preview(blade, sphere, helper.makeMockPlayer());
         try {
             AnvilTestHelper.assertNoOutput(output, "extractSa_noArts_noOutput");
         } catch (AssertionError error) {

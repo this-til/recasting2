@@ -11,6 +11,7 @@ public enum ForgeSeAction implements StringRepresentable {
     LAYOUT_FOUR_NORMAL_ONE_SPECIAL("layout_four_normal_one_special"),
     LAYOUT_FOUR_MAX_NORMAL_ONE_SPECIAL("layout_four_max_normal_one_special"),
     EXTRACT_SPECIAL("extract_special"),
+    EXTRACT_SLASH_ARTS("extract_slash_arts"),
     SWAP_SPECIAL("swap_special"),
     ERASE_SE("erase_se");
 

@@ -4,6 +4,8 @@ Minecraft Forge 1.20.1 的 [SlashBlade Resharped](https://www.curseforge.com/min
 
 新增**61**把名刀、**85**种SA、**59**种SE。
 
+玩家向机制说明（含默认数值）：[docs/player/README.md](docs/player/README.md)
+
 ## 展示
 
 ![Overview](showcase/gallery/overview.png)

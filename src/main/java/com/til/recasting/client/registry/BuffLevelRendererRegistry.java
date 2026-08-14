@@ -152,4 +152,12 @@ public class BuffLevelRendererRegistry {
             () -> new BuffLevelRenderConfig(RecastingBuffTypes.MORTAL_DUST, RecastingLanguageKeys.BUFF_MORTAL_DUST)
     );
 
+    /**
+     * 电涌 - 显示层数
+     */
+    public static final RegistryObject<BuffLevelRenderConfig> ELECTRIC_SURGE = BUFF_LEVEL_RENDER_CONFIGS.register(
+            "electric_surge",
+            () -> new BuffLevelRenderConfig(RecastingBuffTypes.ELECTRIC_SURGE, RecastingLanguageKeys.BUFF_ELECTRIC_SURGE)
+    );
+
 }

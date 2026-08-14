@@ -120,7 +120,7 @@ public class RecastingBuffTypes {
      * 断灭
      */
     public static final RegistryObject<BuffType> ANNIHILATION = BUFF_TYPES.register("annihilation",
-            () -> new BuffType().setMaxLevel(7)
+            () -> new BuffType().setDecayInterval(100).setMaxLevel(7)
     );
 
     /**
@@ -267,7 +267,7 @@ public class RecastingBuffTypes {
      * 电涌
      */
     public static final RegistryObject<BuffType> ELECTRIC_SURGE = BUFF_TYPES.register("electric_surge",
-            () -> new BuffType().setMaxLevel(64)
+            () -> new BuffType().setDecayInterval(100).setMaxLevel(64)
     );
 
     /**
