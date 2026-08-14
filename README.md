@@ -59,10 +59,10 @@ Minecraft Forge 1.20.1 的 [SlashBlade Resharped](https://www.curseforge.com/min
 
 ## 许可证
 
-本项目源码以 [MIT License](LICENSE) 发布。版权所有 © 2026 til, THOD。
+本项目源码以 [MIT License](LICENSE) 发布。版权所有 © 2026 til, HTOD。
 
 Minecraft、Forge 与 SlashBlade Resharped 分别遵循其各自许可证；本仓库不授予这些上游项目的权利。
 
 ## 作者
 
-til、THOD
+til、HTOD
