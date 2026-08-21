@@ -4,6 +4,7 @@ import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -19,6 +20,13 @@ public class TimeRunProvider implements ICapabilityProvider, INBTSerializable<Co
 
     private final ITimeRun.TimeRun timeRun = new ITimeRun.TimeRun();
     private final LazyOptional<ITimeRun> lazyOptional = LazyOptional.of(() -> timeRun);
+
+    /**
+     * 设置关联的实体
+     */
+    public void setEntity(LivingEntity entity) {
+        timeRun.setEntity(entity);
+    }
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
@@ -40,7 +48,7 @@ public class TimeRunProvider implements ICapabilityProvider, INBTSerializable<Co
     }
 
     public void invalidate() {
+        timeRun.clearEntity();
         lazyOptional.invalidate();
     }
 }
-

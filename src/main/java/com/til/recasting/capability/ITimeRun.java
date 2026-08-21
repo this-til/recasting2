@@ -1,6 +1,8 @@
 package com.til.recasting.capability;
 
+import com.til.recasting.handler.TimeRunManage;
 import lombok.extern.log4j.Log4j2;
+import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -55,6 +57,23 @@ public interface ITimeRun {
         protected final List<TimerCell> beAdded = new ArrayList<>();
         protected final Map<String, TimerCell> namedTimerCellMap = new HashMap<>();
         protected boolean isRun;
+        @Nullable
+        protected LivingEntity entity;
+
+        /**
+         * 绑定所属实体，供激活表上报使用
+         */
+        public void setEntity(@Nullable LivingEntity entity) {
+            this.entity = entity;
+        }
+
+        /**
+         * 解除实体绑定并从激活表注销
+         */
+        public void clearEntity() {
+            this.tryDeactivate();
+            this.entity = null;
+        }
 
         @Override
         public void tick() {
@@ -82,12 +101,17 @@ public interface ITimeRun {
                     }
                 }
             }
+
+            if (this.runList.isEmpty() && this.beAdded.isEmpty()) {
+                this.tryDeactivate();
+            }
         }
 
         @Override
         public void addTimerCell(TimerCell timerCell) {
             if (timerCell.isValid()) {
                 this.beAdded.add(timerCell);
+                this.tryActivate();
             }
         }
 
@@ -102,6 +126,7 @@ public interface ITimeRun {
                 existing.setFail();
             }
             this.beAdded.add(timerCell);
+            this.tryActivate();
         }
 
         @Override
@@ -148,6 +173,18 @@ public interface ITimeRun {
 
         protected void removeNamedTimerCell(TimerCell timerCell) {
             this.namedTimerCellMap.entrySet().removeIf(entry -> entry.getValue() == timerCell);
+        }
+
+        protected void tryActivate() {
+            if (this.entity != null) {
+                TimeRunManage.activate(this.entity);
+            }
+        }
+
+        protected void tryDeactivate() {
+            if (this.entity != null) {
+                TimeRunManage.deactivate(this.entity);
+            }
         }
     }
 
@@ -238,4 +275,3 @@ public interface ITimeRun {
         }
     }
 }
-
