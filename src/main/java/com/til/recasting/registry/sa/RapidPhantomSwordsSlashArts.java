@@ -39,7 +39,7 @@ public class RapidPhantomSwordsSlashArts extends ExtendedSlashArts {
         Vec3 attackPos = PosHelper.getAttackTargetPosition(livingEntity, slashBladeState);
 
         // 获取范围内的所有实体
-        List<Entity> entityList = EntityHelper.getTargettableEntitiesWithinAABB(
+        List<LivingEntity> entityList = EntityHelper.getTargettableLivingEntityWithinAABB(
                 worldIn,
                 livingEntity,
                 attackPos,
