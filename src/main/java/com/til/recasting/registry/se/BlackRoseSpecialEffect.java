@@ -106,7 +106,8 @@ public class BlackRoseSpecialEffect extends ExtendedSpecialEffect {
                     new DamageStructure(0f, damage),
                     List.of(
                             RecastingAttackTypes.BLACK_ROSE_ATTACK.get(),
-                            RecastingAttackTypes.NO_RECURSION_ATTACK.get()
+                            RecastingAttackTypes.NO_RECURSION_ATTACK.get(),
+                            RecastingAttackTypes.NO_KNOCKBACK_ATTACK.get()
                     )
             );
 

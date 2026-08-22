@@ -81,7 +81,10 @@ public class JadeFireBuffType extends BuffType {
                     source,
                     target,
                     new DamageStructure(0f, fixedFireDamage),
-                    List.of(RecastingAttackTypes.JADE_FIRE_ATTACK.get())
+                    List.of(
+                            RecastingAttackTypes.JADE_FIRE_ATTACK.get(),
+                            RecastingAttackTypes.NO_KNOCKBACK_ATTACK.get()
+                    )
             );
         });
     }

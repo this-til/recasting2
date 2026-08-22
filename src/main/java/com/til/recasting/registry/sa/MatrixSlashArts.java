@@ -13,7 +13,6 @@ import com.til.recasting.registry.RecastingEntities;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
-import mods.flammpfeil.slashblade.util.KnockBacks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -82,7 +81,6 @@ public class MatrixSlashArts extends ExtendedSlashArts {
                     Level world = hitEntity.level();
                     int currentLevel = hitBuffStackData.getLevel(RecastingBuffTypes.CALCULUS.get(), world);
                     hitBuffStackData.setLevel(RecastingBuffTypes.CALCULUS.get(), currentLevel + 1, world);
-                    KnockBacks.cancel.action.accept(hitEntity);
                 }
         ));
 

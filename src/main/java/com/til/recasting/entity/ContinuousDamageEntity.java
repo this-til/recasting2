@@ -1,6 +1,8 @@
 package com.til.recasting.entity;
 
 import com.til.recasting.handler.AttackHelper;
+import com.til.recasting.registry.RecastingAttackTypes;
+import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.CallbackPoint;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -99,12 +101,17 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
             alreadyHits.add(shooter);
         }
 
+        List<AttackType> attackTypes = new ArrayList<>(attackTypeModelList);
+        if (isRepeatedAttack()) {
+            attackTypes.add(RecastingAttackTypes.NO_KNOCKBACK_ATTACK.get());
+        }
+
         List<LivingEntity> list = AttackHelper.areaAttack(
                         shooter,
                         getPos(),
                         getDamageStructure(),
                         getSize() * getParameterRange(),
-                        new ArrayList<>(attackTypeModelList),
+                        attackTypes,
                         alreadyHits,
                         e -> attackActionCallbackPoint.call(r -> r.attack(e))
                 )

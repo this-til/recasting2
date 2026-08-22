@@ -1,6 +1,7 @@
 package com.til.recasting.entity;
 
 import com.til.recasting.handler.EntityHelper;
+import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingEntities;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;

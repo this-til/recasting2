@@ -284,7 +284,6 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     }
 
     public void doAttackEntity(Entity target, SummondAttackType summondAttackType) {
-
         AttackHelper.attack(getShooter(), target, getDamageStructure(), attackTypeModelList);
         target.setDeltaMovement(0, 0.1, 0);
         switch (summondAttackType) {

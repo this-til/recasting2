@@ -84,7 +84,10 @@ public class PhotonBurnBuffType extends BuffType {
                     source,
                     target,
                     new DamageStructure(0f, damage),
-                    List.of(RecastingAttackTypes.PHOTON_BURN_ATTACK.get())
+                    List.of(
+                            RecastingAttackTypes.PHOTON_BURN_ATTACK.get(),
+                            RecastingAttackTypes.NO_KNOCKBACK_ATTACK.get()
+                    )
             );
         });
     }

@@ -118,6 +118,13 @@ public class RecastingAttackTypes {
             () -> new AttackType((attacker, target) -> null)
     );
 
+    /**
+     * 标记本次攻击不施加击退（持续伤害等）；不产生额外伤害源。
+     */
+    public static final RegistryObject<AttackType> NO_KNOCKBACK_ATTACK = ATTACK_TYPES.register("no_knockback",
+            () -> new AttackType((attacker, target) -> null)
+    );
+
     public static final RegistryObject<AttackType> SPIRAL_SWORD_ATTACK = ATTACK_TYPES.register("no_spiral_special_recursion",
             () -> new AttackType((attacker, target) -> null)
     );

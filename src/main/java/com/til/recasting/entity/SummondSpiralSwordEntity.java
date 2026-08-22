@@ -1,5 +1,6 @@
 package com.til.recasting.entity;
 
+import com.til.recasting.registry.RecastingAttackTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;

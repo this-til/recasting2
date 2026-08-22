@@ -103,6 +103,7 @@ public class AttackHelper {
 
             List<AttackAmplifierEvent.DamageSourceInfo> list = attackAmplifierEvent.getDamageSourceInfoList();
             boolean isAbsolute = attackTypeList.contains(RecastingAttackTypes.ABSOLUTE_ATTACK.get());
+            boolean noKnockback = attackTypeList.contains(RecastingAttackTypes.NO_KNOCKBACK_ATTACK.get());
             if (list.isEmpty() && !isAbsolute) {
                 return;
             }
@@ -141,8 +142,12 @@ public class AttackHelper {
             }
 
             if (any.isPresent() || absoluteApplied) {
-                mods.flammpfeil.slashblade.util.AttackHelper.applyKnockback(attacker, target, knockback);
-                mods.flammpfeil.slashblade.util.AttackHelper.restoreTargetMotionIfNeeded(target, originalMotion);
+                if (noKnockback) {
+                    target.setDeltaMovement(originalMotion);
+                } else {
+                    mods.flammpfeil.slashblade.util.AttackHelper.applyKnockback(attacker, target, knockback);
+                    mods.flammpfeil.slashblade.util.AttackHelper.restoreTargetMotionIfNeeded(target, originalMotion);
+                }
                 mods.flammpfeil.slashblade.util.AttackHelper.playAttackEffects(attacker, target, isCritical);
                 mods.flammpfeil.slashblade.util.AttackHelper.handleEnchantmentsAndDurability(attacker, target);
                 mods.flammpfeil.slashblade.util.AttackHelper.handlePostAttackEffects(attacker, target, fireAspectResult);
