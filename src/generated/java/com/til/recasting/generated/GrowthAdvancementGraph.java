@@ -119,12 +119,13 @@ public final class GrowthAdvancementGraph {
             blade(RecastingSlashBladeKeys.BROADSWORD_WOOD, null, "broadsword_wood_recipe", false),
             blade(RecastingSlashBladeKeys.GREEN_BLADE_WOOD, null, "green_blade_wood_recipe", false),
 
-            // 彩蛋刀直线：法棍 → λ → 锄 → 物理剑 → 结缘剑「犬」
+            // 彩蛋刀直线：法棍 → λ → 锄 → 物理剑 → 美工刀 → 结缘剑「犬」
             menuBlade(RecastingSlashBladeKeys.DHARMA_STICK, "dharma_stick_recipe"),
             blade(RecastingSlashBladeKeys.DHARMA_STICK_LAMBDA, RecastingSlashBladeKeys.DHARMA_STICK, "dharma_stick_lambda_recipe", true),
             menuBlade(RecastingSlashBladeKeys.HOE, RecastingSlashBladeKeys.DHARMA_STICK_LAMBDA, "hoe_recipe"),
             menuBlade(RecastingSlashBladeKeys.PHYSICS_SWORD, RecastingSlashBladeKeys.HOE, "physics_sword_recipe"),
-            menuBlade(RecastingSlashBladeKeys.JIE_YUAN_DOG, RecastingSlashBladeKeys.PHYSICS_SWORD, null),
+            menuBlade(RecastingSlashBladeKeys.ART_KNIFE, RecastingSlashBladeKeys.PHYSICS_SWORD, "art_knife_recipe"),
+            menuBlade(RecastingSlashBladeKeys.JIE_YUAN_DOG, RecastingSlashBladeKeys.ART_KNIFE, null),
 
             blade(RecastingSlashBladeKeys.BROADSWORD_IRON, RecastingSlashBladeKeys.BROADSWORD_WOOD, "broadsword_iron_recipe", false),
             blade(RecastingSlashBladeKeys.GREEN_BLADE_IRON, RecastingSlashBladeKeys.GREEN_BLADE_WOOD, "green_blade_iron_recipe", false),
@@ -136,7 +137,6 @@ public final class GrowthAdvancementGraph {
             blade(RecastingSlashBladeKeys.BRIARLAND, RecastingSlashBladeKeys.BRILLIANT_TEA_LAMBDA, "briarland_recipe", false),
             blade(RecastingSlashBladeKeys.BRIARLAND_LAMBDA, RecastingSlashBladeKeys.BRIARLAND, "briarland_lambda_recipe", true),
 
-            blade(RecastingSlashBladeKeys.ART_KNIFE, RecastingSlashBladeKeys.BROADSWORD_IRON, "art_knife_recipe", false),
             blade(RecastingSlashBladeKeys.BLACK, RecastingSlashBladeKeys.BROADSWORD_IRON, "black_recipe", false),
 
             blade(RecastingSlashBladeKeys.SHINE_GOLD, RecastingSlashBladeKeys.GREEN_BLADE_IRON, "shine_gold_recipe", false),

@@ -177,21 +177,6 @@ public final class SlashBladeDefinitions {
                 )
                 .build();
 
-        // 美工刀
-        register(bootstrap, RecastingSlashBladeKeys.ART_KNIFE)
-                .renderDefinition(
-                        RenderDefinition.Builder.newInstance()
-                                .modelName(R.Slashblade.artKnife$obj)
-                                .textureName(R.Slashblade.artKnife$png)
-                                .effectColor(new Color(100, 100, 100).getRGB())
-                )
-                .propertiesDefinition(
-                        PropertiesDefinition.Builder.newInstance()
-                                .baseAttackModifier(5f)
-                                .maxDamage(24 * 40)
-                )
-                .build();
-
         // 八卦剑
         register(bootstrap, RecastingSlashBladeKeys.BA_GUA)
                 .renderDefinition(
@@ -221,6 +206,21 @@ public final class SlashBladeDefinitions {
                                 .maxDamage(24 * 40)
                 )
                 .addSpecialEffects(SpecialEffectsRegistry.STUN)
+                .build();
+
+        // 美工刀彩蛋
+        register(bootstrap, RecastingSlashBladeKeys.ART_KNIFE)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.artKnife$obj)
+                                .textureName(R.Slashblade.artKnife$png)
+                                .effectColor(new Color(100, 100, 100).getRGB())
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(5f)
+                                .maxDamage(24 * 40)
+                )
                 .build();
 
         // 结缘剑「犬」彩蛋 TODO 贴图模型
