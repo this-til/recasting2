@@ -115,11 +115,12 @@ public final class GrowthAdvancementGraph {
             blade(RecastingSlashBladeKeys.BROADSWORD_WOOD, null, "broadsword_wood_recipe", false),
             blade(RecastingSlashBladeKeys.GREEN_BLADE_WOOD, null, "green_blade_wood_recipe", false),
 
-            // 彩蛋刀直线：木棍 → λ → 锄 → 物理剑
+            // 彩蛋刀直线：法棍 → λ → 锄 → 物理剑 → 结缘剑「犬」
             menuBlade(RecastingSlashBladeKeys.DHARMA_STICK, "dharma_stick_recipe"),
             blade(RecastingSlashBladeKeys.DHARMA_STICK_LAMBDA, RecastingSlashBladeKeys.DHARMA_STICK, "dharma_stick_lambda_recipe", true),
             menuBlade(RecastingSlashBladeKeys.HOE, RecastingSlashBladeKeys.DHARMA_STICK_LAMBDA, "hoe_recipe"),
             menuBlade(RecastingSlashBladeKeys.PHYSICS_SWORD, RecastingSlashBladeKeys.HOE, "physics_sword_recipe"),
+            menuBlade(RecastingSlashBladeKeys.JIE_YUAN_DOG, RecastingSlashBladeKeys.PHYSICS_SWORD, null),
 
             blade(RecastingSlashBladeKeys.BROADSWORD_IRON, RecastingSlashBladeKeys.BROADSWORD_WOOD, "broadsword_iron_recipe", false),
             blade(RecastingSlashBladeKeys.GREEN_BLADE_IRON, RecastingSlashBladeKeys.GREEN_BLADE_WOOD, "green_blade_iron_recipe", false),

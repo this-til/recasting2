@@ -286,6 +286,17 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_MS, "%d 分钟 %d 秒", "%d minute(s) %d second(s)");
         translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_S, "%d 秒", "%d second(s)");
         translation(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_NOW, "立即", "immediately");
+        translation(RecastingLanguageKeys.MESSAGE_JIE_YUAN_DOG_BOND_STARTED, "你与这只狼结缘了，请让它在现实时间中陪伴你至少 6 小时。", "You bonded with this wolf; keep it alive for at least 6 real-world hours.");
+        translation(RecastingLanguageKeys.MESSAGE_JIE_YUAN_DOG_NEED_BOND, "先驯服一只狼并让它陪伴满 6 小时，再对其喂食耀魂碎片。", "Tame a wolf, keep it alive for 6 real-world hours, then feed it a proud soul fragment.");
+        translation(RecastingLanguageKeys.MESSAGE_JIE_YUAN_DOG_BOND_LOST, "结缘的狼在陪伴满 6 小时之前死去，结缘进度已重置。", "Your bonded wolf died before 6 real-world hours passed; the bond progress was reset.");
+        translation(RecastingLanguageKeys.MESSAGE_JIE_YUAN_DOG_BOND_READY, "你的狼已陪伴足够久，对其喂食耀魂碎片即可获得结缘剑「犬」。", "Your wolf has stayed long enough; feed it a proud soul fragment to obtain Bond Blade \"Dog\".");
+        translation(RecastingLanguageKeys.MESSAGE_JIE_YUAN_DOG_ALREADY_CLAIMED, "你已经获得过结缘剑「犬」。", "You have already obtained Bond Blade \"Dog\".");
+        translation(RecastingLanguageKeys.MESSAGE_JIE_YUAN_DOG_CLAIMED, "你获得了结缘剑「犬」。", "You obtained Bond Blade \"Dog\".");
+        translation(RecastingLanguageKeys.MESSAGE_JIE_YUAN_DOG_REMAINING_H, "结缘的狼还需陪伴 %d 小时。", "Your bonded wolf still needs %d hour(s) of companionship.");
+        translation(RecastingLanguageKeys.MESSAGE_JIE_YUAN_DOG_REMAINING_HM, "结缘的狼还需陪伴 %d 小时 %d 分钟。", "Your bonded wolf still needs %d hour(s) and %d minute(s) of companionship.");
+        translation(RecastingLanguageKeys.MESSAGE_JIE_YUAN_DOG_REMAINING_M, "结缘的狼还需陪伴 %d 分钟。", "Your bonded wolf still needs %d minute(s) of companionship.");
+        translation(RecastingLanguageKeys.MESSAGE_JIE_YUAN_DOG_REMAINING_MS, "结缘的狼还需陪伴 %d 分钟 %d 秒。", "Your bonded wolf still needs %d minute(s) and %d second(s) of companionship.");
+        translation(RecastingLanguageKeys.MESSAGE_JIE_YUAN_DOG_REMAINING_S, "结缘的狼还需陪伴 %d 秒。", "Your bonded wolf still needs %d second(s) of companionship.");
         translation(itemKey(RecastingItems.GATHERING_PARTING_VARIANT), "聚散变体", "Gathering Parting Variant");
         translation(itemKey(RecastingItems.UPGRADE_VARIANT), "升格变体 I", "Upgrade Variant I");
         translation(itemKey(RecastingItems.UPGRADE_VARIANT_2), "升格变体 II", "Upgrade Variant II");

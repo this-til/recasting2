@@ -57,6 +57,18 @@ public final class RecastingLanguageKeys {
     public static final String MESSAGE_PROUD_SOUL_DROP_COOLDOWN_S = "recasting.message.proud_soul_drop.cooldown.s";
     public static final String MESSAGE_PROUD_SOUL_DROP_COOLDOWN_NOW = "recasting.message.proud_soul_drop.cooldown.now";
 
+    public static final String MESSAGE_JIE_YUAN_DOG_BOND_STARTED = "recasting.message.jie_yuan_dog.bond_started";
+    public static final String MESSAGE_JIE_YUAN_DOG_NEED_BOND = "recasting.message.jie_yuan_dog.need_bond";
+    public static final String MESSAGE_JIE_YUAN_DOG_BOND_LOST = "recasting.message.jie_yuan_dog.bond_lost";
+    public static final String MESSAGE_JIE_YUAN_DOG_BOND_READY = "recasting.message.jie_yuan_dog.bond_ready";
+    public static final String MESSAGE_JIE_YUAN_DOG_ALREADY_CLAIMED = "recasting.message.jie_yuan_dog.already_claimed";
+    public static final String MESSAGE_JIE_YUAN_DOG_CLAIMED = "recasting.message.jie_yuan_dog.claimed";
+    public static final String MESSAGE_JIE_YUAN_DOG_REMAINING_H = "recasting.message.jie_yuan_dog.remaining.h";
+    public static final String MESSAGE_JIE_YUAN_DOG_REMAINING_HM = "recasting.message.jie_yuan_dog.remaining.hm";
+    public static final String MESSAGE_JIE_YUAN_DOG_REMAINING_M = "recasting.message.jie_yuan_dog.remaining.m";
+    public static final String MESSAGE_JIE_YUAN_DOG_REMAINING_MS = "recasting.message.jie_yuan_dog.remaining.ms";
+    public static final String MESSAGE_JIE_YUAN_DOG_REMAINING_S = "recasting.message.jie_yuan_dog.remaining.s";
+
     public static final String ADVANCEMENT_GROWTH_ROOT_TITLE = "advancements.recasting.growth.root.title";
     public static final String ADVANCEMENT_GROWTH_ROOT_DESC = "advancements.recasting.growth.root.description";
     public static final String ADVANCEMENT_HUB_NEW_BLADE_SMITH_TITLE = "advancements.recasting.hub.new_blade_smith.title";

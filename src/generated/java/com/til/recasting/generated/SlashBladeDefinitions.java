@@ -223,6 +223,23 @@ public final class SlashBladeDefinitions {
                 .addSpecialEffects(SpecialEffectsRegistry.STUN)
                 .build();
 
+        // 结缘剑「犬」彩蛋 TODO 贴图模型
+        register(bootstrap, RecastingSlashBladeKeys.JIE_YUAN_DOG)
+                .renderDefinition(
+                        RenderDefinition.Builder.newInstance()
+                                .effectColor(new Color(0x280040).getRGB())
+                )
+                .propertiesDefinition(
+                        PropertiesDefinition.Builder.newInstance()
+                                .baseAttackModifier(6f)
+                                .maxDamage(32 * 40)
+                                .slashArtsType(SlashArtsRegistry.DOG_BITE.getId())
+                                .defaultSwordType(List.of(SwordType.BEWITCHED))
+                )
+                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
+                .addSpecialEffects(SpecialEffectsRegistry.DOG_BOND, 1)
+                .build();
+
 
         //endregion
 
@@ -641,23 +658,6 @@ public final class SlashBladeDefinitions {
                                 .defaultSwordType(List.of(SwordType.BEWITCHED))
                 )
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-                .build();
-
-        // 结缘剑「犬」 t3 特典 TODO 贴图模型
-        register(bootstrap, RecastingSlashBladeKeys.JIE_YUAN_DOG)
-                .renderDefinition(
-                        RenderDefinition.Builder.newInstance()
-                                .effectColor(new Color(0x280040).getRGB())
-                )
-                .propertiesDefinition(
-                        PropertiesDefinition.Builder.newInstance()
-                                .baseAttackModifier(6f)
-                                .maxDamage(32 * 40)
-                                .slashArtsType(SlashArtsRegistry.DOG_BITE.getId())
-                                .defaultSwordType(List.of(SwordType.BEWITCHED))
-                )
-                .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
-                .addSpecialEffects(SpecialEffectsRegistry.DOG_BOND, 1)
                 .build();
 
         //endregion
