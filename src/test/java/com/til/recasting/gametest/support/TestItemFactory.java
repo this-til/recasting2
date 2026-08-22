@@ -9,7 +9,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
+
+import java.util.Map;
 
 /**
  * 铁砧与配方测试共用的物品构造。
@@ -41,12 +42,23 @@ public final class TestItemFactory {
             int killCount,
             int refineCount
     ) {
+        return bladeWithStatsAndEnchantments(access, bladeId, killCount, refineCount, Map.of());
+    }
+
+    public static ItemStack bladeWithStatsAndEnchantments(
+            RegistryAccess access,
+            ResourceLocation bladeId,
+            int killCount,
+            int refineCount,
+            Map<Enchantment, Integer> enchantments
+    ) {
         ItemStack blade = bladeFromDefinition(access, bladeId);
         blade.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(state -> {
             state.setKillCount(killCount);
             state.setRefine(refineCount);
             blade.getOrCreateTag().put("bladeState", state.serializeNBT());
         });
+        applyEnchantments(blade, enchantments);
         return blade;
     }
 
@@ -60,16 +72,47 @@ public final class TestItemFactory {
             Enchantment enchantment,
             int enchantmentLevel
     ) {
+        if (enchantment == null || enchantmentLevel <= 0) {
+            return bladeWithRequirements(access, bladeId, killCount, refineCount, seId, seLevel, Map.of());
+        }
+        return bladeWithRequirements(
+                access,
+                bladeId,
+                killCount,
+                refineCount,
+                seId,
+                seLevel,
+                Map.of(enchantment, enchantmentLevel)
+        );
+    }
+
+    public static ItemStack bladeWithRequirements(
+            RegistryAccess access,
+            ResourceLocation bladeId,
+            int killCount,
+            int refineCount,
+            ResourceLocation seId,
+            int seLevel,
+            Map<Enchantment, Integer> enchantments
+    ) {
         ItemStack blade = bladeWithSpecialEffect(access, bladeId, seId, seLevel);
         blade.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(state -> {
             state.setKillCount(killCount);
             state.setRefine(refineCount);
             blade.getOrCreateTag().put("bladeState", state.serializeNBT());
         });
-        if (enchantment != null && enchantmentLevel > 0) {
-            blade.enchant(enchantment, enchantmentLevel);
-        }
+        applyEnchantments(blade, enchantments);
         return blade;
+    }
+
+    private static void applyEnchantments(ItemStack blade, Map<Enchantment, Integer> enchantments) {
+        for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+            Enchantment enchantment = entry.getKey();
+            Integer level = entry.getValue();
+            if (enchantment != null && level != null && level > 0) {
+                blade.enchant(enchantment, level);
+            }
+        }
     }
 
     public static ItemStack bladeWithSpecialEffect(

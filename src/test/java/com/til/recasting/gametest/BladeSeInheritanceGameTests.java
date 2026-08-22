@@ -11,9 +11,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
+
+import java.util.Map;
 
 /**
  * 拔刀剑合成后特殊/普通 SE 继承与替换用例。
@@ -22,8 +25,23 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public final class BladeSeInheritanceGameTests {
 
-    private static final ResourceLocation SHINE_TEA_LAMBDA_RECIPE = Recasting.prefix("shine_tea_lambda_recipe");
     private static final ResourceLocation DRAGON_SCALE_LAMBDA_RECIPE = Recasting.prefix("dragon_scale_lambda_recipe");
+    private static final ResourceLocation BRILLIANT_TEA_LAMBDA_RECIPE = Recasting.prefix("brilliant_tea_lambda_recipe");
+    private static final Map<Enchantment, Integer> DRAGON_SCALE_LAMBDA_BLADE_ENCHANTMENTS = Map.of(
+            Enchantments.FIRE_PROTECTION, 4,
+            Enchantments.FIRE_ASPECT, 2,
+            Enchantments.FLAMING_ARROWS, 1
+    );
+    private static final Map<Enchantment, Integer> BRILLIANT_TEA_LAMBDA_BLADE_ENCHANTMENTS = Map.ofEntries(
+            Map.entry(Enchantments.FISHING_LUCK, 3),
+            Map.entry(Enchantments.FISHING_SPEED, 3),
+            Map.entry(Enchantments.SILK_TOUCH, 1),
+            Map.entry(Enchantments.BLOCK_EFFICIENCY, 5),
+            Map.entry(Enchantments.BLOCK_FORTUNE, 3),
+            Map.entry(Enchantments.LOYALTY, 3),
+            Map.entry(Enchantments.RIPTIDE, 1),
+            Map.entry(Enchantments.MENDING, 1)
+    );
 
     private BladeSeInheritanceGameTests() {
     }
@@ -33,13 +51,12 @@ public final class BladeSeInheritanceGameTests {
         Recipe<?> recipe = requireRecipe(helper, DRAGON_SCALE_LAMBDA_RECIPE);
         ItemStack input = TestItemFactory.bladeWithRequirements(
                 helper.getLevel().registryAccess(),
-        RecastingSlashBladeKeys.DRAGON_SCALE.location(),
+                RecastingSlashBladeKeys.DRAGON_SCALE.location(),
                 500,
                 200,
                 SpecialEffectsRegistry.BLACK_ROSE.getId(),
                 1,
-                Enchantments.SMITE,
-                5
+                DRAGON_SCALE_LAMBDA_BLADE_ENCHANTMENTS
         );
 
         try {
@@ -58,12 +75,13 @@ public final class BladeSeInheritanceGameTests {
 
     @GameTest(template = "empty", batch = "recastingBladeSeInheritance")
     public static void specialSe_replaceWhenOutputHasDefinitionSpecialSe(GameTestHelper helper) {
-        Recipe<?> recipe = requireRecipe(helper, SHINE_TEA_LAMBDA_RECIPE);
-        ItemStack input = TestItemFactory.bladeWithStats(
+        Recipe<?> recipe = requireRecipe(helper, BRILLIANT_TEA_LAMBDA_RECIPE);
+        ItemStack input = TestItemFactory.bladeWithStatsAndEnchantments(
                 helper.getLevel().registryAccess(),
-        RecastingSlashBladeKeys.SHINE_TEA.location(),
-                2000,
-                1000
+                RecastingSlashBladeKeys.BRILLIANT_TEA.location(),
+                8000,
+                4000,
+                BRILLIANT_TEA_LAMBDA_BLADE_ENCHANTMENTS
         );
 
         try {
@@ -86,13 +104,12 @@ public final class BladeSeInheritanceGameTests {
         Recipe<?> recipe = requireRecipe(helper, DRAGON_SCALE_LAMBDA_RECIPE);
         ItemStack input = TestItemFactory.bladeWithRequirements(
                 helper.getLevel().registryAccess(),
-        RecastingSlashBladeKeys.DRAGON_SCALE.location(),
+                RecastingSlashBladeKeys.DRAGON_SCALE.location(),
                 500,
                 200,
                 SpecialEffectsRegistry.SHARP_BLADE.getId(),
                 1,
-                Enchantments.SMITE,
-                5
+                DRAGON_SCALE_LAMBDA_BLADE_ENCHANTMENTS
         );
 
         try {
@@ -114,13 +131,12 @@ public final class BladeSeInheritanceGameTests {
         Recipe<?> recipe = requireRecipe(helper, DRAGON_SCALE_LAMBDA_RECIPE);
         ItemStack input = TestItemFactory.bladeWithRequirements(
                 helper.getLevel().registryAccess(),
-        RecastingSlashBladeKeys.DRAGON_SCALE.location(),
+                RecastingSlashBladeKeys.DRAGON_SCALE.location(),
                 500,
                 200,
                 SpecialEffectsRegistry.SHARP_BLADE.getId(),
                 3,
-                Enchantments.SMITE,
-                5
+                DRAGON_SCALE_LAMBDA_BLADE_ENCHANTMENTS
         );
 
         try {

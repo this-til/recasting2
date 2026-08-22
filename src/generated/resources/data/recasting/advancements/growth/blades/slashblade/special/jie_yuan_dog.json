@@ -1,5 +1,5 @@
 {
-  "parent": "recasting:growth/blades/slashblade/physics_sword",
+  "parent": "recasting:growth/blades/slashblade/art_knife",
   "criteria": {
     "obtained": {
       "conditions": {
