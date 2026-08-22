@@ -20,17 +20,43 @@ import java.util.function.BiConsumer;
  * 扫描活体实体背包 / 装备栏中的拔刀剑 SE。
  * <p>
  * 玩家扫描完整物品栏；其他活体扫描全部 {@link EquipmentSlot}。
- * 按实体 UUID + SE id 缓存上次命中的槽位，命中时先校验缓存槽，失效再全量扫描。
+ * 命中槽位会缓存并在失效前 O(1) 校验；未命中会写入负缓存，在物品栏变更前或 TTL 到期前跳过全量扫描。
  */
 public final class InventorySlashBladeSeHelper {
 
-    public record BladeSeHit(ItemStack blade, ISlashBladeState state, int slot) {
+    /**
+     * 未命中后默认重扫间隔：2s
+     */
+    private static final int NEGATIVE_CACHE_TICKS = 40;
+
+    public record BladeSeHit(ItemStack blade, ISlashBladeState state, int slot, ResourceLocation effectId) {
+    }
+
+    private record EffectCacheEntry(int slot, long negativeUntilGameTime) {
+        private static final int NEGATIVE_SLOT = -1;
+
+        private boolean isNegative() {
+            return slot == NEGATIVE_SLOT;
+        }
+
+        private static EffectCacheEntry positive(int slot) {
+            return new EffectCacheEntry(slot, 0L);
+        }
+
+        private static EffectCacheEntry negative(long negativeUntilGameTime) {
+            return new EffectCacheEntry(NEGATIVE_SLOT, negativeUntilGameTime);
+        }
     }
 
     /**
-     * entityUUID -> (effectId -> slot index)
+     * entityUUID -> (effectId -> cache entry)
      */
-    private static final Map<UUID, Map<ResourceLocation, Integer>> SLOT_CACHE = new ConcurrentHashMap<>();
+    private static final Map<UUID, Map<ResourceLocation, EffectCacheEntry>> SLOT_CACHE = new ConcurrentHashMap<>();
+
+    /**
+     * entityUUID -> 无拔刀剑负缓存到期 tick
+     */
+    private static final Map<UUID, Long> NO_BLADE_UNTIL = new ConcurrentHashMap<>();
 
     private static final EquipmentSlot[] EQUIPMENT_SLOTS = EquipmentSlot.values();
 
@@ -63,28 +89,124 @@ public final class InventorySlashBladeSeHelper {
         if (effectId == null) {
             return null;
         }
+        return findFirstInInventory(entity, new ResourceLocation[]{effectId});
+    }
 
+    /**
+     * 按优先级单次扫描多个 SE，返回第一个命中的刀。
+     */
+    @Nullable
+    public static BladeSeHit findFirstInInventory(LivingEntity entity, ResourceLocation... effectIdsInPriority) {
+        if (effectIdsInPriority == null || effectIdsInPriority.length == 0) {
+            return null;
+        }
+
+        long gameTime = entity.level().getGameTime();
         UUID entityId = entity.getUUID();
-        Integer cachedSlot = getCachedSlot(entityId, effectId);
-        if (cachedSlot != null) {
-            BladeSeHit cachedHit = resolveSlot(entity, cachedSlot, effectId);
+        if (isNoBladeCached(entityId, gameTime)) {
+            return null;
+        }
+
+        for(ResourceLocation effectId : effectIdsInPriority) {
+            if (effectId == null) {
+                continue;
+            }
+            BladeSeHit cachedHit = resolveCached(entity, entityId, effectId, gameTime);
             if (cachedHit != null) {
                 return cachedHit;
             }
-            clearCachedSlot(entityId, effectId);
         }
 
+        BladeSeHit scannedHit = scanInventory(entity, entityId, effectIdsInPriority, gameTime);
+        if (scannedHit != null) {
+            return scannedHit;
+        }
+
+        cacheNegative(entityId, effectIdsInPriority, gameTime);
+        return null;
+    }
+
+    @Nullable
+    private static BladeSeHit resolveCached(
+            LivingEntity entity,
+            UUID entityId,
+            ResourceLocation effectId,
+            long gameTime
+    ) {
+        EffectCacheEntry cached = getCachedEntry(entityId, effectId);
+        if (cached == null) {
+            return null;
+        }
+        if (cached.isNegative()) {
+            if (gameTime < cached.negativeUntilGameTime()) {
+                return null;
+            }
+            clearCachedSlot(entityId, effectId);
+            return null;
+        }
+
+        BladeSeHit hit = resolveSlot(entity, cached.slot(), effectId);
+        if (hit != null) {
+            return hit;
+        }
+        clearCachedSlot(entityId, effectId);
+        return null;
+    }
+
+    @Nullable
+    private static BladeSeHit scanInventory(
+            LivingEntity entity,
+            UUID entityId,
+            ResourceLocation[] effectIdsInPriority,
+            long gameTime
+    ) {
         int size = getSlotCount(entity);
-        for(int i = 0; i < size; i++) {
-            BladeSeHit hit = resolveSlot(entity, i, effectId);
-            if (hit != null) {
-                putCachedSlot(entityId, effectId, i);
-                return hit;
+        boolean foundSlashBlade = false;
+        for(int slot = 0; slot < size; slot++) {
+            ItemStack stack = getStackAtSlot(entity, slot);
+            if (stack == null || stack.isEmpty() || !(stack.getItem() instanceof ItemSlashBlade)) {
+                continue;
+            }
+            ISlashBladeState state = stack.getCapability(ItemSlashBlade.BLADESTATE).orElse(null);
+            if (state == null) {
+                continue;
+            }
+            foundSlashBlade = true;
+
+            for(ResourceLocation effectId : effectIdsInPriority) {
+                if (effectId == null || !state.hasSpecialEffect(effectId)) {
+                    continue;
+                }
+                putCachedSlot(entityId, effectId, slot);
+                return new BladeSeHit(stack, state, slot, effectId);
             }
         }
 
-        clearCachedSlot(entityId, effectId);
+        if (!foundSlashBlade) {
+            NO_BLADE_UNTIL.put(entityId, gameTime + NEGATIVE_CACHE_TICKS);
+        }
         return null;
+    }
+
+    private static void cacheNegative(UUID entityId, ResourceLocation[] effectIdsInPriority, long gameTime) {
+        long negativeUntil = gameTime + NEGATIVE_CACHE_TICKS;
+        for(ResourceLocation effectId : effectIdsInPriority) {
+            if (effectId != null) {
+                putNegativeCache(entityId, effectId, negativeUntil);
+            }
+        }
+    }
+
+    private static boolean isNoBladeCached(UUID entityId, long gameTime) {
+        Long until = NO_BLADE_UNTIL.get(entityId);
+        if (until == null) {
+            return false;
+        }
+        if (gameTime < until) {
+            return true;
+        }
+        NO_BLADE_UNTIL.remove(entityId, until);
+        return false;
     }
 
     private static int getSlotCount(LivingEntity entity) {
@@ -121,11 +243,12 @@ public final class InventorySlashBladeSeHelper {
         if (state == null) {
             return null;
         }
-        return new BladeSeHit(stack, state, slot);
+        return new BladeSeHit(stack, state, slot, effectId);
     }
 
-    private static Integer getCachedSlot(UUID entityId, ResourceLocation effectId) {
-        Map<ResourceLocation, Integer> byEffect = SLOT_CACHE.get(entityId);
+    @Nullable
+    private static EffectCacheEntry getCachedEntry(UUID entityId, ResourceLocation effectId) {
+        Map<ResourceLocation, EffectCacheEntry> byEffect = SLOT_CACHE.get(entityId);
         if (byEffect == null) {
             return null;
         }
@@ -133,11 +256,17 @@ public final class InventorySlashBladeSeHelper {
     }
 
     private static void putCachedSlot(UUID entityId, ResourceLocation effectId, int slot) {
-        SLOT_CACHE.computeIfAbsent(entityId, id -> new ConcurrentHashMap<>()).put(effectId, slot);
+        SLOT_CACHE.computeIfAbsent(entityId, id -> new ConcurrentHashMap<>())
+                .put(effectId, EffectCacheEntry.positive(slot));
+    }
+
+    private static void putNegativeCache(UUID entityId, ResourceLocation effectId, long negativeUntilGameTime) {
+        SLOT_CACHE.computeIfAbsent(entityId, id -> new ConcurrentHashMap<>())
+                .put(effectId, EffectCacheEntry.negative(negativeUntilGameTime));
     }
 
     private static void clearCachedSlot(UUID entityId, ResourceLocation effectId) {
-        Map<ResourceLocation, Integer> byEffect = SLOT_CACHE.get(entityId);
+        Map<ResourceLocation, EffectCacheEntry> byEffect = SLOT_CACHE.get(entityId);
         if (byEffect == null) {
             return;
         }
@@ -148,12 +277,14 @@ public final class InventorySlashBladeSeHelper {
     }
 
     /**
-     * 实体离开世界时清理缓存，避免泄漏。
+     * 物品栏 / 装备变更时清理缓存，避免负缓存长期漏检。
      */
     public static void clearEntityCache(UUID entityId) {
-        if (entityId != null) {
-            SLOT_CACHE.remove(entityId);
+        if (entityId == null) {
+            return;
         }
+        SLOT_CACHE.remove(entityId);
+        NO_BLADE_UNTIL.remove(entityId);
     }
 
     public static boolean hasInInventory(LivingEntity entity, RegistryObject<? extends SpecialEffect> effect) {
@@ -195,7 +326,14 @@ public final class InventorySlashBladeSeHelper {
             LivingEntity entity,
             BiConsumer<ItemStack, ISlashBladeState> consumer
     ) {
+        long gameTime = entity.level().getGameTime();
+        UUID entityId = entity.getUUID();
+        if (isNoBladeCached(entityId, gameTime)) {
+            return;
+        }
+
         int size = getSlotCount(entity);
+        boolean foundSlashBlade = false;
         for(int i = 0; i < size; i++) {
             ItemStack stack = getStackAtSlot(entity, i);
             if (stack == null || stack.isEmpty() || !(stack.getItem() instanceof ItemSlashBlade)) {
@@ -203,8 +341,12 @@ public final class InventorySlashBladeSeHelper {
             }
             ISlashBladeState state = stack.getCapability(ItemSlashBlade.BLADESTATE).orElse(null);
             if (state != null) {
+                foundSlashBlade = true;
                 consumer.accept(stack, state);
             }
+        }
+        if (!foundSlashBlade) {
+            NO_BLADE_UNTIL.put(entityId, gameTime + NEGATIVE_CACHE_TICKS);
         }
     }
 }

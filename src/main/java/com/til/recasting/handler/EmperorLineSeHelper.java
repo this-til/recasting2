@@ -6,6 +6,7 @@ import com.til.recasting.registry.SpecialEffectsRegistry;
 import com.til.recasting.registry.se.EmperorLineStats;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
@@ -44,36 +45,29 @@ public final class EmperorLineSeHelper {
      */
     @Nullable
     public static ActiveLine resolveHighest(LivingEntity entity) {
-        InventorySlashBladeSeHelper.BladeSeHit emperorLambda = InventorySlashBladeSeHelper.findFirstInInventory(
+        InventorySlashBladeSeHelper.BladeSeHit hit = InventorySlashBladeSeHelper.findFirstInInventory(
                 entity,
-                SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN_LAMBDA
+                SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN_LAMBDA.getId(),
+                SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN.getId(),
+                SpecialEffectsRegistry.TU_WU_BLOOD_CURSE_LAMBDA.getId(),
+                SpecialEffectsRegistry.TU_WU_BLOOD_CURSE.getId()
         );
-        if (emperorLambda != null) {
-            return toActive(emperorLambda.blade(), emperorLambda.state(), SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN_LAMBDA.get());
+        if (hit == null) {
+            return null;
         }
 
-        InventorySlashBladeSeHelper.BladeSeHit emperor = InventorySlashBladeSeHelper.findFirstInInventory(
-                entity,
-                SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN
-        );
-        if (emperor != null) {
-            return toActive(emperor.blade(), emperor.state(), SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN.get());
+        ResourceLocation effectId = hit.effectId();
+        if (SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN_LAMBDA.getId().equals(effectId)) {
+            return toActive(hit.blade(), hit.state(), SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN_LAMBDA.get());
         }
-
-        InventorySlashBladeSeHelper.BladeSeHit tuWuLambda = InventorySlashBladeSeHelper.findFirstInInventory(
-                entity,
-                SpecialEffectsRegistry.TU_WU_BLOOD_CURSE_LAMBDA
-        );
-        if (tuWuLambda != null) {
-            return toActive(tuWuLambda.blade(), tuWuLambda.state(), SpecialEffectsRegistry.TU_WU_BLOOD_CURSE_LAMBDA.get());
+        if (SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN.getId().equals(effectId)) {
+            return toActive(hit.blade(), hit.state(), SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN.get());
         }
-
-        InventorySlashBladeSeHelper.BladeSeHit tuWu = InventorySlashBladeSeHelper.findFirstInInventory(
-                entity,
-                SpecialEffectsRegistry.TU_WU_BLOOD_CURSE
-        );
-        if (tuWu != null) {
-            return toActive(tuWu.blade(), tuWu.state(), SpecialEffectsRegistry.TU_WU_BLOOD_CURSE.get());
+        if (SpecialEffectsRegistry.TU_WU_BLOOD_CURSE_LAMBDA.getId().equals(effectId)) {
+            return toActive(hit.blade(), hit.state(), SpecialEffectsRegistry.TU_WU_BLOOD_CURSE_LAMBDA.get());
+        }
+        if (SpecialEffectsRegistry.TU_WU_BLOOD_CURSE.getId().equals(effectId)) {
+            return toActive(hit.blade(), hit.state(), SpecialEffectsRegistry.TU_WU_BLOOD_CURSE.get());
         }
         return null;
     }

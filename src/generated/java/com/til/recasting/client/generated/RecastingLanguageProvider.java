@@ -498,7 +498,7 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(slashArtKey(SlashArtsRegistry.CELESTIAL_DRIVE), "[回到未来计划]星辰斗转", "[Back to the Future Plan] Celestial Drive");
         translation(slashArtDescKey(SlashArtsRegistry.CELESTIAL_DRIVE), "从自身向四面八方散射短命剑气。", "Scatters short-lived sword qi outward in all directions from the caster.");
         translation(slashArtKey(SlashArtsRegistry.STARFALL), "[回到未来计划]群星坠落", "[Back to the Future Plan] Starfall");
-        translation(slashArtDescKey(SlashArtsRegistry.STARFALL), "展开阵体：无锁时跟随自身对周围敌人落星；有锁时钉住目标并持续落星。", "Unfolds an array: without a lock it follows the caster and drops stars on nearby foes; with a lock it pins the target and keeps raining stars.");
+        translation(slashArtDescKey(SlashArtsRegistry.STARFALL), "展开阵体：跟随自身时对范围内敌人随机落星；视向锁定目标时钉住目标并持续落星。", "Unfolds an array: while following the caster, stars drop randomly on foes in range; when facing a locked target, it pins them and keeps raining homing stars.");
         translation(slashArtKey(SlashArtsRegistry.SKY_SEIZE), "[回到未来计划]擒苍决", "[Back to the Future Plan] Sky Seize");
         translation(slashArtDescKey(SlashArtsRegistry.SKY_SEIZE), "自高空雨落大量幻影剑，飞剑消失时落雷并沿附近敌人传导闪电链。", "Rains many phantom swords from above; when they vanish they strike with lightning and chain to nearby foes.");
         translation(slashArtKey(SlashArtsRegistry.DIVINE_SLASH), "[回到未来计划]神斩", "[Back to the Future Plan] Divine Slash");

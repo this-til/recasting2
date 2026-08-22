@@ -6,6 +6,7 @@ import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.constant.R;
 import com.til.recasting.entity.StarfallArrayEntity;
 import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
 import lombok.Setter;
@@ -25,7 +26,7 @@ import net.minecraft.world.level.Level;
 import java.util.UUID;
 
 /**
- * [回到未来计划]群星坠落：展开粒子阵体，无锁跟随落星，有锁钉阵禁锢并密集落星。
+ * [回到未来计划]群星坠落：展开粒子阵体；视向锁定目标时钉阵追击，否则跟随自身并在范围内随机落星。
  */
 @Setter
 @Accessors(chain = true)
@@ -38,6 +39,7 @@ public class StarfallSlashArts extends ExtendedSlashArts {
     private float starRatio = 0.08f;
     private int life = 600;
     private int arrayColor = 0xAACCFF;
+    private float seekRange = 45.0f;
 
     @Override
     public void trigger(
@@ -63,6 +65,10 @@ public class StarfallSlashArts extends ExtendedSlashArts {
         LivingEntity pinTarget = locked instanceof LivingEntity living && living.isAlive()
                 ? living
                 : null;
+        boolean pinOnLockedTarget = pinTarget != null
+                && EntityHelper.selectClosestInViewCone(livingEntity)
+                .filter(view -> view.getId() == pinTarget.getId())
+                .isPresent();
 
         StarfallArrayEntity array = new StarfallArrayEntity(
                 RecastingEntities.STARFALL_ARRAY.get(),
@@ -72,11 +78,12 @@ public class StarfallSlashArts extends ExtendedSlashArts {
         array.setMaxLifeTime(life);
         array.setModifiedRatio(starRatio);
         array.setColor(arrayColor);
+        array.setSeekRange(seekRange);
         array.setStarColor(slashBladeState.getColorCode());
         array.setStarModel(starModel);
         array.setStarTexture(starTexture);
 
-        if (pinTarget != null) {
+        if (pinOnLockedTarget) {
             array.setMode(StarfallArrayEntity.MODE_PIN);
             array.setPinTarget(pinTarget);
             array.setPos(pinTarget.getX(), pinTarget.getY(), pinTarget.getZ());

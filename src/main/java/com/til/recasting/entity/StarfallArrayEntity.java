@@ -1,5 +1,6 @@
 package com.til.recasting.entity;
 
+import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.registry.RecastingEntities;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -17,10 +18,11 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.awt.*;
+import java.util.List;
 
 /**
- * [回到未来计划]群星坠落阵：自身不造成伤害，按模式跟随或禁锢锁定目标并刷追踪落星。
- * 落星仅攻击法阵锁定实体，不自动索敌。
+ * [回到未来计划]群星坠落阵：跟随或钉阵刷追踪落星。
+ * 跟随模式在索敌范围内随机落星；钉阵模式仅攻击锁定目标。落星生成后不再自动换目标。
  * 客户端粒子阵：仅边框（参考 CryptoMorin/XSeries 轮廓绘制，不做填充）。
  */
 public class StarfallArrayEntity extends StandardizationAttackEntity {
@@ -50,6 +52,7 @@ public class StarfallArrayEntity extends StandardizationAttackEntity {
     protected static final EntityDataAccessor<Integer> MODE = SynchedEntityData.defineId(StarfallArrayEntity.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Integer> TARGET_ENTITY_ID = SynchedEntityData.defineId(StarfallArrayEntity.class, EntityDataSerializers.INT);
 
+    private float seekRange = 45.0f;
     private int starLife = 200;
     private int starColor = 0x3333FF;
     private float starSize = 2.67f;
@@ -93,23 +96,26 @@ public class StarfallArrayEntity extends StandardizationAttackEntity {
 
         if (getMode() == MODE_FOLLOW) {
             setPos(caster.getX(), caster.getY() + 0.1, caster.getZ());
-        } else {
-            LivingEntity locked = getPinTarget();
-            if (locked == null || !locked.isAlive()) {
-                discard();
-                return;
+            LivingEntity foe = pickRandomFoe(caster);
+            if (foe != null) {
+                Vec3 spawnPos = randomStarSpawnPos(level().getRandom());
+                spawnStar(caster, foe, spawnPos.x, spawnPos.y, spawnPos.z);
             }
-
-            locked.teleportTo(getX(), getY(), getZ());
-            locked.setYRot(locked.getYRot());
-            locked.setXRot(locked.getXRot());
+            return;
         }
 
         LivingEntity locked = getPinTarget();
-        if (locked != null && locked.isAlive()) {
-            Vec3 spawnPos = randomStarSpawnPos(level().getRandom());
-            spawnStar(caster, locked, spawnPos.x, spawnPos.y, spawnPos.z);
+        if (locked == null || !locked.isAlive()) {
+            discard();
+            return;
         }
+
+        locked.teleportTo(getX(), getY(), getZ());
+        locked.setYRot(locked.getYRot());
+        locked.setXRot(locked.getXRot());
+
+        Vec3 spawnPos = randomStarSpawnPos(level().getRandom());
+        spawnStar(caster, locked, spawnPos.x, spawnPos.y, spawnPos.z);
     }
 
     /**
@@ -189,16 +195,30 @@ public class StarfallArrayEntity extends StandardizationAttackEntity {
     }
 
     /**
-     * 法阵上方圆柱内均匀随机点：半径与阵体 {@link #getSize()} 一致，Y 为阵心上方 32～96 格区间。
+     * 法阵上方圆柱内均匀随机点：半径与 {@link #seekRange} 一致，Y 为阵心上方 32～96 格区间。
      */
     private Vec3 randomStarSpawnPos(RandomSource random) {
-        double radius = OUTER_RADIUS * Math.max(0.5f, getSize());
+        double radius = seekRange;
         double angle = random.nextDouble() * Math.PI * 2.0;
         double r = radius * Math.sqrt(random.nextDouble());
         double x = getX() + Math.cos(angle) * r;
         double z = getZ() + Math.sin(angle) * r;
         double y = getY() + STAR_SPAWN_MIN_HEIGHT + random.nextDouble() * STAR_SPAWN_CYLINDER_HEIGHT;
         return new Vec3(x, y, z);
+    }
+
+    @Nullable
+    private LivingEntity pickRandomFoe(LivingEntity caster) {
+        List<LivingEntity> foes = EntityHelper.getTargettableLivingEntityWithinAABB(
+                level(),
+                caster,
+                position(),
+                seekRange
+        );
+        if (foes.isEmpty()) {
+            return null;
+        }
+        return foes.get(level().getRandom().nextInt(foes.size()));
     }
 
     private void spawnStar(LivingEntity caster, LivingEntity target, double spawnX, double spawnY, double spawnZ) {
@@ -263,6 +283,10 @@ public class StarfallArrayEntity extends StandardizationAttackEntity {
             return living;
         }
         return null;
+    }
+
+    public void setSeekRange(float seekRange) {
+        this.seekRange = seekRange;
     }
 
     public void setStarLife(int starLife) {
