@@ -238,8 +238,26 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
         }
 
         private static void saveBackToFutureChain(Consumer<Advancement> writer, Advancement hubKill) {
+            List<ResourceLocation> slashArts = GrowthAdvancementGraph.BACK_TO_FUTURE_SLASH_ARTS;
+            int rowSize = GrowthAdvancementGraph.BACK_TO_FUTURE_ROW_SIZE;
+            if (rowSize <= 0 || rowSize >= slashArts.size()) {
+                saveBackToFutureRow(writer, hubKill, slashArts, 0, slashArts.size());
+                return;
+            }
+            saveBackToFutureRow(writer, hubKill, slashArts, 0, rowSize);
+            saveBackToFutureRow(writer, hubKill, slashArts, rowSize, slashArts.size());
+        }
+
+        private static void saveBackToFutureRow(
+                Consumer<Advancement> writer,
+                Advancement hubKill,
+                List<ResourceLocation> slashArts,
+                int fromIndex,
+                int toIndex
+        ) {
             Advancement parent = hubKill;
-            for (ResourceLocation saId : GrowthAdvancementGraph.BACK_TO_FUTURE_SLASH_ARTS) {
+            for (int i = fromIndex; i < toIndex; i++) {
+                ResourceLocation saId = slashArts.get(i);
                 ItemStack icon = slashArtsSphereIcon(saId);
                 parent = Advancement.Builder.advancement()
                         .parent(parent)

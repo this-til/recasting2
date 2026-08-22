@@ -1,5 +1,5 @@
 {
-  "parent": "recasting:growth/drop/btf/celestial_drive",
+  "parent": "recasting:growth/hub/just_kill",
   "criteria": {
     "obtained": {
       "conditions": {

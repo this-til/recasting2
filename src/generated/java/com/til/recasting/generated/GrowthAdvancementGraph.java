@@ -31,8 +31,12 @@ public final class GrowthAdvancementGraph {
     public static final int REFINE_MILESTONE_1 = 1000;
     public static final int REFINE_MILESTONE_2 = 10000;
 
+    /** [回到未来计划] 成就树第一行 SA 数量（共 15 个，8 + 7 两行）。 */
+    public static final int BACK_TO_FUTURE_ROW_SIZE = 8;
+
     /**
-     * [回到未来计划] SA 直线链，顺序对齐 {@code Config.SLASH_ARTS_DROP_WHITELIST} 默认值。
+     * [回到未来计划] SA 链，顺序对齐 {@code Config.SLASH_ARTS_DROP_WHITELIST} 默认值；
+     * 成就树按 {@link #BACK_TO_FUTURE_ROW_SIZE} 拆成两行，均从 hub just_kill 分支。
      */
     public static final List<ResourceLocation> BACK_TO_FUTURE_SLASH_ARTS = List.of(
             SlashArtsRegistry.TIME_BEYOND.getId(),

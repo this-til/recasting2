@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-23T02:46:46.6480623	Advancements
+// 1.20.1	2026-08-23T03:05:05.4297842	Advancements
 1712a697927bd33f2ac61bd946afa4eb235d72d6 data/recasting/advancements/growth/blades/slashblade/art_knife.json
 84a907fb18a21655c41f203ef6e301210710e6f5 data/recasting/advancements/growth/blades/slashblade/azure_vista.json
 1563f8fe50126bf4ea4b687614ac67e2859928f2 data/recasting/advancements/growth/blades/slashblade/azure_vista_lambda.json
@@ -94,7 +94,7 @@ c2c88b78fa549a092b77ec5236fc97d1e8728bc0 data/recasting/advancements/growth/drop
 2e9dcaedd06aca47402da232f86587c9ad648639 data/recasting/advancements/growth/drop/btf/mortal_dust.json
 6722f9a2b6f0a1b3968f48e5df7c4035152caf1f data/recasting/advancements/growth/drop/btf/phase_fracture.json
 1a9f66960df0d87198083f9c8d62a2f8538a230a data/recasting/advancements/growth/drop/btf/sky_seize.json
-f50bd92566516762e908c241b46e71077aefd841 data/recasting/advancements/growth/drop/btf/starfall.json
+a8b6804aed109a50758763b1a43b9363f5f6f5d5 data/recasting/advancements/growth/drop/btf/starfall.json
 bed2da8091d658dd2e65a36c173bb28f76390d50 data/recasting/advancements/growth/drop/btf/tidal_surge.json
 04ccbb0214c910e6e796e82ab12e9ba74b8b1ee6 data/recasting/advancements/growth/drop/btf/time_beyond.json
 6a4f0e1cf39af0c77401978db0fd35ff699511ca data/recasting/advancements/growth/drop/btf/verdict.json
