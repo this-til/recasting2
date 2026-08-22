@@ -1,7 +1,8 @@
 package com.til.recasting.handler;
 
 import com.til.recasting.Recasting;
-import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -15,7 +16,9 @@ public final class InventorySlashBladeSeCacheHandler {
     }
 
     @SubscribeEvent
-    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
-        InventorySlashBladeSeHelper.clearPlayerCache(event.getEntity().getUUID());
+    public static void onEntityLeaveLevel(EntityLeaveLevelEvent event) {
+        if (event.getEntity() instanceof LivingEntity living) {
+            InventorySlashBladeSeHelper.clearEntityCache(living.getUUID());
+        }
     }
 }

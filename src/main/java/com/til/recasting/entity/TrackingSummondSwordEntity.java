@@ -36,6 +36,11 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
      */
     private static final int RETARGET_INTERVAL_TICKS = 20;
 
+    /**
+     * 无有效目标时是否自动重索敌（默认开启）
+     */
+    private boolean autoRetarget = true;
+
     @Nullable
     protected Entity targetEntity;
 
@@ -122,6 +127,10 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
                 : null;
         if (target != null && target.isAlive()) {
             return target;
+        }
+
+        if (!autoRetarget) {
+            return null;
         }
 
         boolean lostLockedTarget = targetId > 0;
@@ -257,5 +266,9 @@ public class TrackingSummondSwordEntity extends SummondSwordEntity {
 
     public void setInterval(int interval) {
         entityData.set(INTERVAL, Math.max(0, interval));
+    }
+
+    public void setAutoRetarget(boolean autoRetarget) {
+        this.autoRetarget = autoRetarget;
     }
 }

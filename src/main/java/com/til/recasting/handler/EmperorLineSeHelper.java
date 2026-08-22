@@ -5,13 +5,12 @@ import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.registry.SpecialEffectsRegistry;
 import com.til.recasting.registry.se.EmperorLineStats;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
-import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -41,7 +40,7 @@ public final class EmperorLineSeHelper {
     }
 
     /**
-     * 解析当前实体可用的最高阶梯（轩辕背包优先于屠巫手持）。
+     * 解析当前实体可用的最高阶梯（轩辕装备栏优先于屠巫装备栏）。
      */
     @Nullable
     public static ActiveLine resolveHighest(LivingEntity entity) {
@@ -61,20 +60,20 @@ public final class EmperorLineSeHelper {
             return toActive(emperor.blade(), emperor.state(), SpecialEffectsRegistry.HUMAN_EMPEROR_DOMAIN.get());
         }
 
-        ItemStack main = entity.getMainHandItem();
-        if (!main.isEmpty() && main.getItem() instanceof ItemSlashBlade) {
-            if (InventorySlashBladeSeHelper.hasSpecialEffect(main, SpecialEffectsRegistry.TU_WU_BLOOD_CURSE_LAMBDA)) {
-                ISlashBladeState state = main.getCapability(ItemSlashBlade.BLADESTATE).orElse(null);
-                if (state != null) {
-                    return toActive(main, state, SpecialEffectsRegistry.TU_WU_BLOOD_CURSE_LAMBDA.get());
-                }
-            }
-            if (InventorySlashBladeSeHelper.hasSpecialEffect(main, SpecialEffectsRegistry.TU_WU_BLOOD_CURSE)) {
-                ISlashBladeState state = main.getCapability(ItemSlashBlade.BLADESTATE).orElse(null);
-                if (state != null) {
-                    return toActive(main, state, SpecialEffectsRegistry.TU_WU_BLOOD_CURSE.get());
-                }
-            }
+        InventorySlashBladeSeHelper.BladeSeHit tuWuLambda = InventorySlashBladeSeHelper.findFirstInInventory(
+                entity,
+                SpecialEffectsRegistry.TU_WU_BLOOD_CURSE_LAMBDA
+        );
+        if (tuWuLambda != null) {
+            return toActive(tuWuLambda.blade(), tuWuLambda.state(), SpecialEffectsRegistry.TU_WU_BLOOD_CURSE_LAMBDA.get());
+        }
+
+        InventorySlashBladeSeHelper.BladeSeHit tuWu = InventorySlashBladeSeHelper.findFirstInInventory(
+                entity,
+                SpecialEffectsRegistry.TU_WU_BLOOD_CURSE
+        );
+        if (tuWu != null) {
+            return toActive(tuWu.blade(), tuWu.state(), SpecialEffectsRegistry.TU_WU_BLOOD_CURSE.get());
         }
         return null;
     }
@@ -114,19 +113,18 @@ public final class EmperorLineSeHelper {
     }
 
     @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) {
+    public static void onLivingTick(LivingEvent.LivingTickEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (entity.level().isClientSide()) {
             return;
         }
-        Player player = event.player;
-        if (player.level().isClientSide()) {
-            return;
-        }
-        ActiveLine active = resolveHighest(player);
+        ActiveLine active = resolveHighest(entity);
         if (active == null) {
             return;
         }
-        tryRestoreFood(player, active);
+        if (entity instanceof Player player) {
+            tryRestoreFood(player, active);
+        }
     }
 
     private static void tryRestoreFood(Player player, ActiveLine active) {

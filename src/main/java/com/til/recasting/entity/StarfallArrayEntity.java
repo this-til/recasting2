@@ -1,6 +1,5 @@
 package com.til.recasting.entity;
 
-import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.registry.RecastingEntities;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -13,14 +12,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.awt.*;
-import java.util.List;
 
 /**
- * [回到未来计划]群星坠落阵：自身不造成伤害，按模式跟随或禁锢并刷追踪落星。
+ * [回到未来计划]群星坠落阵：自身不造成伤害，按模式跟随或禁锢锁定目标并刷追踪落星。
+ * 落星仅攻击法阵锁定实体，不自动索敌。
  * 客户端粒子阵：仅边框（参考 CryptoMorin/XSeries 轮廓绘制，不做填充）。
  */
 public class StarfallArrayEntity extends StandardizationAttackEntity {
@@ -41,12 +41,15 @@ public class StarfallArrayEntity extends StandardizationAttackEntity {
      */
     private static final double STAR_INNER_RATIO = 0.382;
     private static final double ARRAY_Y_OFFSET = 0.1;
+    /**
+     * 落星生成圆柱：法阵上方最低偏移与柱高（格）
+     */
+    private static final double STAR_SPAWN_MIN_HEIGHT = 32.0;
+    private static final double STAR_SPAWN_CYLINDER_HEIGHT = 64.0;
 
     protected static final EntityDataAccessor<Integer> MODE = SynchedEntityData.defineId(StarfallArrayEntity.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Integer> TARGET_ENTITY_ID = SynchedEntityData.defineId(StarfallArrayEntity.class, EntityDataSerializers.INT);
 
-    private float seekRange = 45.0f;
-    private float starDropHeight = 32.0f;
     private int starLife = 200;
     private int starColor = 0x3333FF;
     private float starSize = 2.67f;
@@ -90,27 +93,23 @@ public class StarfallArrayEntity extends StandardizationAttackEntity {
 
         if (getMode() == MODE_FOLLOW) {
             setPos(caster.getX(), caster.getY() + 0.1, caster.getZ());
-            LivingEntity foe = pickRandomFoe(caster);
-            if (foe != null) {
-                spawnStar(caster, foe, foe.getY() + starDropHeight);
+        } else {
+            LivingEntity locked = getPinTarget();
+            if (locked == null || !locked.isAlive()) {
+                discard();
+                return;
             }
-            return;
+
+            locked.teleportTo(getX(), getY(), getZ());
+            locked.setYRot(locked.getYRot());
+            locked.setXRot(locked.getXRot());
         }
 
-        LivingEntity target = getPinTarget();
-        if (target == null || !target.isAlive()) {
-            discard();
-            return;
+        LivingEntity locked = getPinTarget();
+        if (locked != null && locked.isAlive()) {
+            Vec3 spawnPos = randomStarSpawnPos(level().getRandom());
+            spawnStar(caster, locked, spawnPos.x, spawnPos.y, spawnPos.z);
         }
-
-        target.teleportTo(getX(), getY(), getZ());
-        target.setYRot(target.getYRot());
-        target.setXRot(target.getXRot());
-
-        RandomSource random = level().getRandom();
-        double offset = target.getBbWidth() * (random.nextDouble() * 2.0 - 1.0);
-        double spawnY = target.getY() + Math.abs(offset) * 0.5 + 1.0;
-        spawnStar(caster, target, spawnY);
     }
 
     /**
@@ -189,32 +188,32 @@ public class StarfallArrayEntity extends StandardizationAttackEntity {
         }
     }
 
-    @Nullable
-    private LivingEntity pickRandomFoe(LivingEntity caster) {
-        List<LivingEntity> foes = EntityHelper.getTargettableLivingEntityWithinAABB(
-                level(),
-                caster,
-                position(),
-                seekRange
-        );
-        if (foes.isEmpty()) {
-            return null;
-        }
-        return foes.get(level().getRandom().nextInt(foes.size()));
+    /**
+     * 法阵上方圆柱内均匀随机点：半径与阵体 {@link #getSize()} 一致，Y 为阵心上方 32～96 格区间。
+     */
+    private Vec3 randomStarSpawnPos(RandomSource random) {
+        double radius = OUTER_RADIUS * Math.max(0.5f, getSize());
+        double angle = random.nextDouble() * Math.PI * 2.0;
+        double r = radius * Math.sqrt(random.nextDouble());
+        double x = getX() + Math.cos(angle) * r;
+        double z = getZ() + Math.sin(angle) * r;
+        double y = getY() + STAR_SPAWN_MIN_HEIGHT + random.nextDouble() * STAR_SPAWN_CYLINDER_HEIGHT;
+        return new Vec3(x, y, z);
     }
 
-    private void spawnStar(LivingEntity caster, LivingEntity target, double spawnY) {
+    private void spawnStar(LivingEntity caster, LivingEntity target, double spawnX, double spawnY, double spawnZ) {
         TrackingSummondSwordEntity star = new TrackingSummondSwordEntity(
                 RecastingEntities.TRACKING_SUMMOND_SWORD.get(),
                 level(),
                 caster
         );
-        star.setPos(target.getX(), spawnY, target.getZ());
+        star.setPos(spawnX, spawnY, spawnZ);
         star.setColor(starColor);
         star.setModifiedRatio(getModifiedRatio());
         star.setInterval(0);
         star.setMaxLifeTime(starLife);
         star.setSize(starSize);
+        star.setAutoRetarget(false);
         star.setTargetEntity(target);
         if (starModel != null) {
             star.setModel(starModel);
@@ -264,14 +263,6 @@ public class StarfallArrayEntity extends StandardizationAttackEntity {
             return living;
         }
         return null;
-    }
-
-    public void setSeekRange(float seekRange) {
-        this.seekRange = seekRange;
-    }
-
-    public void setStarDropHeight(float starDropHeight) {
-        this.starDropHeight = starDropHeight;
     }
 
     public void setStarLife(int starLife) {

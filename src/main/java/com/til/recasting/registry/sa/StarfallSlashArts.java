@@ -38,7 +38,6 @@ public class StarfallSlashArts extends ExtendedSlashArts {
     private float starRatio = 0.08f;
     private int life = 600;
     private int arrayColor = 0xAACCFF;
-    private float seekRange = 45.0f;
 
     @Override
     public void trigger(
@@ -73,7 +72,6 @@ public class StarfallSlashArts extends ExtendedSlashArts {
         array.setMaxLifeTime(life);
         array.setModifiedRatio(starRatio);
         array.setColor(arrayColor);
-        array.setSeekRange(seekRange);
         array.setStarColor(slashBladeState.getColorCode());
         array.setStarModel(starModel);
         array.setStarTexture(starTexture);

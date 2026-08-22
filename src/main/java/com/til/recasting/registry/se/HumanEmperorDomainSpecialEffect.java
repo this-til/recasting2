@@ -2,20 +2,20 @@ package com.til.recasting.registry.se;
 
 import com.til.recasting.handler.AbsoluteHealthChangeGuard;
 import com.til.recasting.handler.EmperorLineSeHelper;
+import com.til.recasting.handler.InventorySlashBladeSeHelper;
 import com.til.recasting.registry.RecastingBuffTypes;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
-import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 人皇领域
@@ -39,25 +39,22 @@ public class HumanEmperorDomainSpecialEffect extends ExtendedSpecialEffect imple
     int foodRestore = 1;
 
     @SubscribeEvent
-    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) {
+    public void onLivingTick(LivingEvent.LivingTickEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (entity.level().isClientSide()) {
             return;
         }
-        Player player = event.player;
-        if (player.level().isClientSide()) {
+        if (!EmperorLineSeHelper.isActiveEmperorEffect(entity, this)) {
             return;
         }
-        if (!EmperorLineSeHelper.isActiveEmperorEffect(player, this)) {
-            return;
-        }
-        EmperorLineSeHelper.ActiveLine active = EmperorLineSeHelper.resolveHighestEmperor(player);
+        EmperorLineSeHelper.ActiveLine active = EmperorLineSeHelper.resolveHighestEmperor(entity);
         if (active == null) {
             return;
         }
 
-        RecastingBuffTypes.BUFF_SUPPRESS.get().dispelHarmful(player);
-        player.heal(healPerTick);
-        tryRepairInventoryBlade(player, active.state(), repairProudCost);
+        RecastingBuffTypes.BUFF_SUPPRESS.get().dispelHarmful(entity);
+        entity.heal(healPerTick);
+        tryRepairInventoryBlade(entity, active.state(), repairProudCost);
     }
 
     @SubscribeEvent
@@ -92,7 +89,7 @@ public class HumanEmperorDomainSpecialEffect extends ExtendedSpecialEffect imple
         AbsoluteHealthChangeGuard.run(() -> entity.setHealth(1f));
     }
 
-    private void tryRepairInventoryBlade(Player player, ISlashBladeState seBladeState, int cost) {
+    private void tryRepairInventoryBlade(LivingEntity entity, ISlashBladeState seBladeState, int cost) {
         if (cost <= 0 || repairAmount <= 0) {
             return;
         }
@@ -100,25 +97,26 @@ public class HumanEmperorDomainSpecialEffect extends ExtendedSpecialEffect imple
             return;
         }
 
-        int size = player.getInventory().getContainerSize();
-        for(int i = 0; i < size; i++) {
-            ItemStack stack = player.getInventory().getItem(i);
-            if (stack.isEmpty() || !(stack.getItem() instanceof ItemSlashBlade)) {
-                continue;
+        AtomicBoolean repaired = new AtomicBoolean(false);
+        InventorySlashBladeSeHelper.forEachInventorySlashBlade(entity, (stack, state) -> {
+            if (repaired.get()) {
+                return;
             }
-            ISlashBladeState state = stack.getCapability(ItemSlashBlade.BLADESTATE).orElse(null);
-            if (state == null || state.getMaxDamage() <= 0) {
-                continue;
+            if (seBladeState.getProudSoulCount() < cost) {
+                return;
+            }
+            if (state.getMaxDamage() <= 0) {
+                return;
             }
             int damage = state.getDamage();
             if (damage <= 0) {
-                continue;
+                return;
             }
 
             int restored = Math.min(repairAmount, damage);
             state.setDamage(damage - restored);
             seBladeState.setProudSoulCount(seBladeState.getProudSoulCount() - cost);
-            return;
-        }
+            repaired.set(true);
+        });
     }
 }
