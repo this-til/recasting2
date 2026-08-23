@@ -264,6 +264,9 @@ public class R {
         public static final ResourceLocation physicsSword = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/physics_sword");
         public static final ResourceLocation physicsSword$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/physics_sword.obj");
         public static final ResourceLocation physicsSword$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/physics_sword.png");
+        public static final ResourceLocation radiantStar = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/radiant_star");
+        public static final ResourceLocation radiantStar$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/radiant_star.obj");
+        public static final ResourceLocation radiantStar$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/radiant_star.png");
         public static final ResourceLocation shineGold = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/shine_gold");
         public static final ResourceLocation shineGold$obj = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/shine_gold.obj");
         public static final ResourceLocation shineGold$png = ResourceLocation.fromNamespaceAndPath("recasting", "slashblade/shine_gold.png");

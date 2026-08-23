@@ -25,6 +25,8 @@
   },
   "render": {
     "carry_type": "default",
-    "summon_sword_color": -39220
+    "model": "recasting:slashblade/radiant_star.obj",
+    "summon_sword_color": -39220,
+    "texture": "recasting:slashblade/radiant_star.png"
   }
 }

@@ -1,6 +1,5 @@
 package com.til.recasting.constant;
 
-import com.til.recasting.Recasting;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -103,10 +102,7 @@ public final class RecastingSlashBladeKeys {
     public static final ResourceKey<SlashBladeDefinition> MAGNETIC_STORM_LAMBDA = lambdaOf(MAGNETIC_STORM);
     public static final ResourceKey<SlashBladeDefinition> MAGNETIC_STORM_LIMITS = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.magneticStormLimits);
     public static final ResourceKey<SlashBladeDefinition> MAGNETIC_STORM_LIMITS_LAMBDA = lambdaOf(MAGNETIC_STORM_LIMITS);
-    public static final ResourceKey<SlashBladeDefinition> RADIANT_STAR = ResourceKey.create(
-            SlashBladeDefinition.REGISTRY_KEY,
-            Recasting.prefix("slashblade/radiant_star")
-    );
+    public static final ResourceKey<SlashBladeDefinition> RADIANT_STAR = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.radiantStar);
     public static final ResourceKey<SlashBladeDefinition> STAR_1 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Star.star1);
     public static final ResourceKey<SlashBladeDefinition> STAR_2 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Star.star2);
     public static final ResourceKey<SlashBladeDefinition> STAR_3 = ResourceKey.create(SlashBladeDefinition.REGISTRY_KEY, R.Slashblade.Star.star3);

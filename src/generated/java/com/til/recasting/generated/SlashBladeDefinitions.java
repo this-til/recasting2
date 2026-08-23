@@ -664,10 +664,12 @@ public final class SlashBladeDefinitions {
 
         //region t2
 
-        // 彩耀之星 t2 TODO 贴图模型 / 特效
+        // 彩耀之星 t2
         register(bootstrap, RecastingSlashBladeKeys.RADIANT_STAR)
                 .renderDefinition(
                         RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.radiantStar$obj)
+                                .textureName(R.Slashblade.radiantStar$png)
                                 .effectColor(new Color(0xFF66CC).getRGB())
                 )
                 .propertiesDefinition(
