@@ -1,15 +1,15 @@
 package com.til.recasting.handler;
 
 import com.til.recasting.Recasting;
+import com.til.recasting.capability.provider.InventorySlashBladeSeCacheProvider;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
-import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
-import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * 清理背包 SE 槽位缓存。
+ * 为活体实体挂载背包 SE 查询缓存。
  */
 @Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class InventorySlashBladeSeCacheHandler {
@@ -18,19 +18,12 @@ public final class InventorySlashBladeSeCacheHandler {
     }
 
     @SubscribeEvent
-    public static void onEntityLeaveLevel(EntityLeaveLevelEvent event) {
-        if (event.getEntity() instanceof LivingEntity living) {
-            InventorySlashBladeSeHelper.clearEntityCache(living.getUUID());
+    public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
+        if (!(event.getObject() instanceof LivingEntity)) {
+            return;
         }
-    }
-
-    @SubscribeEvent
-    public static void onLivingEquipmentChange(LivingEquipmentChangeEvent event) {
-        InventorySlashBladeSeHelper.clearEntityCache(event.getEntity().getUUID());
-    }
-
-    @SubscribeEvent
-    public static void onEntityItemPickup(EntityItemPickupEvent event) {
-        InventorySlashBladeSeHelper.clearEntityCache(event.getEntity().getUUID());
+        InventorySlashBladeSeCacheProvider provider = new InventorySlashBladeSeCacheProvider();
+        event.addCapability(Recasting.prefix("inventory_slash_blade_se_cache"), provider);
+        event.addListener(provider::invalidate);
     }
 }

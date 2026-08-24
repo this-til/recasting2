@@ -32,8 +32,7 @@ public class DriveEntity extends SlashEffectEntity {
     /**
      * 每 tick 速度倍率（对齐旧 RoundaboutDrive ×1.05）
      */
-    protected static final EntityDataAccessor<Float> SPEED_SCALE_PER_TICK =
-            SynchedEntityData.defineId(DriveEntity.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> SPEED_SCALE_PER_TICK = SynchedEntityData.defineId(DriveEntity.class, EntityDataSerializers.FLOAT);
 
     public DriveEntity(EntityType<? extends DriveEntity> entityTypeIn, Level worldIn, LivingEntity shooting) {
         super(entityTypeIn, worldIn, shooting);
