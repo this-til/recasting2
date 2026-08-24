@@ -9,33 +9,27 @@ import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 
 /**
- * 物品颜色处理器
- * 为不同颜色的魂火物品设置颜色，支持渐变和时间缩放
+ * 物品颜色处理器，为支持渐变的魂火物品设置颜色。
  */
 @EventBusSubscriber(modid = Recasting.MODID, value = Dist.CLIENT)
-public class ItemColorHandler {
+public final class ItemColorHandler {
+
+    private ItemColorHandler() {
+    }
 
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
-        // 注册所有支持渐变的物品
-        // 使用统一的 ItemColor 处理器，从物品实例中读取 gradient 和 timeScale
         RecastingItems.getAllItems().stream()
-                .map(RegistryObject::get)
+                .map(holder -> holder.get())
                 .filter(item -> item instanceof IGradientColorProvider)
                 .forEach(item -> event.register(createGradientItemColor(), item));
     }
 
-    /**
-     * 创建使用渐变的 ItemColor 实例
-     * 从物品实例中读取 gradient 和 timeScale
-     *
-     * @return ItemColor 实例
-     */
     private static ItemColor createGradientItemColor() {
         return (stack, tintIndex) -> {
             Item item = stack.getItem();
@@ -48,7 +42,6 @@ public class ItemColorHandler {
             }
             float timeScale = provider.getTimeScale();
 
-            // 获取游戏时间
             Level level = Minecraft.getInstance().level;
             if (level == null) {
                 return gradient.evaluateToRGB(0.5f);
@@ -60,4 +53,3 @@ public class ItemColorHandler {
         };
     }
 }
-

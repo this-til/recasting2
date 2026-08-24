@@ -4,8 +4,9 @@ import com.til.recasting.Recasting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.neoforged.api.distmarker.Dist;
-import net.minecraftforge.event.TickEvent;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RenderFrameEvent;
 
 /**
  * 时之彼端：客户端按真实时间每帧推进 dayTime，避免仅按 tick 跳变。
@@ -41,8 +42,8 @@ public final class TimeBeyondClientTimeHandler {
     }
 
     @SubscribeEvent
-    public static void onRenderTick(TickEvent.RenderTickEvent event) {
-        if (event.phase != TickEvent.Phase.START || !active) {
+    public static void onRenderFrame(RenderFrameEvent.Pre event) {
+        if (!active) {
             return;
         }
 
@@ -58,7 +59,6 @@ public final class TimeBeyondClientTimeHandler {
             return;
         }
         if (elapsedSeconds > MAX_FRAME_SECONDS * 8) {
-            // 卡顿过久时重锚定，避免一次性跳太大
             anchorDayTime = level.getDayTime();
             anchorNanoTime = now;
             return;

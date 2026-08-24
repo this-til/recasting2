@@ -4,6 +4,7 @@ import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.handler.AttractionHelper;
 import com.til.recasting.handler.BuffSourceHelper;
 import com.til.recasting.handler.EntityHelper;
+import com.til.recasting.client.effect.FinalGlowBlackHoleClientFx;
 import com.til.recasting.network.FinalGlowIngestMessage;
 import com.til.recasting.registry.RecastingAttachments;
 import com.til.recasting.registry.RecastingAttackTypes;
@@ -311,7 +312,7 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
             return;
         }
         clientDetonationFxSpawned = true;
-        // TODO(P5): FinalGlowBlackHoleClientFx.spawnDetonation(position(), getColor().getRGB())
+        FinalGlowBlackHoleClientFx.spawnDetonation(position(), getColor().getRGB());
     }
 
     private void attractEntities() {

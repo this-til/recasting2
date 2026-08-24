@@ -11,9 +11,6 @@ import java.util.Set;
 /**
  * Mixin 条件加载：JEI 相关 Mixin 仅在 JEI 存在时启用。
  * <p>
- * TODO(P4): 登记 LockOnManagerMixin / ItemSlashBladeInventoryTickMixin / SlashBladeDefinition* /
- * RefineHandlerMixin / LivingEntitySetHealthMixin / SummonedSwordArtsMixin / EnchantmentHelperMixin 等。
- * TODO(P5): 登记客户端 ItemSlashBladeMixin / LayerMainBladeMixin。
  * TODO(P7): 登记 JEICompatMixin。
  */
 public final class RecastingMixinPlugin implements IMixinConfigPlugin {

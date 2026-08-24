@@ -1,5 +1,6 @@
 package com.til.recasting.network;
 
+import com.til.recasting.client.effect.PrismBeamClientEffects;
 import com.til.recasting.Recasting;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -42,6 +43,6 @@ public record PrismBeamMessage(Vec3 start, Vec3 end, int color, int lifeTicks) i
     }
 
     public static void handle(PrismBeamMessage msg, IPayloadContext ctx) {
-        // TODO(P5): PrismBeamClientEffects.add(...)
+        ctx.enqueueWork(() -> PrismBeamClientEffects.add(msg.start(), msg.end(), msg.color(), msg.lifeTicks()));
     }
 }

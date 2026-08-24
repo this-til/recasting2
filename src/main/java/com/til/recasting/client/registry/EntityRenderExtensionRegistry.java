@@ -9,7 +9,7 @@ import com.til.recasting.client.renderer.BuffLevelTextRenderer;
 import com.til.recasting.client.renderer.EntityRenderExtension;
 import com.til.recasting.client.renderer.RenderStateManage;
 import com.til.recasting.constant.R;
-import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.registry.RecastingAttachments;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.instance.BuffType;
 import mods.flammpfeil.slashblade.client.renderer.util.MSAutoCloser;
@@ -24,16 +24,13 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.minecraft.core.Registry;
 import net.neoforged.neoforge.registries.RegistryBuilder;
-import net.minecraftforge.registries.RegistryObject;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
 import java.awt.*;
-import java.util.function.Supplier;
 
 /**
  * 实体渲染扩展注册表（客户端专用）
@@ -56,10 +53,8 @@ public class EntityRenderExtensionRegistry {
     /**
      * 实体渲染扩展注册表实例
      */
-    public static final Supplier<IForgeRegistry<EntityRenderExtension>> REGISTRY =
-            ENTITY_RENDER_EXTENSIONS.makeRegistry(() -> new RegistryBuilder<EntityRenderExtension>()
-                    .setDefaultKey(Recasting.prefix("default"))
-            );
+    public static final Registry<EntityRenderExtension> REGISTRY =
+            new RegistryBuilder<>(ENTITY_RENDER_EXTENSION_REGISTRY_KEY).sync(true).create();
 
     // ==================== 预定义的渲染扩展 ====================
 
@@ -67,7 +62,7 @@ public class EntityRenderExtensionRegistry {
      * 星闪渲染扩展
      * 为拥有星闪buff的实体渲染层级效果
      */
-    public static final DeferredHolder<EntityRenderExtension> STAR_BLINK = ENTITY_RENDER_EXTENSIONS.register(
+    public static final DeferredHolder<EntityRenderExtension, EntityRenderExtension> STAR_BLINK = ENTITY_RENDER_EXTENSIONS.register(
             "star_blink",
             () -> new EntityRenderExtension.BuffLevelRender(
                     R.Models.Mark.starBlink$obj,
@@ -76,7 +71,7 @@ public class EntityRenderExtensionRegistry {
             )
     );
 
-    public static final DeferredHolder<EntityRenderExtension> CALCULUS = ENTITY_RENDER_EXTENSIONS.register(
+    public static final DeferredHolder<EntityRenderExtension, EntityRenderExtension> CALCULUS = ENTITY_RENDER_EXTENSIONS.register(
             "calculus",
             () -> new EntityRenderExtension.BuffLevelRender(
                     R.Models.Mark.calculus$obj,
@@ -85,7 +80,7 @@ public class EntityRenderExtensionRegistry {
             )
     );
 
-    public static final DeferredHolder<EntityRenderExtension> SPIRAL_SPECIAL = ENTITY_RENDER_EXTENSIONS.register(
+    public static final DeferredHolder<EntityRenderExtension, EntityRenderExtension> SPIRAL_SPECIAL = ENTITY_RENDER_EXTENSIONS.register(
             "spiral_special",
             () -> new EntityRenderExtension.BuffLevelRender(
                     R.Models.Mark.spiralSpecial$obj,
@@ -98,7 +93,7 @@ public class EntityRenderExtensionRegistry {
      * 雷光渲染扩展
      * 为拥有雷光buff的实体渲染层级效果
      */
-    public static final DeferredHolder<EntityRenderExtension> THUNDER_LIGHT = ENTITY_RENDER_EXTENSIONS.register(
+    public static final DeferredHolder<EntityRenderExtension, EntityRenderExtension> THUNDER_LIGHT = ENTITY_RENDER_EXTENSIONS.register(
             "thunder_light",
             () -> new EntityRenderExtension.BuffLevelRender(
                     R.Models.Mark.thunderLight$obj,
@@ -111,7 +106,7 @@ public class EntityRenderExtensionRegistry {
      * 断灭渲染扩展
      * 为拥有断灭buff的实体渲染层级效果
      */
-    public static final DeferredHolder<EntityRenderExtension> ANNIHILATION = ENTITY_RENDER_EXTENSIONS.register(
+    public static final DeferredHolder<EntityRenderExtension, EntityRenderExtension> ANNIHILATION = ENTITY_RENDER_EXTENSIONS.register(
             "annihilation",
             () -> new EntityRenderExtension.BuffLevelRender(
                     R.Models.Mark.annihilation$obj,
@@ -124,7 +119,7 @@ public class EntityRenderExtensionRegistry {
      * 灵魂燃烧渲染扩展
      * 为拥有灵魂燃烧buff的实体渲染蓝色火焰效果
      */
-    public static final DeferredHolder<EntityRenderExtension> SOUL_BURN = ENTITY_RENDER_EXTENSIONS.register(
+    public static final DeferredHolder<EntityRenderExtension, EntityRenderExtension> SOUL_BURN = ENTITY_RENDER_EXTENSIONS.register(
             "soul_burn",
             () -> new BuffFireRenderExtension(RecastingBuffTypes.SOUL_BURN, new Color(25, 0, 255))
     );
@@ -133,7 +128,7 @@ public class EntityRenderExtensionRegistry {
      * 光子灼痕渲染扩展
      * 复用灵魂燃烧火焰渲染，使用青色
      */
-    public static final DeferredHolder<EntityRenderExtension> PHOTON_SCAR = ENTITY_RENDER_EXTENSIONS.register(
+    public static final DeferredHolder<EntityRenderExtension, EntityRenderExtension> PHOTON_SCAR = ENTITY_RENDER_EXTENSIONS.register(
             "photon_scar",
             () -> new BuffFireRenderExtension(RecastingBuffTypes.PHOTON_BURN, new Color(80, 220, 255))
     );
@@ -142,7 +137,7 @@ public class EntityRenderExtensionRegistry {
      * 翠火渲染扩展
      * 为拥有翠火buff的实体渲染苍白色火焰效果
      */
-    public static final DeferredHolder<EntityRenderExtension> JADE_FIRE = ENTITY_RENDER_EXTENSIONS.register(
+    public static final DeferredHolder<EntityRenderExtension, EntityRenderExtension> JADE_FIRE = ENTITY_RENDER_EXTENSIONS.register(
             "jade_fire",
             () -> new BuffFireRenderExtension(RecastingBuffTypes.JADE_FIRE, new Color(235, 240, 248))
     );
@@ -151,7 +146,7 @@ public class EntityRenderExtensionRegistry {
      * Buff层数文本渲染扩展
      * 在实体名称标签上方显示 Buff 层数信息
      */
-    public static final DeferredHolder<EntityRenderExtension> BUFF_LEVEL_TEXT = ENTITY_RENDER_EXTENSIONS.register(
+    public static final DeferredHolder<EntityRenderExtension, EntityRenderExtension> BUFF_LEVEL_TEXT = ENTITY_RENDER_EXTENSIONS.register(
             "buff_level_text",
             BuffLevelTextRenderer::new
     );
@@ -159,7 +154,7 @@ public class EntityRenderExtensionRegistry {
     /**
      * 静滞：持有 Buff 时在实体中心渲染广告牌光圈
      */
-    public static final DeferredHolder<EntityRenderExtension> ETERNAL_GUARD = ENTITY_RENDER_EXTENSIONS.register(
+    public static final DeferredHolder<EntityRenderExtension, EntityRenderExtension> ETERNAL_GUARD = ENTITY_RENDER_EXTENSIONS.register(
             "eternal_guard",
             () -> new BuffHaloRenderExtension(RecastingBuffTypes.ETERNAL_GUARD, new Color(58, 107, 255, 180))
     );
@@ -169,10 +164,10 @@ public class EntityRenderExtensionRegistry {
      */
     public static class BuffFireRenderExtension implements EntityRenderExtension {
 
-        private final DeferredHolder<? extends BuffType> buffType;
+        private final DeferredHolder<BuffType, ? extends BuffType> buffType;
         private final Color color;
 
-        public BuffFireRenderExtension(DeferredHolder<? extends BuffType> buffType, Color color) {
+        public BuffFireRenderExtension(DeferredHolder<BuffType, ? extends BuffType> buffType, Color color) {
             this.buffType = buffType;
             this.color = color;
         }
@@ -183,14 +178,11 @@ public class EntityRenderExtensionRegistry {
                 return;
             }
 
-            LazyOptional<IBuffStackData> capability = entity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA);
-            if (!capability.isPresent()) {
+            if (!(entity instanceof LivingEntity livingEntityForBuff)) {
                 return;
             }
 
-            //noinspection DataFlowIssue
-            IBuffStackData buffData = capability.orElse(null);
-
+            IBuffStackData buffData = RecastingAttachments.buffStackData(livingEntityForBuff);
             int level = buffData.getLevel(buffType.get(), entity.level());
             if (level <= 0) {
                 return;
@@ -318,10 +310,10 @@ public class EntityRenderExtensionRegistry {
 
         private static final int SEGMENTS = 48;
 
-        private final DeferredHolder<? extends BuffType> buffType;
+        private final DeferredHolder<BuffType, ? extends BuffType> buffType;
         private final Color color;
 
-        public BuffHaloRenderExtension(DeferredHolder<? extends BuffType> buffType, Color color) {
+        public BuffHaloRenderExtension(DeferredHolder<BuffType, ? extends BuffType> buffType, Color color) {
             this.buffType = buffType;
             this.color = color;
         }
@@ -332,13 +324,7 @@ public class EntityRenderExtensionRegistry {
                 return;
             }
 
-            LazyOptional<IBuffStackData> capability = entity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA);
-            if (!capability.isPresent()) {
-                return;
-            }
-
-            //noinspection DataFlowIssue
-            IBuffStackData buffData = capability.orElse(null);
+            IBuffStackData buffData = RecastingAttachments.buffStackData(entity);
             int level = buffData.getLevel(buffType.get(), entity.level());
             if (level <= 0) {
                 return;

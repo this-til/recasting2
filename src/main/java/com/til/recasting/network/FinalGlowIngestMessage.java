@@ -1,5 +1,6 @@
 package com.til.recasting.network;
 
+import com.til.recasting.client.effect.FinalGlowIngestClientEffects;
 import com.til.recasting.Recasting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -55,6 +56,6 @@ public record FinalGlowIngestMessage(int holeEntityId, float absorbRadius, List<
     }
 
     public static void handle(FinalGlowIngestMessage msg, IPayloadContext ctx) {
-        // TODO(P5): FinalGlowIngestClientEffects.addBatch(...)
+        ctx.enqueueWork(() -> FinalGlowIngestClientEffects.addBatch(msg.holeEntityId(), msg.absorbRadius(), msg.entries()));
     }
 }

@@ -28,7 +28,7 @@ public final class SlashBladeItemBarDecorator implements IItemDecorator {
         }
 
         SlashBladeItemBarCollectEvent event = new SlashBladeItemBarCollectEvent(stack);
-        MinecraftForge.EVENT_BUS.post(event);
+        NeoForge.EVENT_BUS.post(event);
 
         List<SlashBladeItemBarCollectEvent.Bar> bars = event.getBars();
         if (bars.isEmpty()) {

@@ -1,5 +1,6 @@
 package com.til.recasting.network;
 
+import com.til.recasting.client.effect.LightningChainClientEffects;
 import com.til.recasting.Recasting;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -45,6 +46,12 @@ public record LightningChainMessage(Vec3 start, Vec3 end, int color, long seed, 
     }
 
     public static void handle(LightningChainMessage msg, IPayloadContext ctx) {
-        // TODO(P5): LightningChainClientEffects.add(...)
+        ctx.enqueueWork(() -> LightningChainClientEffects.add(
+                msg.start(),
+                msg.end(),
+                msg.color(),
+                msg.seed(),
+                msg.lifeTicks()
+        ));
     }
 }

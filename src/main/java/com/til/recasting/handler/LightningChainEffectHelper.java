@@ -45,7 +45,6 @@ public final class LightningChainEffectHelper {
             }
         }
 
-        // TODO(P5): 客户端 LightningChainClientEffects 折线渲染
         spawnHitParticles(serverLevel, end, color);
     }
 

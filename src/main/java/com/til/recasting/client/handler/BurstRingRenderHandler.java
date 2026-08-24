@@ -15,8 +15,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.event.TickEvent;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import org.joml.Matrix4f;
 
 import java.util.List;
@@ -30,10 +31,7 @@ public class BurstRingRenderHandler {
     private static final BufferBuilder BUFFER = new BufferBuilder(2 * 1024 * 1024);
 
     @SubscribeEvent
-    public static void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) {
-            return;
-        }
+    public static void onClientTick(ClientTickEvent.Post event) {
         BurstRingClientEffects.tick();
     }
 

@@ -6,11 +6,15 @@ import com.til.recasting.client.registry.instance.EntityClientExtension;
 import com.til.recasting.entity.StandardizationAttackEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 
 @EventBusSubscriber(modid = Recasting.MODID, value = Dist.CLIENT)
-public class EntityClientExtensionHandler {
+public final class EntityClientExtensionHandler {
+
+    private EntityClientExtensionHandler() {
+    }
 
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
@@ -24,8 +28,8 @@ public class EntityClientExtensionHandler {
 
     public static void refresh(StandardizationAttackEntity entity) {
         entity.clientTickCallbackPoint.clear();
-        for(ResourceLocation id : entity.getClientExtensions()) {
-            EntityClientExtension extension = EntityClientExtensionRegistry.REGISTRY.get().getValue(id);
+        for (ResourceLocation id : entity.getClientExtensions()) {
+            EntityClientExtension extension = EntityClientExtensionRegistry.REGISTRY.get(id);
             if (extension == null) {
                 continue;
             }

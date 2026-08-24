@@ -3,6 +3,7 @@ package com.til.recasting.entity;
 import com.til.recasting.Recasting;
 import com.til.recasting.registry.RecastingEntityDataSerializers;
 import com.til.recasting.registry.instance.AttackType;
+import com.til.recasting.client.handler.EntityClientExtensionHandler;
 import com.til.recasting.util.CallbackPoint;
 import com.til.recasting.util.DamageStructure;
 import lombok.Getter;
@@ -134,7 +135,9 @@ public abstract class StandardizationAttackEntity extends Entity {
     @Override
     public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
-        // TODO(P5): EntityClientExtensionHandler.refresh(this)
+        if (CLIENT_EXTENSIONS.equals(key)) {
+            EntityClientExtensionHandler.refresh(this);
+        }
     }
 
     @Override

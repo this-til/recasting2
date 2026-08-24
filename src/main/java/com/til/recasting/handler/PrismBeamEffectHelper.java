@@ -38,6 +38,5 @@ public final class PrismBeamEffectHelper {
                 range,
                 new PrismBeamMessage(start, end, color, lifeTicks)
         );
-        // TODO(P5): 命中点粒子与客户端 PrismBeamClientEffects
     }
 }

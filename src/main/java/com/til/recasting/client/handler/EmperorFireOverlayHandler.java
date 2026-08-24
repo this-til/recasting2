@@ -5,6 +5,7 @@ import com.til.recasting.handler.EmperorLineSeHelper;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.RenderBlockScreenEffectEvent;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 
 /**
  * 人皇领域生效时取消原版着火屏幕叠加层。

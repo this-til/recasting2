@@ -1,5 +1,6 @@
 package com.til.recasting.network;
 
+import com.til.recasting.client.handler.TimeBeyondClientTimeHandler;
 import com.til.recasting.Recasting;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -35,6 +36,12 @@ public record TimeBeyondAccelMessage(boolean active, int multiplier, long dayTim
     }
 
     public static void handle(TimeBeyondAccelMessage msg, IPayloadContext ctx) {
-        // TODO(P5): TimeBeyondClientTimeHandler.start/stop(...)
+        ctx.enqueueWork(() -> {
+            if (msg.active()) {
+                TimeBeyondClientTimeHandler.start(msg.multiplier(), msg.dayTime());
+            } else {
+                TimeBeyondClientTimeHandler.stop(msg.dayTime());
+            }
+        });
     }
 }

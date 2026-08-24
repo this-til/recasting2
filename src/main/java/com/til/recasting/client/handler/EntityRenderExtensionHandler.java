@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 
@@ -36,14 +37,9 @@ public class EntityRenderExtensionHandler {
      */
     private static List<EntityRenderExtension> getSortedExtensions() {
         if (sortedExtensions == null) {
-            var registry = EntityRenderExtensionRegistry.REGISTRY.get();
-            if (registry == null) {
-                return Collections.emptyList();
-            } else {
-                sortedExtensions = registry.getValues().stream()
+            sortedExtensions = EntityRenderExtensionRegistry.REGISTRY.stream()
                         .sorted(Comparator.comparingInt(EntityRenderExtension::getPriority))
                         .collect(Collectors.toList());
-            }
         }
         return sortedExtensions;
     }

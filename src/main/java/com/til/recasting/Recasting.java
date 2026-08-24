@@ -2,6 +2,7 @@ package com.til.recasting;
 
 import com.mojang.logging.LogUtils;
 import com.til.recasting.advancement.RecastingCriteriaTriggers;
+import com.til.recasting.client.ClientSetup;
 import com.til.recasting.network.NetworkManager;
 import com.til.recasting.registry.RecastingAttachments;
 import com.til.recasting.registry.RecastingAttackTypes;
@@ -18,7 +19,9 @@ import com.til.recasting.registry.RecastingEntityDataSerializers;
 import com.til.recasting.registry.SlashArtsRegistry;
 import com.til.recasting.registry.SpecialEffectsRegistry;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
@@ -35,6 +38,10 @@ public class Recasting {
 
     public Recasting(IEventBus modEventBus, ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            ClientSetup.initRegistries(modEventBus);
+        }
 
         modEventBus.addListener(NetworkManager::register);
 

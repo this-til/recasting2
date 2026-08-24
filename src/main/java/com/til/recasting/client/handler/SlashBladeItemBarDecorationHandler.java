@@ -5,7 +5,7 @@ import com.til.recasting.Recasting;
 import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.client.SlashBladeItemBarDecorator;
 import com.til.recasting.event.SlashBladeItemBarCollectEvent;
-import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.registry.RecastingAttachments;
 import com.til.recasting.handler.FeEnergyHelper;
 import com.til.recasting.handler.InventorySlashBladeSeHelper;
 import com.til.recasting.registry.RecastingBuffTypes;
@@ -18,6 +18,7 @@ import com.til.recasting.registry.sa.MyriadSilenceSlashArts;
 import com.til.recasting.registry.sa.PhenomenalReturnSlashArts;
 import com.til.recasting.registry.sa.StarfallSlashArts;
 import com.til.recasting.registry.sa.TimeBeyondSlashArts;
+import mods.flammpfeil.slashblade.capability.slashblade.BladeStateAccess;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.slasharts.SlashArts;
@@ -27,10 +28,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.neoforge.client.event.RegisterItemDecorationsEvent;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.neoforged.fml.common.EventBusSubscriber;
 
 /**
  * 注册统筹物品栏进度条装饰器，并向收集事件注入耐久 / FE / 电涌 / SA 自身状态条。
@@ -56,7 +58,7 @@ public final class SlashBladeItemBarDecorationHandler {
 
         @SubscribeEvent
         public static void onRegisterItemDecorations(RegisterItemDecorationsEvent event) {
-            for (Item item : ForgeRegistries.ITEMS) {
+            for (Item item : BuiltInRegistries.ITEM) {
                 if (item instanceof ItemSlashBlade) {
                     event.register(item, SlashBladeItemBarDecorator.INSTANCE);
                 }
@@ -115,11 +117,7 @@ public final class SlashBladeItemBarDecorationHandler {
                 return;
             }
 
-            IBuffStackData buffStackData = player.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).orElse(null);
-            if (buffStackData == null) {
-                return;
-            }
-
+            IBuffStackData buffStackData = RecastingAttachments.buffStackData(player);
             BuffType electricSurge = RecastingBuffTypes.ELECTRIC_SURGE.get();
             int level = buffStackData.getLevel(electricSurge, player.level());
             if (level <= 0) {
@@ -138,7 +136,7 @@ public final class SlashBladeItemBarDecorationHandler {
                 return;
             }
 
-            ISlashBladeState bladeState = stack.getCapability(ItemSlashBlade.BLADESTATE).orElse(null);
+            ISlashBladeState bladeState = BladeStateAccess.of(stack).orElse(null);
             if (bladeState == null) {
                 return;
             }
@@ -148,10 +146,7 @@ public final class SlashBladeItemBarDecorationHandler {
                 return;
             }
 
-            IBuffStackData buffStackData = player.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).orElse(null);
-            if (buffStackData == null) {
-                return;
-            }
+            IBuffStackData buffStackData = RecastingAttachments.buffStackData(player);
 
             if (arts instanceof JadeDomainSlashArts jadeDomain) {
                 addBuffBar(

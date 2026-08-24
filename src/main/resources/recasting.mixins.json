@@ -21,9 +21,12 @@
     "SlashBladeShapedRecipeMixin",
     "LivingEntitySetHealthMixin",
     "EntityAccessor",
-    "AdvancementVisibilityEvaluatorMixin"
+    "AdvancementVisibilityEvaluatorMixin",
+    "ItemSlashBladeMixin"
   ],
-  "client": [],
+  "client": [
+    "client.LayerMainBladeMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
