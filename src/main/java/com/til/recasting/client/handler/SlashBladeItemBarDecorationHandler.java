@@ -216,7 +216,7 @@ public final class SlashBladeItemBarDecorationHandler {
                         event,
                         buffStackData,
                         player,
-                        RecastingBuffTypes.ETERNAL_GUARD.get(),
+                        RecastingBuffTypes.ETERNAL_GUARD_SELF.get(),
                         eternalGuard.getDurationTicks(),
                         ETERNAL_GUARD_BAR_COLOR
                 );

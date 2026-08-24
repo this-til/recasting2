@@ -137,7 +137,7 @@ public class BuffLevelRendererRegistry {
     );
 
     /**
-     * 静滞（永恒守卫）- 显示剩余 tick
+     * 静滞（目标）- 显示剩余 tick
      */
     public static final RegistryObject<BuffLevelRenderConfig> ETERNAL_GUARD = BUFF_LEVEL_RENDER_CONFIGS.register(
             "eternal_guard",
@@ -150,14 +150,6 @@ public class BuffLevelRendererRegistry {
     public static final RegistryObject<BuffLevelRenderConfig> MORTAL_DUST = BUFF_LEVEL_RENDER_CONFIGS.register(
             "mortal_dust",
             () -> new BuffLevelRenderConfig(RecastingBuffTypes.MORTAL_DUST, RecastingLanguageKeys.BUFF_MORTAL_DUST)
-    );
-
-    /**
-     * 电涌 - 显示层数
-     */
-    public static final RegistryObject<BuffLevelRenderConfig> ELECTRIC_SURGE = BUFF_LEVEL_RENDER_CONFIGS.register(
-            "electric_surge",
-            () -> new BuffLevelRenderConfig(RecastingBuffTypes.ELECTRIC_SURGE, RecastingLanguageKeys.BUFF_ELECTRIC_SURGE)
     );
 
 }

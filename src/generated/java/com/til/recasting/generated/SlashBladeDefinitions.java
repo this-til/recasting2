@@ -223,10 +223,12 @@ public final class SlashBladeDefinitions {
                 )
                 .build();
 
-        // 结缘剑「犬」彩蛋 TODO 贴图模型
+        // 结缘剑「犬」彩蛋
         register(bootstrap, RecastingSlashBladeKeys.JIE_YUAN_DOG)
                 .renderDefinition(
                         RenderDefinition.Builder.newInstance()
+                                .modelName(R.Slashblade.Special.jieYuanDog$obj)
+                                .textureName(R.Slashblade.Special.jieYuanDog$png)
                                 .effectColor(new Color(0x280040).getRGB())
                 )
                 .propertiesDefinition(

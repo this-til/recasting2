@@ -30,7 +30,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 永恒守卫：以自身为中心展开领域，进入范围内的敌人被钉在进入时的绝对坐标，无法移动；
- * 同时清除领域内非释放者发出的弹射物。边界粒子环绕施法者；静滞 Buff（剩余 tick）挂在施法者与被禁锢目标上。
+ * 同时清除领域内非释放者发出的弹射物。边界粒子环绕施法者。
+ * 施术者挂 {@link RecastingBuffTypes#ETERNAL_GUARD_SELF}（物品栏条）；目标挂 {@link RecastingBuffTypes#ETERNAL_GUARD}（名称标签 / 光圈）。
  */
 @Getter
 @Setter
@@ -112,7 +113,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
 
         ticksLeft.decrementAndGet();
         int displayLevel = Math.max(1, ticksLeft.get());
-        mountGuardBuff(caster, caster, displayLevel);
+        mountSelfBuff(caster, displayLevel);
 
         List<LivingEntity> nearby = EntityHelper.getTargettableLivingEntityWithinAABB(
                 caster.level(),
@@ -129,7 +130,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
             entity.teleportTo(pin.x, pin.y, pin.z);
             entity.setDeltaMovement(Vec3.ZERO);
             entity.hurtMarked = true;
-            mountGuardBuff(entity, caster, displayLevel);
+            mountTargetBuff(entity, caster, displayLevel);
         }
 
         Iterator<Map.Entry<UUID, LivingEntity>> iterator = pinnedTargets.entrySet().iterator();
@@ -138,7 +139,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
             if (present.contains(entry.getKey())) {
                 continue;
             }
-            clearGuardBuff(entry.getValue());
+            clearTargetBuff(entry.getValue());
             absolutePins.remove(entry.getKey());
             iterator.remove();
         }
@@ -168,22 +169,38 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
     ) {
         timeRun.removeNamedTimerCell(TIMER_NAME);
         timeRun.removeNamedTimerCell(VISUAL_TIMER_NAME);
-        clearGuardBuff(caster);
+        clearSelfBuff(caster);
         for(LivingEntity target : pinnedTargets.values()) {
-            clearGuardBuff(target);
+            clearTargetBuff(target);
         }
         absolutePins.clear();
         pinnedTargets.clear();
     }
 
-    private void mountGuardBuff(LivingEntity target, LivingEntity caster, int displayLevel) {
+    private void mountSelfBuff(LivingEntity caster, int displayLevel) {
+        caster.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
+            data.setLevel(RecastingBuffTypes.ETERNAL_GUARD_SELF.get(), displayLevel, caster.level());
+            BuffSourceHelper.recordSourceEntity(data, RecastingBuffTypes.ETERNAL_GUARD_SELF.get(), caster, caster);
+        });
+    }
+
+    private void clearSelfBuff(LivingEntity caster) {
+        if (caster == null || caster.isRemoved()) {
+            return;
+        }
+        caster.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data ->
+                data.setLevel(RecastingBuffTypes.ETERNAL_GUARD_SELF.get(), 0, caster.level())
+        );
+    }
+
+    private void mountTargetBuff(LivingEntity target, LivingEntity caster, int displayLevel) {
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
             data.setLevel(RecastingBuffTypes.ETERNAL_GUARD.get(), displayLevel, target.level());
             BuffSourceHelper.recordSourceEntity(data, RecastingBuffTypes.ETERNAL_GUARD.get(), target, caster);
         });
     }
 
-    private void clearGuardBuff(LivingEntity target) {
+    private void clearTargetBuff(LivingEntity target) {
         if (target == null || target.isRemoved()) {
             return;
         }

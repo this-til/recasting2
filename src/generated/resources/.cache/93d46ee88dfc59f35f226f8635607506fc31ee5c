@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-12T21:25:19.6373838	Recasting SlashBlade Definition Registry
+// 1.20.1	2026-08-24T16:46:30.2943303	Recasting SlashBlade Definition Registry
 dc314aafdb9885f2c02f8750416a9770ded86441 data/recasting/slashblade/named_blades/slashblade/art_knife.json
 fb5ea4ae03dcd4a94816be3a56b635322ecc90e8 data/recasting/slashblade/named_blades/slashblade/azure_vista.json
 ef829620573a4554652583038a7d8fa9e87ca05e data/recasting/slashblade/named_blades/slashblade/azure_vista_lambda.json
@@ -53,7 +53,7 @@ da42745ca75ff2bd2c0484d4cbe775c0cd5a62e3 data/recasting/slashblade/named_blades/
 ecffcd08f5ac54790123148815def0881e0d9843 data/recasting/slashblade/named_blades/slashblade/onikiri.json
 80087ebca090e7fffd0dbe6d1cd073e65b36fe47 data/recasting/slashblade/named_blades/slashblade/onikiri_lambda.json
 349d0a19b2cb5ce4b7753a37e21030c890fed532 data/recasting/slashblade/named_blades/slashblade/physics_sword.json
-6612c3b5848b3d530869fe72b6c0fcc52ec2cdf5 data/recasting/slashblade/named_blades/slashblade/radiant_star.json
+2f1422aaa9d6d127a9337a1076d0b560f0156719 data/recasting/slashblade/named_blades/slashblade/radiant_star.json
 f04315b22f47fcdae9c45b1e565795552ce44d58 data/recasting/slashblade/named_blades/slashblade/shine_gold.json
 71f19810368e869a5a86e8fd626de6a769a465a6 data/recasting/slashblade/named_blades/slashblade/shine_gold_lambda.json
 bd2de15af39a328418cb0f4efc6793a3e6a76f08 data/recasting/slashblade/named_blades/slashblade/shine_tea.json
@@ -64,7 +64,7 @@ d4a4eb61c16b171913c0b08832720fb9ad0e15af data/recasting/slashblade/named_blades/
 a97eca045307d8d5c5387b207a27cee13b5083b3 data/recasting/slashblade/named_blades/slashblade/soulblade_lambda.json
 b8f68fd5548525b4853c1f067a874732e454be3c data/recasting/slashblade/named_blades/slashblade/special/final_glow.json
 924134bf8e12bb1d401df657c3929ab8ac169ed7 data/recasting/slashblade/named_blades/slashblade/special/final_glow_lambda.json
-656d7a227aba4c5fab679620b215bb127f6f52ff data/recasting/slashblade/named_blades/slashblade/special/jie_yuan_dog.json
+c51efd1930866fb623e96a12bf37859709be426e data/recasting/slashblade/named_blades/slashblade/special/jie_yuan_dog.json
 374a8059ec6733f9880c3b9e21ec2bc7ebd9ff5c data/recasting/slashblade/named_blades/slashblade/special/star_thread.json
 3e1a8571d950d20c85eb0739e8c41ac8441d6134 data/recasting/slashblade/named_blades/slashblade/special/star_thread_lambda.json
 0852dc8dc6c84b1497747d1fe47a22bb576c163c data/recasting/slashblade/named_blades/slashblade/special/tu_wu.json

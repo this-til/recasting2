@@ -20,7 +20,6 @@ public final class RecastingLanguageKeys {
     public static final String BUFF_JADE_FIRE = "buff.recasting.jade_fire";
     public static final String BUFF_ETERNAL_GUARD = "buff.recasting.eternal_guard";
     public static final String BUFF_MORTAL_DUST = "buff.recasting.mortal_dust";
-    public static final String BUFF_ELECTRIC_SURGE = "buff.recasting.electric_surge";
 
     public static final String TOOLTIP_ENGRAVING_RULE_TITLE = "recasting.tooltip.engraving_rule.title";
     public static final String TOOLTIP_ENGRAVING_RULE_MAIN = "recasting.tooltip.engraving_rule.main";

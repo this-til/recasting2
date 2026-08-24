@@ -244,9 +244,16 @@ public class RecastingBuffTypes {
     );
 
     /**
-     * 静滞（永恒守卫，层=剩余 tick）
+     * 静滞（目标侧，层=剩余 tick；名称标签 / 光圈）
      */
     public static final RegistryObject<BuffType> ETERNAL_GUARD = BUFF_TYPES.register("eternal_guard",
+            () -> new BuffType().setDecayInterval(1)
+    );
+
+    /**
+     * 永恒守卫领域（施术者自身，层=剩余 tick；物品栏进度条）
+     */
+    public static final RegistryObject<BuffType> ETERNAL_GUARD_SELF = BUFF_TYPES.register("eternal_guard_self",
             () -> new BuffType().setDecayInterval(1)
     );
 
