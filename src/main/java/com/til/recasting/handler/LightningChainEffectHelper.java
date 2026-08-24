@@ -1,6 +1,7 @@
 package com.til.recasting.handler;
 
 import com.til.recasting.network.LightningChainMessage;
+import com.til.recasting.registry.RecastingParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
@@ -44,6 +45,26 @@ public final class LightningChainEffectHelper {
             }
         }
 
-        // TODO(P5): 落点电云命中粒子
+        // TODO(P5): 客户端 LightningChainClientEffects 折线渲染
+        spawnHitParticles(serverLevel, end, color);
+    }
+
+    public static void spawnHitParticles(ServerLevel serverLevel, Vec3 end, int color) {
+        float r = ((color >> 16) & 0xFF) / 255.0f;
+        float g = ((color >> 8) & 0xFF) / 255.0f;
+        float b = (color & 0xFF) / 255.0f;
+
+        ParticleHelper.sendParticlesLongRange(
+                serverLevel,
+                RecastingParticleTypes.LIGHTNING_HIT.get(),
+                end.x,
+                end.y,
+                end.z,
+                0,
+                r,
+                g,
+                b,
+                1.0
+        );
     }
 }

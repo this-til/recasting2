@@ -22,6 +22,7 @@ import mods.flammpfeil.slashblade.util.AdvancementHelper;
 import mods.flammpfeil.slashblade.util.InputCommand;
 import mods.flammpfeil.slashblade.util.RayTraceHelper;
 import mods.flammpfeil.slashblade.util.TargetSelector;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -86,7 +87,8 @@ public final class SummonedSwordHelper {
             return;
         }
 
-        int powerLevel = blade.getEnchantmentLevel(Enchantments.POWER);
+        var powerEnchantment = sender.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.POWER);
+        int powerLevel = blade.getEnchantmentLevel(powerEnchantment);
         if (powerLevel <= 0) {
             return;
         }

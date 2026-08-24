@@ -1,8 +1,6 @@
 package com.til.recasting.handler;
 
 import com.til.recasting.Recasting;
-import com.til.recasting.energy.FeBladeEnergyStorage;
-import com.til.recasting.handler.AttackHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -38,8 +36,8 @@ public final class ProudSoulLethalAbsorbHelper {
             return;
         }
 
-        float hp = self.getHealth();
-        float amount = (float) event.getNewDamage();
+        double hp = self.getHealth();
+        double amount = event.getNewDamage();
         if (amount < hp) {
             return;
         }
@@ -60,7 +58,7 @@ public final class ProudSoulLethalAbsorbHelper {
         boolean protectedMode = spentInWindow > protectThreshold;
 
         if (protectedMode) {
-            event.setNewDamage(Math.max(0.0, hp - 1.0f));
+            event.setNewDamage((float) Math.max(0.0, hp - 1.0));
             return;
         }
 
@@ -71,9 +69,9 @@ public final class ProudSoulLethalAbsorbHelper {
             return;
         }
 
-        float blocked = Math.min(amount, absorbCap);
+        double blocked = Math.min(amount, absorbCap);
         int proudCost = (int) blocked * proudPerDamage;
-        event.setNewDamage(amount - blocked);
+        event.setNewDamage((float) (amount - blocked));
         active.state().setProudSoulCount(Math.max(0, proud - proudCost));
         spends.addLast(new ProudSpend(now, proudCost));
     }

@@ -41,7 +41,7 @@ public class FertilizeSpecialEffect extends ExtendedSpecialEffect {
                     if (!(state.getBlock() instanceof CropBlock crop)) {
                         continue;
                     }
-                    if (!crop.isValidBonemealTarget(serverLevel, pos, state, false)) {
+                    if (!crop.isValidBonemealTarget(serverLevel, pos, state)) {
                         continue;
                     }
                     crops.add(pos.immutable());
