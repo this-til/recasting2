@@ -57,6 +57,10 @@ public final class InventorySlashBladeSeHelper {
      * entityUUID -> 无拔刀剑负缓存到期 tick
      */
     private static final Map<UUID, Long> NO_BLADE_UNTIL = new ConcurrentHashMap<>();
+    /**
+     * entityUUID -> 最近一次观测到的背包/装备变更计数。
+     */
+    private static final Map<UUID, Integer> INVENTORY_CHANGE_STAMP = new ConcurrentHashMap<>();
 
     private static final EquipmentSlot[] EQUIPMENT_SLOTS = EquipmentSlot.values();
 
@@ -103,6 +107,7 @@ public final class InventorySlashBladeSeHelper {
 
         long gameTime = entity.level().getGameTime();
         UUID entityId = entity.getUUID();
+        refreshCacheIfInventoryChanged(entity, entityId);
         if (isNoBladeCached(entityId, gameTime)) {
             return null;
         }
@@ -288,6 +293,7 @@ public final class InventorySlashBladeSeHelper {
         }
         SLOT_CACHE.remove(entityId);
         NO_BLADE_UNTIL.remove(entityId);
+        INVENTORY_CHANGE_STAMP.remove(entityId);
     }
 
     public static boolean hasInInventory(LivingEntity entity, RegistryObject<? extends SpecialEffect> effect) {
@@ -331,6 +337,7 @@ public final class InventorySlashBladeSeHelper {
     ) {
         long gameTime = entity.level().getGameTime();
         UUID entityId = entity.getUUID();
+        refreshCacheIfInventoryChanged(entity, entityId);
         if (isNoBladeCached(entityId, gameTime)) {
             return;
         }
@@ -351,5 +358,26 @@ public final class InventorySlashBladeSeHelper {
         if (!foundSlashBlade) {
             NO_BLADE_UNTIL.put(entityId, gameTime + NEGATIVE_CACHE_TICKS);
         }
+    }
+
+    private static void refreshCacheIfInventoryChanged(LivingEntity entity, UUID entityId) {
+        int currentStamp = resolveInventoryChangeStamp(entity);
+        Integer cachedStamp = INVENTORY_CHANGE_STAMP.put(entityId, currentStamp);
+        if (cachedStamp == null || cachedStamp == currentStamp) {
+            return;
+        }
+        SLOT_CACHE.remove(entityId);
+        NO_BLADE_UNTIL.remove(entityId);
+    }
+
+    private static int resolveInventoryChangeStamp(LivingEntity entity) {
+        if (entity instanceof Player player) {
+            return player.getInventory().getTimesChanged();
+        }
+        int hash = 1;
+        for(EquipmentSlot slot : EQUIPMENT_SLOTS) {
+            hash = 31 * hash + ItemStack.hashItemAndComponents(entity.getItemBySlot(slot));
+        }
+        return hash;
     }
 }

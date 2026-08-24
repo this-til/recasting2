@@ -179,8 +179,8 @@ public final class SlashBladeItemBarDecorationHandler {
                         event,
                         buffStackData,
                         player,
-                        RecastingBuffTypes.BUFF_SUPPRESS.get(),
-                        phenomenalReturn.getSuppressTicks(),
+                        RecastingBuffTypes.PHENOMENAL_RETURN.get(),
+                        phenomenalReturn.getDurationTicks(),
                         BUFF_SUPPRESS_BAR_COLOR
                 );
             }

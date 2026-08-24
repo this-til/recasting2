@@ -237,6 +237,13 @@ public class RecastingBuffTypes {
     );
 
     /**
+     * 万象归元（层=剩余 tick）
+     */
+    public static final RegistryObject<BuffType> PHENOMENAL_RETURN = BUFF_TYPES.register("phenomenal_return",
+            () -> new BuffType().setDecayInterval(1)
+    );
+
+    /**
      * 静滞（永恒守卫，层=剩余 tick）
      */
     public static final RegistryObject<BuffType> ETERNAL_GUARD = BUFF_TYPES.register("eternal_guard",

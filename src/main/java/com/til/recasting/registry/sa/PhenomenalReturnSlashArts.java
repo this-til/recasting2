@@ -4,6 +4,7 @@ import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.entity.JudgementCutEntity;
+import com.til.recasting.handler.BuffSourceHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.handler.PosHelper;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 万象归元
@@ -72,30 +72,44 @@ public class PhenomenalReturnSlashArts extends ExtendedSlashArts {
         }
         RecastingBuffTypes.BUFF_SUPPRESS.get().dispelBeneficial(livingEntity);
         RecastingBuffTypes.BUFF_SUPPRESS.get().apply(livingEntity, suppressTicks);
+        livingEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
+            data.setLevel(RecastingBuffTypes.PHENOMENAL_RETURN.get(), durationTicks, livingEntity.level());
+            BuffSourceHelper.recordSourceEntity(data, RecastingBuffTypes.PHENOMENAL_RETURN.get(), livingEntity, livingEntity);
+        });
 
         livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             timeRun.removeNamedTimerCell(rainTimer);
-            AtomicInteger remaining = new AtomicInteger(durationTicks);
             timeRun.addNamedTimerCell(
                     rainTimer,
                     new ITimeRun.TimerCell(
-                            () -> {
-                                if (!livingEntity.isAlive() || livingEntity.level().isClientSide()) {
-                                    timeRun.removeNamedTimerCell(rainTimer);
-                                    return;
-                                }
-                                if (remaining.get() <= 0) {
-                                    timeRun.removeNamedTimerCell(rainTimer);
-                                    return;
-                                }
-                                remaining.decrementAndGet();
-                                spawnJudgementCut(livingEntity, slashBladeState);
-                            },
+                            () -> tickRain(livingEntity, slashBladeState, timeRun),
                             1,
                             true
                     )
             );
         });
+    }
+
+    private void tickRain(LivingEntity livingEntity, ISlashBladeState slashBladeState, ITimeRun timeRun) {
+        if (!livingEntity.isAlive() || livingEntity.level().isClientSide()) {
+            clearRainState(livingEntity, timeRun);
+            return;
+        }
+        int remainingTicks = livingEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA)
+                .map(data -> data.getLevel(RecastingBuffTypes.PHENOMENAL_RETURN.get(), livingEntity.level()))
+                .orElse(0);
+        if (remainingTicks <= 0) {
+            clearRainState(livingEntity, timeRun);
+            return;
+        }
+        spawnJudgementCut(livingEntity, slashBladeState);
+    }
+
+    private void clearRainState(LivingEntity livingEntity, ITimeRun timeRun) {
+        timeRun.removeNamedTimerCell(rainTimer);
+        livingEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data ->
+                data.setLevel(RecastingBuffTypes.PHENOMENAL_RETURN.get(), 0, livingEntity.level())
+        );
     }
 
     private void spawnJudgementCut(LivingEntity user, ISlashBladeState state) {

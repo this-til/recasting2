@@ -125,9 +125,9 @@ public class SpecialEffectsRegistry {
     public static final RegistryObject<SpecialEffect> STATIC_AFTERGLOW = registerExtendedSE("static_afterglow", () -> new StaticAfterglowSpecialEffect().setMaxLevel(1).setSpecial(true));
     public static final RegistryObject<SpecialEffect> STATIC_AFTERGLOW_LAMBDA = registerExtendedSE("static_afterglow_lambda", () -> new StaticAfterglowSpecialEffect()
             .setLightningDamageRatio(0.4f)
-            .setDamageCooldownTick(3)
+            .setDamageCooldownTicks(3)
             .setChainChance(0.15f)
-            .setChainCooldownTick(10)
+            .setChainCooldownTicks(10)
             .setMaxLevel(1)
             .setSpecial(true));
     // 宝具连发 - 释放SA后延迟再次触发一次，带内置冷却
