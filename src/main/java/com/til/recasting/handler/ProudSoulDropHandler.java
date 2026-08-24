@@ -1,0 +1,323 @@
+package com.til.recasting.handler;
+
+import com.til.recasting.Config;
+import com.til.recasting.Recasting;
+import com.til.recasting.capability.IProudSoulDropCooldown;
+import com.til.recasting.capability.IProudSoulDropCooldown.DropKind;
+import com.til.recasting.capability.SECrystalData;
+import com.til.recasting.constant.RecastingLanguageKeys;
+import com.til.recasting.inventory.ProudSoulBagMenu;
+import com.til.recasting.registry.RecastingAttachments;
+import com.til.recasting.registry.RecastingDataComponents;
+import com.til.recasting.registry.RecastingItems;
+import com.til.recasting.registry.requir.SlashBladeItems;
+import com.til.recasting.registry.se.ExtendedSpecialEffect;
+import mods.flammpfeil.slashblade.item.ItemSlashBlade;
+import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
+import mods.flammpfeil.slashblade.slasharts.SlashArts;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.registries.DeferredHolder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * 手持拔刀剑击败生物时，按配置概率直接给予玩家耀魂相关物品。
+ */
+@EventBusSubscriber(modid = Recasting.MODID)
+public final class ProudSoulDropHandler {
+
+    private static final int SE_CRYSTAL_DROP_LEVEL = 1;
+
+    private ProudSoulDropHandler() {
+    }
+
+    @SubscribeEvent
+    public static void onLivingDeath(LivingDeathEvent event) {
+        if (event.getEntity().level().isClientSide()) {
+            return;
+        }
+
+        if (!(event.getSource().getEntity() instanceof Player player)) {
+            return;
+        }
+
+        ItemStack blade = player.getMainHandItem();
+        if (blade.isEmpty() || !(blade.getItem() instanceof ItemSlashBlade)) {
+            return;
+        }
+
+        RandomSource random = event.getEntity().getRandom();
+        long gameTime = event.getEntity().level().getGameTime();
+
+        if (random.nextDouble() < Config.PROUD_SOUL_TINY_DROP_CHANCE.get()) {
+            giveProudSoul(player, new ItemStack(SlashBladeItems.PROUDSOUL_TINY.get()));
+        }
+
+        if (random.nextDouble() < Config.PROUD_SOUL_DROP_CHANCE.get()) {
+            giveProudSoul(player, new ItemStack(SlashBladeItems.PROUDSOUL.get()));
+        }
+
+        if (random.nextDouble() < Config.PROUD_SOUL_ENCHANTED_TINY_DROP_CHANCE.get()) {
+            ItemStack enchantedTiny = createEnchantedTinyProudSoul(random, player.level().registryAccess());
+            if (!enchantedTiny.isEmpty()) {
+                giveProudSoul(player, enchantedTiny);
+            }
+        }
+
+        IProudSoulDropCooldown cooldown = RecastingAttachments.proudSoulDropCooldown(player);
+
+        if (cooldown.isReady(DropKind.BASIC_FLAME, gameTime, Config.BASIC_FLAME_DROP_COOLDOWN_TICKS.get())
+                && random.nextDouble() < Config.BASIC_FLAME_DROP_CHANCE.get()) {
+            ItemStack flame = createRandomItem(RecastingItems.getAllFlame(), random);
+            if (!flame.isEmpty()) {
+                notifyCooldownDrop(player, flame, DropKind.BASIC_FLAME, Config.BASIC_FLAME_DROP_COOLDOWN_TICKS.get());
+                giveProudSoul(player, flame);
+                cooldown.mark(DropKind.BASIC_FLAME, gameTime);
+            }
+        }
+
+        if (cooldown.isReady(DropKind.SOUL_CUBE, gameTime, Config.SOUL_CUBE_DROP_COOLDOWN_TICKS.get())
+                && random.nextDouble() < Config.SOUL_CUBE_DROP_CHANCE.get()) {
+            ItemStack cube = createRandomItem(RecastingItems.getAllSoulCube(), random);
+            if (!cube.isEmpty()) {
+                notifyCooldownDrop(player, cube, DropKind.SOUL_CUBE, Config.SOUL_CUBE_DROP_COOLDOWN_TICKS.get());
+                giveProudSoul(player, cube);
+                cooldown.mark(DropKind.SOUL_CUBE, gameTime);
+            }
+        }
+
+        if (cooldown.isReady(DropKind.SE_CRYSTAL, gameTime, Config.SE_CRYSTAL_DROP_COOLDOWN_TICKS.get())
+                && random.nextDouble() < Config.SE_CRYSTAL_LEVEL_1_DROP_CHANCE.get()) {
+            ItemStack seCrystal = createRandomWhitelistedSeCrystal(random);
+            if (!seCrystal.isEmpty()) {
+                notifyCooldownDrop(player, seCrystal, DropKind.SE_CRYSTAL, Config.SE_CRYSTAL_DROP_COOLDOWN_TICKS.get());
+                giveProudSoul(player, seCrystal);
+                cooldown.mark(DropKind.SE_CRYSTAL, gameTime);
+            }
+        }
+
+        if (cooldown.isReady(DropKind.SLASH_ARTS, gameTime, Config.SLASH_ARTS_DROP_COOLDOWN_TICKS.get())
+                && random.nextDouble() < Config.SLASH_ARTS_DROP_CHANCE.get()) {
+            ItemStack slashArtsSphere = createRandomWhitelistedSlashArtsSphere(random);
+            if (!slashArtsSphere.isEmpty()) {
+                notifyCooldownDrop(player, slashArtsSphere, DropKind.SLASH_ARTS, Config.SLASH_ARTS_DROP_COOLDOWN_TICKS.get());
+                giveProudSoul(player, slashArtsSphere);
+                cooldown.mark(DropKind.SLASH_ARTS, gameTime);
+            }
+        }
+    }
+
+    private static void notifyCooldownDrop(Player player, ItemStack stack, DropKind kind, int cooldownTicks) {
+        player.sendSystemMessage(Component.translatable(
+                RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP,
+                describeDrop(stack),
+                describeKind(kind),
+                formatCooldown(cooldownTicks)
+        ));
+    }
+
+    private static Component describeKind(DropKind kind) {
+        return switch (kind) {
+            case BASIC_FLAME -> Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_KIND_BASIC_FLAME);
+            case SOUL_CUBE -> Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_KIND_SOUL_CUBE);
+            case SE_CRYSTAL -> Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_KIND_SE_CRYSTAL);
+            case SLASH_ARTS -> Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_KIND_SLASH_ARTS);
+        };
+    }
+
+    private static Component describeDrop(ItemStack stack) {
+        if (stack.is(RecastingItems.SE_CRYSTAL.get())) {
+            SECrystalData data = stack.getOrDefault(
+                    RecastingDataComponents.SE_CRYSTAL_DATA.get(),
+                    SECrystalData.EMPTY
+            );
+            if (!data.hasSpecialEffect()) {
+                return stack.getHoverName();
+            }
+            ResourceLocation seKey = data.getSpecialEffectType();
+            if (seKey == null) {
+                return stack.getHoverName();
+            }
+            SpecialEffect se = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get(seKey);
+            if (se == null) {
+                return stack.getHoverName();
+            }
+            return Component.translatable(
+                    RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_SE,
+                    Component.translatable(se.getDescriptionId()),
+                    data.getSpecialEffectLevel()
+            );
+        }
+
+        CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+        CompoundTag tag = customData != null ? customData.copyTag() : null;
+        if (tag != null && tag.contains("SpecialAttackType")) {
+            ResourceLocation saKey = ResourceLocation.tryParse(tag.getString("SpecialAttackType"));
+            if (saKey != null) {
+                SlashArts sa = mods.flammpfeil.slashblade.registry.SlashArtsRegistry.REGISTRY.get(saKey);
+                if (sa != null) {
+                    return Component.translatable(
+                            RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_SA,
+                            Component.translatable(sa.getDescriptionId())
+                    );
+                }
+            }
+        }
+        return stack.getHoverName();
+    }
+
+    private static Component formatCooldown(int cooldownTicks) {
+        if (cooldownTicks <= 0) {
+            return Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_NOW);
+        }
+        int totalSeconds = (cooldownTicks + 19) / 20;
+        int hours = totalSeconds / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int seconds = totalSeconds % 60;
+        if (hours > 0) {
+            if (minutes == 0) {
+                return Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_H, hours);
+            }
+            return Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_HM, hours, minutes);
+        }
+        if (minutes > 0) {
+            if (seconds == 0) {
+                return Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_M, minutes);
+            }
+            return Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_MS, minutes, seconds);
+        }
+        return Component.translatable(RecastingLanguageKeys.MESSAGE_PROUD_SOUL_DROP_COOLDOWN_S, seconds);
+    }
+
+    private static void giveProudSoul(Player player, ItemStack stack) {
+        boolean inserted = ProudSoulBagHelper.tryInsertIntoAnyBag(player, stack);
+        if (inserted && player.containerMenu instanceof ProudSoulBagMenu menu) {
+            menu.syncContentsToClient(player);
+        }
+        if (!stack.isEmpty()) {
+            ItemHandlerHelper.giveItemToPlayer(player, stack);
+        }
+    }
+
+    private static ItemStack createEnchantedTinyProudSoul(RandomSource random, HolderLookup.Provider registries) {
+        List<Holder.Reference<Enchantment>> enchantments = registries
+                .lookupOrThrow(Registries.ENCHANTMENT)
+                .listElements()
+                .toList();
+        if (enchantments.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+
+        Holder.Reference<Enchantment> chosen = enchantments.get(random.nextInt(enchantments.size()));
+        ItemStack stack = new ItemStack(SlashBladeItems.PROUDSOUL_TINY.get());
+        int configuredLevel = Math.max(1, Config.PROUD_SOUL_ENCHANTED_TINY_LEVEL.get());
+        int enchantLevel = configuredLevel;
+        if (!Config.PROUD_SOUL_ENCHANTMENT_IGNORE_MAX_LEVEL.get()) {
+            enchantLevel = Math.min(configuredLevel, chosen.value().getMaxLevel());
+        }
+        stack.enchant(chosen, enchantLevel);
+        return stack;
+    }
+
+    private static ItemStack createRandomItem(List<DeferredHolder<Item, Item>> items, RandomSource random) {
+        if (items.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+        return new ItemStack(items.get(random.nextInt(items.size())).get());
+    }
+
+    private static ItemStack createRandomWhitelistedSeCrystal(RandomSource random) {
+        List<ResourceLocation> whitelist = parseWhitelist(Config.SE_CRYSTAL_DROP_WHITELIST.get());
+        if (whitelist.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+
+        List<ExtendedSpecialEffect> candidates = new ArrayList<>();
+        for (ResourceLocation key : whitelist) {
+            SpecialEffect specialEffect = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get(key);
+            if (!(specialEffect instanceof ExtendedSpecialEffect extended)) {
+                continue;
+            }
+            if (extended.getMaxLevel() < SE_CRYSTAL_DROP_LEVEL) {
+                continue;
+            }
+            candidates.add(extended);
+        }
+        if (candidates.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+
+        ExtendedSpecialEffect chosen = candidates.get(random.nextInt(candidates.size()));
+        ResourceLocation seKey = Objects.requireNonNull(
+                mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.getKey(chosen)
+        );
+
+        ItemStack stack = new ItemStack(RecastingItems.SE_CRYSTAL.get());
+        SECrystalData data = new SECrystalData();
+        data.setSpecialEffectType(seKey);
+        data.setSpecialEffectLevel(SE_CRYSTAL_DROP_LEVEL);
+        stack.set(RecastingDataComponents.SE_CRYSTAL_DATA.get(), data);
+        return stack;
+    }
+
+    private static ItemStack createRandomWhitelistedSlashArtsSphere(RandomSource random) {
+        List<ResourceLocation> whitelist = parseWhitelist(Config.SLASH_ARTS_DROP_WHITELIST.get());
+        if (whitelist.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+
+        List<ResourceLocation> candidates = new ArrayList<>();
+        for (ResourceLocation key : whitelist) {
+            SlashArts slashArts = mods.flammpfeil.slashblade.registry.SlashArtsRegistry.REGISTRY.get(key);
+            if (slashArts == null) {
+                continue;
+            }
+            if (slashArts.equals(mods.flammpfeil.slashblade.registry.SlashArtsRegistry.NONE.get())) {
+                continue;
+            }
+            candidates.add(key);
+        }
+        if (candidates.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+
+        ItemStack stack = new ItemStack(SlashBladeItems.PROUDSOUL_SPHERE.get());
+        CustomData existing = stack.get(DataComponents.CUSTOM_DATA);
+        CompoundTag tag = existing != null ? existing.copyTag() : new CompoundTag();
+        tag.putString("SpecialAttackType", candidates.get(random.nextInt(candidates.size())).toString());
+        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+        return stack;
+    }
+
+    private static List<ResourceLocation> parseWhitelist(List<? extends String> entries) {
+        List<ResourceLocation> result = new ArrayList<>();
+        for (String entry : entries) {
+            if (entry == null || entry.isBlank()) {
+                continue;
+            }
+            ResourceLocation key = ResourceLocation.tryParse(entry.trim());
+            if (key != null) {
+                result.add(key);
+            }
+        }
+        return result;
+    }
+}

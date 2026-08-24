@@ -1,11 +1,13 @@
 package com.til.recasting.registry.sa;
 
 import com.til.recasting.Recasting;
+import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.entity.TrackingSummondSwordEntity;
 import com.til.recasting.handler.*;
 import net.minecraft.core.particles.ParticleTypes;
+import com.til.recasting.registry.RecastingAttachments;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;

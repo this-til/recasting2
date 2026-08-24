@@ -16,7 +16,6 @@ import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.ability.StunManager;
 import mods.flammpfeil.slashblade.capability.slashblade.BladeStateAccess;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
-import mods.flammpfeil.slashblade.event.client.UserPoseOverrider;
 import mods.flammpfeil.slashblade.event.handler.FallHandler;
 import mods.flammpfeil.slashblade.registry.combo.ComboState;
 import net.minecraft.sounds.SoundEvents;
@@ -66,25 +65,23 @@ public class SoulSeverSlashArts extends ExtendedSlashArts {
                 .nextOfTimeout(entity -> SlashBlade.prefix("void_slash_sheath"))
                 .addTickAction(entity -> entity.setDeltaMovement(Vec3.ZERO))
                 .addTickAction(ComboState.TimeLineTickAction.getBuilder().put(16, this::activate).build())
-                .addTickAction(ComboState.TimeLineTickAction.getBuilder()
-                        .put(16, entityIn -> UserPoseOverrider.setRot(entityIn, -36, true))
-                        .put(17, entityIn -> UserPoseOverrider.setRot(entityIn, -36, true))
-                        .put(18, entityIn -> UserPoseOverrider.setRot(entityIn, -36, true))
-                        .put(19, entityIn -> UserPoseOverrider.setRot(entityIn, -36, true))
-                        .put(20, entityIn -> UserPoseOverrider.setRot(entityIn, -36, true))
-                        .put(21, entityIn -> UserPoseOverrider.setRot(entityIn, 0, true))
-                        .put(57, entityIn -> UserPoseOverrider.setRot(entityIn, 18, true))
-                        .put(58, entityIn -> UserPoseOverrider.setRot(entityIn, 18, true))
-                        .put(59, entityIn -> UserPoseOverrider.setRot(entityIn, 18, true))
-                        .put(60, entityIn -> UserPoseOverrider.setRot(entityIn, 18, true))
-                        .put(61, entityIn -> UserPoseOverrider.setRot(entityIn, 18, true))
-                        .put(62, entityIn -> UserPoseOverrider.setRot(entityIn, 18, true))
-                        .put(63, entityIn -> UserPoseOverrider.setRot(entityIn, 18, true))
-                        .put(64, entityIn -> UserPoseOverrider.setRot(entityIn, 18, true))
-                        .put(65, entityIn -> UserPoseOverrider.setRot(entityIn, 18, true))
-                        .put(66, entityIn -> UserPoseOverrider.setRot(entityIn, 18, true))
-                        .put(67, entityIn -> UserPoseOverrider.setRot(entityIn, 0, true))
-                        .build())
+                .rotationKeyframe(16, -36)
+                .rotationKeyframe(17, -72)
+                .rotationKeyframe(18, -108)
+                .rotationKeyframe(19, -144)
+                .rotationKeyframe(20, -180)
+                .rotationKeyframe(21, -180)
+                .rotationKeyframe(57, -162)
+                .rotationKeyframe(58, -144)
+                .rotationKeyframe(59, -126)
+                .rotationKeyframe(60, -108)
+                .rotationKeyframe(61, -90)
+                .rotationKeyframe(62, -72)
+                .rotationKeyframe(63, -54)
+                .rotationKeyframe(64, -36)
+                .rotationKeyframe(65, -18)
+                .rotationKeyframe(66, 0)
+                .rotationKeyframe(67, 0)
                 .addTickAction(FallHandler::fallDecrease)
                 .addHitEffect((target, attack) -> StunManager.setStun(target, 40))
                 .build();

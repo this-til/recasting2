@@ -52,7 +52,7 @@ flowchart LR
 | P1 | Attachment/DataComponent 替换 Capability；网络 Payload 骨架；Mixin 空配置；build 绿 | done |
 | P2 | AttackHelper + ExtendedSA/SE + 最小挥刀事件链；关键攻击 Mixin 重对 | done |
 | P2.5 | 全部攻击 Entity 逻辑 + 注册；`doSlash` 接回 `SlashEffectEntity` | done |
-| P3 | 批量移植 SA/SE/Buff 至数量对齐 1.20（Entity 依赖已就绪） | pending |
+| P3 | 批量移植 SA/SE/Buff 至数量对齐 1.20（Entity 依赖已就绪） | done |
 | P4 | 铁砧/物品/掉落/进度/剩余 Mixin | pending |
 | P5 | 客户端渲染、粒子、shader、UI、特效包联调 | pending |
 | P6 | Datagen + assets 拷贝；runData 产出 named_blades/recipes/adv/lang | pending |

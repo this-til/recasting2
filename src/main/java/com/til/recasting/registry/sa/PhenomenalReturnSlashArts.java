@@ -1,5 +1,6 @@
 package com.til.recasting.registry.sa;
 
+import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;

@@ -1,14 +1,15 @@
 package com.til.recasting.registry.sa;
 
+import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.handler.AttackHelper;
-import com.til.recasting.registry.RecastingAttachments;
 import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.handler.EntityPredicateHelper;
-import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.handler.InventorySlashBladeSeHelper;
+import com.til.recasting.handler.MathHelper;
 import com.til.recasting.handler.ParticleHelper;
+import com.til.recasting.registry.RecastingAttachments;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.SpecialEffectsRegistry;
 import com.til.recasting.util.DamageStructure;
@@ -89,7 +90,7 @@ public class DogBiteSlashArts extends ExtendedSlashArts {
             enchantBlade = hit.blade();
         }
 
-        int enchantLevel = Math.min(enchantBlade.getEnchantmentLevel(Enchantments.POWER_ARROWS), maxEnchantBonus);
+        int enchantLevel = Math.min(MathHelper.getEnchantmentLevel(enchantBlade, Enchantments.POWER), maxEnchantBonus);
         int hits = baseHits + Math.max(0, enchantLevel);
 
         ITimeRun timeRun = RecastingAttachments.timeRun(attacker);

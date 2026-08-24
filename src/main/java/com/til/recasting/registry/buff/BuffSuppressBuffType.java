@@ -72,7 +72,7 @@ public class BuffSuppressBuffType extends BuffType {
     public void dispelBeneficial(LivingEntity entity) {
         List<MobEffectInstance> toRemove = new ArrayList<>();
         for (MobEffectInstance instance : entity.getActiveEffects()) {
-            if (instance.getEffect().isBeneficial()) {
+            if (instance.getEffect().value().isBeneficial()) {
                 toRemove.add(instance);
             }
         }
@@ -84,7 +84,7 @@ public class BuffSuppressBuffType extends BuffType {
     public void dispelHarmful(LivingEntity entity) {
         List<MobEffectInstance> toRemove = new ArrayList<>();
         for (MobEffectInstance instance : entity.getActiveEffects()) {
-            if (!instance.getEffect().isBeneficial()) {
+            if (!instance.getEffect().value().isBeneficial()) {
                 toRemove.add(instance);
             }
         }

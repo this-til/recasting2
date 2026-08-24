@@ -9,7 +9,19 @@
     "AttackManagerMixin",
     "AttackHelperMixin",
     "SlashArtsAccessor",
-    "DamageSourcesAccessor"
+    "DamageSourcesAccessor",
+    "SlashBladeDefinitionCodecMixin",
+    "SlashBladeDefinitionMixin",
+    "SlashBladeDefinitionGetBladeMixin",
+    "SlashBladeDefinitionBladeComparatorMixin",
+    "RefineHandlerMixin",
+    "SummonedSwordArtsMixin",
+    "LockOnManagerMixin",
+    "ItemSlashBladeInventoryTickMixin",
+    "SlashBladeShapedRecipeMixin",
+    "LivingEntitySetHealthMixin",
+    "EntityAccessor",
+    "AdvancementVisibilityEvaluatorMixin"
   ],
   "client": [],
   "injectors": {

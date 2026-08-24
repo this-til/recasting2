@@ -1,5 +1,7 @@
 package com.til.recasting.network;
 
+import com.til.recasting.inventory.ProudSoulBagMenu;
+import com.til.recasting.item.ProudSoulBagStorage;
 import com.til.recasting.Recasting;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -48,6 +50,14 @@ public record ProudSoulBagSyncMessage(List<StoredEntry> entries) implements Cust
     }
 
     public static void handle(ProudSoulBagSyncMessage msg, IPayloadContext ctx) {
-        // TODO(P4/P5): ProudSoulBagMenu.setClientEntries(...)
+        ctx.enqueueWork(() -> {
+            if (!(ctx.player().containerMenu instanceof ProudSoulBagMenu menu)) {
+                return;
+            }
+            List<ProudSoulBagStorage.StoredEntry> entries = msg.entries().stream()
+                    .map(entry -> new ProudSoulBagStorage.StoredEntry(entry.template(), entry.count()))
+                    .toList();
+            menu.setClientEntries(entries);
+        });
     }
 }

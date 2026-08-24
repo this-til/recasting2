@@ -1,5 +1,6 @@
 package com.til.recasting.network;
 
+import com.til.recasting.inventory.ProudSoulBagMenu;
 import com.til.recasting.Recasting;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -16,13 +17,16 @@ public record ProudSoulBagActionMessage(Action action, int virtualIndex) impleme
     public static final StreamCodec<RegistryFriendlyByteBuf, ProudSoulBagActionMessage> STREAM_CODEC =
             StreamCodec.of(ProudSoulBagActionMessage::write, ProudSoulBagActionMessage::read);
 
-    // TODO(P4): Menu 移植后改回引用 ProudSoulBagMenu.Action
     public enum Action {
         PICKUP_OR_SET_DOWN,
         SPLIT_OR_PLACE_SINGLE,
         SHIFT_CLICK,
         ROLL_EXTRACT_ONE,
-        ROLL_INSERT_ONE
+        ROLL_INSERT_ONE;
+
+        public ProudSoulBagMenu.Action toMenuAction() {
+            return ProudSoulBagMenu.Action.valueOf(name());
+        }
     }
 
     private static ProudSoulBagActionMessage read(RegistryFriendlyByteBuf buf) {
@@ -42,6 +46,11 @@ public record ProudSoulBagActionMessage(Action action, int virtualIndex) impleme
     }
 
     public static void handle(ProudSoulBagActionMessage msg, IPayloadContext ctx) {
-        // TODO(P4): ProudSoulBagMenu.handleVirtualAction(...)
+        ctx.enqueueWork(() -> {
+            if (!(ctx.player().containerMenu instanceof ProudSoulBagMenu menu)) {
+                return;
+            }
+            menu.handleVirtualAction(ctx.player(), msg.action().toMenuAction(), msg.virtualIndex());
+        });
     }
 }
