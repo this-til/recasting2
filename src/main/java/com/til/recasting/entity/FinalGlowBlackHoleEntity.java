@@ -256,7 +256,7 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
             playGlobalSound(SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 0.06f + intensity * 0.14f, 0.3f + progress * 0.28f);
         }
         if (activePull && tickCount % 11 == 0) {
-            playGlobalSound(SoundEvents.SOUL_ESCAPE, SoundSource.AMBIENT, 0.14f + intensity * 0.18f, 0.45f + progress * 0.85f);
+            playGlobalSound(SoundEvents.SOUL_ESCAPE.value(), SoundSource.AMBIENT, 0.14f + intensity * 0.18f, 0.45f + progress * 0.85f);
         }
         if (ingestedBlocksThisTick && tickCount % 5 == 0) {
             playGlobalSound(SoundEvents.SCULK_CLICKING, SoundSource.BLOCKS, 0.08f + intensity * 0.16f, 0.55f + random.nextFloat() * 0.35f);
@@ -516,7 +516,7 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
         detonated = true;
 
         clearAllStasis();
-        playGlobalSound(SoundEvents.GENERIC_EXPLODE, SoundSource.HOSTILE, 2.4f, 0.55f);
+        playGlobalSound(SoundEvents.GENERIC_EXPLODE.value(), SoundSource.HOSTILE, 2.4f, 0.55f);
         playGlobalSound(SoundEvents.END_PORTAL_SPAWN, SoundSource.HOSTILE, 1.6f, 0.45f);
         Vec3 center = position();
 

@@ -34,7 +34,7 @@ public class SlashEffectEntity extends ContinuousDamageEntity {
     protected static final EntityDataAccessor<Boolean> USE_BLOCK_PARTICLE =
             SynchedEntityData.defineId(SlashEffectEntity.class, EntityDataSerializers.BOOLEAN);
 
-    public SoundEvent tapLightly = SoundEvents.TRIDENT_THROW;
+    public SoundEvent tapLightly = SoundEvents.TRIDENT_THROW.value();
     public SoundEvent heavyStrike = SoundEvents.PLAYER_ATTACK_SWEEP;
 
     private static final ResourceLocation MODEL_LOCATION =

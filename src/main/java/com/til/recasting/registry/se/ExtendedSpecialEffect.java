@@ -99,7 +99,7 @@ public class ExtendedSpecialEffect extends SpecialEffect {
         return target;
     }
 
-    // TODO(P3): JudgementCutEntity 移植后恢复 JudgementCutContext / resolveJudgementCutContext
+    // TODO(P3): SE 侧 JudgementCutContext / resolveJudgementCutContext（实体 JudgementCutEntity 已在 P2.5）
 
     public String getDescId() {
         return getDescriptionId() + ".desc";

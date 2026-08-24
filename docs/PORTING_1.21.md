@@ -51,7 +51,8 @@ flowchart LR
 |----|------|------|
 | P1 | Attachment/DataComponent 替换 Capability；网络 Payload 骨架；Mixin 空配置；build 绿 | done |
 | P2 | AttackHelper + ExtendedSA/SE + 最小挥刀事件链；关键攻击 Mixin 重对 | done |
-| P3 | 批量移植 SA/SE/Buff/Entity 至数量对齐 1.20 | pending |
+| P2.5 | 全部攻击 Entity 逻辑 + 注册；`doSlash` 接回 `SlashEffectEntity` | done |
+| P3 | 批量移植 SA/SE/Buff 至数量对齐 1.20（Entity 依赖已就绪） | pending |
 | P4 | 铁砧/物品/掉落/进度/剩余 Mixin | pending |
 | P5 | 客户端渲染、粒子、shader、UI、特效包联调 | pending |
 | P6 | Datagen + assets 拷贝；runData 产出 named_blades/recipes/adv/lang | pending |
@@ -155,17 +156,35 @@ public static void onDoSlash(SlashBladeEvent.DoSlashEvent event) {
 
 **验收**：创造模式拿到测试刀 → 挥刀触发本模组事件日志 → 无崩溃。
 
-**完成记录（2026-08-24）**：`AttackHelper` / `DoSlashExtendEvent` / `AttackAmplifierEvent` / `ExtendedSlashArts` / `ExtendedSpecialEffect` 已落地；注册顺序 SlashArts → ComboState → SpecialEffects；探针 `probe` SA/SE + `CombatCoreEventHandler` 日志；Mixin 重对 `AttackManagerMixin` / `AttackHelperMixin` / `SlashArtsAccessor`（另含 `DamageSourcesAccessor`）；`doSlash` 暂用 SlashBlade `EntitySlashEffect`（自定义斩击实体待 P3）；`.\gradlew build` 通过。
+**完成记录（2026-08-24）**：`AttackHelper` / `DoSlashExtendEvent` / `AttackAmplifierEvent` / `ExtendedSlashArts` / `ExtendedSpecialEffect` 已落地；注册顺序 SlashArts → ComboState → SpecialEffects；探针 `probe` SA/SE + `CombatCoreEventHandler` 日志；Mixin 重对 `AttackManagerMixin` / `AttackHelperMixin` / `SlashArtsAccessor`（另含 `DamageSourcesAccessor`）；`doSlash` 当时暂用 SlashBlade `EntitySlashEffect`（已在 **P2.5** 接回本模组斩击实体）；`.\gradlew build` 通过。
 
 ---
 
-### P3 — 内容批量（SA / SE / Buff / Entity）
+### P2.5 — 攻击实体层
 
-**目标**：玩法条目数量对齐 1.20（允许个别 API 暂 stub）。
+**目标**：1.20 全部攻击实体逻辑与注册表落地；挥刀走本模组 `SlashEffectEntity`；无完整 Renderer 亦可 `build` 绿。
 
 **动作**
 
-- 批量移植 `registry/sa/*`、`registry/se/*`、`registry/buff/*`、`RecastingAttackTypes`、`entity/*`
+- 支撑：`CallbackPoint`、`RecastingEntityDataSerializers`、`AttractionHelper`、`BuffSourceHelper`、Buff 占位（`MATRIX` / `STARFALL` / `ETERNAL_GUARD`）
+- 实体：`StandardizationAttackEntity` → 连续伤害 / 幻影剑 / 斩击 / Drive / JC / 闪电 / 矩阵 / 星旋 / 群星阵 / 末辉黑洞等
+- 注册：`RecastingEntities` 11 项；空客户端 Renderer 占位
+- `AttackHelper.doSlash` → `SlashEffectEntity`；`AttackManagerMixin` 返回 SlashBlade 哑元 `EntitySlashEffect`
+- 末辉：MatterBall 收集 / 客户端终结 FX 早退（TODO P4 / P5）
+
+**验收**：`.\gradlew build`；实体类与 1.20 注册项对齐；`doSlash` 生成本模组斩击实体。
+
+**完成记录（2026-08-24）**：上述实体与支撑已落地；`doSlash` 已接 `SlashEffectEntity`；空 Renderer 防客户端崩；`.\gradlew build` 通过。
+
+---
+
+### P3 — 内容批量（SA / SE / Buff）
+
+**目标**：玩法条目数量对齐 1.20（允许个别 API 暂 stub）。Entity 层已在 P2.5 完成。
+
+**动作**
+
+- 批量移植 `registry/sa/*`、`registry/se/*`、`registry/buff/*`、`RecastingAttackTypes`（实体相关 AttackType 已有占位可扩展）
 - 按依赖分层：无实体 SA → 召唤剑/Drive 类 → 复杂时停/矩阵/终焉类
 - 每批 15–20 个：编译 → `runClient` 抽测 2–3 个
 
@@ -235,7 +254,8 @@ public static void onDoSlash(SlashBladeEvent.DoSlashEvent event) {
 |------|------|--------|
 | **P1** 基建+数据层 | **W1** 08-25～08-29 | Cap 清零；Payload 骨架；build 绿 |
 | **P2** 战斗核心 | **W2 前半** 09-01～09-03 | 最小 SA/SE 可挥刀 |
-| **P3** 内容批量 | **W2 后半～W3** 09-04～09-12 | SA/SE/Buff/Entity 数量对齐 |
+| **P2.5** 攻击实体 | 接在 P2 后 | Entity 逻辑对齐 + doSlash 回接 |
+| **P3** 内容批量 | **W2 后半～W3** 09-04～09-12 | SA/SE/Buff 数量对齐 |
 | **P4** 系统玩法 | **W4 前半** 09-15～09-17 | 铁砧+掉落+进度 |
 | **P5** 客户端 | **W4 后半** 09-18～09-19 | 渲染/UI/特效同步 |
 | **P6** Datagen+资源 | **W5 前半** 09-22～09-24 | runData 产出完整 |
@@ -251,6 +271,7 @@ gantt
   P1_data_layer           :p1, 2026-08-25, 5d
   section Core
   P2_combat_core          :p2, 2026-09-01, 3d
+  P2_5_entities           :p25, after p2, 2d
   P3_content_batch        :p3, 2026-09-04, 7d
   section Systems
   P4_gameplay_systems     :p4, 2026-09-15, 3d
