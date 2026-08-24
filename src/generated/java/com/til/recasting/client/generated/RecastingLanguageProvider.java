@@ -255,7 +255,6 @@ public class RecastingLanguageProvider extends LanguageProvider {
         translation(RecastingLanguageKeys.TOOLTIP_ABYSS_FLAME_EXTRACT, "• 铁砧：左刀右渊寂火去除特殊SE；左刀右聚散变体提取结晶（刀损毁）", "• Anvil: blade+abyss flame removes special SE; blade+gathering parting variant extracts a crystal (blade destroyed)");
         translation(RecastingLanguageKeys.TOOLTIP_PHANTOM_BLADE_NORMAL, "幻影剑", "Phantom Sword");
         translation(RecastingLanguageKeys.TOOLTIP_PHANTOM_BLADE_TRACKING, "幻影飞刃", "Phantom Flying Blade");
-        translation(RecastingLanguageKeys.TOOLTIP_FE_ENERGY_HINT, "按住 Shift 查看 FE 能量", "Hold Shift to view FE energy");
         translation(RecastingLanguageKeys.TOOLTIP_FE_ENERGY_INFO, "FE 能量：%s", "FE Energy: %s");
         translation(RecastingLanguageKeys.TOOLTIP_SA_SE_DESC_HINT, "按住 Shift 查看 SA/SE 描述", "Hold Shift to view SA/SE descriptions");
         translation("slash_art.slashblade.circle_slash.desc", "环绕自身发动圆形斩击。", "Slash in a circle around yourself.");

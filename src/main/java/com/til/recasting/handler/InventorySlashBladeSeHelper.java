@@ -72,7 +72,7 @@ public final class InventorySlashBladeSeHelper {
             return false;
         }
         ISlashBladeState state = blade.getCapability(ItemSlashBlade.BLADESTATE).orElse(null);
-        return state != null && state.hasSpecialEffect(effectId);
+        return state != null && !state.isBroken() && state.hasSpecialEffect(effectId);
     }
 
     public static boolean isHoldingSpecialEffect(LivingEntity entity, RegistryObject<? extends SpecialEffect> effect) {
@@ -172,6 +172,9 @@ public final class InventorySlashBladeSeHelper {
                 continue;
             }
             foundSlashBlade = true;
+            if (state.isBroken()) {
+                continue;
+            }
 
             for(ResourceLocation effectId : effectIdsInPriority) {
                 if (effectId == null || !state.hasSpecialEffect(effectId)) {

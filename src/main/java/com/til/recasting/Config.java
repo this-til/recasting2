@@ -170,6 +170,10 @@ public class Config {
             .comment("是否解除铁砧 SE 铭刻数量限制。开启后，普通 SE 与特殊 SE 都不再受数量上限约束")
             .define("unlimitedSeEngraving", false);
 
+    public static final ForgeConfigSpec.BooleanValue SHOW_SLASHBLADE_DURABILITY_BAR = BUILDER
+            .comment("是否在物品栏为拔刀剑绘制耐久进度条（SlashBlade 默认隐藏原版耐久条）")
+            .define("showSlashBladeDurabilityBar", true);
+
     // 实验性功能，默认关闭
     public static final ForgeConfigSpec.BooleanValue TIME_BEYOND_ENTITY_TICK_ACCEL = BUILDER
             .comment(

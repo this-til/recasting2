@@ -50,6 +50,9 @@ public class ExtendedSpecialEffect extends SpecialEffect {
 
 
     public boolean hasSpecialEffect(ISlashBladeState slashBladeState) {
+        if (slashBladeState == null || slashBladeState.isBroken()) {
+            return false;
+        }
         return slashBladeState.hasSpecialEffect(
                 mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get().getKey(this)
         );

@@ -292,7 +292,6 @@
   "recasting.tooltip.engraving_rule.title": "Engraving Rules:",
   "recasting.tooltip.engraving_rule.unlimited_hint": "• Current config: normal and special SE engraving counts are both unlimited",
   "recasting.tooltip.engraving_rule.upgrade": "• Upgrade: Use crystals with the same type and higher-level SE to increase level.",
-  "recasting.tooltip.fe_energy.hint": "Hold Shift to view FE energy",
   "recasting.tooltip.fe_energy.info": "FE Energy: %s",
   "recasting.tooltip.phantom_blade.normal": "Phantom Sword",
   "recasting.tooltip.phantom_blade.tracking": "Phantom Flying Blade",

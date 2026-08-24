@@ -4,7 +4,6 @@ import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.energy.FeBladeEnergyStorage;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -158,11 +157,6 @@ public final class FeEnergyHelper {
     public static void appendTooltip(ItemStack stack, List<Component> tooltip) {
         long capacity = getCapacity(stack);
         if (capacity <= 0L) {
-            return;
-        }
-        if (!Screen.hasShiftDown()) {
-            tooltip.add(Component.translatable(RecastingLanguageKeys.TOOLTIP_FE_ENERGY_HINT)
-                    .withStyle(ChatFormatting.GRAY));
             return;
         }
         long stored = getStored(stack);

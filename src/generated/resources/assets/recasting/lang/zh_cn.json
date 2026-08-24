@@ -292,7 +292,6 @@
   "recasting.tooltip.engraving_rule.title": "铭刻规则：",
   "recasting.tooltip.engraving_rule.unlimited_hint": "• 当前配置：普通SE与特殊SE都不受铭刻数量上限约束",
   "recasting.tooltip.engraving_rule.upgrade": "• 升级：使用相同类型并且更高级SE的结晶可提升等级",
-  "recasting.tooltip.fe_energy.hint": "按住 Shift 查看 FE 能量",
   "recasting.tooltip.fe_energy.info": "FE 能量：%s",
   "recasting.tooltip.phantom_blade.normal": "幻影剑",
   "recasting.tooltip.phantom_blade.tracking": "幻影飞刃",
