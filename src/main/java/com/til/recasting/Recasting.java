@@ -8,6 +8,7 @@ import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingComboStateRegistry;
 import com.til.recasting.registry.RecastingDataComponents;
 import com.til.recasting.registry.RecastingEntities;
+import com.til.recasting.registry.RecastingParticleTypes;
 import com.til.recasting.registry.RecastingEntityDataSerializers;
 import com.til.recasting.registry.SlashArtsRegistry;
 import com.til.recasting.registry.SpecialEffectsRegistry;
@@ -38,6 +39,8 @@ public class Recasting {
         RecastingEntities.ENTITY_TYPES.register(modEventBus);
         RecastingBuffTypes.BUFF_TYPES.register(modEventBus);
         RecastingAttackTypes.ATTACK_TYPES.register(modEventBus);
+
+        RecastingParticleTypes.PARTICLE_TYPES.register(modEventBus);
 
         // 注册顺序：SlashArts → ComboState → SpecialEffects（与 1.20 一致）
         SlashArtsRegistry.SLASH_ARTS.register(modEventBus);

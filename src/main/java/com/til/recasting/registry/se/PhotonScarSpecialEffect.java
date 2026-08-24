@@ -1,0 +1,71 @@
+package com.til.recasting.registry.se;
+
+import com.til.recasting.event.AttackAmplifierEvent;
+import com.til.recasting.handler.BuffSourceHelper;
+import com.til.recasting.registry.RecastingAttachments;
+import com.til.recasting.registry.RecastingAttackTypes;
+import com.til.recasting.registry.RecastingBuffTypes;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.neoforged.bus.api.SubscribeEvent;
+
+/**
+ * 光子灼痕
+ * <ul>
+ *   <li>激光命中叠加光子灼烧</li>
+ *   <li>灼烧层数提供全伤害增伤（上限由 {@code maxLaserBonus} 控制）</li>
+ *   <li>灼烧 DoT / 灼痕叠层由对应 BuffType 处理</li>
+ * </ul>
+ */
+@Setter
+@Accessors(chain = true)
+public class PhotonScarSpecialEffect extends ExtendedSpecialEffect {
+
+    /**
+     * 灼烧满层时的全伤害增伤上限
+     */
+    float maxLaserBonus = 0.33f;
+    /**
+     * 每次激光命中叠加的灼烧层数
+     */
+    int addLevel = 1;
+
+    @SubscribeEvent
+    public void onEvent(AttackAmplifierEvent event) {
+        LivingEntity target = resolveServerLivingTarget(event);
+        if (target == null) {
+            return;
+        }
+
+        LivingEntity attacker = event.getAttacker();
+        Level world = target.level();
+        boolean isLaser = event.getAttackTypeList().contains(RecastingAttackTypes.LASER_ATTACK.get());
+        boolean isNoRecursion = event.getAttackTypeList().contains(RecastingAttackTypes.NO_RECURSION_ATTACK.get());
+
+        var buffStackData = RecastingAttachments.buffStackData(target);
+        int burnLevel = buffStackData.getLevel(RecastingBuffTypes.PHOTON_BURN.get(), world);
+        if (burnLevel > 0) {
+            int burnMax = RecastingBuffTypes.PHOTON_BURN.get().getMaxLevel();
+            float damageBonus = burnMax <= 0
+                    ? 0f
+                    : maxLaserBonus * ((float) burnLevel / (float) burnMax);
+            if (damageBonus > 0f) {
+                event.addModifiedRatioAmplifier(damageBonus);
+            }
+        }
+
+        if (isNoRecursion) {
+            return;
+        }
+
+        if (isLaser) {
+            int currentBurn = buffStackData.getLevel(RecastingBuffTypes.PHOTON_BURN.get(), world);
+            int newBurn = Math.min(currentBurn + addLevel, RecastingBuffTypes.PHOTON_BURN.get().getMaxLevel());
+            buffStackData.setLevel(RecastingBuffTypes.PHOTON_BURN.get(), newBurn, world);
+            BuffSourceHelper.recordSourceEntity(buffStackData, RecastingBuffTypes.PHOTON_BURN.get(), target, attacker);
+            RecastingBuffTypes.PHOTON_BURN.get().ensureTimer(target);
+        }
+    }
+}

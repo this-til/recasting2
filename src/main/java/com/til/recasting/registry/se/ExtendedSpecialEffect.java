@@ -3,6 +3,7 @@ package com.til.recasting.registry.se;
 import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
+import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.event.AttackAmplifierEvent;
 import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.registry.RecastingAttachments;
@@ -10,6 +11,7 @@ import com.til.recasting.registry.RecastingDataComponents;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import mods.flammpfeil.slashblade.capability.slashblade.BladeStateAccess;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.resources.ResourceLocation;
@@ -17,10 +19,21 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import org.jetbrains.annotations.Nullable;
 
 @Accessors(chain = true)
 public class ExtendedSpecialEffect extends SpecialEffect {
+
+    protected record JudgementCutContext(
+            JudgementCutEntity judgementCut,
+            LivingEntity shooter,
+            ItemStack blade,
+            ISlashBladeState state,
+            @Nullable PropertiesDefinitionExtension properties,
+            int effectLevel
+    ) {
+    }
 
     @Getter
     @Setter
@@ -99,7 +112,38 @@ public class ExtendedSpecialEffect extends SpecialEffect {
         return target;
     }
 
-    // TODO(P3): SE 侧 JudgementCutContext / resolveJudgementCutContext（实体 JudgementCutEntity 已在 P2.5）
+    @Nullable
+    protected JudgementCutContext resolveJudgementCutContext(EntityJoinLevelEvent event) {
+        if (event.getLevel().isClientSide()) {
+            return null;
+        }
+        if (!(event.getEntity() instanceof JudgementCutEntity judgementCut)) {
+            return null;
+        }
+
+        LivingEntity shooter = judgementCut.getShooter();
+        if (shooter == null) {
+            return null;
+        }
+        ItemStack blade = shooter.getMainHandItem();
+        if (blade.isEmpty()) {
+            return null;
+        }
+
+        ISlashBladeState state = BladeStateAccess.of(blade).orElse(null);
+        if (state == null || !hasSpecialEffect(state)) {
+            return null;
+        }
+        PropertiesDefinitionExtension properties = getPropertiesDefinitionExtension(blade);
+        return new JudgementCutContext(
+                judgementCut,
+                shooter,
+                blade,
+                state,
+                properties,
+                getLevel(properties)
+        );
+    }
 
     public String getDescId() {
         return getDescriptionId() + ".desc";

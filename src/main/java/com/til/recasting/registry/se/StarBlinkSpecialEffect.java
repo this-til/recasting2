@@ -1,0 +1,86 @@
+package com.til.recasting.registry.se;
+
+import com.til.recasting.event.AttackAmplifierEvent;
+import com.til.recasting.handler.AttackHelper;
+import com.til.recasting.registry.RecastingAttachments;
+import com.til.recasting.handler.ParticleHelper;
+import com.til.recasting.registry.RecastingAttackTypes;
+import com.til.recasting.registry.RecastingBuffTypes;
+import com.til.recasting.registry.RecastingParticleTypes;
+import com.til.recasting.util.DamageStructure;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.SubscribeEvent;
+
+import java.util.List;
+
+/***
+ * 星闪
+ * 攻击目标叠加层数，达到最大层数时触发额外伤害并重置目标速度
+ */
+@Setter
+@Accessors(chain = true)
+public class StarBlinkSpecialEffect extends ExtendedSpecialEffect {
+
+    float attack = 1.2f;
+    int addLevel = 1;
+
+    @SubscribeEvent
+    public void onEvent(AttackAmplifierEvent event) {
+        LivingEntity target = resolveServerLivingTarget(event);
+        if (target == null) {
+            return;
+        }
+
+        if (event.getAttackTypeList().contains(RecastingAttackTypes.STAR_BLINK_ATTACK.get())) {
+            return;
+        }
+
+        var buffStackData = RecastingAttachments.buffStackData(target);
+        Level world = target.level();
+
+        // 获取当前层数
+        int currentLevel = buffStackData.getLevel(RecastingBuffTypes.STAR_BLINK.get(), world);
+
+        // 检查是否达到最大层数
+        if (currentLevel >= RecastingBuffTypes.STAR_BLINK.get().getMaxLevel()) {
+            // 重置层数
+            buffStackData.setLevel(RecastingBuffTypes.STAR_BLINK.get(), 0, world);
+
+            if (world instanceof ServerLevel serverLevel) {
+                ParticleHelper.sendParticlesLongRange(
+                        serverLevel,
+                        RecastingParticleTypes.STAR_BLINK.get(),
+                        target.getX(),
+                        target.getY() + target.getBbHeight() * 0.5,
+                        target.getZ(),
+                        1,
+                        0.0, 0.0, 0.0,
+                        0.0
+                );
+            }
+
+            // 造成伤害
+            AttackHelper.attack(
+                    event.getAttacker(),
+                    target,
+                    new DamageStructure(attack, 0),
+                    List.of(RecastingAttackTypes.STAR_BLINK_ATTACK.get())
+            );
+
+            // 将目标速度设为0
+            target.setDeltaMovement(Vec3.ZERO);
+            return;
+        }
+
+        // 增加层数
+        int newLevel = currentLevel + addLevel;
+        buffStackData.setLevel(RecastingBuffTypes.STAR_BLINK.get(), newLevel, world);
+
+    }
+
+}
