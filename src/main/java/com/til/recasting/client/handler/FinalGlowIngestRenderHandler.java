@@ -47,7 +47,7 @@ public class FinalGlowIngestRenderHandler {
 
         PoseStack poseStack = event.getPoseStack();
         Vec3 camera = event.getCamera().getPosition();
-        float partialTick = event.getPartialTick();
+        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(true);
         MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
 
         for(FinalGlowIngestClientEffects.Debris debris : debrisList) {

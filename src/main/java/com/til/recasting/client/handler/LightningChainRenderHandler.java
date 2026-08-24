@@ -54,7 +54,7 @@ public class LightningChainRenderHandler {
         Matrix4f matrix = poseStack.last().pose();
         Vec3 camera = event.getCamera().getPosition();
         long gameTime = minecraft.level.getGameTime();
-        float partialTick = event.getPartialTick();
+        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(true);
 
         List<LightningChainClientEffects.Bolt> brightBolts = new ArrayList<>();
         List<LightningChainClientEffects.Bolt> darkBolts = new ArrayList<>();

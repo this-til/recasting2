@@ -2,7 +2,12 @@ package com.til.recasting.client.particle;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -47,7 +52,7 @@ public class DefaultParticle extends Particle {
     /**
      * 本模组粒子批绘专用 Buffer，与引擎 Tesselator / 共享 BufferSource 隔离。
      */
-    private static final BufferBuilder BATCH_BUFFER = new BufferBuilder(512 * 1024);
+    private static final Tesselator TESSELATOR = Tesselator.getInstance();
 
     /**
      * 当前批正在写入的 Buffer；仅在对应 {@link ParticleRenderType#begin}～{@code end} 期间非 null。
@@ -212,11 +217,6 @@ public class DefaultParticle extends Particle {
     }
 
     @Override
-    public boolean shouldCull() {
-        return false;
-    }
-
-    @Override
     public @NotNull AABB getBoundingBox() {
         if (enableCollision) {
             return super.getBoundingBox();
@@ -314,26 +314,14 @@ public class DefaultParticle extends Particle {
         float r = this.rCol * exposure;
         float g = this.gCol * exposure;
         float b = this.bCol * exposure;
-        buffer.vertex(vertices[0].x(), vertices[0].y(), vertices[0].z())
-                .uv(0, 0)
-                .color(r, g, b, this.alpha)
-                .uv2(combined)
-                .endVertex();
-        buffer.vertex(vertices[1].x(), vertices[1].y(), vertices[1].z())
-                .uv(0, 1)
-                .color(r, g, b, this.alpha)
-                .uv2(combined)
-                .endVertex();
-        buffer.vertex(vertices[2].x(), vertices[2].y(), vertices[2].z())
-                .uv(1, 1)
-                .color(r, g, b, this.alpha)
-                .uv2(combined)
-                .endVertex();
-        buffer.vertex(vertices[3].x(), vertices[3].y(), vertices[3].z())
-                .uv(1, 0)
-                .color(r, g, b, this.alpha)
-                .uv2(combined)
-                .endVertex();
+        int ir = (int) (r * 255.0f);
+        int ig = (int) (g * 255.0f);
+        int ib = (int) (b * 255.0f);
+        int ia = (int) (this.alpha * 255.0f);
+        buffer.addVertex(vertices[0].x(), vertices[0].y(), vertices[0].z()).setUv(0, 0).setColor(ir, ig, ib, ia).setLight(combined);
+        buffer.addVertex(vertices[1].x(), vertices[1].y(), vertices[1].z()).setUv(0, 1).setColor(ir, ig, ib, ia).setLight(combined);
+        buffer.addVertex(vertices[2].x(), vertices[2].y(), vertices[2].z()).setUv(1, 1).setColor(ir, ig, ib, ia).setLight(combined);
+        buffer.addVertex(vertices[3].x(), vertices[3].y(), vertices[3].z()).setUv(1, 0).setColor(ir, ig, ib, ia).setLight(combined);
     }
 
     @Override
@@ -371,12 +359,12 @@ public class DefaultParticle extends Particle {
     private static ParticleRenderType createBatchType(String name, ResourceLocation texture, boolean additive) {
         return new ParticleRenderType() {
             @Override
-            public void begin(BufferBuilder engineBuffer, TextureManager textureManager) {
+            @Nullable
+            public BufferBuilder begin(Tesselator tesselator, TextureManager textureManager) {
                 restoreParticlePipelineAfterCustom();
                 RenderSystem.depthMask(false);
                 RenderSystem.enableBlend();
                 if (additive) {
-                    // 对齐 FantasyDesire GlowingLine / SpreadingRing：SRC_ALPHA, ONE
                     RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
                 } else {
                     RenderSystem.blendFunc(
@@ -388,25 +376,26 @@ public class DefaultParticle extends Particle {
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                 RenderSystem.setShaderTexture(0, texture);
                 textureManager.getTexture(texture).setFilter(true, false);
-                if (BATCH_BUFFER.building()) {
-                    BufferUploader.drawWithShader(BATCH_BUFFER.end());
+                BufferBuilder builder = tesselator.getBuilder();
+                if (builder.building()) {
+                    BufferUploader.drawWithShader(builder.buildOrThrow());
                 }
-                BATCH_BUFFER.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
-                activeBatch = BATCH_BUFFER;
+                activeBatch = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+                return activeBatch;
             }
 
             @Override
-            public void end(Tesselator ignored) {
+            public void end(Tesselator tesselator) {
                 activeBatch = null;
-                if (BATCH_BUFFER.building()) {
-                    BufferUploader.drawWithShader(BATCH_BUFFER.end());
+                BufferBuilder builder = tesselator.getBuilder();
+                if (builder.building()) {
+                    BufferUploader.drawWithShader(builder.buildOrThrow());
                 }
                 Minecraft.getInstance().getTextureManager().getTexture(TextureAtlas.LOCATION_PARTICLES).setFilter(false, false);
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                 RenderSystem.disableBlend();
                 RenderSystem.depthMask(true);
                 RenderSystem.defaultBlendFunc();
-                // 供同帧后续自定义粒子类型继续使用 lightmap
                 Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
             }
 

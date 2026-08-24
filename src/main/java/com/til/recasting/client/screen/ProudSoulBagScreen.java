@@ -2,7 +2,7 @@ package com.til.recasting.client.screen;
 
 import com.til.recasting.inventory.ProudSoulBagMenu;
 import com.til.recasting.item.ProudSoulBagStorage;
-import com.til.recasting.network.NetworkManager;
+import net.neoforged.neoforge.network.PacketDistributor;
 import com.til.recasting.network.ProudSoulBagActionMessage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
@@ -12,6 +12,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -100,7 +101,7 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
     public void containerTick() {
         super.containerTick();
         if (this.searchBox != null) {
-            this.searchBox.tick();
+            // EditBox 在 1.21 无需单独 tick
         }
         boolean shift = hasShiftDown();
         if (shift && !wasShiftDown) {
@@ -124,7 +125,7 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
 
     @Override
     public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(graphics);
+        this.renderBackground(graphics, mouseX, mouseY, partialTick);
         super.render(graphics, mouseX, mouseY, partialTick);
 
         List<IndexedEntry> pageEntries = currentPageEntries();
@@ -212,7 +213,8 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        double delta = scrollY;
         int local = hoveredVirtualIndex((int) mouseX, (int) mouseY);
         if (hasShiftDown() && local >= 0) {
             List<IndexedEntry> pageEntries = currentPageEntries();
@@ -267,7 +269,10 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
     }
 
     private void sendAction(ProudSoulBagMenu.Action action, int storageIndex) {
-        NetworkManager.INSTANCE.sendToServer(new ProudSoulBagActionMessage(action, storageIndex));
+        PacketDistributor.sendToServer(new ProudSoulBagActionMessage(
+                ProudSoulBagActionMessage.Action.valueOf(action.name()),
+                storageIndex
+        ));
     }
 
     private int hoveredVirtualIndex(int mouseX, int mouseY) {
@@ -310,7 +315,7 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
             IndexedEntry matched = null;
             for(int i = 0; i < raw.size(); i++) {
                 ProudSoulBagStorage.StoredEntry entry = raw.get(i);
-                if (entry.count() <= 0 || !ItemStack.isSameItemSameTags(entry.template(), key)) {
+                if (entry.count() <= 0 || !ItemStack.isSameItemSameComponents(entry.template(), key)) {
                     continue;
                 }
                 matched = new IndexedEntry(i, entry);
@@ -331,7 +336,7 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
             }
             boolean already = false;
             for(ItemStack key : nextKeys) {
-                if (ItemStack.isSameItemSameTags(entry.template(), key)) {
+                if (ItemStack.isSameItemSameComponents(entry.template(), key)) {
                     already = true;
                     break;
                 }
@@ -401,7 +406,9 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
         List<Component> lines = new ArrayList<>();
         lines.add(tip.getHoverName());
         if (tip.isEnchanted()) {
-            ItemStack.appendEnchantmentNames(lines, tip.getEnchantmentTags());
+            tip.getEnchantments().keySet().forEach(holder ->
+                    lines.add(holder.value().getFullname(holder, tip.getEnchantments().getLevel(holder)))
+            );
         }
         TooltipFlag flag =
                 this.minecraft != null && this.minecraft.options.advancedItemTooltips
@@ -410,7 +417,8 @@ public class ProudSoulBagScreen extends AbstractContainerScreen<ProudSoulBagMenu
         Level level = this.minecraft != null
                 ? this.minecraft.level
                 : null;
-        tip.getItem().appendHoverText(tip, level, lines, flag);
+        Item.TooltipContext context = Item.TooltipContext.of(level);
+        tip.getItem().appendHoverText(tip, context, lines, flag);
         return lines;
     }
 

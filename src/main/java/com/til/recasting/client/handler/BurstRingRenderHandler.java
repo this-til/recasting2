@@ -3,6 +3,7 @@ package com.til.recasting.client.handler;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -18,7 +19,7 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
-import org.joml.Matrix4f;
+import org.joml.Vector4f;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ import java.util.List;
 @EventBusSubscriber(modid = Recasting.MODID, value = Dist.CLIENT)
 public class BurstRingRenderHandler {
 
-    private static final BufferBuilder BUFFER = new BufferBuilder(2 * 1024 * 1024);
+    private static BufferBuilder activeBuffer;
 
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Post event) {
@@ -53,7 +54,7 @@ public class BurstRingRenderHandler {
         Matrix4f matrix = poseStack.last().pose();
         Vec3 camera = event.getCamera().getPosition();
         long gameTime = minecraft.level.getGameTime();
-        float partialTick = event.getPartialTick();
+        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(true);
 
         beginBatch();
         for(BurstRingClientEffects.Ring ring : rings) {
@@ -75,9 +76,7 @@ public class BurstRingRenderHandler {
     }
 
     private static void beginBatch() {
-        if (BUFFER.building()) {
-            BufferUploader.drawWithShader(BUFFER.end());
-        }
+        flushIfBuilding();
         // 深度测试开启：被地形/实体遮挡；不写深度避免半透明环互相挖洞
         RenderSystem.enableDepthTest();
         RenderSystem.depthMask(false);
@@ -86,13 +85,11 @@ public class BurstRingRenderHandler {
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
         RenderSystem.setShader(GameRenderer::getRendertypeLightningShader);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        BUFFER.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        activeBuffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
     }
 
     private static void endBatch() {
-        if (BUFFER.building()) {
-            BufferUploader.drawWithShader(BUFFER.end());
-        }
+        flushIfBuilding();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.enableCull();
         RenderSystem.disableBlend();
@@ -147,13 +144,24 @@ public class BurstRingRenderHandler {
             float b,
             float a
     ) {
-        BUFFER.vertex(
-                        matrix,
-                        (float) (position.x - camera.x),
-                        (float) (position.y - camera.y),
-                        (float) (position.z - camera.z)
-                )
-                .color(r, g, b, a)
-                .endVertex();
+        if (activeBuffer == null) {
+            return;
+        }
+        Vector4f transformed = new Vector4f(
+                (float) (position.x - camera.x),
+                (float) (position.y - camera.y),
+                (float) (position.z - camera.z),
+                1.0f
+        );
+        transformed.mul(matrix);
+        activeBuffer.addVertex(transformed.x(), transformed.y(), transformed.z())
+                .setColor(r, g, b, a);
+    }
+
+    private static void flushIfBuilding() {
+        if (activeBuffer != null && activeBuffer.building()) {
+            BufferUploader.drawWithShader(activeBuffer.buildOrThrow());
+        }
+        activeBuffer = null;
     }
 }

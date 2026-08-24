@@ -5,10 +5,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
+import org.joml.Vector4f;
 
 /**
  * 朝向相机的线段批绘。加法路径对齐 FantasyDesire {@code GlowingLine}：{@code SRC_ALPHA, ONE}。
@@ -16,30 +18,17 @@ import org.joml.Matrix4f;
 public final class CameraFacingBeamRenderer {
 
     private static final double MIN_LENGTH_SQUARED = 1.0E-8;
-    private static final BufferBuilder BUFFER = new BufferBuilder(256 * 1024);
 
-    /**
-     * 线段混合模式。
-     * <p>
-     * {@link #ADDITIVE} 适合亮色发光；暗色在加法混合下几乎不可见，应改用 {@link #TRANSLUCENT}。
-     */
+    private static BufferBuilder activeBuffer;
+
     public enum BlendMode {
-        /**
-         * SRC_ALPHA, ONE — 越亮越显，黑色无贡献
-         */
         ADDITIVE,
-        /**
-         * SRC_ALPHA, ONE_MINUS_SRC_ALPHA — 可正确显示黑色/暗色
-         */
         TRANSLUCENT
     }
 
     private CameraFacingBeamRenderer() {
     }
 
-    /**
-     * 默认加法混合，兼容既有亮色光束调用
-     */
     public static void begin() {
         begin(BlendMode.ADDITIVE);
     }
@@ -59,7 +48,7 @@ public final class CameraFacingBeamRenderer {
         }
         RenderSystem.setShader(GameRenderer::getRendertypeLightningShader);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        BUFFER.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        activeBuffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
     }
 
     public static void end() {
@@ -80,7 +69,7 @@ public final class CameraFacingBeamRenderer {
             float blue,
             float alpha
     ) {
-        for(int i = 0; i < points.length - 1; i++) {
+        for (int i = 0; i < points.length - 1; i++) {
             drawQuad(matrix, camera, points[i], points[i + 1], halfWidth, red, green, blue, alpha);
         }
     }
@@ -120,9 +109,10 @@ public final class CameraFacingBeamRenderer {
     }
 
     private static void flushIfBuilding() {
-        if (BUFFER.building()) {
-            BufferUploader.drawWithShader(BUFFER.end());
+        if (activeBuffer != null && activeBuffer.building()) {
+            BufferUploader.drawWithShader(activeBuffer.buildOrThrow());
         }
+        activeBuffer = null;
     }
 
     private static void putVertex(
@@ -134,13 +124,17 @@ public final class CameraFacingBeamRenderer {
             float blue,
             float alpha
     ) {
-        BUFFER.vertex(
-                        matrix,
-                        (float) (position.x - camera.x),
-                        (float) (position.y - camera.y),
-                        (float) (position.z - camera.z)
-                )
-                .color(red, green, blue, alpha)
-                .endVertex();
+        if (activeBuffer == null) {
+            return;
+        }
+        Vector4f transformed = new Vector4f(
+                (float) (position.x - camera.x),
+                (float) (position.y - camera.y),
+                (float) (position.z - camera.z),
+                1.0f
+        );
+        transformed.mul(matrix);
+        activeBuffer.addVertex(transformed.x(), transformed.y(), transformed.z())
+                .setColor(red, green, blue, alpha);
     }
 }

@@ -112,34 +112,30 @@ public class LightningEntityRenderer<E extends LightningEntity> extends EntityRe
                                      int r, int g, int b, int alpha,
                                      float width1, float width2,
                                      boolean flag1, boolean flag2, boolean flag3, boolean flag4) {
-        vertexConsumer.vertex(matrix4f, x + (flag1
+        vertexConsumer.addVertex(matrix4f, x + (flag1
                         ? width2
                         : -width2), (float) (segment * 16), z + (flag2
                         ? width2
                         : -width2))
-                .color(r, g, b, alpha)
-                .endVertex();
-        vertexConsumer.vertex(matrix4f, prevX + (flag1
+                .setColor(r, g, b, alpha);
+        vertexConsumer.addVertex(matrix4f, prevX + (flag1
                         ? width1
                         : -width1), (float) ((segment + 1) * 16), prevZ + (flag2
                         ? width1
                         : -width1))
-                .color(r, g, b, alpha)
-                .endVertex();
-        vertexConsumer.vertex(matrix4f, prevX + (flag3
+                .setColor(r, g, b, alpha);
+        vertexConsumer.addVertex(matrix4f, prevX + (flag3
                         ? width1
                         : -width1), (float) ((segment + 1) * 16), prevZ + (flag4
                         ? width1
                         : -width1))
-                .color(r, g, b, alpha)
-                .endVertex();
-        vertexConsumer.vertex(matrix4f, x + (flag3
+                .setColor(r, g, b, alpha);
+        vertexConsumer.addVertex(matrix4f, x + (flag3
                         ? width2
                         : -width2), (float) (segment * 16), z + (flag4
                         ? width2
                         : -width2))
-                .color(r, g, b, alpha)
-                .endVertex();
+                .setColor(r, g, b, alpha);
     }
 
     @NotNull

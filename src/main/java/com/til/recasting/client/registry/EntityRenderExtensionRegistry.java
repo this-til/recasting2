@@ -259,37 +259,30 @@ public class EntityRenderExtensionRegistry {
                             f6 = f10;
                         }
 
-                        buffer.vertex(matrix, f1 - f2, 0.0F - f4, f5)
-                                .color(r, g, b, a)
-                                .uv(f8, f9)
-                                .overlayCoords(OverlayTexture.NO_OVERLAY)
-                                .uv2(packedLight)
-                                .normal(0, 1, 0)
-                                .endVertex();
-
-                        buffer.vertex(matrix, -f1 - f2, 0.0F - f4, f5)
-                                .color(r, g, b, a)
-                                .uv(f6, f9)
-                                .overlayCoords(OverlayTexture.NO_OVERLAY)
-                                .uv2(packedLight)
-                                .normal(0, 1, 0)
-                                .endVertex();
-
-                        buffer.vertex(matrix, -f1 - f2, 1.4F - f4, f5)
-                                .color(r, g, b, a)
-                                .uv(f6, f7)
-                                .overlayCoords(OverlayTexture.NO_OVERLAY)
-                                .uv2(packedLight)
-                                .normal(0, 1, 0)
-                                .endVertex();
-
-                        buffer.vertex(matrix, f1 - f2, 1.4F - f4, f5)
-                                .color(r, g, b, a)
-                                .uv(f8, f7)
-                                .overlayCoords(OverlayTexture.NO_OVERLAY)
-                                .uv2(packedLight)
-                                .normal(0, 1, 0)
-                                .endVertex();
+                        buffer.addVertex(matrix, f1 - f2, 0.0F - f4, f5)
+                                .setColor(r, g, b, a)
+                                .setUv(f8, f9)
+                                .setOverlay(OverlayTexture.NO_OVERLAY)
+                                .setLight(packedLight)
+                                .setNormal(0, 1, 0);
+                        buffer.addVertex(matrix, -f1 - f2, 0.0F - f4, f5)
+                                .setColor(r, g, b, a)
+                                .setUv(f6, f9)
+                                .setOverlay(OverlayTexture.NO_OVERLAY)
+                                .setLight(packedLight)
+                                .setNormal(0, 1, 0);
+                        buffer.addVertex(matrix, -f1 - f2, 1.4F - f4, f5)
+                                .setColor(r, g, b, a)
+                                .setUv(f6, f7)
+                                .setOverlay(OverlayTexture.NO_OVERLAY)
+                                .setLight(packedLight)
+                                .setNormal(0, 1, 0);
+                        buffer.addVertex(matrix, f1 - f2, 1.4F - f4, f5)
+                                .setColor(r, g, b, a)
+                                .setUv(f8, f7)
+                                .setOverlay(OverlayTexture.NO_OVERLAY)
+                                .setLight(packedLight)
+                                .setNormal(0, 1, 0);
 
                         currentF3 -= 0.45F;
                         f4 -= 0.45F;
@@ -351,12 +344,10 @@ public class EntityRenderExtensionRegistry {
                     float angle = (float) (Math.PI * 2.0 * i / SEGMENTS);
                     float cos = Mth.cos(angle);
                     float sin = Mth.sin(angle);
-                    buffer.vertex(matrix, cos * outer, sin * outer, 0.0f)
-                            .color(r, g, b, a)
-                            .endVertex();
-                    buffer.vertex(matrix, cos * inner, sin * inner, 0.0f)
-                            .color(r, g, b, (int) (a * 0.35f))
-                            .endVertex();
+                    buffer.addVertex(matrix, cos * outer, sin * outer, 0.0f)
+                            .setColor(r, g, b, a);
+                    buffer.addVertex(matrix, cos * inner, sin * inner, 0.0f)
+                            .setColor(r, g, b, (int) (a * 0.35f));
                 }
             }
         }

@@ -4,6 +4,7 @@ import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.handler.FeEnergyHelper;
 import com.til.recasting.handler.SpecialEffectTooltipHelper;
+import com.til.recasting.handler.MathHelper;
 import com.til.recasting.registry.RecastingDataComponents;
 import com.til.recasting.registry.se.ExtendedSpecialEffect;
 import mods.flammpfeil.slashblade.capability.slashblade.BladeStateAccess;
@@ -22,7 +23,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -66,7 +66,7 @@ public class ItemSlashBladeMixin {
         if (extension != null) {
             EnumSet<SwordType> swordTypes = SwordType.from(stack);
             if (swordTypes.contains(SwordType.BEWITCHED)
-                    && stack.getEnchantmentLevel(Enchantments.POWER) > 0) {
+                    && MathHelper.getEnchantmentLevel(stack, Enchantments.POWER) > 0) {
                 boolean tracking = extension.trackingPhantomBlade();
                 tooltip.add(Component.translatable(
                         tracking

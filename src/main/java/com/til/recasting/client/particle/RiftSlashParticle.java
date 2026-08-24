@@ -16,7 +16,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -100,13 +100,13 @@ public class RiftSlashParticle extends Particle {
     private ParticleRenderType createRenderType() {
         return new ParticleRenderType() {
             @Override
-            public void begin(BufferBuilder buffer, TextureManager textures) {
+            @Nullable
+            public BufferBuilder begin(Tesselator tesselator, TextureManager textures) {
                 ShaderInstance shader = RecastingShaderHandler.getBladeRift();
                 if (shader != null) {
                     RenderSystem.disableCull();
                     RenderSystem.enableBlend();
                     RenderSystem.depthMask(false);
-                    // FantasyDesire BladeRift：发射通道用 ONE/ONE 累加 HDR 晕
                     RenderSystem.blendFuncSeparate(
                             GlStateManager.SourceFactor.ONE,
                             GlStateManager.DestFactor.ONE,
@@ -114,7 +114,7 @@ public class RiftSlashParticle extends Particle {
                             GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
                     );
                     RenderSystem.setShader(() -> shader);
-                    float partial = Minecraft.getInstance().getFrameTime();
+                    float partial = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
                     float progress = Math.min(1f, Math.max(0f, (age + partial) / (float) lifetime));
                     setUniform(shader, "Progress", progress);
                     setUniform(shader, "FlowTime", (age + partial) * 0.05f);
@@ -123,12 +123,15 @@ public class RiftSlashParticle extends Particle {
                     setColorUniform(shader, "CoreColor", coreColor);
                     setColorUniform(shader, "EnergyColor", energyColor);
                 }
-                buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
+                return tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
             }
 
             @Override
             public void end(Tesselator tesselator) {
-                tesselator.end();
+                BufferBuilder builder = tesselator.getBuilder();
+                if (builder.building()) {
+                    BufferUploader.drawWithShader(builder.buildOrThrow());
+                }
                 RenderSystem.depthMask(true);
                 RenderSystem.defaultBlendFunc();
                 RenderSystem.disableBlend();
@@ -200,7 +203,7 @@ public class RiftSlashParticle extends Particle {
     }
 
     private static void vertex(VertexConsumer out, Vec3 p, float u, float v) {
-        out.vertex(p.x, p.y, p.z).color(1f, 1f, 1f, 1f).uv(u, v).endVertex();
+        out.addVertex((float) p.x, (float) p.y, (float) p.z).setColor(255, 255, 255, 255).setUv(u, v);
     }
 
     @Override
