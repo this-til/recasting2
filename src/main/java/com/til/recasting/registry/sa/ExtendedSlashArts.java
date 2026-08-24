@@ -66,7 +66,6 @@ public abstract class ExtendedSlashArts extends SlashArts {
 
     public abstract void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension);
 
-
     public String getDescId() {
         return getDescriptionId() + ".desc";
     }

@@ -9,6 +9,7 @@ import com.til.recasting.handler.*;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -33,6 +34,7 @@ import java.util.List;
  * 云界 Slash Arts
  * 释放时连续触发刃解，并在持续时间内每秒随机选择范围目标再次触发刃解。
  */
+@Getter
 @Setter
 @Accessors(chain = true)
 public class JadeDomainSlashArts extends ExtendedSlashArts {

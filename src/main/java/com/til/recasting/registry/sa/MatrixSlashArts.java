@@ -10,6 +10,7 @@ import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -30,6 +31,7 @@ import java.util.UUID;
  * 穷观阵 Slash Arts
  * 在目标位置创建一个穷观阵，持续造成伤害，同时叠加演算buff层数，演算使目标受到的伤害更高
  */
+@Getter
 @Setter
 @Accessors(chain = true)
 public class MatrixSlashArts extends ExtendedSlashArts {

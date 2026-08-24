@@ -9,6 +9,7 @@ import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -28,6 +29,7 @@ import java.util.UUID;
 /**
  * [回到未来计划]群星坠落：展开粒子阵体；视向锁定目标时钉阵追击，否则跟随自身并在范围内随机落星。
  */
+@Getter
 @Setter
 @Accessors(chain = true)
 public class StarfallSlashArts extends ExtendedSlashArts {

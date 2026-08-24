@@ -8,6 +8,7 @@ import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.handler.ParticleHelper;
 import com.til.recasting.registry.RecastingBuffTypes;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -31,6 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 永恒守卫：以自身为中心展开领域，进入范围内的敌人被钉在进入时的绝对坐标，无法移动；
  * 同时清除领域内非释放者发出的弹射物。边界粒子环绕施法者；静滞 Buff（剩余 tick）挂在施法者与被禁锢目标上。
  */
+@Getter
 @Setter
 @Accessors(chain = true)
 public class EternalGuardSlashArts extends ExtendedSlashArts {

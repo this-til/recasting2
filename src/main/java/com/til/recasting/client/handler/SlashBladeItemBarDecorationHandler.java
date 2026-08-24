@@ -9,9 +9,14 @@ import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.handler.FeEnergyHelper;
 import com.til.recasting.handler.InventorySlashBladeSeHelper;
 import com.til.recasting.registry.RecastingBuffTypes;
-import com.til.recasting.registry.SlashArtsRegistry;
 import com.til.recasting.registry.SpecialEffectsRegistry;
 import com.til.recasting.registry.instance.BuffType;
+import com.til.recasting.registry.sa.EternalGuardSlashArts;
+import com.til.recasting.registry.sa.JadeDomainSlashArts;
+import com.til.recasting.registry.sa.MatrixSlashArts;
+import com.til.recasting.registry.sa.MyriadSilenceSlashArts;
+import com.til.recasting.registry.sa.PhenomenalReturnSlashArts;
+import com.til.recasting.registry.sa.StarfallSlashArts;
 import com.til.recasting.registry.sa.TimeBeyondSlashArts;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
@@ -27,7 +32,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 /**
  * 注册统筹物品栏进度条装饰器，并向收集事件注入耐久 / FE / 电涌 / SA 自身状态条。
@@ -42,19 +46,6 @@ public final class SlashBladeItemBarDecorationHandler {
     private static final int STARFALL_BAR_COLOR = 0xAACCFF;
     private static final int TIME_BEYOND_BAR_COLOR = 0xFFD060;
     private static final int ETERNAL_GUARD_BAR_COLOR = 0x3A6BFF;
-
-    /** 云界默认时长 tick（30s） */
-    private static final int JADE_DOMAIN_DURATION_TICKS = 20 * 30;
-    /** 万灵寂灭 λ 咒令 tick（39s，覆盖基版 30s） */
-    private static final int CURSE_DECREE_DURATION_TICKS = 39 * 20;
-    /** 万象归元 λ 压制 tick（12s，覆盖基版 9s） */
-    private static final int BUFF_SUPPRESS_DURATION_TICKS = 12 * 20;
-    /** 穷观阵默认寿命 tick */
-    private static final int MATRIX_DURATION_TICKS = 200;
-    /** 群星坠落默认寿命 tick */
-    private static final int STARFALL_DURATION_TICKS = 600;
-    /** 永恒守卫默认时长 tick（25s） */
-    private static final int ETERNAL_GUARD_DURATION_TICKS = 25 * 20;
 
     private SlashBladeItemBarDecorationHandler() {
     }
@@ -163,84 +154,73 @@ public final class SlashBladeItemBarDecorationHandler {
                 return;
             }
 
-            if (matchesSlashArts(arts, SlashArtsRegistry.JADE_DOMAIN, SlashArtsRegistry.JADE_DOMAIN_LAMBDA)) {
+            if (arts instanceof JadeDomainSlashArts jadeDomain) {
                 addBuffBar(
                         event,
                         buffStackData,
                         player,
                         RecastingBuffTypes.JADE_DOMAIN.get(),
-                        JADE_DOMAIN_DURATION_TICKS,
+                        jadeDomain.getDomainDuration(),
                         JADE_DOMAIN_BAR_COLOR
                 );
             }
-            if (matchesSlashArts(arts, SlashArtsRegistry.MYRIAD_SILENCE, SlashArtsRegistry.MYRIAD_SILENCE_LAMBDA)) {
+            if (arts instanceof MyriadSilenceSlashArts myriadSilence) {
                 addBuffBar(
                         event,
                         buffStackData,
                         player,
                         RecastingBuffTypes.CURSE_DECREE.get(),
-                        CURSE_DECREE_DURATION_TICKS,
+                        myriadSilence.getDecreeSeconds() * 20,
                         CURSE_DECREE_BAR_COLOR
                 );
             }
-            if (matchesSlashArts(arts, SlashArtsRegistry.PHENOMENAL_RETURN, SlashArtsRegistry.PHENOMENAL_RETURN_LAMBDA)) {
+            if (arts instanceof PhenomenalReturnSlashArts phenomenalReturn) {
                 addBuffBar(
                         event,
                         buffStackData,
                         player,
                         RecastingBuffTypes.BUFF_SUPPRESS.get(),
-                        BUFF_SUPPRESS_DURATION_TICKS,
+                        phenomenalReturn.getSuppressSeconds() * 20,
                         BUFF_SUPPRESS_BAR_COLOR
                 );
             }
-            if (matchesSlashArts(arts, SlashArtsRegistry.MATRIX, SlashArtsRegistry.MATRIX_LAMBDA)) {
+            if (arts instanceof MatrixSlashArts matrix) {
                 addBuffBar(
                         event,
                         buffStackData,
                         player,
                         RecastingBuffTypes.MATRIX.get(),
-                        MATRIX_DURATION_TICKS,
+                        matrix.getLife(),
                         MATRIX_BAR_COLOR
                 );
             }
-            if (matchesSlashArts(arts, SlashArtsRegistry.STARFALL)) {
+            if (arts instanceof StarfallSlashArts starfall) {
                 addBuffBar(
                         event,
                         buffStackData,
                         player,
                         RecastingBuffTypes.STARFALL.get(),
-                        STARFALL_DURATION_TICKS,
+                        starfall.getLife(),
                         STARFALL_BAR_COLOR
                 );
             }
-            if (matchesSlashArts(arts, SlashArtsRegistry.TIME_BEYOND)) {
+            if (arts instanceof TimeBeyondSlashArts) {
                 BuffType charge = RecastingBuffTypes.TIME_BEYOND_CHARGE.get();
                 int level = buffStackData.getLevel(charge, player.level());
                 if (level > 0) {
-                    int denom = Math.max(1, TimeBeyondSlashArts.MAX_CHARGE_TICKS);
-                    event.addBar(TIME_BEYOND_BAR_COLOR, (float) level / (float) denom);
+                    event.addBar(TIME_BEYOND_BAR_COLOR, (float) level / (float) Math.max(1, TimeBeyondSlashArts.MAX_CHARGE_TICKS));
                 }
             }
-            if (matchesSlashArts(arts, SlashArtsRegistry.ETERNAL_GUARD)) {
+            if (arts instanceof EternalGuardSlashArts eternalGuard) {
                 addBuffBar(
                         event,
                         buffStackData,
                         player,
                         RecastingBuffTypes.ETERNAL_GUARD.get(),
-                        ETERNAL_GUARD_DURATION_TICKS,
+                        eternalGuard.getDurationSeconds() * 20,
                         ETERNAL_GUARD_BAR_COLOR
                 );
             }
-        }
-
-        @SafeVarargs
-        private static boolean matchesSlashArts(SlashArts arts, RegistryObject<? extends SlashArts>... candidates) {
-            for (RegistryObject<? extends SlashArts> candidate : candidates) {
-                if (arts == candidate.get()) {
-                    return true;
-                }
-            }
-            return false;
         }
 
         private static void addBuffBar(

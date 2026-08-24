@@ -10,6 +10,7 @@ import com.til.recasting.handler.PosHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -26,6 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 万象归元
  * 视角中心持续降下绝对伤害次元斩，并驱散/压制周围增益。
  */
+@Getter
 @Setter
 @Accessors(chain = true)
 public class PhenomenalReturnSlashArts extends ExtendedSlashArts {

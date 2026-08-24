@@ -7,6 +7,7 @@ import com.til.recasting.handler.*;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.util.DamageStructure;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -24,6 +25,7 @@ import java.util.List;
  * 万灵寂灭
  * 获得咒令：每 tick 自残 1 血，并对视锥内最近目标发射黑色虚空闪电并叠加寂灭。
  */
+@Getter
 @Setter
 @Accessors(chain = true)
 public class MyriadSilenceSlashArts extends ExtendedSlashArts {
