@@ -50,7 +50,7 @@ flowchart LR
 | ID | 内容 | 状态 |
 |----|------|------|
 | P1 | Attachment/DataComponent 替换 Capability；网络 Payload 骨架；Mixin 空配置；build 绿 | done |
-| P2 | AttackHelper + ExtendedSA/SE + 最小挥刀事件链；关键攻击 Mixin 重对 | pending |
+| P2 | AttackHelper + ExtendedSA/SE + 最小挥刀事件链；关键攻击 Mixin 重对 | done |
 | P3 | 批量移植 SA/SE/Buff/Entity 至数量对齐 1.20 | pending |
 | P4 | 铁砧/物品/掉落/进度/剩余 Mixin | pending |
 | P5 | 客户端渲染、粒子、shader、UI、特效包联调 | pending |
@@ -154,6 +154,8 @@ public static void onDoSlash(SlashBladeEvent.DoSlashEvent event) {
 ```
 
 **验收**：创造模式拿到测试刀 → 挥刀触发本模组事件日志 → 无崩溃。
+
+**完成记录（2026-08-24）**：`AttackHelper` / `DoSlashExtendEvent` / `AttackAmplifierEvent` / `ExtendedSlashArts` / `ExtendedSpecialEffect` 已落地；注册顺序 SlashArts → ComboState → SpecialEffects；探针 `probe` SA/SE + `CombatCoreEventHandler` 日志；Mixin 重对 `AttackManagerMixin` / `AttackHelperMixin` / `SlashArtsAccessor`（另含 `DamageSourcesAccessor`）；`doSlash` 暂用 SlashBlade `EntitySlashEffect`（自定义斩击实体待 P3）；`.\gradlew build` 通过。
 
 ---
 

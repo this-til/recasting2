@@ -4,6 +4,7 @@ import com.til.recasting.Recasting;
 import com.til.recasting.registry.instance.BuffType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 
@@ -22,7 +23,25 @@ public final class RecastingBuffTypes {
     public static final Registry<BuffType> REGISTRY =
             new RegistryBuilder<>(BUFF_TYPE_REGISTRY_KEY).sync(true).create();
 
-    // TODO(P3): 从 1.20 批量移植预定义 BuffType 注册项
+    /** 穷观阵占用标记（实体移除时清零）；完整逻辑待 P3。 */
+    public static final DeferredHolder<BuffType, BuffType> MATRIX = BUFF_TYPES.register(
+            "matrix",
+            () -> new BuffType().setDecayInterval(1)
+    );
+
+    /** 群星坠落阵占用标记（实体移除时清零）；完整逻辑待 P3。 */
+    public static final DeferredHolder<BuffType, BuffType> STARFALL = BUFF_TYPES.register(
+            "starfall",
+            () -> new BuffType().setDecayInterval(1)
+    );
+
+    /** 末辉永恒守卫；完整逻辑待 P3。 */
+    public static final DeferredHolder<BuffType, BuffType> ETERNAL_GUARD = BUFF_TYPES.register(
+            "eternal_guard",
+            () -> new BuffType().setDecayInterval(1)
+    );
+
+    // TODO(P3): 从 1.20 批量移植其余预定义 BuffType 注册项
 
     private RecastingBuffTypes() {
     }

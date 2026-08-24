@@ -5,7 +5,12 @@
   "compatibilityLevel": "JAVA_21",
   "plugin": "com.til.recasting.mixin.RecastingMixinPlugin",
   "refmap": "recasting.refmap.json",
-  "mixins": [],
+  "mixins": [
+    "AttackManagerMixin",
+    "AttackHelperMixin",
+    "SlashArtsAccessor",
+    "DamageSourcesAccessor"
+  ],
   "client": [],
   "injectors": {
     "defaultRequire": 1
