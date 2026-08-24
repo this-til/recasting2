@@ -24,7 +24,7 @@ public class MultipleDriveSlashArts extends ExtendedSlashArts {
 
     float attack = 0.15f;
     int attackNumber = 4;
-    int life = 80;
+    int lifeTicks = 80;
     float range = 1;
 
     @Override
@@ -53,7 +53,7 @@ public class MultipleDriveSlashArts extends ExtendedSlashArts {
             driveEntity.setModifiedRatio(attack);
 
             // 设置生命时间
-            driveEntity.setMaxLifeTime(life);
+            driveEntity.setMaxLifeTime(lifeTicks);
 
             // 设置随机旋转角度（Roll）
             driveEntity.setRoll(livingEntity.getRandom().nextInt(360));

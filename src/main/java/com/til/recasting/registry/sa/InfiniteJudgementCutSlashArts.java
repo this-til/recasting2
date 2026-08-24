@@ -32,7 +32,7 @@ public class InfiniteJudgementCutSlashArts extends ExtendedSlashArts {
     float attackRange = 12f;
     int attackNumber = 12;
     float hit = 0.5f;
-    int delay = 2;
+    int delayTicks = 2;
 
     @Override
     public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
@@ -55,7 +55,7 @@ public class InfiniteJudgementCutSlashArts extends ExtendedSlashArts {
 
         timeRunOptional.ifPresent(timeRun -> {
             for(int i = 0; i < attackNumber; i++) {
-                int _delay = delay * i;
+                int _delay = delayTicks * i;
 
                 timeRun.addTimerCell(
                         () -> {

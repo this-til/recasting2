@@ -27,13 +27,13 @@ import net.minecraftforge.common.util.LazyOptional;
 @Accessors(chain = true)
 public class ZantetsudenRowSlashArts extends ExtendedSlashArts {
 
-    int driveNumber = 20;        // 剑气数量
-    int delay = 1;                // 每次生成间隔（tick）
-    float attack = 0.015f;         // 每次伤害倍率
+    int driveNumber = 20;         // 剑气数量
+    int delayTicks = 1;           // 每次生成间隔（tick）
+    float attack = 0.015f;        // 每次伤害倍率
     float speed = 2.5f;           // 剑气速度
-    int life = 20;                 // 剑气持续时间
-    float size = 2.0f;             // 剑气大小
-    float range = 2.0f;            // 生成位置随机偏移范围
+    int lifeTicks = 20;           // 剑气持续时间
+    float size = 2.0f;            // 剑气大小
+    float range = 2.0f;           // 生成位置随机偏移范围
     boolean ignoreBlock = true;   // 是否穿透墙体
 
     @Override
@@ -53,7 +53,7 @@ public class ZantetsudenRowSlashArts extends ExtendedSlashArts {
         jc.setPos(targetPos.x, targetPos.y, targetPos.z);
         jc.setColor(slashBladeState.getColorCode());
         jc.setSize(8.0f);
-        jc.setMaxLifeTime(driveNumber * delay);
+        jc.setMaxLifeTime(driveNumber * delayTicks);
         worldIn.addFreshEntity(jc);
 
         // 获取实体的定时器
@@ -62,7 +62,7 @@ public class ZantetsudenRowSlashArts extends ExtendedSlashArts {
         timeRunOptional.ifPresent(timeRun -> {
             // 延迟生成驱动剑气
             for(int i = 0; i < driveNumber; i++) {
-                int _delay = delay * i;
+                int _delay = delayTicks * i;
 
                 timeRun.addTimerCell(
                         () -> {
@@ -101,7 +101,7 @@ public class ZantetsudenRowSlashArts extends ExtendedSlashArts {
                             // 设置属性
                             driveEntity.setColor(slashBladeState.getColorCode());
                             driveEntity.setModifiedRatio(attack);
-                            driveEntity.setMaxLifeTime(life);
+                            driveEntity.setMaxLifeTime(lifeTicks);
                             driveEntity.setSize(size);
                             driveEntity.setSeep(speed);
                             driveEntity.setParameter(ignoreBlock); // 是否穿透墙体

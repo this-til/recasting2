@@ -22,7 +22,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class JudgementSpecialEffect extends ExtendedSpecialEffect {
 
     NumberPack attackRatio = new NumberPack(0.2f, 0.1f);
-    int delay = 5;
+    int delayTicks = 5;
 
     @SubscribeEvent
     public void onEvent(SlashBladeEvent.PerformSlashArtEvent event) {
@@ -77,7 +77,7 @@ public class JudgementSpecialEffect extends ExtendedSpecialEffect {
                             // 添加到世界
                             worldIn.addFreshEntity(jc);
                         },
-                        delay
+                        delayTicks
                 )
         );
     }

@@ -25,7 +25,7 @@ public class ThunderstormSpecialEffect extends ExtendedSpecialEffect {
     NumberPack attackRatio = new NumberPack(0.1f, 0.1f);
     NumberPack lightningCount = new NumberPack(1f, 0.4f);
     NumberPack spreadRange = new NumberPack(3f, 0f); // 扩散范围
-    int delay = 5;
+    int delayTicks = 5;
 
     @SubscribeEvent
     public void onEvent(SlashBladeEvent.PerformSlashArtEvent event) {
@@ -100,7 +100,7 @@ public class ThunderstormSpecialEffect extends ExtendedSpecialEffect {
                                     net.minecraft.sounds.SoundSource.WEATHER, 1.0F,
                                     0.8F + user.getRandom().nextFloat() * 0.2F);
                         },
-                        delay
+                        delayTicks
                 )
         );
     }

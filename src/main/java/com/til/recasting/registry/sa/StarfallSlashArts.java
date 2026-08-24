@@ -39,7 +39,7 @@ public class StarfallSlashArts extends ExtendedSlashArts {
     private ResourceLocation starModel = R.Models.Special.starfallStar$obj;
     private ResourceLocation starTexture = R.Models.Special.starfallStar$png;
     private float starRatio = 0.08f;
-    private int life = 600;
+    private int lifeTicks = 600;
     private int arrayColor = 0xAACCFF;
     private float seekRange = 45.0f;
 
@@ -77,7 +77,7 @@ public class StarfallSlashArts extends ExtendedSlashArts {
                 level,
                 livingEntity
         );
-        array.setMaxLifeTime(life);
+        array.setMaxLifeTime(lifeTicks);
         array.setModifiedRatio(starRatio);
         array.setColor(arrayColor);
         array.setSeekRange(seekRange);
@@ -98,7 +98,7 @@ public class StarfallSlashArts extends ExtendedSlashArts {
 
         CompoundTag customData = buffStackData.getOrCreateCustomData(RecastingBuffTypes.STARFALL.get(), level);
         customData.putUUID(KEY_ARRAY_UUID, array.getUUID());
-        buffStackData.setLevel(RecastingBuffTypes.STARFALL.get(), life, level);
+        buffStackData.setLevel(RecastingBuffTypes.STARFALL.get(), lifeTicks, level);
 
         level.playSound(
                 null,

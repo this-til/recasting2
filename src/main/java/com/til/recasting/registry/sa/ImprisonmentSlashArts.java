@@ -42,9 +42,9 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
     private float centerRatio = 0.25f;
     private float bladeRatio = 0.25f;
     private int durationTicks = 300;
-    private int spawnInterval = 2;
+    private int spawnIntervalTicks = 2;
     private float shellRadius = 8.0f;
-    private int bladeLife = 35;
+    private int bladeLifeTicks = 35;
     private float judgementCutSize = 2.0f;
     private float liftPerTick = 0.03f;
     private float retargetRange = 24.0f;
@@ -147,7 +147,7 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
         target.setDeltaMovement(Vec3.ZERO);
         target.hurtMarked = true;
 
-        if (left.get() % spawnInterval != 0) {
+        if (left.get() % spawnIntervalTicks != 0) {
             return;
         }
 
@@ -166,7 +166,7 @@ public class ImprisonmentSlashArts extends ExtendedSlashArts {
         blade.setTexture(R.Models.Special.imprisonment$png);
         blade.setColor(color);
         blade.setModifiedRatio(bladeRatio);
-        blade.setMaxLifeTime(bladeLife);
+        blade.setMaxLifeTime(bladeLifeTicks);
         blade.setStartDelay(0);
         blade.setIgnoringBlock(true);
         blade.lookAt(PosHelper.getEntityAimPosition(target), false);

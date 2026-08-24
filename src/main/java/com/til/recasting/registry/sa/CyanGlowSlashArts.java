@@ -23,7 +23,7 @@ public class CyanGlowSlashArts extends ExtendedSlashArts {
 
     int attackNumber = 8;
     float hit = 0.3f;
-    int delay = 3;
+    int delayTicks = 3;
 
     @Override
     public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
@@ -36,7 +36,7 @@ public class CyanGlowSlashArts extends ExtendedSlashArts {
 
         timeRunOptional.ifPresent(timeRun -> {
             for(int i = 0; i < attackNumber; i++) {
-                int _delay = delay * i;
+                int _delay = delayTicks * i;
                 int finalI = i;
 
                 timeRun.addTimerCell(

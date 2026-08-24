@@ -190,7 +190,7 @@ public final class SlashBladeItemBarDecorationHandler {
                         buffStackData,
                         player,
                         RecastingBuffTypes.MATRIX.get(),
-                        matrix.getLife(),
+                        matrix.getLifeTicks(),
                         MATRIX_BAR_COLOR
                 );
             }
@@ -200,7 +200,7 @@ public final class SlashBladeItemBarDecorationHandler {
                         buffStackData,
                         player,
                         RecastingBuffTypes.STARFALL.get(),
-                        starfall.getLife(),
+                        starfall.getLifeTicks(),
                         STARFALL_BAR_COLOR
                 );
             }

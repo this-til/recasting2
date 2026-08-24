@@ -45,8 +45,8 @@ public class SlashArtsRegistry {
 
     // 拟似黑洞
     public static final RegistryObject<ExtendedSlashArts> VOID_HOLE = registerExtendedSA("void_hole", VoidHoleSlashArts::new);
-    public static final RegistryObject<ExtendedSlashArts> VOID_HOLE_PITCH_BLACK = registerExtendedSA("void_hole_pitch_black", () -> new VoidHoleSlashArts().setLife(40).setRange(45).setPower(0.02f));
-    public static final RegistryObject<ExtendedSlashArts> VOID_HOLE_FISHY_RED = registerExtendedSA("void_hole_fishy_red", () -> new VoidHoleSlashArts().setLife(80).setRange(64).setPower(0.02f));
+    public static final RegistryObject<ExtendedSlashArts> VOID_HOLE_PITCH_BLACK = registerExtendedSA("void_hole_pitch_black", () -> new VoidHoleSlashArts().setLifeTicks(40).setRange(45).setPower(0.02f));
+    public static final RegistryObject<ExtendedSlashArts> VOID_HOLE_FISHY_RED = registerExtendedSA("void_hole_fishy_red", () -> new VoidHoleSlashArts().setLifeTicks(80).setRange(64).setPower(0.02f));
 
     // 多重次元斩·决
     public static final RegistryObject<ExtendedSlashArts> MULTIPLE_JUDGEMENT_CUT = registerExtendedSA("multiple_judgement_cut", MultipleJudgementCutSlashArts::new);
@@ -80,7 +80,7 @@ public class SlashArtsRegistry {
             "lightning_chain_2",
             () -> new LightningChainSlashArts()
                     .setChainCount(3)
-                    .setDelay(5)
+                    .setDelayTicks(5)
                     .setMaxHops(8)
                     .setHopRange(11f)
                     .setSeedRadius(6.0f)
@@ -91,7 +91,7 @@ public class SlashArtsRegistry {
             "lightning_chain_3",
             () -> new LightningChainSlashArts()
                     .setChainCount(6)
-                    .setDelay(5)
+                    .setDelayTicks(5)
                     .setMaxHops(12)
                     .setHopRange(15f)
                     .setSeedRadius(7.0f)
@@ -103,7 +103,7 @@ public class SlashArtsRegistry {
             "lightning_chain_3_lambda",
             () -> new LightningChainSlashArts()
                     .setChainCount(8)
-                    .setDelay(5)
+                    .setDelayTicks(5)
                     .setMaxHops(14)
                     .setHopRange(15f)
                     .setSeedRadius(8.0f)
@@ -138,7 +138,7 @@ public class SlashArtsRegistry {
 
     // 穷观阵
     public static final RegistryObject<ExtendedSlashArts> MATRIX = registerExtendedSA("matrix", MatrixSlashArts::new);
-    public static final RegistryObject<ExtendedSlashArts> MATRIX_LAMBDA = registerExtendedSA("matrix_lambda", () -> new MatrixSlashArts().setAttackInterval(5));
+    public static final RegistryObject<ExtendedSlashArts> MATRIX_LAMBDA = registerExtendedSA("matrix_lambda", () -> new MatrixSlashArts().setAttackIntervalTicks(5));
 
     // 断魄
     public static final RegistryObject<ExtendedSlashArts> SOUL_SEVER = registerExtendedSA("soul_sever", SoulSeverSlashArts::new);
@@ -191,7 +191,7 @@ public class SlashArtsRegistry {
             "laser_2",
             () -> new LaserBeamSlashArts()
                     .setBeamCount(4)
-                    .setDelay(5)
+                    .setDelayTicks(5)
                     .setRange(48f)
                     .setScatterRange(1.33f)
                     .setScatterCount(5)
@@ -203,7 +203,7 @@ public class SlashArtsRegistry {
             "laser_3",
             () -> new LaserBeamSlashArts()
                     .setBeamCount(5)
-                    .setDelay(5)
+                    .setDelayTicks(5)
                     .setRange(72f)
                     .setScatterRange(1.66f)
                     .setScatterCount(5)
@@ -215,7 +215,7 @@ public class SlashArtsRegistry {
             "laser_3_lambda",
             () -> new LaserBeamSlashArts()
                     .setBeamCount(6)
-                    .setDelay(5)
+                    .setDelayTicks(5)
                     .setRange(72f)
                     .setScatterRange(1.66f)
                     .setScatterCount(5)
@@ -259,9 +259,9 @@ public class SlashArtsRegistry {
             "rift_gale_lambda",
             () -> new RiftGaleSlashArts()
                     .setDriveCount(30)
-                    .setDriveDuration(30)
+                    .setDriveDurationTicks(30)
                     .setDriveAttack(0.133f)
-                    .setDriveLife(15)
+                    .setDriveLifeTicks(15)
                     .setCrossAttack(1.7955f)
                     .setCrossSize(4.655f)
     );

@@ -36,8 +36,8 @@ public class BlisteringQiSlashArts extends ExtendedSlashArts {
     private float bladeRatio = 0.12f;
     private int durationTicks = 100;
     private int bladesPerTick = 2;
-    private int bladeLife = 120;
-    private int breakDelay = 10;
+    private int bladeLifeTicks = 120;
+    private int breakDelayTicks = 10;
 
     @Override
     public void trigger(
@@ -104,8 +104,8 @@ public class BlisteringQiSlashArts extends ExtendedSlashArts {
             );
             blade.setStartDelay(0);
             blade.setModifiedRatio(bladeRatio);
-            blade.setMaxLifeTime(bladeLife);
-            blade.setBreakDelay(breakDelay);
+            blade.setMaxLifeTime(bladeLifeTicks);
+            blade.setBreakDelay(breakDelayTicks);
             blade.setIgnoringBlock(true);
             blade.setColor((i % 2 == 0)
                     ? COLOR_BLUE

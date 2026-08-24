@@ -35,8 +35,8 @@ public class PhaseFractureSlashArts extends ExtendedSlashArts {
     private float bladeRatio = 0.25f;
     private int yawSteps = 8;
     private int pitchSteps = 8;
-    private int startDelayMax = 5;
-    private int bladeLife = 30;
+    private int startDelayMaxTicks = 5;
+    private int bladeLifeTicks = 30;
 
     @Override
     public void trigger(
@@ -100,8 +100,8 @@ public class PhaseFractureSlashArts extends ExtendedSlashArts {
                 blade.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
                 blade.setColor(color);
                 blade.setModifiedRatio(bladeRatio);
-                blade.setStartDelay(random.nextInt(startDelayMax + 1));
-                blade.setMaxLifeTime(bladeLife);
+                blade.setStartDelay(random.nextInt(startDelayMaxTicks + 1));
+                blade.setMaxLifeTime(bladeLifeTicks);
                 blade.setRoll(random.nextInt(361));
                 blade.setIgnoringBlock(true);
                 blade.lookAt(focus, false);

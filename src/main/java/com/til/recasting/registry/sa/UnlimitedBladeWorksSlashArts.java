@@ -27,10 +27,10 @@ public class UnlimitedBladeWorksSlashArts extends ExtendedSlashArts {
 
     float attack = 0.04f;
     int totalSwords = 1024;
-    int spawnDuration = 40;  // 生成持续时间（tick）
+    int spawnDurationTicks = 40;  // 生成持续时间（tick）
     float sphereRadius = 64f;  // 半球半径
     float targetOffsetRange = 8f;  // 命中点偏移范围
-    int maxLaunchDelay = 40;  // 最大发射延迟
+    int maxLaunchDelayTicks = 40;  // 最大发射延迟
 
     @Override
     public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
@@ -44,10 +44,10 @@ public class UnlimitedBladeWorksSlashArts extends ExtendedSlashArts {
 
         timeRunOptional.ifPresent(timeRun -> {
             // 计算每个tick需要生成多少把剑
-            int swordsPerTick = (int) Math.ceil((double) totalSwords / spawnDuration);
+            int swordsPerTick = (int) Math.ceil((double) totalSwords / spawnDurationTicks);
 
             // 在40 tick内逐步生成剑
-            for(int tick = 0; tick < spawnDuration; tick++) {
+            for(int tick = 0; tick < spawnDurationTicks; tick++) {
                 int finalTick = tick;
 
                 timeRun.addTimerCell(
@@ -138,12 +138,12 @@ public class UnlimitedBladeWorksSlashArts extends ExtendedSlashArts {
         summonedSword.setModifiedRatio(attack);
 
         // 计算当前剑在第几个tick生成
-        int currentSpawnTick = index / ((int) Math.ceil((double) totalSwords / spawnDuration));
+        int currentSpawnTick = index / ((int) Math.ceil((double) totalSwords / spawnDurationTicks));
 
         // 发射延迟 = 等待所有剑生成完毕的时间 + 随机延迟(0~maxLaunchDelay)
         // 等待时间 = (spawnDuration - currentSpawnTick)，确保所有剑都在第40tick后才开始发射
-        int waitForAllSpawn = spawnDuration - currentSpawnTick;
-        int randomLaunchDelay = random.nextInt(maxLaunchDelay + 1);
+        int waitForAllSpawn = spawnDurationTicks - currentSpawnTick;
+        int randomLaunchDelay = random.nextInt(maxLaunchDelayTicks + 1);
         int totalDelay = waitForAllSpawn + randomLaunchDelay;
 
         summonedSword.setStartDelay(totalDelay);

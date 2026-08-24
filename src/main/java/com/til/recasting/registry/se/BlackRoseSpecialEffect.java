@@ -25,7 +25,7 @@ public class BlackRoseSpecialEffect extends ExtendedSpecialEffect {
 
     float attack = 0.05f;
     float attenuation = 0.75f;
-    int attackInterval = 5;
+    int attackIntervalTicks = 5;
 
     @SubscribeEvent
     public void onAttackAmplifier(AttackAmplifierEvent event) {
@@ -65,7 +65,7 @@ public class BlackRoseSpecialEffect extends ExtendedSpecialEffect {
                     timerName,
                     new ITimeRun.TimerCell(
                             () -> tickBlackRose(target, timeRun),
-                            attackInterval,
+                            attackIntervalTicks,
                             true
                     )
             );

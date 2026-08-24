@@ -33,13 +33,13 @@ public class SkySeizeSlashArts extends ExtendedSlashArts {
     private float spawnRate = 35.0f;
     private float spawnHeight = 18.0f;
     private float bladeRatio = 0.32f;
-    private int startDelay = 5;
-    private int breakDelay = 10;
+    private int startDelayTicks = 5;
+    private int breakDelayTicks = 10;
     private int bladeColor = 0x3333FF;
     private float lightningRatio = 0.5f;
-    private int lightningLife = 20;
+    private int lightningLifeTicks = 20;
     private int chainHops = 3;
-    private int chainHopDelay = 2;
+    private int chainHopDelayTicks = 2;
     private float chainRange = 16.0f;
     private float chainRatio = 0.2f;
 
@@ -81,9 +81,9 @@ public class SkySeizeSlashArts extends ExtendedSlashArts {
             sword.setPos(x, y, z);
             sword.setModifiedRatio(bladeRatio);
             sword.setColor(color);
-            sword.setStartDelay(startDelay);
+            sword.setStartDelay(startDelayTicks);
             sword.setMaxLifeTime(random.nextInt(i) + 40);
-            sword.setBreakDelay(breakDelay);
+            sword.setBreakDelay(breakDelayTicks);
             sword.setRoll(90.0f);
             // 朝向与玩家视线方向一致，而非竖直下落/射向目标点
             sword.lookAt(look, true);
@@ -126,7 +126,7 @@ public class SkySeizeSlashArts extends ExtendedSlashArts {
         );
         lightning.setPos(tip.x, tip.y, tip.z);
         lightning.setModifiedRatio(lightningRatio);
-        lightning.setMaxLifeTime(lightningLife);
+        lightning.setMaxLifeTime(lightningLifeTicks);
         lightning.setColor(color);
         level.addFreshEntity(lightning);
 
@@ -138,7 +138,7 @@ public class SkySeizeSlashArts extends ExtendedSlashArts {
                 serverLevel,
                 color,
                 chainHops,
-                chainHopDelay,
+                chainHopDelayTicks,
                 chainRange,
                 chainRatio,
                 attackTypes,

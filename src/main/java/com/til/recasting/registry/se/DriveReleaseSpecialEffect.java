@@ -16,7 +16,7 @@ public class DriveReleaseSpecialEffect extends ExtendedSpecialEffect {
 
     NumberPack probability = new NumberPack(0.1f, 0.05f);
     NumberPack attackRatio = new NumberPack(0.1f, 0.1f);
-    int lifetime = 20;
+    int lifeTicks = 20;
     float speed = 1.25f;
 
     @SubscribeEvent
@@ -44,7 +44,7 @@ public class DriveReleaseSpecialEffect extends ExtendedSpecialEffect {
         driveEntity.setColor(event.getSlashBladeState().getColorCode());
         driveEntity.setSize(event.getAttackRange());
         driveEntity.setModifiedRatio(event.getModifiedRatio() * attackRatio.of(level));
-        driveEntity.setMaxLifeTime(lifetime);
+        driveEntity.setMaxLifeTime(lifeTicks);
         driveEntity.setRoll(event.getRoll());
         driveEntity.setSeep(speed);
 

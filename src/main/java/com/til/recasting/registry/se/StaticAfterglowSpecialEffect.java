@@ -39,7 +39,7 @@ public class StaticAfterglowSpecialEffect extends ExtendedSpecialEffect {
     /**
      * 附加雷电伤害的内置冷却（tick），记录在受击目标
      */
-    private int damageCooldownTick = 4;
+    private int damageCooldownTicks = 4;
 
     /**
      * 触发闪电链的概率
@@ -49,7 +49,7 @@ public class StaticAfterglowSpecialEffect extends ExtendedSpecialEffect {
     /**
      * 闪电链触发的内置冷却（tick），记录在受击目标
      */
-    private int chainCooldownTick = 14;
+    private int chainCooldownTicks = 14;
 
     @SubscribeEvent
     public void onAttackAmplifier(AttackAmplifierEvent event) {
@@ -102,7 +102,7 @@ public class StaticAfterglowSpecialEffect extends ExtendedSpecialEffect {
                 return;
             }
 
-            targetBuff.setLevel(RecastingBuffTypes.STATIC_AFTERGLOW_DAMAGE_CD.get(), damageCooldownTick, level);
+            targetBuff.setLevel(RecastingBuffTypes.STATIC_AFTERGLOW_DAMAGE_CD.get(), damageCooldownTicks, level);
             event.addDamageSourceInfo(
                     damageSourceInfo.damageSource(),
                     new DamageStructure(lightningDamageRatio, 0f)
@@ -127,7 +127,7 @@ public class StaticAfterglowSpecialEffect extends ExtendedSpecialEffect {
             if (targetBuff.getLevel(RecastingBuffTypes.STATIC_AFTERGLOW_CHAIN_CD.get(), level) > 0) {
                 return;
             }
-            targetBuff.setLevel(RecastingBuffTypes.STATIC_AFTERGLOW_CHAIN_CD.get(), chainCooldownTick, level);
+            targetBuff.setLevel(RecastingBuffTypes.STATIC_AFTERGLOW_CHAIN_CD.get(), chainCooldownTicks, level);
 
             if (level instanceof ServerLevel serverLevel) {
                 List<AttackType> attackTypes = List.of(

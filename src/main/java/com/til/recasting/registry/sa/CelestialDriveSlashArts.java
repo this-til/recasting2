@@ -27,7 +27,7 @@ public class CelestialDriveSlashArts extends ExtendedSlashArts {
     private int pitchSteps = 8;
     private float driveRatio = 0.25f;
     private float driveSeep = 1.8f;
-    private int life = 10;
+    private int lifeTicks = 10;
     private int driveColor = 0x3333FF;
 
     @Override
@@ -60,7 +60,7 @@ public class CelestialDriveSlashArts extends ExtendedSlashArts {
                 drive.setColor(driveColor);
                 drive.setModifiedRatio(driveRatio);
                 drive.setSeep(driveSeep);
-                drive.setMaxLifeTime(life);
+                drive.setMaxLifeTime(lifeTicks);
                 drive.setRepeatedAttack(false);
                 drive.setParameter(true);
                 drive.setRoll(random.nextInt(361));

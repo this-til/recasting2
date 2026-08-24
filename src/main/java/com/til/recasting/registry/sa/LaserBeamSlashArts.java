@@ -44,7 +44,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
     /**
      * 脉冲间隔 tick
      */
-    int delay = 3;
+    int delayTicks = 3;
     float attack = 0.5f;
     /**
      * 散射分光伤害相对主光束
@@ -85,7 +85,7 @@ public class LaserBeamSlashArts extends ExtendedSlashArts {
                 int pulseIndex = i;
                 timeRun.addTimerCell(
                         () -> firePrismPulse(livingEntity, slashBladeState, finalRange, color, attackTypes, pulseIndex),
-                        delay * i
+                        delayTicks * i
                 );
             }
         });

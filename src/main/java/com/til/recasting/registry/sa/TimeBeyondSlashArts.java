@@ -61,7 +61,7 @@ public class TimeBeyondSlashArts extends ExtendedSlashArts {
     private float attackMin = 0.1f;
     private float attackMax = 3.0f;
     private float crossSize = 3.5f;
-    private int driveLife = 10;
+    private int driveLifeTicks = 10;
     private float driveSpeed = 4.5f;
 
     @Override
@@ -102,7 +102,7 @@ public class TimeBeyondSlashArts extends ExtendedSlashArts {
         driveEntity.setPos(pos.x, pos.y, pos.z);
         driveEntity.setColor(slashBladeState.getColorCode());
         driveEntity.setModifiedRatio(attackRatio);
-        driveEntity.setMaxLifeTime(driveLife);
+        driveEntity.setMaxLifeTime(driveLifeTicks);
         driveEntity.setSize(crossSize);
         driveEntity.setRoll(roll);
         driveEntity.setSeep(driveSpeed);

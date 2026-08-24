@@ -28,10 +28,10 @@ import net.minecraftforge.common.util.LazyOptional;
 public class ZantetsudenMaxSlashArts extends ExtendedSlashArts {
 
     int attackNumber = 25;        // 攻击次数
-    int delay = 1;                // 每次攻击间隔（tick）
-    float hit = 0.03f;             // 每次伤害倍率
+    int delayTicks = 1;           // 每次攻击间隔（tick）
+    float hit = 0.03f;            // 每次伤害倍率
     float range = 3.0f;           // 攻击范围（随机偏移）
-    int life = 8;                 // 每次斩击的持续时间
+    int lifeTicks = 8;            // 每次斩击的持续时间
     float size = 2.0f;            // 斩击大小
 
     @Override
@@ -51,7 +51,7 @@ public class ZantetsudenMaxSlashArts extends ExtendedSlashArts {
         jc.setPos(targetPos.x, targetPos.y, targetPos.z);
         jc.setColor(slashBladeState.getColorCode());
         jc.setSize(8.0f);
-        jc.setMaxLifeTime(attackNumber * delay);
+        jc.setMaxLifeTime(attackNumber * delayTicks);
         worldIn.addFreshEntity(jc);
 
         // 获取实体的定时器
@@ -60,7 +60,7 @@ public class ZantetsudenMaxSlashArts extends ExtendedSlashArts {
         timeRunOptional.ifPresent(timeRun -> {
             // 超高频率连续攻击
             for(int i = 0; i < attackNumber; i++) {
-                int _delay = delay * i;
+                int _delay = delayTicks * i;
 
                 timeRun.addTimerCell(
                         () -> {
@@ -94,7 +94,7 @@ public class ZantetsudenMaxSlashArts extends ExtendedSlashArts {
                             // 设置属性
                             slashEffect.setColor(slashBladeState.getColorCode());
                             slashEffect.setModifiedRatio(hit);
-                            slashEffect.setMaxLifeTime(life);
+                            slashEffect.setMaxLifeTime(lifeTicks);
                             slashEffect.setSize(size);
                             slashEffect.setThump(true); // 暴击效果
 

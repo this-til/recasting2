@@ -23,8 +23,8 @@ public class StellarRotationSlashArts extends ExtendedSlashArts {
     float attack = 0.01f;
     float moveRange = 32;
     float size = 3;
-    int attackInterval = 1;
-    int life = 60;
+    int attackIntervalTicks = 1;
+    int lifeTicks = 60;
 
     @Override
     public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
@@ -44,8 +44,8 @@ public class StellarRotationSlashArts extends ExtendedSlashArts {
         jc.setPos(attackPos.x, attackPos.y, attackPos.z);
         jc.setColor(slashBladeState.getColorCode());
         jc.setModifiedRatio(attack);
-        jc.setMaxLifeTime(life);
-        jc.setAttackInterval(attackInterval);
+        jc.setMaxLifeTime(lifeTicks);
+        jc.setAttackInterval(attackIntervalTicks);
         jc.setSize(size);
 
         jc.attackActionCallbackPoint.register(e -> e.setDeltaMovement(Vec3.ZERO));

@@ -24,7 +24,7 @@ public class FanaticalDanceSlashArts extends ExtendedSlashArts {
     int attackNumber = 15;
     int attackDeviation = 3;
     float hit = 0.4f;
-    int delay = 1;
+    int delayTicks = 1;
     int offset = 3;
 
     @Override
@@ -38,7 +38,7 @@ public class FanaticalDanceSlashArts extends ExtendedSlashArts {
 
         timeRunOptional.ifPresent(timeRun -> {
             for(int i = 0; i < number; i++) {
-                int _delay = delay * i;
+                int _delay = delayTicks * i;
 
                 timeRun.addTimerCell(
                         () -> {

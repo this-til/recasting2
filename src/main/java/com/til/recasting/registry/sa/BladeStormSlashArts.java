@@ -29,7 +29,7 @@ public class BladeStormSlashArts extends ExtendedSlashArts {
     float maxRadius = 4.50f;       // 最大半径
     float minHeightOffset = -2.0f; // 最小高度偏移（相对于玩家中心）
     float maxHeightOffset = 2.0f;  // 最大高度偏移（相对于玩家中心）
-    int duration = 60;           // 持续时间（tick）
+    int durationTicks = 60;        // 持续时间（tick）
     float speedVariation = 0.3f;  // 速度随机变化幅度（0.3 = ±30%）
     boolean randomDirection = true; // 是否随机旋转方向（false=统一顺时针，true=随机顺/逆时针）
 
@@ -93,8 +93,8 @@ public class BladeStormSlashArts extends ExtendedSlashArts {
             ss.setColor(slashBladeState.getColorCode());
             ss.setRoll(0);
 
-            ss.setStartDelay(duration);
-            ss.setMaxLifeTime(duration);
+            ss.setStartDelay(durationTicks);
+            ss.setMaxLifeTime(durationTicks);
 
             worldIn.addFreshEntity(ss);
         }

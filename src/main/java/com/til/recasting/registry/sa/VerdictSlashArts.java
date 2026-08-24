@@ -25,12 +25,12 @@ public class VerdictSlashArts extends ExtendedSlashArts {
 
     private float driveRatio = 0.75f;
     private float driveSeep = 0.25f;
-    private int driveLife = 300;
+    private int driveLifeTicks = 300;
     private float driveSize = 1.25f;
     private float driveRoll = 90.0f;
     private int followBladeCount = 6;
     private float followBladeRatio = 0.12f;
-    private int followBladeLife = 100;
+    private int followBladeLifeTicks = 100;
     private float followSpawnRange = 7.0f;
     private float speedScalePerTick = 1.05f;
 
@@ -59,7 +59,7 @@ public class VerdictSlashArts extends ExtendedSlashArts {
         drive.setPos(origin.x, origin.y, origin.z);
         drive.setModifiedRatio(driveRatio);
         drive.setSeep(driveSeep);
-        drive.setMaxLifeTime(driveLife);
+        drive.setMaxLifeTime(driveLifeTicks);
         drive.setRoll(driveRoll);
         drive.setSize(driveSize);
         drive.setColor(color);
@@ -110,7 +110,7 @@ public class VerdictSlashArts extends ExtendedSlashArts {
             double oz = (random.nextDouble() * 2.0 - 1.0) * followSpawnRange;
             blade.setPos(target.getX() + ox, target.getY() + oy + target.getBbHeight() * 0.5, target.getZ() + oz);
             blade.setModifiedRatio(followBladeRatio);
-            blade.setMaxLifeTime(followBladeLife);
+            blade.setMaxLifeTime(followBladeLifeTicks);
             blade.setColor(color);
             blade.setTargetEntity(target);
             blade.setInterval(0);

@@ -32,7 +32,7 @@ public class TidalSurgeSlashArts extends ExtendedSlashArts {
     private int durationTicks = 20;
     private int driveCount = 4;
     private float driveRatio = 0.15f;
-    private int driveLife = 80;
+    private int driveLifeTicks = 80;
     private float driveSeep = 0.1f;
     private int driveColor = 0x0000CD;
 
@@ -99,7 +99,7 @@ public class TidalSurgeSlashArts extends ExtendedSlashArts {
             drive.setPos(caster.getX(), originY, caster.getZ());
             drive.setColor(driveColor);
             drive.setModifiedRatio(driveRatio);
-            drive.setMaxLifeTime(driveLife);
+            drive.setMaxLifeTime(driveLifeTicks);
             drive.setSeep(driveSeep);
             drive.setSize(1.0f);
             drive.setAttackInterval(5);

@@ -21,15 +21,15 @@ import net.minecraft.world.phys.Vec3;
 public class RiftGaleSlashArts extends ExtendedSlashArts {
 
     private int driveCount = 20;
-    private int driveDuration = 20;
+    private int driveDurationTicks = 20;
     private float driveAttack = 0.1f;
     private float driveMinSize = 0.6f;
     private float driveSizeRange = 0.4f;
-    private int driveLife = 10;
+    private int driveLifeTicks = 10;
     private float driveSpeed = 4.5f;
     private float crossAttack = 1.35f;
     private float crossSize = 3.5f;
-    private int crossDelay = 2;
+    private int crossDelayTicks = 2;
 
     @Override
     public void trigger(
@@ -64,15 +64,15 @@ public class RiftGaleSlashArts extends ExtendedSlashArts {
     ) {
         RandomSource random = livingEntity.getRandom();
         for(int i = 0; i < driveCount; i++) {
-            int delay = random.nextInt(driveDuration);
+            int delayTicks = random.nextInt(driveDurationTicks);
             timeRun.addTimerCell(
                     () -> spawnDrive(livingEntity.level(), livingEntity, slashBladeState, livingEntity.getRandom()),
-                    delay
+                    delayTicks
             );
         }
         timeRun.addTimerCell(
                 () -> spawnCross(livingEntity, slashBladeState, livingEntity.getRandom()),
-                driveDuration + crossDelay
+                driveDurationTicks + crossDelayTicks
         );
     }
 
@@ -105,7 +105,7 @@ public class RiftGaleSlashArts extends ExtendedSlashArts {
         driveEntity.setPos(pos.x, pos.y, pos.z);
         driveEntity.setColor(slashBladeState.getColorCode());
         driveEntity.setModifiedRatio(driveAttack);
-        driveEntity.setMaxLifeTime(driveLife);
+        driveEntity.setMaxLifeTime(driveLifeTicks);
         driveEntity.setSize(driveMinSize + random.nextFloat() * driveSizeRange);
         driveEntity.setRoll(random.nextFloat() * 360.0f);
         driveEntity.setSeep(driveSpeed);
@@ -141,7 +141,7 @@ public class RiftGaleSlashArts extends ExtendedSlashArts {
         driveEntity.setPos(pos.x, pos.y, pos.z);
         driveEntity.setColor(slashBladeState.getColorCode());
         driveEntity.setModifiedRatio(crossAttack);
-        driveEntity.setMaxLifeTime(driveLife);
+        driveEntity.setMaxLifeTime(driveLifeTicks);
         driveEntity.setSize(crossSize);
         driveEntity.setRoll(roll);
         driveEntity.setSeep(driveSpeed);

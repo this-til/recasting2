@@ -41,7 +41,7 @@ public class LightningChainSlashArts extends ExtendedSlashArts {
     /**
      * 脉冲间隔 tick（对齐光棱 delay）
      */
-    int delay = 5;
+    int delayTicks = 5;
     /**
      * 总跳数（含首击）
      */
@@ -49,7 +49,7 @@ public class LightningChainSlashArts extends ExtendedSlashArts {
     /**
      * 每跳间隔 tick
      */
-    int hopDelay = 2;
+    int hopDelayTicks = 2;
     /**
      * 横跳索敌半径
      */
@@ -95,7 +95,7 @@ public class LightningChainSlashArts extends ExtendedSlashArts {
                 int pulseIndex = i;
                 timeRun.addTimerCell(
                         () -> fireChainPulse(livingEntity, slashBladeState, serverLevel, color, attackTypes, pulseIndex),
-                        delay * i
+                        delayTicks * i
                 );
             }
         });
@@ -166,7 +166,7 @@ public class LightningChainSlashArts extends ExtendedSlashArts {
 
         LightningChainHelper.startHopSequence(
                 livingEntity, tip, lastHit, serverLevel, color,
-                maxHops - 1, hopDelay, hopRange, chainAttack, attackTypes, allowRepeatJump
+                maxHops - 1, hopDelayTicks, hopRange, chainAttack, attackTypes, allowRepeatJump
         );
     }
 

@@ -39,8 +39,8 @@ public class MatrixSlashArts extends ExtendedSlashArts {
     private static final String KEY_MATRIX_ENTITY_UUID = "MatrixEntityUuid";
 
     float attack = 0.02f;
-    int attackInterval = 10;
-    int life = 200;
+    int attackIntervalTicks = 10;
+    int lifeTicks = 200;
     float size = 16;
 
     ResourceLocation saTexture = R.Models.Special.matrix$png;
@@ -71,8 +71,8 @@ public class MatrixSlashArts extends ExtendedSlashArts {
         matrix.setPos(attackPos.x, attackPos.y + 0.01, attackPos.z);
         matrix.setModel(saModel);
         matrix.setTexture(saTexture);
-        matrix.setMaxLifeTime(life);
-        matrix.setAttackInterval(attackInterval);
+        matrix.setMaxLifeTime(lifeTicks);
+        matrix.setAttackInterval(attackIntervalTicks);
         matrix.setModifiedRatio(attack);
         matrix.setColor(slashBladeState.getColorCode());
         matrix.setSize(size);
@@ -90,7 +90,7 @@ public class MatrixSlashArts extends ExtendedSlashArts {
 
         CompoundTag customData = buffStackData.getOrCreateCustomData(RecastingBuffTypes.MATRIX.get(), worldIn);
         customData.putUUID(KEY_MATRIX_ENTITY_UUID, matrix.getUUID());
-        buffStackData.setLevel(RecastingBuffTypes.MATRIX.get(), life, worldIn);
+        buffStackData.setLevel(RecastingBuffTypes.MATRIX.get(), lifeTicks, worldIn);
     }
 
     private static void discardExistingMatrix(IBuffStackData buffStackData, Level world) {

@@ -36,12 +36,12 @@ public class MortalDustSlashArts extends ExtendedSlashArts {
     private float spawnRangeXZ = 16.0f;
     private float spawnYMin = 2.0f;
     private float spawnYMax = 16.0f;
-    private int startDelayMin = 5;
-    private int startDelayMax = 25;
+    private int startDelayMinTicks = 5;
+    private int startDelayMaxTicks = 25;
     private float bladeRatio = 0.42f;
     private float splashRange = 12.0f;
-    private int bladeLife = 300;
-    private int breakDelay = 10;
+    private int bladeLifeTicks = 300;
+    private int breakDelayTicks = 10;
     private int stackAtCenter = 10;
     private int stackAtEdge = 1;
 
@@ -79,10 +79,10 @@ public class MortalDustSlashArts extends ExtendedSlashArts {
             blade.setDeltaMovement(Vec3.ZERO);
             blade.setColor(color);
             blade.setModifiedRatio(bladeRatio);
-            blade.setStartDelay(startDelayMin + random.nextInt(startDelayMax - startDelayMin + 1));
+            blade.setStartDelay(startDelayMinTicks + random.nextInt(startDelayMaxTicks - startDelayMinTicks + 1));
             blade.setInterval(0);
-            blade.setMaxLifeTime(bladeLife);
-            blade.setBreakDelay(breakDelay);
+            blade.setMaxLifeTime(bladeLifeTicks);
+            blade.setBreakDelay(breakDelayTicks);
             blade.setIgnoringBlock(true);
             blade.setSize(0f);
             blade.setMute(true);

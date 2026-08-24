@@ -22,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
 public class LightningCallSlashArts extends ExtendedSlashArts {
 
     float attack = 0.5f;
-    int life = 20;
+    int lifeTicks = 20;
 
     @Override
     public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
@@ -44,7 +44,7 @@ public class LightningCallSlashArts extends ExtendedSlashArts {
 
         // 设置属性
         lightningEntity.setModifiedRatio(attack);
-        lightningEntity.setMaxLifeTime(life);
+        lightningEntity.setMaxLifeTime(lifeTicks);
 
         // 添加到世界
         worldIn.addFreshEntity(lightningEntity);

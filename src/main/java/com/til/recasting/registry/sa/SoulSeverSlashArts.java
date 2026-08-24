@@ -37,7 +37,7 @@ import java.util.List;
 @Accessors(chain = true)
 public class SoulSeverSlashArts extends ExtendedSlashArts {
 
-    private int slashLife = 36;
+    private int slashLifeTicks = 36;
     private float slashAttack = 3.25f;
     private float slashSize = 3f;
     private float giantJudgementCutAttack = 1.5f;
@@ -126,7 +126,7 @@ public class SoulSeverSlashArts extends ExtendedSlashArts {
         slashEffect.setYRot(livingEntity.getYRot() - 22.5f);
         slashEffect.setXRot(0f);
         slashEffect.setColor(slashBladeState.getColorCode());
-        slashEffect.setMaxLifeTime(slashLife);
+        slashEffect.setMaxLifeTime(slashLifeTicks);
         slashEffect.setSize(slashSize);
         slashEffect.setThump(false);
         slashEffect.setRepeatedAttack(false);

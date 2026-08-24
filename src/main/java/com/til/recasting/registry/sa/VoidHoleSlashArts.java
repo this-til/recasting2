@@ -28,7 +28,7 @@ import java.util.List;
 public class VoidHoleSlashArts extends ExtendedSlashArts {
 
     float attack = 0.05f;
-    int life = 20;
+    int lifeTicks = 20;
     float size = 4;
     float range = 32;
     float power = 0.02f;
@@ -74,7 +74,7 @@ public class VoidHoleSlashArts extends ExtendedSlashArts {
         jc.setModifiedRatio(attack);
 
         // 设置生命时间
-        jc.setMaxLifeTime(life);
+        jc.setMaxLifeTime(lifeTicks);
 
         jc.setColor(slashBladeState.getColorCode());
 

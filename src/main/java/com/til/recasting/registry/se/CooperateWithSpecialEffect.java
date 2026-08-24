@@ -16,7 +16,7 @@ public class CooperateWithSpecialEffect extends ExtendedSpecialEffect {
 
     NumberPack probability = new NumberPack(0.2f, 0.05f);
     NumberPack attackRatio = new NumberPack(0, 0.1f);
-    int delay = 10;
+    int delayTicks = 10;
 
     @SubscribeEvent
     public void onEvent(DoSlashExtendEvent event) {
@@ -47,7 +47,7 @@ public class CooperateWithSpecialEffect extends ExtendedSpecialEffect {
                                 event.getAttackRange(),
                                 null
                         ),
-                        delay
+                        delayTicks
                 )
         );
 

@@ -33,7 +33,7 @@ public class AzureHazeSlashArts extends ExtendedSlashArts {
     private float bladeRatio = 0.12f;
     private float driveRatio = 0.05f;
     private int driveCount = 6;
-    private int driveLife = 20;
+    private int driveLifeTicks = 20;
     private float driveSpeed = 2f;
     private float bladeSize = 4.0f;
     private float seekRange = 12.0f;
@@ -125,7 +125,7 @@ public class AzureHazeSlashArts extends ExtendedSlashArts {
             drive.setPos(cloud.getX(), originY, cloud.getZ());
             drive.setColor(color);
             drive.setModifiedRatio(driveRatio);
-            drive.setMaxLifeTime(driveLife);
+            drive.setMaxLifeTime(driveLifeTicks);
             drive.setRoll(random.nextInt(360));
             drive.setSeep(driveSpeed);
             drive.setSize(1.2f);

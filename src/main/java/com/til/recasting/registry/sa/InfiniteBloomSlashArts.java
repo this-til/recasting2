@@ -39,10 +39,10 @@ public class InfiniteBloomSlashArts extends ExtendedSlashArts {
     private float driveRatio = 0.15f;
     private float areaRange = 2.5f;
     private int driveCount = 36;
-    private int judgementLifeMin = 40;
-    private int judgementLifeMax = 80;
-    private int driveLifeMin = 40;
-    private int driveLifeMax = 80;
+    private int judgementLifeMinTicks = 40;
+    private int judgementLifeMaxTicks = 80;
+    private int driveLifeMinTicks = 40;
+    private int driveLifeMaxTicks = 80;
     private float driveSeepMin = 0.05f;
     private float driveSeepMax = 0.35f;
     private float speedScalePerTick = 1.05f;
@@ -80,7 +80,7 @@ public class InfiniteBloomSlashArts extends ExtendedSlashArts {
         }
 
         RandomSource random = livingEntity.getRandom();
-        int jcLife = judgementLifeMin + random.nextInt(Math.max(1, judgementLifeMax - judgementLifeMin + 1));
+        int jcLifeTicks = judgementLifeMinTicks + random.nextInt(Math.max(1, judgementLifeMaxTicks - judgementLifeMinTicks + 1));
 
         JudgementCutEntity jc = new JudgementCutEntity(
                 RecastingEntities.JUDGEMENT_CUT.get(),
@@ -90,7 +90,7 @@ public class InfiniteBloomSlashArts extends ExtendedSlashArts {
         jc.setPos(center.x, center.y, center.z);
         jc.setColor(color);
         jc.setModifiedRatio(centreRatio);
-        jc.setMaxLifeTime(jcLife);
+        jc.setMaxLifeTime(jcLifeTicks);
         level.addFreshEntity(jc);
 
         spawnSpiralDrives(livingEntity, level, center, color, random);
@@ -129,7 +129,7 @@ public class InfiniteBloomSlashArts extends ExtendedSlashArts {
 
             float roll = (float) (90.0 - 30.0 * Mth.cos((yaw + 30.0f) * Mth.DEG_TO_RAD));
             float seep = driveSeepMin + random.nextFloat() * (driveSeepMax - driveSeepMin);
-            int life = driveLifeMin + random.nextInt(Math.max(1, driveLifeMax - driveLifeMin + 1));
+            int driveLifeTicks = driveLifeMinTicks + random.nextInt(Math.max(1, driveLifeMaxTicks - driveLifeMinTicks + 1));
 
             DriveEntity drive = new DriveEntity(
                     RecastingEntities.DRIVE.get(),
@@ -140,7 +140,7 @@ public class InfiniteBloomSlashArts extends ExtendedSlashArts {
             drive.setColor(color);
             drive.setModifiedRatio(driveRatio);
             drive.setSeep(seep);
-            drive.setMaxLifeTime(life);
+            drive.setMaxLifeTime(driveLifeTicks);
             drive.setRoll(roll + 90.0f);
             drive.setSize(1.0f);
             drive.setAttackInterval(5);

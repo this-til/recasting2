@@ -25,7 +25,7 @@ public class DivineSlashSlashArts extends ExtendedSlashArts {
     private int driveCount = 16;
     private float driveRatio = 0.15f;
     private float driveSeep = 0.15f;
-    private int life = 200;
+    private int lifeTicks = 200;
     private float speedScalePerTick = 1.05f;
 
     @Override
@@ -54,7 +54,7 @@ public class DivineSlashSlashArts extends ExtendedSlashArts {
             drive.setPos(origin.x, origin.y, origin.z);
             drive.setModifiedRatio(driveRatio);
             drive.setSeep(driveSeep);
-            drive.setMaxLifeTime(life);
+            drive.setMaxLifeTime(lifeTicks);
             drive.setAttackInterval(5);
             drive.setRepeatedAttack(false);
             drive.setRoll(random.nextInt(361));

@@ -22,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
 public class FragmentSlashArts extends ExtendedSlashArts {
 
     float attack = 0.3f;
-    int life = 10;
+    int lifeTicks = 10;
 
     @Override
     public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
@@ -45,7 +45,7 @@ public class FragmentSlashArts extends ExtendedSlashArts {
             return;
         }
 
-        slashEffectEntity.setMaxLifeTime(life);
+        slashEffectEntity.setMaxLifeTime(lifeTicks);
         slashEffectEntity.setRepeatedAttack(true);
     }
 }

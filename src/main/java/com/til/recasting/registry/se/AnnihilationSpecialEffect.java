@@ -18,7 +18,7 @@ public class AnnihilationSpecialEffect extends ExtendedSpecialEffect {
 
     NumberPack attackRatio = new NumberPack(0.01f, 0.01f); // 攻击倍率
     int addLevel = 1; // 每次叠加的层数
-    int giantLifetime = 40; // 巨型次元斩的生命时间
+    int giantLifeTicks = 40; // 巨型次元斩的生命时间
     float giantSize = 6.0f; // 巨型次元斩的大小倍率
 
     @SubscribeEvent
@@ -62,7 +62,7 @@ public class AnnihilationSpecialEffect extends ExtendedSpecialEffect {
                         giantJc.setPos(pos.x, pos.y, pos.z);
                         giantJc.setColor(state.getColorCode());
                         giantJc.setModifiedRatio(attackRatio.of(level));
-                        giantJc.setMaxLifeTime(giantLifetime);
+                        giantJc.setMaxLifeTime(giantLifeTicks);
                         giantJc.setSize(giantSize);
 
                         // 添加到世界

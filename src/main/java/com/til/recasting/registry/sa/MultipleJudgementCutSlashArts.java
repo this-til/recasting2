@@ -29,7 +29,7 @@ public class MultipleJudgementCutSlashArts extends ExtendedSlashArts {
 
     int attackNumber = 4;
     float hit = 0.3f;
-    int delay = 4;
+    int delayTicks = 4;
 
     @Override
     public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
@@ -42,7 +42,7 @@ public class MultipleJudgementCutSlashArts extends ExtendedSlashArts {
 
         timeRunOptional.ifPresent(timeRun -> {
             for(int i = 0; i < attackNumber; i++) {
-                int _delay = delay * i;
+                int _delay = delayTicks * i;
 
                 timeRun.addTimerCell(
                         () -> {
