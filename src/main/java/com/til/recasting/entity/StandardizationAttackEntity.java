@@ -1,6 +1,7 @@
 package com.til.recasting.entity;
 
 import com.til.recasting.Recasting;
+import com.til.recasting.client.handler.EntityClientExtensionHandler;
 import com.til.recasting.handler.MathHelper;
 import com.til.recasting.registry.RecastingEntityDataSerializers;
 import com.til.recasting.registry.instance.AttackType;
@@ -18,6 +19,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -87,10 +90,16 @@ public abstract class StandardizationAttackEntity extends Entity {
      */
     protected static final EntityDataAccessor<Boolean> CRITICAL = SynchedEntityData.defineId(StandardizationAttackEntity.class, EntityDataSerializers.BOOLEAN);
 
+    protected static final EntityDataAccessor<ResourceLocation[]> CLIENT_EXTENSIONS = SynchedEntityData.defineId(
+            StandardizationAttackEntity.class,
+            RecastingEntityDataSerializers.RESOURCE_LOCATION_ARRAY.get()
+    );
+
     boolean completeSetup = false;
 
     public final CallbackPoint<ISetup> setupCallbackPoint = new CallbackPoint<>();
     public final CallbackPoint<IEnd> endCallbackPoint = new CallbackPoint<>();
+    public final CallbackPoint<Runnable> clientTickCallbackPoint = new CallbackPoint<>();
 
     /***
      * 附带的攻击类型
@@ -121,6 +130,7 @@ public abstract class StandardizationAttackEntity extends Entity {
         getEntityData().define(SIZE, 1f);
         getEntityData().define(MUTE, false);
         getEntityData().define(CRITICAL, false);
+        getEntityData().define(CLIENT_EXTENSIONS, new ResourceLocation[0]);
     }
 
     @Override
@@ -141,6 +151,7 @@ public abstract class StandardizationAttackEntity extends Entity {
         }
 
         if (level().isClientSide()) {
+            clientTickCallbackPoint.call(Runnable::run);
             return;
         }
 
@@ -148,6 +159,17 @@ public abstract class StandardizationAttackEntity extends Entity {
             discard();
         }
 
+    }
+
+    @Override
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        if (key == CLIENT_EXTENSIONS && level().isClientSide()) {
+            DistExecutor.unsafeRunWhenOn(
+                    Dist.CLIENT,
+                    () -> () -> EntityClientExtensionHandler.refresh(this)
+            );
+        }
     }
 
     @Override
@@ -286,6 +308,14 @@ public abstract class StandardizationAttackEntity extends Entity {
 
     public void setCritical(boolean critical) {
         entityData.set(CRITICAL, critical);
+    }
+
+    public ResourceLocation[] getClientExtensions() {
+        return entityData.get(CLIENT_EXTENSIONS).clone();
+    }
+
+    public void setClientExtensions(ResourceLocation... clientExtensions) {
+        entityData.set(CLIENT_EXTENSIONS, clientExtensions.clone());
     }
 
     public void setRot(float yRot, float xRot, boolean prevSynchronous) {

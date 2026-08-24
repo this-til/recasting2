@@ -19,4 +19,24 @@ public class RecastingEntityDataSerializers {
             )
     );
 
+    public static final Supplier<EntityDataSerializer<ResourceLocation[]>> RESOURCE_LOCATION_ARRAY = ENTITY_DATA_SERIALIZERS.register(
+            "resource_location_array",
+            () -> EntityDataSerializer.simple(
+                    (buffer, resourceLocations) -> {
+                        buffer.writeVarInt(resourceLocations.length);
+                        for(ResourceLocation resourceLocation : resourceLocations) {
+                            buffer.writeUtf(resourceLocation.toString());
+                        }
+                    },
+                    buffer -> {
+                        int length = buffer.readVarInt();
+                        ResourceLocation[] resourceLocations = new ResourceLocation[length];
+                        for(int i = 0; i < length; i++) {
+                            resourceLocations[i] = ResourceLocation.parse(buffer.readUtf());
+                        }
+                        return resourceLocations;
+                    }
+            )
+    );
+
 }

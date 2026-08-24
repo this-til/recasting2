@@ -244,7 +244,9 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
                 }
             }
         } finally {
-            tickCallbackPoint.call(Runnable::run);
+            if (!level().isClientSide()) {
+                tickCallbackPoint.call(Runnable::run);
+            }
         }
     }
 

@@ -3,6 +3,7 @@ package com.til.recasting.client;
 import com.til.recasting.Recasting;
 import com.til.recasting.client.particle.*;
 import com.til.recasting.client.registry.BuffLevelRendererRegistry;
+import com.til.recasting.client.registry.EntityClientExtensionRegistry;
 import com.til.recasting.client.registry.EntityRenderExtensionRegistry;
 import com.til.recasting.client.screen.ProudSoulBagScreen;
 import com.til.recasting.registry.RecastingMenus;
@@ -27,6 +28,7 @@ public class ClientSetup {
      * 必须在 mod 构造函数中、在类加载之前调用
      */
     public static void initRegistries(IEventBus modEventBus) {
+        EntityClientExtensionRegistry.ENTITY_CLIENT_EXTENSIONS.register(modEventBus);
         EntityRenderExtensionRegistry.ENTITY_RENDER_EXTENSIONS.register(modEventBus);
         BuffLevelRendererRegistry.BUFF_LEVEL_RENDER_CONFIGS.register(modEventBus);
         RecastingShaderHandler.register(modEventBus);

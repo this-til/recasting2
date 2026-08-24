@@ -29,6 +29,13 @@ public class CallbackPoint<I> {
         listener.remove(i);
     }
 
+    public synchronized void clear() {
+        if (listener == null) {
+            return;
+        }
+        listener.clear();
+    }
+
     public synchronized void call(Consumer<I> consumer) {
         if (listener == null) {
             return;

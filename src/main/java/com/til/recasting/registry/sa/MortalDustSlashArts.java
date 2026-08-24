@@ -1,8 +1,8 @@
 package com.til.recasting.registry.sa;
 
+import com.til.recasting.Recasting;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
-import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.entity.TrackingSummondSwordEntity;
 import com.til.recasting.handler.*;
 import com.til.recasting.registry.RecastingAttackTypes;
@@ -87,17 +87,7 @@ public class MortalDustSlashArts extends ExtendedSlashArts {
             blade.setSize(0f);
             blade.setMute(true);
             blade.lookAt(PosHelper.getAttackTargetPosition(livingEntity, slashBladeState), false);
-
-            blade.tickCallbackPoint.register(() -> {
-                if (!(blade.level() instanceof ServerLevel serverLevel)) {
-                    return;
-                }
-                SummondSwordEntity.ActionType action = blade.getActionType();
-                if (action != SummondSwordEntity.ActionType.PREPARE && action != SummondSwordEntity.ActionType.FLYING) {
-                    return;
-                }
-                spawnTrail(serverLevel, blade.position());
-            });
+            blade.setClientExtensions(Recasting.prefix("mortal_dust_trail"));
 
             blade.attackActionCallbackPoint.register(hit -> {
                 if (!(hit instanceof LivingEntity livingHit)) {
@@ -139,23 +129,6 @@ public class MortalDustSlashArts extends ExtendedSlashArts {
                 0.55F,
                 0.65F + livingEntity.getRandom().nextFloat() * 0.2F
         );
-    }
-
-    private static void spawnTrail(ServerLevel serverLevel, Vec3 pos) {
-        for(int i = 0; i < 2; i++) {
-            ParticleHelper.sendParticlesLongRange(
-                    serverLevel,
-                    RecastingParticleTypes.MORTAL_DUST_TRAIL.get(),
-                    pos.x,
-                    pos.y,
-                    pos.z,
-                    1,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-            );
-        }
     }
 
     private static void spawnHitBurst(ServerLevel serverLevel, Vec3 pos) {
