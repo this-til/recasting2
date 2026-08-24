@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.til.recasting.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "com.til.recasting.mixin.RecastingMixinPlugin",
+  "refmap": "recasting.refmap.json",
+  "mixins": [],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

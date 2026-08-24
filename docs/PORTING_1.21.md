@@ -49,7 +49,7 @@ flowchart LR
 
 | ID | 内容 | 状态 |
 |----|------|------|
-| P1 | Attachment/DataComponent 替换 Capability；网络 Payload 骨架；Mixin 空配置；build 绿 | pending |
+| P1 | Attachment/DataComponent 替换 Capability；网络 Payload 骨架；Mixin 空配置；build 绿 | done |
 | P2 | AttackHelper + ExtendedSA/SE + 最小挥刀事件链；关键攻击 Mixin 重对 | pending |
 | P3 | 批量移植 SA/SE/Buff/Entity 至数量对齐 1.20 | pending |
 | P4 | 铁砧/物品/掉落/进度/剩余 Mixin | pending |
@@ -110,6 +110,8 @@ public static final DeferredHolder<DataComponentType<?>, DataComponentType<SeCry
 ```
 
 **验收**：`.\gradlew build`；`runServer` 加载通过；工程内无 `LazyOptional`/`AttachCapabilitiesEvent`。
+
+**完成记录（2026-08-24）**：Attachment（5）+ DataComponent（4）已落地；7 Payload 编解码齐全、handler 空；`recasting.mixins.json` 空配置；`build` / `runServer` 通过。
 
 ---
 
