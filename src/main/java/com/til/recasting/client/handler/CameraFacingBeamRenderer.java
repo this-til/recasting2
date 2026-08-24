@@ -109,7 +109,7 @@ public final class CameraFacingBeamRenderer {
     }
 
     private static void flushIfBuilding() {
-        if (activeBuffer != null && activeBuffer.building()) {
+        if (activeBuffer != null) {
             BufferUploader.drawWithShader(activeBuffer.buildOrThrow());
         }
         activeBuffer = null;

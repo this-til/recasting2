@@ -376,27 +376,8 @@ public class DefaultParticle extends Particle {
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                 RenderSystem.setShaderTexture(0, texture);
                 textureManager.getTexture(texture).setFilter(true, false);
-                BufferBuilder builder = tesselator.getBuilder();
-                if (builder.building()) {
-                    BufferUploader.drawWithShader(builder.buildOrThrow());
-                }
                 activeBatch = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
                 return activeBatch;
-            }
-
-            @Override
-            public void end(Tesselator tesselator) {
-                activeBatch = null;
-                BufferBuilder builder = tesselator.getBuilder();
-                if (builder.building()) {
-                    BufferUploader.drawWithShader(builder.buildOrThrow());
-                }
-                Minecraft.getInstance().getTextureManager().getTexture(TextureAtlas.LOCATION_PARTICLES).setFilter(false, false);
-                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-                RenderSystem.disableBlend();
-                RenderSystem.depthMask(true);
-                RenderSystem.defaultBlendFunc();
-                Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
             }
 
             @Override

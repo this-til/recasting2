@@ -19,6 +19,7 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import org.joml.Matrix4f;
 import org.joml.Vector4f;
 
 import java.util.List;
@@ -159,7 +160,7 @@ public class BurstRingRenderHandler {
     }
 
     private static void flushIfBuilding() {
-        if (activeBuffer != null && activeBuffer.building()) {
+        if (activeBuffer != null) {
             BufferUploader.drawWithShader(activeBuffer.buildOrThrow());
         }
         activeBuffer = null;

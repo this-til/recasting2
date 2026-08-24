@@ -43,7 +43,7 @@ public final class RecastingShaderHandler {
             ShaderInstance shader = new ShaderInstance(
                     event.getResourceProvider(),
                     Recasting.prefix("blade_rift"),
-                    DefaultVertexFormat.POSITION_COLOR_TEX
+                    DefaultVertexFormat.POSITION_TEX_COLOR
             );
             event.registerShader(shader, loaded -> bladeRift = loaded);
         } catch (IOException e) {
