@@ -28,7 +28,7 @@ import net.neoforged.fml.config.ModConfig;
 import org.slf4j.Logger;
 
 /**
- * Recasting 1.21 NeoForge：P4 系统玩法（物品/铁砧/掉落/进度）。
+ * Recasting 1.21 NeoForge：P5 客户端渲染/UI/特效同步已接入。
  */
 @Mod(Recasting.MODID)
 public class Recasting {
@@ -65,7 +65,7 @@ public class Recasting {
         RecastingComboStateRegistry.COMBO_STATE.register(modEventBus);
         SpecialEffectsRegistry.SPECIAL_EFFECT.register(modEventBus);
 
-        LOGGER.info("Recasting {} loaded (P4 systems)", modContainer.getModInfo().getVersion());
+        LOGGER.info("Recasting {} loaded (P5 client)", modContainer.getModInfo().getVersion());
     }
 
     public static ResourceLocation prefix(String path) {

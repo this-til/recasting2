@@ -54,7 +54,7 @@ flowchart LR
 | P2.5 | 全部攻击 Entity 逻辑 + 注册；`doSlash` 接回 `SlashEffectEntity` | done |
 | P3 | 批量移植 SA/SE/Buff 至数量对齐 1.20（Entity 依赖已就绪） | done |
 | P4 | 铁砧/物品/掉落/进度/剩余 Mixin | done |
-| P5 | 客户端渲染、粒子、shader、UI、特效包联调 | pending |
+| P5 | 客户端渲染、粒子、shader、UI、特效包联调 | done |
 | P6 | Datagen + lang；runData 产出 named_blades/recipes/adv（assets/`R` 已在 P4） | pending |
 | P7 | JEI/软兼容、文档、定版打包与完整游玩验收 | pending |
 
@@ -221,6 +221,8 @@ public static void onDoSlash(SlashBladeEvent.DoSlashEvent event) {
 
 **验收**：`runClient` 主菜单进档；挥刀有特效；UI 可开。
 
+**完成记录（2026-08-25）**：`client/**` 53 类自 1.20 移植并适配 1.21 渲染 API（`POSITION_TEX_COLOR`、`getTimer()`、移除 `BufferBuilder.building()`/`ParticleRenderType.end()`）；`ClientSetup` + `ClientRenderHandler` 替换 P2.5 空 Renderer；`RecastingShaderHandler` 注册 `blade_rift`；8 种粒子 Provider；`ProudSoulBagScreen` 完整 UI；`ItemSlashBladeMixin` / `LayerMainBladeMixin` 登记；Buff 层数字 / 刀条装饰 / 实体扩展渲染；PrismBeam / LightningChain / FinalGlowIngest / TimeBeyond Payload 联调客户端特效；`.\gradlew build` 通过。
+
 ---
 
 ### P6 — Datagen 与资源
@@ -306,4 +308,4 @@ gantt
 
 ---
 
-**最后更新：** 2026-08-25
+**最后更新：** 2026-08-25（P5 完成）

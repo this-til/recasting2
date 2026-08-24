@@ -6,8 +6,8 @@ import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.entity.TrackingSummondSwordEntity;
 import com.til.recasting.handler.*;
-import net.minecraft.core.particles.ParticleTypes;
 import com.til.recasting.registry.RecastingAttachments;
+import com.til.recasting.registry.RecastingParticleTypes;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
@@ -134,10 +134,9 @@ public class MortalDustSlashArts extends ExtendedSlashArts {
     }
 
     private static void spawnHitBurst(ServerLevel serverLevel, Vec3 pos) {
-        // TODO(P5): 改用 RecastingParticleTypes.MORTAL_DUST_HIT 自定义命中喷泉
         ParticleHelper.sendParticlesLongRange(
                 serverLevel,
-                ParticleTypes.FLAME,
+                RecastingParticleTypes.MORTAL_DUST_HIT.get(),
                 pos.x,
                 pos.y,
                 pos.z,
