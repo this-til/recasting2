@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 永恒守卫：以自身为中心展开领域，进入范围内的敌人被钉在进入时的绝对坐标，无法移动；
- * 同时清除领域内非释放者发出的弹射物。边界粒子环绕施法者；光圈 Buff 挂在被禁锢目标身上。
+ * 同时清除领域内非释放者发出的弹射物。边界粒子环绕施法者；静滞 Buff（剩余 tick）挂在施法者与被禁锢目标上。
  */
 @Setter
 @Accessors(chain = true)
@@ -104,12 +104,13 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
             ITimeRun timeRun
     ) {
         if (!caster.isAlive() || caster.isRemoved() || caster.level().isClientSide() || ticksLeft.get() <= 0) {
-            endDomain(timeRun, absolutePins, pinnedTargets);
+            endDomain(caster, timeRun, absolutePins, pinnedTargets);
             return;
         }
 
         ticksLeft.decrementAndGet();
-        int displayLevel = Math.max(1, (ticksLeft.get() + 19) / 20);
+        int displayLevel = Math.max(1, ticksLeft.get());
+        mountGuardBuff(caster, caster, displayLevel);
 
         List<LivingEntity> nearby = EntityHelper.getTargettableLivingEntityWithinAABB(
                 caster.level(),
@@ -158,12 +159,14 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
     }
 
     private void endDomain(
+            LivingEntity caster,
             ITimeRun timeRun,
             Map<UUID, Vec3> absolutePins,
             Map<UUID, LivingEntity> pinnedTargets
     ) {
         timeRun.removeNamedTimerCell(TIMER_NAME);
         timeRun.removeNamedTimerCell(VISUAL_TIMER_NAME);
+        clearGuardBuff(caster);
         for(LivingEntity target : pinnedTargets.values()) {
             clearGuardBuff(target);
         }

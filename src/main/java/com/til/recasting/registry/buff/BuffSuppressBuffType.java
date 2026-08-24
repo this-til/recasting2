@@ -24,7 +24,7 @@ public class BuffSuppressBuffType extends BuffType {
     private static final String TIMER = "buff_suppress_tick";
 
     public BuffSuppressBuffType() {
-        decayInterval = 20;
+        decayInterval = 1;
         maxLevel = 0;
     }
 
@@ -33,7 +33,7 @@ public class BuffSuppressBuffType extends BuffType {
             return;
         }
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
-            data.setLevel(this, Math.max(1, seconds), target.level());
+            data.setLevel(this, Math.max(1, seconds * 20), target.level());
         });
         ensureTimer(target);
         dispelBeneficial(target);

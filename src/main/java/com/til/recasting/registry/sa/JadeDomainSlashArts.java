@@ -45,7 +45,6 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
     private final int domainDuration = 20 * 30;
     private final int domainTickInterval = 20;
     private final int domainVisualTickInterval = 1;
-    private final int domainStacks = domainDuration / 20;
     private int initialBladeReleaseCount = 7;
     private final int initialBladeReleaseDelay = 2;
     private final int jadeFireStacksPerRelease = 10;
@@ -81,7 +80,7 @@ public class JadeDomainSlashArts extends ExtendedSlashArts {
         }
 
         livingEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(buffData -> {
-            buffData.setLevel(RecastingBuffTypes.JADE_DOMAIN.get(), domainStacks, livingEntity.level());
+            buffData.setLevel(RecastingBuffTypes.JADE_DOMAIN.get(), domainDuration, livingEntity.level());
             BuffSourceHelper.recordSourceEntity(buffData, RecastingBuffTypes.JADE_DOMAIN.get(), livingEntity, livingEntity);
         });
         renderHighlightNodes(livingEntity, 0.0);

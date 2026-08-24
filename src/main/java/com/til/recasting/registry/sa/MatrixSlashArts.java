@@ -88,7 +88,7 @@ public class MatrixSlashArts extends ExtendedSlashArts {
 
         CompoundTag customData = buffStackData.getOrCreateCustomData(RecastingBuffTypes.MATRIX.get(), worldIn);
         customData.putUUID(KEY_MATRIX_ENTITY_UUID, matrix.getUUID());
-        buffStackData.setLevel(RecastingBuffTypes.MATRIX.get(), 1, worldIn);
+        buffStackData.setLevel(RecastingBuffTypes.MATRIX.get(), life, worldIn);
     }
 
     private static void discardExistingMatrix(IBuffStackData buffStackData, Level world) {

@@ -46,7 +46,7 @@ public class MyriadSilenceSlashArts extends ExtendedSlashArts {
         }
 
         livingEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
-            data.setLevel(RecastingBuffTypes.CURSE_DECREE.get(), decreeSeconds, livingEntity.level());
+            data.setLevel(RecastingBuffTypes.CURSE_DECREE.get(), decreeSeconds * 20, livingEntity.level());
             BuffSourceHelper.recordSourceEntity(data, RecastingBuffTypes.CURSE_DECREE.get(), livingEntity, livingEntity);
         });
 

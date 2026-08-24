@@ -1,7 +1,9 @@
 package com.til.recasting.entity;
 
 import com.til.recasting.handler.EntityHelper;
+import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.registry.RecastingAttackTypes;
+import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -15,6 +17,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -77,6 +80,19 @@ public class StarfallArrayEntity extends StandardizationAttackEntity {
         super.defineSynchedData();
         getEntityData().define(MODE, MODE_FOLLOW);
         getEntityData().define(TARGET_ENTITY_ID, -1);
+    }
+
+    @Override
+    public void remove(@NotNull RemovalReason reason) {
+        if (!level().isClientSide()) {
+            LivingEntity shooter = getShooter();
+            if (shooter != null && !shooter.isRemoved()) {
+                shooter.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data ->
+                        data.setLevel(RecastingBuffTypes.STARFALL.get(), 0, shooter.level())
+                );
+            }
+        }
+        super.remove(reason);
     }
 
     @Override

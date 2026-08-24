@@ -11,6 +11,7 @@ import com.til.recasting.registry.buff.SoulBurnBuffType;
 import com.til.recasting.registry.buff.SpiritSilenceBuffType;
 import com.til.recasting.registry.buff.SunsetStackBuffType;
 import com.til.recasting.registry.instance.BuffType;
+import com.til.recasting.registry.sa.TimeBeyondSlashArts;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.registries.DeferredRegister;
@@ -54,10 +55,10 @@ public class RecastingBuffTypes {
     );
 
     /**
-     * 穷观阵
+     * 穷观阵（层=剩余 tick）
      */
     public static final RegistryObject<BuffType> MATRIX = BUFF_TYPES.register("matrix",
-            () -> new BuffType().setMaxLevel(1)
+            () -> new BuffType().setDecayInterval(1)
     );
 
     /**
@@ -173,10 +174,10 @@ public class RecastingBuffTypes {
     );
 
     /**
-     * 云界领域
+     * 云界领域（层=剩余 tick）
      */
     public static final RegistryObject<BuffType> JADE_DOMAIN = BUFF_TYPES.register("jade_domain",
-            () -> new BuffType().setDecayInterval(20)
+            () -> new BuffType().setDecayInterval(1)
     );
 
     /**
@@ -215,10 +216,10 @@ public class RecastingBuffTypes {
     );
 
     /**
-     * 咒令
+     * 咒令（层=剩余 tick）
      */
     public static final RegistryObject<BuffType> CURSE_DECREE = BUFF_TYPES.register("curse_decree",
-            () -> new BuffType().setDecayInterval(20)
+            () -> new BuffType().setDecayInterval(1)
     );
 
     /**
@@ -236,10 +237,10 @@ public class RecastingBuffTypes {
     );
 
     /**
-     * 静滞（永恒守卫）
+     * 静滞（永恒守卫，层=剩余 tick）
      */
     public static final RegistryObject<BuffType> ETERNAL_GUARD = BUFF_TYPES.register("eternal_guard",
-            () -> new BuffType().setDecayInterval(20)
+            () -> new BuffType().setDecayInterval(1)
     );
 
     /**
@@ -257,10 +258,10 @@ public class RecastingBuffTypes {
     );
 
     /**
-     * 群星坠落阵
+     * 群星坠落阵（层=剩余 tick）
      */
     public static final RegistryObject<BuffType> STARFALL = BUFF_TYPES.register("starfall",
-            () -> new BuffType().setMaxLevel(1)
+            () -> new BuffType().setDecayInterval(1)
     );
 
     /**
@@ -268,6 +269,13 @@ public class RecastingBuffTypes {
      */
     public static final RegistryObject<BuffType> ELECTRIC_SURGE = BUFF_TYPES.register("electric_surge",
             () -> new BuffType().setDecayInterval(100).setMaxLevel(64)
+    );
+
+    /**
+     * 时之彼端蓄力（层=已蓄力 tick，上限 MAX_CHARGE_TICKS）
+     */
+    public static final RegistryObject<BuffType> TIME_BEYOND_CHARGE = BUFF_TYPES.register("time_beyond_charge",
+            () -> new BuffType().setMaxLevel(TimeBeyondSlashArts.MAX_CHARGE_TICKS)
     );
 
     /**

@@ -96,7 +96,7 @@ public class StarfallSlashArts extends ExtendedSlashArts {
 
         CompoundTag customData = buffStackData.getOrCreateCustomData(RecastingBuffTypes.STARFALL.get(), level);
         customData.putUUID(KEY_ARRAY_UUID, array.getUUID());
-        buffStackData.setLevel(RecastingBuffTypes.STARFALL.get(), 1, level);
+        buffStackData.setLevel(RecastingBuffTypes.STARFALL.get(), life, level);
 
         level.playSound(
                 null,

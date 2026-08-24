@@ -2,11 +2,14 @@ package com.til.recasting.registry.sa;
 
 import com.til.recasting.Config;
 import com.til.recasting.Recasting;
+import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
 import com.til.recasting.entity.DriveEntity;
+import com.til.recasting.handler.CapabilityRegistryHandler;
 import com.til.recasting.network.NetworkManager;
 import com.til.recasting.network.TimeBeyondAccelMessage;
+import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.registry.SlashArtsRegistry;
 import lombok.Setter;
@@ -14,6 +17,7 @@ import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.event.SlashBladeEvent;
 import mods.flammpfeil.slashblade.slasharts.SlashArts;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -30,7 +34,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,6 +41,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 时之彼端：蓄力加速时间后释放裂岚式十字斩（Drive 尾杀），威力随蓄力时长提升。
  * SA 满蓄（有特效）后推进日夜并可选加速周围实体；通知维度内客户端每帧平滑加速。
+ * 蓄力进度写入 {@link RecastingBuffTypes#TIME_BEYOND_CHARGE}（层=已蓄力 tick）。
  */
 @Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 @Setter
@@ -45,12 +49,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TimeBeyondSlashArts extends ExtendedSlashArts {
 
     public static final int TIME_MULTIPLIER = 32;
+    public static final int MAX_CHARGE_TICKS = 12 * 20;
+
+    private static final String KEY_CHARGE_START = "ChargeStartGameTime";
     private static final int EXTRA_TICKS = TIME_MULTIPLIER - 1;
-    private static final int MAX_CHARGE_TICKS = 12 * 20;
     private static final double ACCEL_RANGE = 32.0;
 
     private static final ThreadLocal<Boolean> ACCELERATING = ThreadLocal.withInitial(() -> false);
-    private static final Map<UUID, Long> CHARGE_START = new ConcurrentHashMap<>();
     private static final Set<UUID> ACTIVE_ACCEL = ConcurrentHashMap.newKeySet();
 
     private float attackMin = 0.1f;
@@ -131,7 +136,7 @@ public class TimeBeyondSlashArts extends ExtendedSlashArts {
         }
 
         long now = level.getGameTime();
-        CHARGE_START.putIfAbsent(user.getUUID(), now);
+        updateChargeBuff(user, now);
 
         boolean newlyActive = ACTIVE_ACCEL.add(user.getUUID());
         level.setDayTime(level.getDayTime() + EXTRA_TICKS);
@@ -178,21 +183,47 @@ public class TimeBeyondSlashArts extends ExtendedSlashArts {
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             stopAccel(serverPlayer);
-            CHARGE_START.remove(serverPlayer.getUUID());
+            clearChargeBuff(serverPlayer);
         }
     }
 
     /**
-     * 读取并清除蓄力进度（0~1），按满蓄加速起点起的真实 gameTime 计算。
+     * 读取并清除蓄力进度（0~1），按 {@link RecastingBuffTypes#TIME_BEYOND_CHARGE} 层数计算。
      */
     public static float consumeProgress(LivingEntity livingEntity) {
         stopAccel(livingEntity);
-        Long start = CHARGE_START.remove(livingEntity.getUUID());
-        if (start == null) {
+        IBuffStackData buffStackData = livingEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).orElse(null);
+        if (buffStackData == null) {
             return 0.0f;
         }
-        long elapsed = livingEntity.level().getGameTime() - start;
-        return Mth.clamp(elapsed / (float) MAX_CHARGE_TICKS, 0.0f, 1.0f);
+        int level = buffStackData.getLevel(RecastingBuffTypes.TIME_BEYOND_CHARGE.get(), livingEntity.level());
+        clearChargeBuff(livingEntity);
+        return Mth.clamp(level / (float) MAX_CHARGE_TICKS, 0.0f, 1.0f);
+    }
+
+    private static void updateChargeBuff(LivingEntity user, long now) {
+        user.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
+            CompoundTag customData = data.getOrCreateCustomData(RecastingBuffTypes.TIME_BEYOND_CHARGE.get(), user.level());
+            if (!customData.contains(KEY_CHARGE_START)) {
+                customData.putLong(KEY_CHARGE_START, now);
+            }
+            long start = customData.getLong(KEY_CHARGE_START);
+            int elapsed = (int) Mth.clamp(now - start, 0L, MAX_CHARGE_TICKS);
+            data.setLevel(RecastingBuffTypes.TIME_BEYOND_CHARGE.get(), elapsed, user.level());
+        });
+    }
+
+    private static void clearChargeBuff(LivingEntity livingEntity) {
+        if (livingEntity.level().isClientSide()) {
+            return;
+        }
+        livingEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
+            IBuffStackData.BuffEntry entry = data.getEntry(RecastingBuffTypes.TIME_BEYOND_CHARGE.get());
+            if (entry != null && entry.getCustomData() != null) {
+                entry.getCustomData().remove(KEY_CHARGE_START);
+            }
+            data.setLevel(RecastingBuffTypes.TIME_BEYOND_CHARGE.get(), 0, livingEntity.level());
+        });
     }
 
     private static void stopAccel(LivingEntity livingEntity) {
