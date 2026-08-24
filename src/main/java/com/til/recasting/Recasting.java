@@ -25,7 +25,7 @@ import net.neoforged.fml.config.ModConfig;
 import org.slf4j.Logger;
 
 /**
- * Recasting 1.21 NeoForge：P2.5 实体层 + 战斗核心。
+ * Recasting 1.21 NeoForge：P4 系统玩法（物品/铁砧/掉落/进度）。
  */
 @Mod(Recasting.MODID)
 public class Recasting {
@@ -58,7 +58,7 @@ public class Recasting {
         RecastingComboStateRegistry.COMBO_STATE.register(modEventBus);
         SpecialEffectsRegistry.SPECIAL_EFFECT.register(modEventBus);
 
-        LOGGER.info("Recasting {} loaded (P4 items/registry)", modContainer.getModInfo().getVersion());
+        LOGGER.info("Recasting {} loaded (P4 systems)", modContainer.getModInfo().getVersion());
     }
 
     public static ResourceLocation prefix(String path) {

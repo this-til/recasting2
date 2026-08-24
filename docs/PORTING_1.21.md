@@ -53,9 +53,9 @@ flowchart LR
 | P2 | AttackHelper + ExtendedSA/SE + 最小挥刀事件链；关键攻击 Mixin 重对 | done |
 | P2.5 | 全部攻击 Entity 逻辑 + 注册；`doSlash` 接回 `SlashEffectEntity` | done |
 | P3 | 批量移植 SA/SE/Buff 至数量对齐 1.20（Entity 依赖已就绪） | done |
-| P4 | 铁砧/物品/掉落/进度/剩余 Mixin | pending |
+| P4 | 铁砧/物品/掉落/进度/剩余 Mixin | done |
 | P5 | 客户端渲染、粒子、shader、UI、特效包联调 | pending |
-| P6 | Datagen + assets 拷贝；runData 产出 named_blades/recipes/adv/lang | pending |
+| P6 | Datagen + lang；runData 产出 named_blades/recipes/adv（assets/`R` 已在 P4） | pending |
 | P7 | JEI/软兼容、文档、定版打包与完整游玩验收 | pending |
 
 ---
@@ -205,6 +205,8 @@ public static void onDoSlash(SlashBladeEvent.DoSlashEvent event) {
 
 **验收**：铁砧给刀上 SE；杀敌掉耀魂；进度可触发。
 
+**完成记录（2026-08-25）**：`assets/recasting` + `script/generate_resource_locations.py` + `R.java` 已提前落地；Items/Menus/Recipes/CreativeTabs/Tags；铁砧三件套 + 耀魂掉落/背包/物质球；`ForgeSeActionTrigger` + ItemSubPredicate Codec 化；服务端 Mixin（跳过 CreativeGroup / EnchantmentHelper / ProudSoul tooltip 匿名类）；耀魂背包空 Screen 占位；`.\gradlew build` 通过。
+
 ---
 
 ### P5 — 客户端
@@ -223,12 +225,12 @@ public static void onDoSlash(SlashBladeEvent.DoSlashEvent event) {
 
 ### P6 — Datagen 与资源
 
-**目标**：named_blades / recipes / advancements / lang / `R` 再生。
+**目标**：named_blades / recipes / advancements / lang。
 
 **动作**
 
 - 移植 datagen 源：`SlashBladeDefinitions`、`SlashBladeRecipes`、`SpecialEffectRecipes`、Language、Advancement、Tags
-- 拷贝 `assets/recasting/slashblade/**`（含 LFS/贴图，单独核对 png）
+- assets / `R` 生成脚本已在 **P4** 完成，本阶段不再重复拷贝；资源变更时再跑 `script/generate_resource_locations.py`
 - `.\gradlew runData` → 提交 generated（或按仓库惯例）
 
 **验收**：创造栏可见名刀；JEI 前配方 JSON 存在；中英语言齐全。
@@ -304,4 +306,4 @@ gantt
 
 ---
 
-**最后更新：** 2026-08-24
+**最后更新：** 2026-08-25
