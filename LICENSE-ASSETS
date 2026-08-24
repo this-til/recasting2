@@ -1,0 +1,26 @@
+Recasting Art Asset License
+
+Copyright (c) 2026 til, HTOD. All rights reserved.
+
+This license applies to the art assets in src/main/resources/assets, including
+image, texture, model, particle, and audio files, and to the images in
+showcase (the "Art Assets").
+
+You may:
+
+1. Use the Art Assets as included in an official, unmodified release JAR of
+   Recasting for normal gameplay and server operation.
+2. Copy and redistribute an official, unmodified release JAR of Recasting as
+   a mirror, including the Art Assets contained in that JAR.
+
+You may not, without prior written permission from the copyright holders:
+
+1. Extract, copy, or redistribute the Art Assets separately from an official
+   release JAR.
+2. Modify, repackage, sublicense, or incorporate the Art Assets into another
+   mod, resource pack, project, or derivative work.
+3. Distribute a modified JAR or other package containing any of the Art
+   Assets.
+
+The MIT License in LICENSE does not grant any rights to the Art Assets.
+Third-party assets, if any, remain subject to their respective licenses.

@@ -61,7 +61,12 @@ Minecraft Forge 1.20.1 的 [SlashBlade Resharped](https://www.curseforge.com/min
 
 ## 许可证
 
-本项目源码以 [MIT License](LICENSE) 发布。版权所有 © 2026 til, HTOD。
+本项目采用双轨许可：
+
+- 源码及其他非美术文件以 [MIT License](LICENSE) 发布。
+- 贴图、模型、粒子、音频及展示图等美术资源由 til、HTOD 共同保留所有权，适用 [Recasting Art Asset License](LICENSE-ASSETS)。
+
+允许正常使用以及镜像分发官方、未经修改的模组 JAR（包括其中的美术资源）；禁止从官方 JAR 或仓库中单独抽取、再分发美术资源，完整条款以 `LICENSE-ASSETS` 为准。
 
 Minecraft、Forge 与 SlashBlade Resharped 分别遵循其各自许可证；本仓库不授予这些上游项目的权利。
 
