@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-24T16:46:30.2943303	Recasting SlashBlade Definition Registry
+// 1.20.1	2026-08-24T16:59:52.1563895	Recasting SlashBlade Definition Registry
 dc314aafdb9885f2c02f8750416a9770ded86441 data/recasting/slashblade/named_blades/slashblade/art_knife.json
 fb5ea4ae03dcd4a94816be3a56b635322ecc90e8 data/recasting/slashblade/named_blades/slashblade/azure_vista.json
 ef829620573a4554652583038a7d8fa9e87ca05e data/recasting/slashblade/named_blades/slashblade/azure_vista_lambda.json
@@ -53,7 +53,7 @@ da42745ca75ff2bd2c0484d4cbe775c0cd5a62e3 data/recasting/slashblade/named_blades/
 ecffcd08f5ac54790123148815def0881e0d9843 data/recasting/slashblade/named_blades/slashblade/onikiri.json
 80087ebca090e7fffd0dbe6d1cd073e65b36fe47 data/recasting/slashblade/named_blades/slashblade/onikiri_lambda.json
 349d0a19b2cb5ce4b7753a37e21030c890fed532 data/recasting/slashblade/named_blades/slashblade/physics_sword.json
-2f1422aaa9d6d127a9337a1076d0b560f0156719 data/recasting/slashblade/named_blades/slashblade/radiant_star.json
+17fa159a46fdf7740ab2040a595036fa395bee67 data/recasting/slashblade/named_blades/slashblade/radiant_star.json
 f04315b22f47fcdae9c45b1e565795552ce44d58 data/recasting/slashblade/named_blades/slashblade/shine_gold.json
 71f19810368e869a5a86e8fd626de6a769a465a6 data/recasting/slashblade/named_blades/slashblade/shine_gold_lambda.json
 bd2de15af39a328418cb0f4efc6793a3e6a76f08 data/recasting/slashblade/named_blades/slashblade/shine_tea.json

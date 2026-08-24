@@ -209,6 +209,7 @@ public final class GrowthAdvancementGraph {
             blade(RecastingSlashBladeKeys.SILVER_WING_LAMBDA, RecastingSlashBladeKeys.SILVER_WING, "silver_wing_lambda_recipe", true),
             blade(RecastingSlashBladeKeys.COLOR_WING, RecastingSlashBladeKeys.SILVER_WING_LAMBDA, "color_wing_recipe", false),
             blade(RecastingSlashBladeKeys.COLOR_WING_LAMBDA, RecastingSlashBladeKeys.COLOR_WING, "color_wing_lambda_recipe", true),
+            blade(RecastingSlashBladeKeys.RADIANT_STAR, RecastingSlashBladeKeys.COLOR_WING, "radiant_star_recipe", false),
 
             blade(RecastingSlashBladeKeys.LONG_SKY_SUNSET, RecastingSlashBladeKeys.BLACK, "long_sky_sunset_recipe", false),
             blade(RecastingSlashBladeKeys.LONG_SKY_SUNSET_LAMBDA, RecastingSlashBladeKeys.LONG_SKY_SUNSET, "long_sky_sunset_lambda_recipe", true),

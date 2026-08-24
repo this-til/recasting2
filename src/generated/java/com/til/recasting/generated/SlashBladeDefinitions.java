@@ -682,7 +682,7 @@ public final class SlashBladeDefinitions {
                                 .defaultSwordType(List.of(SwordType.BEWITCHED))
                 )
                 .propertiesDefinitionExtension(
-                        new PropertiesDefinitionExtension().feCapacity(1_000_000_000_000L)
+                        new PropertiesDefinitionExtension().feCapacity(1_000_000_000L)
                 )
                 .addEnchantmentDefinition(new EnchantmentDefinition(ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SHARPNESS), 1))
                 .addSpecialEffects(SpecialEffectsRegistry.FOCUSED_ENERGY_BLADE, 1)

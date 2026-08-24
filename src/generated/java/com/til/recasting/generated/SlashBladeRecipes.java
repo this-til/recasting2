@@ -2086,6 +2086,36 @@ public class SlashBladeRecipes extends RecipeProvider {
                 .save(consumer, Recasting.prefix("color_wing_lambda_recipe"));
 
         /**
+         * 彩耀之星配方（t2）：从彩翼升级
+         * 要求：杀敌10000、锻造1200、摔落保护4附魔、灵魂疾行3附魔、迅捷潜行3附魔、冰霜行者2附魔
+         * 材料：金黄庸魂立方体4个
+         * SE结晶：雷击 2个
+         * C=金黄庸魂立方体, T=雷击 SE结晶, B=基础刀（彩翼，满足要求）
+         */
+        SlashBladeShapedRecipeBuilder.shaped(RecastingSlashBladeKeys.RADIANT_STAR.location())
+                .pattern("CTC")
+                .pattern("CBC")
+                .pattern("CTC")
+                .define('B',
+                        SlashBladeIngredient.of(RequestDefinition.Builder.newInstance()
+                                .name(RecastingSlashBladeKeys.COLOR_WING.location())
+                                .killCount(10000)
+                                .refineCount(1200)
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FALL_PROTECTION), 4))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SOUL_SPEED), 3))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.SWIFT_SNEAK), 3))
+                                .addEnchantment(new EnchantmentDefinition(
+                                        ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.FROST_WALKER), 2))
+                                .build()))
+                .define('C', RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get())
+                .define('T', SpecialEffectCrystalIngredient.of(SpecialEffectsRegistry.THUNDER_STRIKE.getId(), 1))
+                .unlockedBy("has_gold_medium_soul_cube", RecipeProviderMixin.invokeHas(RecastingItems.GOLD_MEDIUM_SOUL_CUBE.get()))
+                .save(consumer, Recasting.prefix("radiant_star_recipe"));
+
+        /**
          * 长空落日配方（t3）：从黑刃升级
          * 要求：杀敌1500、锻造200、火焰保护4附魔、火焰附加1附魔
          * 材料：赤红庸魂立方体4个

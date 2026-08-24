@@ -162,6 +162,7 @@ public final class RecipeIdCatalog {
                 Recasting.prefix("overload_upgrade_recipes_4"),
                 Recasting.prefix("physics_sword_recipe"),
                 Recasting.prefix("poetry_ash_flame_recipe"),
+                Recasting.prefix("radiant_star_recipe"),
                 Recasting.prefix("redstone_medium_soul_cube_recipe"),
                 Recasting.prefix("regression_se_crystal_recipe"),
                 Recasting.prefix("regression_upgrade_recipes_0"),

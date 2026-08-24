@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-12T21:21:22.8912479	Recasting SlashBlade Recipes
+// 1.20.1	2026-08-24T16:59:52.1683847	Recasting SlashBlade Recipes
 a74627e490b2ab2d41e968543fdb44be214ba575 data/recasting/advancements/recipes/combat/art_knife_recipe.json
 5b776b6b4b893a97c920025c199a758aed3f4e1b data/recasting/advancements/recipes/combat/azure_vista_lambda_recipe.json
 28b6a154a874fbaad038a27535bf0a28f6401d5c data/recasting/advancements/recipes/combat/azure_vista_recipe.json
@@ -55,6 +55,7 @@ f4d1395a775cf87e7b27b4ea926e85d2c8448aa0 data/recasting/advancements/recipes/com
 3e3e9e82bf81ec47bec3b4a2ab5ee518df0575eb data/recasting/advancements/recipes/combat/onikiri_lambda_recipe.json
 a007e466095dbee5a7edf0d43acb6640b0fd0840 data/recasting/advancements/recipes/combat/onikiri_recipe.json
 36611b189dc2f0de3a4c43f58d599dc2d099db93 data/recasting/advancements/recipes/combat/physics_sword_recipe.json
+936592c13bd41b434b77ba8214a987ee64e18600 data/recasting/advancements/recipes/combat/radiant_star_recipe.json
 86b2e149ba6ac95a93d18f847e65e586206eed9d data/recasting/advancements/recipes/combat/shine_gold_lambda_recipe.json
 488acc495dce61ffa846dc621b532fbcd4950177 data/recasting/advancements/recipes/combat/shine_gold_recipe.json
 e28f787a22e4f3dea9387e1ba75dd2c34fb89b4b data/recasting/advancements/recipes/combat/shine_tea_lambda_recipe.json
@@ -145,6 +146,7 @@ e6c689d2553a544b128b753ffa4bc7d8289822f5 data/recasting/recipes/obliterate_lambd
 213f925cf75ab2c671603c5855d7095c24848ebc data/recasting/recipes/onikiri_lambda_recipe.json
 9ccc4a85be8a7169e1428fc9ea70fa7811ec55b0 data/recasting/recipes/onikiri_recipe.json
 9d95dc3fb8b4c2f473ed324a22e98f7ff7f148a6 data/recasting/recipes/physics_sword_recipe.json
+c91791e0c2f12ba97540e2538e7756b69c67835d data/recasting/recipes/radiant_star_recipe.json
 58eb43fa143f9c9f7c56360279bcd34984dbeec4 data/recasting/recipes/shine_gold_lambda_recipe.json
 6cf57daa016a6fc059cc56cab8f7353c41692b41 data/recasting/recipes/shine_gold_recipe.json
 5d48f9c4539eea07b2abb1a5eaac85e3fc720414 data/recasting/recipes/shine_tea_lambda_recipe.json

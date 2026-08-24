@@ -21,7 +21,7 @@
     "extended_special_levels": {
       "recasting:focused_energy_blade": 1
     },
-    "fe_capacity": 1000000000000
+    "fe_capacity": 1000000000
   },
   "render": {
     "carry_type": "default",

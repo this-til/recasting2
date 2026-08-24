@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-23T03:09:02.8238864	Advancements
+// 1.20.1	2026-08-24T16:59:52.1753837	Advancements
 14e356465f588e18f5229184303864848da35bdc data/recasting/advancements/growth/blades/slashblade/art_knife.json
 84a907fb18a21655c41f203ef6e301210710e6f5 data/recasting/advancements/growth/blades/slashblade/azure_vista.json
 1563f8fe50126bf4ea4b687614ac67e2859928f2 data/recasting/advancements/growth/blades/slashblade/azure_vista_lambda.json
@@ -46,6 +46,7 @@ c6a0995d9c81ccaf4b06e229a15cd09652c25177 data/recasting/advancements/growth/blad
 134baef2784fc30e189579a564e949dd2c4ff057 data/recasting/advancements/growth/blades/slashblade/onikiri.json
 695da10421d32b02662e38c0b9c36d72b50db476 data/recasting/advancements/growth/blades/slashblade/onikiri_lambda.json
 b0069e80615da76f230126214352142b4484d530 data/recasting/advancements/growth/blades/slashblade/physics_sword.json
+0b345eb418f72ed4b4782831e3201d9e07a70af3 data/recasting/advancements/growth/blades/slashblade/radiant_star.json
 1992adc005b56d21f953c266db10a3ed5228226f data/recasting/advancements/growth/blades/slashblade/shine_gold.json
 e1e1345d7cb5cc9b3a68dd300ee84d775d1fce3c data/recasting/advancements/growth/blades/slashblade/shine_gold_lambda.json
 6dad2e7bccc3c73d988368b40b937e7dc2f6a4e5 data/recasting/advancements/growth/blades/slashblade/shine_tea.json
