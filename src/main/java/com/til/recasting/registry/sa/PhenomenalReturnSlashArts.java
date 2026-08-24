@@ -37,7 +37,7 @@ public class PhenomenalReturnSlashArts extends ExtendedSlashArts {
     private float centerRange = 32f;
     private float dispelRange = 128f;
     private float attackRatio = 0.08f;
-    private int suppressSeconds = 9;
+    private int suppressTicks = 9 * 20;
     /**
      * 次元斩生命时间：0.5s ~ 1s
      */
@@ -68,10 +68,10 @@ public class PhenomenalReturnSlashArts extends ExtendedSlashArts {
         );
         for(LivingEntity entity : nearby) {
             RecastingBuffTypes.BUFF_SUPPRESS.get().dispelBeneficial(entity);
-            RecastingBuffTypes.BUFF_SUPPRESS.get().apply(entity, suppressSeconds);
+            RecastingBuffTypes.BUFF_SUPPRESS.get().apply(entity, suppressTicks);
         }
         RecastingBuffTypes.BUFF_SUPPRESS.get().dispelBeneficial(livingEntity);
-        RecastingBuffTypes.BUFF_SUPPRESS.get().apply(livingEntity, suppressSeconds);
+        RecastingBuffTypes.BUFF_SUPPRESS.get().apply(livingEntity, suppressTicks);
 
         livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             timeRun.removeNamedTimerCell(rainTimer);

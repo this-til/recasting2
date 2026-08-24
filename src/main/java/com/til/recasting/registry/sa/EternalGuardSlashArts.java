@@ -40,7 +40,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
     private static final String TIMER_NAME = "eternal_guard";
     private static final String VISUAL_TIMER_NAME = "eternal_guard_visual";
 
-    private int durationSeconds = 25;
+    private int durationTicks = 25 * 20;
     private float radius = 11.0f;
     private int ringSegments = 28;
     private int visualColor = 0x3A6BFF;
@@ -61,7 +61,7 @@ public class EternalGuardSlashArts extends ExtendedSlashArts {
 
         Map<UUID, Vec3> absolutePins = new HashMap<>();
         Map<UUID, LivingEntity> pinnedTargets = new HashMap<>();
-        AtomicInteger ticksLeft = new AtomicInteger(durationSeconds * 20);
+        AtomicInteger ticksLeft = new AtomicInteger(durationTicks);
 
         livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN).ifPresent(timeRun -> {
             timeRun.removeNamedTimerCell(TIMER_NAME);

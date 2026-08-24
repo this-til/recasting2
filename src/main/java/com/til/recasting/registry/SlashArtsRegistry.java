@@ -290,7 +290,7 @@ public class SlashArtsRegistry {
     public static final RegistryObject<ExtendedSlashArts> MYRIAD_SILENCE_LAMBDA = registerExtendedSA(
             "myriad_silence_lambda",
             () -> new MyriadSilenceSlashArts()
-                    .setDecreeSeconds(39)
+                    .setDecreeTicks(39 * 20)
                     .setVoidRatio(0.22f)
     );
 
@@ -306,7 +306,7 @@ public class SlashArtsRegistry {
                     .setCenterRange(41.6f)
                     .setDispelRange(166.4f)
                     .setAttackRatio(0.104f)
-                    .setSuppressSeconds(12)
+                    .setSuppressTicks(12 * 20)
                     .setLifeTicksMin(13)
                     .setLifeTicksMax(26)
                     .setTargetedChance(0.52f)

@@ -28,12 +28,12 @@ public class BuffSuppressBuffType extends BuffType {
         maxLevel = 0;
     }
 
-    public void apply(LivingEntity target, int seconds) {
+    public void apply(LivingEntity target, int durationTicks) {
         if (target.level().isClientSide()) {
             return;
         }
         target.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
-            data.setLevel(this, Math.max(1, seconds * 20), target.level());
+            data.setLevel(this, Math.max(1, durationTicks), target.level());
         });
         ensureTimer(target);
         dispelBeneficial(target);

@@ -170,7 +170,7 @@ public final class SlashBladeItemBarDecorationHandler {
                         buffStackData,
                         player,
                         RecastingBuffTypes.CURSE_DECREE.get(),
-                        myriadSilence.getDecreeSeconds() * 20,
+                        myriadSilence.getDecreeTicks(),
                         CURSE_DECREE_BAR_COLOR
                 );
             }
@@ -180,7 +180,7 @@ public final class SlashBladeItemBarDecorationHandler {
                         buffStackData,
                         player,
                         RecastingBuffTypes.BUFF_SUPPRESS.get(),
-                        phenomenalReturn.getSuppressSeconds() * 20,
+                        phenomenalReturn.getSuppressTicks(),
                         BUFF_SUPPRESS_BAR_COLOR
                 );
             }
@@ -217,7 +217,7 @@ public final class SlashBladeItemBarDecorationHandler {
                         buffStackData,
                         player,
                         RecastingBuffTypes.ETERNAL_GUARD.get(),
-                        eternalGuard.getDurationSeconds() * 20,
+                        eternalGuard.getDurationTicks(),
                         ETERNAL_GUARD_BAR_COLOR
                 );
             }

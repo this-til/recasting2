@@ -31,7 +31,7 @@ import java.util.List;
 public class MyriadSilenceSlashArts extends ExtendedSlashArts {
 
     private String timer = "myriad_silence";
-    private int decreeSeconds = 30;
+    private int decreeTicks = 30 * 20;
     private float voidRatio = 0.14f;
     private int talismanColor = 0xA5527B;
 
@@ -48,7 +48,7 @@ public class MyriadSilenceSlashArts extends ExtendedSlashArts {
         }
 
         livingEntity.getCapability(CapabilityRegistryHandler.BUFF_STACK_DATA).ifPresent(data -> {
-            data.setLevel(RecastingBuffTypes.CURSE_DECREE.get(), decreeSeconds * 20, livingEntity.level());
+            data.setLevel(RecastingBuffTypes.CURSE_DECREE.get(), decreeTicks, livingEntity.level());
             BuffSourceHelper.recordSourceEntity(data, RecastingBuffTypes.CURSE_DECREE.get(), livingEntity, livingEntity);
         });
 
