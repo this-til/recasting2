@@ -1,7 +1,5 @@
-package com.til.recasting.energy;
+package com.til.recasting.capability;
 
-import com.til.recasting.capability.FeBladeEnergyData;
-import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.registry.RecastingDataComponents;
 import mods.flammpfeil.slashblade.registry.SlashBladeItems;
 import net.minecraft.world.item.ItemStack;

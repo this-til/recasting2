@@ -1,7 +1,7 @@
 package com.til.recasting.handler;
 
 import com.til.recasting.constant.RecastingLanguageKeys;
-import com.til.recasting.energy.FeBladeEnergyStorage;
+import com.til.recasting.capability.FeBladeEnergyStorage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;

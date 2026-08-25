@@ -3,7 +3,7 @@ package com.til.recasting;
 import com.mojang.logging.LogUtils;
 import com.til.recasting.advancement.RecastingCriteriaTriggers;
 import com.til.recasting.client.ClientSetup;
-import com.til.recasting.energy.FeBladeEnergyStorage;
+import com.til.recasting.capability.FeBladeEnergyStorage;
 import com.til.recasting.network.NetworkManager;
 import com.til.recasting.registry.RecastingAttachments;
 import com.til.recasting.registry.RecastingAttackTypes;
