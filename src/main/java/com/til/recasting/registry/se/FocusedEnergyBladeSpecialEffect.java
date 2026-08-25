@@ -9,6 +9,7 @@ import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.SlashArtsRegistry;
 import com.til.recasting.util.DamageStructure;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
@@ -20,6 +21,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 /**
  * 聚焦能量刃：造成伤害时消耗 FE 追加雷电伤害并叠电涌；满层尝试耗 FE 释放异界斩切。
  */
+@Getter
 @Setter
 @Accessors(chain = true)
 public class FocusedEnergyBladeSpecialEffect extends ExtendedSpecialEffect {
