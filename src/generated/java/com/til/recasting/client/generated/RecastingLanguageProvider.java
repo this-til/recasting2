@@ -17,8 +17,8 @@ import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.Objects;
 
@@ -656,31 +656,31 @@ public class RecastingLanguageProvider extends LanguageProvider {
         return Util.makeDescriptionId("item", key.location());
     }
 
-    private static String itemKey(RegistryObject<Item> item) {
+    private static String itemKey(DeferredHolder<Item, ? extends Item> item) {
         return item.get().getDescriptionId();
     }
 
-    private static String itemDescKey(RegistryObject<Item> item) {
+    private static String itemDescKey(DeferredHolder<Item, ? extends Item> item) {
         return item.get().getDescriptionId() + ".desc";
     }
 
-    private static String buffKey(RegistryObject<? extends BuffType> buffType) {
+    private static String buffKey(DeferredHolder<?, ? extends BuffType> buffType) {
         return buffType.get().getDescriptionId();
     }
 
-    private static String slashArtKey(RegistryObject<? extends SlashArts> slashArts) {
+    private static String slashArtKey(DeferredHolder<?, ? extends SlashArts> slashArts) {
         return Objects.requireNonNull(slashArts.get()).getDescriptionId();
     }
 
-    private static String slashArtDescKey(RegistryObject<? extends SlashArts> slashArts) {
+    private static String slashArtDescKey(DeferredHolder<?, ? extends SlashArts> slashArts) {
         return Objects.requireNonNull(slashArts.get()).getDescriptionId() + ".desc";
     }
 
-    private static String specialEffectKey(RegistryObject<? extends SpecialEffect> specialEffect) {
+    private static String specialEffectKey(DeferredHolder<?, ? extends SpecialEffect> specialEffect) {
         return Objects.requireNonNull(specialEffect.get()).getDescriptionId();
     }
 
-    private static String specialEffectDescKey(RegistryObject<? extends SpecialEffect> specialEffect) {
+    private static String specialEffectDescKey(DeferredHolder<?, ? extends SpecialEffect> specialEffect) {
         return Objects.requireNonNull(specialEffect.get()).getDescriptionId() + ".desc";
     }
 }

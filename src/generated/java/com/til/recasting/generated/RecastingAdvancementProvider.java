@@ -11,22 +11,31 @@ import com.til.recasting.advancement.ForgeSeActionTrigger;
 import com.til.recasting.advancement.NamedSlashBladeItemPredicate;
 import com.til.recasting.advancement.SeCrystalItemPredicate;
 import com.til.recasting.advancement.SlashArtsSphereItemPredicate;
+import com.til.recasting.capability.SECrystalData;
 import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.constant.RecastingSlashBladeKeys;
-import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.registry.RecastingDataComponents;
 import com.til.recasting.registry.RecastingItems;
 import com.til.recasting.registry.SpecialEffectsRegistry;
 import com.til.recasting.registry.requir.SlashBladeItems;
-import mods.flammpfeil.slashblade.item.ItemSlashBlade;
+import mods.flammpfeil.slashblade.capability.slashblade.BladeStateAccess;
 import mods.flammpfeil.slashblade.registry.slashblade.SlashBladeDefinition;
 import mods.flammpfeil.slashblade.registry.specialeffects.SpecialEffect;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.FrameType;
+import net.minecraft.advancements.AdvancementType;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.ItemSubPredicate;
 import net.minecraft.advancements.critereon.PlayerTrigger;
 import net.minecraft.advancements.critereon.RecipeCraftedTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.data.advancements.AdvancementSubProvider;
@@ -36,8 +45,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
@@ -71,62 +81,62 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
         }
 
         @Override
-        public void generate(HolderLookup.Provider registries, Consumer<Advancement> writer) {
-            Map<ResourceKey<SlashBladeDefinition>, Advancement> bladeAdvancements = new HashMap<>();
-            Map<ResourceLocation, Advancement> seAdvancements = new HashMap<>();
+        public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> writer) {
+            Map<ResourceKey<SlashBladeDefinition>, AdvancementHolder> bladeAdvancements = new HashMap<>();
+            Map<ResourceLocation, AdvancementHolder> seAdvancements = new HashMap<>();
 
-            Advancement root = Advancement.Builder.advancement()
+            AdvancementHolder root = Advancement.Builder.advancement()
                     .display(
                             bladeIcon(registries, RecastingSlashBladeKeys.COOL_MINT),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_ROOT_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_GROWTH_ROOT_DESC),
                             BACKGROUND,
-                            FrameType.TASK,
+                            AdvancementType.TASK,
                             false,
                             false,
                             false)
                     .rewards(new AdvancementRewards.Builder()
-                            .addLootTable(Recasting.prefix("advancements/growth_root"))
+                            .addLootTable(ResourceKey.create(Registries.LOOT_TABLE, Recasting.prefix("advancements/growth_root")))
                             .build())
                     .addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
-                    .save(writer, Recasting.prefix("growth/root").toString());
+                    .save(writer, Recasting.prefix("growth/root"));
 
-            Advancement hubBlade = autoHub(
+            AdvancementHolder hubBlade = autoHub(
                     writer,
                     root,
                     "growth/hub/new_blade_smith",
                     bladeIcon(registries, RecastingSlashBladeKeys.BROADSWORD_WOOD),
                     RecastingLanguageKeys.ADVANCEMENT_HUB_NEW_BLADE_SMITH_TITLE,
                     RecastingLanguageKeys.ADVANCEMENT_HUB_NEW_BLADE_SMITH_DESC);
-            Advancement hubSe = autoHub(
+            AdvancementHolder hubSe = autoHub(
                     writer,
                     root,
                     "growth/hub/start_crystal",
                     seCrystalIcon(SpecialEffectsRegistry.SHARP_BLADE.getId()),
                     RecastingLanguageKeys.ADVANCEMENT_HUB_START_CRYSTAL_TITLE,
                     RecastingLanguageKeys.ADVANCEMENT_HUB_START_CRYSTAL_DESC);
-            Advancement hubKill = autoHub(
+            AdvancementHolder hubKill = autoHub(
                     writer,
                     root,
                     "growth/hub/just_kill",
                     new ItemStack(SlashBladeItems.PROUDSOUL.get()),
                     RecastingLanguageKeys.ADVANCEMENT_HUB_JUST_KILL_TITLE,
                     RecastingLanguageKeys.ADVANCEMENT_HUB_JUST_KILL_DESC);
-            Advancement hubEnch = autoHub(
+            AdvancementHolder hubEnch = autoHub(
                     writer,
                     root,
                     "growth/hub/enchant_power",
-                    enchantedBookIcon(GrowthAdvancementGraph.ENCHANT_BONUS_CHAIN.get(0)),
+                    enchantedBookIcon(registries, GrowthAdvancementGraph.ENCHANT_BONUS_CHAIN.get(0)),
                     RecastingLanguageKeys.ADVANCEMENT_HUB_ENCHANT_POWER_TITLE,
                     RecastingLanguageKeys.ADVANCEMENT_HUB_ENCHANT_POWER_DESC);
-            Advancement hubRefine = autoHub(
+            AdvancementHolder hubRefine = autoHub(
                     writer,
                     root,
                     "growth/hub/refine_again",
                     new ItemStack(SlashBladeItems.PROUDSOUL_INGOT.get()),
                     RecastingLanguageKeys.ADVANCEMENT_HUB_REFINE_AGAIN_TITLE,
                     RecastingLanguageKeys.ADVANCEMENT_HUB_REFINE_AGAIN_DESC);
-            Advancement hubForge = autoHub(
+            AdvancementHolder hubForge = autoHub(
                     writer,
                     root,
                     "growth/hub/forge",
@@ -135,7 +145,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                     RecastingLanguageKeys.ADVANCEMENT_HUB_FORGE_DESC);
 
             for (GrowthAdvancementGraph.BladeNode node : GrowthAdvancementGraph.BLADES) {
-                Advancement parent = node.parent() == null
+                AdvancementHolder parent = node.parent() == null
                         ? hubBlade
                         : bladeAdvancements.get(node.parent());
                 if (parent == null) {
@@ -150,31 +160,30 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                                 Component.translatable(BladeTranslationHelper.itemDescriptionId(node.blade().location())),
                                 bladeDescription(node),
                                 null,
-                                node.lambda() ? FrameType.GOAL : FrameType.TASK,
+                                node.lambda() ? AdvancementType.GOAL : AdvancementType.TASK,
                                 true,
                                 false,
                                 false);
 
                 builder.addCriterion(
                         "obtained",
-                        InventoryChangeTrigger.TriggerInstance.hasItems(
-                                NamedSlashBladeItemPredicate.of(node.blade().location())));
+                        hasSubPredicate(NamedSlashBladeItemPredicate.TYPE, NamedSlashBladeItemPredicate.of(node.blade().location())));
 
                 if (node.recipeId() != null) {
                     builder.addCriterion("crafted", RecipeCraftedTrigger.TriggerInstance.craftedItem(node.recipeId()));
-                    builder.requirements(new String[][]{{"obtained", "crafted"}});
+                    builder.requirements(AdvancementRequirements.anyOf(List.of("obtained", "crafted")));
                 }
 
-                Advancement advancement = builder.save(
+                AdvancementHolder advancement = builder.save(
                         writer,
-                        Recasting.prefix("growth/blades/" + node.blade().location().getPath()).toString());
+                        Recasting.prefix("growth/blades/" + node.blade().location().getPath()));
                 bladeAdvancements.put(node.blade(), advancement);
             }
 
             saveFluorescenceSeries(registries, writer, bladeAdvancements);
 
             for (GrowthAdvancementGraph.SeNode node : GrowthAdvancementGraph.SPECIAL_EFFECTS) {
-                Advancement parent = node.parentEffectId() == null
+                AdvancementHolder parent = node.parentEffectId() == null
                         ? hubSe
                         : seAdvancements.get(node.parentEffectId());
                 if (parent == null) {
@@ -189,34 +198,33 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                                 Component.translatable(seDescriptionId(node.effectId())),
                                 Component.translatable(seDescriptionId(node.effectId()) + ".desc"),
                                 null,
-                                FrameType.TASK,
+                                AdvancementType.TASK,
                                 true,
                                 false,
                                 false);
 
                 builder.addCriterion(
                         "obtained",
-                        InventoryChangeTrigger.TriggerInstance.hasItems(
-                                SeCrystalItemPredicate.of(node.effectId(), 1)));
+                        hasSubPredicate(SeCrystalItemPredicate.TYPE, SeCrystalItemPredicate.of(node.effectId(), 1)));
                 builder.addCriterion("crafted", RecipeCraftedTrigger.TriggerInstance.craftedItem(node.recipeId()));
-                builder.requirements(new String[][]{{"obtained", "crafted"}});
+                builder.requirements(AdvancementRequirements.anyOf(List.of("obtained", "crafted")));
 
-                Advancement advancement = builder.save(
+                AdvancementHolder advancement = builder.save(
                         writer,
-                        Recasting.prefix("growth/se/" + node.effectId().getPath()).toString());
+                        Recasting.prefix("growth/se/" + node.effectId().getPath()));
                 seAdvancements.put(node.effectId(), advancement);
             }
 
             saveBackToFutureChain(writer, hubKill);
             saveKillMilestones(writer, hubKill);
-            saveEnchantChain(writer, hubEnch);
+            saveEnchantChain(registries, writer, hubEnch);
             saveRefineMilestones(writer, hubRefine);
             saveForgeBranch(writer, hubForge);
         }
 
-        private static Advancement autoHub(
-                Consumer<Advancement> writer,
-                Advancement parent,
+        private static AdvancementHolder autoHub(
+                Consumer<AdvancementHolder> writer,
+                AdvancementHolder parent,
                 String path,
                 ItemStack icon,
                 String titleKey,
@@ -229,15 +237,15 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             Component.translatable(titleKey),
                             Component.translatable(descKey),
                             null,
-                            FrameType.TASK,
+                            AdvancementType.TASK,
                             false,
                             false,
                             false)
                     .addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
-                    .save(writer, Recasting.prefix(path).toString());
+                    .save(writer, Recasting.prefix(path));
         }
 
-        private static void saveBackToFutureChain(Consumer<Advancement> writer, Advancement hubKill) {
+        private static void saveBackToFutureChain(Consumer<AdvancementHolder> writer, AdvancementHolder hubKill) {
             List<ResourceLocation> slashArts = GrowthAdvancementGraph.BACK_TO_FUTURE_SLASH_ARTS;
             int rowSize = GrowthAdvancementGraph.BACK_TO_FUTURE_ROW_SIZE;
             if (rowSize <= 0 || rowSize >= slashArts.size()) {
@@ -249,13 +257,13 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
         }
 
         private static void saveBackToFutureRow(
-                Consumer<Advancement> writer,
-                Advancement hubKill,
+                Consumer<AdvancementHolder> writer,
+                AdvancementHolder hubKill,
                 List<ResourceLocation> slashArts,
                 int fromIndex,
                 int toIndex
         ) {
-            Advancement parent = hubKill;
+            AdvancementHolder parent = hubKill;
             for (int i = fromIndex; i < toIndex; i++) {
                 ResourceLocation saId = slashArts.get(i);
                 ItemStack icon = slashArtsSphereIcon(saId);
@@ -266,69 +274,71 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                                 Component.translatable(slashArtDescriptionId(saId)),
                                 Component.translatable(slashArtDescriptionId(saId) + ".desc"),
                                 null,
-                                FrameType.TASK,
+                                AdvancementType.TASK,
                                 true,
                                 false,
                                 false)
                         .addCriterion(
                                 "obtained",
-                                InventoryChangeTrigger.TriggerInstance.hasItems(
-                                        SlashArtsSphereItemPredicate.of(saId)))
-                        .save(writer, Recasting.prefix("growth/drop/btf/" + saId.getPath()).toString());
+                                hasSubPredicate(SlashArtsSphereItemPredicate.TYPE, SlashArtsSphereItemPredicate.of(saId)))
+                        .save(writer, Recasting.prefix("growth/drop/btf/" + saId.getPath()));
             }
         }
 
-        private static void saveKillMilestones(Consumer<Advancement> writer, Advancement hubKill) {
-            Advancement kill1 = Advancement.Builder.advancement()
+        private static void saveKillMilestones(Consumer<AdvancementHolder> writer, AdvancementHolder hubKill) {
+            AdvancementHolder kill1 = Advancement.Builder.advancement()
                     .parent(hubKill)
                     .display(
                             new ItemStack(SlashBladeItems.PROUDSOUL_TINY.get()),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000_DESC),
                             null,
-                            FrameType.GOAL,
+                            AdvancementType.GOAL,
                             true,
                             false,
                             false)
                     .addCriterion(
                             "obtained",
-                            InventoryChangeTrigger.TriggerInstance.hasItems(
+                            hasSubPredicate(
+                                    BladeStatItemPredicate.TYPE,
                                     BladeStatItemPredicate.minKill(GrowthAdvancementGraph.KILL_MILESTONE_1)))
-                    .save(writer, Recasting.prefix("growth/drop/kill_1000").toString());
+                    .save(writer, Recasting.prefix("growth/drop/kill_1000"));
 
-            Advancement kill2 = Advancement.Builder.advancement()
+            AdvancementHolder kill2 = Advancement.Builder.advancement()
                     .parent(kill1)
                     .display(
                             new ItemStack(SlashBladeItems.PROUDSOUL.get()),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_10000_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_10000_DESC),
                             null,
-                            FrameType.GOAL,
+                            AdvancementType.GOAL,
                             true,
                             false,
                             false)
                     .addCriterion(
                             "obtained",
-                            InventoryChangeTrigger.TriggerInstance.hasItems(
+                            hasSubPredicate(
+                                    BladeStatItemPredicate.TYPE,
                                     BladeStatItemPredicate.minKill(GrowthAdvancementGraph.KILL_MILESTONE_2)))
-                    .save(writer, Recasting.prefix("growth/drop/kill_10000").toString());
+                    .save(writer, Recasting.prefix("growth/drop/kill_10000"));
 
-            Advancement kill3 = Advancement.Builder.advancement()
+            AdvancementHolder kill3 = Advancement.Builder.advancement()
                     .parent(kill2)
                     .display(
                             new ItemStack(SlashBladeItems.PROUDSOUL_INGOT.get()),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_100000_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_100000_DESC),
                             null,
-                            FrameType.CHALLENGE,
+                            AdvancementType.CHALLENGE,
                             true,
                             false,
                             false)
                     .addCriterion(
                             "obtained",
-                            InventoryChangeTrigger.TriggerInstance.hasItems(
+                            hasSubPredicate(
+                                    BladeStatItemPredicate.TYPE,
                                     BladeStatItemPredicate.minKill(GrowthAdvancementGraph.KILL_MILESTONE_3)))
-                    .save(writer, Recasting.prefix("growth/drop/kill_100000").toString());
+                    .save(writer, Recasting.prefix("growth/drop/kill_100000"));
 
             Advancement.Builder.advancement()
                     .parent(kill3)
@@ -337,61 +347,65 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000000_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_DROP_KILL_1000000_DESC),
                             null,
-                            FrameType.CHALLENGE,
+                            AdvancementType.CHALLENGE,
                             true,
                             false,
                             false)
                     .addCriterion(
                             "obtained",
-                            InventoryChangeTrigger.TriggerInstance.hasItems(
+                            hasSubPredicate(
+                                    BladeStatItemPredicate.TYPE,
                                     BladeStatItemPredicate.minKill(GrowthAdvancementGraph.KILL_MILESTONE_4)))
-                    .save(writer, Recasting.prefix("growth/drop/kill_1000000").toString());
+                    .save(writer, Recasting.prefix("growth/drop/kill_1000000"));
         }
 
-        private static void saveEnchantChain(Consumer<Advancement> writer, Advancement hubEnch) {
-            Advancement parent = hubEnch;
-            for (Enchantment enchantment : GrowthAdvancementGraph.ENCHANT_BONUS_CHAIN) {
-                ResourceLocation enchId = ForgeRegistries.ENCHANTMENTS.getKey(enchantment);
-                if (enchId == null) {
-                    throw new IllegalStateException("Unregistered enchantment in bonus chain: " + enchantment);
-                }
+        private static void saveEnchantChain(
+                HolderLookup.Provider registries,
+                Consumer<AdvancementHolder> writer,
+                AdvancementHolder hubEnch
+        ) {
+            AdvancementHolder parent = hubEnch;
+            for (ResourceKey<Enchantment> enchantment : GrowthAdvancementGraph.ENCHANT_BONUS_CHAIN) {
+                ResourceLocation enchId = enchantment.location();
                 String path = enchId.getPath();
                 parent = Advancement.Builder.advancement()
                         .parent(parent)
                         .display(
-                                enchantedBookIcon(enchantment),
-                                Component.translatable(enchantment.getDescriptionId()),
+                                enchantedBookIcon(registries, enchantment),
+                                Component.translatable(enchantment.location().toLanguageKey("enchantment")),
                                 Component.translatable(enchantDescKey(path)),
                                 null,
-                                FrameType.TASK,
+                                AdvancementType.TASK,
                                 true,
                                 false,
                                 false)
                         .addCriterion(
                                 "obtained",
-                                InventoryChangeTrigger.TriggerInstance.hasItems(
+                                hasSubPredicate(
+                                        EnchantedSlashBladeItemPredicate.TYPE,
                                         EnchantedSlashBladeItemPredicate.of(enchantment)))
-                        .save(writer, Recasting.prefix("growth/enchant/" + path).toString());
+                        .save(writer, Recasting.prefix("growth/enchant/" + path));
             }
         }
 
-        private static void saveRefineMilestones(Consumer<Advancement> writer, Advancement hubRefine) {
-            Advancement refine1 = Advancement.Builder.advancement()
+        private static void saveRefineMilestones(Consumer<AdvancementHolder> writer, AdvancementHolder hubRefine) {
+            AdvancementHolder refine1 = Advancement.Builder.advancement()
                     .parent(hubRefine)
                     .display(
                             new ItemStack(SlashBladeItems.PROUDSOUL_INGOT.get()),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_REFINE_1000_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_REFINE_1000_DESC),
                             null,
-                            FrameType.GOAL,
+                            AdvancementType.GOAL,
                             true,
                             false,
                             false)
                     .addCriterion(
                             "obtained",
-                            InventoryChangeTrigger.TriggerInstance.hasItems(
+                            hasSubPredicate(
+                                    BladeStatItemPredicate.TYPE,
                                     BladeStatItemPredicate.minRefine(GrowthAdvancementGraph.REFINE_MILESTONE_1)))
-                    .save(writer, Recasting.prefix("growth/refine/1000").toString());
+                    .save(writer, Recasting.prefix("growth/refine/1000"));
 
             Advancement.Builder.advancement()
                     .parent(refine1)
@@ -400,33 +414,34 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_REFINE_10000_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_REFINE_10000_DESC),
                             null,
-                            FrameType.CHALLENGE,
+                            AdvancementType.CHALLENGE,
                             true,
                             false,
                             false)
                     .addCriterion(
                             "obtained",
-                            InventoryChangeTrigger.TriggerInstance.hasItems(
+                            hasSubPredicate(
+                                    BladeStatItemPredicate.TYPE,
                                     BladeStatItemPredicate.minRefine(GrowthAdvancementGraph.REFINE_MILESTONE_2)))
-                    .save(writer, Recasting.prefix("growth/refine/10000").toString());
+                    .save(writer, Recasting.prefix("growth/refine/10000"));
         }
 
-        private static void saveForgeBranch(Consumer<Advancement> writer, Advancement hubForge) {
-            Advancement newCapability = Advancement.Builder.advancement()
+        private static void saveForgeBranch(Consumer<AdvancementHolder> writer, AdvancementHolder hubForge) {
+            AdvancementHolder newCapability = Advancement.Builder.advancement()
                     .parent(hubForge)
                     .display(
                             seCrystalIcon(SpecialEffectsRegistry.SHARP_BLADE.getId()),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_NEW_CAPABILITY_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_NEW_CAPABILITY_DESC),
                             null,
-                            FrameType.TASK,
+                            AdvancementType.TASK,
                             true,
                             false,
                             false)
                     .addCriterion(
                             "action",
                             ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.ENGRAVE_ANY))
-                    .save(writer, Recasting.prefix("growth/forge/new_capability").toString());
+                    .save(writer, Recasting.prefix("growth/forge/new_capability"));
 
             Advancement.Builder.advancement()
                     .parent(newCapability)
@@ -435,23 +450,23 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_PEAK_EFFECT_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_PEAK_EFFECT_DESC),
                             null,
-                            FrameType.GOAL,
+                            AdvancementType.GOAL,
                             true,
                             false,
                             false)
                     .addCriterion(
                             "action",
                             ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.ENGRAVE_MAX_NORMAL))
-                    .save(writer, Recasting.prefix("growth/forge/peak_effect").toString());
+                    .save(writer, Recasting.prefix("growth/forge/peak_effect"));
 
-            Advancement fullyEquipped = Advancement.Builder.advancement()
+            AdvancementHolder fullyEquipped = Advancement.Builder.advancement()
                     .parent(newCapability)
                     .display(
                             bladeIconForForge(),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_FULLY_EQUIPPED_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_FULLY_EQUIPPED_DESC),
                             null,
-                            FrameType.GOAL,
+                            AdvancementType.GOAL,
                             true,
                             false,
                             false)
@@ -459,7 +474,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             "action",
                             ForgeSeActionTrigger.TriggerInstance.action(
                                     ForgeSeAction.LAYOUT_FOUR_NORMAL_ONE_SPECIAL))
-                    .save(writer, Recasting.prefix("growth/forge/fully_equipped").toString());
+                    .save(writer, Recasting.prefix("growth/forge/fully_equipped"));
 
             Advancement.Builder.advancement()
                     .parent(fullyEquipped)
@@ -468,7 +483,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_ULTIMATE_REFINE_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_ULTIMATE_REFINE_DESC),
                             null,
-                            FrameType.CHALLENGE,
+                            AdvancementType.CHALLENGE,
                             true,
                             false,
                             false)
@@ -476,23 +491,23 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             "action",
                             ForgeSeActionTrigger.TriggerInstance.action(
                                     ForgeSeAction.LAYOUT_FOUR_MAX_NORMAL_ONE_SPECIAL))
-                    .save(writer, Recasting.prefix("growth/forge/ultimate_refine").toString());
+                    .save(writer, Recasting.prefix("growth/forge/ultimate_refine"));
 
-            Advancement sacrifice = Advancement.Builder.advancement()
+            AdvancementHolder sacrifice = Advancement.Builder.advancement()
                     .parent(newCapability)
                     .display(
                             new ItemStack(RecastingItems.GATHERING_PARTING_VARIANT.get()),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_SACRIFICE_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_SACRIFICE_DESC),
                             null,
-                            FrameType.TASK,
+                            AdvancementType.TASK,
                             true,
                             false,
                             false)
                     .addCriterion(
                             "action",
                             ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.EXTRACT_SPECIAL))
-                    .save(writer, Recasting.prefix("growth/forge/sacrifice").toString());
+                    .save(writer, Recasting.prefix("growth/forge/sacrifice"));
 
             Advancement.Builder.advancement()
                     .parent(newCapability)
@@ -501,14 +516,14 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_ARTS_OFFERING_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_ARTS_OFFERING_DESC),
                             null,
-                            FrameType.TASK,
+                            AdvancementType.TASK,
                             true,
                             false,
                             false)
                     .addCriterion(
                             "action",
                             ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.EXTRACT_SLASH_ARTS))
-                    .save(writer, Recasting.prefix("growth/forge/arts_offering").toString());
+                    .save(writer, Recasting.prefix("growth/forge/arts_offering"));
 
             Advancement.Builder.advancement()
                     .parent(sacrifice)
@@ -517,14 +532,14 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_AFFINITY_SWAP_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_AFFINITY_SWAP_DESC),
                             null,
-                            FrameType.TASK,
+                            AdvancementType.TASK,
                             true,
                             false,
                             false)
                     .addCriterion(
                             "action",
                             ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.SWAP_SPECIAL))
-                    .save(writer, Recasting.prefix("growth/forge/affinity_swap").toString());
+                    .save(writer, Recasting.prefix("growth/forge/affinity_swap"));
 
             Advancement.Builder.advancement()
                     .parent(newCapability)
@@ -533,14 +548,14 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_SILENCE_TITLE),
                             Component.translatable(RecastingLanguageKeys.ADVANCEMENT_FORGE_SILENCE_DESC),
                             null,
-                            FrameType.TASK,
+                            AdvancementType.TASK,
                             true,
                             false,
                             false)
                     .addCriterion(
                             "action",
                             ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.ERASE_SE))
-                    .save(writer, Recasting.prefix("growth/forge/silence").toString());
+                    .save(writer, Recasting.prefix("growth/forge/silence"));
         }
 
         private static ItemStack bladeIconForForge() {
@@ -549,10 +564,10 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
 
         private void saveFluorescenceSeries(
                 HolderLookup.Provider registries,
-                Consumer<Advancement> writer,
-                Map<ResourceKey<SlashBladeDefinition>, Advancement> bladeAdvancements
+                Consumer<AdvancementHolder> writer,
+                Map<ResourceKey<SlashBladeDefinition>, AdvancementHolder> bladeAdvancements
         ) {
-            Advancement parent = bladeAdvancements.get(RecastingSlashBladeKeys.GREEN_BLADE_WOOD);
+            AdvancementHolder parent = bladeAdvancements.get(RecastingSlashBladeKeys.GREEN_BLADE_WOOD);
             if (parent == null) {
                 throw new IllegalStateException("Missing green_blade_wood for fluorescence series");
             }
@@ -569,7 +584,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                                             BladeTranslationHelper.itemDescriptionId(
                                                     RecastingSlashBladeKeys.GREEN_BLADE_WOOD.location()))),
                             null,
-                            FrameType.TASK,
+                            AdvancementType.TASK,
                             true,
                             false,
                             false);
@@ -580,7 +595,8 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                 String obtainedId = "obtained_" + path;
                 builder.addCriterion(
                         obtainedId,
-                        InventoryChangeTrigger.TriggerInstance.hasItems(
+                        hasSubPredicate(
+                                NamedSlashBladeItemPredicate.TYPE,
                                 NamedSlashBladeItemPredicate.of(node.blade().location())));
                 anyBlade.add(obtainedId);
                 if (node.recipeId() != null) {
@@ -592,17 +608,16 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                 }
             }
 
-            builder.requirements(new String[][]{anyBlade.toArray(String[]::new)});
-            builder.save(writer, Recasting.prefix("growth/blades/slashblade/fluorescence").toString());
+            builder.requirements(AdvancementRequirements.anyOf(anyBlade));
+            builder.save(writer, Recasting.prefix("growth/blades/slashblade/fluorescence"));
         }
 
         private ItemStack bladeIcon(HolderLookup.Provider registries, ResourceKey<SlashBladeDefinition> blade) {
             ItemStack fromDefinition = registries.lookup(SlashBladeDefinition.REGISTRY_KEY)
                     .flatMap(lookup -> lookup.get(blade))
-                    .map(holder -> persistBladeState(holder.value().getBlade()))
+                    .map(holder -> holder.value().getBlade(registries))
                     .orElse(null);
-            if (fromDefinition != null && fromDefinition.hasTag()
-                    && fromDefinition.getTag().contains("bladeState")) {
+            if (fromDefinition != null && !fromDefinition.isEmpty()) {
                 return fromDefinition;
             }
             return buildNamedBladeIcon(blade.location());
@@ -627,14 +642,13 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
 
             ResourceLocation finalModel = model;
             ResourceLocation finalTexture = texture;
-            stack.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(state -> {
+            BladeStateAccess.of(stack).ifPresent(state -> {
                 state.setTranslationKey(BladeTranslationHelper.itemDescriptionId(bladeId));
                 state.setModel(finalModel);
                 state.setTexture(finalTexture);
                 if (render != null && render.has("summon_sword_color")) {
                     state.setColorCode(render.get("summon_sword_color").getAsInt());
                 }
-                stack.getOrCreateTag().put("bladeState", state.serializeNBT());
             });
             return stack;
         }
@@ -660,36 +674,39 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
             }
         }
 
-        private static ItemStack persistBladeState(ItemStack stack) {
-            if (stack.isEmpty()) {
-                return stack;
-            }
-            stack.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(state ->
-                    stack.getOrCreateTag().put("bladeState", state.serializeNBT()));
-            return stack;
-        }
-
         private static ItemStack seCrystalIcon(ResourceLocation effectId) {
             ItemStack stack = new ItemStack(RecastingItems.SE_CRYSTAL.get());
-            stack.getCapability(CapabilityRegistryHandler.SE_CRYSTAL_DATA).ifPresent(data -> {
-                data.setSpecialEffectType(effectId);
-                data.setSpecialEffectLevel(1);
-                stack.getOrCreateTag().put("se_crystal_data", data.serializeNBT());
-            });
+            SECrystalData data = new SECrystalData();
+            data.setSpecialEffectType(effectId);
+            data.setSpecialEffectLevel(1);
+            stack.set(RecastingDataComponents.SE_CRYSTAL_DATA.get(), data);
             return stack;
         }
 
         private static ItemStack slashArtsSphereIcon(ResourceLocation saId) {
             ItemStack stack = new ItemStack(SlashBladeItems.PROUDSOUL_SPHERE.get());
-            CompoundTag tag = stack.getOrCreateTag();
+            CompoundTag tag = new CompoundTag();
             tag.putString("SpecialAttackType", saId.toString());
+            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
             return stack;
         }
 
-        private static ItemStack enchantedBookIcon(Enchantment enchantment) {
+        private static ItemStack enchantedBookIcon(
+                HolderLookup.Provider registries,
+                ResourceKey<Enchantment> enchantment
+        ) {
             ItemStack stack = new ItemStack(Items.ENCHANTED_BOOK);
-            stack.enchant(enchantment, 1);
+            Holder<Enchantment> holder = registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(enchantment);
+            stack.enchant(holder, 1);
             return stack;
+        }
+
+        private static <T extends ItemSubPredicate> Criterion<?> hasSubPredicate(
+                ItemSubPredicate.Type<T> type,
+                T predicate
+        ) {
+            return InventoryChangeTrigger.TriggerInstance.hasItems(
+                    ItemPredicate.Builder.item().withSubPredicate(type, predicate).build());
         }
 
         private static Component bladeDescription(GrowthAdvancementGraph.BladeNode node) {
@@ -708,8 +725,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
         }
 
         private static String seDescriptionId(ResourceLocation effectId) {
-            SpecialEffect effect = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get()
-                    .getValue(effectId);
+            SpecialEffect effect = mods.flammpfeil.slashblade.registry.SpecialEffectsRegistry.REGISTRY.get(effectId);
             if (effect != null) {
                 return effect.getDescriptionId();
             }
@@ -718,7 +734,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
 
         private static String slashArtDescriptionId(ResourceLocation saId) {
             mods.flammpfeil.slashblade.slasharts.SlashArts arts =
-                    mods.flammpfeil.slashblade.registry.SlashArtsRegistry.REGISTRY.get().getValue(saId);
+                    mods.flammpfeil.slashblade.registry.SlashArtsRegistry.REGISTRY.get(saId);
             if (arts != null) {
                 return arts.getDescriptionId();
             }
@@ -732,7 +748,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                 case "fire_aspect" -> RecastingLanguageKeys.ADVANCEMENT_ENCHANT_FIRE_ASPECT_DESC;
                 case "flame" -> RecastingLanguageKeys.ADVANCEMENT_ENCHANT_FLAME_DESC;
                 case "power" -> RecastingLanguageKeys.ADVANCEMENT_ENCHANT_POWER_DESC;
-                case "sweeping" -> RecastingLanguageKeys.ADVANCEMENT_ENCHANT_SWEEPING_DESC;
+                case "sweeping_edge", "sweeping" -> RecastingLanguageKeys.ADVANCEMENT_ENCHANT_SWEEPING_DESC;
                 default -> RecastingLanguageKeys.ADVANCEMENT_HUB_ENCHANT_POWER_DESC;
             };
         }
