@@ -23,7 +23,8 @@
     "EntityAccessor",
     "AdvancementVisibilityEvaluatorMixin",
     "ItemSlashBladeMixin",
-    "JEICompatMixin"
+    "JEICompatMixin",
+    "RequestDefinitionInitItemStackMixin"
   ],
   "client": [
     "client.LayerMainBladeMixin"

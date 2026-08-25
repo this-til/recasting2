@@ -1,12 +1,17 @@
 package com.til.recasting.handler;
 
 import com.til.recasting.network.PrismBeamMessage;
+import com.til.recasting.registry.RecastingParticleTypes;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.joml.Vector3f;
 
 /**
- * 光棱特效：线段同步（不含伤害逻辑）。
+ * 光棱特效：线段同步 + 命中点粒子（不含伤害逻辑）。
+ * <p>
+ * 光棱 SA 与灼痕短光束共用本入口，保证命中粒子一致。
  */
 public final class PrismBeamEffectHelper {
 
@@ -19,7 +24,7 @@ public final class PrismBeamEffectHelper {
     }
 
     /**
-     * 同步光棱线段至附近客户端。
+     * 同步光棱线段，并在落点播放命中粒子（刀色 DefaultParticle 高闪 + 白金芯/刀色尘埃）。
      *
      * @param lifeTicks 客户端线段可见持续时间
      */
@@ -38,5 +43,34 @@ public final class PrismBeamEffectHelper {
                 range,
                 new PrismBeamMessage(start, end, color, lifeTicks)
         );
+
+        spawnHitParticles(serverLevel, end, color);
+    }
+
+    /**
+     * 光棱命中点粒子：刀色 {@code DefaultParticle} 高闪 + 白金芯 + 刀色散射尘埃。
+     */
+    public static void spawnHitParticles(ServerLevel serverLevel, Vec3 end, int color) {
+        float r = ((color >> 16) & 0xFF) / 255.0f;
+        float g = ((color >> 8) & 0xFF) / 255.0f;
+        float b = (color & 0xFF) / 255.0f;
+        DustParticleOptions core = new DustParticleOptions(new Vector3f(1.0f, 0.95f, 0.55f), 1.35f);
+        DustParticleOptions sheath = new DustParticleOptions(new Vector3f(r, g, b), 1.0f);
+
+        // 外层高闪：DefaultParticle，颜色走速度通道
+        ParticleHelper.sendParticlesLongRange(
+                serverLevel,
+                RecastingParticleTypes.DEFAULT_PARTICLE.get(),
+                end.x,
+                end.y,
+                end.z,
+                0,
+                r,
+                g,
+                b,
+                1.0
+        );
+        ParticleHelper.sendParticlesLongRange(serverLevel, core, end.x, end.y, end.z, 6, 0.12, 0.12, 0.12, 0.0);
+        ParticleHelper.sendParticlesLongRange(serverLevel, sheath, end.x, end.y, end.z, 10, 0.2, 0.2, 0.2, 0.0);
     }
 }
