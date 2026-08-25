@@ -1,10 +1,10 @@
-package com.til.recasting.mixin;
+package com.til.recasting.mixin.client;
 
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.handler.FeEnergyHelper;
-import com.til.recasting.handler.SpecialEffectTooltipHelper;
 import com.til.recasting.handler.MathHelper;
+import com.til.recasting.handler.SpecialEffectTooltipHelper;
 import com.til.recasting.registry.RecastingDataComponents;
 import com.til.recasting.registry.se.ExtendedSpecialEffect;
 import mods.flammpfeil.slashblade.capability.slashblade.BladeStateAccess;
@@ -24,8 +24,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,18 +37,16 @@ import java.util.EnumSet;
 import java.util.List;
 
 /**
- * 混入 ItemSlashBlade 的 appendSpecialEffects 方法，支持 ExtendedSpecialEffect 等级显示与描述 tooltip。
+ * 客户端混入 ItemSlashBlade：扩展 SE/SA/幻影刀等 tooltip 显示。
  */
 @Mixin(value = ItemSlashBlade.class)
-public class ItemSlashBladeMixin {
+public class ItemSlashBladeTooltipMixin {
 
     @Overwrite(remap = false)
-    @OnlyIn(Dist.CLIENT)
     public void appendSpecialEffects(List<Component> tooltip, @NotNull ISlashBladeState s) {
     }
 
     @Inject(method = "appendSlashArt", at = @At("RETURN"), remap = false)
-    @OnlyIn(Dist.CLIENT)
     public void appendSlashArtDescription(ItemStack stack, List<Component> tooltip, @NotNull ISlashBladeState s, CallbackInfo ci) {
         if (!Screen.hasShiftDown() || !showsSlashArt(stack)) {
             return;
@@ -59,7 +55,6 @@ public class ItemSlashBladeMixin {
     }
 
     @Inject(method = "appendHoverText", at = @At("RETURN"))
-    @OnlyIn(Dist.CLIENT)
     public void appendSpecialEffectHoverText(
             ItemStack stack,
             Item.TooltipContext context,
