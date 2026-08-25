@@ -1,7 +1,7 @@
 {
   "loader": "neoforge:obj",
   "flip_v": true,
-  "model": "slashblade:models/item/soul.obj",
+  "model": "recasting:models/prefab/soul.obj",
   "textures": {
     "soul": "recasting:item/soul",
     "particle": "recasting:item/soul"

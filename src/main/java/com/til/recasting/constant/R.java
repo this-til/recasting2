@@ -60,6 +60,9 @@ public class R {
         }
 
         public static class Prefab {
+            public static final ResourceLocation soul = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul");
+            public static final ResourceLocation soul$mtl = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul.mtl");
+            public static final ResourceLocation soul$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul.obj");
             public static final ResourceLocation soul1 = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_1");
             public static final ResourceLocation soul1$mtl = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_1.mtl");
             public static final ResourceLocation soul1$obj = ResourceLocation.fromNamespaceAndPath("recasting", "models/prefab/soul_1.obj");
