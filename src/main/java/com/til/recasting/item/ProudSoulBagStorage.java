@@ -13,6 +13,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,13 +48,13 @@ public final class ProudSoulBagStorage {
     }
 
     public static @NotNull List<StoredEntry> list(@NotNull ItemStack bag) {
-        ListTag list = getOrCreateList(bag, false);
-        if (list == null || list.isEmpty()) {
+        MutableData data = open(bag, false);
+        if (data == null || data.list.isEmpty()) {
             return Collections.emptyList();
         }
-        List<StoredEntry> result = new ArrayList<>(list.size());
-        for (int i = 0; i < list.size(); i++) {
-            CompoundTag entry = list.getCompound(i);
+        List<StoredEntry> result = new ArrayList<>(data.list.size());
+        for (int i = 0; i < data.list.size(); i++) {
+            CompoundTag entry = data.list.getCompound(i);
             ItemStack template = ItemStack.parseOptional(registries(), entry.getCompound(ENTRY_ITEM_KEY));
             if (template.isEmpty()) {
                 continue;
@@ -77,19 +78,20 @@ public final class ProudSoulBagStorage {
             return 0;
         }
 
-        ListTag list = getOrCreateList(bag, true);
+        MutableData data = open(bag, true);
         ItemStack template = incoming.copyWithCount(1);
-        int index = findMatchingIndex(list, template);
+        int index = findMatchingIndex(data.list, template);
         if (index >= 0) {
-            CompoundTag entry = list.getCompound(index);
+            CompoundTag entry = data.list.getCompound(index);
             long existing = entry.getLong(ENTRY_COUNT_KEY);
             entry.putLong(ENTRY_COUNT_KEY, existing + amount);
         } else {
             CompoundTag entry = new CompoundTag();
             entry.put(ENTRY_ITEM_KEY, saveTemplate(template));
             entry.putLong(ENTRY_COUNT_KEY, amount);
-            list.add(entry);
+            data.list.add(entry);
         }
+        data.commit(bag);
         incoming.setCount(0);
         return amount;
     }
@@ -98,18 +100,19 @@ public final class ProudSoulBagStorage {
         if (match.isEmpty() || want <= 0) {
             return ItemStack.EMPTY;
         }
-        ListTag list = getOrCreateList(bag, false);
-        if (list == null || list.isEmpty()) {
+        MutableData data = open(bag, false);
+        if (data == null || data.list.isEmpty()) {
             return ItemStack.EMPTY;
         }
-        int index = findMatchingIndex(list, match);
+        int index = findMatchingIndex(data.list, match);
         if (index < 0) {
             return ItemStack.EMPTY;
         }
-        CompoundTag entry = list.getCompound(index);
+        CompoundTag entry = data.list.getCompound(index);
         ItemStack template = ItemStack.parseOptional(registries(), entry.getCompound(ENTRY_ITEM_KEY));
         if (template.isEmpty()) {
-            list.remove(index);
+            data.list.remove(index);
+            data.commit(bag);
             return ItemStack.EMPTY;
         }
         long stored = entry.getLong(ENTRY_COUNT_KEY);
@@ -119,13 +122,11 @@ public final class ProudSoulBagStorage {
         }
         long remain = stored - take;
         if (remain <= 0) {
-            list.remove(index);
+            data.list.remove(index);
         } else {
             entry.putLong(ENTRY_COUNT_KEY, remain);
         }
-        if (list.isEmpty()) {
-            clearCustomData(bag);
-        }
+        data.commit(bag);
         template.setCount((int) Math.min(take, Integer.MAX_VALUE));
         return template;
     }
@@ -157,14 +158,16 @@ public final class ProudSoulBagStorage {
         return -1;
     }
 
-    private static ListTag getOrCreateList(ItemStack bag, boolean create) {
+    /**
+     * CustomData 的 copyTag 是副本；写入后必须 {@link MutableData#commit} 写回物品。
+     */
+    private static @Nullable MutableData open(ItemStack bag, boolean create) {
         CompoundTag tag = getCustomTag(bag);
         if (tag == null) {
             if (!create) {
                 return null;
             }
             tag = new CompoundTag();
-            setCustomTag(bag, tag);
         }
         if (!tag.contains(BAG_ITEMS_KEY, Tag.TAG_LIST)) {
             if (!create) {
@@ -172,9 +175,9 @@ public final class ProudSoulBagStorage {
             }
             ListTag created = new ListTag();
             tag.put(BAG_ITEMS_KEY, created);
-            return created;
+            return new MutableData(tag, created);
         }
-        return tag.getList(BAG_ITEMS_KEY, Tag.TAG_COMPOUND);
+        return new MutableData(tag, tag.getList(BAG_ITEMS_KEY, Tag.TAG_COMPOUND));
     }
 
     private static CompoundTag getCustomTag(ItemStack stack) {
@@ -194,15 +197,6 @@ public final class ProudSoulBagStorage {
         }
     }
 
-    private static void clearCustomData(ItemStack stack) {
-        CompoundTag tag = getCustomTag(stack);
-        if (tag == null) {
-            return;
-        }
-        tag.remove(BAG_ITEMS_KEY);
-        setCustomTag(stack, tag);
-    }
-
     private static CompoundTag saveTemplate(ItemStack template) {
         return (CompoundTag) template.saveOptional(registries());
     }
@@ -220,5 +214,14 @@ public final class ProudSoulBagStorage {
             stack.setCount(1);
         }
         return stack;
+    }
+
+    private record MutableData(CompoundTag root, ListTag list) {
+        private void commit(ItemStack bag) {
+            if (list.isEmpty()) {
+                root.remove(BAG_ITEMS_KEY);
+            }
+            setCustomTag(bag, root);
+        }
     }
 }

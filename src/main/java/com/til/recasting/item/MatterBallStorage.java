@@ -46,18 +46,18 @@ public final class MatterBallStorage {
     }
 
     public static boolean isEmpty(@NotNull ItemStack ball) {
-        ListTag list = getOrCreateList(ball, false);
-        return list == null || list.isEmpty();
+        MutableData data = open(ball, false);
+        return data == null || data.list.isEmpty();
     }
 
     public static @NotNull List<StoredEntry> list(@NotNull ItemStack ball) {
-        ListTag list = getOrCreateList(ball, false);
-        if (list == null || list.isEmpty()) {
+        MutableData data = open(ball, false);
+        if (data == null || data.list.isEmpty()) {
             return Collections.emptyList();
         }
-        List<StoredEntry> result = new ArrayList<>(list.size());
-        for (int i = 0; i < list.size(); i++) {
-            CompoundTag entry = list.getCompound(i);
+        List<StoredEntry> result = new ArrayList<>(data.list.size());
+        for (int i = 0; i < data.list.size(); i++) {
+            CompoundTag entry = data.list.getCompound(i);
             ItemStack template = ItemStack.parseOptional(registries(), entry.getCompound(ENTRY_ITEM_KEY));
             if (template.isEmpty()) {
                 continue;
@@ -89,19 +89,20 @@ public final class MatterBallStorage {
             return 0;
         }
 
-        ListTag list = getOrCreateList(ball, true);
+        MutableData data = open(ball, true);
         ItemStack template = incoming.copyWithCount(1);
-        int index = findMatchingIndex(list, template);
+        int index = findMatchingIndex(data.list, template);
         if (index >= 0) {
-            CompoundTag entry = list.getCompound(index);
+            CompoundTag entry = data.list.getCompound(index);
             long existing = entry.getLong(ENTRY_COUNT_KEY);
             entry.putLong(ENTRY_COUNT_KEY, existing + amount);
         } else {
             CompoundTag entry = new CompoundTag();
             entry.put(ENTRY_ITEM_KEY, (CompoundTag) template.saveOptional(registries()));
             entry.putLong(ENTRY_COUNT_KEY, amount);
-            list.add(entry);
+            data.list.add(entry);
         }
+        data.commit(ball);
         incoming.setCount(0);
         return amount;
     }
@@ -152,22 +153,22 @@ public final class MatterBallStorage {
     }
 
     public static long extractToHandler(@NotNull ItemStack ball, @NotNull IItemHandler handler) {
-        ListTag list = getOrCreateList(ball, false);
-        if (list == null || list.isEmpty()) {
+        MutableData data = open(ball, false);
+        if (data == null || data.list.isEmpty()) {
             return 0L;
         }
         long total = 0L;
-        for (int i = 0; i < list.size(); ) {
-            CompoundTag entry = list.getCompound(i);
+        for (int i = 0; i < data.list.size(); ) {
+            CompoundTag entry = data.list.getCompound(i);
             ItemStack template = ItemStack.parseOptional(registries(), entry.getCompound(ENTRY_ITEM_KEY));
             if (template.isEmpty()) {
-                list.remove(i);
+                data.list.remove(i);
                 continue;
             }
             template.setCount(1);
             long remain = entry.getLong(ENTRY_COUNT_KEY);
             if (remain <= 0) {
-                list.remove(i);
+                data.list.remove(i);
                 continue;
             }
             while (remain > 0) {
@@ -182,15 +183,13 @@ public final class MatterBallStorage {
                 total += inserted;
             }
             if (remain <= 0) {
-                list.remove(i);
+                data.list.remove(i);
             } else {
                 entry.putLong(ENTRY_COUNT_KEY, remain);
                 i++;
             }
         }
-        if (list.isEmpty()) {
-            clear(ball);
-        }
+        data.commit(ball);
         return total;
     }
 
@@ -231,14 +230,16 @@ public final class MatterBallStorage {
         return -1;
     }
 
-    private static ListTag getOrCreateList(ItemStack ball, boolean create) {
+    /**
+     * CustomData 的 copyTag 是副本；写入后必须 {@link MutableData#commit} 写回物品。
+     */
+    private static @Nullable MutableData open(ItemStack ball, boolean create) {
         CompoundTag tag = getCustomTag(ball);
         if (tag == null) {
             if (!create) {
                 return null;
             }
             tag = new CompoundTag();
-            setCustomTag(ball, tag);
         }
         if (!tag.contains(MATTER_ITEMS_KEY, Tag.TAG_LIST)) {
             if (!create) {
@@ -246,9 +247,9 @@ public final class MatterBallStorage {
             }
             ListTag created = new ListTag();
             tag.put(MATTER_ITEMS_KEY, created);
-            return created;
+            return new MutableData(tag, created);
         }
-        return tag.getList(MATTER_ITEMS_KEY, Tag.TAG_COMPOUND);
+        return new MutableData(tag, tag.getList(MATTER_ITEMS_KEY, Tag.TAG_COMPOUND));
     }
 
     private static CompoundTag getCustomTag(ItemStack stack) {
@@ -269,5 +270,14 @@ public final class MatterBallStorage {
     }
 
     public record StoredEntry(@NotNull ItemStack template, long count) {
+    }
+
+    private record MutableData(CompoundTag root, ListTag list) {
+        private void commit(ItemStack ball) {
+            if (list.isEmpty()) {
+                root.remove(MATTER_ITEMS_KEY);
+            }
+            setCustomTag(ball, root);
+        }
     }
 }
