@@ -32,8 +32,8 @@
     "RefineHandlerMixin"
   ],
   "client": [
-    "ItemSlashBladeMixin",
     "client.ItemModelBuilderMixin",
+    "client.ItemSlashBladeTooltipMixin",
     "client.LayerMainBladeMixin"
   ],
   "injectors": {

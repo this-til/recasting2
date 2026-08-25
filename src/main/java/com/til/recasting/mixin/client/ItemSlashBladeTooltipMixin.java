@@ -1,4 +1,4 @@
-package com.til.recasting.mixin;
+package com.til.recasting.mixin.client;
 
 import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.handler.CapabilityRegistryHandler;
@@ -38,16 +38,13 @@ import java.util.EnumSet;
 import java.util.List;
 
 /**
- * 混入 ItemSlashBlade 的 appendSpecialEffects 方法
- * 在原始方法之后添加 ExtendedSpecialEffect 的等级显示
- * 并在 forEach 中过滤掉 ExtendedSpecialEffect
+ * 客户端混入 ItemSlashBlade 的 Tooltip：扩展 SE 显示、SA/SE 描述、FE 与幻影剑追踪提示。
  */
 @Mixin(value = ItemSlashBlade.class)
-public class ItemSlashBladeMixin {
+public class ItemSlashBladeTooltipMixin {
 
     /**
-     * 在 appendSpecialEffects 方法的开头注入，先处理 ExtendedSpecialEffect
-     * 然后让原方法继续处理非 ExtendedSpecialEffect 的 SE
+     * 清空原版 appendSpecialEffects，改由 appendHoverText 注入统一绘制 SE 行。
      *
      * @author til
      * @reason 为了支持 ExtendedSpecialEffect 的特殊显示逻辑，需要完全重写此方法
