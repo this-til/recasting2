@@ -133,11 +133,15 @@ public final class SlashBladeRegistryHelper {
                 return Optional.of(cachedRegistryAccess);
             }
 
+            // 集成服服务端线程优先走 ServerLifecycleHooks；仅 Dist.CLIENT 时客户端连接也可兜底
+            Optional<RegistryAccess> serverAccess = getServerRegistryAccess();
+            if (serverAccess.isPresent()) {
+                return serverAccess;
+            }
             if (FMLEnvironment.dist == Dist.CLIENT) {
                 return getClientRegistryAccess();
-            } else {
-                return getServerRegistryAccess();
             }
+            return Optional.empty();
         } catch (Exception e) {
             log.error("获取 RegistryAccess 失败", e);
             return Optional.empty();

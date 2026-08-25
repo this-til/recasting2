@@ -1,5 +1,6 @@
 package com.til.recasting.item;
 
+import com.til.recasting.handler.SlashBladeRegistryHelper;
 import com.til.recasting.registry.RecastingTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 public final class ProudSoulBagStorage {
 
-    private static final HolderLookup.Provider REGISTRY_ACCESS =
+    private static final HolderLookup.Provider FALLBACK_REGISTRIES =
             RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
 
     private static final String BAG_ITEMS_KEY = "BagItems";
@@ -30,6 +31,15 @@ public final class ProudSoulBagStorage {
     private static final String ENTRY_COUNT_KEY = "Count";
 
     private ProudSoulBagStorage() {
+    }
+
+    /**
+     * 附魔等为数据包注册表，必须使用当前世界的 RegistryAccess；静态 BuiltInRegistries 不足以编码 ItemStack。
+     */
+    private static HolderLookup.Provider registries() {
+        return SlashBladeRegistryHelper.getRegistryAccess()
+                .map(access -> (HolderLookup.Provider) access)
+                .orElse(FALLBACK_REGISTRIES);
     }
 
     public static boolean isProudSoul(@NotNull ItemStack stack) {
@@ -44,7 +54,7 @@ public final class ProudSoulBagStorage {
         List<StoredEntry> result = new ArrayList<>(list.size());
         for (int i = 0; i < list.size(); i++) {
             CompoundTag entry = list.getCompound(i);
-            ItemStack template = ItemStack.parseOptional(REGISTRY_ACCESS, entry.getCompound(ENTRY_ITEM_KEY));
+            ItemStack template = ItemStack.parseOptional(registries(), entry.getCompound(ENTRY_ITEM_KEY));
             if (template.isEmpty()) {
                 continue;
             }
@@ -97,7 +107,7 @@ public final class ProudSoulBagStorage {
             return ItemStack.EMPTY;
         }
         CompoundTag entry = list.getCompound(index);
-        ItemStack template = ItemStack.parseOptional(REGISTRY_ACCESS, entry.getCompound(ENTRY_ITEM_KEY));
+        ItemStack template = ItemStack.parseOptional(registries(), entry.getCompound(ENTRY_ITEM_KEY));
         if (template.isEmpty()) {
             list.remove(index);
             return ItemStack.EMPTY;
@@ -139,7 +149,7 @@ public final class ProudSoulBagStorage {
     private static int findMatchingIndex(ListTag list, ItemStack match) {
         for (int i = 0; i < list.size(); i++) {
             CompoundTag entry = list.getCompound(i);
-            ItemStack template = ItemStack.parseOptional(REGISTRY_ACCESS, entry.getCompound(ENTRY_ITEM_KEY));
+            ItemStack template = ItemStack.parseOptional(registries(), entry.getCompound(ENTRY_ITEM_KEY));
             if (!template.isEmpty() && ItemStack.isSameItemSameComponents(template, match)) {
                 return i;
             }
@@ -194,7 +204,7 @@ public final class ProudSoulBagStorage {
     }
 
     private static CompoundTag saveTemplate(ItemStack template) {
-        return (CompoundTag) template.saveOptional(REGISTRY_ACCESS);
+        return (CompoundTag) template.saveOptional(registries());
     }
 
     public record StoredEntry(@NotNull ItemStack template, long count) {

@@ -1,5 +1,6 @@
 package com.til.recasting.item;
 
+import com.til.recasting.handler.SlashBladeRegistryHelper;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
@@ -25,7 +26,7 @@ import java.util.List;
  */
 public final class MatterBallStorage {
 
-    private static final HolderLookup.Provider REGISTRY_ACCESS =
+    private static final HolderLookup.Provider FALLBACK_REGISTRIES =
             RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
 
     private static final String MATTER_ITEMS_KEY = "MatterItems";
@@ -33,6 +34,15 @@ public final class MatterBallStorage {
     private static final String ENTRY_COUNT_KEY = "Count";
 
     private MatterBallStorage() {
+    }
+
+    /**
+     * 附魔等为数据包注册表，必须使用当前世界的 RegistryAccess；静态 BuiltInRegistries 不足以编码 ItemStack。
+     */
+    private static HolderLookup.Provider registries() {
+        return SlashBladeRegistryHelper.getRegistryAccess()
+                .map(access -> (HolderLookup.Provider) access)
+                .orElse(FALLBACK_REGISTRIES);
     }
 
     public static boolean isEmpty(@NotNull ItemStack ball) {
@@ -48,7 +58,7 @@ public final class MatterBallStorage {
         List<StoredEntry> result = new ArrayList<>(list.size());
         for (int i = 0; i < list.size(); i++) {
             CompoundTag entry = list.getCompound(i);
-            ItemStack template = ItemStack.parseOptional(REGISTRY_ACCESS, entry.getCompound(ENTRY_ITEM_KEY));
+            ItemStack template = ItemStack.parseOptional(registries(), entry.getCompound(ENTRY_ITEM_KEY));
             if (template.isEmpty()) {
                 continue;
             }
@@ -88,7 +98,7 @@ public final class MatterBallStorage {
             entry.putLong(ENTRY_COUNT_KEY, existing + amount);
         } else {
             CompoundTag entry = new CompoundTag();
-            entry.put(ENTRY_ITEM_KEY, (CompoundTag) template.saveOptional(REGISTRY_ACCESS));
+            entry.put(ENTRY_ITEM_KEY, (CompoundTag) template.saveOptional(registries()));
             entry.putLong(ENTRY_COUNT_KEY, amount);
             list.add(entry);
         }
@@ -149,7 +159,7 @@ public final class MatterBallStorage {
         long total = 0L;
         for (int i = 0; i < list.size(); ) {
             CompoundTag entry = list.getCompound(i);
-            ItemStack template = ItemStack.parseOptional(REGISTRY_ACCESS, entry.getCompound(ENTRY_ITEM_KEY));
+            ItemStack template = ItemStack.parseOptional(registries(), entry.getCompound(ENTRY_ITEM_KEY));
             if (template.isEmpty()) {
                 list.remove(i);
                 continue;
@@ -213,7 +223,7 @@ public final class MatterBallStorage {
     private static int findMatchingIndex(ListTag list, ItemStack match) {
         for (int i = 0; i < list.size(); i++) {
             CompoundTag entry = list.getCompound(i);
-            ItemStack template = ItemStack.parseOptional(REGISTRY_ACCESS, entry.getCompound(ENTRY_ITEM_KEY));
+            ItemStack template = ItemStack.parseOptional(registries(), entry.getCompound(ENTRY_ITEM_KEY));
             if (!template.isEmpty() && ItemStack.isSameItemSameComponents(template, match)) {
                 return i;
             }

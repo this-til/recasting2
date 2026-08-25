@@ -3,13 +3,11 @@ package com.til.recasting.client.particle;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
@@ -34,12 +32,11 @@ import java.util.Map;
 /**
  * 可链式配置的通用 Billboard 粒子。
  * <p>
- * 独立 {@link ParticleRenderType} 通道 + 自有 {@link BufferBuilder} 批绘。
+ * 独立 {@link ParticleRenderType} 通道；顶点写入引擎在 {@code begin} 中返回的 {@link BufferBuilder}。
  * <p>
- * 兼容假人（dummmmmmy）伤害数字：其 {@code ParticleRenderType.CUSTOM} 在粒子阶段用 Font +
- * {@code renderBuffers().bufferSource().endBatch()}，会弄脏 lightmap / 纹理单元 / 混合状态；
- * Forge 又将自定义 RenderType 排在 CUSTOM 之后，导致同帧后续粒子全灭（同类问题见 Forge#6706）。
- * 本类在 {@code begin} 中完整恢复渲染状态后再开批。
+ * 使用 {@link DefaultVertexFormat#POSITION_TEX_COLOR}（不采样 lightmap），避免假人伤害数字等
+ * {@code ParticleRenderType.CUSTOM} 在粒子阶段 {@code endBatch} 弄脏 lightmap 后，
+ * 同帧后续粒子整批不可见（同类问题见 Forge#6706）。
  */
 @OnlyIn(Dist.CLIENT)
 public class DefaultParticle extends Particle {
@@ -48,17 +45,6 @@ public class DefaultParticle extends Particle {
      * 加法粒子顶点色曝光倍率（SRC_ALPHA/ONE 下提亮普通命中闪等）。
      */
     private static final float ADDITIVE_EXPOSURE = 1.55f;
-
-    /**
-     * 本模组粒子批绘专用 Buffer，与引擎 Tesselator / 共享 BufferSource 隔离。
-     */
-    private static final Tesselator TESSELATOR = Tesselator.getInstance();
-
-    /**
-     * 当前批正在写入的 Buffer；仅在对应 {@link ParticleRenderType#begin}～{@code end} 期间非 null。
-     */
-    @Nullable
-    protected static BufferBuilder activeBatch;
 
     /**
      * 生命周期一半的 tick 数，供尺寸曲线将寿命映射为 0→1→0 的三角波。
@@ -85,16 +71,6 @@ public class DefaultParticle extends Particle {
      * 生命周期内尺寸变化曲线；为 null 时保持 {@link #size} 不变。
      */
     protected SizeChangeType sizeChangeType;
-
-    /**
-     * 当前绕视线轴的滚转角（弧度）。
-     */
-    protected float roll;
-
-    /**
-     * 上一 tick 的滚转角，用于渲染插值。
-     */
-    protected float oldRoll;
 
     /**
      * 每 tick 滚转增量（弧度）。
@@ -262,66 +238,58 @@ public class DefaultParticle extends Particle {
             this.yd -= 0.04D * (double) this.particleGravity;
         }
 
-        this.oldRoll = this.roll;
+        this.oRoll = this.roll;
         this.roll += this.rollSpeed;
     }
 
     @Override
-    public void render(@NotNull VertexConsumer ignored, Camera camera, float partialTick) {
-        BufferBuilder buffer = activeBatch;
-        if (buffer == null) {
-            return;
-        }
-
+    public void render(@NotNull VertexConsumer buffer, Camera camera, float partialTick) {
         float currentSize = resolveCurrentSize();
         if (currentSize <= 1.0E-4f || this.alpha <= 1.0E-4f) {
             return;
         }
 
         Vec3 cameraPos = camera.getPosition();
-        Vector3f addPos = new Vector3f(
-                (float) (Mth.lerp(partialTick, this.xo, this.x) - cameraPos.x()),
-                (float) (Mth.lerp(partialTick, this.yo, this.y) - cameraPos.y()),
-                (float) (Mth.lerp(partialTick, this.zo, this.z) - cameraPos.z())
-        );
+        float x = (float) (Mth.lerp(partialTick, this.xo, this.x) - cameraPos.x());
+        float y = (float) (Mth.lerp(partialTick, this.yo, this.y) - cameraPos.y());
+        float z = (float) (Mth.lerp(partialTick, this.zo, this.z) - cameraPos.z());
 
-        Quaternionf quaternion;
-        if (this.roll == 0.0F) {
-            quaternion = camera.rotation();
-        } else {
-            quaternion = new Quaternionf(camera.rotation());
-            float f3 = Mth.lerp(partialTick, this.oldRoll, this.roll);
-            quaternion.rotateZ(f3);
+        Quaternionf quaternion = new Quaternionf(camera.rotation());
+        if (this.roll != 0.0F) {
+            quaternion.rotateZ(Mth.lerp(partialTick, this.oRoll, this.roll));
         }
 
-        Vector3f[] vertices = new Vector3f[]{
-                new Vector3f(-1.0F, -1.0F, 0.0F),
-                new Vector3f(-1.0F, 1.0F, 0.0F),
-                new Vector3f(1.0F, 1.0F, 0.0F),
-                new Vector3f(1.0F, -1.0F, 0.0F)
-        };
-        for(int i = 0; i < 4; ++i) {
-            Vector3f vertex = vertices[i];
-            vertex.rotate(quaternion);
-            vertex.mul(currentSize);
-            vertex.add(addPos);
-        }
-
-        int combined = 15 << 20 | 15 << 4;
         float exposure = additiveBlend
                 ? ADDITIVE_EXPOSURE
                 : 1.0f;
-        float r = this.rCol * exposure;
-        float g = this.gCol * exposure;
-        float b = this.bCol * exposure;
-        int ir = (int) (r * 255.0f);
-        int ig = (int) (g * 255.0f);
-        int ib = (int) (b * 255.0f);
-        int ia = (int) (this.alpha * 255.0f);
-        buffer.addVertex(vertices[0].x(), vertices[0].y(), vertices[0].z()).setUv(0, 0).setColor(ir, ig, ib, ia).setLight(combined);
-        buffer.addVertex(vertices[1].x(), vertices[1].y(), vertices[1].z()).setUv(0, 1).setColor(ir, ig, ib, ia).setLight(combined);
-        buffer.addVertex(vertices[2].x(), vertices[2].y(), vertices[2].z()).setUv(1, 1).setColor(ir, ig, ib, ia).setLight(combined);
-        buffer.addVertex(vertices[3].x(), vertices[3].y(), vertices[3].z()).setUv(1, 0).setColor(ir, ig, ib, ia).setLight(combined);
+        float r = Mth.clamp(this.rCol * exposure, 0.0f, 1.0f);
+        float g = Mth.clamp(this.gCol * exposure, 0.0f, 1.0f);
+        float b = Mth.clamp(this.bCol * exposure, 0.0f, 1.0f);
+
+        addVertex(buffer, quaternion, x, y, z, -1.0F, -1.0F, currentSize, 0.0F, 0.0F, r, g, b, this.alpha);
+        addVertex(buffer, quaternion, x, y, z, -1.0F, 1.0F, currentSize, 0.0F, 1.0F, r, g, b, this.alpha);
+        addVertex(buffer, quaternion, x, y, z, 1.0F, 1.0F, currentSize, 1.0F, 1.0F, r, g, b, this.alpha);
+        addVertex(buffer, quaternion, x, y, z, 1.0F, -1.0F, currentSize, 1.0F, 0.0F, r, g, b, this.alpha);
+    }
+
+    private static void addVertex(
+            VertexConsumer buffer,
+            Quaternionf quaternion,
+            float x,
+            float y,
+            float z,
+            float xOffset,
+            float yOffset,
+            float quadSize,
+            float u,
+            float v,
+            float r,
+            float g,
+            float b,
+            float a
+    ) {
+        Vector3f vertex = new Vector3f(xOffset, yOffset, 0.0F).rotate(quaternion).mul(quadSize).add(x, y, z);
+        buffer.addVertex(vertex.x(), vertex.y(), vertex.z()).setUv(u, v).setColor(r, g, b, a);
     }
 
     @Override
@@ -361,7 +329,7 @@ public class DefaultParticle extends Particle {
             @Override
             @Nullable
             public BufferBuilder begin(Tesselator tesselator, TextureManager textureManager) {
-                restoreParticlePipelineAfterCustom();
+                restorePipelineAfterCustom();
                 RenderSystem.depthMask(false);
                 RenderSystem.enableBlend();
                 if (additive) {
@@ -372,12 +340,11 @@ public class DefaultParticle extends Particle {
                             GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
                     );
                 }
-                RenderSystem.setShader(GameRenderer::getParticleShader);
+                RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                 RenderSystem.setShaderTexture(0, texture);
                 textureManager.getTexture(texture).setFilter(true, false);
-                activeBatch = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
-                return activeBatch;
+                return tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
             }
 
             @Override
@@ -388,11 +355,9 @@ public class DefaultParticle extends Particle {
     }
 
     /**
-     * 假人伤害数字在 CUSTOM 阶段 endBatch 后，lightmap / 活动纹理单元往往已被拆掉；
-     * 粒子着色器仍采样 lightmap，未恢复则整批不可见。
+     * 假人伤害数字在 CUSTOM 阶段 endBatch 后，活动纹理单元 / 深度测试往往已被弄脏。
      */
-    private static void restoreParticlePipelineAfterCustom() {
-        Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
+    private static void restorePipelineAfterCustom() {
         RenderSystem.activeTexture(org.lwjgl.opengl.GL13.GL_TEXTURE2);
         RenderSystem.activeTexture(org.lwjgl.opengl.GL13.GL_TEXTURE0);
         RenderSystem.enableDepthTest();
