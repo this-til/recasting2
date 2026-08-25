@@ -94,7 +94,7 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
         if (clientEntriesReady) {
             return clientEntries;
         }
-        return ProudSoulBagStorage.list(getBagStack());
+        return ProudSoulBagStorage.list(getBagStack(), playerInventory.player.registryAccess());
     }
 
     public void syncContentsToClient(@Nullable Player player) {
@@ -105,7 +105,8 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
         if (!bag.isEmpty()) {
             playerInventory.setItem(bagInventoryIndex, bag.copy());
         }
-        List<ProudSoulBagStorage.StoredEntry> entries = ProudSoulBagStorage.list(getBagStack());
+        List<ProudSoulBagStorage.StoredEntry> entries =
+                ProudSoulBagStorage.list(getBagStack(), player.registryAccess());
         List<ProudSoulBagSyncMessage.StoredEntry> payload = entries.stream()
                 .map(entry -> new ProudSoulBagSyncMessage.StoredEntry(entry.template(), entry.count()))
                 .toList();
@@ -113,9 +114,15 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
         broadcastChanges();
     }
 
-    public static void writeOpenData(RegistryFriendlyByteBuf buf, InteractionHand hand, ItemStack bag) {
+    public static void writeOpenData(
+            RegistryFriendlyByteBuf buf,
+            InteractionHand hand,
+            ItemStack bag,
+            Player player
+    ) {
         buf.writeEnum(hand);
-        List<ProudSoulBagStorage.StoredEntry> entries = ProudSoulBagStorage.list(bag);
+        List<ProudSoulBagStorage.StoredEntry> entries =
+                ProudSoulBagStorage.list(bag, player.registryAccess());
         buf.writeVarInt(entries.size());
         for (ProudSoulBagStorage.StoredEntry entry : entries) {
             ProudSoulBagStorage.writeTemplate(buf, entry.template());
@@ -144,7 +151,7 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
             return ItemStack.EMPTY;
         }
         ItemStack copy = stack.copy();
-        ProudSoulBagStorage.insert(bag, stack);
+        ProudSoulBagStorage.insert(bag, stack, player.registryAccess());
         if (stack.getCount() == copy.getCount()) {
             return ItemStack.EMPTY;
         }
@@ -177,20 +184,23 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
             return;
         }
 
+        var registries = player.registryAccess();
         ItemStack carried = getCarried();
         switch (action) {
             case PICKUP_OR_SET_DOWN -> {
                 if (!carried.isEmpty()) {
                     if (ProudSoulBagStorage.isProudSoul(carried)) {
-                        ProudSoulBagStorage.insert(bag, carried);
+                        ProudSoulBagStorage.insert(bag, carried, registries);
                     }
                 } else {
-                    ProudSoulBagStorage.StoredEntry entry = ProudSoulBagStorage.getByIndex(bag, virtualIndex);
+                    ProudSoulBagStorage.StoredEntry entry =
+                            ProudSoulBagStorage.getByIndex(bag, virtualIndex, registries);
                     if (entry.template().isEmpty() || entry.count() <= 0) {
                         return;
                     }
                     long want = Math.min(entry.template().getMaxStackSize(), entry.count());
-                    ItemStack extracted = ProudSoulBagStorage.extractByIndex(bag, virtualIndex, want);
+                    ItemStack extracted =
+                            ProudSoulBagStorage.extractByIndex(bag, virtualIndex, want, registries);
                     setCarried(extracted);
                 }
             }
@@ -200,32 +210,36 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
                         return;
                     }
                     ItemStack one = carried.split(1);
-                    ProudSoulBagStorage.insert(bag, one);
+                    ProudSoulBagStorage.insert(bag, one, registries);
                     if (!one.isEmpty()) {
                         carried.grow(one.getCount());
                     }
                 } else {
-                    ProudSoulBagStorage.StoredEntry entry = ProudSoulBagStorage.getByIndex(bag, virtualIndex);
+                    ProudSoulBagStorage.StoredEntry entry =
+                            ProudSoulBagStorage.getByIndex(bag, virtualIndex, registries);
                     if (entry.template().isEmpty() || entry.count() <= 0) {
                         return;
                     }
                     long half = (Math.min(entry.template().getMaxStackSize(), entry.count()) + 1) / 2;
-                    ItemStack extracted = ProudSoulBagStorage.extractByIndex(bag, virtualIndex, half);
+                    ItemStack extracted =
+                            ProudSoulBagStorage.extractByIndex(bag, virtualIndex, half, registries);
                     setCarried(extracted);
                 }
             }
             case SHIFT_CLICK -> {
-                ProudSoulBagStorage.StoredEntry entry = ProudSoulBagStorage.getByIndex(bag, virtualIndex);
+                ProudSoulBagStorage.StoredEntry entry =
+                        ProudSoulBagStorage.getByIndex(bag, virtualIndex, registries);
                 if (entry.template().isEmpty() || entry.count() <= 0) {
                     return;
                 }
                 long want = Math.min(entry.template().getMaxStackSize(), entry.count());
-                ItemStack extracted = ProudSoulBagStorage.extractByIndex(bag, virtualIndex, want);
+                ItemStack extracted =
+                        ProudSoulBagStorage.extractByIndex(bag, virtualIndex, want, registries);
                 if (extracted.isEmpty()) {
                     return;
                 }
                 if (!player.getInventory().add(extracted) && !extracted.isEmpty()) {
-                    ProudSoulBagStorage.insert(bag, extracted);
+                    ProudSoulBagStorage.insert(bag, extracted, registries);
                     if (!extracted.isEmpty()) {
                         player.drop(extracted, false);
                     }
@@ -233,18 +247,23 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
             }
             case ROLL_EXTRACT_ONE -> {
                 if (!carried.isEmpty()) {
-                    if (!ItemStack.isSameItemSameComponents(carried, ProudSoulBagStorage.getByIndex(bag, virtualIndex).template())) {
+                    if (!ItemStack.isSameItemSameComponents(
+                            carried,
+                            ProudSoulBagStorage.getByIndex(bag, virtualIndex, registries).template()
+                    )) {
                         return;
                     }
                     if (carried.getCount() >= carried.getMaxStackSize()) {
                         return;
                     }
-                    ItemStack one = ProudSoulBagStorage.extractByIndex(bag, virtualIndex, 1);
+                    ItemStack one =
+                            ProudSoulBagStorage.extractByIndex(bag, virtualIndex, 1, registries);
                     if (!one.isEmpty()) {
                         carried.grow(1);
                     }
                 } else {
-                    ItemStack one = ProudSoulBagStorage.extractByIndex(bag, virtualIndex, 1);
+                    ItemStack one =
+                            ProudSoulBagStorage.extractByIndex(bag, virtualIndex, 1, registries);
                     setCarried(one);
                 }
             }
@@ -253,7 +272,7 @@ public class ProudSoulBagMenu extends AbstractContainerMenu {
                     return;
                 }
                 ItemStack one = carried.split(1);
-                ProudSoulBagStorage.insert(bag, one);
+                ProudSoulBagStorage.insert(bag, one, registries);
                 if (!one.isEmpty()) {
                     carried.grow(one.getCount());
                 }

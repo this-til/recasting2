@@ -46,7 +46,7 @@ public final class ProudSoulBagHelper {
         if (bag.isEmpty()) {
             return false;
         }
-        long inserted = ProudSoulBagStorage.insert(bag, stack);
+        long inserted = ProudSoulBagStorage.insert(bag, stack, player.registryAccess());
         return inserted > 0;
     }
 }

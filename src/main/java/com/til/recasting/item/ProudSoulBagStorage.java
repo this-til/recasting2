@@ -35,9 +35,10 @@ public final class ProudSoulBagStorage {
     }
 
     /**
-     * 附魔等为数据包注册表，必须使用当前世界的 RegistryAccess；静态 BuiltInRegistries 不足以编码 ItemStack。
+     * 附魔等为数据包注册表，必须使用与 ItemStack 上 Holder 一致的 RegistryAccess。
+     * 有玩家/世界上下文时应传入 {@code player.registryAccess()}，勿依赖静态兜底。
      */
-    private static HolderLookup.Provider registries() {
+    private static HolderLookup.Provider fallbackRegistries() {
         return SlashBladeRegistryHelper.getRegistryAccess()
                 .map(access -> (HolderLookup.Provider) access)
                 .orElse(FALLBACK_REGISTRIES);
@@ -48,6 +49,13 @@ public final class ProudSoulBagStorage {
     }
 
     public static @NotNull List<StoredEntry> list(@NotNull ItemStack bag) {
+        return list(bag, fallbackRegistries());
+    }
+
+    public static @NotNull List<StoredEntry> list(
+            @NotNull ItemStack bag,
+            @NotNull HolderLookup.Provider registries
+    ) {
         MutableData data = open(bag, false);
         if (data == null || data.list.isEmpty()) {
             return Collections.emptyList();
@@ -55,7 +63,7 @@ public final class ProudSoulBagStorage {
         List<StoredEntry> result = new ArrayList<>(data.list.size());
         for (int i = 0; i < data.list.size(); i++) {
             CompoundTag entry = data.list.getCompound(i);
-            ItemStack template = ItemStack.parseOptional(registries(), entry.getCompound(ENTRY_ITEM_KEY));
+            ItemStack template = ItemStack.parseOptional(registries, entry.getCompound(ENTRY_ITEM_KEY));
             if (template.isEmpty()) {
                 continue;
             }
@@ -70,6 +78,14 @@ public final class ProudSoulBagStorage {
     }
 
     public static long insert(@NotNull ItemStack bag, @NotNull ItemStack incoming) {
+        return insert(bag, incoming, fallbackRegistries());
+    }
+
+    public static long insert(
+            @NotNull ItemStack bag,
+            @NotNull ItemStack incoming,
+            @NotNull HolderLookup.Provider registries
+    ) {
         if (!isProudSoul(incoming) || incoming.isEmpty()) {
             return 0;
         }
@@ -80,14 +96,14 @@ public final class ProudSoulBagStorage {
 
         MutableData data = open(bag, true);
         ItemStack template = incoming.copyWithCount(1);
-        int index = findMatchingIndex(data.list, template);
+        int index = findMatchingIndex(data.list, template, registries);
         if (index >= 0) {
             CompoundTag entry = data.list.getCompound(index);
             long existing = entry.getLong(ENTRY_COUNT_KEY);
             entry.putLong(ENTRY_COUNT_KEY, existing + amount);
         } else {
             CompoundTag entry = new CompoundTag();
-            entry.put(ENTRY_ITEM_KEY, saveTemplate(template));
+            entry.put(ENTRY_ITEM_KEY, saveTemplate(template, registries));
             entry.putLong(ENTRY_COUNT_KEY, amount);
             data.list.add(entry);
         }
@@ -97,6 +113,15 @@ public final class ProudSoulBagStorage {
     }
 
     public static @NotNull ItemStack extract(@NotNull ItemStack bag, @NotNull ItemStack match, long want) {
+        return extract(bag, match, want, fallbackRegistries());
+    }
+
+    public static @NotNull ItemStack extract(
+            @NotNull ItemStack bag,
+            @NotNull ItemStack match,
+            long want,
+            @NotNull HolderLookup.Provider registries
+    ) {
         if (match.isEmpty() || want <= 0) {
             return ItemStack.EMPTY;
         }
@@ -104,12 +129,12 @@ public final class ProudSoulBagStorage {
         if (data == null || data.list.isEmpty()) {
             return ItemStack.EMPTY;
         }
-        int index = findMatchingIndex(data.list, match);
+        int index = findMatchingIndex(data.list, match, registries);
         if (index < 0) {
             return ItemStack.EMPTY;
         }
         CompoundTag entry = data.list.getCompound(index);
-        ItemStack template = ItemStack.parseOptional(registries(), entry.getCompound(ENTRY_ITEM_KEY));
+        ItemStack template = ItemStack.parseOptional(registries, entry.getCompound(ENTRY_ITEM_KEY));
         if (template.isEmpty()) {
             data.list.remove(index);
             data.commit(bag);
@@ -132,25 +157,46 @@ public final class ProudSoulBagStorage {
     }
 
     public static @NotNull ItemStack extractByIndex(@NotNull ItemStack bag, int index, long want) {
-        List<StoredEntry> entries = list(bag);
+        return extractByIndex(bag, index, want, fallbackRegistries());
+    }
+
+    public static @NotNull ItemStack extractByIndex(
+            @NotNull ItemStack bag,
+            int index,
+            long want,
+            @NotNull HolderLookup.Provider registries
+    ) {
+        List<StoredEntry> entries = list(bag, registries);
         if (index < 0 || index >= entries.size()) {
             return ItemStack.EMPTY;
         }
-        return extract(bag, entries.get(index).template(), want);
+        return extract(bag, entries.get(index).template(), want, registries);
     }
 
     public static @NotNull StoredEntry getByIndex(@NotNull ItemStack bag, int index) {
-        List<StoredEntry> entries = list(bag);
+        return getByIndex(bag, index, fallbackRegistries());
+    }
+
+    public static @NotNull StoredEntry getByIndex(
+            @NotNull ItemStack bag,
+            int index,
+            @NotNull HolderLookup.Provider registries
+    ) {
+        List<StoredEntry> entries = list(bag, registries);
         if (index < 0 || index >= entries.size()) {
             return new StoredEntry(ItemStack.EMPTY, 0);
         }
         return entries.get(index);
     }
 
-    private static int findMatchingIndex(ListTag list, ItemStack match) {
+    private static int findMatchingIndex(
+            ListTag list,
+            ItemStack match,
+            HolderLookup.Provider registries
+    ) {
         for (int i = 0; i < list.size(); i++) {
             CompoundTag entry = list.getCompound(i);
-            ItemStack template = ItemStack.parseOptional(registries(), entry.getCompound(ENTRY_ITEM_KEY));
+            ItemStack template = ItemStack.parseOptional(registries, entry.getCompound(ENTRY_ITEM_KEY));
             if (!template.isEmpty() && ItemStack.isSameItemSameComponents(template, match)) {
                 return i;
             }
@@ -197,8 +243,8 @@ public final class ProudSoulBagStorage {
         }
     }
 
-    private static CompoundTag saveTemplate(ItemStack template) {
-        return (CompoundTag) template.saveOptional(registries());
+    private static CompoundTag saveTemplate(ItemStack template, HolderLookup.Provider registries) {
+        return (CompoundTag) template.saveOptional(registries);
     }
 
     public record StoredEntry(@NotNull ItemStack template, long count) {

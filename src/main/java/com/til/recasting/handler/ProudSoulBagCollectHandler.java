@@ -36,7 +36,7 @@ public final class ProudSoulBagCollectHandler {
             return;
         }
         int before = stack.getCount();
-        ProudSoulBagStorage.insert(bag, stack);
+        ProudSoulBagStorage.insert(bag, stack, player.registryAccess());
         if (stack.getCount() != before && player.containerMenu instanceof ProudSoulBagMenu menu) {
             menu.syncContentsToClient(player);
         }

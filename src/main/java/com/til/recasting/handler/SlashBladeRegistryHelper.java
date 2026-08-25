@@ -133,15 +133,23 @@ public final class SlashBladeRegistryHelper {
                 return Optional.of(cachedRegistryAccess);
             }
 
-            // 集成服服务端线程优先走 ServerLifecycleHooks；仅 Dist.CLIENT 时客户端连接也可兜底
-            Optional<RegistryAccess> serverAccess = getServerRegistryAccess();
-            if (serverAccess.isPresent()) {
-                return serverAccess;
-            }
+            // Dist.CLIENT 含集成服：客户端物品的 Holder 绑定连接侧 RegistryAccess。
+            // 若在渲染线程仍优先返回服务端 Access，ItemStack.save（含附魔）会因 registry set 不匹配崩溃。
             if (FMLEnvironment.dist == Dist.CLIENT) {
-                return getClientRegistryAccess();
+                MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+                if (server != null && server.isSameThread()) {
+                    return Optional.of(server.registryAccess());
+                }
+                Optional<RegistryAccess> clientAccess = getClientRegistryAccess();
+                if (clientAccess.isPresent()) {
+                    return clientAccess;
+                }
+                if (server != null) {
+                    return Optional.of(server.registryAccess());
+                }
+                return Optional.empty();
             }
-            return Optional.empty();
+            return getServerRegistryAccess();
         } catch (Exception e) {
             log.error("获取 RegistryAccess 失败", e);
             return Optional.empty();
