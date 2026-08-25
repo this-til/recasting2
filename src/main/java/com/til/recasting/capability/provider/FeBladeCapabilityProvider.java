@@ -1,6 +1,5 @@
 package com.til.recasting.capability.provider;
 
-import com.til.recasting.energy.FeBladeEnergyStorage;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;

@@ -1,4 +1,4 @@
-package com.til.recasting.energy;
+package com.til.recasting.capability.provider;
 
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.handler.CapabilityRegistryHandler;
