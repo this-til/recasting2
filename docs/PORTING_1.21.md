@@ -55,7 +55,7 @@ flowchart LR
 | P3 | 批量移植 SA/SE/Buff 至数量对齐 1.20（Entity 依赖已就绪） | done |
 | P4 | 铁砧/物品/掉落/进度/剩余 Mixin | done |
 | P5 | 客户端渲染、粒子、shader、UI、特效包联调 | done |
-| P6 | Datagen + lang；runData 产出 named_blades/recipes/adv（assets/`R` 已在 P4） | pending |
+| P6 | Datagen + lang；runData 产出 named_blades/recipes/adv（assets/`R` 已在 P4） | done |
 | P7 | JEI/软兼容、文档、定版打包与完整游玩验收 | pending |
 
 ---
@@ -237,6 +237,8 @@ public static void onDoSlash(SlashBladeEvent.DoSlashEvent event) {
 
 **验收**：创造栏可见名刀；JEI 前配方 JSON 存在；中英语言齐全。
 
+**完成记录（2026-08-25）**：11 个 `src/generated/java` 自 1.20 移植并适配 NeoForge 1.21（`BootstrapContext` / `RecipeOutput` / `Holder<Enchantment>` / `ItemSubPredicate` + `AdvancementHolder`）；`build.gradle` mods 含 `sourceSets.generated`；`runData` 产出 named_blades×92、recipes×312、advancements×468、lang×2、models×49；顺带修 `ItemSlashBladeMixin` tooltip 签名、`LockOnManagerMixin` static 注入、客户端自定义 Registry 的 `NewRegistryEvent`、无 `@SubscribeEvent` 的 EVENT_BUS 注册与 `SECrystalData` equals/hashCode；`.\gradlew compileGeneratedJava` / `runData` / `build` 通过。
+
 ---
 
 ### P7 — 兼容、打包、文档收尾
@@ -308,4 +310,4 @@ gantt
 
 ---
 
-**最后更新：** 2026-08-25（P5 完成）
+**最后更新：** 2026-08-25（P6 完成）
