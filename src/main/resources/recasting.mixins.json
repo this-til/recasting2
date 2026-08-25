@@ -22,11 +22,11 @@
     "LivingEntitySetHealthMixin",
     "EntityAccessor",
     "AdvancementVisibilityEvaluatorMixin",
-    "ItemSlashBladeMixin",
     "JEICompatMixin",
     "RequestDefinitionInitItemStackMixin"
   ],
   "client": [
+    "ItemSlashBladeMixin",
     "client.LayerMainBladeMixin"
   ],
   "injectors": {
