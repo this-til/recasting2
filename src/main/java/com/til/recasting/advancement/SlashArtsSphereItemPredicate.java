@@ -21,6 +21,13 @@ public record SlashArtsSphereItemPredicate(ResourceLocation slashArtsId) impleme
             ResourceLocation.CODEC.fieldOf("slash_arts").forGetter(SlashArtsSphereItemPredicate::slashArtsId)
     ).apply(instance, SlashArtsSphereItemPredicate::new));
 
+    public static final ItemSubPredicate.Type<SlashArtsSphereItemPredicate> TYPE =
+            new ItemSubPredicate.Type<>(CODEC);
+
+    public static SlashArtsSphereItemPredicate of(ResourceLocation slashArtsId) {
+        return new SlashArtsSphereItemPredicate(slashArtsId);
+    }
+
     @Override
     public boolean matches(ItemStack stack) {
         if (stack.isEmpty() || !stack.is(SlashBladeItems.PROUDSOUL_SPHERE.get())) {

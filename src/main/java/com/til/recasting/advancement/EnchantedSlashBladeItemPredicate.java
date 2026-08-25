@@ -19,6 +19,17 @@ public record EnchantedSlashBladeItemPredicate(ResourceLocation enchantmentId) i
             ResourceLocation.CODEC.fieldOf("enchantment").forGetter(EnchantedSlashBladeItemPredicate::enchantmentId)
     ).apply(instance, EnchantedSlashBladeItemPredicate::new));
 
+    public static final ItemSubPredicate.Type<EnchantedSlashBladeItemPredicate> TYPE =
+            new ItemSubPredicate.Type<>(CODEC);
+
+    public static EnchantedSlashBladeItemPredicate of(ResourceLocation enchantmentId) {
+        return new EnchantedSlashBladeItemPredicate(enchantmentId);
+    }
+
+    public static EnchantedSlashBladeItemPredicate of(ResourceKey<Enchantment> enchantment) {
+        return of(enchantment.location());
+    }
+
     @Override
     public boolean matches(ItemStack stack) {
         if (stack.isEmpty() || !(stack.getItem() instanceof ItemSlashBlade)) {

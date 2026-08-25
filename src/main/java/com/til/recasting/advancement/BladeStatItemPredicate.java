@@ -17,6 +17,17 @@ public record BladeStatItemPredicate(int minExclusiveKillCount, int minExclusive
             Codec.INT.optionalFieldOf("min_exclusive_refine", -1).forGetter(BladeStatItemPredicate::minExclusiveRefine)
     ).apply(instance, BladeStatItemPredicate::new));
 
+    public static final ItemSubPredicate.Type<BladeStatItemPredicate> TYPE =
+            new ItemSubPredicate.Type<>(CODEC);
+
+    public static BladeStatItemPredicate minKill(int minExclusiveKillCount) {
+        return new BladeStatItemPredicate(minExclusiveKillCount, -1);
+    }
+
+    public static BladeStatItemPredicate minRefine(int minExclusiveRefine) {
+        return new BladeStatItemPredicate(-1, minExclusiveRefine);
+    }
+
     @Override
     public boolean matches(ItemStack stack) {
         if (stack.isEmpty() || !(stack.getItem() instanceof ItemSlashBlade)) {

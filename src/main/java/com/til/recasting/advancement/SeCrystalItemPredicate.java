@@ -19,6 +19,13 @@ public record SeCrystalItemPredicate(ResourceLocation effectId, int level) imple
             Codec.INT.optionalFieldOf("level", 1).forGetter(SeCrystalItemPredicate::level)
     ).apply(instance, SeCrystalItemPredicate::new));
 
+    public static final ItemSubPredicate.Type<SeCrystalItemPredicate> TYPE =
+            new ItemSubPredicate.Type<>(CODEC);
+
+    public static SeCrystalItemPredicate of(ResourceLocation effectId, int level) {
+        return new SeCrystalItemPredicate(effectId, level);
+    }
+
     @Override
     public boolean matches(ItemStack stack) {
         if (stack.isEmpty() || !stack.is(RecastingItems.SE_CRYSTAL.get())) {

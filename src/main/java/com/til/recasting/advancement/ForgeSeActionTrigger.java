@@ -2,6 +2,7 @@ package com.til.recasting.advancement;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
@@ -33,6 +34,11 @@ public class ForgeSeActionTrigger extends SimpleCriterionTrigger<ForgeSeActionTr
 
         public boolean matches(ForgeSeAction performed) {
             return this.action == performed;
+        }
+
+        public static Criterion<TriggerInstance> action(ForgeSeAction action) {
+            return RecastingCriteriaTriggers.FORGE_SE_ACTION.get()
+                    .createCriterion(new TriggerInstance(Optional.empty(), action));
         }
     }
 }

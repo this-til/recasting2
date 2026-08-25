@@ -17,6 +17,13 @@ public record NamedSlashBladeItemPredicate(ResourceLocation bladeId) implements 
             ResourceLocation.CODEC.fieldOf("blade").forGetter(NamedSlashBladeItemPredicate::bladeId)
     ).apply(instance, NamedSlashBladeItemPredicate::new));
 
+    public static final ItemSubPredicate.Type<NamedSlashBladeItemPredicate> TYPE =
+            new ItemSubPredicate.Type<>(CODEC);
+
+    public static NamedSlashBladeItemPredicate of(ResourceLocation bladeId) {
+        return new NamedSlashBladeItemPredicate(bladeId);
+    }
+
     @Override
     public boolean matches(ItemStack stack) {
         if (stack.isEmpty() || !(stack.getItem() instanceof ItemSlashBlade)) {
