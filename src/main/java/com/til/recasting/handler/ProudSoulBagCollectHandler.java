@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 
 /**
@@ -41,6 +42,7 @@ public final class ProudSoulBagCollectHandler {
             menu.syncContentsToClient(player);
         }
         if (stack.isEmpty()) {
+            event.setCanPickup(TriState.FALSE);
             itemEntity.discard();
             return;
         }

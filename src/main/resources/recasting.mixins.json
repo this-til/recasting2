@@ -8,6 +8,7 @@
   "mixins": [
     "AttackManagerMixin",
     "AttackHelperMixin",
+    "EnchantmentHelperMixin",
     "SlashArtsAccessor",
     "DamageSourcesAccessor",
     "SlashBladeDefinitionCodecMixin",

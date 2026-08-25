@@ -9,8 +9,6 @@ import com.til.recasting.registry.RecastingDataComponents;
 import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.DamageStructure;
-import mods.flammpfeil.slashblade.ability.ArrowReflector;
-import mods.flammpfeil.slashblade.ability.TNTExtinguisher;
 import mods.flammpfeil.slashblade.capability.slashblade.BladeStateAccess;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.util.KnockBacks;
@@ -183,6 +181,10 @@ public final class AttackHelper {
         return Math.min(level * 0.2F, 1.0F);
     }
 
+    /**
+     * 原版锋利在 {@link net.minecraft.world.item.enchantment.EnchantmentHelper#modifyDamage} 中的典型加值：
+     * {@code 1 + 0.5 * max(0, level - 1)}。
+     */
     public static float vanillaSharpnessDamageBonus(int level) {
         if (level <= 0) {
             return 0.0F;
@@ -364,9 +366,6 @@ public final class AttackHelper {
         });
 
         target.invulnerableTime = 0;
-
-        ArrowReflector.doReflect(target, attacker);
-        TNTExtinguisher.doExtinguishing(target, attacker);
     }
 
     public static List<LivingEntity> attackAlongSegment(
