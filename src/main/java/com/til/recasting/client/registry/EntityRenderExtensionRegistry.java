@@ -54,7 +54,7 @@ public class EntityRenderExtensionRegistry {
      * 实体渲染扩展注册表实例
      */
     public static final Registry<EntityRenderExtension> REGISTRY =
-            new RegistryBuilder<>(ENTITY_RENDER_EXTENSION_REGISTRY_KEY).sync(true).create();
+            new RegistryBuilder<>(ENTITY_RENDER_EXTENSION_REGISTRY_KEY).sync(false).create();
 
     // ==================== 预定义的渲染扩展 ====================
 

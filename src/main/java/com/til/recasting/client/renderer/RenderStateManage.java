@@ -12,6 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @OnlyIn(Dist.CLIENT)
 public class RenderStateManage extends BladeRenderState {
 
@@ -35,18 +38,36 @@ public class RenderStateManage extends BladeRenderState {
                 RenderSystem.defaultBlendFunc();
             });
 
-    public static RenderType mackLuminous(ResourceLocation texture) {
-        RenderType.CompositeState state = RenderType.CompositeState.builder()
-                .setShaderState(RenderStateShard.RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
-                .setOutputState(ITEM_ENTITY_TARGET)
-                .setTextureState(new RenderStateShard.TextureStateShard(texture, true, true))
-                .setTransparencyState(ADDITIVE_TRANSPARENCY)
-                // 移除 lightmap 以禁用全局光照影响，物体将始终保持最大亮度
-                .setOverlayState(OVERLAY)
-                .setWriteMaskState(COLOR_DEPTH_WRITE)
-                .createCompositeState(false);
+    private static final Map<ResourceLocation, RenderType> LUMINOUS_CACHE = new HashMap<>();
+    private static final Map<ResourceLocation, RenderType> MODEL_CACHE = new HashMap<>();
 
-        return RenderType.create("luminous_" + texture, DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.TRIANGLES, 256, false, true, state);
+    /**
+     * 实体世界发光渲染：对齐 SlashBlade luminous（MAIN_TARGET + lightmap + NO_CULL）。
+     * 不可用 ITEM_ENTITY_TARGET——生物实体批绘阶段不会正确合成该目标。
+     */
+    public static RenderType mackLuminous(ResourceLocation texture) {
+        return LUMINOUS_CACHE.computeIfAbsent(texture, t -> {
+            RenderType.CompositeState state = RenderType.CompositeState.builder()
+                    .setShaderState(RenderStateShard.RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
+                    .setOutputState(MAIN_TARGET)
+                    .setCullState(NO_CULL)
+                    .setTextureState(new RenderStateShard.TextureStateShard(t, true, true))
+                    .setTransparencyState(ADDITIVE_TRANSPARENCY)
+                    .setLightmapState(LIGHTMAP)
+                    .setOverlayState(OVERLAY)
+                    .setWriteMaskState(COLOR_WRITE)
+                    .createCompositeState(false);
+
+            return RenderType.create(
+                    "recasting_luminous_" + t,
+                    DefaultVertexFormat.NEW_ENTITY,
+                    VertexFormat.Mode.TRIANGLES,
+                    256,
+                    false,
+                    true,
+                    state
+            );
+        });
     }
 
     public static final ResourceLocation FIRE_LAYER_0 = ResourceLocation.fromNamespaceAndPath("minecraft", "block/fire_0");
@@ -104,17 +125,28 @@ public class RenderStateManage extends BladeRenderState {
             });
 
     public static RenderType mackModel(ResourceLocation texture) {
-        RenderType.CompositeState state = RenderType.CompositeState.builder()
-                .setShaderState(RenderStateShard.RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
-                .setOutputState(ITEM_ENTITY_TARGET)
-                .setTextureState(new RenderStateShard.TextureStateShard(texture, true, true))
-                .setTransparencyState(MODEL_TRANSPARENCY)
-                // 移除 lightmap 以禁用全局光照影响，物体将始终保持最大亮度
-                .setOverlayState(OVERLAY)
-                .setWriteMaskState(COLOR_WRITE)
-                .createCompositeState(false);
+        return MODEL_CACHE.computeIfAbsent(texture, t -> {
+            RenderType.CompositeState state = RenderType.CompositeState.builder()
+                    .setShaderState(RenderStateShard.RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
+                    .setOutputState(MAIN_TARGET)
+                    .setCullState(NO_CULL)
+                    .setTextureState(new RenderStateShard.TextureStateShard(t, true, true))
+                    .setTransparencyState(MODEL_TRANSPARENCY)
+                    .setLightmapState(LIGHTMAP)
+                    .setOverlayState(OVERLAY)
+                    .setWriteMaskState(COLOR_WRITE)
+                    .createCompositeState(false);
 
-        return RenderType.create("model_" + texture, DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.TRIANGLES, 256, false, true, state);
+            return RenderType.create(
+                    "recasting_model_" + t,
+                    DefaultVertexFormat.NEW_ENTITY,
+                    VertexFormat.Mode.TRIANGLES,
+                    256,
+                    false,
+                    true,
+                    state
+            );
+        });
     }
 
     /**

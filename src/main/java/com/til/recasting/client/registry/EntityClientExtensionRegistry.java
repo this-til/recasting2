@@ -23,7 +23,7 @@ public final class EntityClientExtensionRegistry {
             DeferredRegister.create(ENTITY_CLIENT_EXTENSION_REGISTRY_KEY, Recasting.MODID);
 
     public static final Registry<EntityClientExtension> REGISTRY =
-            new RegistryBuilder<>(ENTITY_CLIENT_EXTENSION_REGISTRY_KEY).sync(true).create();
+            new RegistryBuilder<>(ENTITY_CLIENT_EXTENSION_REGISTRY_KEY).sync(false).create();
 
     public static final DeferredHolder<EntityClientExtension, EntityClientExtension> MORTAL_DUST_TRAIL = ENTITY_CLIENT_EXTENSIONS.register(
             "mortal_dust_trail",

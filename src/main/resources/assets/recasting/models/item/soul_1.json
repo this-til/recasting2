@@ -1,7 +1,6 @@
 {
-  "loader": "forge:obj",
-  "__comment": "Add the following line on the same level as a 'model' declaration.",
-  "custom": { "flip-v": true },
+  "loader": "neoforge:obj",
+  "flip_v": true,
   "model": "recasting:models/prefab/soul_1.obj",
   "textures": {
     "soul": "recasting:item/soul",

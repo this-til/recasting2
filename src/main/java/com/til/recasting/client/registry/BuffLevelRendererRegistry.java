@@ -22,7 +22,7 @@ public final class BuffLevelRendererRegistry {
             DeferredRegister.create(BUFF_LEVEL_RENDER_CONFIG_REGISTRY_KEY, Recasting.MODID);
 
     public static final Registry<BuffLevelRenderConfig> REGISTRY =
-            new RegistryBuilder<>(BUFF_LEVEL_RENDER_CONFIG_REGISTRY_KEY).sync(true).create();
+            new RegistryBuilder<>(BUFF_LEVEL_RENDER_CONFIG_REGISTRY_KEY).sync(false).create();
 
     public static final DeferredHolder<BuffLevelRenderConfig, BuffLevelRenderConfig> SOUL_BURN = BUFF_LEVEL_RENDER_CONFIGS.register(
             "soul_burn",

@@ -85,40 +85,52 @@ public class BuffLevelTextRenderer implements EntityRenderExtension {
         try (MSAutoCloser msac = MSAutoCloser.pushMatrix(poseStack)) {
             float entityHeight = entity.getBbHeight();
             float nameTagOffset = 0.5F;
-            float baseYOffset = entityHeight + nameTagOffset;
             float lineHeight = 0.25F;
-            float startY = baseYOffset + lineHeight;
+            float startY = entityHeight + nameTagOffset + lineHeight;
 
             poseStack.translate(0.0D, startY, 0.0D);
             poseStack.mulPose(minecraft.getEntityRenderDispatcher().cameraOrientation());
 
             float scale = 0.025F;
-            poseStack.scale(-scale, -scale, scale);
+            poseStack.scale(scale, -scale, scale);
 
             Matrix4f matrix = poseStack.last().pose();
+            float backgroundOpacity = minecraft.options.getBackgroundOpacity(0.25F);
+            int backgroundColor = (int) (backgroundOpacity * 255.0F) << 24;
 
-            int yOffset = 0;
+            float yOffset = 0.0F;
             for (BuffInfo buffInfo : buffInfos) {
                 String text = buffInfo.displayText;
                 float textWidth = font.width(text);
                 float x = -textWidth / 2.0F;
 
-                int backgroundOpacity = 64;
-                int backgroundColor = backgroundOpacity << 24;
+                // 对齐原版名称标签：先透视层再实色层，保证可读
                 font.drawInBatch(
                         text,
                         x,
                         yOffset,
-                        0xFFFFFF,
+                        0x20FFFFFF,
+                        false,
+                        matrix,
+                        bufferSource,
+                        Font.DisplayMode.SEE_THROUGH,
+                        backgroundColor,
+                        packedLight
+                );
+                font.drawInBatch(
+                        text,
+                        x,
+                        yOffset,
+                        0xFFFFFFFF,
                         false,
                         matrix,
                         bufferSource,
                         Font.DisplayMode.NORMAL,
-                        backgroundColor,
+                        0,
                         packedLight
                 );
 
-                yOffset += 10;
+                yOffset += 10.0F;
             }
         }
     }

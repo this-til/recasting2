@@ -13,7 +13,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,10 +35,14 @@ public class EntityRenderExtensionHandler {
      * 按优先级排序（数值越小越先渲染）
      */
     private static List<EntityRenderExtension> getSortedExtensions() {
-        if (sortedExtensions == null) {
-            sortedExtensions = EntityRenderExtensionRegistry.REGISTRY.stream()
-                        .sorted(Comparator.comparingInt(EntityRenderExtension::getPriority))
-                        .collect(Collectors.toList());
+        if (sortedExtensions == null || sortedExtensions.isEmpty()) {
+            List<EntityRenderExtension> loaded = EntityRenderExtensionRegistry.REGISTRY.stream()
+                    .sorted(Comparator.comparingInt(EntityRenderExtension::getPriority))
+                    .collect(Collectors.toList());
+            if (!loaded.isEmpty()) {
+                sortedExtensions = loaded;
+            }
+            return loaded;
         }
         return sortedExtensions;
     }

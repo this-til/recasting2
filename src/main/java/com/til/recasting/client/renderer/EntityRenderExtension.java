@@ -10,7 +10,6 @@ import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;
 import mods.flammpfeil.slashblade.client.renderer.model.obj.WavefrontObject;
 import mods.flammpfeil.slashblade.client.renderer.util.BladeRenderState;
 import mods.flammpfeil.slashblade.client.renderer.util.MSAutoCloser;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -59,7 +58,7 @@ public interface EntityRenderExtension {
         public void render(Entity entity, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
             IBuffStackData buffStackData = RecastingAttachments.buffStackData(entity);
             BuffType buffType = buffTypeSupplier.get();
-            int level = buffStackData.getLevel(buffType, Minecraft.getInstance().level);
+            int level = buffStackData.getLevel(buffType, entity.level());
 
             if (level <= 0) {
                 return;
@@ -75,7 +74,17 @@ public interface EntityRenderExtension {
 
                 for (int layer = level; layer > 0; layer--) {
                     BladeRenderState.setCol(color);
-                    BladeRenderState.renderOverrided(ItemStack.EMPTY, model, "l" + layer, textureLocation, poseStack, bufferSource, packedLight, RenderStateManage::mackLuminous, true);
+                    BladeRenderState.renderOverrided(
+                            ItemStack.EMPTY,
+                            model,
+                            "l" + layer,
+                            textureLocation,
+                            poseStack,
+                            bufferSource,
+                            BladeRenderState.MAX_LIGHT,
+                            RenderStateManage::mackLuminous,
+                            true
+                    );
                 }
             }
         }
