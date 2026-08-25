@@ -1,0 +1,51 @@
+{
+  "parent": "recasting:growth/se/regression",
+  "criteria": {
+    "crafted": {
+      "conditions": {
+        "recipe_id": "recasting:life_steal_se_crystal_recipe"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:se_crystal": {
+                "effect": "recasting:life_steal"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "se.recasting.life_steal.desc"
+    },
+    "icon": {
+      "components": {
+        "recasting:se_crystal_data": {
+          "SpecialEffectType": "recasting:life_steal",
+          "SpecialEffectTypeLevel": 1
+        }
+      },
+      "count": 1,
+      "id": "recasting:se_crystal"
+    },
+    "title": {
+      "translate": "se.recasting.life_steal"
+    }
+  },
+  "requirements": [
+    [
+      "obtained",
+      "crafted"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,63 @@
+{
+  "parent": "recasting:growth/blades/slashblade/art_knife",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:named_slashblade": {
+                "blade": "recasting:slashblade/special/jie_yuan_dog"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.growth.blade.menu.description"
+    },
+    "icon": {
+      "components": {
+        "slashblade:blade_state": {
+          "adjust": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "baseAttackModifier": 4.0,
+          "broken": false,
+          "carryType": "pso2",
+          "comboRoot": "slashblade:standby",
+          "defaultBewitched": false,
+          "effectColor": -14155712,
+          "effectColorInverse": false,
+          "killCount": 0,
+          "model": "recasting:slashblade/special/jie_yuan_dog.obj",
+          "proudSoul": 0,
+          "refine": 0,
+          "sealed": false,
+          "slashArtsKey": "slashblade:judgement_cut",
+          "specialEffects": [],
+          "texture": "recasting:slashblade/special/jie_yuan_dog.png",
+          "translationKey": "item.recasting.slashblade.special.jie_yuan_dog"
+        }
+      },
+      "count": 1,
+      "id": "slashblade:slashblade"
+    },
+    "title": {
+      "translate": "item.recasting.slashblade.special.jie_yuan_dog"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

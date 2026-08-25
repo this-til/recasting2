@@ -1,0 +1,35 @@
+{
+  "parent": "recasting:growth/root",
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.hub.enchant_power.description"
+    },
+    "icon": {
+      "components": {
+        "minecraft:stored_enchantments": {
+          "levels": {
+            "minecraft:smite": 1
+          }
+        }
+      },
+      "count": 1,
+      "id": "minecraft:enchanted_book"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.recasting.hub.enchant_power.title"
+    }
+  },
+  "requirements": [
+    [
+      "tick"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

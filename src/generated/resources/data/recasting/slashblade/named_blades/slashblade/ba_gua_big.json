@@ -1,0 +1,23 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/ba_gua_big",
+  "properties": {
+    "attack_base": 6.0,
+    "max_damage": 1280,
+    "slash_art": "recasting:matrix",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/ba_gua_big.obj",
+    "summon_sword_color": -1,
+    "texture": "recasting:slashblade/ba_gua_big.png"
+  }
+}

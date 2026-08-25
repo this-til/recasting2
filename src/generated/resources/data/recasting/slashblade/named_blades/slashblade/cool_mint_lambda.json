@@ -1,0 +1,23 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/cool_mint_lambda",
+  "properties": {
+    "attack_base": 7.0,
+    "max_damage": 5120,
+    "slash_art": "recasting:fanatical_dance_lambda",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/cool_mint.obj",
+    "summon_sword_color": -3673141,
+    "texture": "recasting:slashblade/cool_mint.png"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/magnetic_storm_limits",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:channeling"
+          },
+          {
+            "id": "minecraft:impaling",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:loyalty",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:power",
+            "lvl": 2
+          }
+        ],
+        "kill": 5000,
+        "name": "recasting:slashblade/magnetic_storm_lambda",
+        "refine": 600
+      }
+    },
+    "C": {
+      "item": "recasting:frost_vortex_core"
+    },
+    "T": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:thunderstorm"
+      }
+    }
+  },
+  "pattern": [
+    " TC",
+    "CBC",
+    "CT "
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

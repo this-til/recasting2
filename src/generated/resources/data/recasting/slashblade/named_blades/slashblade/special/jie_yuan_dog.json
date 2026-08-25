@@ -1,0 +1,31 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/special/jie_yuan_dog",
+  "properties": {
+    "attack_base": 6.0,
+    "max_damage": 1280,
+    "slash_art": "recasting:dog_bite",
+    "special_effects": [
+      "recasting:dog_bond"
+    ],
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:dog_bond": 1
+    }
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/special/jie_yuan_dog.obj",
+    "summon_sword_color": -14155712,
+    "texture": "recasting:slashblade/special/jie_yuan_dog.png"
+  }
+}

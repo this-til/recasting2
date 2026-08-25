@@ -1,0 +1,51 @@
+{
+  "parent": "recasting:growth/se/split",
+  "criteria": {
+    "crafted": {
+      "conditions": {
+        "recipe_id": "recasting:impact_se_crystal_recipe"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:se_crystal": {
+                "effect": "recasting:impact"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "se.recasting.impact.desc"
+    },
+    "icon": {
+      "components": {
+        "recasting:se_crystal_data": {
+          "SpecialEffectType": "recasting:impact",
+          "SpecialEffectTypeLevel": 1
+        }
+      },
+      "count": 1,
+      "id": "recasting:se_crystal"
+    },
+    "title": {
+      "translate": "se.recasting.impact"
+    }
+  },
+  "requirements": [
+    [
+      "obtained",
+      "crafted"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

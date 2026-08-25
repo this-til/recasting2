@@ -1,0 +1,43 @@
+{
+  "parent": "recasting:growth/drop/btf/mortal_dust",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:slash_arts_sphere": {
+                "slash_arts": "recasting:tidal_surge"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "slash_art.recasting.tidal_surge.desc"
+    },
+    "icon": {
+      "components": {
+        "minecraft:custom_data": {
+          "SpecialAttackType": "recasting:tidal_surge"
+        }
+      },
+      "count": 1,
+      "id": "slashblade:proudsoul_sphere"
+    },
+    "title": {
+      "translate": "slash_art.recasting.tidal_surge"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

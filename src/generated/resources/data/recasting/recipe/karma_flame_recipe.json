@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "P": {
+      "item": "slashblade:proudsoul"
+    },
+    "Q": {
+      "item": "minecraft:quartz"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    "QRQ",
+    "SPS",
+    "QRQ"
+  ],
+  "result": {
+    "count": 1,
+    "id": "recasting:karma_flame"
+  }
+}

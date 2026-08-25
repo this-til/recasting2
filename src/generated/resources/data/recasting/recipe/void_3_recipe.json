@@ -1,0 +1,54 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/void/void_3",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:protection",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:thorns",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:blast_protection",
+            "lvl": 4
+          }
+        ],
+        "kill": 5000,
+        "name": "recasting:slashblade/void/void_2",
+        "refine": 500
+      }
+    },
+    "C": {
+      "item": "recasting:blazing_flame_core"
+    },
+    "L": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:life_steal"
+      }
+    }
+  },
+  "pattern": [
+    " LC",
+    "CBC",
+    "CL "
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

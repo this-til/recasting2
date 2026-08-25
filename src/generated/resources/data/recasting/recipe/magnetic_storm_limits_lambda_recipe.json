@@ -1,0 +1,78 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/magnetic_storm_limits_lambda",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:channeling"
+          },
+          {
+            "id": "minecraft:impaling",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:loyalty",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:power",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:unbreaking",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:mending"
+          },
+          {
+            "id": "minecraft:respiration",
+            "lvl": 3
+          }
+        ],
+        "kill": 10000,
+        "name": "recasting:slashblade/magnetic_storm_limits",
+        "refine": 1200
+      }
+    },
+    "C": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:thunder_cloud"
+      }
+    },
+    "F": {
+      "item": "recasting:frost_vortex_core"
+    },
+    "T": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:thunderstorm"
+      }
+    }
+  },
+  "pattern": [
+    "FT ",
+    "CBC",
+    " TF"
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

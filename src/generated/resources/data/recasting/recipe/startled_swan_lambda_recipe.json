@@ -1,0 +1,71 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/startled_swan_lambda",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:feather_falling",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:depth_strider",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:soul_speed",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:swift_sneak",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:unbreaking",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:mending"
+          },
+          {
+            "id": "minecraft:multishot"
+          }
+        ],
+        "kill": 2000,
+        "name": "recasting:slashblade/startled_swan",
+        "refine": 2000
+      }
+    },
+    "C": {
+      "item": "recasting:frost_vortex_core"
+    },
+    "I": {
+      "item": "minecraft:ender_eye"
+    },
+    "S": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:sever_break"
+      }
+    }
+  },
+  "pattern": [
+    "CIC",
+    "SBS",
+    "CIC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

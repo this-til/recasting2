@@ -1,0 +1,31 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/brilliant_tea",
+  "properties": {
+    "attack_base": 7.0,
+    "max_damage": 3840,
+    "slash_art": "recasting:zantetsuden_row_lambda",
+    "special_effects": [
+      "recasting:tea_aroma"
+    ],
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:tea_aroma": 1
+    }
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/brilliant_tea.obj",
+    "summon_sword_color": -256,
+    "texture": "recasting:slashblade/brilliant_tea.png"
+  }
+}

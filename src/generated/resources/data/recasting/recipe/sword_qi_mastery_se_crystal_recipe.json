@@ -1,0 +1,28 @@
+{
+  "type": "recasting:se_crystal_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:blaze_rod"
+    },
+    "F": {
+      "item": "recasting:holy_flame"
+    },
+    "M": {
+      "item": "recasting:gathering_parting_variant"
+    }
+  },
+  "pattern": [
+    "FAF",
+    "AMA",
+    "FAF"
+  ],
+  "result": {
+    "count": 1,
+    "id": "recasting:se_crystal"
+  },
+  "se_crystal": {
+    "level": 1,
+    "special_effect_type": "recasting:sword_qi_mastery"
+  }
+}

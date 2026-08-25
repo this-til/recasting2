@@ -1,0 +1,23 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/xuan_ming_lambda",
+  "properties": {
+    "attack_base": 6.0,
+    "max_damage": 2560,
+    "slash_art": "recasting:rapid_phantom_swords_dense_lambda",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/xuan_ming.obj",
+    "summon_sword_color": -7701924,
+    "texture": "recasting:slashblade/xuan_ming.png"
+  }
+}

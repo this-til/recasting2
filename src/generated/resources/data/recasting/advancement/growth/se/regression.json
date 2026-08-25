@@ -1,0 +1,51 @@
+{
+  "parent": "recasting:growth/se/growth",
+  "criteria": {
+    "crafted": {
+      "conditions": {
+        "recipe_id": "recasting:regression_se_crystal_recipe"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:se_crystal": {
+                "effect": "recasting:regression"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "se.recasting.regression.desc"
+    },
+    "icon": {
+      "components": {
+        "recasting:se_crystal_data": {
+          "SpecialEffectType": "recasting:regression",
+          "SpecialEffectTypeLevel": 1
+        }
+      },
+      "count": 1,
+      "id": "recasting:se_crystal"
+    },
+    "title": {
+      "translate": "se.recasting.regression"
+    }
+  },
+  "requirements": [
+    [
+      "obtained",
+      "crafted"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

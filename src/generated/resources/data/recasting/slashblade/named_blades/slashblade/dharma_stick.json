@@ -1,0 +1,21 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "name": "recasting:slashblade/dharma_stick",
+  "properties": {
+    "attack_base": 0.1,
+    "max_damage": 4560,
+    "special_effects": [
+      "recasting:eat"
+    ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:eat": 1
+    }
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/dharma_stick.obj",
+    "texture": "recasting:slashblade/dharma_stick.png"
+  }
+}

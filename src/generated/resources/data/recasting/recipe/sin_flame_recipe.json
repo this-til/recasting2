@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "item": "minecraft:ghast_tear"
+    },
+    "M": {
+      "item": "minecraft:magma_cream"
+    },
+    "N": {
+      "item": "minecraft:nether_brick"
+    },
+    "P": {
+      "item": "slashblade:proudsoul"
+    }
+  },
+  "pattern": [
+    "NGN",
+    "MPM",
+    "NGN"
+  ],
+  "result": {
+    "count": 1,
+    "id": "recasting:sin_flame"
+  }
+}

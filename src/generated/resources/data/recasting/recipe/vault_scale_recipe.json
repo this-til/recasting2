@@ -1,0 +1,42 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/special/vault_scale",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:sharpness",
+            "lvl": 5
+          }
+        ],
+        "kill": 8000,
+        "name": "recasting:slashblade/dragon_lambda",
+        "refine": 800
+      }
+    },
+    "E": {
+      "item": "recasting:erosion_phase_transition"
+    },
+    "S": {
+      "item": "recasting:spread_phase_transition"
+    },
+    "W": {
+      "item": "recasting:winding_phase_transition"
+    }
+  },
+  "pattern": [
+    " SW",
+    "EBE",
+    "WS "
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "type": "recasting:se_crystal_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:ender_eye"
+    },
+    "F": {
+      "item": "recasting:tide_flame"
+    },
+    "M": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:overload"
+      }
+    }
+  },
+  "pattern": [
+    "FAF",
+    "AMA",
+    "FAF"
+  ],
+  "result": {
+    "count": 1,
+    "id": "recasting:se_crystal"
+  },
+  "se_crystal": {
+    "level": 1,
+    "special_effect_type": "recasting:whirlwind"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/star/star_3",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:sever_break"
+      }
+    },
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:projectile_protection",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:thorns",
+            "lvl": 3
+          }
+        ],
+        "kill": 4000,
+        "name": "recasting:slashblade/star/star_2",
+        "refine": 600
+      }
+    }
+  },
+  "pattern": [
+    " A ",
+    "ABA",
+    " A "
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/dragon_lambda",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:fire_protection",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:fire_aspect",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:flame"
+          },
+          {
+            "id": "minecraft:blast_protection",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:smite",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:knockback",
+            "lvl": 2
+          }
+        ],
+        "kill": 2000,
+        "name": "recasting:slashblade/dragon",
+        "refine": 500
+      }
+    },
+    "C": {
+      "item": "recasting:illuminating_truth_core"
+    },
+    "S": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:spiral"
+      }
+    }
+  },
+  "pattern": [
+    "CSC",
+    "SBS",
+    "CSC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

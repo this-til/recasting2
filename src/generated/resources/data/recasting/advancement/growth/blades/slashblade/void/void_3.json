@@ -1,0 +1,75 @@
+{
+  "parent": "recasting:growth/blades/slashblade/void/void_2",
+  "criteria": {
+    "crafted": {
+      "conditions": {
+        "recipe_id": "recasting:void_3_recipe"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:named_slashblade": {
+                "blade": "recasting:slashblade/void/void_3"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.growth.blade.from.description",
+      "with": [
+        {
+          "translate": "item.recasting.slashblade.void.void_2"
+        }
+      ]
+    },
+    "icon": {
+      "components": {
+        "slashblade:blade_state": {
+          "adjust": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "baseAttackModifier": 4.0,
+          "broken": false,
+          "carryType": "pso2",
+          "comboRoot": "slashblade:standby",
+          "defaultBewitched": false,
+          "effectColor": -65506,
+          "effectColorInverse": false,
+          "killCount": 0,
+          "model": "recasting:slashblade/void/void.obj",
+          "proudSoul": 0,
+          "refine": 0,
+          "sealed": false,
+          "slashArtsKey": "slashblade:judgement_cut",
+          "specialEffects": [],
+          "texture": "recasting:slashblade/void/void_3.png",
+          "translationKey": "item.recasting.slashblade.void.void_3"
+        }
+      },
+      "count": 1,
+      "id": "slashblade:slashblade"
+    },
+    "title": {
+      "translate": "item.recasting.slashblade.void.void_3"
+    }
+  },
+  "requirements": [
+    [
+      "obtained",
+      "crafted"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

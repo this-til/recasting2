@@ -1,0 +1,45 @@
+{
+  "parent": "recasting:growth/enchant/smite",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:enchanted_slashblade": {
+                "enchantment": "minecraft:bane_of_arthropods"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.enchant.bane_of_arthropods.description"
+    },
+    "icon": {
+      "components": {
+        "minecraft:stored_enchantments": {
+          "levels": {
+            "minecraft:bane_of_arthropods": 1
+          }
+        }
+      },
+      "count": 1,
+      "id": "minecraft:enchanted_book"
+    },
+    "title": {
+      "translate": "enchantment.minecraft.bane_of_arthropods"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

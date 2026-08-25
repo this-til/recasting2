@@ -18,6 +18,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
 
 /**
  * 客户端初始化，仅在客户端执行。
@@ -36,6 +37,13 @@ public final class ClientSetup {
         EntityRenderExtensionRegistry.ENTITY_RENDER_EXTENSIONS.register(modEventBus);
         BuffLevelRendererRegistry.BUFF_LEVEL_RENDER_CONFIGS.register(modEventBus);
         RecastingShaderHandler.register(modEventBus);
+    }
+
+    @SubscribeEvent
+    public static void registerRegistries(NewRegistryEvent event) {
+        event.register(EntityClientExtensionRegistry.REGISTRY);
+        event.register(EntityRenderExtensionRegistry.REGISTRY);
+        event.register(BuffLevelRendererRegistry.REGISTRY);
     }
 
     @SubscribeEvent

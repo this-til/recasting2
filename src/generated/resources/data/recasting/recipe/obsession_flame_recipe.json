@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:blaze_powder"
+    },
+    "G": {
+      "item": "minecraft:gold_nugget"
+    },
+    "P": {
+      "item": "slashblade:proudsoul"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    "GBG",
+    "RPR",
+    "GBG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "recasting:obsession_flame"
+  }
+}

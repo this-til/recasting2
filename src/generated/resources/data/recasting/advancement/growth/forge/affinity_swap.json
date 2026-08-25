@@ -1,0 +1,36 @@
+{
+  "parent": "recasting:growth/forge/sacrifice",
+  "criteria": {
+    "action": {
+      "conditions": {
+        "action": "swap_special"
+      },
+      "trigger": "recasting:forge_se_action"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.forge.affinity_swap.description"
+    },
+    "icon": {
+      "components": {
+        "recasting:se_crystal_data": {
+          "SpecialEffectType": "recasting:storm_variant",
+          "SpecialEffectTypeLevel": 1
+        }
+      },
+      "count": 1,
+      "id": "recasting:se_crystal"
+    },
+    "title": {
+      "translate": "advancements.recasting.forge.affinity_swap.title"
+    }
+  },
+  "requirements": [
+    [
+      "action"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

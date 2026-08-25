@@ -1,0 +1,57 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/wind_cloud",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:power",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:punch",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:infinity"
+          },
+          {
+            "id": "minecraft:piercing",
+            "lvl": 3
+          }
+        ],
+        "kill": 1500,
+        "name": "recasting:slashblade/xuan_ming_lambda",
+        "refine": 400
+      }
+    },
+    "C": {
+      "item": "recasting:illuminating_truth_core"
+    },
+    "W": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:whirlwind"
+      }
+    }
+  },
+  "pattern": [
+    "CWC",
+    "WBW",
+    "CWC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

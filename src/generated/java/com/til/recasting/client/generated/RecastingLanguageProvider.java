@@ -664,23 +664,23 @@ public class RecastingLanguageProvider extends LanguageProvider {
         return item.get().getDescriptionId() + ".desc";
     }
 
-    private static String buffKey(DeferredHolder<?, ? extends BuffType> buffType) {
+    private static String buffKey(java.util.function.Supplier<? extends BuffType> buffType) {
         return buffType.get().getDescriptionId();
     }
 
-    private static String slashArtKey(DeferredHolder<?, ? extends SlashArts> slashArts) {
+    private static String slashArtKey(java.util.function.Supplier<? extends SlashArts> slashArts) {
         return Objects.requireNonNull(slashArts.get()).getDescriptionId();
     }
 
-    private static String slashArtDescKey(DeferredHolder<?, ? extends SlashArts> slashArts) {
+    private static String slashArtDescKey(java.util.function.Supplier<? extends SlashArts> slashArts) {
         return Objects.requireNonNull(slashArts.get()).getDescriptionId() + ".desc";
     }
 
-    private static String specialEffectKey(DeferredHolder<?, ? extends SpecialEffect> specialEffect) {
+    private static String specialEffectKey(java.util.function.Supplier<? extends SpecialEffect> specialEffect) {
         return Objects.requireNonNull(specialEffect.get()).getDescriptionId();
     }
 
-    private static String specialEffectDescKey(DeferredHolder<?, ? extends SpecialEffect> specialEffect) {
+    private static String specialEffectDescKey(java.util.function.Supplier<? extends SpecialEffect> specialEffect) {
         return Objects.requireNonNull(specialEffect.get()).getDescriptionId() + ".desc";
     }
 }

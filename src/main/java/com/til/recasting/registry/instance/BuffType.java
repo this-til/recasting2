@@ -5,9 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Method;
 import java.util.Objects;
 
 /**
@@ -31,7 +33,18 @@ public class BuffType {
     public BuffType() {
         decayInterval = 0;
         maxLevel = 0;
-        NeoForge.EVENT_BUS.register(this);
+        registerEventsIfPresent();
+    }
+
+    private void registerEventsIfPresent() {
+        for (Class<?> type = getClass(); type != null && type != Object.class; type = type.getSuperclass()) {
+            for (Method method : type.getDeclaredMethods()) {
+                if (method.isAnnotationPresent(SubscribeEvent.class)) {
+                    NeoForge.EVENT_BUS.register(this);
+                    return;
+                }
+            }
+        }
     }
 
     public boolean hasMaxLevel() {
@@ -57,6 +70,10 @@ public class BuffType {
 
     @Override
     public String toString() {
-        return Objects.requireNonNull(RecastingBuffTypes.REGISTRY.getKey(this)).toString();
+        ResourceLocation key = RecastingBuffTypes.REGISTRY.getKey(this);
+        if (key == null) {
+            return getClass().getSimpleName();
+        }
+        return key.toString();
     }
 }

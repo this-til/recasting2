@@ -1,0 +1,39 @@
+{
+  "parent": "recasting:growth/drop/kill_100000",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:blade_stat": {
+                "min_exclusive_kill": 1000000
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.drop.kill_1000000.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "slashblade:proudsoul_trapezohedron"
+    },
+    "title": {
+      "translate": "advancements.recasting.drop.kill_1000000.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

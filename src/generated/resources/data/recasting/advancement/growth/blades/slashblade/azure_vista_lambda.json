@@ -1,0 +1,76 @@
+{
+  "parent": "recasting:growth/blades/slashblade/azure_vista",
+  "criteria": {
+    "crafted": {
+      "conditions": {
+        "recipe_id": "recasting:azure_vista_lambda_recipe"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:named_slashblade": {
+                "blade": "recasting:slashblade/azure_vista_lambda"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.growth.blade.from.description",
+      "with": [
+        {
+          "translate": "item.recasting.slashblade.azure_vista"
+        }
+      ]
+    },
+    "frame": "goal",
+    "icon": {
+      "components": {
+        "slashblade:blade_state": {
+          "adjust": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "baseAttackModifier": 4.0,
+          "broken": false,
+          "carryType": "pso2",
+          "comboRoot": "slashblade:standby",
+          "defaultBewitched": false,
+          "effectColor": -11761011,
+          "effectColorInverse": false,
+          "killCount": 0,
+          "model": "recasting:slashblade/azure_vista.obj",
+          "proudSoul": 0,
+          "refine": 0,
+          "sealed": false,
+          "slashArtsKey": "slashblade:judgement_cut",
+          "specialEffects": [],
+          "texture": "recasting:slashblade/azure_vista.png",
+          "translationKey": "item.recasting.slashblade.azure_vista_lambda"
+        }
+      },
+      "count": 1,
+      "id": "slashblade:slashblade"
+    },
+    "title": {
+      "translate": "item.recasting.slashblade.azure_vista_lambda"
+    }
+  },
+  "requirements": [
+    [
+      "obtained",
+      "crafted"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

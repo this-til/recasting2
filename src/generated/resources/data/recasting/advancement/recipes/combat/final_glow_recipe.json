@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_detonation_phase_transition": {
+      "conditions": {
+        "items": [
+          {
+            "items": "recasting:detonation_phase_transition"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "recasting:final_glow_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_detonation_phase_transition"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "recasting:final_glow_recipe"
+    ]
+  }
+}

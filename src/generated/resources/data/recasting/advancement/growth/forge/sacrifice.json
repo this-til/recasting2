@@ -1,0 +1,30 @@
+{
+  "parent": "recasting:growth/forge/new_capability",
+  "criteria": {
+    "action": {
+      "conditions": {
+        "action": "extract_special"
+      },
+      "trigger": "recasting:forge_se_action"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.forge.sacrifice.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "recasting:gathering_parting_variant"
+    },
+    "title": {
+      "translate": "advancements.recasting.forge.sacrifice.title"
+    }
+  },
+  "requirements": [
+    [
+      "action"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

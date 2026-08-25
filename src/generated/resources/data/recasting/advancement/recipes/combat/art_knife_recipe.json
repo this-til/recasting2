@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_craftsman_flame": {
+      "conditions": {
+        "items": [
+          {
+            "items": "recasting:craftsman_flame"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "recasting:art_knife_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_craftsman_flame"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "recasting:art_knife_recipe"
+    ]
+  }
+}

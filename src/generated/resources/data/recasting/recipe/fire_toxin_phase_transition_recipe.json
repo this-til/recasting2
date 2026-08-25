@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "recasting:abyss_depth_core"
+    },
+    "C": {
+      "item": "recasting:blazing_flame_core"
+    },
+    "G": {
+      "item": "recasting:gathering_parting_variant"
+    },
+    "S": {
+      "item": "slashblade:proudsoul_sphere"
+    }
+  },
+  "pattern": [
+    " SA",
+    "SGS",
+    "CS "
+  ],
+  "result": {
+    "count": 1,
+    "id": "recasting:fire_toxin_phase_transition"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "parent": "recasting:growth/blades/slashblade/void/void_3",
+  "criteria": {
+    "crafted": {
+      "conditions": {
+        "recipe_id": "recasting:final_glow_recipe"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:named_slashblade": {
+                "blade": "recasting:slashblade/special/final_glow"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.growth.blade.from.description",
+      "with": [
+        {
+          "translate": "item.recasting.slashblade.void.void_3"
+        }
+      ]
+    },
+    "icon": {
+      "components": {
+        "slashblade:blade_state": {
+          "adjust": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "baseAttackModifier": 4.0,
+          "broken": false,
+          "carryType": "pso2",
+          "comboRoot": "slashblade:standby",
+          "defaultBewitched": false,
+          "effectColor": -638141,
+          "effectColorInverse": false,
+          "killCount": 0,
+          "model": "recasting:slashblade/special/final_glow.obj",
+          "proudSoul": 0,
+          "refine": 0,
+          "sealed": false,
+          "slashArtsKey": "slashblade:judgement_cut",
+          "specialEffects": [],
+          "texture": "recasting:slashblade/special/final_glow.png",
+          "translationKey": "item.recasting.slashblade.special.final_glow"
+        }
+      },
+      "count": 1,
+      "id": "slashblade:slashblade"
+    },
+    "title": {
+      "translate": "item.recasting.slashblade.special.final_glow"
+    }
+  },
+  "requirements": [
+    [
+      "obtained",
+      "crafted"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

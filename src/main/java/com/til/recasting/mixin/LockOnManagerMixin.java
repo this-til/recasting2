@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class LockOnManagerMixin {
 
     @Inject(method = "onInputChange", at = @At("HEAD"), cancellable = true)
-    private void recasting$replaceLockOnSearch(InputCommandEvent event, CallbackInfo ci) {
+    private static void recasting$replaceLockOnSearch(InputCommandEvent event, CallbackInfo ci) {
         ci.cancel();
 
         ServerPlayer player = event.getEntity();

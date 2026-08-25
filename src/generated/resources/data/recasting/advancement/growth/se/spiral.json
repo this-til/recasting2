@@ -1,0 +1,51 @@
+{
+  "parent": "recasting:growth/se/fragment",
+  "criteria": {
+    "crafted": {
+      "conditions": {
+        "recipe_id": "recasting:spiral_se_crystal_recipe"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:se_crystal": {
+                "effect": "recasting:spiral"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "se.recasting.spiral.desc"
+    },
+    "icon": {
+      "components": {
+        "recasting:se_crystal_data": {
+          "SpecialEffectType": "recasting:spiral",
+          "SpecialEffectTypeLevel": 1
+        }
+      },
+      "count": 1,
+      "id": "recasting:se_crystal"
+    },
+    "title": {
+      "translate": "se.recasting.spiral"
+    }
+  },
+  "requirements": [
+    [
+      "obtained",
+      "crafted"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

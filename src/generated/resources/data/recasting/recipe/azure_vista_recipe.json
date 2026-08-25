@@ -1,0 +1,57 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/azure_vista",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:power",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:punch",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:infinity"
+          },
+          {
+            "id": "minecraft:piercing",
+            "lvl": 3
+          }
+        ],
+        "kill": 1500,
+        "name": "recasting:slashblade/dragon_scale_lambda",
+        "refine": 300
+      }
+    },
+    "C": {
+      "item": "recasting:emerald_medium_soul_cube"
+    },
+    "D": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:drive_release"
+      }
+    }
+  },
+  "pattern": [
+    " CD",
+    "CBC",
+    "DC "
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/star/star_4_lambda",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:projectile_protection",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:thorns",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:power",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:punch",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:infinity"
+          },
+          {
+            "id": "minecraft:multishot"
+          },
+          {
+            "id": "minecraft:quick_charge",
+            "lvl": 3
+          }
+        ],
+        "kill": 12000,
+        "name": "recasting:slashblade/star/star_4",
+        "refine": 1600
+      }
+    },
+    "C": {
+      "item": "recasting:illuminating_truth_core"
+    },
+    "S": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:storm"
+      }
+    },
+    "V": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:storm_variant"
+      }
+    }
+  },
+  "pattern": [
+    "CVC",
+    "SBS",
+    "CVC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

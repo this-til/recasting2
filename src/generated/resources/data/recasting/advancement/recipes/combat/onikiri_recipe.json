@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_frost_vortex_core": {
+      "conditions": {
+        "items": [
+          {
+            "items": "recasting:frost_vortex_core"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "recasting:onikiri_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_frost_vortex_core"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "recasting:onikiri_recipe"
+    ]
+  }
+}

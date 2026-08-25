@@ -1,0 +1,39 @@
+{
+  "parent": "recasting:growth/drop/kill_1000",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:blade_stat": {
+                "min_exclusive_kill": 10000
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.drop.kill_10000.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "slashblade:proudsoul"
+    },
+    "title": {
+      "translate": "advancements.recasting.drop.kill_10000.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

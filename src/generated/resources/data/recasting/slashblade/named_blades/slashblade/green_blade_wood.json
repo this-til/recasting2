@@ -1,0 +1,13 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "name": "recasting:slashblade/green_blade_wood",
+  "properties": {
+    "attack_base": 3.0,
+    "max_damage": 320
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/green_blade_wood.obj",
+    "texture": "recasting:slashblade/green_blade_wood.png"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/color_wing_lambda",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:feather_falling",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:soul_speed",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:swift_sneak",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:frost_walker",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:mending"
+          },
+          {
+            "id": "minecraft:channeling"
+          },
+          {
+            "id": "minecraft:multishot"
+          },
+          {
+            "id": "minecraft:quick_charge",
+            "lvl": 3
+          }
+        ],
+        "kill": 10000,
+        "name": "recasting:slashblade/color_wing",
+        "refine": 1200
+      }
+    },
+    "C": {
+      "item": "recasting:blazing_flame_core"
+    },
+    "G": {
+      "item": "minecraft:glow_ink_sac"
+    },
+    "T": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:thunderstorm"
+      }
+    }
+  },
+  "pattern": [
+    "GTG",
+    "CBC",
+    "GTG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

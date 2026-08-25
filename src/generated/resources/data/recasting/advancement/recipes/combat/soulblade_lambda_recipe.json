@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_blazing_flame_core": {
+      "conditions": {
+        "items": [
+          {
+            "items": "recasting:blazing_flame_core"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "recasting:soulblade_lambda_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_blazing_flame_core"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "recasting:soulblade_lambda_recipe"
+    ]
+  }
+}

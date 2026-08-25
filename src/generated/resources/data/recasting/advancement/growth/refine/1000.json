@@ -1,0 +1,39 @@
+{
+  "parent": "recasting:growth/hub/refine_again",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:blade_stat": {
+                "min_exclusive_refine": 1000
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.refine.1000.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "slashblade:proudsoul_ingot"
+    },
+    "title": {
+      "translate": "advancements.recasting.refine.1000.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

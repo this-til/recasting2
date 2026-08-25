@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_obsession_flame": {
+      "conditions": {
+        "items": [
+          {
+            "items": "recasting:obsession_flame"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "recasting:broken_white_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_obsession_flame"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "recasting:broken_white_recipe"
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/soulblade_lambda",
+  "properties": {
+    "attack_base": 7.0,
+    "max_damage": 5120,
+    "slash_art": "recasting:inferno_lambda",
+    "special_effects": [
+      "recasting:flame_foam_lambda"
+    ],
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:flame_foam_lambda": 1
+    }
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/soulblade.obj",
+    "summon_sword_color": -6921016,
+    "texture": "recasting:slashblade/soulblade.png"
+  }
+}

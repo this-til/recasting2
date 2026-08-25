@@ -1,0 +1,26 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/void/void_3",
+  "properties": {
+    "attack_base": 7.0,
+    "max_damage": 3840,
+    "slash_art": "recasting:void_hole_fishy_red",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "properties_extension": {
+    "attack_distance": 1.5
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/void/void.obj",
+    "summon_sword_color": 16711710,
+    "texture": "recasting:slashblade/void/void_3.png"
+  }
+}

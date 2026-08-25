@@ -1,0 +1,68 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/azure_vista_lambda",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:power",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:punch",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:infinity"
+          },
+          {
+            "id": "minecraft:piercing",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:looting",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:bane_of_arthropods",
+            "lvl": 2
+          },
+          {
+            "id": "minecraft:impaling"
+          }
+        ],
+        "kill": 3000,
+        "name": "recasting:slashblade/azure_vista",
+        "refine": 600
+      }
+    },
+    "C": {
+      "item": "recasting:diamond_medium_soul_cube"
+    },
+    "G": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:growth"
+      }
+    }
+  },
+  "pattern": [
+    " CG",
+    "CBC",
+    "GC "
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

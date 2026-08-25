@@ -1,0 +1,47 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/brilliant_gold",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:efficiency",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:silk_touch"
+          },
+          {
+            "id": "minecraft:fortune",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:luck_of_the_sea",
+            "lvl": 2
+          }
+        ],
+        "kill": 4000,
+        "name": "recasting:slashblade/shine_gold_lambda",
+        "proud_soul": 200000
+      }
+    },
+    "I": {
+      "item": "recasting:illuminating_truth_core"
+    }
+  },
+  "pattern": [
+    " I ",
+    " I ",
+    " B "
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

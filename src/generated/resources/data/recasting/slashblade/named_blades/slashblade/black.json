@@ -1,0 +1,15 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "name": "recasting:slashblade/black",
+  "properties": {
+    "attack_base": 5.0,
+    "max_damage": 960,
+    "slash_art": "recasting:multiple_judgement_cut"
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/black.obj",
+    "summon_sword_color": -16777216,
+    "texture": "recasting:slashblade/black.png"
+  }
+}

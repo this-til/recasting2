@@ -1,0 +1,75 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/laser/laser_3_lambda",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:protection",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:thorns",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:projectile_protection",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:respiration",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:aqua_affinity"
+          },
+          {
+            "id": "minecraft:unbreaking",
+            "lvl": 3
+          }
+        ],
+        "kill": 10000,
+        "name": "recasting:slashblade/laser/laser_3",
+        "refine": 1200
+      }
+    },
+    "C": {
+      "item": "recasting:frost_vortex_core"
+    },
+    "I": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:impact"
+      }
+    },
+    "S": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:split"
+      }
+    }
+  },
+  "pattern": [
+    "CSI",
+    " B ",
+    "ISC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

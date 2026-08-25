@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:emerald_block"
+    },
+    "C": {
+      "item": "recasting:chaos_flame"
+    },
+    "P": {
+      "item": "slashblade:proudsoul"
+    }
+  },
+  "pattern": [
+    "PCP",
+    "CBC",
+    "PCP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "recasting:emerald_medium_soul_cube"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "name": "recasting:slashblade/fluorescence/fluorescence_1",
+  "properties": {
+    "attack_base": 1.0,
+    "max_damage": 960
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/fluorescence/fluorescence_1.obj",
+    "texture": "recasting:slashblade/fluorescence/fluorescence_1.png"
+  }
+}

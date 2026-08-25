@@ -1,0 +1,15 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "name": "recasting:slashblade/ba_gua",
+  "properties": {
+    "attack_base": 5.0,
+    "max_damage": 960,
+    "slash_art": "recasting:multiple_drive"
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/ba_gua.obj",
+    "summon_sword_color": -1,
+    "texture": "recasting:slashblade/ba_gua.png"
+  }
+}

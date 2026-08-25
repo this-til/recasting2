@@ -1,0 +1,22 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/physics_sword",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "P": {
+      "item": "slashblade:proudsoul"
+    }
+  },
+  "pattern": [
+    "I  ",
+    "IP ",
+    "II "
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

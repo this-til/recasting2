@@ -1,0 +1,45 @@
+{
+  "parent": "recasting:growth/hub/enchant_power",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:enchanted_slashblade": {
+                "enchantment": "minecraft:smite"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.enchant.smite.description"
+    },
+    "icon": {
+      "components": {
+        "minecraft:stored_enchantments": {
+          "levels": {
+            "minecraft:smite": 1
+          }
+        }
+      },
+      "count": 1,
+      "id": "minecraft:enchanted_book"
+    },
+    "title": {
+      "translate": "enchantment.minecraft.smite"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

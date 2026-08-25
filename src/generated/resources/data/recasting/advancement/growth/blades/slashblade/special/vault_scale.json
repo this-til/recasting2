@@ -1,0 +1,75 @@
+{
+  "parent": "recasting:growth/blades/slashblade/dragon_lambda",
+  "criteria": {
+    "crafted": {
+      "conditions": {
+        "recipe_id": "recasting:vault_scale_recipe"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:named_slashblade": {
+                "blade": "recasting:slashblade/special/vault_scale"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.growth.blade.from.description",
+      "with": [
+        {
+          "translate": "item.recasting.slashblade.dragon_lambda"
+        }
+      ]
+    },
+    "icon": {
+      "components": {
+        "slashblade:blade_state": {
+          "adjust": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "baseAttackModifier": 4.0,
+          "broken": false,
+          "carryType": "pso2",
+          "comboRoot": "slashblade:standby",
+          "defaultBewitched": false,
+          "effectColor": -16772778,
+          "effectColorInverse": false,
+          "killCount": 0,
+          "model": "recasting:slashblade/special/vault_scale.obj",
+          "proudSoul": 0,
+          "refine": 0,
+          "sealed": false,
+          "slashArtsKey": "slashblade:judgement_cut",
+          "specialEffects": [],
+          "texture": "recasting:slashblade/special/vault_scale.png",
+          "translationKey": "item.recasting.slashblade.special.vault_scale"
+        }
+      },
+      "count": 1,
+      "id": "slashblade:slashblade"
+    },
+    "title": {
+      "translate": "item.recasting.slashblade.special.vault_scale"
+    }
+  },
+  "requirements": [
+    [
+      "obtained",
+      "crafted"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

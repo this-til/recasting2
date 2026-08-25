@@ -56,4 +56,21 @@ public class SECrystalData implements ISpecialEffectCrystalData {
     public void setSpecialEffectLevel(int level) {
         this.specialEffectLevel = Math.max(0, level);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof SECrystalData other)) {
+            return false;
+        }
+        return specialEffectLevel == other.specialEffectLevel
+                && java.util.Objects.equals(specialEffectType, other.specialEffectType);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(specialEffectType, specialEffectLevel);
+    }
 }

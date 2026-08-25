@@ -1,0 +1,46 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/silver_wing",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:feather_falling",
+            "lvl": 4
+          }
+        ],
+        "kill": 1000,
+        "name": "recasting:slashblade/black",
+        "refine": 200
+      }
+    },
+    "C": {
+      "item": "recasting:iron_medium_soul_cube"
+    },
+    "S": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:split"
+      }
+    }
+  },
+  "pattern": [
+    " SC",
+    "CBC",
+    "CS "
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

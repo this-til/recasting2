@@ -1,0 +1,13 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "name": "recasting:slashblade/broadsword_wood",
+  "properties": {
+    "attack_base": 3.0,
+    "max_damage": 320
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/broadsword_wood.obj",
+    "texture": "recasting:slashblade/broadsword_wood.png"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/special/vault_scale",
+  "properties": {
+    "attack_base": 8.0,
+    "max_damage": 7680,
+    "slash_art": "recasting:unlimited_blade_works",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/special/vault_scale.obj",
+    "summon_sword_color": -16772778,
+    "texture": "recasting:slashblade/special/vault_scale.png"
+  }
+}

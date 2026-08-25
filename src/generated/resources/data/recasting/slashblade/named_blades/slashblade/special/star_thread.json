@@ -1,0 +1,31 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/special/star_thread",
+  "properties": {
+    "attack_base": 8.0,
+    "max_damage": 7680,
+    "slash_art": "recasting:stellar_rotation",
+    "special_effects": [
+      "recasting:star_blink"
+    ],
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:star_blink": 1
+    }
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/special/star_thread.obj",
+    "summon_sword_color": -2984202,
+    "texture": "recasting:slashblade/special/star_thread.png"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/ba_gua_big",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:smite",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:sharpness",
+            "lvl": 2
+          }
+        ],
+        "kill": 2000,
+        "name": "recasting:slashblade/ba_gua",
+        "refine": 100
+      }
+    },
+    "C": {
+      "item": "recasting:copper_medium_soul_cube"
+    },
+    "P": {
+      "item": "recasting:poetry_ash_flame"
+    }
+  },
+  "pattern": [
+    "CPC",
+    "PBP",
+    "CPC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

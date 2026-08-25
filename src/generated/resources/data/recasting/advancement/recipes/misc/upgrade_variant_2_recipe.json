@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "recasting:upgrade_variant_2_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_upgrade_variant": {
+      "conditions": {
+        "items": [
+          {
+            "items": "recasting:upgrade_variant"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_upgrade_variant"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "recasting:upgrade_variant_2_recipe"
+    ]
+  }
+}

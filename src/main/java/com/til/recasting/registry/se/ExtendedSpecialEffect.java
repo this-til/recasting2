@@ -18,9 +18,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import org.jetbrains.annotations.Nullable;
+
+import java.lang.reflect.Method;
 
 @Accessors(chain = true)
 public class ExtendedSpecialEffect extends SpecialEffect {
@@ -45,7 +48,18 @@ public class ExtendedSpecialEffect extends SpecialEffect {
 
     public ExtendedSpecialEffect() {
         super(0, false, false);
-        NeoForge.EVENT_BUS.register(this);
+        registerEventsIfPresent();
+    }
+
+    private void registerEventsIfPresent() {
+        for (Class<?> type = getClass(); type != null && type != Object.class; type = type.getSuperclass()) {
+            for (Method method : type.getDeclaredMethods()) {
+                if (method.isAnnotationPresent(SubscribeEvent.class)) {
+                    NeoForge.EVENT_BUS.register(this);
+                    return;
+                }
+            }
+        }
     }
 
     public boolean hasSpecialEffect(ISlashBladeState slashBladeState) {

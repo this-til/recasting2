@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "recasting:emerald_medium_soul_cube"
+    },
+    "P": {
+      "item": "recasting:poetry_ash_flame"
+    },
+    "T": {
+      "item": "minecraft:totem_of_undying"
+    }
+  },
+  "pattern": [
+    "PEP",
+    "ETE",
+    "PEP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "recasting:sandalwood_rhyme_core"
+  }
+}

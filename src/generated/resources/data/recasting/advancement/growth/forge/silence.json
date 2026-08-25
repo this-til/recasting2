@@ -1,0 +1,30 @@
+{
+  "parent": "recasting:growth/forge/new_capability",
+  "criteria": {
+    "action": {
+      "conditions": {
+        "action": "erase_se"
+      },
+      "trigger": "recasting:forge_se_action"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.forge.silence.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "recasting:abyss_flame"
+    },
+    "title": {
+      "translate": "advancements.recasting.forge.silence.title"
+    }
+  },
+  "requirements": [
+    [
+      "action"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

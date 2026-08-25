@@ -1,0 +1,23 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/special/final_glow",
+  "properties": {
+    "attack_base": 8.0,
+    "max_damage": 7680,
+    "slash_art": "recasting:final_supernova",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/special/final_glow.obj",
+    "summon_sword_color": -638141,
+    "texture": "recasting:slashblade/special/final_glow.png"
+  }
+}

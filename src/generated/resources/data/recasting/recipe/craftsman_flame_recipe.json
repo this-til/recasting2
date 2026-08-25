@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:brewing_stand"
+    },
+    "C": {
+      "item": "minecraft:crafting_table"
+    },
+    "F": {
+      "item": "minecraft:furnace"
+    },
+    "P": {
+      "item": "slashblade:proudsoul"
+    },
+    "S": {
+      "item": "minecraft:stonecutter"
+    }
+  },
+  "pattern": [
+    " C ",
+    "FPB",
+    " S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "recasting:craftsman_flame"
+  }
+}

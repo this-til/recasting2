@@ -1,0 +1,30 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/color_wing_lambda",
+  "properties": {
+    "attack_base": 7.0,
+    "max_damage": 5120,
+    "slash_art": "recasting:heaven_twelve_hit_lambda",
+    "special_effects": [
+      "recasting:color_dye"
+    ],
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:color_dye": 1
+    }
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/color_wing.obj",
+    "texture": "recasting:slashblade/color_wing.png"
+  }
+}

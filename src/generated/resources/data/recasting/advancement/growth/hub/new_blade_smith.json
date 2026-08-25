@@ -1,0 +1,53 @@
+{
+  "parent": "recasting:growth/root",
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.hub.new_blade_smith.description"
+    },
+    "icon": {
+      "components": {
+        "slashblade:blade_state": {
+          "adjust": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "baseAttackModifier": 4.0,
+          "broken": false,
+          "carryType": "pso2",
+          "comboRoot": "slashblade:standby",
+          "defaultBewitched": false,
+          "effectColor": -13421569,
+          "effectColorInverse": false,
+          "killCount": 0,
+          "model": "recasting:slashblade/broadsword_wood.obj",
+          "proudSoul": 0,
+          "refine": 0,
+          "sealed": false,
+          "slashArtsKey": "slashblade:judgement_cut",
+          "specialEffects": [],
+          "texture": "recasting:slashblade/broadsword_wood.png",
+          "translationKey": "item.recasting.slashblade.broadsword_wood"
+        }
+      },
+      "count": 1,
+      "id": "slashblade:slashblade"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.recasting.hub.new_blade_smith.title"
+    }
+  },
+  "requirements": [
+    [
+      "tick"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

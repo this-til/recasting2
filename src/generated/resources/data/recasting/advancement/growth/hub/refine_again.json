@@ -1,0 +1,28 @@
+{
+  "parent": "recasting:growth/root",
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.hub.refine_again.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "slashblade:proudsoul_ingot"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.recasting.hub.refine_again.title"
+    }
+  },
+  "requirements": [
+    [
+      "tick"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -99,7 +99,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             .addLootTable(ResourceKey.create(Registries.LOOT_TABLE, Recasting.prefix("advancements/growth_root")))
                             .build())
                     .addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
-                    .save(writer, Recasting.prefix("growth/root"));
+                    .save(writer, toAdvId("growth/root"));
 
             AdvancementHolder hubBlade = autoHub(
                     writer,
@@ -176,7 +176,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
 
                 AdvancementHolder advancement = builder.save(
                         writer,
-                        Recasting.prefix("growth/blades/" + node.blade().location().getPath()));
+                        toAdvId("growth/blades/" + node.blade().location().getPath()));
                 bladeAdvancements.put(node.blade(), advancement);
             }
 
@@ -211,7 +211,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
 
                 AdvancementHolder advancement = builder.save(
                         writer,
-                        Recasting.prefix("growth/se/" + node.effectId().getPath()));
+                        toAdvId("growth/se/" + node.effectId().getPath()));
                 seAdvancements.put(node.effectId(), advancement);
             }
 
@@ -242,7 +242,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             false,
                             false)
                     .addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
-                    .save(writer, Recasting.prefix(path));
+                    .save(writer, toAdvId(path));
         }
 
         private static void saveBackToFutureChain(Consumer<AdvancementHolder> writer, AdvancementHolder hubKill) {
@@ -281,7 +281,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                         .addCriterion(
                                 "obtained",
                                 hasSubPredicate(SlashArtsSphereItemPredicate.TYPE, SlashArtsSphereItemPredicate.of(saId)))
-                        .save(writer, Recasting.prefix("growth/drop/btf/" + saId.getPath()));
+                        .save(writer, toAdvId("growth/drop/btf/" + saId.getPath()));
             }
         }
 
@@ -302,7 +302,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             hasSubPredicate(
                                     BladeStatItemPredicate.TYPE,
                                     BladeStatItemPredicate.minKill(GrowthAdvancementGraph.KILL_MILESTONE_1)))
-                    .save(writer, Recasting.prefix("growth/drop/kill_1000"));
+                    .save(writer, toAdvId("growth/drop/kill_1000"));
 
             AdvancementHolder kill2 = Advancement.Builder.advancement()
                     .parent(kill1)
@@ -320,7 +320,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             hasSubPredicate(
                                     BladeStatItemPredicate.TYPE,
                                     BladeStatItemPredicate.minKill(GrowthAdvancementGraph.KILL_MILESTONE_2)))
-                    .save(writer, Recasting.prefix("growth/drop/kill_10000"));
+                    .save(writer, toAdvId("growth/drop/kill_10000"));
 
             AdvancementHolder kill3 = Advancement.Builder.advancement()
                     .parent(kill2)
@@ -338,7 +338,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             hasSubPredicate(
                                     BladeStatItemPredicate.TYPE,
                                     BladeStatItemPredicate.minKill(GrowthAdvancementGraph.KILL_MILESTONE_3)))
-                    .save(writer, Recasting.prefix("growth/drop/kill_100000"));
+                    .save(writer, toAdvId("growth/drop/kill_100000"));
 
             Advancement.Builder.advancement()
                     .parent(kill3)
@@ -356,7 +356,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             hasSubPredicate(
                                     BladeStatItemPredicate.TYPE,
                                     BladeStatItemPredicate.minKill(GrowthAdvancementGraph.KILL_MILESTONE_4)))
-                    .save(writer, Recasting.prefix("growth/drop/kill_1000000"));
+                    .save(writer, toAdvId("growth/drop/kill_1000000"));
         }
 
         private static void saveEnchantChain(
@@ -384,7 +384,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                                 hasSubPredicate(
                                         EnchantedSlashBladeItemPredicate.TYPE,
                                         EnchantedSlashBladeItemPredicate.of(enchantment)))
-                        .save(writer, Recasting.prefix("growth/enchant/" + path));
+                        .save(writer, toAdvId("growth/enchant/" + path));
             }
         }
 
@@ -405,7 +405,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             hasSubPredicate(
                                     BladeStatItemPredicate.TYPE,
                                     BladeStatItemPredicate.minRefine(GrowthAdvancementGraph.REFINE_MILESTONE_1)))
-                    .save(writer, Recasting.prefix("growth/refine/1000"));
+                    .save(writer, toAdvId("growth/refine/1000"));
 
             Advancement.Builder.advancement()
                     .parent(refine1)
@@ -423,7 +423,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             hasSubPredicate(
                                     BladeStatItemPredicate.TYPE,
                                     BladeStatItemPredicate.minRefine(GrowthAdvancementGraph.REFINE_MILESTONE_2)))
-                    .save(writer, Recasting.prefix("growth/refine/10000"));
+                    .save(writer, toAdvId("growth/refine/10000"));
         }
 
         private static void saveForgeBranch(Consumer<AdvancementHolder> writer, AdvancementHolder hubForge) {
@@ -441,7 +441,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                     .addCriterion(
                             "action",
                             ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.ENGRAVE_ANY))
-                    .save(writer, Recasting.prefix("growth/forge/new_capability"));
+                    .save(writer, toAdvId("growth/forge/new_capability"));
 
             Advancement.Builder.advancement()
                     .parent(newCapability)
@@ -457,7 +457,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                     .addCriterion(
                             "action",
                             ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.ENGRAVE_MAX_NORMAL))
-                    .save(writer, Recasting.prefix("growth/forge/peak_effect"));
+                    .save(writer, toAdvId("growth/forge/peak_effect"));
 
             AdvancementHolder fullyEquipped = Advancement.Builder.advancement()
                     .parent(newCapability)
@@ -474,7 +474,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             "action",
                             ForgeSeActionTrigger.TriggerInstance.action(
                                     ForgeSeAction.LAYOUT_FOUR_NORMAL_ONE_SPECIAL))
-                    .save(writer, Recasting.prefix("growth/forge/fully_equipped"));
+                    .save(writer, toAdvId("growth/forge/fully_equipped"));
 
             Advancement.Builder.advancement()
                     .parent(fullyEquipped)
@@ -491,7 +491,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                             "action",
                             ForgeSeActionTrigger.TriggerInstance.action(
                                     ForgeSeAction.LAYOUT_FOUR_MAX_NORMAL_ONE_SPECIAL))
-                    .save(writer, Recasting.prefix("growth/forge/ultimate_refine"));
+                    .save(writer, toAdvId("growth/forge/ultimate_refine"));
 
             AdvancementHolder sacrifice = Advancement.Builder.advancement()
                     .parent(newCapability)
@@ -507,7 +507,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                     .addCriterion(
                             "action",
                             ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.EXTRACT_SPECIAL))
-                    .save(writer, Recasting.prefix("growth/forge/sacrifice"));
+                    .save(writer, toAdvId("growth/forge/sacrifice"));
 
             Advancement.Builder.advancement()
                     .parent(newCapability)
@@ -523,7 +523,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                     .addCriterion(
                             "action",
                             ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.EXTRACT_SLASH_ARTS))
-                    .save(writer, Recasting.prefix("growth/forge/arts_offering"));
+                    .save(writer, toAdvId("growth/forge/arts_offering"));
 
             Advancement.Builder.advancement()
                     .parent(sacrifice)
@@ -539,7 +539,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                     .addCriterion(
                             "action",
                             ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.SWAP_SPECIAL))
-                    .save(writer, Recasting.prefix("growth/forge/affinity_swap"));
+                    .save(writer, toAdvId("growth/forge/affinity_swap"));
 
             Advancement.Builder.advancement()
                     .parent(newCapability)
@@ -555,7 +555,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                     .addCriterion(
                             "action",
                             ForgeSeActionTrigger.TriggerInstance.action(ForgeSeAction.ERASE_SE))
-                    .save(writer, Recasting.prefix("growth/forge/silence"));
+                    .save(writer, toAdvId("growth/forge/silence"));
         }
 
         private static ItemStack bladeIconForForge() {
@@ -609,7 +609,7 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
             }
 
             builder.requirements(AdvancementRequirements.anyOf(anyBlade));
-            builder.save(writer, Recasting.prefix("growth/blades/slashblade/fluorescence"));
+            builder.save(writer, toAdvId("growth/blades/slashblade/fluorescence"));
         }
 
         private ItemStack bladeIcon(HolderLookup.Provider registries, ResourceKey<SlashBladeDefinition> blade) {
@@ -751,6 +751,10 @@ public class RecastingAdvancementProvider extends AdvancementProvider {
                 case "sweeping_edge", "sweeping" -> RecastingLanguageKeys.ADVANCEMENT_ENCHANT_SWEEPING_DESC;
                 default -> RecastingLanguageKeys.ADVANCEMENT_HUB_ENCHANT_POWER_DESC;
             };
+        }
+
+        private static String toAdvId(String path) {
+            return Recasting.prefix(path).toString();
         }
     }
 }

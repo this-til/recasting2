@@ -1,0 +1,40 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/shine_tea",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:luck_of_the_sea",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:lure",
+            "lvl": 2
+          }
+        ],
+        "kill": 1000,
+        "name": "recasting:slashblade/broadsword_iron",
+        "refine": 500
+      }
+    },
+    "I": {
+      "item": "recasting:gold_medium_soul_cube"
+    }
+  },
+  "pattern": [
+    "  I",
+    " I ",
+    "B  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

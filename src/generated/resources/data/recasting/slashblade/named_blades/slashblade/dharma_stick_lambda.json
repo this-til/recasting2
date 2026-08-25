@@ -1,0 +1,21 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "name": "recasting:slashblade/dharma_stick_lambda",
+  "properties": {
+    "attack_base": 0.1,
+    "max_damage": 9120,
+    "special_effects": [
+      "recasting:enlarge"
+    ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:enlarge": 1
+    }
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/dharma_stick.obj",
+    "texture": "recasting:slashblade/dharma_stick.png"
+  }
+}

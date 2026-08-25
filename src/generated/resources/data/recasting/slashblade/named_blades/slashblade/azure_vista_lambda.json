@@ -1,0 +1,23 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/azure_vista_lambda",
+  "properties": {
+    "attack_base": 6.0,
+    "max_damage": 2560,
+    "slash_art": "recasting:phantom_explosion_lambda",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/azure_vista.obj",
+    "summon_sword_color": -11761011,
+    "texture": "recasting:slashblade/azure_vista.png"
+  }
+}

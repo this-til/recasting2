@@ -1,0 +1,22 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/obliterate",
+  "properties": {
+    "attack_base": 6.0,
+    "max_damage": 1280,
+    "slash_art": "recasting:inferno",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/obliterate.obj",
+    "texture": "recasting:slashblade/obliterate.png"
+  }
+}

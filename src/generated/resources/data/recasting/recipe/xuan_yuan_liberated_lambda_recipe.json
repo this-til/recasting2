@@ -1,0 +1,42 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/special/xuan_yuan_liberated_lambda",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:sharpness",
+            "lvl": 5
+          }
+        ],
+        "kill": 15000,
+        "name": "recasting:slashblade/special/xuan_yuan_liberated",
+        "refine": 1600
+      }
+    },
+    "I": {
+      "item": "recasting:interlace_phase_transition"
+    },
+    "R": {
+      "item": "recasting:refraction_phase_transition"
+    },
+    "S": {
+      "item": "recasting:spread_phase_transition"
+    }
+  },
+  "pattern": [
+    " IR",
+    "SBS",
+    "RI "
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:diamond_block"
+    },
+    "I": {
+      "item": "recasting:ice_core_flame"
+    },
+    "P": {
+      "item": "slashblade:proudsoul"
+    }
+  },
+  "pattern": [
+    "PIP",
+    "IBI",
+    "PIP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "recasting:diamond_medium_soul_cube"
+  }
+}

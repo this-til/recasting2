@@ -1,0 +1,37 @@
+{
+  "parent": "recasting:growth/forge/new_capability",
+  "criteria": {
+    "action": {
+      "conditions": {
+        "action": "engrave_max_normal"
+      },
+      "trigger": "recasting:forge_se_action"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.forge.peak_effect.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "components": {
+        "recasting:se_crystal_data": {
+          "SpecialEffectType": "recasting:sharp_blade",
+          "SpecialEffectTypeLevel": 1
+        }
+      },
+      "count": 1,
+      "id": "recasting:se_crystal"
+    },
+    "title": {
+      "translate": "advancements.recasting.forge.peak_effect.title"
+    }
+  },
+  "requirements": [
+    [
+      "action"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

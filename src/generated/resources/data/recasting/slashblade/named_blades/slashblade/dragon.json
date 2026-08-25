@@ -1,0 +1,23 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/dragon",
+  "properties": {
+    "attack_base": 7.0,
+    "max_damage": 3840,
+    "slash_art": "recasting:sword_rain",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/dragon.obj",
+    "summon_sword_color": -5458746,
+    "texture": "recasting:slashblade/dragon.png"
+  }
+}

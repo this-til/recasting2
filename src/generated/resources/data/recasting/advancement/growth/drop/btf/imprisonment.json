@@ -1,0 +1,43 @@
+{
+  "parent": "recasting:growth/drop/btf/time_beyond",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:slash_arts_sphere": {
+                "slash_arts": "recasting:imprisonment"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "slash_art.recasting.imprisonment.desc"
+    },
+    "icon": {
+      "components": {
+        "minecraft:custom_data": {
+          "SpecialAttackType": "recasting:imprisonment"
+        }
+      },
+      "count": 1,
+      "id": "slashblade:proudsoul_sphere"
+    },
+    "title": {
+      "translate": "slash_art.recasting.imprisonment"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,24 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness",
+      "lvl": 2
+    }
+  ],
+  "name": "recasting:slashblade/magnetic_storm_lambda",
+  "properties": {
+    "attack_base": 6.0,
+    "max_damage": 2560,
+    "slash_art": "recasting:lightning_chain_2",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/magnetic_storm.obj",
+    "summon_sword_color": -11675137,
+    "texture": "recasting:slashblade/magnetic_storm.png"
+  }
+}

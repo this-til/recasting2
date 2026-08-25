@@ -20,9 +20,9 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -60,7 +60,13 @@ public class ItemSlashBladeMixin {
 
     @Inject(method = "appendHoverText", at = @At("RETURN"))
     @OnlyIn(Dist.CLIENT)
-    public void appendSpecialEffectHoverText(ItemStack stack, Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn, CallbackInfo ci) {
+    public void appendSpecialEffectHoverText(
+            ItemStack stack,
+            Item.TooltipContext context,
+            @NotNull List<Component> tooltip,
+            @NotNull TooltipFlag flagIn,
+            CallbackInfo ci
+    ) {
         FeEnergyHelper.appendTooltip(stack, tooltip);
 
         PropertiesDefinitionExtension extension = stack.get(RecastingDataComponents.PROPERTIES_DEFINITION_EXTENSION.get());

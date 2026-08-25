@@ -1,0 +1,30 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/broadsword_iron",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "kill": 50,
+        "name": "recasting:slashblade/broadsword_wood",
+        "refine": 5
+      }
+    },
+    "I": {
+      "item": "slashblade:proudsoul_ingot"
+    }
+  },
+  "pattern": [
+    "  I",
+    " I ",
+    "B  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

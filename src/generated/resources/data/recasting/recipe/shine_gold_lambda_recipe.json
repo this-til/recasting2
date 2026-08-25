@@ -1,0 +1,42 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/shine_gold_lambda",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:efficiency",
+            "lvl": 5
+          },
+          {
+            "id": "minecraft:silk_touch"
+          },
+          {
+            "id": "minecraft:fortune"
+          }
+        ],
+        "kill": 2000,
+        "name": "recasting:slashblade/shine_gold",
+        "proud_soul": 100000
+      }
+    },
+    "I": {
+      "item": "recasting:gold_medium_soul_cube"
+    }
+  },
+  "pattern": [
+    " I ",
+    " I ",
+    " B "
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

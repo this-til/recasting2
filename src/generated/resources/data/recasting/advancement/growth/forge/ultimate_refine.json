@@ -1,0 +1,31 @@
+{
+  "parent": "recasting:growth/forge/fully_equipped",
+  "criteria": {
+    "action": {
+      "conditions": {
+        "action": "layout_four_max_normal_one_special"
+      },
+      "trigger": "recasting:forge_se_action"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.recasting.forge.ultimate_refine.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "slashblade:slashblade"
+    },
+    "title": {
+      "translate": "advancements.recasting.forge.ultimate_refine.title"
+    }
+  },
+  "requirements": [
+    [
+      "action"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

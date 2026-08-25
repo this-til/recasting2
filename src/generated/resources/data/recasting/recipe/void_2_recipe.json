@@ -1,0 +1,50 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/void/void_2",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:protection",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:thorns",
+            "lvl": 3
+          }
+        ],
+        "kill": 3000,
+        "name": "recasting:slashblade/void/void_1",
+        "refine": 250
+      }
+    },
+    "C": {
+      "item": "recasting:netherite_medium_soul_cube"
+    },
+    "G": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:growth"
+      }
+    }
+  },
+  "pattern": [
+    " GC",
+    "CBC",
+    "CG "
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

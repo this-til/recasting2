@@ -1,0 +1,43 @@
+{
+  "parent": "recasting:growth/drop/btf/eternal_guard",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:slash_arts_sphere": {
+                "slash_arts": "recasting:azure_haze"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "slash_art.recasting.azure_haze.desc"
+    },
+    "icon": {
+      "components": {
+        "minecraft:custom_data": {
+          "SpecialAttackType": "recasting:azure_haze"
+        }
+      },
+      "count": 1,
+      "id": "slashblade:proudsoul_sphere"
+    },
+    "title": {
+      "translate": "slash_art.recasting.azure_haze"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

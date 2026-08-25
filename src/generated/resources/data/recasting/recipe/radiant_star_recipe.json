@@ -1,0 +1,58 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/radiant_star",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:feather_falling",
+            "lvl": 4
+          },
+          {
+            "id": "minecraft:soul_speed",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:swift_sneak",
+            "lvl": 3
+          },
+          {
+            "id": "minecraft:frost_walker",
+            "lvl": 2
+          }
+        ],
+        "kill": 10000,
+        "name": "recasting:slashblade/color_wing",
+        "refine": 1200
+      }
+    },
+    "C": {
+      "item": "recasting:gold_medium_soul_cube"
+    },
+    "T": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:thunder_strike"
+      }
+    }
+  },
+  "pattern": [
+    "CTC",
+    "CBC",
+    "CTC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

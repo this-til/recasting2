@@ -1,0 +1,21 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "name": "recasting:slashblade/hoe",
+  "properties": {
+    "attack_base": 2.0,
+    "max_damage": 320,
+    "special_effects": [
+      "recasting:fertilize"
+    ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:fertilize": 1
+    }
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/hoe.obj",
+    "texture": "recasting:slashblade/hoe.png"
+  }
+}

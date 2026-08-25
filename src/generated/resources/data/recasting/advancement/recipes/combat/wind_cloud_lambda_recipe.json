@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_illuminating_truth_core": {
+      "conditions": {
+        "items": [
+          {
+            "items": "recasting:illuminating_truth_core"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "recasting:wind_cloud_lambda_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_illuminating_truth_core"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "recasting:wind_cloud_lambda_recipe"
+    ]
+  }
+}

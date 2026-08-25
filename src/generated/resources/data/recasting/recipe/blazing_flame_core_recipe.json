@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:enchanted_golden_apple"
+    },
+    "O": {
+      "item": "recasting:obsession_flame"
+    },
+    "R": {
+      "item": "recasting:redstone_medium_soul_cube"
+    }
+  },
+  "pattern": [
+    "ORO",
+    "RAR",
+    "ORO"
+  ],
+  "result": {
+    "count": 1,
+    "id": "recasting:blazing_flame_core"
+  }
+}

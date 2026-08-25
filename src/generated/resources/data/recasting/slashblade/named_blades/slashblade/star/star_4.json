@@ -1,0 +1,26 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "enchantments": [
+    {
+      "id": "minecraft:sharpness"
+    }
+  ],
+  "name": "recasting:slashblade/star/star_4",
+  "properties": {
+    "attack_base": 7.0,
+    "max_damage": 3840,
+    "slash_art": "recasting:star_4",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "properties_extension": {
+    "attack_distance": 2.0
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/star/star_4.obj",
+    "summon_sword_color": -1579546,
+    "texture": "recasting:slashblade/star/star_4.png"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "type": "recasting:se_crystal_shaped",
+  "category": "misc",
+  "key": {
+    "S": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:growth"
+      }
+    },
+    "U": {
+      "item": "recasting:abyss_flame"
+    }
+  },
+  "pattern": [
+    " U ",
+    "USU",
+    " U "
+  ],
+  "result": {
+    "count": 1,
+    "id": "recasting:se_crystal"
+  },
+  "se_crystal": {
+    "level": 0,
+    "special_effect_type": "recasting:growth"
+  }
+}

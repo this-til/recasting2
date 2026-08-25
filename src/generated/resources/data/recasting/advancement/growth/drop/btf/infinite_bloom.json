@@ -1,0 +1,43 @@
+{
+  "parent": "recasting:growth/drop/btf/verdict",
+  "criteria": {
+    "obtained": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "recasting:slash_arts_sphere": {
+                "slash_arts": "recasting:infinite_bloom"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "slash_art.recasting.infinite_bloom.desc"
+    },
+    "icon": {
+      "components": {
+        "minecraft:custom_data": {
+          "SpecialAttackType": "recasting:infinite_bloom"
+        }
+      },
+      "count": 1,
+      "id": "slashblade:proudsoul_sphere"
+    },
+    "title": {
+      "translate": "slash_art.recasting.infinite_bloom"
+    }
+  },
+  "requirements": [
+    [
+      "obtained"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

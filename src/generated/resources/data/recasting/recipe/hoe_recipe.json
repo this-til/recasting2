@@ -1,0 +1,22 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/hoe",
+  "category": "equipment",
+  "key": {
+    "H": {
+      "item": "slashblade:proudsoul_ingot"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    " HH",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

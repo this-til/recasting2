@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:gold_block"
+    },
+    "H": {
+      "item": "recasting:holy_flame"
+    },
+    "P": {
+      "item": "slashblade:proudsoul"
+    }
+  },
+  "pattern": [
+    "PHP",
+    "HBH",
+    "PHP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "recasting:gold_medium_soul_cube"
+  }
+}

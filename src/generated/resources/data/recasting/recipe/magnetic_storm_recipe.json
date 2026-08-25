@@ -1,0 +1,49 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "recasting:slashblade/magnetic_storm",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "type": "slashblade:blade",
+      "items": [
+        "slashblade:slashblade"
+      ],
+      "request": {
+        "enchantments": [
+          {
+            "id": "minecraft:channeling"
+          },
+          {
+            "id": "minecraft:impaling",
+            "lvl": 3
+          }
+        ],
+        "kill": 1500,
+        "name": "recasting:slashblade/black",
+        "refine": 200
+      }
+    },
+    "C": {
+      "item": "recasting:iron_medium_soul_cube"
+    },
+    "T": {
+      "type": "recasting:se_crystal",
+      "items": [
+        "recasting:se_crystal"
+      ],
+      "request": {
+        "level": 1,
+        "special_effect_type": "recasting:thunder_strike"
+      }
+    }
+  },
+  "pattern": [
+    " TC",
+    "CBC",
+    "CT "
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade:slashblade"
+  }
+}

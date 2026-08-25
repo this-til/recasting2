@@ -1,0 +1,21 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "name": "recasting:slashblade/physics_sword",
+  "properties": {
+    "attack_base": 5.0,
+    "max_damage": 960,
+    "special_effects": [
+      "recasting:stun"
+    ]
+  },
+  "properties_extension": {
+    "extended_special_levels": {
+      "recasting:stun": 1
+    }
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/physics_sword.obj",
+    "texture": "recasting:slashblade/physics_sword.png"
+  }
+}

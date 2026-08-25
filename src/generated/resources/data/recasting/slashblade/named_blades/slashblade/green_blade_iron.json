@@ -1,0 +1,12 @@
+{
+  "creativeGroup": "recasting:hidden",
+  "name": "recasting:slashblade/green_blade_iron",
+  "properties": {
+    "max_damage": 480
+  },
+  "render": {
+    "carry_type": "default",
+    "model": "recasting:slashblade/green_blade_iron.obj",
+    "texture": "recasting:slashblade/green_blade_iron.png"
+  }
+}
