@@ -34,22 +34,23 @@ public final class ItemColorHandler {
         return (stack, tintIndex) -> {
             Item item = stack.getItem();
             if (!(item instanceof IGradientColorProvider provider)) {
-                return 0xFFFFFF;
+                return 0xFFFFFFFF;
             }
             Gradient gradient = provider.getGradient(stack, tintIndex);
             if (gradient == null) {
-                return 0xFFFFFF;
+                return 0xFFFFFFFF;
             }
             float timeScale = provider.getTimeScale();
 
             Level level = Minecraft.getInstance().level;
             if (level == null) {
-                return gradient.evaluateToRGB(0.5f);
+                // ItemColor 按 ARGB 采样；evaluateToRGB 的 alpha=0 会使带 TintIndex 的 OBJ 全透明
+                return gradient.evaluateToARGB(0.5f);
             }
 
             long gameTime = level.getGameTime();
             float time = (float) (gameTime % (long) timeScale) / timeScale;
-            return gradient.evaluateToRGB(time);
+            return gradient.evaluateToARGB(time);
         };
     }
 }
