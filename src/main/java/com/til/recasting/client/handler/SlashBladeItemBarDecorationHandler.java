@@ -11,6 +11,7 @@ import com.til.recasting.handler.InventorySlashBladeSeHelper;
 import com.til.recasting.registry.RecastingBuffTypes;
 import com.til.recasting.registry.SpecialEffectsRegistry;
 import com.til.recasting.registry.instance.BuffType;
+import com.til.recasting.registry.se.FocusedEnergyBladeSpecialEffect;
 import com.til.recasting.registry.sa.EternalGuardSlashArts;
 import com.til.recasting.registry.sa.JadeDomainSlashArts;
 import com.til.recasting.registry.sa.MatrixSlashArts;
@@ -121,6 +122,10 @@ public final class SlashBladeItemBarDecorationHandler {
                 return;
             }
 
+            if (!(SpecialEffectsRegistry.FOCUSED_ENERGY_BLADE.get() instanceof FocusedEnergyBladeSpecialEffect focused)) {
+                return;
+            }
+
             BuffType electricSurge = RecastingBuffTypes.ELECTRIC_SURGE.get();
             int level = buffStackData.getLevel(electricSurge, player.level());
             if (level <= 0) {
@@ -128,7 +133,13 @@ public final class SlashBladeItemBarDecorationHandler {
             }
 
             int maxLevel = Math.max(1, electricSurge.getMaxLevel());
-            event.addBar(ELECTRIC_SURGE_BAR_COLOR, (float) level / (float) maxLevel);
+            float stackProgress = (float) level / (float) maxLevel;
+
+            int maxCooldown = Math.max(1, focused.getSlashCooldownTicks());
+            int remainingCooldown = buffStackData.getLevel(RecastingBuffTypes.OTHERWORLD_SLASH_CD.get(), player.level());
+            float cooldownProgress = (float) (maxCooldown - Math.min(remainingCooldown, maxCooldown)) / (float) maxCooldown;
+
+            event.addBar(ELECTRIC_SURGE_BAR_COLOR, Math.min(stackProgress, cooldownProgress));
         }
 
         @SubscribeEvent(priority = EventPriority.LOWEST)
