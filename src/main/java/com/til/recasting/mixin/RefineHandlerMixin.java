@@ -48,11 +48,11 @@ public abstract class RefineHandlerMixin {
             method = "onAnvilUpdateEvent",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/neoforged/neoforge/event/AnvilUpdateEvent;setCost(I)V"
+                    target = "Lnet/neoforged/neoforge/event/AnvilUpdateEvent;setCost(J)V"
             ),
             index = 0
     )
-    private int recasting$forceRefineCostOne(int cost) {
-        return 1;
+    private long recasting$forceRefineCostOne(long cost) {
+        return 1L;
     }
 }

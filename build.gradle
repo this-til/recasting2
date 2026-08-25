@@ -60,7 +60,7 @@ neoForge {
 
         server {
             server()
-            // 与客户端 run/ 隔离，避免 iris/embeddium 等客户端 jar 进入专用服
+            // 与客户端 run/ 隔离，避免 iris/sodium 等客户端 jar 进入专用服
             gameDirectory = project.file('run-server')
             programArgument '--nogui'
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
@@ -153,7 +153,7 @@ def parseRunFlag(String name) {
 // SlashBlade 扩展兼容 mod：默认不注入
 def runCompatSrelic = parseRunFlag('runCompatSrelic')
 def runCompatTruePower = parseRunFlag('runCompatTruePower')
-// Embeddium + Iris + 主流光影包：仅客户端；默认开启；关闭 -PrunShaders=false
+// Sodium + Iris + 主流光影包：仅客户端；默认开启；关闭 -PrunShaders=false
 def runShaders = project.hasProperty('runShaders') ? parseRunFlag('runShaders') : true
 
 /** 仅同步带 mods 元数据的依赖 jar，排除 neoforge/minecraft 本体。 */
@@ -204,9 +204,12 @@ def cleanRunModsDir = { File modsDir, List alwaysRemove = [] ->
     }
     if (!runShaders) {
         removeNameMatchers.addAll([
-                { String n -> n.startsWith('embeddium') },
+                { String n -> n.startsWith('sodium') || n.startsWith('embeddium') },
                 { String n -> n.startsWith('oculus') || n.startsWith('iris') },
         ])
+    } else {
+        // Iris NeoForge 与 Embeddium 互斥，清理历史残留
+        removeNameMatchers.add({ String n -> n.startsWith('embeddium') })
     }
     modsDir.listFiles()?.each { File file ->
         if (!file.name.toLowerCase(Locale.ROOT).endsWith('.jar')) {
@@ -222,7 +225,7 @@ def cleanRunModsDir = { File modsDir, List alwaysRemove = [] ->
 
 // 服务端 mods 目录禁止出现的客户端专用 jar 前缀（渲染/光影类）
 def serverForbiddenClientModMatchers = [
-        { String n -> n.startsWith('embeddium') },
+        { String n -> n.startsWith('sodium') || n.startsWith('embeddium') },
         { String n -> n.startsWith('oculus') || n.startsWith('iris') },
 ]
 
@@ -274,8 +277,8 @@ dependencies {
     }
 
     if (runShaders) {
-        // Embeddium —— 仅客户端
-        runModLibraries "curse.maven:embeddium-908741:6118392"
+        // Sodium 0.8（Iris NeoForge 与 Embeddium 互斥）—— 仅客户端
+        runModLibraries "maven.modrinth:sodium:mc1.21.1-0.8.12-neoforge"
         // Iris 替代 Oculus（1.21 NeoForge 无 Oculus）—— 仅客户端
         runModLibraries "maven.modrinth:iris:1.8.14-beta.1+1.21.1-neoforge"
     }
