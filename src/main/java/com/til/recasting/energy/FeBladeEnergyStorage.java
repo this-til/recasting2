@@ -3,7 +3,10 @@ package com.til.recasting.energy;
 import com.til.recasting.capability.FeBladeEnergyData;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.registry.RecastingDataComponents;
+import mods.flammpfeil.slashblade.registry.SlashBladeItems;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
 /**
@@ -13,14 +16,33 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
  */
 public class FeBladeEnergyStorage implements IEnergyStorage {
 
-    // TODO(P4): 通过 RegisterCapabilitiesEvent 向拔刀剑 ItemStack 暴露 Capabilities.EnergyStorage.ITEM
-
     private final ItemStack stack;
     private int maxReceive = Integer.MAX_VALUE;
     private int maxExtract = Integer.MAX_VALUE;
 
     public FeBladeEnergyStorage(ItemStack stack) {
         this.stack = stack;
+    }
+
+    /**
+     * 向拔刀剑 ItemStack 暴露 {@link Capabilities.EnergyStorage#ITEM}。
+     */
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerItem(
+                Capabilities.EnergyStorage.ITEM,
+                (stack, context) -> {
+                    FeBladeEnergyStorage storage = new FeBladeEnergyStorage(stack);
+                    if (storage.resolveCapacity() <= 0L) {
+                        return null;
+                    }
+                    return storage;
+                },
+                SlashBladeItems.SLASHBLADE.get(),
+                SlashBladeItems.SLASHBLADE_WOOD.get(),
+                SlashBladeItems.SLASHBLADE_BAMBOO.get(),
+                SlashBladeItems.SLASHBLADE_SILVERBAMBOO.get(),
+                SlashBladeItems.SLASHBLADE_WHITE.get()
+        );
     }
 
     public long resolveCapacity() {

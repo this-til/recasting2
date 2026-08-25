@@ -116,7 +116,6 @@ public abstract class AttackManagerMixin {
                 new DamageStructure(comboRatio, 0),
                 List.of(RecastingAttackTypes.SLASH_EFFECT_ATTACK.get())
         );
-        // TODO(P3): cancel 后补回 AttackManager 原有 ArrowReflector / TNTExtinguisher 调用
         ci.cancel();
     }
 }

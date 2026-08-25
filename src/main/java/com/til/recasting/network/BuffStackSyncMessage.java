@@ -2,17 +2,22 @@ package com.til.recasting.network;
 
 import com.til.recasting.Recasting;
 import com.til.recasting.capability.IBuffStackData;
+import com.til.recasting.registry.RecastingAttachments;
+import com.til.recasting.registry.RecastingBuffTypes;
+import com.til.recasting.registry.instance.BuffType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Buff叠加数据网络同步消息
- * 优化为只同步单个buff条目的更新
+ * Buff 叠加数据网络同步消息（单条目增量）。
  */
 public record BuffStackSyncMessage(
         int entityId,
@@ -63,6 +68,27 @@ public record BuffStackSyncMessage(
     }
 
     public static void handle(BuffStackSyncMessage msg, IPayloadContext ctx) {
-        // TODO(P4/P5): 客户端写入 BUFF_STACK_DATA Attachment
+        ctx.enqueueWork(() -> applyOnClient(msg));
+    }
+
+    private static void applyOnClient(BuffStackSyncMessage msg) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.level == null || msg.buffTypeKey == null) {
+            return;
+        }
+        Entity entity = minecraft.level.getEntity(msg.entityId);
+        if (!(entity instanceof LivingEntity livingEntity)) {
+            return;
+        }
+        BuffType buffType = RecastingBuffTypes.REGISTRY.get(msg.buffTypeKey);
+        if (buffType == null) {
+            return;
+        }
+        IBuffStackData data = RecastingAttachments.buffStackData(livingEntity);
+        if (msg.entry != null) {
+            data.setEntry(buffType, msg.entry);
+        } else {
+            data.remove(buffType);
+        }
     }
 }

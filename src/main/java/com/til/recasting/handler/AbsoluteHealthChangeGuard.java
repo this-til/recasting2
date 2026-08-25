@@ -3,7 +3,6 @@ package com.til.recasting.handler;
 /**
  * 标记当前线程上的 setHealth 为模组合法扣血（绝对伤害等），
  * 使人皇领域等 setHealth Mixin 不拦截。
- * TODO(P4): 配套移植 LivingEntitySetHealthMixin。
  */
 public final class AbsoluteHealthChangeGuard {
 

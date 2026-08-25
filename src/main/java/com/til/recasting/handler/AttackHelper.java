@@ -9,6 +9,8 @@ import com.til.recasting.registry.RecastingDataComponents;
 import com.til.recasting.registry.RecastingEntities;
 import com.til.recasting.registry.instance.AttackType;
 import com.til.recasting.util.DamageStructure;
+import mods.flammpfeil.slashblade.ability.ArrowReflector;
+import mods.flammpfeil.slashblade.ability.TNTExtinguisher;
 import mods.flammpfeil.slashblade.capability.slashblade.BladeStateAccess;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.util.KnockBacks;
@@ -363,7 +365,8 @@ public final class AttackHelper {
 
         target.invulnerableTime = 0;
 
-        // TODO(P3): 对齐 SlashBlade AttackManager.doMeleeAttack 后置逻辑（ArrowReflector / TNTExtinguisher）
+        ArrowReflector.doReflect(target, attacker);
+        TNTExtinguisher.doExtinguishing(target, attacker);
     }
 
     public static List<LivingEntity> attackAlongSegment(

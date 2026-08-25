@@ -3,6 +3,7 @@ package com.til.recasting;
 import com.mojang.logging.LogUtils;
 import com.til.recasting.advancement.RecastingCriteriaTriggers;
 import com.til.recasting.client.ClientSetup;
+import com.til.recasting.energy.FeBladeEnergyStorage;
 import com.til.recasting.network.NetworkManager;
 import com.til.recasting.registry.RecastingAttachments;
 import com.til.recasting.registry.RecastingAttackTypes;
@@ -44,6 +45,7 @@ public class Recasting {
         }
 
         modEventBus.addListener(NetworkManager::register);
+        modEventBus.addListener(FeBladeEnergyStorage::registerCapabilities);
 
         RecastingAttachments.ATTACHMENT_TYPES.register(modEventBus);
         RecastingDataComponents.DATA_COMPONENTS.register(modEventBus);

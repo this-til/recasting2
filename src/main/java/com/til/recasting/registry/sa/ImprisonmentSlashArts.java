@@ -3,7 +3,7 @@ package com.til.recasting.registry.sa;
 import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
-import com.til.recasting.R;
+import com.til.recasting.constant.R;
 import com.til.recasting.entity.JudgementCutEntity;
 import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.registry.RecastingAttachments;

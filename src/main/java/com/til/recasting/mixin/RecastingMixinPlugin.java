@@ -10,8 +10,6 @@ import java.util.Set;
 
 /**
  * Mixin 条件加载：JEI 相关 Mixin 仅在 JEI 存在时启用。
- * <p>
- * TODO(P7): 登记 JEICompatMixin。
  */
 public final class RecastingMixinPlugin implements IMixinConfigPlugin {
 

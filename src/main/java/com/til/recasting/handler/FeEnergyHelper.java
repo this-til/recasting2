@@ -1,11 +1,14 @@
 package com.til.recasting.handler;
 
+import com.til.recasting.constant.RecastingLanguageKeys;
 import com.til.recasting.energy.FeBladeEnergyStorage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 import java.util.List;
 
@@ -18,6 +21,10 @@ public final class FeEnergyHelper {
     }
 
     private static FeBladeEnergyStorage storage(ItemStack stack) {
+        IEnergyStorage energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+        if (energy instanceof FeBladeEnergyStorage fe) {
+            return fe;
+        }
         return new FeBladeEnergyStorage(stack);
     }
 
@@ -42,7 +49,6 @@ public final class FeEnergyHelper {
         if (stack == null || stack.isEmpty() || amount <= 0L) {
             return false;
         }
-        // TODO(P4): Capabilities.EnergyStorage.ITEM 注册后可走 capability 路径
         return storage(stack).extractEnergyLong(amount, simulate) >= amount;
     }
 
@@ -128,7 +134,7 @@ public final class FeEnergyHelper {
         long stored = getStored(stack);
         Component energyTip = Component.literal(formatEnergy(stored) + " / " + formatEnergy(capacity))
                 .withStyle(ChatFormatting.GOLD);
-        tooltip.add(Component.translatable("tooltip.recasting.fe_energy_info", energyTip)
+        tooltip.add(Component.translatable(RecastingLanguageKeys.TOOLTIP_FE_ENERGY_INFO, energyTip)
                 .withStyle(ChatFormatting.GRAY));
     }
 }

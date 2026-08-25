@@ -170,7 +170,7 @@ public static void onDoSlash(SlashBladeEvent.DoSlashEvent event) {
 - 实体：`StandardizationAttackEntity` → 连续伤害 / 幻影剑 / 斩击 / Drive / JC / 闪电 / 矩阵 / 星旋 / 群星阵 / 末辉黑洞等
 - 注册：`RecastingEntities` 11 项；空客户端 Renderer 占位
 - `AttackHelper.doSlash` → `SlashEffectEntity`；`AttackManagerMixin` 返回 SlashBlade 哑元 `EntitySlashEffect`
-- 末辉：MatterBall 收集 / 客户端终结 FX 早退（TODO P4 / P5）
+- 末辉：MatterBall 收集 / 客户端终结 FX
 
 **验收**：`.\gradlew build`；实体类与 1.20 注册项对齐；`doSlash` 生成本模组斩击实体。
 

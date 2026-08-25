@@ -5,10 +5,12 @@ import com.til.recasting.handler.AttractionHelper;
 import com.til.recasting.handler.BuffSourceHelper;
 import com.til.recasting.handler.EntityHelper;
 import com.til.recasting.client.effect.FinalGlowBlackHoleClientFx;
+import com.til.recasting.item.MatterBallStorage;
 import com.til.recasting.network.FinalGlowIngestMessage;
 import com.til.recasting.registry.RecastingAttachments;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.registry.RecastingBuffTypes;
+import com.til.recasting.registry.RecastingItems;
 import com.til.recasting.util.DamageStructure;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -51,6 +53,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
@@ -64,8 +67,6 @@ import java.util.UUID;
 
 /**
  * 末辉终焉超新星爆：视界坍缩后终结。
- * <p>
- * MatterBall 收集/返还待 P4；客户端终结 FX 待 P5。
  */
 @Getter
 @Setter
@@ -100,6 +101,10 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private boolean ingestedBlocksThisTick;
+
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private final ItemStack collectBall = new ItemStack(RecastingItems.MATTER_BALL.get());
 
     public FinalGlowBlackHoleEntity(
             EntityType<? extends FinalGlowBlackHoleEntity> entityTypeIn,
@@ -344,7 +349,7 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
                 continue;
             }
             if (entity instanceof ItemEntity itemEntity) {
-                // TODO(P4): MatterBallStorage.insert(collectBall, itemEntity.getItem())
+                MatterBallStorage.insert(collectBall, itemEntity.getItem());
                 itemEntity.discard();
                 continue;
             }
@@ -466,7 +471,7 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
             }
             BlockEntity blockEntity = level().getBlockEntity(pos);
             for (ItemStack drop : Block.getDrops(state, serverLevel, pos, blockEntity, shooter, silkTool)) {
-                // TODO(P4): MatterBallStorage.insert(collectBall, drop)
+                MatterBallStorage.insert(collectBall, drop);
                 drop.setCount(0);
             }
             level().removeBlock(pos, false);
@@ -522,7 +527,7 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
         Vec3 center = position();
 
         LivingEntity shooter = getShooter();
-        // TODO(P4): giveMatterBall(shooter, center)
+        giveMatterBall(shooter, center);
 
         if (shooter == null) {
             return;
@@ -542,6 +547,30 @@ public class FinalGlowBlackHoleEntity extends JudgementCutEntity {
                 continue;
             }
             AttackHelper.doMeleeAttack(shooter, target, new DamageStructure(ratio, 0.0f), attackTypes);
+        }
+    }
+
+    private void giveMatterBall(LivingEntity shooter, Vec3 center) {
+        if (MatterBallStorage.isEmpty(collectBall)) {
+            return;
+        }
+        if (shooter instanceof Player player) {
+            ItemStack existing = MatterBallStorage.findBall(player, null);
+            if (!existing.isEmpty()) {
+                MatterBallStorage.mergeFrom(collectBall, existing);
+                return;
+            }
+            ItemStack ball = new ItemStack(RecastingItems.MATTER_BALL.get());
+            MatterBallStorage.copyFrom(collectBall, ball);
+            MatterBallStorage.clear(collectBall);
+            ItemHandlerHelper.giveItemToPlayer(player, ball);
+            return;
+        }
+        ItemStack ball = new ItemStack(RecastingItems.MATTER_BALL.get());
+        MatterBallStorage.copyFrom(collectBall, ball);
+        MatterBallStorage.clear(collectBall);
+        if (!ball.isEmpty()) {
+            level().addFreshEntity(new ItemEntity(level(), center.x, center.y, center.z, ball));
         }
     }
 

@@ -3,7 +3,7 @@ package com.til.recasting.registry.sa;
 import com.til.recasting.capability.IBuffStackData;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
-import com.til.recasting.R;
+import com.til.recasting.constant.R;
 import com.til.recasting.entity.MatrixEntity;
 import com.til.recasting.registry.RecastingAttachments;
 import com.til.recasting.handler.PosHelper;

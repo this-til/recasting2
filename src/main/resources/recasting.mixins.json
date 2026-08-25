@@ -22,7 +22,8 @@
     "LivingEntitySetHealthMixin",
     "EntityAccessor",
     "AdvancementVisibilityEvaluatorMixin",
-    "ItemSlashBladeMixin"
+    "ItemSlashBladeMixin",
+    "JEICompatMixin"
   ],
   "client": [
     "client.LayerMainBladeMixin"
