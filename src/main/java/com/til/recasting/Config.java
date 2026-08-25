@@ -119,16 +119,21 @@ public class Config {
             .defineInRange("seCrystalDropCooldownTicks", 144000, 0, Integer.MAX_VALUE);
 
     public static final ForgeConfigSpec.ConfigValue<List<? extends String>> SE_CRYSTAL_DROP_WHITELIST = BUILDER
-            .comment("SE 结晶掉落白名单（ResourceLocation；空列表则不掉落）")
+            .comment("SE 结晶掉落白名单（ResourceLocation；默认指令映射/宝具连发及其 λ）")
             .defineListAllowEmpty(
                     List.of("seCrystalDropWhitelist"),
-                    List::of,
+                    () -> List.of(
+                            "recasting:command_mapping",
+                            "recasting:command_mapping_lambda",
+                            "recasting:treasure_barrage",
+                            "recasting:treasure_barrage_lambda"
+                    ),
                     entry -> entry instanceof String
             );
 
     public static final ForgeConfigSpec.DoubleValue SLASH_ARTS_DROP_CHANCE = BUILDER
             .comment("手持拔刀剑击败生物时，掉落配置白名单内 SA（耀魂宝珠）的概率")
-            .defineInRange("slashArtsDropChance", 0.0003, 0.0, 1.0);
+            .defineInRange("slashArtsDropChance", 0.0005, 0.0, 1.0);
 
     public static final ForgeConfigSpec.IntValue SLASH_ARTS_DROP_COOLDOWN_TICKS = BUILDER
             .comment("SA 掉落冷却（tick；默认 2 小时 = 144000）")
