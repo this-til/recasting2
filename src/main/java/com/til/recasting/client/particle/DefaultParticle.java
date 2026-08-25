@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
@@ -32,11 +33,9 @@ import java.util.Map;
 /**
  * 可链式配置的通用 Billboard 粒子。
  * <p>
- * 独立 {@link ParticleRenderType} 通道；顶点写入引擎在 {@code begin} 中返回的 {@link BufferBuilder}。
- * <p>
- * 使用 {@link DefaultVertexFormat#POSITION_TEX_COLOR}（不采样 lightmap），避免假人伤害数字等
- * {@code ParticleRenderType.CUSTOM} 在粒子阶段 {@code endBatch} 弄脏 lightmap 后，
- * 同帧后续粒子整批不可见（同类问题见 Forge#6706）。
+ * 独立 {@link ParticleRenderType} 通道；批缓冲走共享 {@link Tesselator#begin}（与 1.21
+ * {@code ParticleEngine} / {@link RiftSlashParticle} 一致），格式用
+ * {@link DefaultVertexFormat#POSITION_TEX_COLOR}，不依赖 lightmap。
  */
 @OnlyIn(Dist.CLIENT)
 public class DefaultParticle extends Particle {
@@ -209,6 +208,16 @@ public class DefaultParticle extends Particle {
     }
 
     @Override
+    public @NotNull AABB getRenderBoundingBox(float partialTick) {
+        float currentSize = resolveCurrentSize();
+        double extent = Math.max(currentSize * 2.0, 1.0);
+        double cx = Mth.lerp(partialTick, this.xo, this.x);
+        double cy = Mth.lerp(partialTick, this.yo, this.y);
+        double cz = Mth.lerp(partialTick, this.zo, this.z);
+        return new AABB(cx - extent, cy - extent, cz - extent, cx + extent, cy + extent, cz + extent);
+    }
+
+    @Override
     public void tick() {
         this.xo = this.x;
         this.yo = this.y;
@@ -266,10 +275,11 @@ public class DefaultParticle extends Particle {
         float g = Mth.clamp(this.gCol * exposure, 0.0f, 1.0f);
         float b = Mth.clamp(this.bCol * exposure, 0.0f, 1.0f);
 
-        addVertex(buffer, quaternion, x, y, z, -1.0F, -1.0F, currentSize, 0.0F, 0.0F, r, g, b, this.alpha);
-        addVertex(buffer, quaternion, x, y, z, -1.0F, 1.0F, currentSize, 0.0F, 1.0F, r, g, b, this.alpha);
-        addVertex(buffer, quaternion, x, y, z, 1.0F, 1.0F, currentSize, 1.0F, 1.0F, r, g, b, this.alpha);
-        addVertex(buffer, quaternion, x, y, z, 1.0F, -1.0F, currentSize, 1.0F, 0.0F, r, g, b, this.alpha);
+        // 与 SingleQuadParticle 一致的绕序，避免默认背面剔除整批消失
+        addVertex(buffer, quaternion, x, y, z, 1.0F, -1.0F, currentSize, 1.0F, 1.0F, r, g, b, this.alpha);
+        addVertex(buffer, quaternion, x, y, z, 1.0F, 1.0F, currentSize, 1.0F, 0.0F, r, g, b, this.alpha);
+        addVertex(buffer, quaternion, x, y, z, -1.0F, 1.0F, currentSize, 0.0F, 0.0F, r, g, b, this.alpha);
+        addVertex(buffer, quaternion, x, y, z, -1.0F, -1.0F, currentSize, 0.0F, 1.0F, r, g, b, this.alpha);
     }
 
     private static void addVertex(
@@ -289,7 +299,9 @@ public class DefaultParticle extends Particle {
             float a
     ) {
         Vector3f vertex = new Vector3f(xOffset, yOffset, 0.0F).rotate(quaternion).mul(quadSize).add(x, y, z);
-        buffer.addVertex(vertex.x(), vertex.y(), vertex.z()).setUv(u, v).setColor(r, g, b, a);
+        buffer.addVertex(vertex.x(), vertex.y(), vertex.z())
+                .setUv(u, v)
+                .setColor(r, g, b, a);
     }
 
     @Override
@@ -330,6 +342,7 @@ public class DefaultParticle extends Particle {
             @Nullable
             public BufferBuilder begin(Tesselator tesselator, TextureManager textureManager) {
                 restorePipelineAfterCustom();
+                RenderSystem.disableCull();
                 RenderSystem.depthMask(false);
                 RenderSystem.enableBlend();
                 if (additive) {
@@ -340,6 +353,7 @@ public class DefaultParticle extends Particle {
                             GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
                     );
                 }
+                // 与 RiftSlashParticle 一致：不采样 lightmap，避开假人 CUSTOM 拆掉 lightmap 后整批变黑
                 RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                 RenderSystem.setShaderTexture(0, texture);
@@ -355,9 +369,10 @@ public class DefaultParticle extends Particle {
     }
 
     /**
-     * 假人伤害数字在 CUSTOM 阶段 endBatch 后，活动纹理单元 / 深度测试往往已被弄脏。
+     * 假人伤害数字在 CUSTOM 阶段 endBatch 后，lightmap / 纹理单元 / 深度测试往往已被弄脏。
      */
     private static void restorePipelineAfterCustom() {
+        Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
         RenderSystem.activeTexture(org.lwjgl.opengl.GL13.GL_TEXTURE2);
         RenderSystem.activeTexture(org.lwjgl.opengl.GL13.GL_TEXTURE0);
         RenderSystem.enableDepthTest();
