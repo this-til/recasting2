@@ -20,7 +20,7 @@ Minecraft **NeoForge 1.21.1** 的 [SlashBlade Resharped](https://www.curseforge.
 .\gradlew build
 ```
 
-产物位于 `build/libs/`，文件名形如 `recasting2-1.21.1-2.0.0-SNAPSHOT.jar`。
+产物位于 `build/libs/`，文件名形如 `recasting2-1.21.1-1.0.0.jar`。
 
 开发客户端：
 
