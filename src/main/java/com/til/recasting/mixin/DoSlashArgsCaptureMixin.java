@@ -32,7 +32,7 @@ public abstract class DoSlashArgsCaptureMixin {
             KnockBacks knockback,
             CallbackInfoReturnable<?> cir
     ) {
-        DoSlashArgsCapture.set(centerOffset, mute, colorCode);
+        DoSlashArgsCapture.push(centerOffset, mute, colorCode);
     }
 
     @Inject(
@@ -50,6 +50,6 @@ public abstract class DoSlashArgsCaptureMixin {
             KnockBacks knockback,
             CallbackInfoReturnable<?> cir
     ) {
-        DoSlashArgsCapture.clear();
+        DoSlashArgsCapture.pop();
     }
 }

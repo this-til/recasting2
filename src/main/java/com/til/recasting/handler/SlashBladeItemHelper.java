@@ -1,6 +1,7 @@
 package com.til.recasting.handler;
 
 import com.til.recasting.Config;
+import lombok.extern.log4j.Log4j2;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +22,7 @@ import java.util.regex.PatternSyntaxException;
  * 原版挥砍 / 召唤剑 / 次元斩是否改走 Recasting。
  * 物品 Class / SA / SE / 附魔正则任意整串匹配（{@link java.util.regex.Matcher#matches()}）则不接管。
  */
+@Log4j2
 public final class SlashBladeItemHelper {
 
     private static final RegexGate ITEM_CLASS_GATE = new RegexGate();
@@ -145,7 +147,8 @@ public final class SlashBladeItemHelper {
                 }
                 try {
                     compiled.add(Pattern.compile(pattern));
-                } catch (PatternSyntaxException ignored) {
+                } catch (PatternSyntaxException e) {
+                    log.warn("Invalid vanillaArtReplace regex skipped: {} ({})", pattern, e.getDescription());
                 }
             }
             return compiled;

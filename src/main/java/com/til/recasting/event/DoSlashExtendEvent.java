@@ -3,33 +3,69 @@ package com.til.recasting.event;
 import lombok.Getter;
 import lombok.Setter;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
-import mods.flammpfeil.slashblade.event.SlashBladeEvent;
 import mods.flammpfeil.slashblade.util.KnockBacks;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.eventbus.api.Cancelable;
+import net.minecraftforge.eventbus.api.Event;
 
-public class DoSlashExtendEvent extends SlashBladeEvent.DoSlashEvent {
+/**
+ * Recasting 挥刀事件。独立于原版 {@code SlashBladeEvent}，
+ * 避免接管原版挥刀时对父类型监听者二次投递。
+ */
+@Cancelable
+@Getter
+public class DoSlashExtendEvent extends Event {
 
-    @Getter
+    private final ItemStack blade;
+    private final ISlashBladeState slashBladeState;
+    private final LivingEntity user;
+    private final Vec3 centerOffset;
+
     @Setter
-    float attackRange;
+    private float roll;
 
-    @Getter
     @Setter
-    float modifiedRatio;
+    private boolean critical;
 
-    @Getter
-    Vec3 centerOffset;
-
-    @Getter
     @Setter
-    boolean mute;
+    private double damage;
 
-    public DoSlashExtendEvent(ItemStack blade, ISlashBladeState state, LivingEntity user, float roll, boolean critical, float modifiedRatio, float damage, KnockBacks knockback, float attackRange, Vec3 centerOffset, boolean mute) {
-        super(blade, state, user, roll, critical, damage, knockback);
-        this.attackRange = attackRange;
+    @Setter
+    private KnockBacks knockback;
+
+    @Setter
+    private float attackRange;
+
+    @Setter
+    private float modifiedRatio;
+
+    @Setter
+    private boolean mute;
+
+    public DoSlashExtendEvent(
+            ItemStack blade,
+            ISlashBladeState slashBladeState,
+            LivingEntity user,
+            float roll,
+            boolean critical,
+            float modifiedRatio,
+            float damage,
+            KnockBacks knockback,
+            float attackRange,
+            Vec3 centerOffset,
+            boolean mute
+    ) {
+        this.blade = blade;
+        this.slashBladeState = slashBladeState;
+        this.user = user;
+        this.roll = roll;
+        this.critical = critical;
         this.modifiedRatio = modifiedRatio;
+        this.damage = damage;
+        this.knockback = knockback;
+        this.attackRange = attackRange;
         this.centerOffset = centerOffset;
         this.mute = mute;
     }
