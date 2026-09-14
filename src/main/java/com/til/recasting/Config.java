@@ -177,6 +177,45 @@ public class Config {
             .comment("是否在物品栏为拔刀剑绘制耐久进度条（SlashBlade 默认隐藏原版耐久条）")
             .define("showSlashBladeDurabilityBar", true);
 
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> VANILLA_ART_REPLACE_ITEM_CLASS_PATTERNS;
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> VANILLA_ART_REPLACE_SA_PATTERNS;
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> VANILLA_ART_REPLACE_SE_PATTERNS;
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> VANILLA_ART_REPLACE_ENCHANTMENT_PATTERNS;
+
+    static {
+        BUILDER.push("vanillaArtReplace");
+        VANILLA_ART_REPLACE_ITEM_CLASS_PATTERNS = BUILDER
+                .comment(
+                        "物品 Class 全名正则，任意一条整串匹配则不接管挥砍/召唤剑/次元斩。",
+                        "匹配方式为 Java Matcher.matches（整段必须匹配，不是子串 find）。",
+                        "默认排除 ItemSlashBlade 以外的类型，即仅 Class 严格等于 mods.flammpfeil.slashblade.item.ItemSlashBlade 才接管。"
+                )
+                .defineListAllowEmpty(
+                        "itemClassPatterns",
+                        List.of("^(?!mods\\.flammpfeil\\.slashblade\\.item\\.ItemSlashBlade$).+"),
+                        entry -> entry instanceof String
+                );
+        VANILLA_ART_REPLACE_SA_PATTERNS = BUILDER
+                .comment(
+                        "刀上 SA id 正则，任意一条整串匹配则不接管。",
+                        "匹配方式为 Java Matcher.matches。例 srelic:.*"
+                )
+                .defineListAllowEmpty("saPatterns", List.of(), entry -> entry instanceof String);
+        VANILLA_ART_REPLACE_SE_PATTERNS = BUILDER
+                .comment(
+                        "刀上 SE id 正则，任意一条整串匹配则不接管。",
+                        "匹配方式为 Java Matcher.matches。例 srelic:.*"
+                )
+                .defineListAllowEmpty("sePatterns", List.of(), entry -> entry instanceof String);
+        VANILLA_ART_REPLACE_ENCHANTMENT_PATTERNS = BUILDER
+                .comment(
+                        "刀上附魔 id 正则，任意一条整串匹配则不接管。",
+                        "匹配方式为 Java Matcher.matches。"
+                )
+                .defineListAllowEmpty("enchantmentPatterns", List.of(), entry -> entry instanceof String);
+        BUILDER.pop();
+    }
+
     // 实验性功能，默认关闭
     public static final ModConfigSpec.BooleanValue TIME_BEYOND_ENTITY_TICK_ACCEL = BUILDER
             .comment(

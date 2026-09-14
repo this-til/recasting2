@@ -1,15 +1,11 @@
 package com.til.recasting.mixin;
 
-import com.til.recasting.entity.SlashEffectEntity;
 import com.til.recasting.handler.AttackHelper;
+import com.til.recasting.handler.SlashBladeItemHelper;
 import com.til.recasting.registry.RecastingAttackTypes;
 import com.til.recasting.util.DamageStructure;
-import mods.flammpfeil.slashblade.RegistryEvents;
-import mods.flammpfeil.slashblade.entity.EntitySlashEffect;
-import mods.flammpfeil.slashblade.util.KnockBacks;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,46 +16,10 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * 接管 SlashBlade {@code AttackManager} 的关键攻击入口，接入本模组 AttackHelper / DoSlashExtendEvent。
+ * 挥刀由 {@code VanillaDoSlashHandler} 接管。此处只替换 {@code areaAttack} / {@code doMeleeAttack}。
  */
 @Mixin(value = mods.flammpfeil.slashblade.util.AttackManager.class, remap = false)
 public abstract class AttackManagerMixin {
-
-    @Inject(
-            method = "doSlash(Lnet/minecraft/world/entity/LivingEntity;FILnet/minecraft/world/phys/Vec3;ZZDLmods/flammpfeil/slashblade/util/KnockBacks;)Lmods/flammpfeil/slashblade/entity/EntitySlashEffect;",
-            at = @At("HEAD"),
-            cancellable = true,
-            remap = false
-    )
-    private static void recasting$doSlash(
-            LivingEntity playerIn,
-            float roll,
-            int colorCode,
-            Vec3 centerOffset,
-            boolean mute,
-            boolean critical,
-            double comboRatio,
-            KnockBacks knockback,
-            CallbackInfoReturnable<EntitySlashEffect> cir
-    ) {
-        float attackDistance = AttackHelper.propertiesOf(playerIn.getMainHandItem()).attackDistance();
-
-        AttackHelper.doSlash(
-                playerIn,
-                roll,
-                colorCode,
-                centerOffset,
-                mute,
-                critical,
-                new DamageStructure((float) comboRatio, 0),
-                attackDistance,
-                knockback
-        );
-
-        // 真实伤害实体已入世；返回哑元以满足 SlashBlade 方法签名（与 1.20 一致）
-        cir.setReturnValue(new EntitySlashEffect(RegistryEvents.SlashEffect, playerIn.level()));
-        cir.cancel();
-    }
 
     @Inject(
             method = "areaAttack(Lnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Consumer;FZZZLjava/util/List;)Ljava/util/List;",
@@ -77,8 +37,10 @@ public abstract class AttackManagerMixin {
             List<Entity> exclude,
             CallbackInfoReturnable<List<Entity>> cir
     ) {
+        if (!SlashBladeItemHelper.matchesReplaceRule(playerIn.getMainHandItem())) {
+            return;
+        }
         float attackDistance = AttackHelper.propertiesOf(playerIn.getMainHandItem()).attackDistance();
-
         List<Entity> hits = AttackHelper.areaAttack(
                         playerIn,
                         playerIn.position(),
@@ -91,7 +53,6 @@ public abstract class AttackManagerMixin {
                 .stream()
                 .map(e -> (Entity) e)
                 .toList();
-
         cir.setReturnValue(hits);
         cir.cancel();
     }
@@ -110,6 +71,9 @@ public abstract class AttackManagerMixin {
             float comboRatio,
             CallbackInfo ci
     ) {
+        if (!SlashBladeItemHelper.matchesReplaceRule(attacker.getMainHandItem())) {
+            return;
+        }
         AttackHelper.doMeleeAttack(
                 attacker,
                 target,

@@ -3,11 +3,13 @@ package com.til.recasting.registry.sa;
 import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
+import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.registry.RecastingAttachments;
+import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
-import mods.flammpfeil.slashblade.util.AttackManager;
+import mods.flammpfeil.slashblade.util.KnockBacks;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -28,12 +30,10 @@ public class FanaticalDanceSlashArts extends ExtendedSlashArts {
 
     @Override
     public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
-
-        // 计算总攻击次数
         int number = attackNumber + livingEntity.getRandom().nextInt(attackDeviation + 1);
 
         ITimeRun timeRun = RecastingAttachments.timeRun(livingEntity);
-        for(int i = 0; i < number; i++) {
+        for (int i = 0; i < number; i++) {
             int delay = delayTicks * i;
 
             timeRun.addTimerCell(
@@ -44,14 +44,16 @@ public class FanaticalDanceSlashArts extends ExtendedSlashArts {
                                 livingEntity.getRandom().nextFloat() - 0.5f,
                                 0
                         ).scale(offset);
-
-                        AttackManager.doSlash(
+                        AttackHelper.doSlash(
                                 livingEntity,
                                 randomRoll,
+                                slashBladeState.getColorCode(),
                                 randomOffset,
                                 false,
                                 true,
-                                hit
+                                new DamageStructure(hit, 0),
+                                propertiesDefinitionExtension.attackDistance(),
+                                KnockBacks.cancel
                         );
                     },
                     delay

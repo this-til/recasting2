@@ -8,11 +8,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * 结缘剑「犬」获取进度：驯服狼、现实时间陪伴、一次性领取。
+ * 结缘剑「犬」获取进度：驯服狼、在线陪伴、一次性领取。
  */
 public interface IJieYuanDogBond {
 
-    long SURVIVAL_MILLIS = 6L * 60L * 60L * 1000L;
+    long SURVIVAL_TICKS = 6L * 60L * 60L * 20L;
 
     boolean isClaimed();
 
@@ -27,27 +27,31 @@ public interface IJieYuanDogBond {
     @Nullable
     UUID getBondedWolfUuid();
 
-    long getTameTimeMillis();
+    long getCompanionshipTicks();
 
-    void beginBond(UUID wolfUuid, long tameTimeMillis);
+    void setCompanionshipTicks(long companionshipTicks);
+
+    void addCompanionshipTicks(long ticks);
+
+    void beginBond(UUID wolfUuid);
 
     void clearActiveBond();
 
-    default boolean isSurvivalComplete(long nowMillis) {
+    default boolean isSurvivalComplete() {
         if (isBondFulfilled()) {
             return true;
         }
         if (!hasActiveBond()) {
             return false;
         }
-        return nowMillis - getTameTimeMillis() >= SURVIVAL_MILLIS;
+        return getCompanionshipTicks() >= SURVIVAL_TICKS;
     }
 
-    default long remainingSurvivalMillis(long nowMillis) {
+    default long remainingSurvivalTicks() {
         if (isBondFulfilled() || !hasActiveBond()) {
             return 0L;
         }
-        return Math.max(0L, SURVIVAL_MILLIS - (nowMillis - getTameTimeMillis()));
+        return Math.max(0L, SURVIVAL_TICKS - getCompanionshipTicks());
     }
 
     void copyFrom(IJieYuanDogBond other);
@@ -64,26 +68,26 @@ public interface IJieYuanDogBond {
                             }
                             return Optional.of(bond.bondedWolfUuid.toString());
                         }),
-                        Codec.LONG.optionalFieldOf("tame_time", 0L).forGetter(JieYuanDogBond::getTameTimeMillis))
-                .apply(instance, (claimed, fulfilled, wolfUuid, tameTime) -> {
+                        Codec.LONG.optionalFieldOf("companionship_ticks", 0L).forGetter(JieYuanDogBond::getCompanionshipTicks))
+                .apply(instance, (claimed, fulfilled, wolfUuid, companionshipTicks) -> {
                     JieYuanDogBond bond = new JieYuanDogBond();
                     bond.claimed = claimed;
                     bond.bondFulfilled = fulfilled;
                     if (wolfUuid.isPresent()) {
                         try {
                             bond.bondedWolfUuid = UUID.fromString(wolfUuid.get());
-                            bond.tameTimeMillis = tameTime;
                         } catch (IllegalArgumentException ignored) {
                             bond.clearActiveBond();
                         }
                     }
+                    bond.companionshipTicks = companionshipTicks;
                     return bond;
                 }));
 
         private boolean claimed;
         private boolean bondFulfilled;
         private UUID bondedWolfUuid = NO_WOLF;
-        private long tameTimeMillis;
+        private long companionshipTicks;
 
         @Override
         public boolean isClaimed() {
@@ -107,7 +111,7 @@ public interface IJieYuanDogBond {
 
         @Override
         public boolean hasActiveBond() {
-            return !NO_WOLF.equals(bondedWolfUuid) && tameTimeMillis > 0L;
+            return !NO_WOLF.equals(bondedWolfUuid);
         }
 
         @Override
@@ -120,21 +124,34 @@ public interface IJieYuanDogBond {
         }
 
         @Override
-        public long getTameTimeMillis() {
-            return tameTimeMillis;
+        public long getCompanionshipTicks() {
+            return companionshipTicks;
         }
 
         @Override
-        public void beginBond(UUID wolfUuid, long tameTimeMillis) {
+        public void setCompanionshipTicks(long companionshipTicks) {
+            this.companionshipTicks = Math.max(0L, companionshipTicks);
+        }
+
+        @Override
+        public void addCompanionshipTicks(long ticks) {
+            if (ticks <= 0L) {
+                return;
+            }
+            companionshipTicks += ticks;
+        }
+
+        @Override
+        public void beginBond(UUID wolfUuid) {
             this.bondedWolfUuid = wolfUuid;
-            this.tameTimeMillis = tameTimeMillis;
+            this.companionshipTicks = 0L;
             this.bondFulfilled = false;
         }
 
         @Override
         public void clearActiveBond() {
             this.bondedWolfUuid = NO_WOLF;
-            this.tameTimeMillis = 0L;
+            this.companionshipTicks = 0L;
         }
 
         @Override
@@ -147,7 +164,7 @@ public interface IJieYuanDogBond {
                 return;
             }
             bondedWolfUuid = wolfUuid;
-            tameTimeMillis = other.getTameTimeMillis();
+            companionshipTicks = other.getCompanionshipTicks();
         }
     }
 }

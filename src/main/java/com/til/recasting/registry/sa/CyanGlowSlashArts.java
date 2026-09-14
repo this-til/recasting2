@@ -3,11 +3,13 @@ package com.til.recasting.registry.sa;
 import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
+import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.registry.RecastingAttachments;
+import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
-import mods.flammpfeil.slashblade.util.AttackManager;
+import mods.flammpfeil.slashblade.util.KnockBacks;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -29,20 +31,23 @@ public class CyanGlowSlashArts extends ExtendedSlashArts {
         float angleStep = 360f / attackNumber;
         ITimeRun timeRun = RecastingAttachments.timeRun(livingEntity);
 
-        for(int i = 0; i < attackNumber; i++) {
+        for (int i = 0; i < attackNumber; i++) {
             int delay = delayTicks * i;
             int index = i;
 
             timeRun.addTimerCell(
                     () -> {
                         float angle = angleStep * index;
-                        AttackManager.doSlash(
+                        AttackHelper.doSlash(
                                 livingEntity,
                                 angle,
+                                slashBladeState.getColorCode(),
                                 Vec3.ZERO,
                                 false,
                                 false,
-                                hit
+                                new DamageStructure(hit, 0),
+                                propertiesDefinitionExtension.attackDistance(),
+                                KnockBacks.cancel
                         );
                     },
                     delay

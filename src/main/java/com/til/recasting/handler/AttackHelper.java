@@ -245,8 +245,7 @@ public final class AttackHelper {
     }
 
     /**
-     * 生成本模组 {@link SlashEffectEntity}；SlashBlade {@code AttackManager.doSlash} 签名仍返回
-     * {@link EntitySlashEffect}，由 Mixin 填哑元。
+     * 生成本模组 {@link SlashEffectEntity}；原版连段经 {@code DoSlashEvent} 由 {@code VanillaDoSlashHandler} 转入此处。
      */
     @Nullable
     public static SlashEffectEntity doSlash(

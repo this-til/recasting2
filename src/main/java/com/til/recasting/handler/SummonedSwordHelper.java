@@ -77,6 +77,9 @@ public final class SummonedSwordHelper {
         ServerPlayer sender = event.getEntity();
 
         ItemStack blade = sender.getMainHandItem();
+        if (!SlashBladeItemHelper.matchesReplaceRule(blade)) {
+            return;
+        }
         Optional<ISlashBladeState> stateOpt = BladeStateAccess.of(blade);
         if (stateOpt.isEmpty()) {
             return;
