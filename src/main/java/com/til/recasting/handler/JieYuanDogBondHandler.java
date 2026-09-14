@@ -29,7 +29,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import java.util.UUID;
 
 /**
- * 结缘剑「犬」：驯服狼并现实陪伴满 6 小时后，对其喂食耀魂碎片一次性领取。
+ * 结缘剑「犬」：驯服狼并在线陪伴满 6 小时后，对其喂食耀魂碎片一次性领取。
  */
 @Mod.EventBusSubscriber(modid = Recasting.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class JieYuanDogBondHandler {
@@ -76,7 +76,7 @@ public class JieYuanDogBondHandler {
             if (bond.isBondFulfilled()) {
                 return;
             }
-            bond.beginBond(wolf.getUUID(), System.currentTimeMillis());
+            bond.beginBond(wolf.getUUID());
             player.displayClientMessage(
                     Component.translatable(RecastingLanguageKeys.MESSAGE_JIE_YUAN_DOG_BOND_STARTED),
                     true
@@ -135,12 +135,12 @@ public class JieYuanDogBondHandler {
             if (bond.isClaimed() || bond.isBondFulfilled() || !bond.hasActiveBond()) {
                 return;
             }
-            long nowMillis = System.currentTimeMillis();
-            if (!bond.isSurvivalComplete(nowMillis)) {
-                return;
-            }
             Wolf wolf = findBondedWolf(player, bond.getBondedWolfUuid());
             if (wolf == null || !wolf.isAlive()) {
+                return;
+            }
+            bond.addCompanionshipTicks(PROGRESS_CHECK_INTERVAL);
+            if (!bond.isSurvivalComplete()) {
                 return;
             }
             bond.setBondFulfilled(true);
@@ -190,9 +190,9 @@ public class JieYuanDogBondHandler {
                     event.setCanceled(true);
                     return;
                 }
-                long remainingMillis = bond.remainingSurvivalMillis(System.currentTimeMillis());
+                long remainingTicks = bond.remainingSurvivalTicks();
                 player.displayClientMessage(
-                        formatRemainingTime(remainingMillis),
+                        formatRemainingTime(remainingTicks),
                         true
                 );
                 event.setCanceled(true);
@@ -241,8 +241,8 @@ public class JieYuanDogBondHandler {
         return null;
     }
 
-    private static Component formatRemainingTime(long remainingMillis) {
-        long totalSeconds = (remainingMillis + 999L) / 1000L;
+    private static Component formatRemainingTime(long remainingTicks) {
+        long totalSeconds = (remainingTicks + 19L) / 20L;
         long hours = totalSeconds / 3600L;
         long minutes = (totalSeconds % 3600L) / 60L;
         long seconds = totalSeconds % 60L;
