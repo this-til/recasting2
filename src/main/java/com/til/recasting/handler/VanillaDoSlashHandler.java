@@ -3,7 +3,6 @@ package com.til.recasting.handler;
 import com.til.recasting.Recasting;
 import com.til.recasting.compat.Dmc5SfxCompat;
 import com.til.recasting.entity.SlashEffectEntity;
-import com.til.recasting.event.DoSlashExtendEvent;
 import com.til.recasting.util.DamageStructure;
 import mods.flammpfeil.slashblade.event.SlashBladeEvent;
 import net.minecraft.world.phys.Vec3;
@@ -14,6 +13,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 /**
  * 规则命中时取消原版 {@link SlashBladeEvent.DoSlashEvent}，改走 Recasting 斩击。
  * offset / mute / color 来自 {@link DoSlashArgsCapture}（原版事件没有这些字段）。
+ * Recasting 侧另发 {@link com.til.recasting.event.DoSlashExtendEvent}（独立事件，不挂原版 SlashBladeEvent），避免父类型双投递。
  */
 @EventBusSubscriber(modid = Recasting.MODID)
 public final class VanillaDoSlashHandler {
@@ -23,7 +23,7 @@ public final class VanillaDoSlashHandler {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void onDoSlash(SlashBladeEvent.DoSlashEvent event) {
-        if (event instanceof DoSlashExtendEvent || event.isCanceled()) {
+        if (event.isCanceled()) {
             return;
         }
         if (!SlashBladeItemHelper.matchesReplaceRule(event.getBlade())) {
