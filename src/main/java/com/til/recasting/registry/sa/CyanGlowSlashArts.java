@@ -3,11 +3,13 @@ package com.til.recasting.registry.sa;
 import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
+import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
-import mods.flammpfeil.slashblade.util.AttackManager;
+import mods.flammpfeil.slashblade.util.KnockBacks;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -28,30 +30,28 @@ public class CyanGlowSlashArts extends ExtendedSlashArts {
     @Override
     public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
 
-        // 计算每次攻击的角度间隔
         float angleStep = 360f / attackNumber;
 
-        // 获取实体的定时器
         LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN);
 
         timeRunOptional.ifPresent(timeRun -> {
-            for(int i = 0; i < attackNumber; i++) {
+            for (int i = 0; i < attackNumber; i++) {
                 int _delay = delayTicks * i;
                 int finalI = i;
 
                 timeRun.addTimerCell(
                         () -> {
-                            // 计算均匀分布的角度
                             float angle = angleStep * finalI;
-
-                            // 执行斩击
-                            AttackManager.doSlash(
+                            AttackHelper.doSlash(
                                     livingEntity,
                                     angle,
-                                    Vec3.ZERO,  // 无偏移
-                                    false,      // mute
-                                    false,      // critical
-                                    hit         // comboRatio
+                                    slashBladeState.getColorCode(),
+                                    Vec3.ZERO,
+                                    false,
+                                    false,
+                                    new DamageStructure(hit, 0),
+                                    propertiesDefinitionExtension.attackDistance(),
+                                    KnockBacks.cancel
                             );
                         },
                         _delay

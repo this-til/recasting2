@@ -2,7 +2,6 @@ package com.til.recasting.handler;
 
 
 import com.til.recasting.capability.PropertiesDefinitionExtension;
-import com.til.recasting.compat.SrelicCompat;
 import com.til.recasting.entity.SummondSpiralSwordEntity;
 import com.til.recasting.entity.SummondSwordEntity;
 import com.til.recasting.entity.TrackingSummondSwordEntity;
@@ -70,7 +69,7 @@ public class SummonedSwordHelper {
         ServerPlayer sender = event.getEntity();
 
         ItemStack blade = sender.getMainHandItem();
-        if (SrelicCompat.isSrelicBlade(blade)) {
+        if (!SlashBladeItemHelper.matchesReplaceRule(blade)) {
             return;
         }
         var bladeState = blade.getCapability(ItemSlashBlade.BLADESTATE).orElse(new SlashBladeState(blade));

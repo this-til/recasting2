@@ -85,7 +85,7 @@
 - **攻击逻辑统一走 `AttackHelper`** —— `doSlash` / `attack` / `areaAttack`；SE 挥刀优先监听 `DoSlashExtendEvent`，伤害加成用 `AttackAmplifierEvent`；不绕过 `AttackHelper` 自建平行攻击系统
 - **扩展数据走 Capability** —— `PropertiesDefinitionExtension`（攻击距离、SE 等级）、`RenderDefinitionExtension`（幻影剑/斩击模型）；不往原版 NBT 硬塞未序列化字段
 - **延迟序列** —— `TIME_RUN` Capability 的 `addTimerCell(...)`；实体 buff 用 `RecastingBuffTypes` + `BUFF_STACK_DATA`
-- **Mixin 边界** —— 仅用于定义扩展、攻击路由（`AttackManagerMixin`）、CODEC 序列化、tooltip、JEI 兼容；目标类在 `mods.flammpfeil.slashblade.*` 时 **`remap = false`**；新 Mixin 必须登记 `recasting.mixins.json`
+- **Mixin 边界** —— 仅用于定义扩展、无法用事件接管的攻击路由（`AttackManagerMixin` 只替换 `areaAttack`/`doMeleeAttack`，挥刀走 `DoSlashEvent`；`JudgementCutMixin`、`SummonedSwordArtsMixin`）、CODEC 序列化、tooltip、JEI 兼容；目标类在 `mods.flammpfeil.slashblade.*` 时 **`remap = false`**；新 Mixin 必须登记 `recasting.mixins.json`
 - **参考库** —— 运行时依赖 CurseMaven JAR；`SlashBlade_Resharped/` 源码目录只读，查 API 用，禁止修改
 
 **最后更新：** 2026-08-12

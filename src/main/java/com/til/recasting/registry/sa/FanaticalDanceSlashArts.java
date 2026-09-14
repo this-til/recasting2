@@ -3,11 +3,13 @@ package com.til.recasting.registry.sa;
 import com.til.recasting.capability.ITimeRun;
 import com.til.recasting.capability.PropertiesDefinitionExtension;
 import com.til.recasting.capability.RenderDefinitionExtension;
+import com.til.recasting.handler.AttackHelper;
 import com.til.recasting.handler.CapabilityRegistryHandler;
+import com.til.recasting.util.DamageStructure;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
-import mods.flammpfeil.slashblade.util.AttackManager;
+import mods.flammpfeil.slashblade.util.KnockBacks;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -30,36 +32,32 @@ public class FanaticalDanceSlashArts extends ExtendedSlashArts {
     @Override
     public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, RenderDefinitionExtension renderDefinitionExtension, PropertiesDefinitionExtension propertiesDefinitionExtension) {
 
-        // 计算总攻击次数
         int number = attackNumber + livingEntity.getRandom().nextInt(attackDeviation + 1);
 
-        // 获取实体的定时器
         LazyOptional<ITimeRun> timeRunOptional = livingEntity.getCapability(CapabilityRegistryHandler.TIME_RUN);
 
         timeRunOptional.ifPresent(timeRun -> {
-            for(int i = 0; i < number; i++) {
+            for (int i = 0; i < number; i++) {
                 int _delay = delayTicks * i;
 
                 timeRun.addTimerCell(
                         () -> {
-                            // 随机角度 (0-360度)
                             float randomRoll = livingEntity.getRandom().nextFloat() * 360;
-
-                            // 随机偏移向量
                             Vec3 randomOffset = new Vec3(
                                     livingEntity.getRandom().nextFloat() - 0.5f,
                                     livingEntity.getRandom().nextFloat() - 0.5f,
                                     0
                             ).scale(offset);
-
-                            // 执行斩击
-                            AttackManager.doSlash(
+                            AttackHelper.doSlash(
                                     livingEntity,
                                     randomRoll,
+                                    slashBladeState.getColorCode(),
                                     randomOffset,
-                                    false,  // mute
-                                    true,   // critical
-                                    hit     // comboRatio
+                                    false,
+                                    true,
+                                    new DamageStructure(hit, 0),
+                                    propertiesDefinitionExtension.attackDistance(),
+                                    KnockBacks.cancel
                             );
                         },
                         _delay
