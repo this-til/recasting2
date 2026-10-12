@@ -29,7 +29,7 @@
   ],
   "client": [
     "client.ItemSlashBladeTooltipMixin",
-    "client.LayerMainBladeMixin"
+    "client.LayerSlashBladeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

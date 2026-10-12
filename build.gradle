@@ -237,11 +237,11 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.36'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
 
-    // SlashBlade Resharped 2.0.5 (NeoForge 1.21.1)
+    // SlashBlade Resharped 2.0.8 (NeoForge 1.21.1)
     // 编译用 compileOnly；运行时走 run*/mods，避免双加载
-    compileOnly "curse.maven:SlashBlade_Resharped-1022428:8667925"
-    testCompileOnly "curse.maven:SlashBlade_Resharped-1022428:8667925"
-    runServerModLibraries "curse.maven:SlashBlade_Resharped-1022428:8667925"
+    compileOnly "curse.maven:SlashBlade_Resharped-1022428:9066774"
+    testCompileOnly "curse.maven:SlashBlade_Resharped-1022428:9066774"
+    runServerModLibraries "curse.maven:SlashBlade_Resharped-1022428:9066774"
 
     // Curios（历史前置；1.21.1 NeoForge 9.5.1）
     compileOnly "curse.maven:curios-309927:6529130"

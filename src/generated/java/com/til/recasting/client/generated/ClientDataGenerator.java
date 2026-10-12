@@ -19,5 +19,6 @@ public class ClientDataGenerator {
         dataGenerator.addProvider(event.includeClient(), new RecastingItemModelProvider(packOutput, existingFileHelper));
         dataGenerator.addProvider(event.includeClient(), new RecastingLanguageProvider(packOutput, "zh_cn"));
         dataGenerator.addProvider(event.includeClient(), new RecastingLanguageProvider(packOutput, "en_us"));
+        dataGenerator.addProvider(event.includeClient(), new RecastingLanguageProvider(packOutput, "ja_jp"));
     }
 }
